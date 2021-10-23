@@ -56,7 +56,7 @@ export default function Header(props) {
                 </div>
                 <div className={classes.icons}>
                     <div class={classes.user}>
-                        <Avatar className={classes.avatar} alt="avatar" src="https://images.pexels.com/photos/8647814/pexels-photo-8647814.jpeg?auto=compress&cs=tinysrgb&dpr=2&w=500" />
+                        <Avatar className={classes.avatar} alt="avatar" src="https://media.istockphoto.com/vectors/default-profile-picture-avatar-photo-placeholder-vector-illustration-vector-id1223671392?k=20&m=1223671392&s=612x612&w=0&h=lGpj2vWAI3WUT1JeJWm1PRoHT3V15_1pdcTn2szdwQ0=" />
                         <Typography>Trần Văn A</Typography>
 
                     </div>
