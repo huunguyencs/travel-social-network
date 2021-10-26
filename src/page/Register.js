@@ -17,7 +17,10 @@ import {
   LockRounded,
   Visibility,
   VisibilityOff,
+  LocalPhone,
+  Mail,
 } from "@material-ui/icons";
+
 import React from "react";
 import { createTheme } from "@material-ui/core/styles";
 
@@ -54,7 +57,7 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-function Login() {
+function Register() {
   const classes = useStyles();
   const [values, setValues] = React.useState({
     password: "",
@@ -109,18 +112,44 @@ function Login() {
                 alt="logo"
               ></img>
             </Grid>
-            
+
             <div style={{ height: 20 }}></div>
 
-            <InputLabel htmlFor="standard-adornment-username">
-              Username
-            </InputLabel>
+            <InputLabel htmlFor="standard-adornment-name">Họ và tên</InputLabel>
             <Input
-              id="standard-adornment-username"
-              type= "text"
+              id="standard-adornment-name"
+              type="text"
               startAdornment={
                 <InputAdornment position="start">
                   <AccountCircle></AccountCircle>
+                </InputAdornment>
+              }
+            />
+
+            <div style={{ height: 20 }}></div>
+
+            <InputLabel htmlFor="standard-adornment-email">Email</InputLabel>
+            <Input
+              id="standard-adornment-email"
+              type="text"
+              startAdornment={
+                <InputAdornment position="start">
+                  <Mail></Mail>
+                </InputAdornment>
+              }
+            />
+
+            <div style={{ height: 20 }}></div>
+
+            <InputLabel htmlFor="standard-adornment-phone">
+              Số điện thoại
+            </InputLabel>
+            <Input
+              id="standard-adornment-phone"
+              type="text"
+              startAdornment={
+                <InputAdornment position="start">
+                  <LocalPhone></LocalPhone>
                 </InputAdornment>
               }
             />
@@ -154,11 +183,10 @@ function Login() {
             />
             <div style={{ height: 20 }}></div>
             <Button theme={theme.primary} variant="contained">
-              Đăng nhập
+              Đăng ký
             </Button>
-            <div>Quên mật khẩu</div>
             <div style={{ height: 20 }}></div>
-            <Button>Tạo tài khoản mới</Button>
+            <Button>Đã có tài khoản</Button>
           </div>
           <div />
         </Grid>
@@ -167,4 +195,7 @@ function Login() {
   );
 }
 
-export default Login;
+function Login(){
+    
+}
+export default Register;
