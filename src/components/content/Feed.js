@@ -1,4 +1,5 @@
-import { Container, makeStyles, Typography } from "@material-ui/core";
+import { Container, InputBase, makeStyles, alpha } from "@material-ui/core";
+import Post from "./Post";
 
 import React from "react";
 
@@ -6,6 +7,28 @@ const useStyles = makeStyles((theme) => ({
     container: {
         marginTop: theme.spacing(10),
         color: 'black',
+        alignContent: "center",
+    },
+    content: {
+        // marginLeft: theme.spacing(10),
+        // marginRight: theme.spacing(10),
+    },
+    create: {
+        margin: 30,
+        backgroundColor: "#EEF6F3",
+        paddingInline: theme.spacing(5),
+        paddingTop: theme.spacing(1),
+        paddingBottom: theme.spacing(1),
+        borderRadius: 20,
+        border: "1px solid rgba(47, 53, 66, 0.5)",
+        "&:hover": {
+            backgroundColor: alpha("#aaa", 0.15),
+        }
+
+
+    },
+    createText: {
+        width: "100%",
     }
 }));
 
@@ -14,11 +37,18 @@ export default function Feed(props) {
 
     return (
         <Container className={classes.container}>
-            <Typography>This paper describes the Dynamic Baseline Model ® (DBM) as a framework for analysis of the project management learning process and an indicator of the expected success of a project. By matching project complexity with the appropriate project management approach, the DBM identifies individual learning needs and the appropriate response to the challenges of todays projects. As project management tools and techniques are more and more applied as a one-size-fits-all solution, there is a need to explore beyond these tools and techniques. The DBM suggests that our ability to create solutions is bounded by our current learning horizon, which may be too restrictive for the needs of a project. The model helps us find suitable solutions by enabling us to ask the right questions.</Typography>
-            <Typography>This paper describes the Dynamic Baseline Model ® (DBM) as a framework for analysis of the project management learning process and an indicator of the expected success of a project. By matching project complexity with the appropriate project management approach, the DBM identifies individual learning needs and the appropriate response to the challenges of todays projects. As project management tools and techniques are more and more applied as a one-size-fits-all solution, there is a need to explore beyond these tools and techniques. The DBM suggests that our ability to create solutions is bounded by our current learning horizon, which may be too restrictive for the needs of a project. The model helps us find suitable solutions by enabling us to ask the right questions.</Typography>
-            <Typography>This paper describes the Dynamic Baseline Model ® (DBM) as a framework for analysis of the project management learning process and an indicator of the expected success of a project. By matching project complexity with the appropriate project management approach, the DBM identifies individual learning needs and the appropriate response to the challenges of todays projects. As project management tools and techniques are more and more applied as a one-size-fits-all solution, there is a need to explore beyond these tools and techniques. The DBM suggests that our ability to create solutions is bounded by our current learning horizon, which may be too restrictive for the needs of a project. The model helps us find suitable solutions by enabling us to ask the right questions.</Typography>
-            <Typography>This paper describes the Dynamic Baseline Model ® (DBM) as a framework for analysis of the project management learning process and an indicator of the expected success of a project. By matching project complexity with the appropriate project management approach, the DBM identifies individual learning needs and the appropriate response to the challenges of todays projects. As project management tools and techniques are more and more applied as a one-size-fits-all solution, there is a need to explore beyond these tools and techniques. The DBM suggests that our ability to create solutions is bounded by our current learning horizon, which may be too restrictive for the needs of a project. The model helps us find suitable solutions by enabling us to ask the right questions.</Typography>
-            <Typography>This paper describes the Dynamic Baseline Model ® (DBM) as a framework for analysis of the project management learning process and an indicator of the expected success of a project. By matching project complexity with the appropriate project management approach, the DBM identifies individual learning needs and the appropriate response to the challenges of todays projects. As project management tools and techniques are more and more applied as a one-size-fits-all solution, there is a need to explore beyond these tools and techniques. The DBM suggests that our ability to create solutions is bounded by our current learning horizon, which may be too restrictive for the needs of a project. The model helps us find suitable solutions by enabling us to ask the right questions.</Typography>
+            <div className={classes.content}>
+                <div className={classes.create}>
+                    <InputBase
+                        placeholder="Bạn đang nghĩ gì?..."
+                        className={classes.createText}
+                    />
+                </div>
+            </div>
+            <div>
+                <Post />
+                <Post />
+            </div>
         </Container>
     )
 }
