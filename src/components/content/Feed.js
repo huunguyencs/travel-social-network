@@ -77,7 +77,29 @@ export default function Feed(props) {
             ],
             content: "Đây là content. Tôi đang thấy vui ...",
             numLike: 12,
-            numCmt: 2
+            liked: true,
+            cmts: [
+                {
+                    user: {
+                        avatar: "",
+                        name: "Nguyễn Văn C"
+                    },
+                    content: "Đây là comment",
+                    time: "October 26, 2021",
+                    numLike: 1,
+                    liked: false,
+                },
+                {
+                    user: {
+                        avatar: "",
+                        name: "Nguyễn Văn D"
+                    },
+                    content: "Comment",
+                    time: "October 26, 2021",
+                    numLike: 2,
+                    liked: true,
+                }
+            ]
         },
         {
             user: {
@@ -97,7 +119,8 @@ export default function Feed(props) {
             ],
             content: "Cảnh đẹp Việt Nam",
             numLike: 10,
-            numCmt: 5,
+            liked: false,
+            cmts: [],
         },
 
     ]

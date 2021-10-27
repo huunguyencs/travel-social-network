@@ -1,6 +1,8 @@
-import { Avatar, Card, CardActions, CardContent, CardHeader, CardMedia, IconButton, ImageList, ImageListItem, InputBase, makeStyles, Typography } from "@material-ui/core";
-import { Favorite, MoreVert, QuestionAnswer, Send, Share } from "@material-ui/icons";
-import React from "react";
+import { Avatar, Card, CardActions, CardContent, CardHeader, CardMedia, Collapse, IconButton, ImageList, ImageListItem, InputBase, makeStyles, Typography } from "@material-ui/core";
+import { Favorite, FavoriteBorderOutlined, MoreVert, QuestionAnswer, Send, Share } from "@material-ui/icons";
+import React, { useState } from "react";
+
+import Comment from "./Comment";
 
 const useStyles = makeStyles((theme) => ({
     cardContainer: {
@@ -16,7 +18,11 @@ const useStyles = makeStyles((theme) => ({
     },
     userName: {
         fontSize: 16,
+        fontWeight: 500,
         cursor: "pointer",
+        "&:hover": {
+            textDecorationLine: 'underline',
+        }
     },
     imageItem: {
         cursor: "pointer"
@@ -38,14 +44,35 @@ const useStyles = makeStyles((theme) => ({
     },
     sendIcon: {
 
-    }
+    },
+    line: {
+        width: "80%",
+        // color: "",
+        border: "0.5px solid #2F3542",
+    },
+    listCmt: {
+        marginTop: 30,
+    },
 }))
 
 
 export default function Post(props) {
 
+    const [showCmt, setShowCmt] = useState(false);
 
-    const classes = useStyles();
+    const [like, setLike] = useState(props.post.liked);
+
+    const [numLike, setNumLike] = useState(props.post.numLike);
+
+    const classes = useStyles({ showCmt });
+
+    const likeHandle = (e) => {
+        setLike(!like);
+        if (!like) setNumLike(numLike + 1);
+        else setNumLike(numLike - 1);
+
+    }
+
     return (
         <Card className={classes.cardContainer}>
             <CardHeader
@@ -62,6 +89,13 @@ export default function Post(props) {
                 }
                 subheader={props.post.time}
             />
+
+            <CardContent>
+                <Typography variant="body1" color="#2F3542" component="p">
+                    {props.post.content}
+                </Typography>
+            </CardContent>
+
             <CardMedia>
 
                 {/* <img src="https://img.thuthuatphanmem.vn/uploads/2018/10/26/anh-dep-cau-rong-da-nang-viet-nam_055418962.jpg" alt="img" /> */}
@@ -73,28 +107,37 @@ export default function Post(props) {
                     ))}
                 </ImageList>
             </CardMedia>
-            <CardContent>
-                <Typography variant="body2" color="#2F3542" component="p">
-                    {props.post.content}
-                </Typography>
-            </CardContent>
+
             <CardActions>
-                <IconButton>
-                    <Favorite className={classes.likeIcon} />
+                <IconButton onClick={likeHandle}>
+                    {
+                        like ? <Favorite className={classes.likeIcon} /> : <FavoriteBorderOutlined className={classes.likeIcon} />
+                    }
+
                 </IconButton>
                 <Typography className={classes.numLike}>
-                    {props.post.numLike}
+                    {numLike}
                 </Typography>
-                <IconButton>
+                <IconButton onClick={(e) => (setShowCmt(!showCmt))}>
                     <QuestionAnswer />
                 </IconButton>
                 <Typography className={classes.numCmt}>
-                    {props.post.numCmt}
+                    {props.post.cmts.length}
                 </Typography>
                 <IconButton>
                     <Share />
                 </IconButton>
             </CardActions>
+
+            <Collapse className={classes.cmt} in={showCmt}>
+                <hr className={classes.line} />
+                <div className={classes.listCmt}>
+                    {props.post.cmts.map((cmt) => (
+                        <Comment comment={cmt} />
+                    ))}
+                </div>
+            </Collapse>
+
             <div className={classes.writeCmt}>
                 <InputBase
                     placeholder="Viết bình luận ..."
