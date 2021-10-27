@@ -8,11 +8,15 @@ const useStyles = makeStyles((theme) => ({
         justifyContent: "space-between",
         paddingTop: 5,
         paddingBottom: 5,
+        backgroundColor: "#57606F",
     },
     search: {
         display: "flex",
         alignItems: "center",
-        backgroundColor: alpha(theme.palette.common.white, 0.15),
+        backgroundColor: alpha("#000", 0.15),
+        "&:hover": {
+            backgroundColor: alpha("#000", 0.25)
+        },
         borderRadius: 15,
         width: "40%",
         padding: 3,
@@ -21,6 +25,7 @@ const useStyles = makeStyles((theme) => ({
         marginLeft: 10,
     },
     input: {
+        width: "100%",
         color: "white",
         marginLeft: theme.spacing(1),
     },
@@ -30,18 +35,24 @@ const useStyles = makeStyles((theme) => ({
     },
     badge: {
         marginRight: theme.spacing(3),
+        cursor: "pointer",
     },
     avatar: {
         marginRight: theme.spacing(2),
     },
     user: {
+        cursor: "pointer",
         display: "flex",
         alignItems: "center",
         marginRight: theme.spacing(5),
     },
+    userName: {
+        fontSize: 18,
+    }
 }));
 
 export default function Header(props) {
+
     const classes = useStyles();
 
     return (
@@ -52,12 +63,12 @@ export default function Header(props) {
                 </Typography>
                 <div className={classes.search}>
                     <Search className={classes.searchIcon} />
-                    <InputBase placeholder="Search ..." className={classes.input} />
+                    <InputBase placeholder="Tìm kiếm ..." className={classes.input} />
                 </div>
                 <div className={classes.icons}>
                     <div class={classes.user}>
                         <Avatar className={classes.avatar} alt="avatar" src="https://media.istockphoto.com/vectors/default-profile-picture-avatar-photo-placeholder-vector-illustration-vector-id1223671392?k=20&m=1223671392&s=612x612&w=0&h=lGpj2vWAI3WUT1JeJWm1PRoHT3V15_1pdcTn2szdwQ0=" />
-                        <Typography>Trần Văn A</Typography>
+                        <Typography className={classes.userName}>Trần Văn A</Typography>
 
                     </div>
                     <Badge className={classes.badge} color="secondary">
