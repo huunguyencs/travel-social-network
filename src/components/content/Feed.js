@@ -1,7 +1,8 @@
-import { Container, InputBase, makeStyles, alpha } from "@material-ui/core";
+import { Container, InputBase, makeStyles, alpha, Button, Zoom } from "@material-ui/core";
 import Post from "./Post";
 
-import React from "react";
+import React, { useState } from "react";
+import { AddCircleOutline, Create } from "@material-ui/icons";
 
 const useStyles = makeStyles((theme) => ({
     container: {
@@ -15,6 +16,9 @@ const useStyles = makeStyles((theme) => ({
     },
     create: {
         margin: 30,
+        marginBottom: 50,
+    },
+    containerText: {
         backgroundColor: "#EEF6F3",
         paddingInline: theme.spacing(5),
         paddingTop: theme.spacing(1),
@@ -24,16 +28,35 @@ const useStyles = makeStyles((theme) => ({
         "&:hover": {
             backgroundColor: alpha("#aaa", 0.15),
         }
-
-
     },
     createText: {
         width: "100%",
-    }
+    },
+    menuCreate: {
+        display: "flex",
+        justifyContent: "space-between",
+        marginTop: 5,
+        marginInline: 20,
+    },
+    addImageButton: {
+        borderRadius: 10,
+        padding: 10,
+        paddingInline: 30,
+        backgroundColor: "#A4B0BE",
+    },
+    postButton: {
+        borderRadius: 10,
+        padding: 10,
+        paddingInline: 30,
+        backgroundColor: "#2ED573",
+    },
 }));
 
 export default function Feed(props) {
-    const classes = useStyles();
+
+    const [show, setShow] = useState(false);
+
+    const classes = useStyles({ show });
 
     const listPost = [
         {
@@ -83,11 +106,36 @@ export default function Feed(props) {
         <Container className={classes.container}>
             <div className={classes.content}>
                 <div className={classes.create}>
-                    <InputBase
-                        placeholder="Bạn đang nghĩ gì?..."
-                        className={classes.createText}
-                    />
+                    <div className={classes.containerText}>
+                        <InputBase
+                            placeholder="Bạn đang nghĩ gì?..."
+                            className={classes.createText}
+                            onChange={(e) => {
+                                if (e.target.value === "") {
+                                    setShow(false);
+                                }
+                                else setShow(true);
+                            }}
+                        />
+                    </div>
+                    <div className={classes.menuCreate}>
+                        <Zoom in={show}>
+                            <Button className={classes.addImageButton}>
+                                <AddCircleOutline style={{ marginRight: 10 }} />
+                                Thêm ảnh
+                            </Button>
+                        </Zoom>
+                        <Zoom in={show}>
+                            <Button className={classes.postButton}>
+                                <Create style={{ marginRight: 10 }} />
+                                Đăng
+                            </Button>
+                        </Zoom>
+
+                    </div>
+
                 </div>
+
             </div>
             <div>
                 {
