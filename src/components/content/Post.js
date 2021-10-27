@@ -47,8 +47,6 @@ const useStyles = makeStyles((theme) => ({
     },
     line: {
         width: "80%",
-        // color: "",
-        border: "0.5px solid #2F3542",
     },
     listCmt: {
         marginTop: 30,
@@ -71,6 +69,12 @@ export default function Post(props) {
         if (!like) setNumLike(numLike + 1);
         else setNumLike(numLike - 1);
 
+    }
+
+    const calcCols = (length) => {
+        // if (length % 3 === 0) return 3;
+        if (length > 1) return 2;
+        return 1;
     }
 
     return (
@@ -99,7 +103,7 @@ export default function Post(props) {
             <CardMedia>
 
                 {/* <img src="https://img.thuthuatphanmem.vn/uploads/2018/10/26/anh-dep-cau-rong-da-nang-viet-nam_055418962.jpg" alt="img" /> */}
-                <ImageList rowHeight={300} className={classes.imageList} gap={1}>
+                <ImageList rowHeight={300} className={classes.imageList} cols={calcCols(props.post.imgList.length)}>
                     {props.post.imgList.map((item) => (
                         <ImageListItem key={item.img} className={classes.imageItem}>
                             <img src={item.img} alt={item.title} />
@@ -111,7 +115,7 @@ export default function Post(props) {
             <CardActions>
                 <IconButton onClick={likeHandle}>
                     {
-                        like ? <Favorite className={classes.likeIcon} /> : <FavoriteBorderOutlined className={classes.likeIcon} />
+                        like ? <Favorite className={classes.likeIcon} /> : <FavoriteBorderOutlined />
                     }
 
                 </IconButton>
