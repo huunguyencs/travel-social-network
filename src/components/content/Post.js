@@ -1,5 +1,5 @@
-import { Avatar, Card, CardActions, CardContent, CardHeader, CardMedia, IconButton, ImageList, ImageListItem, makeStyles, Typography } from "@material-ui/core";
-import { Favorite, MoreVert, QuestionAnswer, Share } from "@material-ui/icons";
+import { Avatar, Card, CardActions, CardContent, CardHeader, CardMedia, IconButton, ImageList, ImageListItem, InputBase, makeStyles, Typography } from "@material-ui/core";
+import { Favorite, MoreVert, QuestionAnswer, Send, Share } from "@material-ui/icons";
 import React from "react";
 
 const useStyles = makeStyles((theme) => ({
@@ -20,17 +20,37 @@ const useStyles = makeStyles((theme) => ({
     },
     imageItem: {
         cursor: "pointer"
+    },
+    numLike: {
+        marginRight: 15,
+    },
+    numCmt: {
+        marginRight: 15,
+    },
+    writeCmt: {
+        backgroundColor: "#ededed",
+        margin: 20,
+        borderRadius: 20,
+    },
+    writeCmtText: {
+        paddingInline: 20,
+        width: "92%",
+    },
+    sendIcon: {
+
     }
 }))
 
 
 export default function Post(props) {
+
+
     const classes = useStyles();
     return (
         <Card className={classes.cardContainer}>
             <CardHeader
                 avatar={
-                    <Avatar alt="avatar" src="https://media.istockphoto.com/vectors/default-profile-picture-avatar-photo-placeholder-vector-illustration-vector-id1223671392?k=20&m=1223671392&s=612x612&w=0&h=lGpj2vWAI3WUT1JeJWm1PRoHT3V15_1pdcTn2szdwQ0=" />
+                    <Avatar alt="avatar" src={props.post.user.avatar} />
                 }
                 action={
                     <IconButton aria-label="settings">
@@ -38,40 +58,54 @@ export default function Post(props) {
                     </IconButton>
                 }
                 title={
-                    <Typography className={classes.userName}>Trần Văn A</Typography>
+                    <Typography className={classes.userName}>{props.post.user.name}</Typography>
                 }
-                subheader="October 26, 2021"
+                subheader={props.post.time}
             />
             <CardMedia>
+
                 {/* <img src="https://img.thuthuatphanmem.vn/uploads/2018/10/26/anh-dep-cau-rong-da-nang-viet-nam_055418962.jpg" alt="img" /> */}
-                <ImageList rowHeight={200} className={classes.imageList} gap={1}>
-                    <ImageListItem className={classes.imageItem}>
-                        <img src="https://img.thuthuatphanmem.vn/uploads/2018/10/26/anh-dep-cau-rong-da-nang-viet-nam_055418962.jpg" alt="img" />
-                    </ImageListItem>
-                    <ImageListItem className={classes.imageItem}>
-                        <img src="http://media.hanoitimes.vn/2021/03/02/DANANG_CAU_RONG.jpg" alt="img" />
-                    </ImageListItem>
-                    <ImageListItem className={classes.imageItem}>
-                        <img src="https://static.dalaco.travel/intranet/images/thoi-gian-cau-rong-phun-lua-da-nang.jpg" alt="img" />
-                    </ImageListItem>
+                <ImageList rowHeight={300} className={classes.imageList} gap={1}>
+                    {props.post.imgList.map((item) => (
+                        <ImageListItem key={item.img} className={classes.imageItem}>
+                            <img src={item.img} alt={item.title} />
+                        </ImageListItem>
+                    ))}
                 </ImageList>
             </CardMedia>
             <CardContent>
                 <Typography variant="body2" color="#2F3542" component="p">
-                    Đây là một bài post. Tôi đang nghĩ gì đó....
+                    {props.post.content}
                 </Typography>
             </CardContent>
             <CardActions>
                 <IconButton>
                     <Favorite className={classes.likeIcon} />
                 </IconButton>
+                <Typography className={classes.numLike}>
+                    {props.post.numLike}
+                </Typography>
                 <IconButton>
                     <QuestionAnswer />
                 </IconButton>
+                <Typography className={classes.numCmt}>
+                    {props.post.numCmt}
+                </Typography>
                 <IconButton>
                     <Share />
                 </IconButton>
             </CardActions>
+            <div className={classes.writeCmt}>
+                <InputBase
+                    placeholder="Viết bình luận ..."
+                    className={classes.writeCmtText}
+                />
+                <IconButton>
+                    <Send className={classes.sendIcon} />
+                </IconButton>
+
+            </div>
+
         </Card>
     )
 }

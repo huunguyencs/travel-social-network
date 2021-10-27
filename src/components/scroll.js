@@ -14,7 +14,7 @@ const useStyles = makeStyles((theme) => ({
             color: '#397BA6',
             backgroundColor: '#DCDCDC',
         },
-        right: '5%',
+        right: '1%',
     }
 }))
 

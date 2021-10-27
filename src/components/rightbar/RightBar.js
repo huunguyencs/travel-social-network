@@ -27,7 +27,10 @@ const useStyles = makeStyles((theme) => ({
     },
     item: {
         borderRadius: 20,
-        paddingInline: theme.spacing(6),
+        paddingInline: theme.spacing(5),
+    },
+    list: {
+
     }
 }));
 
