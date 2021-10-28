@@ -2,7 +2,7 @@ import { Avatar, Card, CardActions, CardContent, CardHeader, CardMedia, Collapse
 import { Favorite, FavoriteBorderOutlined, MoreVert, QuestionAnswer, Send, Share } from "@material-ui/icons";
 import React, { useState } from "react";
 
-import Comment from "./Comment";
+import Comment from "../comment/Comment";
 
 const useStyles = makeStyles((theme) => ({
     cardContainer: {
@@ -54,13 +54,13 @@ const useStyles = makeStyles((theme) => ({
 }))
 
 
-export default function Post(props) {
+export default function Tour(props) {
 
     const [showCmt, setShowCmt] = useState(false);
 
-    const [like, setLike] = useState(props.post.liked);
+    const [like, setLike] = useState(props.tour.liked);
 
-    const [numLike, setNumLike] = useState(props.post.numLike);
+    const [numLike, setNumLike] = useState(props.tour.numLike);
 
     const classes = useStyles({ showCmt });
 
@@ -81,7 +81,7 @@ export default function Post(props) {
         <Card className={classes.cardContainer}>
             <CardHeader
                 avatar={
-                    <Avatar alt="avatar" src={props.post.user.avatar} />
+                    <Avatar alt="avatar" src={props.tour.user.avatar} />
                 }
                 action={
                     <IconButton aria-label="settings">
@@ -89,28 +89,38 @@ export default function Post(props) {
                     </IconButton>
                 }
                 title={
-                    <Typography className={classes.userName}>{props.post.user.name}</Typography>
+                    <Typography className={classes.userName}>{props.tour.user.name}</Typography>
                 }
-                subheader={props.post.time}
             />
 
-            <CardContent>
-                <Typography variant="body1" color="#2F3542" component="p">
-                    {props.post.content}
-                </Typography>
-            </CardContent>
+
 
             <CardMedia>
 
                 {/* <img src="https://img.thuthuatphanmem.vn/uploads/2018/10/26/anh-dep-cau-rong-da-nang-viet-nam_055418962.jpg" alt="img" /> */}
-                <ImageList rowHeight={300} className={classes.imageList} cols={calcCols(props.post.imgList.length)}>
-                    {props.post.imgList.map((item) => (
+                <ImageList rowHeight={300} className={classes.imageList} cols={calcCols(props.tour.imgList.length)}>
+                    {props.tour.imgList.map((item) => (
                         <ImageListItem key={item.img} className={classes.imageItem}>
                             <img src={item.img} alt={item.title} />
                         </ImageListItem>
                     ))}
                 </ImageList>
             </CardMedia>
+
+            <CardContent>
+                <Typography variant="body1" color="#2F3542" component="p">
+                    {props.tour.title}
+                </Typography>
+                <Typography>
+                    Chi phí: {props.tour.cost}
+                </Typography>
+                <Typography>
+                    Thời gian: {props.tour.time}
+                </Typography>
+                <Typography>
+                    Địa điểm: {props.tour.location}
+                </Typography>
+            </CardContent>
 
             <CardActions>
                 <IconButton onClick={likeHandle}>
@@ -126,17 +136,18 @@ export default function Post(props) {
                     <QuestionAnswer />
                 </IconButton>
                 <Typography className={classes.numCmt}>
-                    {props.post.cmts.length}
+                    {props.tour.cmts.length}
                 </Typography>
                 <IconButton>
                     <Share />
                 </IconButton>
             </CardActions>
 
+
             <Collapse className={classes.cmt} in={showCmt}>
                 <hr className={classes.line} />
                 <div className={classes.listCmt}>
-                    {props.post.cmts.map((cmt) => (
+                    {props.tour.cmts.map((cmt) => (
                         <Comment comment={cmt} />
                     ))}
                 </div>

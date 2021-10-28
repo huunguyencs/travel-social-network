@@ -1,18 +1,18 @@
-import { Container, makeStyles, Typography } from "@material-ui/core";
+// import { makeStyles } from "@material-ui/core";
 
 import React from "react";
 import loginImg1 from './login-1.jpeg';
 
 import TextField from '@material-ui/core/TextField/TextField';
 import Button from '@material-ui/core/Button/Button';
-import CircularProgress from '@material-ui/core/CircularProgress';
-import Checkbox  from "@material-ui/core/Checkbox";
-const useStyles = makeStyles((theme) => ({
-    
-}));
+// import CircularProgress from '@material-ui/core/CircularProgress';
+import Checkbox from "@material-ui/core/Checkbox";
+// const useStyles = makeStyles((theme) => ({
+
+// }));
 
 export default function Register(props) {
-    const classes = useStyles();
+    // const classes = useStyles();
 
     return (
         <div className="login">
@@ -26,12 +26,12 @@ export default function Register(props) {
                     <h4 className="login-register-switch__active__register">Đăng ký</h4>
                 </div>
                 <p style={{
-                  opacity: 0.5,
-                  marginTop: '1rem',
-                  marginBottom: '1rem'
-                    }}>Đăng ký tài khoản</p>
+                    opacity: 0.5,
+                    marginTop: '1rem',
+                    marginBottom: '1rem'
+                }}>Đăng ký tài khoản</p>
                 <form
-                     style = {{
+                    style={{
                         marginTop: '-10px'
                     }}
                     noValidate
@@ -72,32 +72,32 @@ export default function Register(props) {
                         name="password"
                         type="password"
                         className="form-input"
-                    > 
+                    >
                     </TextField>
                     <div style={{
-                           display:'flex',
-                           textAlign:'center',
-                        }}
+                        display: 'flex',
+                        textAlign: 'center',
+                    }}
                     >
                         <Checkbox
-                        style={{
-                           display:'inline-block',
-                        }}
-                        // checked
-                        // onChange={handleChange}
-                        inputProps={{ 'aria-label': 'controlled' }}
+                            style={{
+                                display: 'inline-block',
+                            }}
+                            // checked
+                            // onChange={handleChange}
+                            inputProps={{ 'aria-label': 'controlled' }}
                         />
                         <p style={{
                             opacity: 0.5,
                             textDecoration: 'underline',
                             color: '#f37435c4',
-                            display:'inline-block',
+                            display: 'inline-block',
                         }}>
-                        Tôi đồng ý với các quy định của GoGo
+                            Tôi đồng ý với các quy định của GoGo
                         </p>
                     </div>
-                    
-                     <div className="login-group">
+
+                    <div className="login-group">
                         <Button
                             variant="contained"
                             // color="primary"
@@ -106,7 +106,7 @@ export default function Register(props) {
                         >
                             Đăng nhập
                         </Button>
-                     </div>
+                    </div>
                 </form>
             </div>
         </div>

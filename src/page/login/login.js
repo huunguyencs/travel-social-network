@@ -1,18 +1,18 @@
-import { Container, makeStyles, Typography } from "@material-ui/core";
-import { Home } from "@material-ui/icons";
+// import { makeStyles } from "@material-ui/core";
+// import { Home } from "@material-ui/icons";
 import React from "react";
 import loginImg1 from './login-1.jpeg';
 
 import TextField from '@material-ui/core/TextField/TextField';
 import Button from '@material-ui/core/Button/Button';
-import CircularProgress from '@material-ui/core/CircularProgress';
-import { red } from "@material-ui/core/colors";
-const useStyles = makeStyles((theme) => ({
-    
-}));
+// import CircularProgress from '@material-ui/core/CircularProgress';
+// import { red } from "@material-ui/core/colors";
+// const useStyles = makeStyles((theme) => ({
+
+// }));
 
 export default function Login(props) {
-    const classes = useStyles();
+    // const classes = useStyles();
 
     return (
         <div className="login">
@@ -26,12 +26,12 @@ export default function Login(props) {
                     <h4>Đăng ký</h4>
                 </div>
                 <p style={{
-                  opacity: 0.5,
-                  marginTop: '1rem',
-                  marginBottom: '1rem'
-                    }}>Đăng nhập bằng tài khoản</p>
+                    opacity: 0.5,
+                    marginTop: '1rem',
+                    marginBottom: '1rem'
+                }}>Đăng nhập bằng tài khoản</p>
                 <form
-                     style = {{
+                    style={{
                         marginTop: '-10px'
                     }}
                     noValidate
@@ -54,7 +54,7 @@ export default function Login(props) {
                         name="password"
                         type="password"
                         className="form-input"
-                    > 
+                    >
                     </TextField>
                     <p style={{
                         opacity: 0.5,
@@ -62,8 +62,8 @@ export default function Login(props) {
                         color: '#f37435c4'
                     }}>
                         Quên mật khẩu?
-                     </p>
-                     <div className="login-group">
+                    </p>
+                    <div className="login-group">
                         <Button
                             variant="contained"
                             // color="primary"
@@ -72,7 +72,7 @@ export default function Login(props) {
                         >
                             Đăng nhập
                         </Button>
-                     </div>
+                    </div>
                 </form>
             </div>
         </div>

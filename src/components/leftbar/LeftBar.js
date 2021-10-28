@@ -1,5 +1,5 @@
 import { Container, makeStyles, ListItem, List, ListItemIcon, ListItemText, Collapse } from "@material-ui/core";
-import { Accessibility, ExpandLess, ExpandMore, Explore, Home } from "@material-ui/icons";
+import { ExpandLess, ExpandMore } from "@material-ui/icons";
 import React, { useState } from "react";
 
 const useStyles = makeStyles((theme) => ({
@@ -51,52 +51,29 @@ export default function LeftBar(props) {
     return (
         <Container className={classes.container} elevation={15}>
             <List className={classes.panel}>
-                <ListItem button className={[classes.item, classes.itemActive]}>
-                    <ListItemIcon>
-                        <Home className={classes.icon} />
-                    </ListItemIcon>
-                    <ListItemText
-                        primary="Trang chủ"
-                        classes={{ primary: classes.text }}
-                    />
-                </ListItem>
-                <ListItem button className={classes.item}>
-                    <ListItemIcon>
-                        <Explore className={classes.icon} />
-                    </ListItemIcon>
-                    <ListItemText
-                        primary="Hành trình"
-                        classes={{ primary: classes.text }}
-                    />
-                </ListItem>
-                <ListItem button className={classes.item}>
-                    <ListItemIcon>
-                        <Accessibility className={classes.icon} />
-                    </ListItemIcon>
-                    <ListItemText
-                        primary="Dịch vụ"
-                        classes={{ primary: classes.text }}
-                    />
-                </ListItem>
+                {props.menuList.slice(0, 3).map((item) => (
+                    <ListItem button className={item.active ? [classes.item, classes.itemActive] : classes.item}>
+                        <ListItemIcon>
+                            {<item.icon className={classes.icon} />}
+                        </ListItemIcon>
+                        <ListItemText
+                            primary={item.name}
+                            classes={{ primary: classes.text }}
+                        />
+                    </ListItem>
+                ))}
                 <Collapse in={more}>
-                    <ListItem button className={classes.item}>
-                        <ListItemIcon>
-                            <Accessibility className={classes.icon} />
-                        </ListItemIcon>
-                        <ListItemText
-                            primary="Dịch vụ"
-                            classes={{ primary: classes.text }}
-                        />
-                    </ListItem>
-                    <ListItem button className={classes.item}>
-                        <ListItemIcon>
-                            <Accessibility className={classes.icon} />
-                        </ListItemIcon>
-                        <ListItemText
-                            primary="Dịch vụ"
-                            classes={{ primary: classes.text }}
-                        />
-                    </ListItem>
+                    {props.menuList.slice(3).map((item) => (
+                        <ListItem button className={item.active ? [classes.item, classes.itemActive] : classes.item}>
+                            <ListItemIcon>
+                                {<item.icon className={classes.icon} />}
+                            </ListItemIcon>
+                            <ListItemText
+                                primary={item.name}
+                                classes={{ primary: classes.text }}
+                            />
+                        </ListItem>
+                    ))}
                 </Collapse>
                 <ListItem button className={classes.item} onClick={() => setMore(!more)}>
                     <ListItemIcon>

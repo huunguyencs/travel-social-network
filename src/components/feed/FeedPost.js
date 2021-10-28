@@ -1,5 +1,5 @@
 import { Container, InputBase, makeStyles, alpha, Button, Zoom } from "@material-ui/core";
-import Post from "./Post";
+import Post from '../post/Post';
 
 import React, { useState } from "react";
 import { AddCircleOutline, Create } from "@material-ui/icons";
@@ -210,15 +210,16 @@ export default function Feed(props) {
 
                 </div>
 
-            </div>
-            <div>
-                {
-                    listPost.map((post) => (
-                        <Post
-                            post={post}
-                        />
-                    ))
-                }
+
+                <div>
+                    {
+                        listPost.map((post) => (
+                            <Post
+                                post={post}
+                            />
+                        ))
+                    }
+                </div>
             </div>
         </Container>
     )
