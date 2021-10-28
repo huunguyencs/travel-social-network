@@ -1,5 +1,6 @@
-import { Avatar, Card, CardActions, CardContent, CardHeader, CardMedia, Collapse, IconButton, ImageList, ImageListItem, InputBase, makeStyles, Typography } from "@material-ui/core";
-import { Favorite, FavoriteBorderOutlined, MoreVert, QuestionAnswer, Send, Share } from "@material-ui/icons";
+import { Avatar, Card, CardActions, CardContent, CardHeader, CardMedia, Collapse, IconButton, ImageList, ImageListItem, InputBase, makeStyles, Popover, Typography } from "@material-ui/core";
+import { Favorite, FavoriteBorderOutlined, InsertEmoticon, MoreVert, QuestionAnswer, Share } from "@material-ui/icons";
+import EmojiPicker from "emoji-picker-react";
 import React, { useState } from "react";
 
 import Comment from "../comment/Comment";
@@ -57,11 +58,10 @@ const useStyles = makeStyles((theme) => ({
 export default function Post(props) {
 
     const [showCmt, setShowCmt] = useState(false);
-
     const [like, setLike] = useState(props.post.liked);
-
     const [numLike, setNumLike] = useState(props.post.numLike);
-
+    const [showPicker, setShowPicker] = useState(null);
+    const [text, setText] = useState("");
     const classes = useStyles({ showCmt });
 
     const likeHandle = (e) => {
@@ -69,6 +69,18 @@ export default function Post(props) {
         if (!like) setNumLike(numLike + 1);
         else setNumLike(numLike - 1);
 
+    }
+
+    const handleShowPicker = (e) => {
+        setShowPicker(e.currentTarget)
+    }
+
+    const handleClosePicker = (e) => {
+        setShowPicker(null);
+    }
+
+    const onEmojiClick = (e, emojiObject) => {
+        setText(prevInput => prevInput + emojiObject.emoji);
     }
 
     const calcCols = (length) => {
@@ -146,11 +158,36 @@ export default function Post(props) {
                 <InputBase
                     placeholder="Viết bình luận ..."
                     className={classes.writeCmtText}
+                    value={text}
+                    onChange={e => setText(e.target.value)}
                 />
-                <IconButton>
-                    <Send className={classes.sendIcon} />
+                <IconButton
+                    aria-controls="customized-menu"
+                    aria-haspopup="true"
+                    variant="contained"
+                >
+                    <InsertEmoticon className={classes.sendIcon} onClick={handleShowPicker} />
                 </IconButton>
 
+
+
+                <Popover
+                    open={Boolean(showPicker)}
+                    anchorEl={showPicker}
+                    onClose={handleClosePicker}
+                    anchorOrigin={{
+                        vertical: "bottom",
+                        horizontal: "left",
+                    }}
+                    transformOrigin={{
+                        vertical: "top",
+                        horizontal: "left"
+                    }}
+                >
+                    <EmojiPicker
+                        onEmojiClick={onEmojiClick}
+                    />
+                </Popover>
             </div>
 
         </Card>
