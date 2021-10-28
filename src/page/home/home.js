@@ -1,4 +1,4 @@
-import { Grid } from "@material-ui/core";
+import { Grid, makeStyles } from "@material-ui/core";
 import React from "react";
 import { Accessibility, Explore, Home, SupervisorAccount, Tune } from "@material-ui/icons";
 
@@ -11,10 +11,18 @@ import Scroll from "../../components/scroll";
 import Slider from "../../components/slider/slider";
 
 
+const useStyles = makeStyles((theme) => ({
+  rightbar: {
+    [theme.breakpoints.down("md")]: {
+      display: "none",
+    }
+  }
+}))
+
 
 function HomePage() {
 
-  // const classes = useStyles();
+  const classes = useStyles();
 
   return (
     <div>
@@ -24,7 +32,7 @@ function HomePage() {
         <Grid item sm={12} >
           <Slider />
         </Grid>
-        <Grid item sm={3}>
+        <Grid item md={3} sm={4} xs={2}>
           <LeftBar
             menuList={[
               {
@@ -55,10 +63,10 @@ function HomePage() {
             ]}
           />
         </Grid>
-        <Grid item sm={6}>
+        <Grid item md={6} sm={8} xs={10}>
           <Feed />
         </Grid>
-        <Grid item sm={3}>
+        <Grid item md={3} className={classes.rightbar}>
           <RightBar />
         </Grid>
       </Grid>

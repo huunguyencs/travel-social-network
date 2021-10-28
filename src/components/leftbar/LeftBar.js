@@ -18,6 +18,9 @@ const useStyles = makeStyles((theme) => ({
         paddingTop: theme.spacing(4),
         paddingBottom: theme.spacing(4),
         paddingInline: theme.spacing(1.5),
+        [theme.breakpoints.down("xs")]: {
+            padding: 0,
+        }
 
     },
     item: {
@@ -25,22 +28,40 @@ const useStyles = makeStyles((theme) => ({
         borderRadius: 20,
         marginTop: theme.spacing(1),
         marginBottom: theme.spacing(2),
-        // marginLeft: theme.spacing(3),
         "&:hover": {
             backgroundColor: "#A5DEC8",
+        },
+        [theme.breakpoints.down("xs")]: {
+            paddingInline: 10,
+        },
+        [theme.breakpoints.down("md")]: {
+            paddingInline: 8,
+        },
+        [theme.breakpoints.down("sm")]: {
+            paddingInline: 0,
         },
     },
     itemActive: {
         backgroundColor: "#A5DEC8",
+
     },
     icon: {
         color: "#2F3542",
         marginInline: theme.spacing(3),
+        [theme.breakpoints.down("sm")]: {
+            marginInline: 2,
+        },
+        [theme.breakpoints.down("xs")]: {
+            marginInline: 5,
+        }
     },
     text: {
         fontSize: '1.2em',
         fontWeight: 500,
         color: "#2F3542",
+        [theme.breakpoints.down("xs")]: {
+            display: "none",
+        }
     },
 }));
 
