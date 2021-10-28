@@ -28,26 +28,31 @@ export default function TourPage(props) {
                                 name: "Trang chủ",
                                 icon: Home,
                                 active: false,
+                                path: "",
                             },
                             {
                                 name: "Hành trình",
                                 icon: Explore,
                                 active: true,
+                                path: "",
                             },
                             {
                                 name: "Dịch vụ",
                                 icon: Accessibility,
                                 active: false,
+                                path: "",
                             },
                             {
                                 name: "Bạn bè",
                                 icon: SupervisorAccount,
                                 active: false,
+                                path: "",
                             },
                             {
                                 name: "Cài đặt",
                                 icon: Tune,
                                 active: false,
+                                path: "",
                             }
                         ]}
                     />

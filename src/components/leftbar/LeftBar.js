@@ -1,4 +1,4 @@
-import { Container, makeStyles, ListItem, List, ListItemIcon, ListItemText, Collapse } from "@material-ui/core";
+import { Container, makeStyles, ListItem, List, ListItemIcon, ListItemText, Collapse, Link } from "@material-ui/core";
 import { ExpandLess, ExpandMore } from "@material-ui/icons";
 import React, { useState } from "react";
 
@@ -40,6 +40,7 @@ const useStyles = makeStyles((theme) => ({
     text: {
         fontSize: '1.2em',
         fontWeight: 500,
+        color: "#2F3542",
     },
 }));
 
@@ -52,18 +53,7 @@ export default function LeftBar(props) {
         <Container className={classes.container} elevation={15}>
             <List className={classes.panel}>
                 {props.menuList.slice(0, 3).map((item) => (
-                    <ListItem button className={item.active ? [classes.item, classes.itemActive] : classes.item}>
-                        <ListItemIcon>
-                            {<item.icon className={classes.icon} />}
-                        </ListItemIcon>
-                        <ListItemText
-                            primary={item.name}
-                            classes={{ primary: classes.text }}
-                        />
-                    </ListItem>
-                ))}
-                <Collapse in={more}>
-                    {props.menuList.slice(3).map((item) => (
+                    <Link style={{ textDecoration: "none", }}>
                         <ListItem button className={item.active ? [classes.item, classes.itemActive] : classes.item}>
                             <ListItemIcon>
                                 {<item.icon className={classes.icon} />}
@@ -73,6 +63,21 @@ export default function LeftBar(props) {
                                 classes={{ primary: classes.text }}
                             />
                         </ListItem>
+                    </Link>
+                ))}
+                <Collapse in={more}>
+                    {props.menuList.slice(3).map((item) => (
+                        <Link style={{ textDecoration: "none", }}>
+                            <ListItem button className={item.active ? [classes.item, classes.itemActive] : classes.item}>
+                                <ListItemIcon>
+                                    {<item.icon className={classes.icon} />}
+                                </ListItemIcon>
+                                <ListItemText
+                                    primary={item.name}
+                                    classes={{ primary: classes.text }}
+                                />
+                            </ListItem>
+                        </Link>
                     ))}
                 </Collapse>
                 <ListItem button className={classes.item} onClick={() => setMore(!more)}>
