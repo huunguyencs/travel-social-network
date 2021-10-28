@@ -1,6 +1,6 @@
-import { Container, makeStyles, ListItem, List, ListItemIcon, ListItemText } from "@material-ui/core";
-import { Accessibility, ExpandMore, Explore, Home } from "@material-ui/icons";
-import React from "react";
+import { Container, makeStyles, ListItem, List, ListItemIcon, ListItemText, Collapse } from "@material-ui/core";
+import { Accessibility, ExpandLess, ExpandMore, Explore, Home } from "@material-ui/icons";
+import React, { useState } from "react";
 
 const useStyles = makeStyles((theme) => ({
 
@@ -25,6 +25,7 @@ const useStyles = makeStyles((theme) => ({
         borderRadius: 20,
         marginTop: theme.spacing(1),
         marginBottom: theme.spacing(2),
+        // marginLeft: theme.spacing(3),
         "&:hover": {
             backgroundColor: "#A5DEC8",
         },
@@ -34,15 +35,18 @@ const useStyles = makeStyles((theme) => ({
     },
     icon: {
         color: "#2F3542",
+        marginInline: theme.spacing(3),
     },
     text: {
         fontSize: '1.2em',
         fontWeight: 500,
-    }
+    },
 }));
 
 export default function LeftBar(props) {
-    const classes = useStyles();
+
+    const [more, setMore] = useState(false);
+    const classes = useStyles({ more });
 
     return (
         <Container className={classes.container} elevation={15}>
@@ -74,12 +78,32 @@ export default function LeftBar(props) {
                         classes={{ primary: classes.text }}
                     />
                 </ListItem>
-                <ListItem button className={classes.item}>
+                <Collapse in={more}>
+                    <ListItem button className={classes.item}>
+                        <ListItemIcon>
+                            <Accessibility className={classes.icon} />
+                        </ListItemIcon>
+                        <ListItemText
+                            primary="Dịch vụ"
+                            classes={{ primary: classes.text }}
+                        />
+                    </ListItem>
+                    <ListItem button className={classes.item}>
+                        <ListItemIcon>
+                            <Accessibility className={classes.icon} />
+                        </ListItemIcon>
+                        <ListItemText
+                            primary="Dịch vụ"
+                            classes={{ primary: classes.text }}
+                        />
+                    </ListItem>
+                </Collapse>
+                <ListItem button className={classes.item} onClick={() => setMore(!more)}>
                     <ListItemIcon>
-                        <ExpandMore className={classes.icon} />
+                        {more ? <ExpandLess className={classes.icon} /> : <ExpandMore className={classes.icon} />}
                     </ListItemIcon>
                     <ListItemText
-                        primary="Xem thêm"
+                        primary={more ? "Thu gọn" : "Xem thêm"}
                         classes={{ primary: classes.text }}
                     />
                 </ListItem>
