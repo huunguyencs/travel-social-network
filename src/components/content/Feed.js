@@ -139,10 +139,12 @@ const useStyles = makeStyles((theme) => ({
         border: "1px solid rgba(47, 53, 66, 0.5)",
         "&:hover": {
             backgroundColor: alpha("#aaa", 0.15),
-        }
+        },
+        height: (props) => props.show ? "5em" : "2em",
     },
     createText: {
         width: "100%",
+
     },
     menuCreate: {
         display: "flex",
@@ -186,6 +188,8 @@ export default function Feed(props) {
                                 }
                                 else setShow(true);
                             }}
+                            rows={show ? 3 : 1}
+                            multiline
                         />
                     </div>
                     <div className={classes.menuCreate}>
