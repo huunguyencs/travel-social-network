@@ -1,4 +1,5 @@
 import { makeStyles, alpha } from "@material-ui/core";
+import color from "./color";
 
 
 const headerStyles = makeStyles((theme) => ({
@@ -45,8 +46,8 @@ const headerStyles = makeStyles((theme) => ({
         }
     },
     badge: {
-        marginRight: theme.spacing(3),
-        cursor: "pointer",
+        marginRight: theme.spacing(1),
+        color: color.white,
     },
     avatar: {
         marginRight: theme.spacing(2),
@@ -55,7 +56,7 @@ const headerStyles = makeStyles((theme) => ({
         cursor: "pointer",
         display: "flex",
         alignItems: "center",
-        marginRight: theme.spacing(5),
+        marginRight: theme.spacing(2),
     },
     userName: {
         fontSize: 18,
@@ -76,6 +77,12 @@ const headerStyles = makeStyles((theme) => ({
             display: (props) => (props.open ? "flex" : "none"),
         }
     },
+    button: {
+        color: color.white,
+        marginInline: 5,
+        padding: 10,
+        borderRadius: 10,
+    }
 }));
 
 export default headerStyles;
