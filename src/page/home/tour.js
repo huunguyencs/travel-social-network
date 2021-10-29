@@ -4,13 +4,16 @@ import { Accessibility, Explore, Home, SupervisorAccount, Tune } from "@material
 
 import Header from "../../components/header/Header";
 import LeftBar from "../../components/leftbar/LeftBar";
-import Feed from "../../components/feed/FeedTour";
+import FeedTour from "../../components/feed/FeedTour";
 import RightBar from "../../components/rightbar/RightBar";
 import Scroll from "../../components/scroll";
 import Slider from "../../components/slider/slider";
+import useStyles from "../../style";
 
 
 export default function TourPage(props) {
+
+    const classes = useStyles();
 
 
     return (
@@ -58,9 +61,9 @@ export default function TourPage(props) {
                     />
                 </Grid>
                 <Grid item sm={6}>
-                    <Feed />
+                    <FeedTour />
                 </Grid>
-                <Grid item sm={3}>
+                <Grid item sm={3} className={classes.rightbar}>
                     <RightBar />
                 </Grid>
             </Grid>

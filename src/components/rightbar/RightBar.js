@@ -1,41 +1,19 @@
-import { Avatar, Container, List, ListItem, ListItemAvatar, ListItemText, makeStyles, Typography } from "@material-ui/core";
-// import { AccountCircle } from "@material-ui/icons";
 import React from "react";
-import Calendar from "react-calendar";
-import './calendar.css';
+import {
+    Avatar,
+    Container,
+    List,
+    ListItem,
+    ListItemAvatar,
+    ListItemText,
+    Typography
+} from "@material-ui/core";
 
-const useStyles = makeStyles((theme) => ({
-    container: {
-        color: 'white',
-        paddingTop: theme.spacing(10),
-        position: "sticky",
-        marginTop: theme.spacing(10),
-        paddingBottom: theme.spacing(4),
-        top: 0,
-        alignItems: 'center'
-    },
-
-    friend: {
-        borderRadius: 20,
-        color: "#2F3542",
-        padding: 20,
-        backgroundColor: "#EEF6F3",
-    },
-    text: {
-        fontSize: "1.15em",
-        fontWeight: 500,
-    },
-    item: {
-        borderRadius: 20,
-        paddingInline: theme.spacing(5),
-    },
-    list: {
-
-    }
-}));
+import Calendar from '../Calendar/Calendar';
+import { rightbarStyles } from "../../style";
 
 export default function RightBar(props) {
-    const classes = useStyles();
+    const classes = rightbarStyles();
 
     return (
         <Container className={classes.container}>

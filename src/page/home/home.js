@@ -1,23 +1,16 @@
-import { Grid, makeStyles } from "@material-ui/core";
+import { Grid } from "@material-ui/core";
 import React from "react";
 import { Accessibility, Explore, Home, SupervisorAccount, Tune } from "@material-ui/icons";
 
 
 import Header from "../../components/header/Header";
 import LeftBar from "../../components/leftbar/LeftBar";
-import Feed from "../../components/feed/FeedPost";
+import FeedPost from "../../components/feed/FeedPost";
 import RightBar from "../../components/rightbar/RightBar";
 import Scroll from "../../components/scroll";
 import Slider from "../../components/slider/slider";
+import useStyles from "../../style";
 
-
-const useStyles = makeStyles((theme) => ({
-  rightbar: {
-    [theme.breakpoints.down("md")]: {
-      display: "none",
-    }
-  }
-}))
 
 
 function HomePage() {
@@ -64,7 +57,7 @@ function HomePage() {
           />
         </Grid>
         <Grid item md={6}>
-          <Feed />
+          <FeedPost />
         </Grid>
         <Grid item md={3} className={classes.rightbar}>
           <RightBar />

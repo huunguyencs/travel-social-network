@@ -1,58 +1,29 @@
-import { Avatar, Card, CardActions, CardContent, CardHeader, CardMedia, Collapse, IconButton, ImageList, ImageListItem, InputBase, makeStyles, Popover, Typography } from "@material-ui/core";
-import { Favorite, FavoriteBorderOutlined, InsertEmoticon, MoreVert, QuestionAnswer, Share } from "@material-ui/icons";
-import EmojiPicker from "emoji-picker-react";
 import React, { useState } from "react";
+import {
+    Avatar,
+    Card,
+    CardActions,
+    CardContent,
+    CardHeader,
+    CardMedia,
+    Collapse,
+    IconButton,
+    ImageList,
+    ImageListItem,
+    Typography
+} from "@material-ui/core";
+import {
+    Favorite,
+    FavoriteBorderOutlined,
+    MoreVert,
+    QuestionAnswer,
+    Share
+} from "@material-ui/icons";
+
 
 import Comment from "../comment/Comment";
-
-const useStyles = makeStyles((theme) => ({
-    cardContainer: {
-        margin: 20,
-        borderRadius: 20,
-        backgroundColor: "#EEF6F3",
-    },
-    likeIcon: {
-        color: "#ed4956",
-    },
-    imageList: {
-        margin: 20,
-    },
-    userName: {
-        fontSize: 16,
-        fontWeight: 500,
-        cursor: "pointer",
-        "&:hover": {
-            textDecorationLine: 'underline',
-        }
-    },
-    imageItem: {
-        cursor: "pointer"
-    },
-    numLike: {
-        marginRight: 15,
-    },
-    numCmt: {
-        marginRight: 15,
-    },
-    writeCmt: {
-        backgroundColor: "#ededed",
-        margin: 20,
-        borderRadius: 20,
-    },
-    writeCmtText: {
-        paddingInline: 20,
-        width: "92%",
-    },
-    sendIcon: {
-
-    },
-    line: {
-        width: "80%",
-    },
-    listCmt: {
-        marginTop: 30,
-    },
-}))
+import InputComment from "../input/comment";
+import { postStyles } from "../../style";
 
 
 export default function Post(props) {
@@ -60,9 +31,8 @@ export default function Post(props) {
     const [showCmt, setShowCmt] = useState(false);
     const [like, setLike] = useState(props.post.liked);
     const [numLike, setNumLike] = useState(props.post.numLike);
-    const [showPicker, setShowPicker] = useState(null);
-    const [text, setText] = useState("");
-    const classes = useStyles({ showCmt });
+
+    const classes = postStyles({ showCmt });
 
     const likeHandle = (e) => {
         setLike(!like);
@@ -71,20 +41,7 @@ export default function Post(props) {
 
     }
 
-    const handleShowPicker = (e) => {
-        setShowPicker(e.currentTarget)
-    }
-
-    const handleClosePicker = (e) => {
-        setShowPicker(null);
-    }
-
-    const onEmojiClick = (e, emojiObject) => {
-        setText(prevInput => prevInput + emojiObject.emoji);
-    }
-
     const calcCols = (length) => {
-        // if (length % 3 === 0) return 3;
         if (length > 1) return 2;
         return 1;
     }
@@ -154,41 +111,7 @@ export default function Post(props) {
                 </div>
             </Collapse>
 
-            <div className={classes.writeCmt}>
-                <InputBase
-                    placeholder="Viết bình luận ..."
-                    className={classes.writeCmtText}
-                    value={text}
-                    onChange={e => setText(e.target.value)}
-                />
-                <IconButton
-                    aria-controls="customized-menu"
-                    aria-haspopup="true"
-                    variant="contained"
-                >
-                    <InsertEmoticon className={classes.sendIcon} onClick={handleShowPicker} />
-                </IconButton>
-
-
-
-                <Popover
-                    open={Boolean(showPicker)}
-                    anchorEl={showPicker}
-                    onClose={handleClosePicker}
-                    anchorOrigin={{
-                        vertical: "bottom",
-                        horizontal: "left",
-                    }}
-                    transformOrigin={{
-                        vertical: "top",
-                        horizontal: "left"
-                    }}
-                >
-                    <EmojiPicker
-                        onEmojiClick={onEmojiClick}
-                    />
-                </Popover>
-            </div>
+            <InputComment />
 
         </Card>
     )

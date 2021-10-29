@@ -1,8 +1,10 @@
-import { Container, InputBase, makeStyles, alpha, Button, Zoom } from "@material-ui/core";
-import Post from '../post/Post';
-
 import React, { useState } from "react";
+import { Container, InputBase, Button, Zoom } from "@material-ui/core";
 import { AddCircleOutline, Create } from "@material-ui/icons";
+
+import Post from '../post/Post';
+import { feedStyles } from "../../style";
+
 
 const listPost = [
     {
@@ -116,61 +118,12 @@ const listPost = [
     }
 ]
 
-const useStyles = makeStyles((theme) => ({
-    container: {
-        marginTop: theme.spacing(10),
-        color: 'black',
-        alignContent: "center",
-    },
-    content: {
-        // marginLeft: theme.spacing(10),
-        // marginRight: theme.spacing(10),
-    },
-    create: {
-        margin: 30,
-        marginBottom: 50,
-    },
-    containerText: {
-        backgroundColor: "#EEF6F3",
-        paddingInline: theme.spacing(5),
-        paddingTop: theme.spacing(1),
-        paddingBottom: theme.spacing(1),
-        borderRadius: 20,
-        border: "1px solid rgba(47, 53, 66, 0.5)",
-        "&:hover": {
-            backgroundColor: alpha("#aaa", 0.15),
-        },
-        height: (props) => props.show ? "5em" : "2em",
-    },
-    createText: {
-        width: "100%",
 
-    },
-    menuCreate: {
-        display: "flex",
-        justifyContent: "space-between",
-        marginTop: 5,
-        marginInline: 20,
-    },
-    addImageButton: {
-        borderRadius: 20,
-        padding: 10,
-        paddingInline: 30,
-        backgroundColor: "#A4B0BE",
-    },
-    postButton: {
-        borderRadius: 20,
-        padding: 10,
-        paddingInline: 30,
-        backgroundColor: "#2ED573",
-    },
-}));
-
-export default function Feed(props) {
+export default function FeedPost(props) {
 
     const [show, setShow] = useState(false);
 
-    const classes = useStyles({ show });
+    const classes = feedStyles({ show });
 
 
 
