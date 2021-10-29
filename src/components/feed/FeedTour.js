@@ -35,7 +35,7 @@ const listTour = [
                     avatar: "",
                     name: "Nguyễn Văn C"
                 },
-                content: "Đây là comment",
+                content: "Đây là comment dhaskj hkjashdjk asdhkas kjdhaskd d asdkjasd akjdsh akjsdh jkdashdjk hasdhsadjkh  dashdjka kjdhaskjd asjkdh adjsh askdh dkjashd asdh  djashdjk asdjkh asjdh akjsdha ksd hk kjh jkh",
                 time: "27 Thg 10 2021",
                 numLike: 1,
                 liked: false,

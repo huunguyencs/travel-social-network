@@ -1,5 +1,7 @@
 import { makeStyles } from "@material-ui/core";
 
+import color from "./color";
+
 const commentStyles = makeStyles((theme) => ({
     comment: {
         display: "flex",
@@ -15,7 +17,7 @@ const commentStyles = makeStyles((theme) => ({
 
     },
     content: {
-        backgroundColor: "#fff",
+        backgroundColor: color.background,
         padding: 10,
         borderRadius: 10,
     },

@@ -16,9 +16,13 @@ const headerStyles = makeStyles((theme) => ({
         "&:hover": {
             backgroundColor: alpha("#000", 0.25)
         },
+        marginLeft: 300,
         borderRadius: 15,
         width: "40%",
         padding: 3,
+        [theme.breakpoints.down("md")]: {
+            marginLeft: 100,
+        },
         [theme.breakpoints.down("sm")]: {
             display: (props) => (props.open ? "flex" : "none"),
             width: "70%",
