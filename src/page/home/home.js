@@ -18,7 +18,7 @@ function HomePage() {
   const classes = useStyles();
 
   return (
-    <div>
+    <>
       <Scroll showBelow={500} />
       <Header />
       <Grid container style={{ margin: 0, padding: 0 }}>
@@ -63,7 +63,7 @@ function HomePage() {
           <RightBar />
         </Grid>
       </Grid>
-    </div>
+    </>
   );
 }
 

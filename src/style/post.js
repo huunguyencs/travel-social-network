@@ -1,13 +1,15 @@
 import { makeStyles } from "@material-ui/core";
 
+import color from "./color";
+
 const postStyles = makeStyles((theme) => ({
     cardContainer: {
         margin: 20,
         borderRadius: 20,
-        backgroundColor: "#EEF6F3",
+        backgroundColor: color.white,
     },
     likeIcon: {
-        color: "#ed4956",
+        color: color.like,
     },
     imageList: {
         margin: 20,
@@ -38,13 +40,13 @@ const postStyles = makeStyles((theme) => ({
     },
     title: {
         marginBottom: 10,
-        color: "#2F3542",
+        color: color.text,
         cursor: "pointer"
     },
     location: {
         padding: 5,
         cursor: "pointer",
-        color: "#2F3542",
+        color: color.text,
     }
 }))
 

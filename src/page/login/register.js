@@ -1,15 +1,9 @@
-// import { makeStyles } from "@material-ui/core";
-
 import React from "react";
 import loginImg1 from './login-1.jpeg';
 
 import TextField from '@material-ui/core/TextField/TextField';
 import Button from '@material-ui/core/Button/Button';
-// import CircularProgress from '@material-ui/core/CircularProgress';
 import Checkbox from "@material-ui/core/Checkbox";
-// const useStyles = makeStyles((theme) => ({
-
-// }));
 
 export default function Register(props) {
     // const classes = useStyles();

@@ -66,7 +66,7 @@ export default function Tour(props) {
 
             <CardMedia>
 
-                <ImageList rowHeight={300} className={classes.imageList} cols={calcCols(props.tour.imgList.length)}>
+                <ImageList rowHeight={500} className={classes.imageList} cols={calcCols(props.tour.imgList.length)}>
                     {props.tour.imgList.map((item) => (
                         <ImageListItem key={item.img} className={classes.imageItem}>
                             <img src={item.img} alt={item.title} />

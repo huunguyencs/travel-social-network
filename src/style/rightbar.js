@@ -1,5 +1,7 @@
 import { makeStyles } from "@material-ui/core";
 
+import color from "./color";
+
 const rightbarStyles = makeStyles((theme) => ({
     container: {
         color: 'white',
@@ -13,9 +15,9 @@ const rightbarStyles = makeStyles((theme) => ({
 
     friend: {
         borderRadius: 20,
-        color: "#2F3542",
+        color: color.text,
         padding: 20,
-        backgroundColor: "#EEF6F3",
+        backgroundColor: color.white,
     },
     text: {
         fontSize: "1.15em",
@@ -25,9 +27,6 @@ const rightbarStyles = makeStyles((theme) => ({
         borderRadius: 20,
         paddingInline: theme.spacing(5),
     },
-    list: {
-
-    }
 }));
 
 export default rightbarStyles;

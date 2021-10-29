@@ -1,9 +1,10 @@
 import { makeStyles } from "@material-ui/core";
 
+import color from "./color";
+
 const leftbarStyles = makeStyles((theme) => ({
 
     container: {
-        color: '#2F3542',
         paddingTop: theme.spacing(10),
         position: "sticky",
         marginTop: theme.spacing(10),
@@ -11,7 +12,7 @@ const leftbarStyles = makeStyles((theme) => ({
         top: 0,
     },
     panel: {
-        backgroundColor: "#EEF6F3",
+        backgroundColor: color.white,
         borderRadius: 20,
         paddingTop: theme.spacing(4),
         paddingBottom: theme.spacing(4),
@@ -24,21 +25,21 @@ const leftbarStyles = makeStyles((theme) => ({
         marginTop: theme.spacing(1),
         marginBottom: theme.spacing(2),
         "&:hover": {
-            backgroundColor: "#A5DEC8",
+            backgroundColor: color.turquoise,
         },
     },
     itemActive: {
-        backgroundColor: "#A5DEC8",
+        backgroundColor: color.turquoise,
 
     },
     icon: {
-        color: "#2F3542",
+        color: color.text,
         marginInline: theme.spacing(3),
     },
     text: {
         fontSize: '1.2em',
         fontWeight: 500,
-        color: "#2F3542",
+        color: color.text,
     },
 }));
 

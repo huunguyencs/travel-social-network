@@ -72,7 +72,7 @@ export default function Post(props) {
             <CardMedia>
 
                 {/* <img src="https://img.thuthuatphanmem.vn/uploads/2018/10/26/anh-dep-cau-rong-da-nang-viet-nam_055418962.jpg" alt="img" /> */}
-                <ImageList rowHeight={300} className={classes.imageList} cols={calcCols(props.post.imgList.length)}>
+                <ImageList rowHeight={500} className={classes.imageList} cols={calcCols(props.post.imgList.length)}>
                     {props.post.imgList.map((item) => (
                         <ImageListItem key={item.img} className={classes.imageItem}>
                             <img src={item.img} alt={item.title} />

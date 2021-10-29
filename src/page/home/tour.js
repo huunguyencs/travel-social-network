@@ -17,14 +17,14 @@ export default function TourPage(props) {
 
 
     return (
-        <div>
+        <>
             <Scroll showBelow={500} />
             <Header />
             <Grid container style={{ margin: 0, padding: 0 }}>
-                <Grid item sm={12} >
+                <Grid item md={12} xs={12}>
                     <Slider />
                 </Grid>
-                <Grid item sm={3}>
+                <Grid item md={3} sm={12} xs={12}>
                     <LeftBar
                         menuList={[
                             {
@@ -60,13 +60,13 @@ export default function TourPage(props) {
                         ]}
                     />
                 </Grid>
-                <Grid item sm={6}>
+                <Grid item md={6} sm={12} xs={12}>
                     <FeedTour />
                 </Grid>
-                <Grid item sm={3} className={classes.rightbar}>
+                <Grid item md={3} className={classes.rightbar}>
                     <RightBar />
                 </Grid>
             </Grid>
-        </div>
+        </>
     )
 }
