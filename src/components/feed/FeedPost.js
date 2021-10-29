@@ -153,13 +153,13 @@ const useStyles = makeStyles((theme) => ({
         marginInline: 20,
     },
     addImageButton: {
-        borderRadius: 10,
+        borderRadius: 20,
         padding: 10,
         paddingInline: 30,
         backgroundColor: "#A4B0BE",
     },
     postButton: {
-        borderRadius: 10,
+        borderRadius: 20,
         padding: 10,
         paddingInline: 30,
         backgroundColor: "#2ED573",

@@ -32,7 +32,7 @@ function HomePage() {
         <Grid item sm={12} >
           <Slider />
         </Grid>
-        <Grid item md={3} sm={4} xs={2}>
+        <Grid item md={3}>
           <LeftBar
             menuList={[
               {
@@ -63,7 +63,7 @@ function HomePage() {
             ]}
           />
         </Grid>
-        <Grid item md={6} sm={8} xs={10}>
+        <Grid item md={6}>
           <Feed />
         </Grid>
         <Grid item md={3} className={classes.rightbar}>

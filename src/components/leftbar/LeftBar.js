@@ -18,9 +18,9 @@ const useStyles = makeStyles((theme) => ({
         paddingTop: theme.spacing(4),
         paddingBottom: theme.spacing(4),
         paddingInline: theme.spacing(1.5),
-        [theme.breakpoints.down("xs")]: {
-            padding: 0,
-        }
+        // [theme.breakpoints.down("xs")]: {
+        //     padding: 0,
+        // }
 
     },
     item: {
@@ -31,15 +31,15 @@ const useStyles = makeStyles((theme) => ({
         "&:hover": {
             backgroundColor: "#A5DEC8",
         },
-        [theme.breakpoints.down("xs")]: {
-            paddingInline: 10,
-        },
-        [theme.breakpoints.down("md")]: {
-            paddingInline: 8,
-        },
-        [theme.breakpoints.down("sm")]: {
-            paddingInline: 0,
-        },
+        // [theme.breakpoints.down("xs")]: {
+        //     paddingInline: 10,
+        // },
+        // [theme.breakpoints.down("md")]: {
+        //     paddingInline: 8,
+        // },
+        // [theme.breakpoints.down("sm")]: {
+        //     paddingInline: 0,
+        // },
     },
     itemActive: {
         backgroundColor: "#A5DEC8",
@@ -48,20 +48,20 @@ const useStyles = makeStyles((theme) => ({
     icon: {
         color: "#2F3542",
         marginInline: theme.spacing(3),
-        [theme.breakpoints.down("sm")]: {
-            marginInline: 2,
-        },
-        [theme.breakpoints.down("xs")]: {
-            marginInline: 5,
-        }
+        // [theme.breakpoints.down("sm")]: {
+        //     marginInline: 2,
+        // },
+        // [theme.breakpoints.down("xs")]: {
+        //     marginInline: 5,
+        // }
     },
     text: {
         fontSize: '1.2em',
         fontWeight: 500,
         color: "#2F3542",
-        [theme.breakpoints.down("xs")]: {
-            display: "none",
-        }
+        // [theme.breakpoints.down("xs")]: {
+        //     display: "none",
+        // }
     },
 }));
 
