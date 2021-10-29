@@ -1,53 +1,21 @@
-import { Container, makeStyles, ListItem, List, ListItemIcon, ListItemText, Collapse, Link } from "@material-ui/core";
-import { ExpandLess, ExpandMore } from "@material-ui/icons";
 import React, { useState } from "react";
+import {
+    Container,
+    ListItem,
+    List,
+    ListItemIcon,
+    ListItemText,
+    Collapse,
+    Link
+} from "@material-ui/core";
+import { ExpandLess, ExpandMore } from "@material-ui/icons";
 
-const useStyles = makeStyles((theme) => ({
-
-    container: {
-        color: '#2F3542',
-        paddingTop: theme.spacing(10),
-        position: "sticky",
-        marginTop: theme.spacing(10),
-        paddingBottom: theme.spacing(4),
-        top: 0,
-    },
-    panel: {
-        backgroundColor: "#EEF6F3",
-        borderRadius: 20,
-        paddingTop: theme.spacing(4),
-        paddingBottom: theme.spacing(4),
-        paddingInline: theme.spacing(1.5),
-
-    },
-    item: {
-        paddingInline: theme.spacing(4),
-        borderRadius: 20,
-        marginTop: theme.spacing(1),
-        marginBottom: theme.spacing(2),
-        // marginLeft: theme.spacing(3),
-        "&:hover": {
-            backgroundColor: "#A5DEC8",
-        },
-    },
-    itemActive: {
-        backgroundColor: "#A5DEC8",
-    },
-    icon: {
-        color: "#2F3542",
-        marginInline: theme.spacing(3),
-    },
-    text: {
-        fontSize: '1.2em',
-        fontWeight: 500,
-        color: "#2F3542",
-    },
-}));
+import { leftbarStyles } from "../../style";
 
 export default function LeftBar(props) {
-
     const [more, setMore] = useState(false);
-    const classes = useStyles({ more });
+
+    const classes = leftbarStyles({ more });
 
     return (
         <Container className={classes.container} elevation={15}>

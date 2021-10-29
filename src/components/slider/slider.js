@@ -1,9 +1,10 @@
-import { IconButton, makeStyles, Typography, useTheme } from "@material-ui/core";
 import React, { useState } from "react";
+import { IconButton, Typography, useTheme } from "@material-ui/core";
 import { autoPlay } from 'react-swipeable-views-utils';
 import SwipeableViews from 'react-swipeable-views';
 import { ChevronLeft, ChevronRight } from "@material-ui/icons";
-// import { ChevronLeft, ChevronRight } from "@material-ui/icons";
+
+import { sliderStyles } from "../../style";
 
 const AutoPlaySwipeableViews = autoPlay(SwipeableViews);
 
@@ -34,40 +35,11 @@ const data = [
     }
 ]
 
-const useStyles = makeStyles((theme) => ({
-    container: {
-        maxWidth: "100%",
-        flexGrow: 1,
-    },
-    img: {
-        height: 800,
-        display: "flex",
-        textAlign: "center",
-        maxWidth: "100%",
-        overflow: "hidden",
-        width: "100%",
-        justifyContent: "space-between",
-    },
-    textCover: {
-        paddingTop: 250,
-    },
-    button: {
-        marginTop: 300,
-        height: 50,
-        width: 50,
-    },
-    icon: {
-        fontSize: 40,
-    },
-    description: {
-        fontSize: 16,
-        fontStyle: "italic",
-    }
-}))
 
 export default function Slider() {
 
-    const classes = useStyles();
+    const classes = sliderStyles();
+
     const theme = useTheme();
     const [activeStep, setActiveStep] = useState(0);
     const maxSteps = data.length;

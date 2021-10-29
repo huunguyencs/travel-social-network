@@ -1,11 +1,11 @@
-import { Container, makeStyles } from "@material-ui/core";
-// import Tour from "./Tour";
-import Tour from "../tour/Tour";
-
 import React from "react";
-// import { AddCircleOutline, Create } from "@material-ui/icons";
+import { Container } from "@material-ui/core";
 
-const listPost = [
+import Tour from "../tour/Tour";
+import { feedStyles } from "../../style";
+
+
+const listTour = [
     {
         user: {
             avatar: "https://media.istockphoto.com/vectors/default-profile-picture-avatar-photo-placeholder-vector-illustration-vector-id1223671392",
@@ -24,6 +24,9 @@ const listPost = [
         ],
         title: "Du lịch Hà Nội",
         cost: "200.000 VND",
+        location: [
+            "Hà Nội",
+        ],
         numLike: 12,
         liked: true,
         cmts: [
@@ -71,6 +74,9 @@ const listPost = [
         ],
         title: "Du lịch Phú Quốc",
         cost: "300.000 VND",
+        location: [
+            "Phú Quốc",
+        ],
         numLike: 10,
         liked: false,
         cmts: [],
@@ -93,6 +99,10 @@ const listPost = [
         ],
         title: "Du lịch cùng Phạm C",
         cost: "100.000 VND",
+        location: [
+            "Vũng Tàu",
+            "Tp Hồ Chí Minh",
+        ],
         numLike: 5,
         liked: true,
         cmts: [
@@ -120,21 +130,9 @@ const listPost = [
     }
 ]
 
-const useStyles = makeStyles((theme) => ({
-    container: {
-        marginTop: theme.spacing(10),
-        color: 'black',
-        alignContent: "center",
-    },
-}));
+export default function FeedTour(props) {
 
-export default function Feed(props) {
-
-    // const [show, setShow] = useState(false);
-
-    const classes = useStyles();
-
-
+    const classes = feedStyles();
 
     return (
         <Container className={classes.container}>
@@ -142,7 +140,7 @@ export default function Feed(props) {
 
                 <div>
                     {
-                        listPost.map((tour) => (
+                        listTour.map((tour) => (
                             <Tour
                                 tour={tour}
                             />

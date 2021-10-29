@@ -5,16 +5,17 @@ import { Accessibility, Explore, Home, SupervisorAccount, Tune } from "@material
 
 import Header from "../../components/header/Header";
 import LeftBar from "../../components/leftbar/LeftBar";
-import Feed from "../../components/feed/FeedPost";
+import FeedPost from "../../components/feed/FeedPost";
 import RightBar from "../../components/rightbar/RightBar";
 import Scroll from "../../components/scroll";
 import Slider from "../../components/slider/slider";
+import useStyles from "../../style";
 
 
 
 function HomePage() {
 
-  // const classes = useStyles();
+  const classes = useStyles();
 
   return (
     <div>
@@ -24,7 +25,7 @@ function HomePage() {
         <Grid item sm={12} >
           <Slider />
         </Grid>
-        <Grid item sm={3}>
+        <Grid item md={3}>
           <LeftBar
             menuList={[
               {
@@ -55,10 +56,10 @@ function HomePage() {
             ]}
           />
         </Grid>
-        <Grid item sm={6}>
-          <Feed />
+        <Grid item md={6}>
+          <FeedPost />
         </Grid>
-        <Grid item sm={3}>
+        <Grid item md={3} className={classes.rightbar}>
           <RightBar />
         </Grid>
       </Grid>
