@@ -22,10 +22,10 @@ function HomePage() {
       <Scroll showBelow={500} />
       <Header />
       <Grid container style={{ margin: 0, padding: 0 }}>
-        <Grid item sm={12} >
+        <Grid item md={12} >
           <Slider />
         </Grid>
-        <Grid item md={3}>
+        <Grid item md={3} sm={12}>
           <LeftBar
             menuList={[
               {
@@ -59,7 +59,7 @@ function HomePage() {
         <Grid item md={6}>
           <FeedPost />
         </Grid>
-        <Grid item md={3} className={classes.rightbar}>
+        <Grid item md={3} sm={0} className={classes.rightbar}>
           <RightBar />
         </Grid>
       </Grid>
