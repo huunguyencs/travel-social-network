@@ -11,6 +11,7 @@ import inputStyles from "./input";
 import feedStyles from "./feed";
 import locationStyles from "./location";
 import cardStyles from "./card";
+import messageStyles from "./message";
 
 const useStyles = makeStyles((theme) => ({
     ...shareStyles,
@@ -40,4 +41,5 @@ export {
     feedStyles,
     locationStyles,
     cardStyles,
+    messageStyles,
 };

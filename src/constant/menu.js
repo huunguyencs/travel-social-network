@@ -28,5 +28,33 @@ const homeMenu = [
     }
 ];
 
-export { homeMenu };
+const profileMenu = [
+    {
+        name: "Giới Thiệu",
+        icon: Home,
+        link: "/:id/intro",
+    },
+    {
+        name: "Bài Viết",
+        icon: Explore,
+        link: "/:id/post",
+    },
+    {
+        name: "Hành Trình",
+        icon: Accessibility,
+        link: "/:id/tour",
+    },
+    {
+        name: "Nhóm",
+        icon: SupervisorAccount,
+        link: "/:id/group",
+    },
+    {
+        name: "Thay đổi thông tin",
+        icon: Tune,
+        link: "/:id/changeinfo",
+    }
+]
+
+export { homeMenu, profileMenu };
 
