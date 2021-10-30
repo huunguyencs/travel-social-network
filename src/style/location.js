@@ -1,5 +1,6 @@
 import { makeStyles } from "@material-ui/core";
 import color from "./color";
+import attr from "./attr";
 
 const locationStyles = makeStyles((theme) => ({
     img: {
@@ -19,14 +20,14 @@ const locationStyles = makeStyles((theme) => ({
     desContainer: {
         margin: 50,
         backgroundColor: color.white,
-        borderRadius: 20,
+        borderRadius: attr.borderRadius.md,
     },
     title: {
         backgroundColor: color.turquoise,
         display: "flex",
         justifyContent: "center",
         padding: 15,
-        borderRadius: 20,
+        borderRadius: attr.borderRadius.md,
     },
     desContent: {
         padding: 30,
@@ -34,11 +35,7 @@ const locationStyles = makeStyles((theme) => ({
     locationList: {
         margin: 50,
         backgroundColor: color.white,
-        borderRadius: 20,
-    },
-    listContainer: {
-        // display: "flex",
-        // margin: 20,
+        borderRadius: attr.borderRadius.md,
     }
 }))
 

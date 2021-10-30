@@ -1,11 +1,12 @@
 import { makeStyles } from "@material-ui/core";
 
 import color from "./color";
+import attr from "./attr";
 
 const postStyles = makeStyles((theme) => ({
     cardContainer: {
         margin: 20,
-        borderRadius: 20,
+        borderRadius: attr.borderRadius.md,
         backgroundColor: color.white,
     },
     likeIcon: {

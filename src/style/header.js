@@ -1,5 +1,6 @@
 import { makeStyles, alpha } from "@material-ui/core";
 import color from "./color";
+import attr from "./attr";
 
 
 const headerStyles = makeStyles((theme) => ({
@@ -18,7 +19,7 @@ const headerStyles = makeStyles((theme) => ({
             backgroundColor: alpha("#000", 0.25)
         },
         marginLeft: 300,
-        borderRadius: 15,
+        borderRadius: attr.borderRadius.md,
         width: "40%",
         padding: 3,
         [theme.breakpoints.down("md")]: {
@@ -81,7 +82,7 @@ const headerStyles = makeStyles((theme) => ({
         color: color.white,
         marginInline: 5,
         padding: 10,
-        borderRadius: 10,
+        borderRadius: attr.borderRadius.sm,
     }
 }));
 

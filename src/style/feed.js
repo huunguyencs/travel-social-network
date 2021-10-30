@@ -1,5 +1,6 @@
 import { makeStyles, alpha } from "@material-ui/core";
 import color from "./color";
+import attr from "./attr";
 
 const feedStyles = makeStyles((theme) => ({
     container: {
@@ -16,7 +17,7 @@ const feedStyles = makeStyles((theme) => ({
         paddingInline: theme.spacing(5),
         paddingTop: theme.spacing(1),
         paddingBottom: theme.spacing(1),
-        borderRadius: 20,
+        borderRadius: attr.borderRadius.md,
         border: "1px solid rgba(47, 53, 66, 0.5)",
         "&:hover": {
             backgroundColor: alpha("#aaa", 0.15),
@@ -34,13 +35,13 @@ const feedStyles = makeStyles((theme) => ({
         marginInline: 20,
     },
     addImageButton: {
-        borderRadius: 20,
+        borderRadius: attr.borderRadius.md,
         padding: 10,
         paddingInline: 30,
         backgroundColor: "#A4B0BE",
     },
     postButton: {
-        borderRadius: 20,
+        borderRadius: attr.borderRadius.md,
         padding: 10,
         paddingInline: 30,
         backgroundColor: "#2ED573",

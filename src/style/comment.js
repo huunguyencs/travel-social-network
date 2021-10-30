@@ -8,7 +8,6 @@ const commentStyles = makeStyles((theme) => ({
         marginTop: 10,
         marginBottom: 20,
         marginInline: 30,
-
     },
     avatar: {
         marginRight: 10,

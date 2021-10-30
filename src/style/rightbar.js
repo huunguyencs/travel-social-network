@@ -1,6 +1,7 @@
 import { makeStyles } from "@material-ui/core";
 
 import color from "./color";
+import attr from "./attr";
 
 const rightbarStyles = makeStyles((theme) => ({
     container: {
@@ -14,7 +15,7 @@ const rightbarStyles = makeStyles((theme) => ({
     },
 
     friend: {
-        borderRadius: 20,
+        borderRadius: attr.borderRadius.md,
         color: color.text,
         padding: 20,
         backgroundColor: color.white,
@@ -24,7 +25,7 @@ const rightbarStyles = makeStyles((theme) => ({
         fontWeight: 500,
     },
     item: {
-        borderRadius: 20,
+        borderRadius: attr.borderRadius.md,
         paddingInline: theme.spacing(5),
     },
 }));

@@ -1,10 +1,11 @@
 import { makeStyles } from "@material-ui/core";
 import color from "./color";
+import attr from "./attr";
 
 const cardStyles = makeStyles((theme) => ({
     cardContainer: {
         margin: 20,
-        borderRadius: 20,
+        borderRadius: attr.borderRadius.md,
     },
     image: {
         height: 180,
@@ -28,14 +29,14 @@ const cardStyles = makeStyles((theme) => ({
     },
     seeMore: {
         backgroundColor: color.turquoise,
-        borderRadius: 20,
+        borderRadius: attr.borderRadius.md,
         paddingInline: 10,
     },
     weatherCardContainer: {
         marginRight: 40,
         marginTop: theme.spacing(6),
         top: 0,
-        borderRadius: 20,
+        borderRadius: attr.borderRadius.md,
     },
     content: {
         padding: 20,

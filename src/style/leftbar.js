@@ -1,6 +1,7 @@
 import { makeStyles } from "@material-ui/core";
 
 import color from "./color";
+import attr from "./attr";
 
 const leftbarStyles = makeStyles((theme) => ({
 
@@ -13,7 +14,7 @@ const leftbarStyles = makeStyles((theme) => ({
     },
     panel: {
         backgroundColor: color.white,
-        borderRadius: 20,
+        borderRadius: attr.borderRadius.md,
         paddingTop: theme.spacing(4),
         paddingBottom: theme.spacing(4),
         paddingInline: theme.spacing(1.5),
@@ -21,7 +22,7 @@ const leftbarStyles = makeStyles((theme) => ({
     },
     item: {
         paddingInline: theme.spacing(4),
-        borderRadius: 20,
+        borderRadius: attr.borderRadius.md,
         marginTop: theme.spacing(1),
         marginBottom: theme.spacing(2),
         "&:hover": {
