@@ -19,6 +19,12 @@ const useStyles = makeStyles((theme) => ({
             display: "none",
         }
     },
+    notFoundContainer: {
+        height: "100vh",
+        // display: "flex",
+        // justifyContent: "center",
+        textAlign: "center",
+    }
 
 }));
 
