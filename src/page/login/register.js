@@ -30,6 +30,7 @@ export default function Register(props) {
                     }}
                     noValidate
                     autoComplete="off"
+                    method="POST"
                 >
                     <TextField
                         autoComplete=""
@@ -37,7 +38,7 @@ export default function Register(props) {
                         variant="outlined"
                         name="name"
                         className="form-input"
-                        required={true}
+                        required
                     >
                     </TextField>
                     <TextField
@@ -46,7 +47,7 @@ export default function Register(props) {
                         variant="outlined"
                         name="email"
                         className="form-input"
-                        required={true}
+                        required
                     >
                     </TextField>
                     <TextField
@@ -55,14 +56,24 @@ export default function Register(props) {
                         variant="outlined"
                         name="phone"
                         className="form-input"
-                        required={true}
+                        required
                     >
                     </TextField>
                     <TextField
                         autoComplete=""
                         label="Password (6+ Charactor)"
                         variant="outlined"
-                        required={true}
+                        required
+                        name="password"
+                        type="password"
+                        className="form-input"
+                    >
+                    </TextField>
+                    <TextField
+                        autoComplete=""
+                        label="Confirm password"
+                        variant="outlined"
+                        required
                         name="password"
                         type="password"
                         className="form-input"
@@ -84,7 +95,7 @@ export default function Register(props) {
                         <p style={{
                             opacity: 0.5,
                             textDecoration: 'underline',
-                            color: '#f37435c4',
+                            // color: '#f37435c4',
                             display: 'inline-block',
                         }}>
                             Tôi đồng ý với các quy định của GoGo

@@ -3,13 +3,13 @@ import React from "react";
 import { Accessibility, Explore, Home, SupervisorAccount, Tune } from "@material-ui/icons";
 
 
-import Header from "../../components/header/Header";
-import LeftBar from "../../components/leftbar/LeftBar";
-import FeedPost from "../../components/feed/FeedPost";
-import RightBar from "../../components/rightbar/RightBar";
-import Scroll from "../../components/scroll";
-import Slider from "../../components/slider/slider";
-import useStyles from "../../style";
+import Header from "../components/header/Header";
+import LeftBar from "../components/leftbar/LeftBar";
+import FeedPost from "../components/feed/FeedPost";
+import RightBar from "../components/rightbar/RightBar";
+import Scroll from "../components/scroll";
+import Slider from "../components/slider/slider";
+import useStyles from "../style";
 
 
 

@@ -30,7 +30,7 @@ const cardStyles = makeStyles((theme) => ({
     seeMore: {
         backgroundColor: color.turquoise,
         borderRadius: attr.borderRadius.md,
-        paddingInline: 10,
+        paddingInline: 20,
     },
     weatherCardContainer: {
         marginRight: 40,
@@ -39,7 +39,7 @@ const cardStyles = makeStyles((theme) => ({
         borderRadius: attr.borderRadius.md,
     },
     content: {
-        padding: 20,
+        padding: 10,
     },
     icon: {
         width: 100,
@@ -62,11 +62,18 @@ const cardStyles = makeStyles((theme) => ({
     itemInfo: {
         display: "flex",
         justifyContent: "space-between",
-        marginRight: 40,
-        marginLeft: 30,
+        marginRight: 30,
+        marginLeft: 20,
     },
     value: {
         fontSize: 18,
+    },
+    title: {
+        backgroundColor: color.turquoise,
+        borderRadius: attr.borderRadius.md,
+        display: "flex",
+        justifyContent: "center",
+        padding: 10,
     }
 }))
 

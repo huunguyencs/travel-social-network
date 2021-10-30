@@ -2,11 +2,12 @@ import { Grid, Typography } from "@material-ui/core";
 import React from "react";
 
 
-import Header from "../../components/header/Header";
-import Scroll from "../../components/scroll";
-import LocationCard from "../../components/card/LocationCard";
-import { locationStyles } from "../../style";
-import WeatherCard from "../../components/card/WeatherCard";
+import Header from "../components/header/Header";
+import Scroll from "../components/scroll";
+import LocationCard from "../components/card/LocationCard";
+import { locationStyles } from "../style";
+import WeatherCard from "../components/card/WeatherCard";
+import CovidCard from "../components/card/CovidCard";
 
 
 const listLocation = [
@@ -104,6 +105,7 @@ export default function Province(props) {
                 </Grid>
                 <Grid item md={3}>
                     <WeatherCard weather={weather} />
+                    <CovidCard />
                 </Grid>
             </Grid>
         </>

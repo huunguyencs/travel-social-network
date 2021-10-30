@@ -32,6 +32,7 @@ export default function Login(props) {
                     }}
                     noValidate
                     autoComplete="off"
+                    method="POST"
                 >
                     <TextField
                         autoComplete=""
@@ -39,14 +40,14 @@ export default function Login(props) {
                         variant="outlined"
                         name="email"
                         className="form-input"
-                        required={true}
+                        required
                     >
                     </TextField>
                     <TextField
                         autoComplete=""
                         label="Password (6+ Charactor)"
                         variant="outlined"
-                        required={true}
+                        required
                         name="password"
                         type="password"
                         className="form-input"
@@ -55,7 +56,7 @@ export default function Login(props) {
                     <p style={{
                         opacity: 0.5,
                         textDecoration: 'underline',
-                        color: '#f37435c4'
+                        // color: '#f37435c4'
                     }}>
                         Quên mật khẩu?
                     </p>
