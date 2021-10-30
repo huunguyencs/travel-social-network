@@ -73,8 +73,6 @@ export default function Slider() {
                             <div
                                 style={{
                                     backgroundImage: `url(${step.imgPath})`,
-                                    backgroundSize: "cover",
-                                    backgroundRepeat: "no-repeat",
                                     color: step.color,
                                 }}
                                 className={classes.img}

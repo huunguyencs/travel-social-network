@@ -19,6 +19,9 @@ const useStyles = makeStyles((theme) => ({
 }))
 
 const Scroll = ({ showBelow }) => {
+
+    if (!showBelow) showBelow = 500;
+
     const [show, setShow] = useState(showBelow ? false : true);
 
     const classes = useStyles();

@@ -9,7 +9,8 @@ import sliderStyles from "./slider";
 import rightbarStyles from "./rightbar";
 import inputStyles from "./input";
 import feedStyles from "./feed";
-
+import locationStyles from "./location";
+import cardStyles from "./card";
 
 const useStyles = makeStyles((theme) => ({
     ...shareStyles,
@@ -30,5 +31,7 @@ export {
     sliderStyles,
     rightbarStyles,
     inputStyles,
-    feedStyles
+    feedStyles,
+    locationStyles,
+    cardStyles,
 };

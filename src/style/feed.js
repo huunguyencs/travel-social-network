@@ -1,4 +1,5 @@
 import { makeStyles, alpha } from "@material-ui/core";
+import color from "./color";
 
 const feedStyles = makeStyles((theme) => ({
     container: {
@@ -11,7 +12,7 @@ const feedStyles = makeStyles((theme) => ({
         marginBottom: 50,
     },
     containerText: {
-        backgroundColor: "#EEF6F3",
+        backgroundColor: color.white,
         paddingInline: theme.spacing(5),
         paddingTop: theme.spacing(1),
         paddingBottom: theme.spacing(1),

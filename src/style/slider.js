@@ -13,6 +13,8 @@ const sliderStyles = makeStyles((theme) => ({
         overflow: "hidden",
         width: "100%",
         justifyContent: "space-between",
+        backgroundSize: "cover",
+        backgroundRepeat: "no-repeat",
     },
     textCover: {
         paddingTop: 250,

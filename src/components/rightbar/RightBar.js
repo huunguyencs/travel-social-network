@@ -9,7 +9,7 @@ import {
     Typography
 } from "@material-ui/core";
 
-import Calendar from '../Calendar/Calendar';
+import Calendar from '../card/CalendarCard';
 import { rightbarStyles } from "../../style";
 
 export default function RightBar(props) {
