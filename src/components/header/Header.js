@@ -21,6 +21,7 @@ import {
 } from "@material-ui/icons";
 
 import { headerStyles } from "../../style";
+import { Link } from "react-router-dom";
 
 export default function Header(props) {
 
@@ -42,9 +43,11 @@ export default function Header(props) {
     return (
         <AppBar position="fixed">
             <Toolbar className={classes.toolbar}>
-                <Typography variant="h6">
-                    GOGO
-                </Typography>
+                <Link to="/">
+                    <Typography variant="h6" style={{ color: "#fff" }}>
+                        GOGO
+                    </Typography>
+                </Link>
 
                 <div className={classes.search}>
                     <Search className={classes.searchIcon} />

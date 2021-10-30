@@ -1,9 +1,6 @@
 import { Grid, Typography } from "@material-ui/core";
 import React from "react";
 
-
-import Header from "../components/header/Header";
-import Scroll from "../components/scroll";
 import LocationCard from "../components/card/LocationCard";
 import { locationStyles } from "../style";
 import WeatherCard from "../components/card/WeatherCard";
@@ -66,8 +63,7 @@ export default function Province(props) {
 
     return (
         <>
-            <Scroll showBelow={500} />
-            <Header />
+
             <Grid container>
                 <Grid item md={12}>
                     <div

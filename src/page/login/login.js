@@ -13,7 +13,7 @@ export default function Login(props) {
     return (
         <div className="login">
             <div className="login-img">
-                <img src={loginImg1} alt="image-login"></img>
+                <img src={loginImg1} alt="login"></img>
             </div>
             <div className="form-login">
                 {/* <h3 className="form-login-title">GOGO</h3> */}
