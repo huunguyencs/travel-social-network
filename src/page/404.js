@@ -13,7 +13,7 @@ export default function NotFound() {
             <Header />
             <div className={classes.notFoundContainer}>
                 <Typography variant="h1" style={{ paddingTop: 350 }}>Oops :(</Typography>
-                <Typography variant="h2">404 Not Found.</Typography>
+                <Typography variant="h2">404 Not Found!</Typography>
             </div>
         </>
     )
