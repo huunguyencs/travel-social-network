@@ -1,12 +1,12 @@
 import { Grid } from "@material-ui/core";
 import React from "react";
 
-import LeftBar from "../components/leftbar/LeftBar";
-import FeedTour from "../components/feed/FeedTour";
-import RightBar from "../components/rightbar/RightBar";
-import Slider from "../components/slider/slider";
-import useStyles from "../style";
-import { homeMenu } from "../constant/menu";
+import LeftBar from "../../components/leftbar/LeftBar";
+import FeedTour from "../../components/feed/FeedTour";
+import RightBar from "../../components/rightbar/RightBar";
+import Slider from "../../components/slider/slider";
+import useStyles from "../../style";
+import { homeMenu } from "../../constant/menu";
 
 
 export default function TourPage(props) {
