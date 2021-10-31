@@ -1,6 +1,7 @@
 import { IconButton, makeStyles } from "@material-ui/core";
 import { ExpandLess } from "@material-ui/icons";
 import React, { useEffect, useState } from "react";
+import { withRouter } from "react-router-dom";
 
 const useStyles = makeStyles((theme) => ({
     toTop: {
@@ -16,7 +17,24 @@ const useStyles = makeStyles((theme) => ({
         },
         right: '1%',
     }
-}))
+}));
+
+function ScrollToTop({ history }) {
+    useEffect(() => {
+        const unlisten = history.listen(() => {
+            window['scrollTo']({ top: 0, behavior: 'smooth' });
+        });
+        return () => {
+            unlisten();
+        }
+    }, []);
+
+    return (null);
+}
+
+const WithRouterScroll = withRouter(ScrollToTop);
+
+export { WithRouterScroll };
 
 const Scroll = ({ showBelow }) => {
 

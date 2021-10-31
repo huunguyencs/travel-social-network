@@ -18,11 +18,11 @@ const leftbarStyles = makeStyles((theme) => ({
         paddingTop: theme.spacing(4),
         paddingBottom: theme.spacing(4),
         paddingInline: theme.spacing(1.5),
-
     },
     item: {
         paddingInline: theme.spacing(4),
         borderRadius: attr.borderRadius.md,
+        marginInline: theme.spacing(1),
         marginTop: theme.spacing(1),
         marginBottom: theme.spacing(2),
         "&:hover": {

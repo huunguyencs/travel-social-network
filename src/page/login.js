@@ -1,10 +1,11 @@
 // import { makeStyles } from "@material-ui/core";
 // import { Home } from "@material-ui/icons";
 import React from "react";
-import loginImg1 from './login-1.jpeg';
+// import loginImg1 from '../../public/login-1.jpeg';
 
 import TextField from '@material-ui/core/TextField/TextField';
 import Button from '@material-ui/core/Button/Button';
+import { Link } from "react-router-dom";
 
 
 export default function Login(props) {
@@ -13,13 +14,13 @@ export default function Login(props) {
     return (
         <div className="login">
             <div className="login-img">
-                <img src={loginImg1} alt="login"></img>
+                <img src={'/login-1.jpeg'} alt="login"></img>
             </div>
             <div className="form-login">
                 {/* <h3 className="form-login-title">GOGO</h3> */}
                 <div className="login-register-switch">
                     <h4 className="login-register-switch__active">Đăng nhập</h4>
-                    <h4>Đăng ký</h4>
+                    <h4><Link to='/register' style={{ color: "#2F3542" }}> Đăng ký </Link></h4>
                 </div>
                 <p style={{
                     opacity: 0.5,

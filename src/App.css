@@ -1,5 +1,5 @@
 /* @import url('./components/leftbar/LeftBar.css'); */
-@import url(./page/login/login.css);
+@import url(./style/login.css);
 a{
   text-decoration: none;
   color:black;

@@ -104,10 +104,10 @@ export default function Header(props) {
                         ) : (
                             <>
                                 <Button className={classes.button}>
-                                    <Typography>Đăng nhập</Typography>
+                                    <Link to='/login' style={{ color: "white" }}>Đăng nhập</Link>
                                 </Button>
                                 <Button className={classes.button}>
-                                    <Typography>Đăng ký</Typography>
+                                    <Link to='/register' style={{ color: "white" }}>Đăng ký</Link>
                                 </Button>
                             </>
                         )
