@@ -15,18 +15,17 @@ const generatePage = (pageName) => {
 }
 
 const PageRender = () => {
-    const { page, id } = useParams();
+    const { page, subparam } = useParams();
 
     let pageName = "";
 
-    if (id) {
-        pageName = `${page}/[id]`
+    if (subparam) {
+        pageName = `${page}/${subparam}`
     }
     else {
         pageName = `${page}`
     }
 
-    console.log(pageName);
 
     return generatePage(pageName)
 }

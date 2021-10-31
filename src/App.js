@@ -25,7 +25,7 @@ function App() {
       {displayHeader() && <Header />}
       <Route path="/" component={HomePage} exact />
       <CustomRouter path='/:page' component={PageRender} exact />
-      <CustomRouter path='/:page/:id' component={PageRender} exact />
+      <CustomRouter path='/:page/:subparam' component={PageRender} exact />
     </div>
 
   );

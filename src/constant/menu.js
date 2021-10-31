@@ -24,7 +24,7 @@ const homeMenu = [
     {
         name: "Cài đặt",
         icon: Tune,
-        link: "setting",
+        link: "/setting",
     }
 ];
 
@@ -32,27 +32,27 @@ const profileMenu = [
     {
         name: "Giới Thiệu",
         icon: Home,
-        link: "/:id/intro",
+        link: "/profile/intro",
     },
     {
         name: "Bài Viết",
         icon: Explore,
-        link: "/:id/post",
+        link: "/profile/post",
     },
     {
         name: "Hành Trình",
         icon: Accessibility,
-        link: "/:id/tour",
+        link: "/profile/tour",
     },
     {
         name: "Nhóm",
         icon: SupervisorAccount,
-        link: "/:id/group",
+        link: "/profile/group",
     },
     {
         name: "Thay đổi thông tin",
         icon: Tune,
-        link: "/:id/changeinfo",
+        link: "/profile/changeinfo",
     }
 ]
 
