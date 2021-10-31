@@ -1,4 +1,4 @@
-import { Container, makeStyles, Typography, Avatar} from "@material-ui/core";
+import {  makeStyles, Typography, Avatar} from "@material-ui/core";
 
 import { Grid } from "@material-ui/core";
 import React from "react";
@@ -7,7 +7,6 @@ import { Accessibility, Explore, Home, SupervisorAccount, Tune, Search, Cancel, 
 import Header from "../../components/header/Header";
 import LeftBar from "../../components/leftbar/LeftBar";
 
-import InputComment from "../../components/input/comment";
 
 import {List, ListItem, ListItemText, ListItemAvatar} from "@material-ui/core";
 const useStyles = makeStyles((theme) => ({

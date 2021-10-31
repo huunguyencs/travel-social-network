@@ -6,10 +6,11 @@ import './App.css';
 // import Register from "./page/login/register";
 import Profile_Posts from "./page/profile/posts";
 import Message from "./page/message/message";
+import Change_info from "./page/profile/change_info";
 function App() {
   return (
     <div style={{ backgroundColor: "#EEF6F3" }}>
-      <Message />
+      <Change_info />
     </div>
 
   );
