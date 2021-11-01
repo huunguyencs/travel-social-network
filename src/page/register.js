@@ -1,20 +1,10 @@
 import React from "react";
-// import loginImg1 from '../../public/login-1.jpeg';
-
 import TextField from '@material-ui/core/TextField/TextField';
 import Button from '@material-ui/core/Button/Button';
-<<<<<<< HEAD:src/page/login/register.js
-import Checkbox  from "@material-ui/core/Checkbox";
-
-
-export default function Register(props) {
-=======
 import Checkbox from "@material-ui/core/Checkbox";
 import { Link } from "react-router-dom";
 
 export default function Register(props) {
-    // const classes = useStyles();
->>>>>>> 121ec0bc9cbe62c23b521b7506ca5b99e8a6a1d8:src/page/register.js
 
     return (
         <div className="login">

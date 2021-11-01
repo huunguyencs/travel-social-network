@@ -1,11 +1,4 @@
 import React from "react";
-<<<<<<< HEAD
-import HomePage from "./page/HomePage";
-import Login from "./page/login/login";
-import  Register from "./page/login/register";
-
-import './App.css';
-=======
 import { Route } from "react-router-dom";
 
 import Header from "./components/header/Header";
@@ -17,7 +10,6 @@ import HomePage from './page/home';
 import './App.css'
 import { WithRouterScroll } from './components/scroll';
 import { useLocation } from "react-router-dom";
->>>>>>> 121ec0bc9cbe62c23b521b7506ca5b99e8a6a1d8
 
 function App() {
   const location = useLocation();

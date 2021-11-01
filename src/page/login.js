@@ -1,24 +1,10 @@
-<<<<<<< HEAD:src/page/login/login.js
-=======
-// import { makeStyles } from "@material-ui/core";
-// import { Home } from "@material-ui/icons";
->>>>>>> 121ec0bc9cbe62c23b521b7506ca5b99e8a6a1d8:src/page/login.js
 import React from "react";
-// import loginImg1 from '../../public/login-1.jpeg';
-
 import TextField from '@material-ui/core/TextField/TextField';
 import Button from '@material-ui/core/Button/Button';
-<<<<<<< HEAD:src/page/login/login.js
-
-
-export default function Login(props) {
-=======
 import { Link } from "react-router-dom";
 
 
 export default function Login(props) {
-    // const classes = useStyles();
->>>>>>> 121ec0bc9cbe62c23b521b7506ca5b99e8a6a1d8:src/page/login.js
 
     return (
         <div className="login">
