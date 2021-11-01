@@ -14,6 +14,7 @@ import cardStyles from "./card";
 import messageStyles from "./message";
 import profileStyles from "./profile";
 import tourdetailStyles from "./tourdetail";
+import provinceStyles from "./province";
 
 const useStyles = makeStyles((theme) => ({
     ...shareStyles,
@@ -44,4 +45,5 @@ export {
     messageStyles,
     profileStyles,
     tourdetailStyles,
+    provinceStyles,
 };
