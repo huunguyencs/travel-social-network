@@ -1,10 +1,10 @@
 import { Grid, Typography } from "@material-ui/core";
 import React from "react";
 
-import LocationCard from "../components/card/LocationCard";
-import { locationStyles } from "../style";
-import WeatherCard from "../components/card/WeatherCard";
-import CovidCard from "../components/card/CovidCard";
+import LocationCard from "../../components/card/LocationCard";
+import { locationStyles } from "../../style";
+import WeatherCard from "../../components/card/WeatherCard";
+import CovidCard from "../../components/card/CovidCard";
 
 
 const listLocation = [
