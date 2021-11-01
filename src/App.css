@@ -1,5 +1,8 @@
 /* @import url('./components/leftbar/LeftBar.css'); */
 @import url(./style/login.css);
+body {
+  font-family: 'Roboto';
+}
 a{
   text-decoration: none;
   color:black;
