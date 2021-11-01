@@ -1,4 +1,5 @@
 import React from "react";
+import { useParams } from "react-router-dom";
 import Tour from "../../components/tour/TourDetail";
 
 const tour = {
@@ -65,6 +66,10 @@ const tour = {
 }
 
 export default function TourDetail(props) {
+
+    const { id } = useParams();
+
+    console.log(id);
 
     return (
         <Tour tour={tour} />

@@ -21,8 +21,6 @@ export default function LeftBar(props) {
     const classes = leftbarStyles({ more });
 
     const isActive = (path) => {
-        console.log(location.pathname);
-        console.log(path);
         if (path === "/" && location.pathname === "/home") return true;
         return path === location.pathname;
     }
