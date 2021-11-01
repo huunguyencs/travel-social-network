@@ -1,35 +1,44 @@
 import React from "react";
-import loginImg1 from './login-1.jpeg';
+// import loginImg1 from '../../public/login-1.jpeg';
 
 import TextField from '@material-ui/core/TextField/TextField';
 import Button from '@material-ui/core/Button/Button';
+<<<<<<< HEAD:src/page/login/register.js
 import Checkbox  from "@material-ui/core/Checkbox";
 
 
 export default function Register(props) {
+=======
+import Checkbox from "@material-ui/core/Checkbox";
+import { Link } from "react-router-dom";
+
+export default function Register(props) {
+    // const classes = useStyles();
+>>>>>>> 121ec0bc9cbe62c23b521b7506ca5b99e8a6a1d8:src/page/register.js
 
     return (
         <div className="login">
             <div className="login-img">
-                <img src={loginImg1} alt="image-login"></img>
+                <img src={'/login-1.jpeg'} alt="login"></img>
             </div>
             <div className="form-login">
                 {/* <h3 className="form-login-title">GOGO</h3> */}
                 <div className="login-register-switch">
-                    <h4 className="login-register-switch__notactive">Đăng nhập</h4>
+                    <h4 className="login-register-switch__notactive"><Link to="/login" style={{ color: "#2F3542" }}> Đăng nhập </Link></h4>
                     <h4 className="login-register-switch__active__register">Đăng ký</h4>
                 </div>
                 <p style={{
-                  opacity: 0.5,
-                  marginTop: '1rem',
-                  marginBottom: '1rem'
-                    }}>Đăng ký tài khoản</p>
+                    opacity: 0.5,
+                    marginTop: '1rem',
+                    marginBottom: '1rem'
+                }}>Đăng ký tài khoản</p>
                 <form
-                     style = {{
+                    style={{
                         marginTop: '-10px'
                     }}
                     noValidate
                     autoComplete="off"
+                    method="POST"
                 >
                     <TextField
                         autoComplete=""
@@ -37,7 +46,7 @@ export default function Register(props) {
                         variant="outlined"
                         name="name"
                         className="form-input"
-                        required={true}
+                        required
                     >
                     </TextField>
                     <TextField
@@ -46,7 +55,7 @@ export default function Register(props) {
                         variant="outlined"
                         name="email"
                         className="form-input"
-                        required={true}
+                        required
                     >
                     </TextField>
                     <TextField
@@ -55,43 +64,53 @@ export default function Register(props) {
                         variant="outlined"
                         name="phone"
                         className="form-input"
-                        required={true}
+                        required
                     >
                     </TextField>
                     <TextField
                         autoComplete=""
                         label="Password (6+ Charactor)"
                         variant="outlined"
-                        required={true}
+                        required
                         name="password"
                         type="password"
                         className="form-input"
-                    > 
+                    >
+                    </TextField>
+                    <TextField
+                        autoComplete=""
+                        label="Confirm password"
+                        variant="outlined"
+                        required
+                        name="password"
+                        type="password"
+                        className="form-input"
+                    >
                     </TextField>
                     <div style={{
-                           display:'flex',
-                           textAlign:'center',
-                        }}
+                        display: 'flex',
+                        textAlign: 'center',
+                    }}
                     >
                         <Checkbox
-                        style={{
-                           display:'inline-block',
-                        }}
-                        // checked
-                        // onChange={handleChange}
-                        inputProps={{ 'aria-label': 'controlled' }}
+                            style={{
+                                display: 'inline-block',
+                            }}
+                            // checked
+                            // onChange={handleChange}
+                            inputProps={{ 'aria-label': 'controlled' }}
                         />
                         <p style={{
                             opacity: 0.5,
                             textDecoration: 'underline',
-                            color: '#f37435c4',
-                            display:'inline-block',
+                            // color: '#f37435c4',
+                            display: 'inline-block',
                         }}>
-                        Tôi đồng ý với các quy định của GoGo
+                            Tôi đồng ý với các quy định của GoGo
                         </p>
                     </div>
-                    
-                     <div className="login-group">
+
+                    <div className="login-group">
                         <Button
                             variant="contained"
                             // color="primary"
@@ -100,7 +119,7 @@ export default function Register(props) {
                         >
                             Đăng nhập
                         </Button>
-                     </div>
+                    </div>
                 </form>
             </div>
         </div>

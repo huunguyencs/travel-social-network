@@ -1,82 +1,118 @@
-import React from "react";
-import { Typography, AppBar, Toolbar, InputBase, Avatar, Badge, makeStyles, alpha } from "@material-ui/core";
-import { Search, Notifications, WhatsApp } from "@material-ui/icons";
+import React, { useState } from "react";
+import {
+    Typography,
+    AppBar,
+    Toolbar,
+    InputBase,
+    Avatar,
+    IconButton,
+    Button,
+    Popover,
+    Grow,
+    MenuList,
+    MenuItem,
+    ClickAwayListener
+} from "@material-ui/core";
+import {
+    Search,
+    Notifications,
+    WhatsApp,
+    Cancel
+} from "@material-ui/icons";
 
-const useStyles = makeStyles((theme) => ({
-    toolbar: {
-        display: "flex",
-        justifyContent: "space-between",
-        paddingTop: 5,
-        paddingBottom: 5,
-        backgroundColor: "#57606F",
-    },
-    search: {
-        display: "flex",
-        alignItems: "center",
-        backgroundColor: alpha("#000", 0.15),
-        "&:hover": {
-            backgroundColor: alpha("#000", 0.25)
-        },
-        borderRadius: 15,
-        width: "40%",
-        padding: 3,
-    },
-    searchIcon: {
-        marginLeft: 10,
-    },
-    input: {
-        width: "100%",
-        color: "white",
-        marginLeft: theme.spacing(1),
-    },
-    icons: {
-        alignItems: "center",
-        display: "flex",
-    },
-    badge: {
-        marginRight: theme.spacing(3),
-        cursor: "pointer",
-    },
-    avatar: {
-        marginRight: theme.spacing(2),
-    },
-    user: {
-        cursor: "pointer",
-        display: "flex",
-        alignItems: "center",
-        marginRight: theme.spacing(5),
-    },
-    userName: {
-        fontSize: 18,
-    }
-}));
+import { headerStyles } from "../../style";
+import { Link } from "react-router-dom";
 
 export default function Header(props) {
 
-    const classes = useStyles();
+    const [open, setOpen] = useState(false);
+    const [toggle, setToggle] = useState(null);
+
+    const handleToggle = (e) => {
+        setToggle(e.currentTarget);
+    }
+
+    const handleClose = (e) => {
+        setToggle(null);
+    }
+
+    const classes = headerStyles({ open });
+
+    const temp = false;
 
     return (
         <AppBar position="fixed">
             <Toolbar className={classes.toolbar}>
-                <Typography variant="h6">
-                    GOGO
-                </Typography>
+                <Link to="/">
+                    <Typography variant="h6" style={{ color: "#fff" }}>
+                        GOGO
+                    </Typography>
+                </Link>
+
                 <div className={classes.search}>
                     <Search className={classes.searchIcon} />
                     <InputBase placeholder="Tìm kiếm ..." className={classes.input} />
+                    <Cancel className={classes.cancel} onClick={(e) => setOpen(false)} />
+                </div>
+                <div>
+                    <IconButton onClick={(e) => setOpen(true)}>
+                        <Search className={classes.searchButton} />
+                    </IconButton>
                 </div>
                 <div className={classes.icons}>
-                    <div class={classes.user}>
-                        <Avatar className={classes.avatar} alt="avatar" src="https://media.istockphoto.com/vectors/default-profile-picture-avatar-photo-placeholder-vector-illustration-vector-id1223671392?k=20&m=1223671392&s=612x612&w=0&h=lGpj2vWAI3WUT1JeJWm1PRoHT3V15_1pdcTn2szdwQ0=" />
-                        <Typography className={classes.userName}>Trần Văn A</Typography>
+                    {
+                        temp ? (
+                            <>
+                                <div class={classes.user}>
+                                    <Button className={classes.button} onClick={handleToggle}>
+                                        <Avatar className={classes.avatar} alt="avatar" src="" />
+                                        <Typography className={classes.userName}>Trần Văn A</Typography>
+                                    </Button>
+                                    <Popover
+                                        open={Boolean(toggle)}
+                                        anchorEl={toggle}
+                                        onClose={handleClose}
+                                        transformOrigin={{
+                                            vertical: "top",
+                                            horizontal: "left"
+                                        }}
+                                        anchorOrigin={{
+                                            vertical: "bottom",
+                                            horizontal: "left",
+                                        }}
+                                    >
+                                        <Grow
+                                            style={{ transformOrigin: 'center bottom' }}
+                                        >
+                                            <ClickAwayListener onClickAway={handleClose}>
+                                                <MenuList autoFocusItem={toggle}>
+                                                    <MenuItem>Thông tin người dùng</MenuItem>
+                                                    <MenuItem>Thay đổi mật khẩu</MenuItem>
+                                                    <MenuItem>Đăng xuất</MenuItem>
+                                                </MenuList>
+                                            </ClickAwayListener>
+                                        </Grow>
+                                    </Popover>
+                                </div>
+                                <IconButton className={classes.badge}>
+                                    <Notifications />
+                                </IconButton>
+                                <IconButton className={classes.badge}>
+                                    <WhatsApp />
+                                </IconButton>
+                            </>
+                        ) : (
+                            <>
+                                <Button className={classes.button}>
+                                    <Link to='/login' style={{ color: "white" }}>Đăng nhập</Link>
+                                </Button>
+                                <Button className={classes.button}>
+                                    <Link to='/register' style={{ color: "white" }}>Đăng ký</Link>
+                                </Button>
+                            </>
+                        )
+                    }
 
-                    </div>
-                    <Badge className={classes.badge} color="secondary">
-                        <Notifications />
-                    </Badge>
-                    <Badge className={classes.badge} color="secondary">
-                        <WhatsApp />
-                    </Badge>
                 </div>
             </Toolbar>
         </AppBar>

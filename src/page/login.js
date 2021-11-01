@@ -1,34 +1,48 @@
+<<<<<<< HEAD:src/page/login/login.js
+=======
+// import { makeStyles } from "@material-ui/core";
+// import { Home } from "@material-ui/icons";
+>>>>>>> 121ec0bc9cbe62c23b521b7506ca5b99e8a6a1d8:src/page/login.js
 import React from "react";
-import loginImg1 from './login-1.jpeg';
+// import loginImg1 from '../../public/login-1.jpeg';
 
 import TextField from '@material-ui/core/TextField/TextField';
 import Button from '@material-ui/core/Button/Button';
+<<<<<<< HEAD:src/page/login/login.js
 
 
 export default function Login(props) {
+=======
+import { Link } from "react-router-dom";
+
+
+export default function Login(props) {
+    // const classes = useStyles();
+>>>>>>> 121ec0bc9cbe62c23b521b7506ca5b99e8a6a1d8:src/page/login.js
 
     return (
         <div className="login">
             <div className="login-img">
-                <img src={loginImg1} alt="image-login"></img>
+                <img src={'/login-1.jpeg'} alt="login"></img>
             </div>
             <div className="form-login">
                 {/* <h3 className="form-login-title">GOGO</h3> */}
                 <div className="login-register-switch">
                     <h4 className="login-register-switch__active">Đăng nhập</h4>
-                    <h4>Đăng ký</h4>
+                    <h4><Link to='/register' style={{ color: "#2F3542" }}> Đăng ký </Link></h4>
                 </div>
                 <p style={{
-                  opacity: 0.5,
-                  marginTop: '1rem',
-                  marginBottom: '1rem'
-                    }}>Đăng nhập bằng tài khoản</p>
+                    opacity: 0.5,
+                    marginTop: '1rem',
+                    marginBottom: '1rem'
+                }}>Đăng nhập bằng tài khoản</p>
                 <form
-                     style = {{
+                    style={{
                         marginTop: '-10px'
                     }}
                     noValidate
                     autoComplete="off"
+                    method="POST"
                 >
                     <TextField
                         autoComplete=""
@@ -36,27 +50,27 @@ export default function Login(props) {
                         variant="outlined"
                         name="email"
                         className="form-input"
-                        required={true}
+                        required
                     >
                     </TextField>
                     <TextField
                         autoComplete=""
                         label="Password (6+ Charactor)"
                         variant="outlined"
-                        required={true}
+                        required
                         name="password"
                         type="password"
                         className="form-input"
-                    > 
+                    >
                     </TextField>
                     <p style={{
                         opacity: 0.5,
                         textDecoration: 'underline',
-                        color: '#f37435c4'
+                        // color: '#f37435c4'
                     }}>
                         Quên mật khẩu?
-                     </p>
-                     <div className="login-group">
+                    </p>
+                    <div className="login-group">
                         <Button
                             variant="contained"
                             // color="primary"
@@ -65,7 +79,7 @@ export default function Login(props) {
                         >
                             Đăng nhập
                         </Button>
-                     </div>
+                    </div>
                 </form>
             </div>
         </div>

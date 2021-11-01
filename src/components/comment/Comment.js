@@ -1,66 +1,14 @@
-import { Avatar, makeStyles, Typography } from "@material-ui/core";
-// import { Favorite } from "@material-ui/icons";
 import React, { useState } from "react";
+import { Avatar, Typography } from "@material-ui/core";
 
-const useStyles = makeStyles((theme) => ({
-    comment: {
-        display: "flex",
-        marginTop: 10,
-        marginBottom: 20,
-        marginInline: 30,
-
-    },
-    avatar: {
-        marginRight: 10,
-    },
-    cmtInfo: {
-
-    },
-    content: {
-        backgroundColor: "#fff",
-        padding: 10,
-        borderRadius: 10,
-    },
-    cmtSubinfo: {
-        display: "flex",
-        marginTop: 5,
-    },
-    smallText: {
-        fontSize: "14px",
-    },
-    like: {
-        marginInline: 10,
-        display: "flex",
-    },
-    time: {
-        marginInline: 10,
-    },
-    likeIcon: {
-        fontSize: "15px",
-    },
-    likeBtn: {
-        color: (props) => props.like ? theme.palette.primary.main : "black",
-        fontWeight: (props) => props.like ? 600 : 400,
-        marginInline: 5,
-        cursor: "pointer",
-        "&:hover": {
-            textDecorationLine: 'underline',
-        }
-    },
-    userName: {
-        cursor: "pointer",
-        "&:hover": {
-            textDecorationLine: 'underline',
-        }
-    }
-}))
+import { commentStyles } from "../../style";
 
 export default function Comment(props) {
 
     const [like, setLike] = useState(props.comment.liked);
     const [numLike, setNumLike] = useState(props.comment.numLike);
 
-    const classes = useStyles({ like });
+    const classes = commentStyles({ like });
 
     const likeHandle = (e) => {
         setLike(!like);

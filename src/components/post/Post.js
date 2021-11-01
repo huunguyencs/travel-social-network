@@ -1,70 +1,37 @@
-import { Avatar, Card, CardActions, CardContent, CardHeader, CardMedia, Collapse, IconButton, ImageList, ImageListItem, InputBase, makeStyles, Typography } from "@material-ui/core";
-import { Favorite, FavoriteBorderOutlined, MoreVert, QuestionAnswer, Send, Share } from "@material-ui/icons";
 import React, { useState } from "react";
+import {
+    Avatar,
+    Card,
+    CardActions,
+    CardContent,
+    CardHeader,
+    CardMedia,
+    Collapse,
+    IconButton,
+    Typography
+} from "@material-ui/core";
+import {
+    Favorite,
+    FavoriteBorderOutlined,
+    MoreVert,
+    QuestionAnswer,
+    Share
+} from "@material-ui/icons";
 
-import Comment from "./Comment";
 
-const useStyles = makeStyles((theme) => ({
-    cardContainer: {
-        margin: 20,
-        borderRadius: 20,
-        backgroundColor: "#EEF6F3",
-    },
-    likeIcon: {
-        color: "#ed4956",
-    },
-    imageList: {
-        margin: 20,
-    },
-    userName: {
-        fontSize: 16,
-        fontWeight: 500,
-        cursor: "pointer",
-        "&:hover": {
-            textDecorationLine: 'underline',
-        }
-    },
-    imageItem: {
-        cursor: "pointer"
-    },
-    numLike: {
-        marginRight: 15,
-    },
-    numCmt: {
-        marginRight: 15,
-    },
-    writeCmt: {
-        backgroundColor: "#ededed",
-        margin: 20,
-        borderRadius: 20,
-    },
-    writeCmtText: {
-        paddingInline: 20,
-        width: "92%",
-    },
-    sendIcon: {
-
-    },
-    line: {
-        width: "80%",
-        // color: "",
-        border: "0.5px solid #2F3542",
-    },
-    listCmt: {
-        marginTop: 30,
-    },
-}))
+import Comment from "../comment/Comment";
+import InputComment from "../input/comment";
+import { postStyles } from "../../style";
+import ImageList from "../imagelist/ImageList";
 
 
 export default function Post(props) {
 
     const [showCmt, setShowCmt] = useState(false);
-
     const [like, setLike] = useState(props.post.liked);
-
     const [numLike, setNumLike] = useState(props.post.numLike);
 
-    const classes = useStyles({ showCmt });
+    const classes = postStyles({ showCmt });
 
     const likeHandle = (e) => {
         setLike(!like);
@@ -99,19 +66,13 @@ export default function Post(props) {
             <CardMedia>
 
                 {/* <img src="https://img.thuthuatphanmem.vn/uploads/2018/10/26/anh-dep-cau-rong-da-nang-viet-nam_055418962.jpg" alt="img" /> */}
-                <ImageList rowHeight={300} className={classes.imageList} gap={1}>
-                    {props.post.imgList.map((item) => (
-                        <ImageListItem key={item.img} className={classes.imageItem}>
-                            <img src={item.img} alt={item.title} />
-                        </ImageListItem>
-                    ))}
-                </ImageList>
+                <ImageList imgList={props.post.imgList} />
             </CardMedia>
 
             <CardActions>
                 <IconButton onClick={likeHandle}>
                     {
-                        like ? <Favorite className={classes.likeIcon} /> : <FavoriteBorderOutlined className={classes.likeIcon} />
+                        like ? <Favorite className={classes.likeIcon} /> : <FavoriteBorderOutlined />
                     }
 
                 </IconButton>
@@ -138,16 +99,7 @@ export default function Post(props) {
                 </div>
             </Collapse>
 
-            <div className={classes.writeCmt}>
-                <InputBase
-                    placeholder="Viết bình luận ..."
-                    className={classes.writeCmtText}
-                />
-                <IconButton>
-                    <Send className={classes.sendIcon} />
-                </IconButton>
-
-            </div>
+            <InputComment />
 
         </Card>
     )
