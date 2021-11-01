@@ -8,6 +8,7 @@ function Tour(props) {
 
     const classes = tourdetailStyles();
 
+
     const isReviewed = true;
     const [showRv, setShowRv] = useState(false);
     const [like, setLike] = useState(false);
@@ -47,7 +48,7 @@ function Tour(props) {
                         <Typography variant="h4" className={classes.locationName}>{tourInfo.location}</Typography>
                         <Typography variant="h5">{tourInfo.province}</Typography>
                         {isReviewed ?
-                            <Button className={classes.reviewBtn} onClick={() => setShowRv(!showRv)}>{showRv ? "Ẩn" : "Xem"} Review</Button> :
+                            <Button className={classes.reviewBtn} onClick={() => setShowRv((value) => setShowRv(!value))}>{showRv ? "Ẩn" : "Xem"} Review</Button> :
                             <Button className={classes.reviewBtn}>Tạo Review</Button>
                         }
                         <div className={classes.costContainer}>
