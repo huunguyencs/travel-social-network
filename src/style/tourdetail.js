@@ -1,5 +1,6 @@
 import { makeStyles } from "@material-ui/core";
 import attr from "./attr";
+import color from "./color";
 
 
 const tourdetailStyles = makeStyles((theme) => ({
@@ -66,10 +67,10 @@ const tourdetailStyles = makeStyles((theme) => ({
         color: "black",
     },
     activeDot: {
-        backgroundColor: "#52BEDB"
+        backgroundColor: "#52BEDB !important",
     },
     unactiveDot: {
-
+        color: "gray"
     },
     addContainer: {
         display: "flex",
@@ -79,6 +80,24 @@ const tourdetailStyles = makeStyles((theme) => ({
     tourHeader: {
         display: "flex",
         justifyContent: "space-between",
+    },
+    addTour: {
+        padding: 10,
+        paddingInline: 50,
+        backgroundColor: color.turquoise,
+        marginBottom: 50,
+    },
+    likeIcon: {
+        color: color.like,
+    },
+    marginIcon: {
+        marginLeft: 20,
+    },
+    numLike: {
+        marginRight: 30,
+    },
+    review: {
+        marginInline: 30,
     }
 }))
 
