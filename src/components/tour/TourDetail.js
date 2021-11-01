@@ -12,7 +12,7 @@ function Tour(props) {
     const [showRv, setShowRv] = useState(false);
     const [like, setLike] = useState(false);
     const [numLike, setNumLike] = useState(0);
-    const [rate, setRate] = useState(4);
+    const [valueRate, setValueRate] = useState(0);
 
     const likeHandle = (e) => {
         setLike(!like);
@@ -60,10 +60,10 @@ function Tour(props) {
                         <CardContent className={classes.review}>
                             <Typography component="legend">Đánh giá: </Typography>
                             <Rating
-                                name="simple-controlled"
-                                value={rate}
-                                onChange={(event, newValue) => {
-                                    setRate(newValue);
+                                name={"rating" + tourInfo.id}
+                                value={valueRate}
+                                onChange={(e, newValue) => {
+                                    setValueRate(newValue);
                                 }}
                             />
                             <Typography>Đây là review</Typography>

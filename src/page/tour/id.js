@@ -9,6 +9,7 @@ const tour = {
             time: "1/11/2021",
             tour: [
                 {
+                    id: "1",
                     fromPrev: 0,
                     img: "/login-1.jpeg",
                     location: "Chùa Một Cột",
@@ -16,6 +17,7 @@ const tour = {
                     cost: "200",
                 },
                 {
+                    id: "2",
                     fromPrev: 30,
                     img: "/login-1.jpeg",
                     location: "Lăng Chủ tịch",
@@ -23,6 +25,7 @@ const tour = {
                     cost: "100",
                 },
                 {
+                    id: "3",
                     fromPrev: 20,
                     img: "/login-1.jpeg",
                     location: "Lăng Chủ tịch",
@@ -35,6 +38,7 @@ const tour = {
             time: "2/11/2021",
             tour: [
                 {
+                    id: "4",
                     fromPrev: 0,
                     img: "/login-1.jpeg",
                     location: "Lăng Chủ tịch",
@@ -42,6 +46,7 @@ const tour = {
                     cost: "100",
                 },
                 {
+                    id: "5",
                     fromPrev: 20,
                     img: "/login-1.jpeg",
                     location: "Lăng Chủ tịch",
@@ -54,6 +59,7 @@ const tour = {
             time: "3/11/2021",
             tour: [
                 {
+                    id: "6",
                     fromPrev: 0,
                     img: "/login-1.jpeg",
                     location: "Lăng Chủ tịch",
