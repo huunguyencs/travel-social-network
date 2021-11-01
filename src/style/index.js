@@ -13,6 +13,7 @@ import locationStyles from "./location";
 import cardStyles from "./card";
 import messageStyles from "./message";
 import profileStyles from "./profile";
+import tourdetailStyles from "./tourdetail";
 
 const useStyles = makeStyles((theme) => ({
     ...shareStyles,
@@ -23,8 +24,6 @@ const useStyles = makeStyles((theme) => ({
     },
     notFoundContainer: {
         height: "100vh",
-        // display: "flex",
-        // justifyContent: "center",
         textAlign: "center",
     }
 
@@ -44,4 +43,5 @@ export {
     cardStyles,
     messageStyles,
     profileStyles,
+    tourdetailStyles,
 };

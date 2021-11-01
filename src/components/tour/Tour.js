@@ -8,8 +8,6 @@ import {
     CardMedia,
     Collapse,
     IconButton,
-    ImageList,
-    ImageListItem,
     Link,
     Typography
 } from "@material-ui/core";
@@ -25,6 +23,7 @@ import {
 import Comment from "../comment/Comment";
 import { postStyles } from "../../style";
 import InputComment from "../input/comment";
+import ImageList from "../imagelist/ImageList";
 
 
 export default function Tour(props) {
@@ -40,12 +39,6 @@ export default function Tour(props) {
         if (!like) setNumLike(numLike + 1);
         else setNumLike(numLike - 1);
 
-    }
-
-    const calcCols = (length) => {
-        // if (length % 3 === 0) return 3;
-        if (length > 1) return 2;
-        return 1;
     }
 
     return (
@@ -66,13 +59,7 @@ export default function Tour(props) {
 
             <CardMedia>
 
-                <ImageList rowHeight={500} className={classes.imageList} cols={calcCols(props.tour.imgList.length)}>
-                    {props.tour.imgList.map((item) => (
-                        <ImageListItem key={item.img} className={classes.imageItem}>
-                            <img src={item.img} alt={item.title} />
-                        </ImageListItem>
-                    ))}
-                </ImageList>
+                <ImageList imgList={props.tour.imgList} />
             </CardMedia>
 
             <CardContent>

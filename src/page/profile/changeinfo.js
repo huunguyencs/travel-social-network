@@ -84,7 +84,7 @@ export default function Change_info(props) {
                                             </IconButton>
                                         </label>
                                     </div>
-                                    <img className={classes.change_bg} src="https://res.cloudinary.com/dxnfxl89q/image/upload/v1625327484/Toho/close-up-opened-umbrella-mockup_53876-98796_nj3un5.jpg" ></img>
+                                    <img className={classes.change_bg} src="https://res.cloudinary.com/dxnfxl89q/image/upload/v1625327484/Toho/close-up-opened-umbrella-mockup_53876-98796_nj3un5.jpg" alt="cover"></img>
                                 </div>
                                 <div className={classes.change_wrapper}>
                                     <div className={classes.change_avatar}>
@@ -96,7 +96,7 @@ export default function Change_info(props) {
                                                 </IconButton>
                                             </label>
                                         </div>
-                                        <img className={classes.change_avatar_img} src="https://res.cloudinary.com/dxnfxl89q/image/upload/v1625327484/Toho/close-up-opened-umbrella-mockup_53876-98796_nj3un5.jpg" ></img>
+                                        <img className={classes.change_avatar_img} src="https://res.cloudinary.com/dxnfxl89q/image/upload/v1625327484/Toho/close-up-opened-umbrella-mockup_53876-98796_nj3un5.jpg" alt="avatar"></img>
                                     </div>
                                     <div className={classes.change_form}>
                                         <form

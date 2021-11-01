@@ -12,9 +12,6 @@ const postStyles = makeStyles((theme) => ({
     likeIcon: {
         color: color.like,
     },
-    imageList: {
-        margin: 20,
-    },
     userName: {
         fontSize: 16,
         fontWeight: 500,
@@ -22,9 +19,6 @@ const postStyles = makeStyles((theme) => ({
         "&:hover": {
             textDecorationLine: 'underline',
         }
-    },
-    imageItem: {
-        cursor: "pointer"
     },
     numLike: {
         marginRight: 15,

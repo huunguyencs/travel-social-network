@@ -8,8 +8,6 @@ import {
     CardMedia,
     Collapse,
     IconButton,
-    ImageList,
-    ImageListItem,
     Typography
 } from "@material-ui/core";
 import {
@@ -24,6 +22,7 @@ import {
 import Comment from "../comment/Comment";
 import InputComment from "../input/comment";
 import { postStyles } from "../../style";
+import ImageList from "../imagelist/ImageList";
 
 
 export default function Post(props) {
@@ -39,11 +38,6 @@ export default function Post(props) {
         if (!like) setNumLike(numLike + 1);
         else setNumLike(numLike - 1);
 
-    }
-
-    const calcCols = (length) => {
-        if (length > 1) return 2;
-        return 1;
     }
 
     return (
@@ -72,13 +66,7 @@ export default function Post(props) {
             <CardMedia>
 
                 {/* <img src="https://img.thuthuatphanmem.vn/uploads/2018/10/26/anh-dep-cau-rong-da-nang-viet-nam_055418962.jpg" alt="img" /> */}
-                <ImageList rowHeight={500} className={classes.imageList} cols={calcCols(props.post.imgList.length)}>
-                    {props.post.imgList.map((item) => (
-                        <ImageListItem key={item.img} className={classes.imageItem}>
-                            <img src={item.img} alt={item.title} />
-                        </ImageListItem>
-                    ))}
-                </ImageList>
+                <ImageList imgList={props.post.imgList} />
             </CardMedia>
 
             <CardActions>
