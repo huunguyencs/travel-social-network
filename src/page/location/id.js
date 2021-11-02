@@ -1,6 +1,7 @@
 import { Grid, Typography } from "@material-ui/core";
 import { LocationOn } from "@material-ui/icons";
 import React from "react";
+import MapCard from "../../components/card/MapCard";
 import RatingChart from "../../components/card/RatingChart";
 import WeatherCard from "../../components/card/WeatherCard";
 import FeedReview from "../../components/feed/FeedReview";
@@ -54,7 +55,7 @@ export default function Location(props) {
                 </div>
 
                 <div className={classes.map}>
-
+                    <MapCard />
                 </div>
             </Grid>
             <Grid item md={6} sm={12}>

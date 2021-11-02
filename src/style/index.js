@@ -17,6 +17,7 @@ import tourdetailStyles from "./tourdetail";
 import provinceStyles from "./province";
 import friendCardStyles from "./friendRecommend";
 import calendarStyles from "./calendar";
+import mapCardStyles from "./mapCardStyle";
 
 const useStyles = makeStyles((theme) => ({
     ...shareStyles,
@@ -50,4 +51,5 @@ export {
     provinceStyles,
     friendCardStyles,
     calendarStyles,
+    mapCardStyles,
 };
