@@ -1,8 +1,9 @@
 import { Grid, Typography } from "@material-ui/core";
 import { LocationOn } from "@material-ui/icons";
 import React from "react";
+import RatingChart from "../../components/card/RatingChart";
 import WeatherCard from "../../components/card/WeatherCard";
-import FeedPost from "../../components/feed/FeedPost";
+import FeedReview from "../../components/feed/FeedReview";
 
 import { locationStyles } from "../../style";
 
@@ -41,7 +42,7 @@ export default function Location(props) {
             <Grid item md={3} sm={12}>
                 <div className={classes.infoPanel}>
                     <div className={classes.infoHeader}>
-                        <Typography>
+                        <Typography variant="h6">
                             Thông tin chung
                         </Typography>
                     </div>
@@ -61,13 +62,11 @@ export default function Location(props) {
 
                 </div>
                 <div className={classes.reviewPosts}>
-                    <FeedPost />
+                    <FeedReview />
                 </div>
             </Grid>
             <Grid item md={3}>
-                <div className={classes.ratePanel}>
-
-                </div>
+                <RatingChart />
                 <WeatherCard weather={weather} />
             </Grid>
         </Grid>

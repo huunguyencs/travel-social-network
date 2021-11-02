@@ -169,6 +169,7 @@ export default function FeedPost(props) {
                         listPost.map((post) => (
                             <Post
                                 post={post}
+                                isReview={false}
                             />
                         ))
                     }
