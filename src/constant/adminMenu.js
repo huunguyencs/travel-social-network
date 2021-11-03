@@ -11,32 +11,32 @@ export const mainListItems = [
     {
         icon: Person,
         text: "Người dùng",
-        link: "/",
+        link: "/admin/user",
     },
     {
         icon: Accessibility,
         text: "Dịch vụ",
-        link: "/",
+        link: "/admin/service",
     },
     {
         icon: LocationOn,
         text: "Địa điểm",
-        link: "/",
+        link: "/admin/location",
     },
     {
         icon: Group,
         text: "Nhóm",
-        link: "/",
+        link: "/admin/group",
     },
     {
         icon: PostAdd,
         text: "Bài viết",
-        link: "/",
+        link: "/admin/post",
     },
     {
         icon: RateReview,
         text: "Review",
-        link: "/",
+        link: "/admin/review",
     },
 ]
 

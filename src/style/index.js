@@ -18,6 +18,7 @@ import provinceStyles from "./province";
 import friendCardStyles from "./friendRecommend";
 import calendarStyles from "./calendar";
 import mapCardStyles from "./mapCardStyle";
+import notificationStyles from "./notification";
 
 const useStyles = makeStyles((theme) => ({
     ...shareStyles,
@@ -52,4 +53,5 @@ export {
     friendCardStyles,
     calendarStyles,
     mapCardStyles,
+    notificationStyles,
 };

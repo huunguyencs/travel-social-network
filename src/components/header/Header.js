@@ -38,7 +38,7 @@ export default function Header(props) {
 
     const classes = headerStyles({ open });
 
-    const temp = false;
+    const temp = true;
 
     return (
         <AppBar position="fixed">
@@ -86,7 +86,7 @@ export default function Header(props) {
                                         >
                                             <ClickAwayListener onClickAway={handleClose}>
                                                 <MenuList autoFocusItem={toggle}>
-                                                    <MenuItem>Thông tin người dùng</MenuItem>
+                                                    <MenuItem aria-label="profile-post" component={Link} to="/profile/posts">Trang cá nhân</MenuItem>
                                                     <MenuItem>Thay đổi mật khẩu</MenuItem>
                                                     <MenuItem>Đăng xuất</MenuItem>
                                                 </MenuList>
@@ -94,10 +94,10 @@ export default function Header(props) {
                                         </Grow>
                                     </Popover>
                                 </div>
-                                <IconButton className={classes.badge}>
+                                <IconButton className={classes.badge} aria-label="notifications" component={Link} to="/notifications">
                                     <Notifications />
                                 </IconButton>
-                                <IconButton className={classes.badge}>
+                                <IconButton className={classes.badge} aria-label="messages" component={Link} to="/message">
                                     <WhatsApp />
                                 </IconButton>
                             </>
