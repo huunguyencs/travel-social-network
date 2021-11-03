@@ -74,6 +74,37 @@ const cardStyles = makeStyles((theme) => ({
         display: "flex",
         justifyContent: "center",
         padding: 10,
+    },
+    header: {
+        display: "flex",
+        justifyContent: "center",
+        marginTop: 20,
+        marginBottom: 30,
+    },
+    chart: {
+        margin: 30,
+    },
+    line: {
+        maxWidth: "100%",
+        marginRight: 20,
+        height: 15,
+    },
+    iconStar: {
+        color: color.yellow,
+        fontSize: "50px",
+    },
+    starContent: {
+        marginInline: 30,
+    },
+    starContainer: {
+        margin: 40,
+        marginTop: 50,
+        marginLeft: 0,
+        borderRadius: attr.borderRadius.md,
+    },
+    center: {
+        display: "flex",
+        justifyContent: "center",
     }
 }))
 

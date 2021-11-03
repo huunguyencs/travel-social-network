@@ -23,6 +23,7 @@ const listPost = [
                 title: "img2",
             }
         ],
+        rate: 5,
         content: "Đây là content. Tôi đang thấy vui ...",
         numLike: 12,
         liked: true,
@@ -69,6 +70,7 @@ const listPost = [
                 title: "img3",
             }
         ],
+        rate: 4,
         content: "Cảnh đẹp Việt Nam",
         numLike: 10,
         liked: false,
@@ -92,6 +94,7 @@ const listPost = [
         ],
         content: "Đây là content. Tôi đang thấy vui ...",
         numLike: 5,
+        rate: 4,
         liked: true,
         cmts: [
             {
@@ -119,7 +122,7 @@ const listPost = [
 ]
 
 
-export default function FeedPost(props) {
+export default function FeedReview(props) {
 
     const [show, setShow] = useState(false);
 
@@ -133,7 +136,7 @@ export default function FeedPost(props) {
                 <div className={classes.create}>
                     <div className={classes.containerText}>
                         <InputBase
-                            placeholder="Bạn đang nghĩ gì?..."
+                            placeholder="Viết Review..."
                             className={classes.createText}
                             onChange={(e) => {
                                 if (e.target.value === "") {
@@ -169,7 +172,7 @@ export default function FeedPost(props) {
                         listPost.map((post) => (
                             <Post
                                 post={post}
-                                isReview={false}
+                                isReview={true}
                             />
                         ))
                     }
