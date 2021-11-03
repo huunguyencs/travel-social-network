@@ -23,6 +23,7 @@ import Comment from "../comment/Comment";
 import InputComment from "../input/comment";
 import { postStyles } from "../../style";
 import ImageList from "../imagelist/ImageList";
+import { Rating } from "@material-ui/lab";
 
 
 export default function Post(props) {
@@ -32,6 +33,7 @@ export default function Post(props) {
     const [numLike, setNumLike] = useState(props.post.numLike);
 
     const classes = postStyles({ showCmt });
+    const isReview = props.isReview;
 
     const likeHandle = (e) => {
         setLike(!like);
@@ -58,6 +60,7 @@ export default function Post(props) {
             />
 
             <CardContent>
+                {isReview && <Rating name="read-only" value={props.post.rate} readOnly style={{ marginBottom: 20 }} />}
                 <Typography variant="body1" color="#2F3542" component="p">
                     {props.post.content}
                 </Typography>

@@ -13,7 +13,7 @@ const useStyles = makeStyles((theme) => ({
         cursor: "pointer"
     },
     more: {
-        filter: "brightness(80%)",
+        filter: "brightness(70%)",
     },
     textCenter: {
         position: "absolute",

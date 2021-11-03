@@ -1,12 +1,26 @@
-import { Button, Card, CardContent, CardMedia, Container, Grid, IconButton, makeStyles, Typography } from "@material-ui/core";
+import { Button, Card, CardActions, CardContent, CardMedia, Collapse, Container, Grid, IconButton, Typography } from "@material-ui/core";
 import React, { useState } from "react";
-import { Timeline, TimelineItem, TimelineSeparator, TimelineConnector, TimelineContent, TimelineDot } from '@material-ui/lab'
-import { MoreVert } from "@material-ui/icons";
+import { Timeline, TimelineItem, TimelineSeparator, TimelineConnector, TimelineContent, TimelineDot, Rating } from '@material-ui/lab'
+import { Favorite, FavoriteBorderOutlined, MoreVert } from "@material-ui/icons";
 import { tourdetailStyles } from "../../style";
 
 function Tour(props) {
 
     const classes = tourdetailStyles();
+
+
+    const isReviewed = true;
+    const [showRv, setShowRv] = useState(false);
+    const [like, setLike] = useState(false);
+    const [numLike, setNumLike] = useState(0);
+    const [valueRate, setValueRate] = useState(0);
+
+    const likeHandle = (e) => {
+        setLike(!like);
+        if (!like) setNumLike(numLike + 1);
+        else setNumLike(numLike - 1);
+
+    }
 
     const tourInfo = props.tour;
 
@@ -33,12 +47,43 @@ function Tour(props) {
 
                         <Typography variant="h4" className={classes.locationName}>{tourInfo.location}</Typography>
                         <Typography variant="h5">{tourInfo.province}</Typography>
-                        <Button className={classes.reviewBtn}>Tạo Review</Button>
+                        {isReviewed ?
+                            <Button className={classes.reviewBtn} onClick={() => setShowRv((value) => setShowRv(!value))}>{showRv ? "Ẩn" : "Xem"} Review</Button> :
+                            <Button className={classes.reviewBtn}>Tạo Review</Button>
+                        }
                         <div className={classes.costContainer}>
                             <Typography variant="body1">Chi phí: {tourInfo.cost}.000 VND</Typography>
                         </div>
                     </CardContent>
                 </Grid>
+                <Collapse in={showRv}>
+                    <Grid item md={12}>
+                        <CardContent className={classes.review}>
+                            <Typography component="legend">Đánh giá: </Typography>
+                            <Rating
+                                name={"rating" + tourInfo.id}
+                                value={valueRate}
+                                onChange={(e, newValue) => {
+                                    setValueRate(newValue);
+                                }}
+                            />
+                            <Typography>Đây là review</Typography>
+                        </CardContent>
+                        <CardActions>
+                            <IconButton onClick={likeHandle} className={classes.marginIcon}>
+                                {
+                                    like ? <Favorite className={classes.likeIcon} /> : <FavoriteBorderOutlined />
+                                }
+
+                            </IconButton>
+                            <Typography className={classes.numLike}>
+                                {numLike}
+                            </Typography>
+                            <Button>Xem chi tiết</Button>
+                        </CardActions>
+                    </Grid>
+                </Collapse>
+
             </Grid>
         </Card>
     )
@@ -84,7 +129,7 @@ export default function TourDetail(props) {
                         ))
                     }
                     <div className={classes.addContainer}>
-                        <Button>
+                        <Button className={classes.addTour}>
                             Thêm
                         </Button>
                     </div>

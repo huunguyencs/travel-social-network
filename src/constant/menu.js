@@ -37,7 +37,7 @@ const profileMenu = [
     {
         name: "Bài Viết",
         icon: Explore,
-        link: "/profile/post",
+        link: "/profile/posts",
     },
     {
         name: "Hành Trình",
