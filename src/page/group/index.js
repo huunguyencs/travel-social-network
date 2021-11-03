@@ -16,7 +16,7 @@ function Group() {
     <div>
       <Scroll showBelow={500} />
       <Header />
-      <Group_Info></Group_Info>
+      <Group_Info/>
       <Grid container style={{ margin: 0, padding: 0 }}>
         <Grid item sm={3}>
           <LeftBar
