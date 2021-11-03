@@ -5,28 +5,7 @@
 // import GoogleMapReact from "google-map-react";
 
 
-const apiIsLoaded = (map, maps) => {
-    const google = window.google;
-    const directionsService = new google.maps.DirectionsService();
-    const directionsRenderer = new google.maps.DirectionsRenderer();
-    directionsRenderer.setMap(map);
-    const origin = { lat: 40.756795, lng: -73.954298 };
-    const destination = { lat: 41.756795, lng: -78.954298 };
-
-    directionsService.route(
-        {
-            origin: origin,
-            destination: destination,
-            travelMode: google.maps.TravelMode.DRIVING
-        },
-        (result, status) => {
-            if (status === google.maps.DirectionsStatus.OK) {
-                directionsRenderer.setDirections(result);
-            } else {
-                console.error(`error fetching directions ${result}`);
-            }
-        }
-    );
+const renderMarkers = (map, maps) => {
 }
 
-export default apiIsLoaded;
+export { renderMarkers };
