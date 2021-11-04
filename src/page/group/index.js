@@ -7,6 +7,7 @@ import Feed from "../../components/feed/FeedPost";
 import Scroll from "../../components/scroll";
 import { groupMenu } from "../../constant/menu";
 import {Group_Info} from "../../components/group/information"
+import { Group_Menber } from "../../components/group/menber";
 
 function Group() {
 
@@ -24,7 +25,7 @@ function Group() {
           />
         </Grid>
         <Grid item sm={6}>
-          <Feed />
+         <Group_Menber/>
         </Grid>
       </Grid>
     </div>
