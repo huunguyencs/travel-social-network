@@ -1,59 +1,41 @@
 
-import { Accessibility, Assignment, Dashboard, Group, LocationOn, Person, PostAdd, RateReview } from '@material-ui/icons';
+import { Accessibility, Dashboard, Group, LocationOn, Person, PostAdd, RateReview } from '@material-ui/icons';
 
 
-export const mainListItems = [
+export const adminListMenu = [
     {
         icon: Dashboard,
-        text: "Tổng quan",
-        link: "/",
+        name: "Tổng quan",
+        link: "/admin",
     },
     {
         icon: Person,
-        text: "Người dùng",
-        link: "/admin/user",
+        name: "Người dùng",
+        link: "/admin/users",
     },
     {
         icon: Accessibility,
-        text: "Dịch vụ",
-        link: "/admin/service",
+        name: "Dịch vụ",
+        link: "/admin/services",
     },
     {
         icon: LocationOn,
-        text: "Địa điểm",
-        link: "/admin/location",
+        name: "Địa điểm",
+        link: "/admin/locations",
     },
     {
         icon: Group,
-        text: "Nhóm",
-        link: "/admin/group",
+        name: "Nhóm",
+        link: "/admin/groups",
     },
     {
         icon: PostAdd,
-        text: "Bài viết",
-        link: "/admin/post",
+        name: "Bài viết",
+        link: "/admin/posts",
     },
     {
         icon: RateReview,
-        text: "Review",
-        link: "/admin/review",
-    },
-]
-
-export const secondaryListItems = [
-    {
-        icon: Assignment,
-        text: "Nâng cao",
-        link: "/",
-    },
-    {
-        icon: Assignment,
-        text: "Nâng cao",
-        link: "/",
-    },
-    {
-        icon: Assignment,
-        text: "Nâng cao",
-        link: "/",
+        name: "Review",
+        link: "/admin/reviews",
     },
 ]

@@ -21,6 +21,7 @@ function TabPanel(props) {
         >
             {value === index && (
                 <Box p={3}>
+                    {value}
                     <List className={classes.listSearch} component={Link} to="/profile/posts">
                         <ListItem className={classes.itemSearch}>
                             <ListItemAvatar>

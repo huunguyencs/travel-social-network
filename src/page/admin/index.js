@@ -1,102 +1,75 @@
-import { AppBar, Avatar, Badge, Button, Collapse, CssBaseline, Divider, Drawer, IconButton, List, ListItem, ListItemIcon, ListItemText, Toolbar, Typography } from '@material-ui/core';
-import { ChevronLeft, ExpandLess, ExpandMore, Menu, Notifications } from '@material-ui/icons';
-import React, { useState } from "react";
-import clsx from 'clsx';
+import { Card, Grid, makeStyles, Typography } from "@material-ui/core";
+import { Group, Person, PostAdd } from "@material-ui/icons";
+import React from "react";
+import LeftBar from "../../components/leftbar/LeftBar";
+import { adminListMenu } from "../../constant/adminMenu";
 
-import { mainListItems, secondaryListItems } from "../../constant/adminMenu";
-import AdminHome from "./home";
-import useStyles from "../../style/admin";
+const useStyles = makeStyles((theme) => ({
+    appBarSpacer: {
+        marginTop: 140,
+    },
+    cardInfo: {
+        margin: 20,
+        padding: 20,
+        borderRadius: 10,
+    },
+    cardValue: {
+        marginTop: 10,
+    },
+    cardIcon: {
+        fontSize: "37px",
+        marginRight: 30,
+    }
+}))
 
-export default function Admin(props) {
-    const [open, setOpen] = useState(true);
-    const [more, setMore] = useState(false);
-
-    const handleDrawerOpen = () => {
-        setOpen(true);
-    };
-    const handleDrawerClose = () => {
-        setOpen(false);
-    };
+export default function AdminHome(props) {
 
     const classes = useStyles();
 
     return (
-        <div className={classes.root}>
-            <CssBaseline />
-            <AppBar position="absolute" className={clsx(classes.appBar, open && classes.appBarShift)}>
-                <Toolbar className={classes.toolbar}>
-                    <IconButton
-                        edge="start"
-                        color="inherit"
-                        aria-label="open drawer"
-                        onClick={handleDrawerOpen}
-                        className={clsx(classes.menuButton, open && classes.menuButtonHidden)}
-                    >
-                        <Menu />
-                    </IconButton>
-                    <Typography component="h1" variant="h6" color="inherit" noWrap className={classes.title}>
-                        Dashboard
-                    </Typography>
-                    <Button style={{ display: "flex" }}>
-                        <Avatar alt="avatar" />
-                        <Typography style={{ color: "white", marginRight: 20, marginLeft: 10 }}>Admin</Typography>
-                    </Button>
-                    <IconButton color="inherit">
-                        <Badge badgeContent={4} color="secondary">
-                            <Notifications />
-                        </Badge>
-                    </IconButton>
-                </Toolbar>
-            </AppBar>
-            <Drawer
-                variant="permanent"
-                classes={{
-                    paper: clsx(classes.drawerPaper, !open && classes.drawerPaperClose),
-                }}
-                open={open}
-            >
-                <div className={classes.toolbarIcon}>
-                    <IconButton onClick={handleDrawerClose}>
-                        <ChevronLeft />
-                    </IconButton>
-                </div>
-                <Divider />
-                <List>
-                    {mainListItems.map((item) => (
-                        <ListItem button>
-                            <ListItemIcon>
-                                {<item.icon />}
-                            </ListItemIcon>
-                            <ListItemText primary={item.text} />
-                        </ListItem>
-                    ))}
-                </List>
-                <Divider />
-                <List>
-                    <Collapse in={more}>
-                        {secondaryListItems.map((item) => (
-                            <ListItem button>
-                                <ListItemIcon>
-                                    {<item.icon />}
-                                </ListItemIcon>
-                                <ListItemText primary={item.text} />
-                            </ListItem>
-                        ))}
-                    </Collapse>
-                    <ListItem button onClick={() => setMore(!more)}>
-                        <ListItemIcon>
-                            {more ? <ExpandLess /> : <ExpandMore />}
-                        </ListItemIcon>
-                        <ListItemText primary={more ? "Thu gọn" : "Nâng cao"} />
-                    </ListItem>
-                </List>
-            </Drawer>
-
-            <main className={classes.content}>
+        <Grid container>
+            <Grid item md={3}>
+                <LeftBar menuList={adminListMenu} />
+            </Grid>
+            <Grid item md={9} style={{ height: "100vh" }}>
                 <div className={classes.appBarSpacer} />
-                <AdminHome />
+                <Grid container>
+                    <Grid item md={4} >
+                        <Card className={classes.cardInfo}>
+                            <Typography variant="h5">
+                                Tổng số người dùng
+                            </Typography>
+                            <Typography variant="h3" className={classes.cardValue}>
+                                <Person className={classes.cardIcon} />
+                                1300
+                            </Typography>
+                        </Card>
+                    </Grid>
+                    <Grid item md={4}>
+                        <Card className={classes.cardInfo}>
+                            <Typography variant="h5">
+                                Tổng số nhóm
+                            </Typography>
+                            <Typography variant="h3" className={classes.cardValue}>
+                                <Group className={classes.cardIcon} />
+                                57
+                            </Typography>
+                        </Card>
+                    </Grid>
+                    <Grid item md={4}>
+                        <Card className={classes.cardInfo}>
+                            <Typography variant="h5">
+                                Số bài viết mới trong tuần
+                            </Typography>
+                            <Typography variant="h3" className={classes.cardValue}>
+                                <PostAdd className={classes.cardIcon} />
+                                180
+                            </Typography>
+                        </Card>
+                    </Grid>
 
-            </main>
-        </div>
-    );
+                </Grid>
+            </Grid>
+        </Grid>
+    )
 }

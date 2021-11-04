@@ -21,11 +21,13 @@ const PageRender = () => {
 
     let pageName = "";
 
-    if (page === "profile") {
-        pageName = `${page}/${subparam}`
-    }
-    else if (subparam) {
-        pageName = `${page}/id`;
+    if (subparam) {
+        if (page === "profile" || page === "admin") {
+            pageName = `${page}/${subparam}`
+        }
+        else {
+            pageName = `${page}/id`;
+        }
     }
     else {
         pageName = `${page}`;
