@@ -3,9 +3,9 @@ import React from "react";
 import { Search, Cancel, Call, Delete, Send } from "@material-ui/icons";
 
 import Header from "../../components/header/Header";
-import LeftBar from "../../components/leftbar/LeftBar";
+// import LeftBar from "../../components/leftbar/LeftBar";
 import { messageStyles } from "../../style";
-import { profileMenu } from "../../constant/menu";
+// import { profileMenu } from "../../constant/menu";
 
 
 export default function Message(props) {
@@ -15,12 +15,12 @@ export default function Message(props) {
         <div>
             <Header />
             <Grid container style={{ margin: 0, padding: 0 }}>
-                <Grid item sm={3}>
+                {/* <Grid item sm={3}>
                     <LeftBar
                         menuList={profileMenu}
                     />
-                </Grid>
-                <Grid item sm={3}>
+                </Grid> */}
+                <Grid item sm={4}>
                     <div className={classes.message_conversations}>
                         <div className={classes.message_header}>
                             <div className={classes.message_header_right}>
@@ -68,7 +68,7 @@ export default function Message(props) {
                         </div>
                     </div>
                 </Grid>
-                <Grid item sm={6}>
+                <Grid item sm={8}>
                     <div className={classes.message_conversation}>
                         <div className={classes.message_box}>
                             <div className={classes.message_box_header}>

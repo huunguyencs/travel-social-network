@@ -22,29 +22,15 @@ const feedStyles = makeStyles((theme) => ({
         "&:hover": {
             backgroundColor: alpha("#aaa", 0.15),
         },
-        height: (props) => props.show ? "5em" : "2em",
     },
     createText: {
         width: "100%",
 
     },
-    menuCreate: {
-        display: "flex",
-        justifyContent: "space-between",
-        marginTop: 5,
-        marginInline: 20,
-    },
-    addImageButton: {
-        borderRadius: attr.borderRadius.md,
-        padding: 10,
-        paddingInline: 30,
-        backgroundColor: "#A4B0BE",
-    },
-    postButton: {
-        borderRadius: attr.borderRadius.md,
-        padding: 10,
-        paddingInline: 30,
-        backgroundColor: "#2ED573",
+    modal: {
+        display: 'flex',
+        alignItems: 'center',
+        justifyContent: 'center',
     },
 }));
 

@@ -9,46 +9,57 @@ const listNoti = [
     {
         isSeen: false,
         content: "Thông báo 1",
+        time: "4/11/2021"
     },
     {
         isSeen: false,
         content: "Thông báo 2",
+        time: "4/11/2021",
     },
     {
         isSeen: true,
         content: "Thông báo 3",
+        time: "3/11/2021",
     },
     {
         isSeen: true,
         content: "Thông báo 4",
+        time: "3/11/2021",
     },
     {
         isSeen: true,
         content: "Thông báo 5",
+        time: "2/11/2021",
     },
     {
         isSeen: true,
         content: "Thông báo 5",
+        time: "2/11/2021",
     },
     {
         isSeen: true,
         content: "Thông báo 5",
+        time: "2/11/2021",
     },
     {
         isSeen: true,
         content: "Thông báo 5",
+        time: "2/11/2021",
     },
     {
         isSeen: true,
         content: "Thông báo 5",
+        time: "2/11/2021",
     },
     {
         isSeen: true,
         content: "Thông báo 5",
+        time: "1/11/2021",
     },
     {
         isSeen: true,
         content: "Thông báo 5",
+        time: "1/11/2021",
     },
 
 ]

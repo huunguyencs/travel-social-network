@@ -1,4 +1,4 @@
-import { Avatar, ListItem, ListItemAvatar, ListItemText } from "@material-ui/core";
+import { Avatar, ListItem, ListItemAvatar, ListItemText, Typography } from "@material-ui/core";
 import React from "react";
 import { Link } from "react-router-dom";
 
@@ -16,7 +16,14 @@ export default function NotificationItem(props) {
                         alt="avatar"
                     />
                 </ListItemAvatar>
-                <ListItemText>{props.noti.content}</ListItemText>
+                <ListItemText>
+                    <Typography variant="caption">
+                        {props.noti.time}
+                    </Typography>
+                    <Typography variant="body1">
+                        {props.noti.content}
+                    </Typography>
+                </ListItemText>
             </ListItem>
         </Link>
     )
