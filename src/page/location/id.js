@@ -19,6 +19,11 @@ const weather = {
     vWind: 2.9,
     visibility: 10,
 }
+// 21.03586561753796, 105.83362647397051
+const location = {
+    lat: 21.03586561753796,
+    lng: 105.83362647397051,
+}
 
 
 export default function Location(props) {
@@ -55,7 +60,7 @@ export default function Location(props) {
                 </div>
 
                 <div className={classes.map}>
-                    <MapCard />
+                    <MapCard location={location} />
                 </div>
             </Grid>
             <Grid item md={6} sm={12}>
