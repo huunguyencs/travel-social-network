@@ -28,7 +28,7 @@ export default function LeftBar(props) {
     return (
         <Container className={classes.container} elevation={15}>
             <List className={classes.panel}>
-                {props.menuList.slice(0, 3).map((item) => (
+                {props.menuList.slice(0, 4).map((item) => (
                     <Link style={{ textDecoration: "none", }} to={item.link}>
                         <ListItem button className={isActive(item.link) ? [classes.item, classes.itemActive] : classes.item}>
                             <ListItemIcon>
@@ -42,7 +42,7 @@ export default function LeftBar(props) {
                     </Link>
                 ))}
                 <Collapse in={more}>
-                    {props.menuList.slice(3).map((item) => (
+                    {props.menuList.slice(4).map((item) => (
                         <Link style={{ textDecoration: "none", }} to={item.link}>
                             <ListItem button className={isActive(item.link) ? [classes.item, classes.itemActive] : classes.item}>
                                 <ListItemIcon>

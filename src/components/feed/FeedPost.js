@@ -1,9 +1,10 @@
 import React, { useState } from "react";
-import { Container, InputBase, Button, Zoom } from "@material-ui/core";
-import { AddCircleOutline, Create } from "@material-ui/icons";
+import { Container, InputBase, Modal, Backdrop, Fade } from "@material-ui/core";
+
 
 import Post from '../post/Post';
 import { feedStyles } from "../../style";
+import CreatePostForm from "../forms/createpost";
 
 
 const listPost = [
@@ -123,7 +124,15 @@ export default function FeedPost(props) {
 
     const [show, setShow] = useState(false);
 
-    const classes = feedStyles({ show });
+    const classes = feedStyles();
+
+    const handleShow = () => {
+        setShow(true);
+    }
+
+    const handleClose = () => {
+        setShow(false);
+    }
 
 
 
@@ -135,31 +144,26 @@ export default function FeedPost(props) {
                         <InputBase
                             placeholder="Bạn đang nghĩ gì?..."
                             className={classes.createText}
-                            onChange={(e) => {
-                                if (e.target.value === "") {
-                                    setShow(false);
-                                }
-                                else setShow(true);
-                            }}
-                            rows={show ? 3 : 1}
-                            multiline
+                            onClick={handleShow}
+                            rows={1}
                         />
                     </div>
-                    <div className={classes.menuCreate}>
-                        <Zoom in={show}>
-                            <Button className={classes.addImageButton}>
-                                <AddCircleOutline style={{ marginRight: 10 }} />
-                                Thêm ảnh
-                            </Button>
-                        </Zoom>
-                        <Zoom in={show}>
-                            <Button className={classes.postButton}>
-                                <Create style={{ marginRight: 10 }} />
-                                Đăng
-                            </Button>
-                        </Zoom>
-
-                    </div>
+                    <Modal
+                        aria-labelledby="transition-modal-title"
+                        aria-describedby="transition-modal-description"
+                        className={classes.modal}
+                        open={show}
+                        onClose={handleClose}
+                        closeAfterTransition
+                        BackdropComponent={Backdrop}
+                        BackdropProps={{
+                            timeout: 500,
+                        }}
+                    >
+                        <Fade in={show}>
+                            <CreatePostForm />
+                        </Fade>
+                    </Modal>
 
                 </div>
 

@@ -38,7 +38,7 @@ export default function Header(props) {
 
     const classes = headerStyles({ open });
 
-    const temp = false;
+    const temp = true;
 
     return (
         <AppBar position="fixed">
@@ -86,18 +86,18 @@ export default function Header(props) {
                                         >
                                             <ClickAwayListener onClickAway={handleClose}>
                                                 <MenuList autoFocusItem={toggle}>
-                                                    <MenuItem>Thông tin người dùng</MenuItem>
-                                                    <MenuItem>Thay đổi mật khẩu</MenuItem>
-                                                    <MenuItem>Đăng xuất</MenuItem>
+                                                    <MenuItem aria-label="profile-post" component={Link} to="/profile/posts" onClick={handleClose}>Trang cá nhân</MenuItem>
+                                                    <MenuItem onClick={handleClose}>Thay đổi mật khẩu</MenuItem>
+                                                    <MenuItem onClick={handleClose}>Đăng xuất</MenuItem>
                                                 </MenuList>
                                             </ClickAwayListener>
                                         </Grow>
                                     </Popover>
                                 </div>
-                                <IconButton className={classes.badge}>
+                                <IconButton className={classes.badge} aria-label="notifications" component={Link} to="/notifications">
                                     <Notifications />
                                 </IconButton>
-                                <IconButton className={classes.badge}>
+                                <IconButton className={classes.badge} aria-label="messages" component={Link} to="/message">
                                     <WhatsApp />
                                 </IconButton>
                             </>
