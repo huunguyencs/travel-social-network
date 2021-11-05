@@ -8,7 +8,7 @@ import Scroll from "../../components/scroll";
 import { groupMenu } from "../../constant/menu";
 import {Group_Info} from "../../components/group/information"
 
-function Group() {
+function GroupPost() {
 
   // const classes = useStyles();
 
@@ -31,4 +31,4 @@ function Group() {
   );
 }
 
-export default Group;
+export default GroupPost;

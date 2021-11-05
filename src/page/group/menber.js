@@ -1,129 +1,35 @@
+import { Grid } from "@material-ui/core";
 import React from "react";
-import { GroupAdd } from "@material-ui/icons";
-import { Avatar, Button, Container, Divider, Typography } from "@material-ui/core";
 
-import profileStyles from "../../style";
-import { Link } from "react-router-dom";
-import { List } from "@material-ui/core";
-import { ListItem } from "@material-ui/core";
+import Header from "../../components/header/Header";
+import LeftBar from "../../components/leftbar/LeftBar";
+import Feed from "../../components/feed/FeedPost";
+import Scroll from "../../components/scroll";
+import { groupMenu } from "../../constant/menu";
+import {Group_Info} from "../../components/group/information"
+import { Group_Menber } from "../../components/group/menber";
 
-const listAdmin = [
-    {
-        menberId: 1,
-        name: "Trần Văn An",
-        avatar: "https://media.istockphoto.com/vectors/default-profile-picture-avatar-photo-placeholder-vector-illustration-vector-id1223671392",
-    },
-    {
-        menberId: 2,
-        name: "Trần Văn An",
-        avatar: "https://media.istockphoto.com/vectors/default-profile-picture-avatar-photo-placeholder-vector-illustration-vector-id1223671392",
-    },
-]
-const listMenber = [
-    
-    {
-        menberId: 1,
-        name: "Trần Văn An",
-        avatar: "https://media.istockphoto.com/vectors/default-profile-picture-avatar-photo-placeholder-vector-illustration-vector-id1223671392",
-        admin: false,
-    },
-    {
-        menberId: 2,
-        name: "Trần Văn An",
-        avatar: "https://media.istockphoto.com/vectors/default-profile-picture-avatar-photo-placeholder-vector-illustration-vector-id1223671392",
-        admin: false,
-    },
-    {
-        menberId: 3,
-        name: "Trần Văn An",
-        avatar: "https://media.istockphoto.com/vectors/default-profile-picture-avatar-photo-placeholder-vector-illustration-vector-id1223671392",
-        admin: false,
-    },
-    {
-        menberId: 4,
-        name: "Trần Văn An",
-        avatar: "https://media.istockphoto.com/vectors/default-profile-picture-avatar-photo-placeholder-vector-illustration-vector-id1223671392",
-        admin: false,
-    },
-]
+function GroupMenber() {
 
-function Group_Menber(props) {
-  const classes = profileStyles();
+  // const classes = useStyles();
+
   return (
-    <Container className={classes.container} style={{marginTop: "160px"}}>
-        <div style={{backgroundColor: "#FFFFFF", borderRadius: "15px"}}>
-            <div className={classes.admin}
-                style={{
-                   padding: "30px"
-                }}
-            >
-                <Typography>
-                Quản trị viên
-                </Typography>
-                <div className={classes.listAdmin}>
-                    <List
-                        style={{
-                            alignItems: "center",
-                        }}
-                    >
-                        {listAdmin.map(item =>(
-                            <ListItem
-                            style={{
-                                backgroundColor: "#DFE4EA",
-                                borderRadius: "10px",
-                                marginTop: "20px",
-                                width: "80%",
-                                padding:"10px",
-                                marginLeft: "50px"
-                            }}
-                            >
-                                <Avatar
-                                className={classes.group_avatar__img}
-                                src= {item.avatar}
-                                alt="avatar"
-                                />
-                                <Typography>{item.name}</Typography>
-                            </ListItem>
-                        ))}
-                    </List>
-                </div>
-            </div>
-            <Divider></Divider>
-            <div className={classes.admin}
-            style={{
-                padding: "30px"
-             }}
-            >
-                <Typography>
-                Thành viên
-                </Typography>
-                <div className={classes.listMenber}>
-                    <List>
-                        {listMenber.map(item =>(
-                            <ListItem
-                            style={{
-                                backgroundColor: "#DFE4EA",
-                                borderRadius: "10px",
-                                marginTop: "20px",
-                                width: "80%",
-                                padding:"10px",
-                                marginLeft: "50px"
-                            }}
-                            >
-                                <Avatar
-                                className={classes.group_avatar__img}
-                                src= {item.avatar}
-                                alt="avatar"
-                                />
-                                <Typography>{item.name}</Typography>
-                            </ListItem>
-                        ))}
-                    </List>
-                </div>
-            </div>
-        </div>
-    </Container>
+    <div>
+      <Scroll showBelow={500} />
+      <Header />
+      <Group_Info/>
+      <Grid container style={{ margin: 0, padding: 0 }}>
+        <Grid item sm={3}>
+          <LeftBar
+            menuList={groupMenu}
+          />
+        </Grid>
+        <Grid item sm={6}>
+         <Group_Menber/>
+        </Grid>
+      </Grid>
+    </div>
   );
 }
 
-export { Group_Menber };
+export default GroupMenber;
