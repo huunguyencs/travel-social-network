@@ -56,5 +56,23 @@ const profileMenu = [
     }
 ]
 
-export { homeMenu, profileMenu };
+const groupMenu = [
+    {
+        name: "Giới Thiệu",
+        icon: Home,
+        link: "/group/intro",
+    },
+    {
+        name: "Bài Viết",
+        icon: Explore,
+        link: "/group/posts",
+    },
+    {
+        name: "Thành Viên",
+        icon: Accessibility,
+        link: "/group/menber",
+    }
+]
+
+export { homeMenu, profileMenu, groupMenu };
 

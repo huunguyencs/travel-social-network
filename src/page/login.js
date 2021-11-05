@@ -1,15 +1,10 @@
-// import { makeStyles } from "@material-ui/core";
-// import { Home } from "@material-ui/icons";
 import React from "react";
-// import loginImg1 from '../../public/login-1.jpeg';
-
 import TextField from '@material-ui/core/TextField/TextField';
 import Button from '@material-ui/core/Button/Button';
 import { Link } from "react-router-dom";
 
 
 export default function Login(props) {
-    // const classes = useStyles();
 
     return (
         <div className="login">
