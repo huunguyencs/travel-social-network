@@ -9,7 +9,7 @@ function Tour(props) {
     const classes = tourdetailStyles();
 
 
-    const isReviewed = true;
+    const isReviewed = false;
     const [showRv, setShowRv] = useState(false);
     const [like, setLike] = useState(false);
     const [numLike, setNumLike] = useState(0);

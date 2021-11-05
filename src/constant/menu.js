@@ -42,7 +42,7 @@ const profileMenu = [
     {
         name: "Hành Trình",
         icon: Accessibility,
-        link: "/profile/tour",
+        link: "/profile/tours",
     },
     {
         name: "Nhóm",
@@ -60,7 +60,7 @@ const groupMenu = [
     {
         name: "Giới Thiệu",
         icon: Home,
-        link: "/group/intro",
+        link: "/group",
     },
     {
         name: "Bài Viết",
