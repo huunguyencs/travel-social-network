@@ -5,6 +5,7 @@ import LocationCard from "../../components/card/LocationCard";
 import { provinceStyles } from "../../style";
 import WeatherCard from "../../components/card/WeatherCard";
 import CovidCard from "../../components/card/CovidCard";
+import SpeedDialButton from "../../components/speedDialBtn";
 
 
 const listLocation = [
@@ -63,6 +64,7 @@ export default function Province(props) {
 
     return (
         <Grid container>
+            <SpeedDialButton />
             <Grid item md={12}>
                 <div
                     style={{

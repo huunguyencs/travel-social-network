@@ -1,0 +1,24 @@
+import { makeStyles } from "@material-ui/core";
+
+
+const speedDialStyles = makeStyles((theme) => ({
+    speedDialWrapper: {
+        zIndex: 2,
+        position: 'fixed',
+        bottom: '2vh',
+        left: '5%',
+    },
+    speedDial: {
+        position: 'absolute',
+        '&.MuiSpeedDial-directionUp, &.MuiSpeedDial-directionLeft': {
+            bottom: theme.spacing(2),
+            right: theme.spacing(2),
+        },
+        '&.MuiSpeedDial-directionDown, &.MuiSpeedDial-directionRight': {
+            top: theme.spacing(2),
+            left: theme.spacing(2),
+        },
+    },
+}))
+
+export default speedDialStyles;

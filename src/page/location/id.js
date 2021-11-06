@@ -5,6 +5,7 @@ import MapCard from "../../components/card/MapCard";
 import RatingChart from "../../components/card/RatingChart";
 import WeatherCard from "../../components/card/WeatherCard";
 import FeedReview from "../../components/feed/FeedReview";
+import SpeedDialButton from "../../components/speedDialBtn";
 
 import { locationStyles } from "../../style";
 
@@ -32,6 +33,7 @@ export default function Location(props) {
 
     return (
         <Grid container className={classes.container}>
+            <SpeedDialButton />
             <Grid item md={12} className={classes.coverImg}>
                 <div className={classes.imgBg}>
                     <div className={classes.coverText}>

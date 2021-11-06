@@ -22,7 +22,7 @@ const tourdetailStyles = makeStyles((theme) => ({
         marginTop: 80,
         position: "sticky",
         top: 0,
-        paddingBottom: 350,
+        paddingBottom: 300,
     },
     cardContainer: {
         margin: 30,
@@ -98,6 +98,16 @@ const tourdetailStyles = makeStyles((theme) => ({
     },
     review: {
         marginInline: 30,
+    },
+    modal: {
+        display: 'flex',
+        alignItems: 'center',
+        justifyContent: 'center',
+    },
+    addDay: {
+        marginTop: 40,
+        backgroundColor: color.turquoise,
+        marginLeft: 20,
     }
 }))
 

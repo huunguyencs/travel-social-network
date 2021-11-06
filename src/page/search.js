@@ -4,6 +4,7 @@ import PropTypes from 'prop-types';
 import { Link } from "react-router-dom";
 
 import { searchStyles } from "../style";
+import SpeedDialButton from "../components/speedDialBtn";
 
 
 function TabPanel(props) {
@@ -19,6 +20,7 @@ function TabPanel(props) {
             aria-labelledby={`vertical-tab-${index}`}
             {...other}
         >
+            <SpeedDialButton />
             {value === index && (
                 <Box p={3}>
                     {value}
