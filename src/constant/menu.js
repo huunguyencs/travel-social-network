@@ -70,7 +70,7 @@ const groupMenu = [
     {
         name: "Thành Viên",
         icon: Accessibility,
-        link: "/group/menber",
+        link: "/group/member",
     }
 ]
 
