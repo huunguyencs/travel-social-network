@@ -1,6 +1,6 @@
 import React from "react";
-import { Home, WhatsApp,Cancel } from "@material-ui/icons";
-import { Avatar, Button, Container, Typography, Modal, Backdrop,List, ListItem, ListItemText, ListItemAvatar, ListItemSecondaryAction } from "@material-ui/core";
+import { WhatsApp, Cancel, RssFeed } from "@material-ui/icons";
+import { Avatar, Button, Container, Typography, Modal, Backdrop, List, ListItem, ListItemText, ListItemAvatar, ListItemSecondaryAction } from "@material-ui/core";
 
 import { profileStyles } from "../../style";
 
@@ -22,47 +22,47 @@ export default function Profile_Avatar(props) {
   const body = (
     <div className={classes.paper}>
       <div className={classes.modal_header}>
-          <h2  className={classes.modal_header_left}>Following</h2>
+        <h2 className={classes.modal_header_left}>Following</h2>
         <div className={classes.modal_header_right}>
           <Cancel className={classes.modal_header_closeIcon} />
         </div>
       </div>
       <List className={classes.modal_body}>
         <ListItem button className={classes.modal_body_user}>
-            <ListItemAvatar>
-                <Avatar alt="avatar" src="">
-                </Avatar>
-            </ListItemAvatar>
-            <ListItemText primary="Tran Van An" />
-            <ListItemSecondaryAction> 
-              <Button variant="outlined"className={classes.modal_body_user_button}  >
-                Follow
-              </Button>
-            </ListItemSecondaryAction>
+          <ListItemAvatar>
+            <Avatar alt="avatar" src="">
+            </Avatar>
+          </ListItemAvatar>
+          <ListItemText primary="Tran Van An" />
+          <ListItemSecondaryAction>
+            <Button variant="outlined" className={classes.modal_body_user_button}  >
+              Follow
+            </Button>
+          </ListItemSecondaryAction>
         </ListItem>
         <ListItem button className={classes.modal_body_user}>
-            <ListItemAvatar>
-                <Avatar alt="avatar" src="">
-                </Avatar>
-            </ListItemAvatar>
-            <ListItemText primary="Tran Van Be" />
-            <ListItemSecondaryAction> 
-              <Button variant="outlined"className={classes.modal_body_user_button}  >
-                Follow
-              </Button>
-            </ListItemSecondaryAction>
+          <ListItemAvatar>
+            <Avatar alt="avatar" src="">
+            </Avatar>
+          </ListItemAvatar>
+          <ListItemText primary="Tran Van Be" />
+          <ListItemSecondaryAction>
+            <Button variant="outlined" className={classes.modal_body_user_button}  >
+              Follow
+            </Button>
+          </ListItemSecondaryAction>
         </ListItem>
         <ListItem button className={classes.modal_body_user}>
-            <ListItemAvatar>
-                <Avatar alt="avatar" src="">
-                </Avatar>
-            </ListItemAvatar>
-            <ListItemText primary="Tran Van Be" />
-            <ListItemSecondaryAction> 
-              <Button variant="outlined"className={classes.modal_body_user_button}  >
-                Follow
-              </Button>
-            </ListItemSecondaryAction>
+          <ListItemAvatar>
+            <Avatar alt="avatar" src="">
+            </Avatar>
+          </ListItemAvatar>
+          <ListItemText primary="Tran Van Be" />
+          <ListItemSecondaryAction>
+            <Button variant="outlined" className={classes.modal_body_user_button}  >
+              Follow
+            </Button>
+          </ListItemSecondaryAction>
         </ListItem>
       </List>
     </div>
@@ -81,8 +81,8 @@ export default function Profile_Avatar(props) {
             Tran Van A
           </Typography>
           <div >
-            <Typography variant="body1" color="#9b9696" component="p" style={{ display:"flex",fontSize: "20px", }}>
-              <Typography style={{ marginRight: "20px",cursor:"pointer", }} onClick={handleOpen} >30 Following</Typography>
+            <Typography variant="body1" color="#9b9696" component="p" style={{ display: "flex", fontSize: "20px", }}>
+              <Typography style={{ marginRight: "20px", cursor: "pointer", }} onClick={handleOpen} >30 Following</Typography>
               <Modal
                 aria-labelledby="transition-modal-title"
                 aria-describedby="transition-modal-description"
@@ -95,14 +95,14 @@ export default function Profile_Avatar(props) {
                   timeout: 500,
                 }}
               >
-                  {body}
+                {body}
               </Modal>
-              <Typography style={{ cursor:"pointer", }} onClick={handleOpen} >30 Followed</Typography>
+              <Typography style={{ cursor: "pointer", }} onClick={handleOpen} >30 Followed</Typography>
             </Typography>
           </div>
         </div>
         <div className={classes.profile_button} style={{ marginTop: "120px", marginLeft: "10vw", }}>
-          <Button variant="outlined" startIcon={< Home />} style={{ backgroundColor: "#A5DEC8", marginRight: "20px", }}>
+          <Button variant="outlined" startIcon={< RssFeed />} style={{ backgroundColor: "#A5DEC8", marginRight: "20px", }}>
             Follow
           </Button>
           <Button style={{ backgroundColor: "#A5DEC8" }} variant="outlined" startIcon={<WhatsApp />}>

@@ -1,11 +1,11 @@
 import React, { useState } from "react";
 import { SpeedDial, SpeedDialAction, SpeedDialIcon } from "@material-ui/lab";
-import { CardTravel, Create, Message } from "@material-ui/icons";
+import { Create, Explore, Message } from "@material-ui/icons";
 import { speedDialStyles } from "../style";
 
 const actions = [
     { icon: <Create />, name: "Create Post" },
-    { icon: <CardTravel />, name: "Create Tour" },
+    { icon: <Explore />, name: "Create Tour" },
     { icon: <Message />, name: "Message" },
 ]
 
