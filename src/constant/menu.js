@@ -1,4 +1,4 @@
-import { Accessibility, Explore, Home, SupervisorAccount, Tune } from "@material-ui/icons";
+import { Accessibility, Explore, Home, SupervisorAccount, Tune, Event } from "@material-ui/icons";
 
 const homeMenu = [
     {
@@ -71,6 +71,11 @@ const groupMenu = [
         name: "Thành Viên",
         icon: Accessibility,
         link: "/group/menber",
+    },
+    {
+        name: "Sự kiện",
+        icon: Event,
+        link: "/group/event",
     }
 ]
 
