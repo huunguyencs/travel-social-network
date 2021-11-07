@@ -1,16 +1,19 @@
-import { Button, Card, CardActions, CardContent, CardMedia, Collapse, Container, Grid, IconButton, Typography } from "@material-ui/core";
+import { Button, Card, CardActions, CardContent, CardMedia, Collapse, Container, Grid, IconButton, Modal, Typography, Backdrop, Fade } from "@material-ui/core";
 import React, { useState } from "react";
 import { Timeline, TimelineItem, TimelineSeparator, TimelineConnector, TimelineContent, TimelineDot, Rating } from '@material-ui/lab'
 import { Favorite, FavoriteBorderOutlined, MoreVert } from "@material-ui/icons";
 import { tourdetailStyles } from "../../style";
+import CreateReviewForm from "../forms/createReview";
+import AddLocationForm from "../forms/addLocation";
 
 function Tour(props) {
 
     const classes = tourdetailStyles();
 
 
-    const isReviewed = true;
+    const isReviewed = false;
     const [showRv, setShowRv] = useState(false);
+    const [showCreateRv, setShowCreateRv] = useState(false);
     const [like, setLike] = useState(false);
     const [numLike, setNumLike] = useState(0);
     const [valueRate, setValueRate] = useState(0);
@@ -19,7 +22,14 @@ function Tour(props) {
         setLike(!like);
         if (!like) setNumLike(numLike + 1);
         else setNumLike(numLike - 1);
+    }
 
+    const handleShow = () => {
+        setShowCreateRv(true);
+    }
+
+    const handleClose = () => {
+        setShowCreateRv(false);
     }
 
     const tourInfo = props.tour;
@@ -49,8 +59,24 @@ function Tour(props) {
                         <Typography variant="h5">{tourInfo.province}</Typography>
                         {isReviewed ?
                             <Button className={classes.reviewBtn} onClick={() => setShowRv((value) => setShowRv(!value))}>{showRv ? "Ẩn" : "Xem"} Review</Button> :
-                            <Button className={classes.reviewBtn}>Tạo Review</Button>
+                            <Button className={classes.reviewBtn} onClick={handleShow}>Tạo Review</Button>
                         }
+                        <Modal
+                            aria-labelledby="transition-modal-title"
+                            aria-describedby="transition-modal-description"
+                            open={showCreateRv}
+                            className={classes.modal}
+                            onClose={handleClose}
+                            closeAfterTransition
+                            BackdropComponent={Backdrop}
+                            BackdropProps={{
+                                timeout: 500,
+                            }}
+                        >
+                            <Fade in={showCreateRv}>
+                                <CreateReviewForm />
+                            </Fade>
+                        </Modal>
                         <div className={classes.costContainer}>
                             <Typography variant="body1">Chi phí: {tourInfo.cost}.000 VND</Typography>
                         </div>
@@ -92,6 +118,15 @@ function Tour(props) {
 export default function TourDetail(props) {
 
     const [idx, setIdx] = useState(0);
+    const [addLoc, setAddLoc] = useState(false);
+
+    const handleShow = () => {
+        setAddLoc(true);
+    }
+
+    const handleClose = () => {
+        setAddLoc(false);
+    }
 
     const classes = tourdetailStyles();
 
@@ -120,7 +155,12 @@ export default function TourDetail(props) {
                                 </TimelineItem>
                             ))}
                         </Timeline>
+                        <Button className={classes.addDay}>
+                            Thêm ngày
+                        </Button>
                     </Container>
+
+
                 </Grid>
                 <Grid item md={6} className={classes.feedTour}>
                     {
@@ -129,9 +169,25 @@ export default function TourDetail(props) {
                         ))
                     }
                     <div className={classes.addContainer}>
-                        <Button className={classes.addTour}>
+                        <Button className={classes.addTour} onClick={handleShow}>
                             Thêm
                         </Button>
+                        <Modal
+                            aria-labelledby="transition-modal-title"
+                            aria-describedby="transition-modal-description"
+                            open={addLoc}
+                            className={classes.modal}
+                            onClose={handleClose}
+                            closeAfterTransition
+                            BackdropComponent={Backdrop}
+                            BackdropProps={{
+                                timeout: 500,
+                            }}
+                        >
+                            <Fade in={addLoc}>
+                                <AddLocationForm />
+                            </Fade>
+                        </Modal>
                     </div>
 
                 </Grid>

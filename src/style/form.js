@@ -25,6 +25,22 @@ const formStyles = makeStyles((theme) => ({
         padding: 15,
         borderRadius: attr.borderRadius.md,
         marginBottom: 20,
+    },
+    formCreateReview: {
+        display: "flex",
+        justifyContent: "center",
+        marginBottom: 20,
+    },
+    addLocationForm: {
+        textAlign: "center",
+    },
+    addFormContainer: {
+        paddingBottom: 30,
+    },
+    addLocationSubmit: {
+        margin: 20,
+        paddingInline: 30,
+        backgroundColor: color.turquoise,
     }
 }))
 

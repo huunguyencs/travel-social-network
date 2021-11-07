@@ -4,14 +4,15 @@ import { Card } from "@material-ui/core";
 import { renderMarkers } from '../../utils/map';
 import { mapCardStyles } from "../../style";
 import { Room } from "@material-ui/icons";
-import profileStyles from "../../style";
+import KEY from "../../key/googlemap";
+
 
 export default function MapCard(props) {
-    const classes = profileStyles();
+    const classes = mapCardStyles();
     return (
         <Card className={classes.container}>
             <GoogleMapReact
-                // bootstrapURLKeys={{ key: KEY }}
+                bootstrapURLKeys={{ key: KEY }}
                 defaultCenter={props.location}
                 defaultZoom={15}
                 onGoogleApiLoaded={({ map, maps }) => renderMarkers(map, maps)}

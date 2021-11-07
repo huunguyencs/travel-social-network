@@ -25,7 +25,6 @@ const feedStyles = makeStyles((theme) => ({
     },
     createText: {
         width: "100%",
-
     },
     modal: {
         display: 'flex',

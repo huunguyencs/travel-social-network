@@ -41,7 +41,7 @@ export default function Header(props) {
     const temp = true;
 
     return (
-        <AppBar position="fixed">
+        <AppBar positionSticky style={{ zIndex: 1 }}>
             <Toolbar className={classes.toolbar}>
                 <Link to="/">
                     <Typography variant="h6" style={{ color: "#fff" }}>

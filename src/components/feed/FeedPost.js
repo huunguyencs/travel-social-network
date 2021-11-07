@@ -4,7 +4,7 @@ import { Container, InputBase, Modal, Backdrop, Fade } from "@material-ui/core";
 
 import Post from '../post/Post';
 import { feedStyles } from "../../style";
-import CreatePostForm from "../forms/createpost";
+import CreatePostForm from "../forms/createPost";
 
 
 const listPost = [

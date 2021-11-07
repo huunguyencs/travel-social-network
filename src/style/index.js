@@ -21,6 +21,7 @@ import mapCardStyles from "./mapCardStyle";
 import notificationStyles from "./notification";
 import formStyles from "./form";
 import searchStyles from "./search";
+import speedDialStyles from "./speeddial";
 
 const useStyles = makeStyles((theme) => ({
     ...shareStyles,
@@ -58,4 +59,5 @@ export {
     notificationStyles,
     formStyles,
     searchStyles,
+    speedDialStyles,
 };

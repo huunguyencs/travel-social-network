@@ -8,6 +8,7 @@ import RightBar from "../components/rightbar/RightBar";
 import Slider from "../components/slider/slider";
 import useStyles from "../style";
 import { homeMenu } from "../constant/menu";
+import SpeedDialButton from "../components/speedDialBtn";
 
 
 
@@ -17,6 +18,7 @@ function HomePage() {
 
   return (
     <Grid container style={{ margin: 0, padding: 0 }}>
+      <SpeedDialButton />
       <Grid item md={12} >
         <Slider />
       </Grid>
