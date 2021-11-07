@@ -14,6 +14,10 @@ export default function TourPage(props) {
 
     const classes = useStyles();
 
+    // useEffect(() => {
+    //     document.title = "Hành trình"
+    // }, [])
+
 
     return (
         <>

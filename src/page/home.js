@@ -16,6 +16,10 @@ function HomePage() {
 
   const classes = useStyles();
 
+  // useEffect(() => {
+  //   document.title = "Trang chủ"
+  // }, [])
+
   return (
     <Grid container style={{ margin: 0, padding: 0 }}>
       <SpeedDialButton />
