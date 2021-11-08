@@ -11,31 +11,31 @@ export const adminListMenu = [
     {
         icon: Person,
         name: "Người dùng",
-        link: "/admin/users",
+        link: "/admin/user",
     },
     {
         icon: Accessibility,
         name: "Dịch vụ",
-        link: "/admin/services",
+        link: "/admin/service",
     },
     {
         icon: LocationOn,
         name: "Địa điểm",
-        link: "/admin/locations",
+        link: "/admin/location",
     },
     {
         icon: Group,
         name: "Nhóm",
-        link: "/admin/groups",
+        link: "/admin/group",
     },
     {
         icon: PostAdd,
         name: "Bài viết",
-        link: "/admin/posts",
+        link: "/admin/post",
     },
     {
         icon: RateReview,
         name: "Review",
-        link: "/admin/reviews",
+        link: "/admin/review",
     },
 ]
