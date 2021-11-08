@@ -70,7 +70,7 @@ const rows = [
 
 
 
-export default function AdminUsers(props) {
+export default function AdminLocation(props) {
     const classes = useStyles();
 
     return (

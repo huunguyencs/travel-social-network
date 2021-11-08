@@ -1,8 +1,8 @@
 import React from "react";
 import { DataGrid } from '@mui/x-data-grid';
 import { Card, Grid, makeStyles } from "@material-ui/core";
-import LeftBar from "../../components/leftbar/LeftBar";
-import { adminListMenu } from "../../constant/adminMenu";
+import LeftBar from "../../../components/leftbar/LeftBar";
+import { adminListMenu } from "../../../constant/adminMenu";
 
 const useStyles = makeStyles((theme) => ({
     appBarSpacer: {
