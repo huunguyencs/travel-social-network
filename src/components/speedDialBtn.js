@@ -1,12 +1,14 @@
 import React, { useState } from "react";
 import { SpeedDial, SpeedDialAction, SpeedDialIcon } from "@material-ui/lab";
-import { Create, Explore, Message } from "@material-ui/icons";
+import { Create, Explore, WhatsApp } from "@material-ui/icons";
 import { speedDialStyles } from "../style";
+import { Link } from "react-router-dom";
+import { IconButton } from "@material-ui/core";
 
 const actions = [
-    { icon: <Create />, name: "Create Post" },
-    { icon: <Explore />, name: "Create Tour" },
-    { icon: <Message />, name: "Message" },
+    { icon: <IconButton component={Link} to={"/"}><Create /></IconButton>, name: "Create Post" },
+    { icon: <IconButton component={Link} to={"/"}><Explore /></IconButton>, name: "Create Tour" },
+    { icon: <IconButton component={Link} to={"/message"}><WhatsApp /></IconButton>, name: "Message" },
 ]
 
 

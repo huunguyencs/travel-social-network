@@ -15,7 +15,9 @@ const useStyles = makeStyles((theme) => ({
             color: '#397BA6',
             backgroundColor: '#DCDCDC',
         },
-        right: '1%',
+        right: '0.9%',
+        width: 56,
+        height: 56,
     }
 }));
 
