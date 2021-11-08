@@ -31,6 +31,16 @@ const feedStyles = makeStyles((theme) => ({
         alignItems: 'center',
         justifyContent: 'center',
     },
+    event: {
+        paddingTop: 50,
+    },
+    title: {
+        paddingBottom: 20,
+        textAlign: "center",
+    },
+    hot: {
+        paddingTop: 50,
+    }
 }));
 
 export default feedStyles;

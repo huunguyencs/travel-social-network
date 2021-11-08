@@ -1,6 +1,5 @@
-import React, { useState } from "react";
-import { Container, InputBase, Button, Zoom } from "@material-ui/core";
-import { AddCircleOutline, Create } from "@material-ui/icons";
+import React from "react";
+import { Container } from "@material-ui/core";
 
 import Post from '../post/Post';
 import { feedStyles } from "../../style";
@@ -124,48 +123,13 @@ const listPost = [
 
 export default function FeedReview(props) {
 
-    const [show, setShow] = useState(false);
-
-    const classes = feedStyles({ show });
+    const classes = feedStyles();
 
 
 
     return (
         <Container className={classes.container}>
             <div className={classes.content}>
-                <div className={classes.create}>
-                    <div className={classes.containerText}>
-                        <InputBase
-                            placeholder="Viết Review..."
-                            className={classes.createText}
-                            onChange={(e) => {
-                                if (e.target.value === "") {
-                                    setShow(false);
-                                }
-                                else setShow(true);
-                            }}
-                            rows={show ? 3 : 1}
-                            multiline
-                        />
-                    </div>
-                    <div className={classes.menuCreate}>
-                        <Zoom in={show}>
-                            <Button className={classes.addImageButton}>
-                                <AddCircleOutline style={{ marginRight: 10 }} />
-                                Thêm ảnh
-                            </Button>
-                        </Zoom>
-                        <Zoom in={show}>
-                            <Button className={classes.postButton}>
-                                <Create style={{ marginRight: 10 }} />
-                                Đăng
-                            </Button>
-                        </Zoom>
-
-                    </div>
-
-                </div>
-
 
                 <div>
                     {
