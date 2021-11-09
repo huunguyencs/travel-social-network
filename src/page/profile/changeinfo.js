@@ -8,6 +8,7 @@ import { profileMenu } from "../../constant/menu";
 import Header from "../../components/header/Header";
 import LeftBar from "../../components/leftbar/LeftBar";
 import { profileStyles } from "../../style";
+import Menu from "../../components/leftbar/menu";
 
 
 function TabPanel(props) {
@@ -57,7 +58,9 @@ export default function Change_info(props) {
             <Header />
             <Grid container style={{ margin: 0, padding: 0 }}>
                 <Grid item sm={3}>
-                    <LeftBar menuList={profileMenu} />
+                    <LeftBar >
+                        <Menu menuList={profileMenu} />
+                    </LeftBar>
                 </Grid>
                 <Grid item sm={9}>
                     <div className={classes.root}>

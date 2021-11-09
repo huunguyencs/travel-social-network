@@ -8,6 +8,7 @@ import Scroll from "../../components/scroll";
 import ProfileAvatar from "../../components/Profile/avatar";
 import { profileMenu } from "../../constant/menu";
 import SpeedDialButton from "../../components/speedDialBtn";
+import Menu from "../../components/leftbar/menu";
 
 
 
@@ -22,9 +23,9 @@ function ProfilePosts() {
       <ProfileAvatar />
       <Grid container style={{ margin: 0, padding: 0 }}>
         <Grid item sm={3}>
-          <LeftBar
-            menuList={profileMenu}
-          />
+          <LeftBar >
+            <Menu menuList={profileMenu} />
+          </LeftBar>
         </Grid>
         <Grid item sm={6}>
           <Feed />

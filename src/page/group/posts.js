@@ -7,6 +7,7 @@ import Scroll from "../../components/scroll";
 import { groupMenu } from "../../constant/menu";
 import GroupInfo from "../../components/group/information"
 import SpeedDialButton from "../../components/speedDialBtn";
+import Menu from "../../components/leftbar/menu";
 
 function GroupPost() {
 
@@ -19,9 +20,9 @@ function GroupPost() {
       <GroupInfo />
       <Grid container style={{ margin: 0, padding: 0 }}>
         <Grid item sm={3}>
-          <LeftBar
-            menuList={groupMenu}
-          />
+          <LeftBar >
+            <Menu menuList={groupMenu} />
+          </LeftBar>
         </Grid>
         <Grid item sm={6}>
           <Feed />

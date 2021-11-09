@@ -130,7 +130,7 @@ export default function Header(props) {
                                             <ClickAwayListener onClickAway={handleCloseNoti}>
                                                 <List>
                                                     <ListItem>
-                                                        <ListItemText>Thông báo 1</ListItemText>
+                                                        <ListItemText>Thông báo 1Thông báo 1</ListItemText>
                                                     </ListItem>
                                                     <ListItem>
                                                         <ListItemText>Thông báo 1</ListItemText>

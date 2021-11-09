@@ -8,6 +8,7 @@ import { profileMenu } from "../../constant/menu";
 import FeedTour from "../../components/feed/FeedTour";
 import ProfileAvatar from "../../components/Profile/avatar";
 import SpeedDialButton from "../../components/speedDialBtn";
+import Menu from "../../components/leftbar/menu";
 
 
 function ProfileTours() {
@@ -19,7 +20,9 @@ function ProfileTours() {
       <ProfileAvatar />
       <Grid container style={{ margin: 0, padding: 0 }}>
         <Grid item md={3} sm={12} xs={12}>
-          <LeftBar menuList={profileMenu} />
+          <LeftBar >
+            <Menu menuList={profileMenu} />
+          </LeftBar>
         </Grid>
         <Grid item md={6} sm={12} xs={12}>
           <FeedTour />

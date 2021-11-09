@@ -9,6 +9,7 @@ import Slider from "../components/slider/slider";
 import useStyles from "../style";
 import { homeMenu } from "../constant/menu";
 import SpeedDialButton from "../components/speedDialBtn";
+import Menu from "../components/leftbar/menu";
 
 
 
@@ -27,7 +28,9 @@ function HomePage() {
         <Slider />
       </Grid>
       <Grid item md={3} sm={12}>
-        <LeftBar menuList={homeMenu} />
+        <LeftBar >
+          <Menu menuList={homeMenu} />
+        </LeftBar>
       </Grid>
       <Grid item md={6}>
         <FeedPost />

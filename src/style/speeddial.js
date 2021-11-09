@@ -20,6 +20,11 @@ const speedDialStyles = makeStyles((theme) => ({
             left: theme.spacing(2),
         },
     },
+    modal: {
+        display: 'flex',
+        alignItems: 'center',
+        justifyContent: 'center',
+    },
 }))
 
 export default speedDialStyles;

@@ -2,6 +2,7 @@ import { Grid } from "@material-ui/core";
 import React from "react";
 import FeedHot from "../components/feed/FeedHot";
 import LeftBar from "../components/leftbar/LeftBar";
+import Menu from "../components/leftbar/menu";
 import RightBar from "../components/rightbar/RightBar";
 import SpeedDialButton from "../components/speedDialBtn";
 import { homeMenu } from "../constant/menu";
@@ -19,7 +20,9 @@ export default function HotPage(props) {
                 <Slider />
             </Grid> */}
             <Grid item md={3} sm={12}>
-                <LeftBar menuList={homeMenu} />
+                <LeftBar >
+                    <Menu menuList={homeMenu} />
+                </LeftBar>
             </Grid>
             <Grid item md={6}>
                 <FeedHot />

@@ -2,6 +2,7 @@ import { Card, Grid, makeStyles, Typography } from "@material-ui/core";
 import { Group, Person, PostAdd } from "@material-ui/icons";
 import React from "react";
 import LeftBar from "../../components/leftbar/LeftBar";
+import Menu from "../../components/leftbar/menu";
 import { adminListMenu } from "../../constant/adminMenu";
 
 const useStyles = makeStyles((theme) => ({
@@ -29,7 +30,9 @@ export default function AdminHome(props) {
     return (
         <Grid container>
             <Grid item md={3}>
-                <LeftBar menuList={adminListMenu} />
+                <LeftBar >
+                    <Menu menuList={adminListMenu} />
+                </LeftBar>
             </Grid>
             <Grid item md={9} style={{ height: "100vh" }}>
                 <div className={classes.appBarSpacer} />
