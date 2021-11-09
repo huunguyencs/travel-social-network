@@ -1,20 +1,54 @@
 import * as TOUR_TYPES from '../constants/tourConstant';
+import * as dateUtils from '../../utils/date';
 
 const initState = {
+    name: "",
     tour: []
 }
 
 
 const tourReducer = (state = initState, action) => {
     switch (action.type) {
-        case TOUR_TYPES.ADD_NEW_DATE: {
+        case TOUR_TYPES.ADD_TOUR: {
+            var dateStr = dateUtils.convertDateToStr(action.payload.date);
             return {
                 ...state,
-                tour: [action.payload.newDate, ...state.tour]
+                name: action.payload.name,
+                tour: [...state.tour, { time: dateStr, tour: [] }]
+            }
+        }
+        case TOUR_TYPES.ADD_NEW_DATE: {
+
+            var newDate = dateUtils.convertStrToDate(state.tour[state.tour.length - 1].time);
+            newDate.setDate(newDate.getDate() + 1);
+            dateStr = dateUtils.convertDateToStr(newDate);
+
+            return {
+                ...state,
+                tour: [...state.tour,
+                {
+                    time: dateStr,
+                    tour: [],
+                }
+                ]
             }
         }
         case TOUR_TYPES.ADD_NEW_LOCATION: {
-            const { newLocation } = action.payload.newLocation;
+            const { locationId, cost } = action.payload;
+            // goi api lay du lieu tu location id
+            console.log(locationId);
+
+            const image = "/login-1.jpeg";
+            const province = "Hà Nội";
+            const location = "Chùa Một Cột";
+
+            const newLocation = {
+                img: image,
+                location: location,
+                province: province,
+                cost: cost,
+            }
+
             return {
                 ...state,
                 tour: state.tour.map((date, i) => i === action.payload.indexDate ? [

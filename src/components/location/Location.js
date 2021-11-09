@@ -28,7 +28,7 @@ export default function LocationCard(props) {
             </CardContent>
             <CardActions>
                 <Button className={classes.seeMoreBtn} component={Link} to={"/location/" + props.location.id}>
-                    Xem thêm
+                    Xem chi tiết
                 </Button>
             </CardActions>
         </Card>

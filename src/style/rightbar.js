@@ -5,8 +5,8 @@ const rightbarStyles = makeStyles((theme) => ({
         color: 'white',
         paddingTop: theme.spacing(10),
         position: "sticky",
-        marginTop: theme.spacing(10),
         paddingBottom: theme.spacing(4),
+        marginRight: 15,
         top: 0,
         alignItems: 'center'
     },

@@ -10,6 +10,8 @@ import useStyles from "../style";
 import { homeMenu } from "../constant/menu";
 import SpeedDialButton from "../components/speedDialBtn";
 import Menu from "../components/leftbar/menu";
+import Calendar from '../components/card/CalendarCard';
+import FriendRecommendCard from '../components/card/FriendRecommend';
 
 
 
@@ -36,7 +38,10 @@ function HomePage() {
         <FeedPost />
       </Grid>
       <Grid item md={3} sm={0} className={classes.rightbar}>
-        <RightBar />
+        <RightBar>
+          <Calendar />
+          <FriendRecommendCard />
+        </RightBar>
       </Grid>
     </Grid>
   );

@@ -76,6 +76,7 @@ export default function Location(props) {
             <Grid item md={3}>
                 <RatingChart />
                 <WeatherCard weather={weather} />
+
             </Grid>
         </Grid>
     )

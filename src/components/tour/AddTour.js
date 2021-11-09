@@ -3,13 +3,18 @@ import React, { useState } from "react";
 import { Timeline, TimelineItem, TimelineSeparator, TimelineConnector, TimelineContent, TimelineDot } from '@material-ui/lab'
 
 import { tourdetailStyles } from "../../style";
-
 import AddLocationForm from "../forms/addLocation";
 import Location from './Location';
+import { useDispatch, useSelector } from "react-redux";
+import * as tourAction from '../../redux/actions/tourAction';
 
 
 
-export default function TourDetail(props) {
+export default function AddTour(props) {
+
+    const dispatch = useDispatch();
+    const { tour } = useSelector(state => state);
+
 
     const [idx, setIdx] = useState(0);
     const [addLoc, setAddLoc] = useState(false);
@@ -22,20 +27,24 @@ export default function TourDetail(props) {
         setAddLoc(false);
     }
 
+
+    const handleAddDay = () => {
+        dispatch(tourAction.addDate());
+    }
+
     const classes = tourdetailStyles();
 
-    const listTour = props.tour.tourList;
 
     return (
         <div>
             <div className={classes.coverTitle}>
-                <Typography variant="h3" className={classes.title}>{props.tour.tourName}</Typography>
+                <Typography variant="h3" className={classes.title}>{tour.name}</Typography>
             </div>
             <Grid container className={classes.container}>
                 <Grid item md={2} >
                     <Container className={classes.timeline}>
                         <Timeline align="right">
-                            {listTour.map((item, index) => (
+                            {tour.tour.map((item, index) => (
                                 <TimelineItem>
                                     <TimelineSeparator>
                                         <TimelineDot className={index === idx ? classes.activeDot : classes.unactiveDot} />
@@ -49,7 +58,7 @@ export default function TourDetail(props) {
                                 </TimelineItem>
                             ))}
                         </Timeline>
-                        <Button className={classes.addDay}>
+                        <Button className={classes.addDay} onClick={handleAddDay}>
                             Thêm ngày
                         </Button>
                     </Container>
@@ -58,7 +67,7 @@ export default function TourDetail(props) {
                 </Grid>
                 <Grid item md={6} className={classes.feedTour}>
                     {
-                        listTour[idx].tour.map((item) => (
+                        tour.tour[idx].tour.map((item) => (
                             <Location tour={item} />
                         ))
                     }

@@ -6,6 +6,7 @@ import { provinceStyles } from "../../style";
 import WeatherCard from "../../components/card/WeatherCard";
 import CovidCard from "../../components/card/CovidCard";
 import SpeedDialButton from "../../components/speedDialBtn";
+import RightBar from "../../components/rightbar/RightBar";
 
 
 const listLocation = [
@@ -100,8 +101,10 @@ export default function Province(props) {
                 </div>
             </Grid>
             <Grid item md={3}>
-                <WeatherCard weather={weather} />
-                <CovidCard />
+                <RightBar>
+                    <WeatherCard weather={weather} />
+                    <CovidCard />
+                </RightBar>
             </Grid>
         </Grid>
     )
