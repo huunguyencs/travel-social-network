@@ -1,4 +1,4 @@
-import { Button, Container, Grid, Modal, Typography, Backdrop, Fade } from "@material-ui/core";
+import { Button, Container, Grid, Modal, Typography, Backdrop, Fade, Dialog, DialogActions, DialogTitle } from "@material-ui/core";
 import React, { useState } from "react";
 import { Timeline, TimelineItem, TimelineSeparator, TimelineConnector, TimelineContent, TimelineDot } from '@material-ui/lab'
 
@@ -8,6 +8,7 @@ import Location from './Location';
 import { useDispatch, useSelector } from "react-redux";
 import * as tourAction from '../../redux/actions/tourAction';
 import { useHistory } from "react-router-dom";
+import UpdateDateForm from "../forms/updateDate";
 
 
 
@@ -21,6 +22,8 @@ export default function AddTour(props) {
 
     const [idx, setIdx] = useState(0);
     const [addLoc, setAddLoc] = useState(false);
+    const [showUpdateDate, setShowUpdateDate] = useState(false);
+    const [showDeleteDate, setShowDeteleDate] = useState(false);
 
     const handleShow = () => {
         setAddLoc(true);
@@ -43,10 +46,24 @@ export default function AddTour(props) {
 
     const handleDeleteDate = () => {
         dispatch(tourAction.deleteDate({ indexDate: idx }));
+        setIdx(0);
+        handleCloseDelete();
     }
 
-    const handleUpdateDate = () => {
-        dispatch(tourAction.updateDate({ indexDate: idx, newDate: "" }))
+    const handleShowUpdate = () => {
+        setShowUpdateDate(true);
+    }
+
+    const handleCloseUpdate = () => {
+        setShowUpdateDate(false);
+    }
+
+    const handleShowDelete = () => {
+        setShowDeteleDate(true);
+    }
+
+    const handleCloseDelete = () => {
+        setShowDeteleDate(false);
     }
 
 
@@ -92,12 +109,44 @@ export default function AddTour(props) {
                 </Grid>
                 <Grid item md={6} className={classes.feedTour}>
                     <div>
-                        <Button onClick={handleDeleteDate}>
+                        <Button onClick={handleShowDelete}>
                             Xóa ngày
                         </Button>
-                        <Button onClick={handleUpdateDate}>
+                        <Dialog
+                            open={showDeleteDate}
+                            onClose={handleCloseDelete}
+                            aria-labelledby="alert-dialog-title"
+                            aria-describedby="alert-dialog-description"
+                        >
+                            <DialogTitle id="alert-dialog-title">{"Bạn có chắc chắn muốn xóa?"}</DialogTitle>
+                            <DialogActions>
+                                <Button onClick={handleCloseDelete}>
+                                    Hủy
+                                </Button>
+                                <Button onClick={handleDeleteDate}>
+                                    Xóa
+                                </Button>
+                            </DialogActions>
+                        </Dialog>
+                        <Button onClick={handleShowUpdate}>
                             Thay đổi ngày
                         </Button>
+                        <Modal
+                            aria-labelledby="transition-modal-title"
+                            aria-describedby="transition-modal-description"
+                            open={showUpdateDate}
+                            className={classes.modal}
+                            onClose={handleCloseUpdate}
+                            closeAfterTransition
+                            BackdropComponent={Backdrop}
+                            BackdropProps={{
+                                timeout: 500,
+                            }}
+                        >
+                            <Fade in={showUpdateDate}>
+                                <UpdateDateForm handleClose={handleCloseUpdate} indexDate={idx} currentDate={tour.tour[idx].time} />
+                            </Fade>
+                        </Modal>
                     </div>
                     {
                         tour.tour[idx].tour.map((item, index) => (

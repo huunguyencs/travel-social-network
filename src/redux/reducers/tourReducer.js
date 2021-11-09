@@ -81,11 +81,11 @@ const tourReducer = (state = initState, action) => {
             }
         }
         case TOUR_TYPES.UPDATE_DATE: {
-            var dateStr = dateUtils.convertDateToStr(action.payload.newDate);
+            dateStr = dateUtils.convertDateToStr(action.payload.newDate);
             return {
                 ...state,
                 tour: state.tour.map((date, i) => i === action.payload.indexDate ? {
-                    ...state,
+                    ...date,
                     time: dateStr
                 } : date)
             }
