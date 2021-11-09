@@ -1,5 +1,6 @@
 import * as TOUR_TYPES from '../constants/tourConstant'
 
+
 export const createTour = (props) => {
     return {
         type: TOUR_TYPES.ADD_TOUR,
@@ -35,19 +36,30 @@ export const deleteLocation = (props) => {
     }
 }
 
+export const updateDate = (props) => {
+    return {
+        type: TOUR_TYPES.UPDATE_DATE,
+        payload: props,
+    }
+}
+
+export const updateLocation = (props) => {
+    return {
+        type: TOUR_TYPES.UPDATE_LOCATION,
+        payload: props,
+    }
+}
+
 export const resetTour = (props) => {
-
-
-
-    // reset tour at client
     return {
         type: TOUR_TYPES.RESET_TOUR,
         payload: null,
     }
 }
 
-export const saveTour = (props) => (dispatch) => {
+export const saveTour = (props) => async (dispatch) => {
     // call api to save data to database
 
     // reset tour
+
 }

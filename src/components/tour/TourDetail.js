@@ -58,8 +58,8 @@ export default function TourDetail(props) {
                 </Grid>
                 <Grid item md={6} className={classes.feedTour}>
                     {
-                        listTour[idx].tour.map((item) => (
-                            <Location tour={item} />
+                        listTour[idx].tour.map((item, index) => (
+                            <Location tour={item} index={index} edit={false} />
                         ))
                     }
                     <div className={classes.addContainer}>

@@ -7,10 +7,13 @@ import AddLocationForm from "../forms/addLocation";
 import Location from './Location';
 import { useDispatch, useSelector } from "react-redux";
 import * as tourAction from '../../redux/actions/tourAction';
+import { useHistory } from "react-router-dom";
 
 
 
 export default function AddTour(props) {
+
+    const history = useHistory();
 
     const dispatch = useDispatch();
     const { tour } = useSelector(state => state);
@@ -31,6 +34,21 @@ export default function AddTour(props) {
     const handleAddDay = () => {
         dispatch(tourAction.addDate());
     }
+
+    const handleSave = () => {
+        dispatch(tourAction.resetTour());
+        dispatch(tourAction.saveTour());
+        history.push("/tour");
+    }
+
+    const handleDeleteDate = () => {
+        dispatch(tourAction.deleteDate({ indexDate: idx }));
+    }
+
+    const handleUpdateDate = () => {
+        dispatch(tourAction.updateDate({ indexDate: idx, newDate: "" }))
+    }
+
 
     const classes = tourdetailStyles();
 
@@ -58,22 +76,37 @@ export default function AddTour(props) {
                                 </TimelineItem>
                             ))}
                         </Timeline>
-                        <Button className={classes.addDay} onClick={handleAddDay}>
-                            Thêm ngày
-                        </Button>
+                        <div>
+                            <Button className={classes.addDay} onClick={handleAddDay}>
+                                Thêm ngày
+                            </Button>
+                        </div>
+                        <div>
+                            <Button className={classes.addDay} onClick={handleSave}>
+                                Lưu lại
+                            </Button>
+                        </div>
                     </Container>
 
 
                 </Grid>
                 <Grid item md={6} className={classes.feedTour}>
+                    <div>
+                        <Button onClick={handleDeleteDate}>
+                            Xóa ngày
+                        </Button>
+                        <Button onClick={handleUpdateDate}>
+                            Thay đổi ngày
+                        </Button>
+                    </div>
                     {
-                        tour.tour[idx].tour.map((item) => (
-                            <Location tour={item} />
+                        tour.tour[idx].tour.map((item, index) => (
+                            <Location tour={item} index={index} edit={true} />
                         ))
                     }
                     <div className={classes.addContainer}>
                         <Button className={classes.addTour} onClick={handleShow}>
-                            Thêm
+                            Thêm địa điểm
                         </Button>
                         <Modal
                             aria-labelledby="transition-modal-title"
@@ -88,7 +121,7 @@ export default function AddTour(props) {
                             }}
                         >
                             <Fade in={addLoc}>
-                                <AddLocationForm />
+                                <AddLocationForm handleClose={handleClose} indexDate={idx} />
                             </Fade>
                         </Modal>
                     </div>

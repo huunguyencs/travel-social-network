@@ -3,6 +3,8 @@ import { makeStyles } from "@material-ui/core";
 const rightbarStyles = makeStyles((theme) => ({
     container: {
         color: 'white',
+        paddingLeft: 0,
+        paddingRight: 48,
         paddingTop: theme.spacing(10),
         position: "sticky",
         paddingBottom: theme.spacing(4),
