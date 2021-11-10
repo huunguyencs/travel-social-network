@@ -4,11 +4,11 @@ import { PhotoCamera } from "@material-ui/icons";
 import PropTypes from 'prop-types';
 import { RadioGroup, FormControlLabel } from "@material-ui/core";
 
-import { profileMenu } from "../../constant/menu";
-import Header from "../../components/header/Header";
-import LeftBar from "../../components/leftbar/LeftBar";
-import { profileStyles } from "../../style";
-import Menu from "../../components/leftbar/menu";
+import { profileMenu } from "../../../constant/menu";
+import Header from "../../../components/header/Header";
+import LeftBar from "../../../components/leftbar/LeftBar";
+import { profileStyles } from "../../../style";
+import Menu from "../../../components/leftbar/menu";
 
 
 function TabPanel(props) {

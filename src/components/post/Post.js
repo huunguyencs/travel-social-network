@@ -60,7 +60,7 @@ export default function Post(props) {
             />
 
             <CardContent>
-                {isReview && <Rating name="read-only" value={props.post.rate} readOnly style={{ marginBottom: 20 }} />}
+                {isReview && <Rating name="location-rating" value={props.post.rate} readOnly style={{ marginBottom: 20 }} />}
                 <Typography variant="body1" color="#2F3542" component="p">
                     {props.post.content}
                 </Typography>

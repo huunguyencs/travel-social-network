@@ -67,6 +67,7 @@ export default function ImageList(props) {
                     nextSrc={imageList[(pictureIndex + 1) % imageList.length].img}
                     prevSrc={imageList[(pictureIndex + imageList.length - 1) % imageList.length].img}
                     mainSrcThumbnail={imageList[pictureIndex].title}
+                    imageCaption={imageList[pictureIndex]?.title}
                     nextSrcThumbnail={imageList[(pictureIndex + 1) % imageList.length].title}
                     prevSrcThumbnail={imageList[(pictureIndex + imageList.length - 1) % imageList.length].title}
                     onCloseRequest={() => setOpen(false)}

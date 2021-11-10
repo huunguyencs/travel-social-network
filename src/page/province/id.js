@@ -8,6 +8,7 @@ import CovidCard from "../../components/card/CovidCard";
 import SpeedDialButton from "../../components/speedDialBtn";
 import RightBar from "../../components/rightbar/RightBar";
 import { Pagination } from "@material-ui/lab";
+import ServiceCard from "../../components/card/ServiceCard";
 
 
 const listLocation = [
@@ -67,6 +68,63 @@ const listLocation = [
     // },
 ]
 
+const listService = [
+    {
+        id: "1",
+        image: "https://recmiennam.com/wp-content/uploads/2020/10/nhung-canh-dep-viet-nam-sao-ma-yeu-den-the-1.jpg",
+        name: "Test1",
+        star: 4,
+    },
+    {
+        id: "2",
+        image: "https://recmiennam.com/wp-content/uploads/2020/10/nhung-canh-dep-viet-nam-sao-ma-yeu-den-the-1.jpg",
+        name: "Test2",
+        star: 4,
+    },
+    {
+        id: "3",
+        image: "https://recmiennam.com/wp-content/uploads/2020/10/nhung-canh-dep-viet-nam-sao-ma-yeu-den-the-1.jpg",
+        name: "Test3",
+        star: 4,
+    },
+    {
+        id: "4",
+        image: "https://recmiennam.com/wp-content/uploads/2020/10/nhung-canh-dep-viet-nam-sao-ma-yeu-den-the-1.jpg",
+        name: "Test4",
+        star: 4,
+    },
+    {
+        id: "5",
+        image: "https://recmiennam.com/wp-content/uploads/2020/10/nhung-canh-dep-viet-nam-sao-ma-yeu-den-the-1.jpg",
+        name: "Test5",
+        star: 4,
+    },
+    {
+        id: "6",
+        image: "https://recmiennam.com/wp-content/uploads/2020/10/nhung-canh-dep-viet-nam-sao-ma-yeu-den-the-1.jpg",
+        name: "Test6",
+        star: 4,
+    },
+    {
+        id: "7",
+        image: "https://recmiennam.com/wp-content/uploads/2020/10/nhung-canh-dep-viet-nam-sao-ma-yeu-den-the-1.jpg",
+        name: "Test7",
+        star: 4,
+    },
+    {
+        id: "8",
+        image: "https://recmiennam.com/wp-content/uploads/2020/10/nhung-canh-dep-viet-nam-sao-ma-yeu-den-the-1.jpg",
+        name: "Test8",
+        star: 4,
+    },
+    {
+        id: "9",
+        image: "https://recmiennam.com/wp-content/uploads/2020/10/nhung-canh-dep-viet-nam-sao-ma-yeu-den-the-1.jpg",
+        name: "Test9",
+        star: 4,
+    },
+]
+
 const weather = {
     name: "Hà Nội",
     time: "30/10/2021",
@@ -78,15 +136,20 @@ const weather = {
     visibility: 10,
 }
 
-const LOCAION_PER_PAGE = 6;
+const ITEM_PER_PAGE = 6;
 
 
 export default function Province(props) {
 
-    const [page, setPage] = useState(1);
+    const [pageLoc, setPageLoc] = useState(1);
+    const [pageSer, setPageSer] = useState(1);
 
-    const handleChange = (e, value) => {
-        setPage(value);
+    const handleChangeLoc = (e, value) => {
+        setPageLoc(value);
+    }
+
+    const handleChangeSer = (e, value) => {
+        setPageSer(value);
     }
 
     const classes = provinceStyles();
@@ -120,7 +183,7 @@ export default function Province(props) {
                         <Typography variant="h6">Danh sách địa điểm</Typography>
                     </div>
                     <Grid className={classes.listContainer} container>
-                        {listLocation.slice((page - 1) * LOCAION_PER_PAGE, page * LOCAION_PER_PAGE).map((item) => (
+                        {listLocation.slice((pageLoc - 1) * ITEM_PER_PAGE, pageLoc * ITEM_PER_PAGE).map((item) => (
                             <Grid item md={4} sm={6} xs={12} key={item.id}>
                                 <LocationCard location={item} />
                             </Grid>
@@ -128,7 +191,23 @@ export default function Province(props) {
 
                     </Grid>
                     <div style={{ marginTop: 30, display: "flex", justifyContent: "center" }}>
-                        <Pagination count={Math.ceil(listLocation.length / LOCAION_PER_PAGE)} page={page} onChange={handleChange} color="primary" />
+                        <Pagination count={Math.ceil(listLocation.length / ITEM_PER_PAGE)} page={pageLoc} onChange={handleChangeLoc} color="primary" />
+                    </div>
+                </div>
+                <div className={classes.locationList}>
+                    <div className={classes.title}>
+                        <Typography variant="h6">Danh sách dịch vụ</Typography>
+                    </div>
+                    <Grid className={classes.listContainer} container>
+                        {listService.slice((pageSer - 1) * ITEM_PER_PAGE, pageSer * ITEM_PER_PAGE).map((item) => (
+                            <Grid item md={4} sm={6} xs={12} key={item.id}>
+                                <ServiceCard service={item} />
+                            </Grid>
+                        ))}
+
+                    </Grid>
+                    <div style={{ marginTop: 30, display: "flex", justifyContent: "center" }}>
+                        <Pagination count={Math.ceil(listService.length / ITEM_PER_PAGE)} page={pageSer} onChange={handleChangeSer} color="primary" />
                     </div>
                 </div>
             </Grid>

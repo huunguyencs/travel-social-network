@@ -24,6 +24,7 @@ import searchStyles from "./search";
 import speedDialStyles from "./speeddial";
 import eventStyles from "./event";
 import locationCardStyles from "./locationCard";
+import serviceStyles from "./service";
 
 
 
@@ -66,4 +67,5 @@ export {
     speedDialStyles,
     eventStyles,
     locationCardStyles,
+    serviceStyles,
 };

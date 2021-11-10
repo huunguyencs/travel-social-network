@@ -107,7 +107,6 @@ export default function Location(props) {
                                 anchorEl={anchorEl}
                                 open={Boolean(anchorEl)}
                                 onClose={handleCloseMenu}
-                                // onClick={handleCloseMenu}
                                 MenuListProps={MenuListProps}
                                 transformOrigin={{ horizontal: 'right', vertical: 'top' }}
                                 anchorOrigin={{ horizontal: 'right', vertical: 'bottom' }}

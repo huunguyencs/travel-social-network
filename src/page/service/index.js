@@ -1,18 +1,18 @@
 import { Grid } from "@material-ui/core";
 import React from "react";
-import FeedHot from "../components/feed/FeedHot";
-import LeftBar from "../components/leftbar/LeftBar";
-import Menu from "../components/leftbar/menu";
-import RightBar from "../components/rightbar/RightBar";
-import SpeedDialButton from "../components/speedDialBtn";
-import { homeMenu } from "../constant/menu";
-import useStyles from "../style";
-import Calendar from '../components/card/CalendarCard';
-import FriendRecommendCard from '../components/card/FriendRecommend';
-import Slider from "../components/slider/slider";
 
+import Calendar from '../../components/card/CalendarCard';
+import FriendRecommendCard from "../../components/card/FriendRecommend";
+import FeedService from "../../components/feed/FeedService";
+import LeftBar from "../../components/leftbar/LeftBar";
+import Menu from "../../components/leftbar/menu";
+import RightBar from "../../components/rightbar/RightBar";
+import Slider from "../../components/slider/slider";
+import SpeedDialButton from "../../components/speedDialBtn";
+import { homeMenu } from "../../constant/menu";
+import useStyles from "../../style";
 
-export default function HotPage(props) {
+export default function ServicePage(props) {
 
     const classes = useStyles();
 
@@ -28,7 +28,7 @@ export default function HotPage(props) {
                 </LeftBar>
             </Grid>
             <Grid item md={6}>
-                <FeedHot />
+                <FeedService />
             </Grid>
             <Grid item md={3} sm={0} className={classes.rightbar}>
                 <RightBar>

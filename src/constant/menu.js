@@ -17,11 +17,6 @@ const homeMenu = [
         link: "/hot"
     },
     {
-        name: "Bạn bè",
-        icon: SupervisorAccount,
-        link: "/friend",
-    },
-    {
         name: "Dịch vụ",
         icon: Accessibility,
         link: "/service",

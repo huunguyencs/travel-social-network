@@ -1,15 +1,13 @@
-import React from "react";
 import { Container } from "@material-ui/core";
-
-import Post from '../post/Post';
+import React from "react";
 import { feedStyles } from "../../style";
+import Post from "../post/Post";
 
-
-const listReview = [
+const listService = [
     {
         user: {
             avatar: "https://media.istockphoto.com/vectors/default-profile-picture-avatar-photo-placeholder-vector-illustration-vector-id1223671392",
-            name: "Trần Văn A",
+            name: "Khách sạn abc",
         },
         time: "26 Thg 10 2021",
         imgList: [
@@ -23,7 +21,7 @@ const listReview = [
             }
         ],
         rate: 5,
-        content: "Đây là content. Tôi đang thấy vui ...",
+        content: "Khách sạn chất lượng 5 sao",
         numLike: 12,
         liked: true,
         cmts: [
@@ -52,7 +50,7 @@ const listReview = [
     {
         user: {
             avatar: "https://media.istockphoto.com/vectors/default-profile-picture-avatar-photo-placeholder-vector-illustration-vector-id1223671392",
-            name: "Trần Văn B",
+            name: "Nhà hàng xyz",
         },
         time: "27 Thg 10 2021",
         imgList: [
@@ -70,7 +68,7 @@ const listReview = [
             }
         ],
         rate: 4,
-        content: "Cảnh đẹp Việt Nam",
+        content: "Những món ăn ngon...",
         numLike: 10,
         liked: false,
         cmts: [],
@@ -78,7 +76,7 @@ const listReview = [
     {
         user: {
             avatar: "https://media.istockphoto.com/vectors/default-profile-picture-avatar-photo-placeholder-vector-illustration-vector-id1223671392",
-            name: "Phạm C",
+            name: "Quán ăn 123",
         },
         time: "26 Thg 10 2021",
         imgList: [
@@ -91,7 +89,7 @@ const listReview = [
             //     title: "img2",
             // }
         ],
-        content: "Đây là content. Tôi đang thấy vui ...",
+        content: "Những món ăn ngon",
         numLike: 5,
         rate: 4,
         liked: true,
@@ -121,21 +119,18 @@ const listReview = [
 ]
 
 
-export default function FeedReview(props) {
+export default function FeedService(props) {
 
     const classes = feedStyles();
-
-
-
     return (
         <Container className={classes.container}>
             <div className={classes.content}>
 
                 <div>
                     {
-                        listReview.map((post) => (
+                        listService.map((service) => (
                             <Post
-                                post={post}
+                                post={service}
                                 isReview={true}
                             />
                         ))
