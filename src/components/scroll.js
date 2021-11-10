@@ -15,7 +15,9 @@ const useStyles = makeStyles((theme) => ({
             color: '#397BA6',
             backgroundColor: '#DCDCDC',
         },
-        right: '1%',
+        right: '0.9%',
+        width: 56,
+        height: 56,
     }
 }));
 
@@ -27,7 +29,7 @@ function ScrollToTop({ history }) {
         return () => {
             unlisten();
         }
-    }, []);
+    }, [history]);
 
     return (null);
 }
@@ -45,8 +47,6 @@ const Scroll = ({ showBelow }) => {
     const classes = useStyles();
 
     const handleScroll = () => {
-        console.log(window.scrollY);
-        console.log(showBelow);
         if (window.scrollY > showBelow) {
             if (!show) setShow(true);
         }

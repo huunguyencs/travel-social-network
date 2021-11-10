@@ -1,13 +1,89 @@
 import React, { useState } from "react";
 import { SpeedDial, SpeedDialAction, SpeedDialIcon } from "@material-ui/lab";
-import { CardTravel, Create, Message } from "@material-ui/icons";
+import { Create, Explore, WhatsApp } from "@material-ui/icons";
 import { speedDialStyles } from "../style";
+import { Link } from "react-router-dom";
+import { Fade, IconButton, Modal, Backdrop } from "@material-ui/core";
+import CreatePostForm from "./forms/createPost";
+import CreateTourForm from "./forms/createTour";
 
 const actions = [
-    { icon: <Create />, name: "Create Post" },
-    { icon: <CardTravel />, name: "Create Tour" },
-    { icon: <Message />, name: "Message" },
+    { icon: < CreatePostIcon />, name: "Create Post" },
+    { icon: < CreateTourIcon />, name: "Create Tour" },
+    { icon: <IconButton component={Link} to={"/message"}><WhatsApp /></IconButton>, name: "Message" },
 ]
+
+function CreatePostIcon(props) {
+    const [show, setShow] = useState(false);
+
+    const classes = speedDialStyles();
+
+    const handleShow = () => {
+        setShow(true);
+    }
+
+    const handleClose = () => {
+        setShow(false);
+    }
+    return (
+        <>
+            <IconButton onClick={handleShow}><Create /></IconButton>
+            <Modal
+                aria-labelledby="create-post"
+                aria-describedby="create-post-modal"
+                className={classes.modal}
+                open={show}
+                onClose={handleClose}
+                closeAfterTransition
+                BackdropComponent={Backdrop}
+                BackdropProps={{
+                    timeout: 500,
+                }}
+            >
+                <Fade in={show}>
+                    <CreatePostForm />
+                </Fade>
+            </Modal>
+        </>
+    )
+}
+
+function CreateTourIcon(props) {
+    const [show, setShow] = useState(false);
+
+    const classes = speedDialStyles();
+
+    const handleShow = () => {
+        setShow(true);
+    }
+
+    const handleClose = () => {
+        setShow(false);
+    }
+    return (
+        <>
+            <IconButton onClick={handleShow}><Explore /></IconButton>
+            <Modal
+                aria-labelledby="create-tour"
+                aria-describedby="create-tour-modal"
+                className={classes.modal}
+                open={show}
+                onClose={handleClose}
+                closeAfterTransition
+                BackdropComponent={Backdrop}
+                BackdropProps={{
+                    timeout: 500,
+                }}
+            >
+                <Fade in={show}>
+                    <CreateTourForm />
+                </Fade>
+            </Modal>
+        </>
+    )
+}
+
+
 
 
 export default function SpeedDialButton(props) {

@@ -10,7 +10,7 @@ const locationStyles = makeStyles((theme) => ({
         // height: "50vh",
     },
     imgBg: {
-        backgroundImage: `url(https://freenice.net/wp-content/uploads/2021/08/Hinh-anh-thien-nhien-dep.jpg)`,
+        backgroundImage: `url(https://toquoc.mediacdn.vn/2018/12/25/cau-vang-ba-na-3-15457134861131150541874.jpg)`,
         height: 700,
         display: "flex",
         textAlign: "center",

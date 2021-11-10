@@ -22,6 +22,11 @@ import notificationStyles from "./notification";
 import formStyles from "./form";
 import searchStyles from "./search";
 import speedDialStyles from "./speeddial";
+import eventStyles from "./event";
+import locationCardStyles from "./locationCard";
+import serviceStyles from "./service";
+
+
 
 const useStyles = makeStyles((theme) => ({
     ...shareStyles,
@@ -60,4 +65,7 @@ export {
     formStyles,
     searchStyles,
     speedDialStyles,
+    eventStyles,
+    locationCardStyles,
+    serviceStyles,
 };

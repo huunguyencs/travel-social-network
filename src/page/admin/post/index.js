@@ -3,6 +3,7 @@ import { DataGrid } from '@mui/x-data-grid';
 import { Card, Grid, makeStyles } from "@material-ui/core";
 import LeftBar from "../../../components/leftbar/LeftBar";
 import { adminListMenu } from "../../../constant/adminMenu";
+import Menu from "../../../components/leftbar/menu";
 
 const useStyles = makeStyles((theme) => ({
     appBarSpacer: {
@@ -67,7 +68,9 @@ export default function AdminUsers(props) {
     return (
         <Grid container>
             <Grid item md={3}>
-                <LeftBar menuList={adminListMenu} />
+                <LeftBar >
+                    <Menu menuList={adminListMenu} />
+                </LeftBar>
             </Grid>
             <Grid item md={9}>
                 <div className={classes.appBarSpacer} />

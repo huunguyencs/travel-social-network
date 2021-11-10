@@ -74,7 +74,6 @@ const tour = {
 export default function TourDetail(props) {
 
     const { id } = useParams();
-
     console.log(id);
 
     return (

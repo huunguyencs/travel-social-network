@@ -8,16 +8,19 @@ const leftbarStyles = makeStyles((theme) => ({
     container: {
         paddingTop: theme.spacing(10),
         position: "sticky",
-        marginTop: theme.spacing(10),
+        // marginTop: theme.spacing(10),
         paddingBottom: theme.spacing(4),
+        marginLeft: 15,
         top: 0,
     },
     panel: {
-        backgroundColor: color.white,
+        // marginTop: theme.spacing(10),
+        // position: "fixed",
+        backgroundColor: color.background,
         borderRadius: attr.borderRadius.md,
         paddingTop: theme.spacing(4),
         paddingBottom: theme.spacing(4),
-        paddingInline: theme.spacing(1.5),
+        paddingInline: theme.spacing(0),
     },
     item: {
         paddingInline: theme.spacing(4),

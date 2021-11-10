@@ -41,6 +41,10 @@ const formStyles = makeStyles((theme) => ({
         margin: 20,
         paddingInline: 30,
         backgroundColor: color.turquoise,
+    },
+    datepicker: {
+        marginInline: 50,
+        marginBottom: 30,
     }
 }))
 

@@ -1,6 +1,7 @@
 import { Button, Card, CardActions, CardContent, CardMedia, Typography } from "@material-ui/core";
 import { Star } from "@material-ui/icons";
 import React from "react";
+import { Link } from "react-router-dom";
 
 import { cardStyles } from "../../style";
 
@@ -22,7 +23,7 @@ export default function LocationCard(props) {
                     <Typography>{props.location.star}</Typography>
                     <Star className={classes.starIcon} />
                 </div>
-                <Button className={classes.seeMore}>
+                <Button className={classes.seeMore} component={Link} to={"/location/" + props.location.id}>
                     Xem thêm
                 </Button>
             </CardActions>

@@ -9,12 +9,16 @@ import Slider from "../components/slider/slider";
 import useStyles from "../style";
 import { homeMenu } from "../constant/menu";
 import SpeedDialButton from "../components/speedDialBtn";
+import Menu from "../components/leftbar/menu";
+import Calendar from '../components/card/CalendarCard';
+import FriendRecommendCard from '../components/card/FriendRecommend';
 
 
 
 function HomePage() {
 
   const classes = useStyles();
+
 
   return (
     <Grid container style={{ margin: 0, padding: 0 }}>
@@ -23,13 +27,18 @@ function HomePage() {
         <Slider />
       </Grid>
       <Grid item md={3} sm={12}>
-        <LeftBar menuList={homeMenu} />
+        <LeftBar >
+          <Menu menuList={homeMenu} />
+        </LeftBar>
       </Grid>
       <Grid item md={6}>
         <FeedPost />
       </Grid>
       <Grid item md={3} sm={0} className={classes.rightbar}>
-        <RightBar />
+        <RightBar>
+          <Calendar />
+          <FriendRecommendCard />
+        </RightBar>
       </Grid>
     </Grid>
   );

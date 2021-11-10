@@ -36,6 +36,11 @@ const provinceStyles = makeStyles((theme) => ({
         margin: 50,
         backgroundColor: color.white,
         borderRadius: attr.borderRadius.md,
+        // marginBottom: 20,
+        paddingBottom: 20,
+    },
+    listContainer: {
+        height: 700,
     }
 }))
 
