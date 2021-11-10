@@ -5,6 +5,7 @@ import { Favorite, FavoriteBorderOutlined, MoreVert } from "@material-ui/icons";
 import { tourdetailStyles } from "../../style";
 import CreateReviewForm from "../forms/createReview";
 import EditLocationForm from "../forms/editLocation";
+import { Link } from "react-router-dom";
 
 const MenuListProps = {
     elevation: 0,
@@ -60,6 +61,7 @@ export default function Location(props) {
 
     const handleCloseEdit = () => {
         setEditLoc(false);
+        handleCloseMenu();
     }
 
     const likeHandle = (e) => {
@@ -119,14 +121,13 @@ export default function Location(props) {
                                     open={editLoc}
                                     className={classes.modal}
                                     onClose={handleCloseEdit}
-                                    // closeAfterTransition
                                     BackdropComponent={Backdrop}
                                     BackdropProps={{
                                         timeout: 500,
                                     }}
                                 >
                                     <Fade in={editLoc}>
-                                        <EditLocationForm handleClose={handleCloseEdit} indexDate={props.indexDate} indexLocation={props.indexLocation} locationInfo={tourInfo} />
+                                        <EditLocationForm handleCloseParent={handleCloseMenu} handleClose={handleCloseEdit} indexDate={props.indexDate} indexLocation={props.indexLocation} locationInfo={tourInfo} />
                                     </Fade>
                                 </Modal>
                                 <MenuItem>
@@ -135,12 +136,14 @@ export default function Location(props) {
                             </Menu>
                         </div>
 
-                        <Typography variant="h4" className={classes.locationName}>{tourInfo.location}</Typography>
+                        <Typography variant="h4" className={classes.locationName} component={Link} to={"/location/" + tourInfo.id}>{tourInfo.location}</Typography>
                         <Typography variant="h5">{tourInfo.province}</Typography>
                         {isReviewed ?
                             <Button className={classes.reviewBtn} onClick={() => setShowRv((value) => setShowRv(!value))}>{showRv ? "Ẩn" : "Xem"} Review</Button> :
                             <Button className={classes.reviewBtn} onClick={handleShow}>Tạo Review</Button>
                         }
+
+
                         <Modal
                             aria-labelledby="transition-modal-title"
                             aria-describedby="transition-modal-description"

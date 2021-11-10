@@ -1,0 +1,4 @@
+export const SAVE_POST_START = "SAVE_POST_START";
+export const SAVE_POST_SUCCESS = "SAVE_POST_SUCCESS";
+export const SAVE_POST_FAIL = "SAVE_POST_FAIL";
+

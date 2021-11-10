@@ -118,26 +118,6 @@ const tourReducer = (state = INIT_STATE, action) => {
                 tour: []
             }
         }
-        case TOUR_TYPES.CALL_START: {
-            return {
-                ...state,
-                isFetching: true,
-            }
-        }
-        case TOUR_TYPES.CALL_SUCCESS: {
-            return {
-                ...state,
-                isFetching: false,
-                error: null,
-            }
-        }
-        case TOUR_TYPES.CALL_FAIL: {
-            return {
-                ...state,
-                error: action.payload.error,
-                isFetching: false,
-            }
-        }
         default: {
             return state
         }

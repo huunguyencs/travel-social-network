@@ -1,32 +1,29 @@
-import * as NOTIFY_TYPES from '../constants/notifyConstant';
+import * as POST_TYPES from '../constants/postConstant';
 
 const INIT_STATE = {
     isFetching: false,
-    success: false,
     error: null,
 }
 
-const notifyReducer = (state = INIT_STATE, action) => {
+const postReducer = (state, action) => {
     switch (action.type) {
-        case NOTIFY_TYPES.CALL_START: {
+        case POST_TYPES.SAVE_POST_START: {
             return {
                 ...state,
                 isFetching: true,
             }
         }
-        case NOTIFY_TYPES.CALL_SUCCESS: {
+        case POST_TYPES.SAVE_POST_SUCCESS: {
             return {
                 ...state,
                 isFetching: false,
-                success: true,
                 error: null,
             }
         }
-        case NOTIFY_TYPES.CALL_FAIL: {
+        case POST_TYPES.SAVE_POST_FAIL: {
             return {
                 ...state,
                 isFetching: false,
-                success: false,
                 error: action.payload.error,
             }
         }
@@ -36,4 +33,5 @@ const notifyReducer = (state = INIT_STATE, action) => {
     }
 }
 
-export default notifyReducer;
+
+export default postReducer;

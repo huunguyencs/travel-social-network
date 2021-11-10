@@ -36,6 +36,7 @@ export default function EditLocationForm(props) {
         e.preventDefault();
         dispatch(tourAction.updateLocation({ indexDate: props.indexDate, indexLocation: props.indexLocation, location: loc, cost: costRef.current.value }))
         props.handleClose();
+        props.handleCloseParent();
     }
 
 

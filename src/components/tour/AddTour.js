@@ -40,7 +40,7 @@ export default function AddTour(props) {
 
     const handleSave = () => {
         dispatch(tourAction.resetTour());
-        dispatch(tourAction.saveTour());
+        // dispatch(tourAction.saveTour());
         history.push("/tour");
     }
 
