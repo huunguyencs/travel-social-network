@@ -13,7 +13,7 @@ const data = [
         label: "one",
         title: "Welcome to GOGO",
         subtitle: "It's time to travel",
-        imgPath: "https://freenice.net/wp-content/uploads/2021/08/Hinh-anh-thien-nhien-dep.jpg",
+        imgPath: "https://i.ytimg.com/vi/NqMS9nldyP4/maxresdefault.jpg",
         color: "white",
         description: "Ảnh: Ruộng bậc thang Tây Bắc",
     },

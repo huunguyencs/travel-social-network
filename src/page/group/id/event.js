@@ -1,11 +1,11 @@
 import { Grid } from "@material-ui/core";
 import React from "react";
 
-import LeftBar from "../../components/leftbar/LeftBar";
-import Scroll from "../../components/scroll";
-import { groupMenu } from "../../constant/menu";
-import GroupInfo from "../../components/group/information"
-import GMComponent from "../../components/group/event";
+import LeftBar from "../../../components/leftbar/LeftBar";
+import Scroll from "../../../components/scroll";
+import { groupMenu } from "../../../constant/menu";
+import GroupInfo from "../../../components/group/information"
+import GMComponent from "../../../components/group/event";
 
 function GroupEvent() {
 

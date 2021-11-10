@@ -17,20 +17,35 @@ const generatePage = (pageName) => {
 }
 
 const PageRender = () => {
-    const { page, subparam } = useParams();
+    const { page, id, subpage } = useParams();
 
-    let pageName = "";
+    var pageName = "";
 
-    if (subparam) {
-        if (page === "profile" || page === "admin" || page === "group") {
-            pageName = `${page}/${subparam}`
+    if (page === "admin") {
+        if (id) {
+            if (subpage) {
+                pageName = `admin/${id}/${subpage}`;
+            }
+            else {
+                pageName = `admin/${id}`;
+            }
         }
         else {
-            pageName = `${page}/id`;
+            pageName = `admin`
         }
     }
     else {
-        pageName = `${page}`;
+        if (id) {
+            if (subpage) {
+                pageName = `${page}/id/${subpage}`;
+            }
+            else {
+                pageName = `${page}/id`;
+            }
+        }
+        else {
+            pageName = `${page}`;
+        }
     }
 
 

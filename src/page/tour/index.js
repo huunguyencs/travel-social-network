@@ -8,11 +8,18 @@ import Slider from "../../components/slider/slider";
 import useStyles from "../../style";
 import { homeMenu } from "../../constant/menu";
 import SpeedDialButton from "../../components/speedDialBtn";
+import Menu from "../../components/leftbar/menu";
+import Calendar from '../../components/card/CalendarCard';
+import FriendRecommendCard from '../../components/card/FriendRecommend';
 
 
 export default function TourPage(props) {
 
     const classes = useStyles();
+
+    // useEffect(() => {
+    //     document.title = "Hành trình"
+    // }, [])
 
 
     return (
@@ -24,13 +31,18 @@ export default function TourPage(props) {
                     <Slider />
                 </Grid>
                 <Grid item md={3} sm={12} xs={12}>
-                    <LeftBar menuList={homeMenu} />
+                    <LeftBar >
+                        <Menu menuList={homeMenu} />
+                    </LeftBar>
                 </Grid>
                 <Grid item md={6} sm={12} xs={12}>
                     <FeedTour />
                 </Grid>
                 <Grid item md={3} className={classes.rightbar}>
-                    <RightBar />
+                    <RightBar>
+                        <Calendar />
+                        <FriendRecommendCard />
+                    </RightBar>
                 </Grid>
             </Grid>
         </>

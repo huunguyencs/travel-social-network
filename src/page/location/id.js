@@ -1,6 +1,7 @@
 import { Grid, Typography } from "@material-ui/core";
 import { LocationOn } from "@material-ui/icons";
 import React from "react";
+import { Link } from "react-router-dom";
 import MapCard from "../../components/card/MapCard";
 import RatingChart from "../../components/card/RatingChart";
 import WeatherCard from "../../components/card/WeatherCard";
@@ -37,13 +38,16 @@ export default function Location(props) {
             <Grid item md={12} className={classes.coverImg}>
                 <div className={classes.imgBg}>
                     <div className={classes.coverText}>
-                        <Typography variant="h1">
+                        <Typography variant="h1" style={{ color: "black" }}>
                             Chùa Một Cột
                         </Typography>
-                        <Typography variant="h2">
-                            <LocationOn style={{ fontSize: "50px", marginRight: "30px" }} />
-                            Hà Nội
-                        </Typography>
+                        <div>
+                            <LocationOn style={{ fontSize: "50px", marginRight: "30px", color: "black" }} />
+                            <Typography variant="h2" component={Link} to={"/province/1"}>
+                                Hà Nội
+                            </Typography>
+                        </div>
+
                     </div>
                 </div>
             </Grid>
@@ -76,6 +80,7 @@ export default function Location(props) {
             <Grid item md={3}>
                 <RatingChart />
                 <WeatherCard weather={weather} />
+
             </Grid>
         </Grid>
     )

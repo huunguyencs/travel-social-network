@@ -5,7 +5,7 @@ import attr from "./attr";
 
 const postStyles = makeStyles((theme) => ({
     cardContainer: {
-        margin: 20,
+        margin: 10,
         borderRadius: attr.borderRadius.md,
         backgroundColor: color.white,
     },

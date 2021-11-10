@@ -5,8 +5,9 @@ const speedDialStyles = makeStyles((theme) => ({
     speedDialWrapper: {
         zIndex: 2,
         position: 'fixed',
-        bottom: '2vh',
-        left: '5%',
+        bottom: '8vh',
+        right: '0%',
+
     },
     speedDial: {
         position: 'absolute',
@@ -18,6 +19,11 @@ const speedDialStyles = makeStyles((theme) => ({
             top: theme.spacing(2),
             left: theme.spacing(2),
         },
+    },
+    modal: {
+        display: 'flex',
+        alignItems: 'center',
+        justifyContent: 'center',
     },
 }))
 
