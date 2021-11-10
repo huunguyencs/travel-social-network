@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { Container, InputBase, Modal, Backdrop, Fade } from "@material-ui/core";
 
 
@@ -134,6 +134,11 @@ export default function FeedPost(props) {
         setShow(false);
     }
 
+    useEffect(() => {
+        console.log("Render post list");
+        // call api to get list posts
+
+    }, [])
 
 
     return (

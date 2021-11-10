@@ -4,9 +4,8 @@ import { useParams } from "react-router-dom";
 import NotFound from "../page/404";
 
 const generatePage = (pageName) => {
-    const component = () => require(`../page/${pageName}`).default;
+    const component = () => require(`../page/admin/${pageName}`).default;
 
-    console.log(pageName);
 
     try {
         return React.createElement(component())
@@ -16,25 +15,17 @@ const generatePage = (pageName) => {
     }
 }
 
-const PageRender = () => {
-    const { page, id, subpage } = useParams();
-
+const AdminPageRender = () => {
+    const { page, id } = useParams();
     var pageName = "";
 
     if (id) {
-        if (subpage) {
-            pageName = `${page}/id/${subpage}`;
-        }
-        else {
-            pageName = `${page}/id`;
-        }
+        pageName = `${page}/id`;
     }
     else {
         pageName = `${page}`;
     }
-
-
     return generatePage(pageName)
 }
 
-export default PageRender;
+export default AdminPageRender;

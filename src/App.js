@@ -10,6 +10,7 @@ import HomePage from './page/home';
 import './App.css'
 import { WithRouterScroll } from './components/scroll';
 import { useLocation } from "react-router-dom";
+import AdminPageRender from "./router/AdminPageRender";
 
 function App() {
   const location = useLocation();
@@ -24,8 +25,11 @@ function App() {
       <Scroll showBelow={500} />
       {displayHeader() && <Header />}
       <Route path="/" component={HomePage} exact />
+      <CustomRouter path="/admin/:page" component={AdminPageRender} exact />
+      <CustomRouter path="/admin/:page/:id" component={AdminPageRender} exact />
       <CustomRouter path='/:page' component={PageRender} exact />
-      <CustomRouter path='/:page/:subparam' component={PageRender} exact />
+      <CustomRouter path='/:page/:id' component={PageRender} exact />
+      <CustomRouter path='/:page/:id/:subpage' component={PageRender} exact />
     </div>
 
   );

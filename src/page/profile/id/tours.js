@@ -1,14 +1,14 @@
 import { Grid } from "@material-ui/core";
 import React from "react";
-import LeftBar from "../../components/leftbar/LeftBar";
-import RightBar from "../../components/rightbar/RightBar";
-import Scroll from "../../components/scroll";
-import useStyles from "../../style";
-import { profileMenu } from "../../constant/menu";
-import FeedTour from "../../components/feed/FeedTour";
-import ProfileAvatar from "../../components/Profile/avatar";
-import SpeedDialButton from "../../components/speedDialBtn";
-import Menu from "../../components/leftbar/menu";
+import LeftBar from "../../../components/leftbar/LeftBar";
+import RightBar from "../../../components/rightbar/RightBar";
+import Scroll from "../../../components/scroll";
+import useStyles from "../../../style";
+import { profileMenu } from "../../../constant/menu";
+import FeedTour from "../../../components/feed/FeedTour";
+import ProfileAvatar from "../../../components/Profile/avatar";
+import SpeedDialButton from "../../../components/speedDialBtn";
+import Menu from "../../../components/leftbar/menu";
 
 
 function ProfileTours() {

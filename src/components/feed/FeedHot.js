@@ -1,5 +1,5 @@
 import { Container, Typography } from "@material-ui/core";
-import React from "react";
+import React, { useEffect } from "react";
 import { feedStyles } from "../../style";
 import Event from "../event/event";
 import LocationCard from "../location/Location";
@@ -40,6 +40,11 @@ const locationHot = [
 export default function FeedHot(props) {
 
     const classes = feedStyles();
+
+    useEffect(() => {
+        console.log("Render list event and list hot");
+        // call api
+    }, [])
 
     return (
         <Container className={classes.container}>
