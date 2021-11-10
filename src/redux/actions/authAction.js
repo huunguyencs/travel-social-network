@@ -1,46 +1,10 @@
-import * as AUTH_TYPES from '../constants/authConstant';
+import { AUTH } from "../constants"
 
-export const loginStart = (props) => {
+const auth = (props) => {
     return {
-        type: AUTH_TYPES.LOGIN_START
-    }
-}
-
-export const loginSuccess = (props) => {
-    return {
-        type: AUTH_TYPES.LOGIN_SUCCESS,
+        type: AUTH,
         payload: props,
     }
 }
 
-export const loginFail = (props) => {
-    return {
-        type: AUTH_TYPES.LOGIN_FAIL,
-        payload: props,
-    }
-}
-
-export const signupStart = (props) => {
-    return {
-        type: AUTH_TYPES.SIGNUP_START,
-    }
-}
-
-export const signupSuccess = (props) => {
-    return {
-        type: AUTH_TYPES.SIGNUP_SUCCESS,
-    }
-}
-
-export const signupFail = (props) => {
-    return {
-        type: AUTH_TYPES.SIGNUP_FAIL,
-        payload: props,
-    }
-}
-
-export const logout = (props) => {
-    return {
-        type: AUTH_TYPES.LOGOUT,
-    }
-}
+export default auth;

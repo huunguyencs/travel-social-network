@@ -1,28 +1,29 @@
 import * as tourAction from '../actions/tourAction';
+import * as notifyAction from '../actions/notifyAction';
 
 
-export const saveTour = (props) => async (dispatch) => {
+export const saveTour = (data) => async (dispatch) => {
 
-    dispatch(tourAction.callStart());
+    dispatch(notifyAction.callStart());
 
     try {
         // call api to save tour
 
-        dispatch(tourAction.callSuccess());
+        dispatch(notifyAction.callSuccess());
         dispatch(tourAction.resetTour());
     }
     catch (err) {
-        dispatch(tourAction.callFail({ error: err }))
+        dispatch(notifyAction.callFail({ error: err }))
     }
 }
 
-export const deleteTour = (props) => async (dispatch) => {
-    dispatch(tourAction.callStart());
+export const deleteTour = (data) => async (dispatch) => {
+    dispatch(notifyAction.callStart());
     try {
         // call api to delete tour
-        dispatch(tourAction.callSuccess());
+        dispatch(notifyAction.callSuccess());
     }
     catch (err) {
-        dispatch(tourAction.callFail({ error: err }));
+        dispatch(notifyAction.callFail({ error: err }));
     }
 }

@@ -128,6 +128,7 @@ const tourReducer = (state = INIT_STATE, action) => {
             return {
                 ...state,
                 isFetching: false,
+                error: null,
             }
         }
         case TOUR_TYPES.CALL_FAIL: {

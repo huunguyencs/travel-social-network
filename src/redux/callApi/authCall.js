@@ -1,39 +1,45 @@
+import * as notifyAction from '../actions/notifyAction';
 import * as authAction from '../actions/authAction';
 
-export const login = (props) => async (dispatch) => {
+export const login = (data) => async (dispatch) => {
 
     // begin loading
-    dispatch(authAction.loginStart());
+    dispatch(notifyAction.callStart());
     try {
         // call api to login
 
         const res = null;
         // stop loading
-        dispatch(authAction.loginSuccess({ user: res.data.user }));
+        dispatch(notifyAction.callSuccess());
+        dispatch(authAction.auth({ user: res.data.user }));
 
     }
     catch (err) {
-        dispatch(authAction.loginFail({ error: err }));
+        dispatch(notifyAction.callFail({ error: err }));
     }
 
 
 }
 
-export const signup = (props) => async (dispatch) => {
+export const signup = (data) => async (dispatch) => {
 
-    dispatch(authAction.signupStart());
+    dispatch(notifyAction.callStart());
     try {
-        // call api to sign up
+        // call api to login
 
         const res = null;
-        dispatch(authAction.signupSuccess());
+        // stop loading
+        dispatch(notifyAction.callSuccess());
+
+        // redirect
+
     }
     catch (err) {
-        dispatch(authAction.signupFail({ error: err }));
+        dispatch(notifyAction.callFail({ error: err }));
     }
 
 }
 
-export const logout = (props) => async (dispatch) => {
+export const logout = (data) => async (dispatch) => {
 
 }

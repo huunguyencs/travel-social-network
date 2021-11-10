@@ -56,22 +56,3 @@ export const resetTour = (props) => {
         payload: null,
     }
 }
-
-export const callStart = (props) => {
-    return {
-        type: TOUR_TYPES.CALL_START,
-    }
-}
-
-export const callSuccess = (props) => {
-    return {
-        type: TOUR_TYPES.CALL_SUCCESS,
-    }
-}
-
-export const callFail = (props) => {
-    return {
-        type: TOUR_TYPES.CALL_FAIL,
-        payload: props,
-    }
-}
