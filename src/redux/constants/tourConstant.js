@@ -6,3 +6,6 @@ export const RESET_TOUR = "RESET_TOUR";
 export const ADD_TOUR = "ADD_TOUR";
 export const UPDATE_DATE = "UPDATE_DATE";
 export const UPDATE_LOCATION = "UPDATE_LOCATION";
+export const CALL_START = "CALL_START";
+export const CALL_SUCCESS = "CALL_SUCCESS";
+export const CALL_FAIL = "CALL_FAIL";

@@ -23,16 +23,18 @@ const listLocation = [
 ]
 
 
-export default function AddLocationForm(props) {
 
-    const [loc, setLoc] = useState({});
+export default function EditLocationForm(props) {
+
+    // const idRef = useRef(props.locationId);
+    const [loc, setLoc] = useState({ id: props.locationInfo.id, name: props.locationInfo.location });
     const costRef = useRef('');
 
     const dispatch = useDispatch();
 
     const handleSubmit = (e) => {
         e.preventDefault();
-        dispatch(tourAction.addLocation({ location: loc, cost: costRef.current.value, indexDate: props.indexDate }))
+        dispatch(tourAction.updateLocation({ indexDate: props.indexDate, indexLocation: props.indexLocation, location: loc, cost: costRef.current.value }))
         props.handleClose();
     }
 
@@ -45,7 +47,7 @@ export default function AddLocationForm(props) {
         <Paper className={[classes.paperContainer, classes.addFormContainer]}>
             <div className={classes.textTitle}>
                 <Typography variant="h5">
-                    Thêm địa điểm
+                    Chỉnh sửa địa điểm
                 </Typography>
             </div>
             <form
@@ -56,8 +58,9 @@ export default function AddLocationForm(props) {
                     options={listLocation}
                     getOptionLabel={(option) => option.name}
                     style={{ width: 400, marginTop: 30 }}
+                    defaultValue={loc}
                     onChange={(e, value) => setLoc(value)}
-                    renderInput={(params) => <TextField {...params} name="location" label="Địa điểm" variant="outlined" required />}
+                    renderInput={(params) => <TextField {...params} name="location" label="Địa điểm" variant="outlined" required defaultValue={props.locationInfo.location} />}
                 />
                 <TextField
                     label="Chi phí dự kiến (nghìn VND)"
@@ -67,6 +70,7 @@ export default function AddLocationForm(props) {
                     style={{ width: 400, marginTop: 30 }}
                     type="number"
                     inputRef={costRef}
+                    defaultValue={props.locationInfo.cost}
                 />
                 <div>
                     <Button

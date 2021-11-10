@@ -47,8 +47,6 @@ const Scroll = ({ showBelow }) => {
     const classes = useStyles();
 
     const handleScroll = () => {
-        console.log(window.scrollY);
-        console.log(showBelow);
         if (window.scrollY > showBelow) {
             if (!show) setShow(true);
         }

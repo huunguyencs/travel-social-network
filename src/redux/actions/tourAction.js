@@ -57,9 +57,21 @@ export const resetTour = (props) => {
     }
 }
 
-export const saveTour = (props) => async (dispatch) => {
-    // call api to save data to database
+export const callStart = (props) => {
+    return {
+        type: TOUR_TYPES.CALL_START,
+    }
+}
 
-    // reset tour
+export const callSuccess = (props) => {
+    return {
+        type: TOUR_TYPES.CALL_SUCCESS,
+    }
+}
 
+export const callFail = (props) => {
+    return {
+        type: TOUR_TYPES.CALL_FAIL,
+        payload: props,
+    }
 }

@@ -1,13 +1,15 @@
 import * as TOUR_TYPES from '../constants/tourConstant';
 import * as dateUtils from '../../utils/date';
 
-const initState = {
-    name: "",
-    tour: []
+const INIT_STATE = {
+    name: null,
+    tour: [],
+    isFetching: false,
+    error: null,
 }
 
 
-const tourReducer = (state = initState, action) => {
+const tourReducer = (state = INIT_STATE, action) => {
     switch (action.type) {
         case TOUR_TYPES.ADD_TOUR: {
             var dateStr = dateUtils.convertDateToStr(action.payload.date);
@@ -41,8 +43,9 @@ const tourReducer = (state = initState, action) => {
             const province = "Hà Nội";
 
             const newLocation = {
+                id: location.id,
                 img: image,
-                location: location,
+                location: location.name,
                 province: province,
                 cost: cost,
             }
@@ -91,8 +94,21 @@ const tourReducer = (state = initState, action) => {
             }
         }
         case TOUR_TYPES.UPDATE_LOCATION: {
-            return {
+            // goi api lay du lieu
+            const { location, cost } = action.payload;
+            console.log(location)
 
+            return {
+                ...state,
+                tour: state.tour.map((date, i) => i === action.payload.indexDate ? {
+                    ...date,
+                    tour: date.tour.map((loc, j) => j === action.payload.indexLocation ? {
+                        ...loc,
+                        id: location.id,
+                        location: location.name,
+                        cost: cost
+                    } : loc)
+                } : date)
             }
         }
         case TOUR_TYPES.RESET_TOUR: {
@@ -100,6 +116,25 @@ const tourReducer = (state = initState, action) => {
                 ...state,
                 name: "",
                 tour: []
+            }
+        }
+        case TOUR_TYPES.CALL_START: {
+            return {
+                ...state,
+                isFetching: true,
+            }
+        }
+        case TOUR_TYPES.CALL_SUCCESS: {
+            return {
+                ...state,
+                isFetching: false,
+            }
+        }
+        case TOUR_TYPES.CALL_FAIL: {
+            return {
+                ...state,
+                error: action.payload.error,
+                isFetching: false,
             }
         }
         default: {
