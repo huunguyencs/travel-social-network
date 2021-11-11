@@ -125,8 +125,6 @@ export default function FeedReview(props) {
 
     const classes = feedStyles();
 
-
-
     return (
         <Container className={classes.container}>
             <div className={classes.content}>

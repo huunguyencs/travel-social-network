@@ -34,8 +34,8 @@ const cardStyles = makeStyles((theme) => ({
     },
     weatherCardContainer: {
         marginRight: 40,
-        marginTop: theme.spacing(6),
         top: 0,
+        marginBottom: 30,
         borderRadius: attr.borderRadius.md,
     },
     content: {
