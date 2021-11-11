@@ -14,7 +14,6 @@ export default function CreateTourForm(props) {
 
     const dispatch = useDispatch();
 
-
     const classes = formStyles();
 
     const [name, setName] = useState("");
@@ -29,7 +28,7 @@ export default function CreateTourForm(props) {
 
     const handleClick = (e) => {
         e.preventDefault();
-        dispatch(tourAction.resetTour());
+        // dispatch(tourAction.resetTour());
         dispatch(tourAction.createTour({ name: name, date: selectedDate }));
         history.push("/createtour");
     }

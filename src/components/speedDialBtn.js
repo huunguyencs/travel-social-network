@@ -2,10 +2,11 @@ import React, { useState } from "react";
 import { SpeedDial, SpeedDialAction, SpeedDialIcon } from "@material-ui/lab";
 import { Create, Explore, WhatsApp } from "@material-ui/icons";
 import { speedDialStyles } from "../style";
-import { Link } from "react-router-dom";
+import { Link, useHistory } from "react-router-dom";
 import { Fade, IconButton, Modal, Backdrop } from "@material-ui/core";
 import CreatePostForm from "./forms/createPost";
 import CreateTourForm from "./forms/createTour";
+import { useSelector } from "react-redux";
 
 const actions = [
     { icon: < CreatePostIcon />, name: "Create Post" },
@@ -51,15 +52,27 @@ function CreatePostIcon(props) {
 function CreateTourIcon(props) {
     const [show, setShow] = useState(false);
 
+    const { createTour } = useSelector(state => state);
+    const history = useHistory();
+
     const classes = speedDialStyles();
 
     const handleShow = () => {
-        setShow(true);
+        if (createTour.tour.length > 0) {
+            history.push("/createtour");
+        }
+        else {
+            setShow(true);
+        }
+
     }
 
     const handleClose = () => {
         setShow(false);
     }
+
+
+
     return (
         <>
             <IconButton onClick={handleShow}><Explore /></IconButton>

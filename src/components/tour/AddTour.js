@@ -39,9 +39,10 @@ export default function AddTour(props) {
     }
 
     const handleSave = () => {
-        dispatch(tourAction.resetTour());
+        // dispatch(tourAction.resetTour());
         // dispatch(tourAction.saveTour());
-        history.push("/tour");
+        // history.push("/tour");
+        console.log("save tour");
     }
 
     const handleDeleteDate = () => {
