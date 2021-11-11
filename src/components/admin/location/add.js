@@ -39,7 +39,7 @@ function AdminAddLocation(props) {
   return (
     <Container className={classes.container} style={{ marginTop: "160px" }}>
       <div>
-        <Typography className={classes.tile}>Thêm địa điểm</Typography>
+        <Typography variant="h4" color= "primary">Thêm địa điểm</Typography>
       </div>
       <div className={classes.adminLocation_body} style={{ width: "700px" }}>
         <form
@@ -56,6 +56,7 @@ function AdminAddLocation(props) {
               display: "flex",
               flexDirection: "row",
               justifyContent: "space-between",
+              alignItems: "center"
             }}
           >
             <Typography>Tên</Typography>
@@ -74,6 +75,7 @@ function AdminAddLocation(props) {
               display: "flex",
               flexDirection: "row",
               justifyContent: "space-between",
+              alignItems: "center"
             }}
           >
             <Typography>Mô tả</Typography>
@@ -92,6 +94,7 @@ function AdminAddLocation(props) {
               display: "flex",
               flexDirection: "row",
               justifyContent: "space-between",
+              alignItems: "center"
             }}
           >
             <Typography>Categories</Typography>
