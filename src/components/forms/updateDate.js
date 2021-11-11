@@ -3,7 +3,7 @@ import { KeyboardDatePicker, MuiPickersUtilsProvider } from "@material-ui/picker
 import React, { useState } from "react";
 import DateFnsUtils from '@date-io/date-fns';
 
-import * as tourAction from '../../redux/actions/tourAction';
+import * as tourAction from '../../redux/actions/createTourAction';
 import { useDispatch } from "react-redux";
 import * as dateUtils from '../../utils/date';
 

@@ -8,7 +8,7 @@ const INIT_STATE = {
 
 const postRecuder = (state = INIT_STATE, action) => {
     switch (action.type) {
-        case POST_TYPES.GET_POSTS: {
+        case POST_TYPES.GET_POSTS: {  // tai danh sach cac post (thanh cong)
             return {
                 ...state,
                 posts: action.payload.posts,
@@ -16,7 +16,7 @@ const postRecuder = (state = INIT_STATE, action) => {
                 error: null,
             }
         }
-        case POST_TYPES.LOADING: {
+        case POST_TYPES.LOADING: { // dang tai danh sach
             return {
                 ...state,
                 loading: true,
@@ -49,7 +49,7 @@ const postRecuder = (state = INIT_STATE, action) => {
                 ]
             }
         }
-        case POST_TYPES.ERROR: {
+        case POST_TYPES.ERROR: { // loi trong khi tai danh sach cac post
             return {
                 ...state,
                 loading: false,

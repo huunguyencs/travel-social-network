@@ -6,7 +6,7 @@ const INIT_STATE = {
     error: null,
 }
 
-const tourReducer = (state, action) => {
+const tourReducer = (state = INIT_STATE, action) => {
     switch (action.type) {
         case TOUR_TYPES.GET_TOURS: {
             return {

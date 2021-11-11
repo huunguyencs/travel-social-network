@@ -5,7 +5,7 @@ import { useDispatch } from "react-redux";
 import 'date-fns';
 import { Button, Paper, TextField, Typography } from "@material-ui/core";
 import { formStyles } from "../../style";
-import * as tourAction from '../../redux/actions/tourAction';
+import * as tourAction from '../../redux/actions/createTourAction';
 import { useHistory } from "react-router-dom";
 
 export default function CreateTourForm(props) {

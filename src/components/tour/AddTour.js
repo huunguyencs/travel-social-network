@@ -6,7 +6,7 @@ import { tourdetailStyles } from "../../style";
 import AddLocationForm from "../forms/addLocation";
 import Location from './Location';
 import { useDispatch, useSelector } from "react-redux";
-import * as tourAction from '../../redux/actions/tourAction';
+import * as tourAction from '../../redux/actions/createTourAction';
 import { useHistory } from "react-router-dom";
 import UpdateDateForm from "../forms/updateDate";
 

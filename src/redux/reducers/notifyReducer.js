@@ -8,13 +8,13 @@ const INIT_STATE = {
 
 const notifyReducer = (state = INIT_STATE, action) => {
     switch (action.type) {
-        case NOTIFY_TYPES.CALL_START: {
+        case NOTIFY_TYPES.CALL_START: { // bat dau goi api
             return {
                 ...state,
                 isFetching: true,
             }
         }
-        case NOTIFY_TYPES.CALL_SUCCESS: {
+        case NOTIFY_TYPES.CALL_SUCCESS: { // goi api thanh cong
             return {
                 ...state,
                 isFetching: false,
@@ -22,7 +22,7 @@ const notifyReducer = (state = INIT_STATE, action) => {
                 error: null,
             }
         }
-        case NOTIFY_TYPES.CALL_FAIL: {
+        case NOTIFY_TYPES.CALL_FAIL: { // goi api that bai
             return {
                 ...state,
                 isFetching: false,

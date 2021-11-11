@@ -4,7 +4,7 @@ import React, { useRef, useState } from "react";
 import { useDispatch } from "react-redux";
 
 import { formStyles } from '../../style';
-import * as tourAction from '../../redux/actions/tourAction';
+import * as tourAction from '../../redux/actions/createTourAction';
 
 const listLocation = [
     { id: "1", name: "Chùa Một Cột" },

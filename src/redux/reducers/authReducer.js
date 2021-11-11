@@ -6,7 +6,7 @@ const INIT_STATE = {
 
 const authReducer = (state = INIT_STATE, action) => {
     switch (action.type) {
-        case TYPES.AUTH: {
+        case TYPES.AUTH: {  // luu thong tin nguoi dung khi dang nhap
             return {
                 ...state,
                 user: action.payload.user,
