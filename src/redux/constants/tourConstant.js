@@ -4,4 +4,5 @@ export const UPDATE_TOUR = "UPDATE_TOUR";
 export const DELETE_TOUR = "DELETE_TOUR";
 export const LOADING = "LOADING";
 export const ERROR = "ERROR";
-
+export const UPDATE_COMMENT = "UPDATE_COMMENT";
+export const UPDATE_LIKE = "UPDATE_LIKE";

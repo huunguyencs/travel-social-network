@@ -41,3 +41,10 @@ export const error = (props) => {
         payload: props,
     }
 }
+
+export const updateLike = (props) => {
+    return {
+        type: TOUR_TYPES.UPDATE_LIKE,
+        payload: props,
+    }
+}

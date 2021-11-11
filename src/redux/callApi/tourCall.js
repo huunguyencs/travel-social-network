@@ -55,3 +55,31 @@ export const deleteTour = (data) => async (dispatch) => {
         dispatch(tourAction.error({ error: err }));
     }
 }
+
+export const likeTour = (data) => async (dispatch) => {
+    dispatch(notifyAction.callStart());
+
+    try {
+
+        const res;
+        dispatch(tourAction.updateLike({ like: res }));
+        dispatch(notifyAction.callSuccess());
+    }
+    catch (err) {
+        dispatch(notifyAction.callFail({ error: err }));
+    }
+}
+
+export const unlikeTour = (data) => async (dispatch) => {
+    dispatch(notifyAction.callStart());
+
+    try {
+
+        const res;
+        dispatch(tourAction.updateLike({ like: res }));
+        dispatch(notifyAction.callSuccess());
+    }
+    catch (err) {
+        dispatch(notifyAction.callFail({ error: err }));
+    }
+}

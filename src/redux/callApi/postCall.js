@@ -56,3 +56,31 @@ export const deletePost = (data) => async (dispatch) => {
         dispatch(notifyAction.callFail({ error: err }))
     }
 }
+
+export const likePost = (data) => async (dispatch) => {
+    dispatch(notifyAction.callStart());
+
+    try {
+
+        const res;
+        dispatch(postAction.updateLike({ like: res }));
+        dispatch(notifyAction.callSuccess());
+    }
+    catch (err) {
+        dispatch(notifyAction.callFail({ error: err }));
+    }
+}
+
+export const unlikePost = (data) => async (dispatch) => {
+    dispatch(notifyAction.callStart());
+
+    try {
+
+        const res;
+        dispatch(postAction.updateLike({ like: res }));
+        dispatch(notifyAction.callSuccess());
+    }
+    catch (err) {
+        dispatch(notifyAction.callFail({ error: err }));
+    }
+}

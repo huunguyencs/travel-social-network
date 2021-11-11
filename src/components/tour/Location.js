@@ -1,4 +1,4 @@
-import { Button, Card, CardActions, CardContent, CardMedia, Collapse, Grid, IconButton, Modal, Typography, Backdrop, Fade, Menu, MenuItem } from "@material-ui/core";
+import { Button, Card, CardActions, CardContent, CardMedia, Collapse, Grid, IconButton, Modal, Typography, Backdrop, Fade, Menu, MenuItem, Dialog, DialogTitle, DialogActions } from "@material-ui/core";
 import React, { useState } from "react";
 import { Rating } from '@material-ui/lab'
 import { Favorite, FavoriteBorderOutlined, MoreVert } from "@material-ui/icons";
@@ -6,6 +6,8 @@ import { tourdetailStyles } from "../../style";
 import CreateReviewForm from "../forms/createReview";
 import EditLocationForm from "../forms/editLocation";
 import { Link } from "react-router-dom";
+import * as tourAction from '../../redux/actions/createTourAction';
+import { useDispatch } from "react-redux";
 
 const MenuListProps = {
     elevation: 0,
@@ -37,6 +39,8 @@ export default function Location(props) {
 
     const classes = tourdetailStyles();
 
+    const dispatch = useDispatch();
+
 
     const isReviewed = false;
     const [showRv, setShowRv] = useState(false);
@@ -46,6 +50,7 @@ export default function Location(props) {
     const [valueRate, setValueRate] = useState(0);
     const [anchorEl, setAnchorEl] = useState(null);
     const [editLoc, setEditLoc] = useState(false);
+    const [showDeleteLocation, setShowDeleteLocation] = useState(false);
 
     const handleShowMenu = (e) => {
         setAnchorEl(e.currentTarget);
@@ -76,6 +81,19 @@ export default function Location(props) {
 
     const handleClose = () => {
         setShowCreateRv(false);
+    }
+
+    const handleShowDelete = () => {
+        setShowDeleteLocation(true);
+    }
+    const handleCloseDelete = () => {
+        setShowDeleteLocation(false);
+    }
+
+    const handleDeleteLocation = () => {
+        dispatch(tourAction.deleteLocation({ indexDate: props.indexDate, indexLocation: props.indexLocation }));
+        handleCloseDelete();
+        handleCloseMenu();
     }
 
     const tourInfo = props.tour;
@@ -129,9 +147,25 @@ export default function Location(props) {
                                         <EditLocationForm handleCloseParent={handleCloseMenu} handleClose={handleCloseEdit} indexDate={props.indexDate} indexLocation={props.indexLocation} locationInfo={tourInfo} />
                                     </Fade>
                                 </Modal>
-                                <MenuItem>
+                                <MenuItem onClick={handleShowDelete}>
                                     Xóa
                                 </MenuItem>
+                                <Dialog
+                                    open={showDeleteLocation}
+                                    onClose={handleCloseDelete}
+                                    aria-labelledby="alert-dialog-title"
+                                    aria-describedby="alert-dialog-description"
+                                >
+                                    <DialogTitle id="alert-dialog-title">{"Bạn có chắc chắn muốn xóa?"}</DialogTitle>
+                                    <DialogActions>
+                                        <Button onClick={handleCloseDelete}>
+                                            Hủy
+                                        </Button>
+                                        <Button onClick={handleDeleteLocation}>
+                                            Xóa
+                                        </Button>
+                                    </DialogActions>
+                                </Dialog>
                             </Menu>
                         </div>
 
