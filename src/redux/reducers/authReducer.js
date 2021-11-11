@@ -1,4 +1,4 @@
-import * as TYPES from '../constants';
+import * as AUTH_TYPES from '../constants/authConstant';
 
 const INIT_STATE = {
     user: null,

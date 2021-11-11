@@ -1,1 +1,1 @@
-export const SAVE_USER = "SAVE_USER";
+export const AUTH = "AUTH";

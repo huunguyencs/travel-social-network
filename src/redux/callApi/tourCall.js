@@ -1,16 +1,45 @@
 import * as tourAction from '../actions/tourAction';
 import * as notifyAction from '../actions/notifyAction';
 
+export const getTours = (data) => async (dispatch) => {
+    dispatch(tourAction.loading());
+    try {
+        // call api to get tours
+        const res;
 
-export const saveTour = (data) => async (dispatch) => {
+        dispatch(tourAction.getTours({ tour: res.data }));
+    }
+    catch (err) {
+        dispatch(tourAction.error({ error: err }))
+    }
+}
+
+export const updateTour = (data) => async (dispatch) => {
+    dispatch(notifyAction.loading());
+    try {
+        // 
+
+        dispatch(tourAction.updateTour({ tour: res.data }));
+        dispatch(notifyAction.callSuccess());
+    }
+    catch (err) {
+        dispatch(notifyAction.callFail({ error: err }));
+    }
+}
+
+
+
+export const createTour = (data) => async (dispatch) => {
 
     dispatch(notifyAction.callStart());
 
     try {
         // call api to save tour
 
+        const res;
+
+        dispatch(tourAction.createTour({ tour: res }));
         dispatch(notifyAction.callSuccess());
-        dispatch(tourAction.resetTour());
     }
     catch (err) {
         dispatch(notifyAction.callFail({ error: err }))
@@ -18,12 +47,11 @@ export const saveTour = (data) => async (dispatch) => {
 }
 
 export const deleteTour = (data) => async (dispatch) => {
-    dispatch(notifyAction.callStart());
     try {
         // call api to delete tour
-        dispatch(notifyAction.callSuccess());
+        dispatch(tourAction.deleteTour());
     }
     catch (err) {
-        dispatch(notifyAction.callFail({ error: err }));
+        dispatch(tourAction.error({ error: err }));
     }
 }

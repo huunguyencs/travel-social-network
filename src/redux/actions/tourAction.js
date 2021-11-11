@@ -1,58 +1,43 @@
-import * as TOUR_TYPES from '../constants/tourConstant'
+import * as TOUR_TYPES from '../constants/tourConstant';
 
+export const getTours = (props) => {
+    return {
+        type: TOUR_TYPES.GET_TOURS,
+        payload: props,
+    }
+}
 
 export const createTour = (props) => {
     return {
-        type: TOUR_TYPES.ADD_TOUR,
+        type: TOUR_TYPES.CREATE_TOUR,
         payload: props,
     }
 }
 
-export const addDate = (props) => {
+export const updateTour = (props) => {
     return {
-        type: TOUR_TYPES.ADD_NEW_DATE,
-        payload: props
-    }
-}
-
-export const addLocation = (props) => {
-    return {
-        type: TOUR_TYPES.ADD_NEW_LOCATION,
-        payload: props
-    }
-}
-
-export const deleteDate = (props) => {
-    return {
-        type: TOUR_TYPES.DELETE_DATE,
-        payload: props
-    }
-}
-
-export const deleteLocation = (props) => {
-    return {
-        type: TOUR_TYPES.DELETE_LOCATION,
+        type: TOUR_TYPES.UPDATE_TOUR,
         payload: props,
     }
 }
 
-export const updateDate = (props) => {
+export const deleteTour = (props) => {
     return {
-        type: TOUR_TYPES.UPDATE_DATE,
+        type: TOUR_TYPES.DELETE_TOUR,
         payload: props,
     }
 }
 
-export const updateLocation = (props) => {
+export const loading = (props) => {
     return {
-        type: TOUR_TYPES.UPDATE_LOCATION,
+        type: TOUR_TYPES.LOADING,
         payload: props,
     }
 }
 
-export const resetTour = (props) => {
+export const error = (props) => {
     return {
-        type: TOUR_TYPES.RESET_TOUR,
-        payload: null,
+        type: TOUR_TYPES.ERROR,
+        payload: props,
     }
 }

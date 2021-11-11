@@ -1,4 +1,7 @@
-export const SAVE_POST_START = "SAVE_POST_START";
-export const SAVE_POST_SUCCESS = "SAVE_POST_SUCCESS";
-export const SAVE_POST_FAIL = "SAVE_POST_FAIL";
+export const GET_POSTS = "GET_POSTS";
+export const CREATE_POST = "CREATE_POST";
+export const UPDATE_POST = "UPDATE_POST";
+export const DELETE_POST = "DELETE_POST";
+export const LOADING = "LOADING";
+export const ERROR = "ERROR";
 

@@ -1,4 +1,21 @@
 import * as notifyAction from '../actions/notifyAction'
+import * as postAction from '../actions/postAction';
+
+
+export const getPosts = (data) => async (dispatch) => {
+    dispatch(postAction.loading());
+
+    try {
+        // call api to get post list
+        const res;
+
+        dispatch(postAction.getPosts({ post: res.data }))
+    }
+    catch (err) {
+        dispatch(postAction.error({ error: err }))
+    }
+
+}
 
 export const createPost = (data) => async (dispatch) => {
     // post api

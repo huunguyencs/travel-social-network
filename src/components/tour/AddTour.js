@@ -17,7 +17,7 @@ export default function AddTour(props) {
     const history = useHistory();
 
     const dispatch = useDispatch();
-    const { tour } = useSelector(state => state);
+    const { createTour } = useSelector(state => state);
 
 
     const [idx, setIdx] = useState(0);
@@ -73,13 +73,13 @@ export default function AddTour(props) {
     return (
         <div>
             <div className={classes.coverTitle}>
-                <Typography variant="h3" className={classes.title}>{tour.name}</Typography>
+                <Typography variant="h3" className={classes.title}>{createTour.name}</Typography>
             </div>
             <Grid container className={classes.container}>
                 <Grid item md={2} >
                     <Container className={classes.timeline}>
                         <Timeline align="right">
-                            {tour.tour.map((item, index) => (
+                            {createTour.tour.map((item, index) => (
                                 <TimelineItem>
                                     <TimelineSeparator>
                                         <TimelineDot className={index === idx ? classes.activeDot : classes.unactiveDot} />
@@ -144,12 +144,12 @@ export default function AddTour(props) {
                             }}
                         >
                             <Fade in={showUpdateDate}>
-                                <UpdateDateForm handleClose={handleCloseUpdate} indexDate={idx} currentDate={tour.tour[idx].time} />
+                                <UpdateDateForm handleClose={handleCloseUpdate} indexDate={idx} currentDate={createTour.tour[idx].time} />
                             </Fade>
                         </Modal>
                     </div>
                     {
-                        tour.tour[idx].tour.map((item, index) => (
+                        createTour.tour[idx].tour.map((item, index) => (
                             <Location tour={item} indexDate={idx} indexLocation={index} edit={true} />
                         ))
                     }
