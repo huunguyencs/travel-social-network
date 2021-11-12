@@ -16,16 +16,18 @@ export default function Comment(props) {
         else setNumLike(numLike - 1);
     }
 
+
     return (
         <div className={classes.comment}>
             <div className={classes.avatar}>
                 <Avatar
-                    src={props.comment.user.avatar}
+                    src={props.comment.user.avatarImage}
+                    atl="Avatar"
                 />
             </div>
             <div className={classes.cmtInfo}>
                 <Typography variant="subtitle2" className={classes.userName}>
-                    {props.comment.user.name}
+                    {props.comment.user.userName}
                 </Typography>
                 <div className={classes.content}>
                     <Typography variant="body2">
@@ -35,7 +37,7 @@ export default function Comment(props) {
                 <div className={classes.cmtSubinfo}>
                     <div className={classes.like}>
                         <Typography className={classes.smallText}>
-                            {numLike}
+                            {props.comment.likes.length}
                         </Typography>
                         <Typography className={[classes.smallText, classes.likeBtn]} onClick={likeHandle}>Like</Typography>
                     </div>

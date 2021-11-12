@@ -37,25 +37,25 @@ export default function ImageList(props) {
         <>
             <ImgList rowHeight={600} className={classes.imageList} cols={imageList.length > 1 ? 2 : 1}>
                 <ImageListItem
-                    key={imageList[0].img}
+                    key={imageList[0].url}
                     className={classes.imageItem}
                     onClick={() => {
                         setOpen(true);
                         setPictureIndex(0);
                     }}
                 >
-                    <img src={imageList[0].img} alt={imageList[0].title} />
+                    <img src={imageList[0].url} alt={imageList[0].title} />
                 </ImageListItem>
                 {imageList.length > 1 && (
                     <ImageListItem
-                        key={imageList[1].img}
+                        key={imageList[1].url}
                         className={imageList.length > 2 ? [classes.imageItem, classes.more] : classes.imageItem}
                         onClick={() => {
                             setOpen(true);
                             setPictureIndex(1);
                         }}
                     >
-                        <img src={imageList[1].img} alt={imageList[1].title} />
+                        <img src={imageList[1].url} alt={imageList[1].title} />
                         {(imageList.length > 2) && <Typography variant="h2" className={classes.textCenter}>{imageList.length - 1}+</Typography>}
                     </ImageListItem>
                 )}
@@ -63,9 +63,9 @@ export default function ImageList(props) {
 
             {open && (
                 <Lightbox
-                    mainSrc={imageList[pictureIndex].img}
-                    nextSrc={imageList[(pictureIndex + 1) % imageList.length].img}
-                    prevSrc={imageList[(pictureIndex + imageList.length - 1) % imageList.length].img}
+                    mainSrc={imageList[pictureIndex].url}
+                    nextSrc={imageList[(pictureIndex + 1) % imageList.length].url}
+                    prevSrc={imageList[(pictureIndex + imageList.length - 1) % imageList.length].url}
                     mainSrcThumbnail={imageList[pictureIndex].title}
                     imageCaption={imageList[pictureIndex]?.title}
                     nextSrcThumbnail={imageList[(pictureIndex + 1) % imageList.length].title}
