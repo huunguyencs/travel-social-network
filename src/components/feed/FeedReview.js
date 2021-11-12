@@ -1,8 +1,10 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { Container } from "@material-ui/core";
 
 import Post from '../post/Post';
 import { feedStyles } from "../../style";
+import { useDispatch, useSelector } from "react-redux";
+import { getPosts } from "../../redux/callApi/postCall";
 
 
 const listReview = [
@@ -124,6 +126,12 @@ const listReview = [
 export default function FeedReview(props) {
 
     const classes = feedStyles();
+    const dispatch = useDispatch();
+    const { post } = useSelector();
+
+    useEffect(() => {
+        dispatch(getPosts({ type: "review" }));
+    })
 
     return (
         <Container className={classes.container}>
@@ -131,10 +139,9 @@ export default function FeedReview(props) {
 
                 <div>
                     {
-                        listReview.map((post) => (
+                        post.posts.map((post) => (
                             <Post
                                 post={post}
-                                isReview={true}
                             />
                         ))
                     }
