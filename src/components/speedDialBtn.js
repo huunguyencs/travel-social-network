@@ -1,12 +1,13 @@
 import React, { useState } from "react";
 import { SpeedDial, SpeedDialAction, SpeedDialIcon } from "@material-ui/lab";
 import { Create, Explore, WhatsApp } from "@material-ui/icons";
-import { speedDialStyles } from "../style";
 import { Link, useHistory } from "react-router-dom";
 import { Fade, IconButton, Modal, Backdrop } from "@material-ui/core";
+import { useSelector } from "react-redux";
+
 import CreatePostForm from "./forms/createPost";
 import CreateTourForm from "./forms/createTour";
-import { useSelector } from "react-redux";
+import { speedDialStyles } from "../style";
 
 const actions = [
     { icon: < CreatePostIcon />, name: "Create Post" },

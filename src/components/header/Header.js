@@ -23,9 +23,10 @@ import {
     WhatsApp,
     Cancel
 } from "@material-ui/icons";
+import { Link } from "react-router-dom";
 
 import { headerStyles } from "../../style";
-import { Link } from "react-router-dom";
+
 
 export default function Header(props) {
 

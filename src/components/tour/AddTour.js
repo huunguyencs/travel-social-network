@@ -1,11 +1,11 @@
 import { Button, Container, Grid, Modal, Typography, Backdrop, Fade, Dialog, DialogActions, DialogTitle } from "@material-ui/core";
 import React, { useState } from "react";
 import { Timeline, TimelineItem, TimelineSeparator, TimelineConnector, TimelineContent, TimelineDot } from '@material-ui/lab'
+import { useDispatch, useSelector } from "react-redux";
 
 import { tourdetailStyles } from "../../style";
 import AddLocationForm from "../forms/addLocation";
 import Location from './Location';
-import { useDispatch, useSelector } from "react-redux";
 import * as tourAction from '../../redux/actions/createTourAction';
 // import { useHistory } from "react-router-dom";
 import UpdateDateForm from "../forms/updateDate";
@@ -39,9 +39,7 @@ export default function AddTour(props) {
     }
 
     const handleSave = () => {
-        // dispatch(tourAction.resetTour());
-        // dispatch(tourAction.saveTour());
-        // history.push("/tour");
+
         console.log("save tour");
     }
 

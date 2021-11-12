@@ -1,12 +1,13 @@
 import React, { useEffect, useState } from "react";
 import { Container, InputBase, Modal, Backdrop, Fade } from "@material-ui/core";
+import { useSelector, useDispatch } from "react-redux";
 
 
 import Post from '../post/Post';
 import { feedStyles } from "../../style";
 import CreatePostForm from "../forms/createPost";
 import { getPosts } from "../../redux/callApi/postCall";
-import { useSelector, useDispatch } from "react-redux";
+
 
 
 export default function FeedPost(props) {
@@ -29,7 +30,7 @@ export default function FeedPost(props) {
     useEffect(() => {
         // console.log("Render post list");
         dispatch(getPosts());
-    }, [])
+    }, [dispatch])
 
 
     return (

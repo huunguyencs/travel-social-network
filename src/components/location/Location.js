@@ -2,6 +2,7 @@ import { Button, Card, CardActionArea, CardActions, CardContent, CardMedia, Typo
 import { Rating } from "@material-ui/lab";
 import React from "react";
 import { Link } from "react-router-dom";
+
 import { locationCardStyles } from "../../style";
 
 export default function LocationCard(props) {
@@ -19,15 +20,15 @@ export default function LocationCard(props) {
             </CardActionArea>
             <CardContent className={classes.content}>
                 <Typography variant="h5">
-                    {props.location.name}
+                    {props.location.locationName}
                 </Typography>
                 <Rating name="read-only" value={props.location.rate} readOnly size="small" />
-                <Typography variant="body1">
+                {/* <Typography variant="body1">
                     {props.location.description}
-                </Typography>
+                </Typography> */}
             </CardContent>
             <CardActions>
-                <Button className={classes.seeMoreBtn} component={Link} to={"/location/" + props.location.id}>
+                <Button className={classes.seeMoreBtn} component={Link} to={"/location/" + props.location._id}>
                     Xem chi tiết
                 </Button>
             </CardActions>

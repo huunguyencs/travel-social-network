@@ -1,6 +1,7 @@
 import { Button, Card, CardActionArea, CardActions, CardContent, CardMedia, Typography } from "@material-ui/core";
 import React from "react";
 import { Link } from "react-router-dom";
+
 import { eventStyles } from "../../style";
 
 export default function EventItem(props) {

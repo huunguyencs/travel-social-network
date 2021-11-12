@@ -2,6 +2,7 @@ import { IconButton } from "@material-ui/core";
 import { ChevronLeft, ChevronRight } from "@material-ui/icons";
 import React, { useContext } from "react";
 import { ScrollMenu, VisibilityContext } from 'react-horizontal-scrolling-menu';
+
 import EventItem from "./eventItem";
 
 function LeftArrow(props) {

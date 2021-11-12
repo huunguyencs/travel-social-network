@@ -1,7 +1,7 @@
 import { Box, Container, List } from "@material-ui/core";
 import React from "react";
-import NotificationItem from "../components/notifications/notification";
 
+import NotificationItem from "../components/notifications/notification";
 import { notificationStyles } from "../style";
 
 

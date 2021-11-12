@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import {
     Avatar,
     Card,
@@ -17,13 +17,13 @@ import {
     QuestionAnswer,
     Share
 } from "@material-ui/icons";
-
+import { Rating } from "@material-ui/lab";
 
 import Comment from "../comment/Comment";
 import InputComment from "../input/comment";
 import { postStyles } from "../../style";
 import ImageList from "../imagelist/ImageList";
-import { Rating } from "@material-ui/lab";
+
 
 
 export default function Post(props) {

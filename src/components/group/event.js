@@ -1,12 +1,12 @@
 import React from "react";
-
+import { List } from "@material-ui/core";
+import { ListItem } from "@material-ui/core";
+import { CheckCircle, Stars } from "@material-ui/icons";
 import { Avatar, Container, Divider, Typography } from "@material-ui/core";
 
 import profileStyles from "../../style";
 
-import { List } from "@material-ui/core";
-import { ListItem } from "@material-ui/core";
-import { CheckCircle, Stars } from "@material-ui/icons";
+
 
 const listEvent = [
 
@@ -51,11 +51,11 @@ function GroupEvent(props) {
                     }}
                 >
                     <div
-                    style={{
-                        display: "flex",
-                        flexDirection: "row",
-                        justifyContent: "space-between",
-                    }}
+                        style={{
+                            display: "flex",
+                            flexDirection: "row",
+                            justifyContent: "space-between",
+                        }}
                     >
                         <Typography>
                             Sự kiện
@@ -64,7 +64,7 @@ function GroupEvent(props) {
                             Tạo sự kiện
                         </Typography>
                     </div>
-                    
+
                     <div className={classes.listAdmin}>
                         <List
                             style={{
@@ -86,52 +86,52 @@ function GroupEvent(props) {
                                     }}
                                 >
                                     <div
-                                    style={{
-                                        width: "150px"
-                                    }}
+                                        style={{
+                                            width: "150px"
+                                        }}
                                     >
                                         <img
                                             className={classes.event_ItemImage}
-                                            style={{ borderRadius: "10px", width: "130px", height: "130px"}}
-                                            src= {item.img}
+                                            style={{ borderRadius: "10px", width: "130px", height: "130px" }}
+                                            src={item.img}
                                             alt="cover"
                                         />
                                     </div>
                                     <div
-                                    style={{
-                                        width: "300px"
-                                    }}
+                                        style={{
+                                            width: "300px"
+                                        }}
                                     >
                                         <Typography>{item.name}</Typography>
                                         <Typography>{item.time}</Typography>
                                         <Typography>Người tạo: {item.user}</Typography>
                                         <div
-                                        style={{
-                                            display: "flex",
-                                            flexDirection: "row",
-                                            justifyContent: "space-between",
-                                        }}
-                                        >
-                                            <div
                                             style={{
                                                 display: "flex",
                                                 flexDirection: "row",
+                                                justifyContent: "space-between",
                                             }}
+                                        >
+                                            <div
+                                                style={{
+                                                    display: "flex",
+                                                    flexDirection: "row",
+                                                }}
                                             >
                                                 <Stars></Stars>
                                                 <Typography>Quan Tâm</Typography>
                                             </div>
                                             <div
-                                            style={{
-                                                display: "flex",
-                                                flexDirection: "row",
-                                            }}
+                                                style={{
+                                                    display: "flex",
+                                                    flexDirection: "row",
+                                                }}
                                             >
                                                 <CheckCircle></CheckCircle>
                                                 <Typography>Sẽ tham gia</Typography>
                                             </div>
                                         </div>
-                                    </div>   
+                                    </div>
                                 </ListItem>
                             ))}
                         </List>

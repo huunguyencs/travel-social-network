@@ -4,8 +4,6 @@ import { Avatar, Container, Divider, Typography } from "@material-ui/core";
 
 import profileStyles from "../../style";
 
-
-
 function GroupIntro(props) {
     const classes = profileStyles();
     return (

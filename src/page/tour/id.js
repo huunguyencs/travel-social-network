@@ -1,5 +1,6 @@
 import React from "react";
 import { useParams } from "react-router-dom";
+
 import Tour from "../../components/tour/TourDetail";
 
 const tour = {

@@ -37,16 +37,13 @@ const createTourReducer = (state = INIT_STATE, action) => {
         case TOUR_TYPES.ADD_NEW_LOCATION: {
             const { location, cost } = action.payload;
             // goi api lay du lieu tu location id
-            console.log(location);
-
-            const image = "/login-1.jpeg";
-            const province = "Hà Nội";
+            // console.log(location);
 
             const newLocation = {
-                id: location.id,
-                img: image,
-                location: location.name,
-                province: province,
+                id: location._id,
+                img: location.image[0],
+                location: location.locationName,
+                province: location.province.name,
                 cost: cost,
             }
 

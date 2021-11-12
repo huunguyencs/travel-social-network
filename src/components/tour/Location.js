@@ -2,12 +2,14 @@ import { Button, Card, CardActions, CardContent, CardMedia, Collapse, Grid, Icon
 import React, { useState } from "react";
 import { Rating } from '@material-ui/lab'
 import { Favorite, FavoriteBorderOutlined, MoreVert } from "@material-ui/icons";
+import { useDispatch } from "react-redux";
+import { Link } from "react-router-dom";
+
 import { tourdetailStyles } from "../../style";
 import CreateReviewForm from "../forms/createReview";
 import EditLocationForm from "../forms/editLocation";
-import { Link } from "react-router-dom";
 import * as tourAction from '../../redux/actions/createTourAction';
-import { useDispatch } from "react-redux";
+
 
 const MenuListProps = {
     elevation: 0,
@@ -104,7 +106,7 @@ export default function Location(props) {
             <Grid container>
                 <Grid item md={5}>
                     <CardMedia className={classes.imgContainer}>
-                        <img src={tourInfo.img} alt="hehe" className={classes.img} />
+                        <img src={tourInfo.img} alt="location" className={classes.img} />
                     </CardMedia>
 
                 </Grid>

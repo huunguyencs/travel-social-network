@@ -3,7 +3,6 @@ import React, { useState } from "react";
 import { Timeline, TimelineItem, TimelineSeparator, TimelineConnector, TimelineContent, TimelineDot } from '@material-ui/lab'
 
 import { tourdetailStyles } from "../../style";
-
 import AddLocationForm from "../forms/addLocation";
 import Location from './Location';
 

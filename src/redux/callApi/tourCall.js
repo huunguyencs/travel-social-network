@@ -5,9 +5,9 @@ export const getTours = (data) => async (dispatch) => {
     dispatch(tourAction.loading());
     try {
         // call api to get tours
-        const res;
+        const res = 0;
 
-        dispatch(tourAction.getTours({ tour: res.data }));
+        dispatch(tourAction.getTours({ tour: res }));
     }
     catch (err) {
         dispatch(tourAction.error({ error: err }))
@@ -15,11 +15,12 @@ export const getTours = (data) => async (dispatch) => {
 }
 
 export const updateTour = (data) => async (dispatch) => {
-    dispatch(notifyAction.loading());
+    dispatch(notifyAction.callStart());
     try {
         // 
+        const res = 0;
 
-        dispatch(tourAction.updateTour({ tour: res.data }));
+        dispatch(tourAction.updateTour({ tour: res }));
         dispatch(notifyAction.callSuccess());
     }
     catch (err) {
@@ -36,7 +37,7 @@ export const createTour = (data) => async (dispatch) => {
     try {
         // call api to save tour
 
-        const res;
+        const res = 0;
 
         dispatch(tourAction.createTour({ tour: res }));
         dispatch(notifyAction.callSuccess());
@@ -61,7 +62,7 @@ export const likeTour = (data) => async (dispatch) => {
 
     try {
 
-        const res;
+        const res = 0;
         dispatch(tourAction.updateLike({ like: res }));
         dispatch(notifyAction.callSuccess());
     }
@@ -75,7 +76,7 @@ export const unlikeTour = (data) => async (dispatch) => {
 
     try {
 
-        const res;
+        const res = 0;
         dispatch(tourAction.updateLike({ like: res }));
         dispatch(notifyAction.callSuccess());
     }

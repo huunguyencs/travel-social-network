@@ -1,32 +1,20 @@
 import { Button, Paper, TextField, Typography } from "@material-ui/core";
 import { Autocomplete } from "@material-ui/lab";
-import React, { useRef, useState } from "react";
-import { useDispatch } from "react-redux";
+import React, { useEffect, useRef, useState } from "react";
+import { useDispatch, useSelector } from "react-redux";
 
 import { formStyles } from '../../style';
 import * as tourAction from '../../redux/actions/createTourAction';
+import { getLocations } from "../../redux/callApi/locationCall";
 
-const listLocation = [
-    { id: "1", name: "Chùa Một Cột" },
-    { id: "2", name: "Hồ Gươm" },
-    { id: "3", name: "Lăng Chủ tịch" },
-    { id: "4", name: "Vịnh Hạ Long" },
-    { id: "5", name: "Biển Mỹ Khê" },
-    { id: "6", name: "Biển Vũng Tàu" },
-    { id: "7", name: "Biển Nha Trang" },
-    { id: "8", name: "Phố cổ Hội An" },
-    { id: "9", name: "Chùa Một Cột" },
-    { id: "10", name: "Chùa Một Cột" },
-    { id: "11", name: "Chùa Một Cột" },
-    { id: "12", name: "Chùa Một Cột" },
-    { id: "13", name: "Chùa Một Cột" },
-]
 
 
 export default function AddLocationForm(props) {
 
     const [loc, setLoc] = useState({});
     const costRef = useRef('');
+
+    const { location } = useSelector(state => state);
 
     const dispatch = useDispatch();
 
@@ -35,6 +23,12 @@ export default function AddLocationForm(props) {
         dispatch(tourAction.addLocation({ location: loc, cost: costRef.current.value, indexDate: props.indexDate }))
         props.handleClose();
     }
+
+    useEffect(() => {
+        if (location.locations.length === 0) {
+            dispatch(getLocations());
+        }
+    }, [dispatch, location.locations.length])
 
 
     // onEffect load listLocation
@@ -53,8 +47,8 @@ export default function AddLocationForm(props) {
             >
                 <Autocomplete
                     id="choose-location"
-                    options={listLocation}
-                    getOptionLabel={(option) => option.name}
+                    options={location.locations}
+                    getOptionLabel={(option) => option.locationName}
                     style={{ width: 400, marginTop: 30 }}
                     onChange={(e, value) => setLoc(value)}
                     renderInput={(params) => <TextField {...params} name="location" label="Địa điểm" variant="outlined" required />}

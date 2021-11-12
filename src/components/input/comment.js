@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import { IconButton, InputBase, Popover } from "@material-ui/core";
 import { InsertEmoticon } from "@material-ui/icons";
 import EmojiPicker from "emoji-picker-react";
+
 import { inputStyles } from "../../style";
 
 export default function InputComment(props) {
