@@ -2,7 +2,7 @@ import { Grid } from "@material-ui/core";
 import React from "react";
 
 import LeftBar from "../../../components/leftbar/LeftBar";
-import Feed from "../../../components/feed/FeedPost";
+// import Feed from "../../../components/feed/FeedPost";
 import RightBar from "../../../components/rightbar/RightBar";
 import Scroll from "../../../components/scroll";
 import ProfileAvatar from "../../../components/Profile/avatar";

@@ -37,7 +37,7 @@ const profileMenu = {
         {
             name: "Giới Thiệu",
             icon: Home,
-            link: "/intro",
+            link: "/",
         },
         {
             name: "Bài Viết",

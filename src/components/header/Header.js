@@ -100,7 +100,7 @@ export default function Header(props) {
                                         >
                                             <ClickAwayListener onClickAway={handleCloseUser}>
                                                 <MenuList autoFocusItem={toggleMenuUser}>
-                                                    <MenuItem aria-label="profile-post" component={Link} to="/profile/465/posts" onClick={handleCloseUser}>Trang cá nhân</MenuItem>
+                                                    <MenuItem aria-label="profile-post" component={Link} to="/profile/465/" onClick={handleCloseUser}>Trang cá nhân</MenuItem>
                                                     <MenuItem onClick={handleCloseUser}>Thay đổi mật khẩu</MenuItem>
                                                     <MenuItem onClick={handleCloseUser}>Đăng xuất</MenuItem>
                                                 </MenuList>
