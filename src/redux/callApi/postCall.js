@@ -11,7 +11,10 @@ export const getPosts = (data) => async (dispatch) => {
             {
                 postId: 4465456,
                 user: {
+                    _id: "3132",
                     userName: "huunguyen",
+                    firstName: "A",
+                    lastName: "Trần Văn",
                     avatarImage: "",
                 },
                 content: "Đây là lần đầu tôi post bài",
@@ -62,7 +65,10 @@ export const getPosts = (data) => async (dispatch) => {
             {
                 postId: 4465456,
                 user: {
+                    _id: "3132",
                     userName: "huunguyen",
+                    firstName: "A",
+                    lastName: "Trần Văn",
                     avatarImage: "",
                 },
                 content: "Đây là lần đầu tôi post bài",

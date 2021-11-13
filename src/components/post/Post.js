@@ -23,6 +23,7 @@ import Comment from "../comment/Comment";
 import InputComment from "../input/comment";
 import { postStyles } from "../../style";
 import ImageList from "../imagelist/ImageList";
+import { Link } from "react-router-dom";
 
 
 
@@ -57,7 +58,9 @@ export default function Post(props) {
                     </IconButton>
                 }
                 title={
-                    <Typography className={classes.userName}>{props.post.user.userName}</Typography>
+                    <Link to={"/profile/" + props.post.user._id} >
+                        <Typography className={classes.userName}>{props.post.user.lastName + " " + props.post.user.firstName}</Typography>
+                    </Link>
                 }
                 subheader={props.post.time}
             />
