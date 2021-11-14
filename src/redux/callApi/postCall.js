@@ -120,7 +120,6 @@ export const getPosts = (data) => async (dispatch) => {
         ];
 
         dispatch(postAction.getPosts({ posts: res }));
-        console.log(res);
     }
     catch (err) {
         dispatch(postAction.error({ error: err }))

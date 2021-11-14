@@ -42,6 +42,7 @@ export default function FeedPost(props) {
                             placeholder="Bạn đang nghĩ gì?..."
                             className={classes.createText}
                             onClick={handleShow}
+                            readOnly
                             rows={1}
                         />
                     </div>

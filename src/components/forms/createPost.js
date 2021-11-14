@@ -1,11 +1,25 @@
 import { InputBase, Typography, Grid, Button, Paper } from "@material-ui/core";
 import { AddCircleOutline, Create } from "@material-ui/icons";
-import React from "react";
+import React, { useState } from "react";
+import { ScrollMenu } from 'react-horizontal-scrolling-menu';
 
 import { formStyles } from '../../style';
 
 
 export default function CreatePostForm(props) {
+
+    const [imageUpload, setImageUpload] = useState([]);
+
+    const handleChangeImageUpload = (e) => {
+        setImageUpload(oldImage => [...oldImage, ...e.target.files])
+    }
+
+    const removeImage = (index) => {
+        setImageUpload(oldImage => [
+            ...oldImage.slice(0, index),
+            ...oldImage.slice(index + 1)
+        ])
+    }
 
     const classes = formStyles();
 
@@ -22,6 +36,8 @@ export default function CreatePostForm(props) {
                         <InputBase
                             placeholder="Bạn đang nghĩ gì?..."
                             rows={10}
+                            name="content"
+                            id="content"
                             multiline
                             className={classes.input}
                         />
@@ -31,11 +47,13 @@ export default function CreatePostForm(props) {
                             accept="image/*"
                             className={classes.input}
                             style={{ display: 'none' }}
-                            id="raised-button-file"
+                            id="input-image"
+                            name="input-image"
                             multiple
                             type="file"
+                            onChange={handleChangeImageUpload}
                         />
-                        <label htmlFor="raised-button-file">
+                        <label htmlFor="input-image">
                             <Button className={classes.button} variant="raised" component="span">
                                 <AddCircleOutline style={{ marginRight: 10 }} />
                                 Thêm ảnh
@@ -48,8 +66,39 @@ export default function CreatePostForm(props) {
                             Đăng
                         </Button>
                     </Grid>
+
+
                 </Grid>
             </form>
+            <div
+                style={{
+                    marginInline: "20px",
+                    maxWidth: "500px"
+                }}
+            >
+                {imageUpload.length > 0 &&
+                    <ScrollMenu
+                        height="300px"
+                    >
+                        {imageUpload.map((item, index) =>
+                            <img
+                                key={index}
+                                alt="not found"
+                                style={{
+                                    width: "150px",
+                                    height: "150px",
+                                    margin: "5px",
+                                    position: "relative",
+                                    cursor: "pointer"
+                                }}
+                                onClick={() => removeImage(index)}
+                                src={URL.createObjectURL(item)}
+                            />
+                        )}
+                    </ScrollMenu>
+
+                }
+            </div>
         </Paper>
     )
 }
