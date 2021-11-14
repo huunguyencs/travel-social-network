@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { IconButton, InputBase, Popover } from "@material-ui/core";
-import { InsertEmoticon } from "@material-ui/icons";
+import { InsertEmoticon, Send } from "@material-ui/icons";
 import EmojiPicker from "emoji-picker-react";
 
 import { inputStyles } from "../../style";
@@ -26,18 +26,21 @@ export default function InputComment(props) {
 
     return (
         <div className={classes.writeCmt}>
-            <InputBase
-                placeholder="Viết bình luận ..."
-                className={classes.writeCmtText}
-                value={text}
-                onChange={e => setText(e.target.value)}
-            />
             <IconButton
                 aria-controls="customized-menu"
                 aria-haspopup="true"
                 variant="contained"
             >
                 <InsertEmoticon onClick={handleShowPicker} />
+            </IconButton>
+            <InputBase
+                placeholder="Viết bình luận ..."
+                className={classes.writeCmtText}
+                value={text}
+                onChange={e => setText(e.target.value)}
+            />
+            <IconButton disabled={text === ""}>
+                <Send />
             </IconButton>
 
 

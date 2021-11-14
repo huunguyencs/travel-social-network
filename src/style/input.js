@@ -5,11 +5,12 @@ const inputStyles = makeStyles((theme) => ({
     writeCmt: {
         backgroundColor: "#ededed",
         margin: 20,
-        borderRadius: attr.borderRadius.md,
+        borderRadius: attr.borderRadius.lg,
     },
     writeCmtText: {
         paddingInline: 20,
-        width: "92%",
+        width: "86%",
+
     },
 }))
 
