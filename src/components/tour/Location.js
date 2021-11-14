@@ -98,7 +98,7 @@ export default function Location(props) {
         handleCloseMenu();
     }
 
-    const tourInfo = props.tour;
+    const locationInfo = props.location;
 
     return (
         <Card className={classes.cardContainer}>
@@ -106,7 +106,7 @@ export default function Location(props) {
             <Grid container>
                 <Grid item md={5}>
                     <CardMedia className={classes.imgContainer}>
-                        <img src={tourInfo.img} alt="location" className={classes.img} />
+                        <img src={locationInfo.location.image} alt="location" className={classes.img} />
                     </CardMedia>
 
                 </Grid>
@@ -115,8 +115,8 @@ export default function Location(props) {
                         <div className={classes.tourHeader}>
                             <Typography variant="body1" style={{ paddingTop: 20 }}>
                                 {
-                                    tourInfo.fromPrev ?
-                                        tourInfo.fromPrev === 0 ? "Điểm bắt đầu" : `Khoảng ${tourInfo.fromPrev} phút đi xe từ điểm trước đó.`
+                                    locationInfo.fromPrev ?
+                                        locationInfo.fromPrev === 0 ? "Điểm bắt đầu" : `Khoảng ${locationInfo.fromPrev} phút đi xe từ điểm trước đó.`
                                         : "Đang xử lý thời gian"
                                 }
                             </Typography>
@@ -146,7 +146,7 @@ export default function Location(props) {
                                     }}
                                 >
                                     <Fade in={editLoc}>
-                                        <EditLocationForm handleCloseParent={handleCloseMenu} handleClose={handleCloseEdit} indexDate={props.indexDate} indexLocation={props.indexLocation} locationInfo={tourInfo} />
+                                        <EditLocationForm handleCloseParent={handleCloseMenu} handleClose={handleCloseEdit} indexDate={props.indexDate} indexLocation={props.indexLocation} location={locationInfo} />
                                     </Fade>
                                 </Modal>
                                 <MenuItem onClick={handleShowDelete}>
@@ -171,8 +171,8 @@ export default function Location(props) {
                             </Menu>
                         </div>
 
-                        <Typography variant="h4" className={classes.locationName} component={Link} to={"/location/" + tourInfo.id}>{tourInfo.location}</Typography>
-                        <Typography variant="h5">{tourInfo.province}</Typography>
+                        <Typography variant="h4" className={classes.locationName} component={Link} to={"/location/" + locationInfo.location._id}>{locationInfo.location.locationName}</Typography>
+                        <Typography variant="h5">{locationInfo.province}</Typography>
                         {isReviewed ?
                             <Button className={classes.reviewBtn} onClick={() => setShowRv((value) => setShowRv(!value))}>{showRv ? "Ẩn" : "Xem"} Review</Button> :
                             <Button className={classes.reviewBtn} onClick={handleShow}>Tạo Review</Button>
@@ -196,12 +196,12 @@ export default function Location(props) {
                             </Fade>
                         </Modal>
                         <div className={classes.costContainer}>
-                            <Typography variant="body1">Chi phí: {tourInfo.cost}.000 VND</Typography>
+                            <Typography variant="body1">Chi phí: {locationInfo.cost}.000 VND</Typography>
                         </div>
                     </CardContent>
                 </Grid>
                 <Collapse in={showRv}>
-                    <Grid item md={12}>
+                    {/* <Grid item md={12}>
                         <CardContent className={classes.review}>
                             <Typography component="legend">Đánh giá: </Typography>
                             <Rating
@@ -225,7 +225,7 @@ export default function Location(props) {
                             </Typography>
                             <Button>Xem chi tiết</Button>
                         </CardActions>
-                    </Grid>
+                    </Grid> */}
                 </Collapse>
 
             </Grid>

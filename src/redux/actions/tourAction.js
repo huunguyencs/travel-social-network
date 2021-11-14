@@ -48,3 +48,10 @@ export const updateLike = (props) => {
         payload: props,
     }
 }
+
+export const getTourDetail = (props) => {
+    return {
+        type: TOUR_TYPES.GET_TOUR_DETAIL,
+        payload: props,
+    }
+}

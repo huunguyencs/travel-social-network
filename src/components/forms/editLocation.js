@@ -1,10 +1,11 @@
 import { Button, Paper, TextField, Typography } from "@material-ui/core";
 import { Autocomplete } from "@material-ui/lab";
-import React, { useRef, useState } from "react";
-import { useDispatch } from "react-redux";
+import React, { useEffect, useRef, useState } from "react";
+import { useDispatch, useSelector } from "react-redux";
 
 import { formStyles } from '../../style';
 import * as tourAction from '../../redux/actions/createTourAction';
+import { getLocations } from "../../redux/callApi/locationCall";
 
 const listLocation = [
     { id: "1", name: "Chùa Một Cột" },
@@ -27,10 +28,11 @@ const listLocation = [
 export default function EditLocationForm(props) {
 
     // const idRef = useRef(props.locationId);
-    const [loc, setLoc] = useState({ id: props.locationInfo.id, name: props.locationInfo.location });
+    const [loc, setLoc] = useState(props.location.location);
     const costRef = useRef('');
 
     const dispatch = useDispatch();
+    const { location } = useSelector(state => state);
 
     const handleSubmit = (e) => {
         e.preventDefault();
@@ -39,6 +41,12 @@ export default function EditLocationForm(props) {
         props.handleCloseParent();
     }
 
+    useEffect(() => {
+        if (location.locations.length === 0) {
+            dispatch(getLocations());
+        }
+
+    })
 
     // onEffect load listLocation
 
@@ -56,12 +64,12 @@ export default function EditLocationForm(props) {
             >
                 <Autocomplete
                     id="choose-location"
-                    options={listLocation}
-                    getOptionLabel={(option) => option.name}
+                    options={location.locations}
+                    getOptionLabel={(option) => option.locationName}
                     style={{ width: 400, marginTop: 30 }}
                     defaultValue={loc}
                     onChange={(e, value) => setLoc(value)}
-                    renderInput={(params) => <TextField {...params} name="location" label="Địa điểm" variant="outlined" required defaultValue={props.locationInfo.location} />}
+                    renderInput={(params) => <TextField {...params} name="location" label="Địa điểm" variant="outlined" required defaultValue={loc.locationName} />}
                 />
                 <TextField
                     label="Chi phí dự kiến (nghìn VND)"
@@ -71,7 +79,7 @@ export default function EditLocationForm(props) {
                     style={{ width: 400, marginTop: 30 }}
                     type="number"
                     inputRef={costRef}
-                    defaultValue={props.locationInfo.cost}
+                    defaultValue={props.location.cost}
                 />
                 <div>
                     <Button

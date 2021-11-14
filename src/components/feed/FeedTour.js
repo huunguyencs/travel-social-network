@@ -1,10 +1,10 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { Container } from "@material-ui/core";
 
-// import Tour from "../tour/Tour";
+import Tour from "../tour/Tour";
 import { feedStyles } from "../../style";
-// import { useDispatch } from "react-redux";
-// import { getTours } from "../../redux/callApi/tourCall";
+import { useDispatch, useSelector } from "react-redux";
+import { getTours } from "../../redux/callApi/tourCall";
 
 
 // const listTour = [
@@ -132,26 +132,26 @@ export default function FeedTour(props) {
 
     const classes = feedStyles();
 
-    // const dispatch = useDispatch();
-    // const { tour } = useSelector(state => state);
+    const dispatch = useDispatch();
+    const { tour } = useSelector(state => state);
 
-    // useEffect(() => {
-    //     dispatch(getTours());
-    // }, [])
+    useEffect(() => {
+        dispatch(getTours());
+    }, [dispatch])
 
     return (
         <Container className={classes.container}>
             <div className={classes.content}>
 
-                {/* <div>
+                <div>
                     {
-                        listTour.map((tour) => (
+                        tour.tours.map((tour) => (
                             <Tour
                                 tour={tour}
                             />
                         ))
                     }
-                </div> */}
+                </div>
 
             </div>
 

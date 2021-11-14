@@ -1,4 +1,5 @@
 export const GET_TOURS = "GET_TOURS";
+export const GET_TOUR_DETAIL = "GET_TOUR_DETAIL";
 export const CREATE_TOUR = "CREATE_TOUR";
 export const UPDATE_TOUR = "UPDATE_TOUR";
 export const DELETE_TOUR = "DELETE_TOUR";

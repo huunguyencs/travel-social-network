@@ -40,10 +40,9 @@ const createTourReducer = (state = INIT_STATE, action) => {
             // console.log(location);
 
             const newLocation = {
-                id: location._id,
-                img: location.image[0],
-                location: location.locationName,
-                province: location.province.name,
+                _id: 1321,
+                location: location,
+                province: "Hà Nội",
                 cost: cost,
             }
 
@@ -93,7 +92,6 @@ const createTourReducer = (state = INIT_STATE, action) => {
         case TOUR_TYPES.UPDATE_LOCATION: {
             // goi api lay du lieu
             const { location, cost } = action.payload;
-            console.log(location)
 
             return {
                 ...state,
@@ -101,9 +99,8 @@ const createTourReducer = (state = INIT_STATE, action) => {
                     ...date,
                     tour: date.tour.map((loc, j) => j === action.payload.indexLocation ? {
                         ...loc,
-                        id: location.id,
-                        location: location.name,
-                        cost: cost
+                        location: location,
+                        cost: cost,
                     } : loc)
                 } : date)
             }

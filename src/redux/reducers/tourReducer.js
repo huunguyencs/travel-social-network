@@ -11,7 +11,16 @@ const tourReducer = (state = INIT_STATE, action) => {
         case TOUR_TYPES.GET_TOURS: {
             return {
                 ...state,
-                tours: action.payload,
+                tours: action.payload.tour,
+                loading: false,
+                error: null,
+            }
+        }
+        case TOUR_TYPES.GET_TOUR_DETAIL: {
+            return {
+                ...state,
+                tourdetail: action.payload.tourdetail,
+                loading: false,
                 error: null,
             }
         }

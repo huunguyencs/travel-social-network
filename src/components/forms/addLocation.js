@@ -30,7 +30,6 @@ export default function AddLocationForm(props) {
         }
     }, [dispatch, location.locations.length])
 
-
     // onEffect load listLocation
 
     const classes = formStyles();

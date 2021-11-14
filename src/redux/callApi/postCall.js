@@ -9,7 +9,7 @@ export const getPosts = (data) => async (dispatch) => {
         // call api to get post list
         const res = [
             {
-                postId: 4465456,
+                _id: 46794,
                 user: {
                     _id: "3132",
                     userName: "huunguyen",
@@ -21,7 +21,7 @@ export const getPosts = (data) => async (dispatch) => {
                 time: "11/11/2021",
                 comments: [
                     {
-                        commendId: 46546,
+                        _id: 46546,
                         likes: [46, 461, 134],
                         content: "Đây là nội dung của comment",
                         time: "13/11/2021",
@@ -31,7 +31,7 @@ export const getPosts = (data) => async (dispatch) => {
                         },
                     },
                     {
-                        commendId: 46546,
+                        _id: 4654,
                         likes: [46, 461, 134],
                         content: "Đây là nội dung của comment",
                         time: "13/11/2021",
@@ -63,7 +63,7 @@ export const getPosts = (data) => async (dispatch) => {
                 provinceId: 3123,
             },
             {
-                postId: 4465456,
+                _id: 4465456,
                 user: {
                     _id: "3132",
                     userName: "huunguyen",
@@ -75,7 +75,7 @@ export const getPosts = (data) => async (dispatch) => {
                 time: "11/11/2021",
                 comments: [
                     {
-                        commendId: 46546,
+                        _id: 46546,
                         likes: [46, 461, 134],
                         content: "Đây là nội dung của comment",
                         time: "13/11/2021",
@@ -85,7 +85,7 @@ export const getPosts = (data) => async (dispatch) => {
                         },
                     },
                     {
-                        commendId: 46546,
+                        _id: 4656,
                         likes: [46, 461, 134],
                         content: "Đây là nội dung của comment",
                         time: "13/11/2021",

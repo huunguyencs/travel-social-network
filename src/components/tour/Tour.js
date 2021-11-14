@@ -45,7 +45,7 @@ export default function Tour(props) {
         <Card className={classes.cardContainer}>
             <CardHeader
                 avatar={
-                    <Avatar alt="avatar" src={props.tour.user.avatar} />
+                    <Avatar alt="avatar" src={props.tour.user.avarImage} />
                 }
                 action={
                     <IconButton aria-label="settings">
@@ -53,34 +53,34 @@ export default function Tour(props) {
                     </IconButton>
                 }
                 title={
-                    <Typography className={classes.userName}>{props.tour.user.name}</Typography>
+                    <Typography className={classes.userName}>{props.tour.user.lastName + " " + props.tour.user.firstName}</Typography>
                 }
             />
 
-            <CardMedia>
+            {/* <CardMedia>
 
                 <ImageList imgList={props.tour.imgList} />
-            </CardMedia>
+            </CardMedia> */}
 
             <CardContent>
                 <Link>
                     <Typography variant="h6" className={classes.title}>
-                        {props.tour.title}
+                        {props.tour.tourName}
                     </Typography>
                 </Link>
-                <Typography>
+                {/* <Typography>
                     Chi phí: {props.tour.cost}
-                </Typography>
+                </Typography> */}
                 <Typography>
-                    Thời gian: {props.tour.time}
+                    Thời gian: {props.tour.tourDate.length} ngày
                 </Typography>
-                <Typography>
+                {/* <Typography>
                     Địa điểm: {props.tour.location.map((item) => {
                         return (
                             <Link className={classes.location}>{item}</Link>
                         )
                     })}
-                </Typography>
+                </Typography> */}
             </CardContent>
 
             <CardActions>
@@ -91,13 +91,13 @@ export default function Tour(props) {
 
                 </IconButton>
                 <Typography className={classes.numLike}>
-                    {numLike}
+                    {props.tour.likeIds.length}
                 </Typography>
                 <IconButton onClick={(e) => (setShowCmt(!showCmt))}>
                     <QuestionAnswer />
                 </IconButton>
                 <Typography className={classes.numCmt}>
-                    {props.tour.cmts.length}
+                    {props.tour.comment.length}
                 </Typography>
                 <IconButton>
                     <Share />
@@ -108,7 +108,7 @@ export default function Tour(props) {
             <Collapse className={classes.cmt} in={showCmt}>
                 <hr className={classes.line} />
                 <div className={classes.listCmt}>
-                    {props.tour.cmts.map((cmt) => (
+                    {props.tour.comment.map((cmt) => (
                         <Comment comment={cmt} />
                     ))}
                 </div>
