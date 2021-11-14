@@ -1,72 +1,55 @@
-import React from "react";
+import React, { useState } from "react";
 import { WhatsApp, Cancel, RssFeed } from "@material-ui/icons";
 import { Avatar, Button, Container, Typography, Modal, Backdrop, List, ListItem, ListItemText, ListItemAvatar, ListItemSecondaryAction } from "@material-ui/core";
 
 import { profileStyles } from "../../style";
+import UserList from "../modalList/userList";
 
-
+const userList = [
+  {
+    _id: 132123,
+    firstName: "An",
+    lastName: "Nguyễn",
+    avatarImage: "",
+  },
+  {
+    _id: 456,
+    firstName: "An",
+    lastName: "Nguyễn",
+    avatarImage: "",
+  },
+  {
+    _id: 798,
+    firstName: "An",
+    lastName: "Nguyễn",
+    avatarImage: "",
+  }
+]
 
 
 
 export default function Profile_Avatar(props) {
   const classes = profileStyles();
-  const [open, setOpen] = React.useState(false);
+  const [openFollowing, setOpenFollowing] = useState(false);
+  const [openFollower, setOpenFollower] = useState(false);
 
-  const handleOpen = () => {
-    setOpen(true);
+
+  const handleOpenFollowing = () => {
+    setOpenFollowing(true);
   };
 
-  const handleClose = () => {
-    setOpen(false);
+  const handleCloseFollowing = () => {
+    setOpenFollowing(false);
   };
-  const body = (
-    <div className={classes.paper}>
-      <div className={classes.modal_header}>
-        <h2 className={classes.modal_header_left}>Following</h2>
-        <div className={classes.modal_header_right}>
-          <Cancel className={classes.modal_header_closeIcon} />
-        </div>
-      </div>
-      <List className={classes.modal_body}>
-        <ListItem button className={classes.modal_body_user}>
-          <ListItemAvatar>
-            <Avatar alt="avatar" src="">
-            </Avatar>
-          </ListItemAvatar>
-          <ListItemText primary="Tran Van An" />
-          <ListItemSecondaryAction>
-            <Button variant="outlined" className={classes.modal_body_user_button}  >
-              Follow
-            </Button>
-          </ListItemSecondaryAction>
-        </ListItem>
-        <ListItem button className={classes.modal_body_user}>
-          <ListItemAvatar>
-            <Avatar alt="avatar" src="">
-            </Avatar>
-          </ListItemAvatar>
-          <ListItemText primary="Tran Van Be" />
-          <ListItemSecondaryAction>
-            <Button variant="outlined" className={classes.modal_body_user_button}  >
-              Follow
-            </Button>
-          </ListItemSecondaryAction>
-        </ListItem>
-        <ListItem button className={classes.modal_body_user}>
-          <ListItemAvatar>
-            <Avatar alt="avatar" src="">
-            </Avatar>
-          </ListItemAvatar>
-          <ListItemText primary="Tran Van Be" />
-          <ListItemSecondaryAction>
-            <Button variant="outlined" className={classes.modal_body_user_button}  >
-              Follow
-            </Button>
-          </ListItemSecondaryAction>
-        </ListItem>
-      </List>
-    </div>
-  );
+
+  const handleOpenFollower = () => {
+    setOpenFollower(true);
+  };
+
+  const handleCloseFollower = () => {
+    setOpenFollower(false);
+  };
+
   return (
     <Container className={classes.container}>
       <div>
@@ -82,22 +65,36 @@ export default function Profile_Avatar(props) {
           </Typography>
           <div >
             <Typography variant="body1" color="#9b9696" component="p" style={{ display: "flex", fontSize: "20px", }}>
-              <Typography style={{ marginRight: "20px", cursor: "pointer", }} onClick={handleOpen} >30 Following</Typography>
+              <Typography style={{ marginRight: "20px", cursor: "pointer", }} onClick={handleOpenFollowing} >30 Following</Typography>
               <Modal
                 aria-labelledby="transition-modal-title"
                 aria-describedby="transition-modal-description"
                 className={classes.modal}
-                open={open}
-                onClose={handleClose}
+                open={openFollowing}
+                onClose={handleCloseFollowing}
                 closeAfterTransition
                 BackdropComponent={Backdrop}
                 BackdropProps={{
                   timeout: 500,
                 }}
               >
-                {body}
+                <UserList listUser={userList} title={"Following"} handleClose={handleCloseFollowing} />
               </Modal>
-              <Typography style={{ cursor: "pointer", }} onClick={handleOpen} >30 Followed</Typography>
+              <Typography style={{ cursor: "pointer", }} onClick={handleOpenFollower} >30 Follower</Typography>
+              <Modal
+                aria-labelledby="transition-modal-title"
+                aria-describedby="transition-modal-description"
+                className={classes.modal}
+                open={openFollower}
+                onClose={handleCloseFollower}
+                closeAfterTransition
+                BackdropComponent={Backdrop}
+                BackdropProps={{
+                  timeout: 500,
+                }}
+              >
+                <UserList listUser={userList} title={"Follower"} handleClose={handleCloseFollower} />
+              </Modal>
             </Typography>
           </div>
         </div>

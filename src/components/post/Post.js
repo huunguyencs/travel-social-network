@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import {
     Avatar,
+    Backdrop,
     Card,
     CardActions,
     CardContent,
@@ -8,6 +9,7 @@ import {
     CardMedia,
     Collapse,
     IconButton,
+    Modal,
     Typography
 } from "@material-ui/core";
 import {
@@ -24,6 +26,28 @@ import InputComment from "../input/comment";
 import { postStyles } from "../../style";
 import ImageList from "../imagelist/ImageList";
 import { Link } from "react-router-dom";
+import UserList from "../modalList/userList";
+
+const userList = [
+    {
+        _id: 132123,
+        firstName: "An",
+        lastName: "Nguyễn",
+        avatarImage: "",
+    },
+    {
+        _id: 456,
+        firstName: "An",
+        lastName: "Nguyễn",
+        avatarImage: "",
+    },
+    {
+        _id: 798,
+        firstName: "An",
+        lastName: "Nguyễn",
+        avatarImage: "",
+    }
+]
 
 
 
@@ -40,6 +64,16 @@ export default function Post(props) {
         if (!like) setNumLike(numLike + 1);
         else setNumLike(numLike - 1);
     }
+
+    const [showLike, setShowLike] = useState(false);
+
+    const handleOpen = () => {
+        setShowLike(true);
+    };
+
+    const handleClose = () => {
+        setShowLike(false);
+    };
 
 
     const handleShowCmt = () => {
@@ -85,9 +119,23 @@ export default function Post(props) {
                     }
 
                 </IconButton>
-                <Typography className={classes.numLike}>
+                <Typography className={classes.numLike} onClick={handleOpen}>
                     {props.post.likes.length}
                 </Typography>
+                <Modal
+                    aria-labelledby="transition-modal-title"
+                    aria-describedby="transition-modal-description"
+                    className={classes.modal}
+                    open={showLike}
+                    onClose={handleClose}
+                    closeAfterTransition
+                    BackdropComponent={Backdrop}
+                    BackdropProps={{
+                        timeout: 500,
+                    }}
+                >
+                    <UserList listUser={userList} title={"Liked"} handleClose={handleClose} />
+                </Modal>
                 <IconButton onClick={handleShowCmt}>
                     <QuestionAnswer />
                 </IconButton>

@@ -22,6 +22,10 @@ const postStyles = makeStyles((theme) => ({
     },
     numLike: {
         marginRight: 15,
+        cursor: "pointer",
+        "&:hover": {
+            textDecorationLine: 'underline',
+        }
     },
     numCmt: {
         marginRight: 15,
@@ -42,7 +46,12 @@ const postStyles = makeStyles((theme) => ({
         padding: 5,
         cursor: "pointer",
         color: color.text,
-    }
+    },
+    modal: {
+        display: 'flex',
+        alignItems: 'center',
+        justifyContent: 'center',
+    },
 }))
 
 export default postStyles;
