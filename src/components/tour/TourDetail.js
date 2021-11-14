@@ -44,7 +44,7 @@ export default function TourDetail(props) {
                     <Container className={classes.timeline}>
                         <Timeline align="right">
                             {tour.tourdetail?.tourDate.map((item, index) => (
-                                <TimelineItem>
+                                <TimelineItem key={index}>
                                     <TimelineSeparator>
                                         <TimelineDot className={index === idx ? classes.activeDot : classes.unactiveDot} />
                                         <TimelineConnector />
@@ -67,7 +67,7 @@ export default function TourDetail(props) {
                 <Grid item md={6} className={classes.feedTour}>
                     {
                         tour.tourdetail?.tourDate[idx].locations.map((item, index) => (
-                            <Location location={item} index={index} edit={false} />
+                            <Location location={item} index={index} edit={false} key={item._id} />
                         ))
                     }
                     <div className={classes.addContainer}>

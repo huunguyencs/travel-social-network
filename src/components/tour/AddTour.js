@@ -79,7 +79,7 @@ export default function AddTour(props) {
                     <Container className={classes.timeline}>
                         <Timeline align="right">
                             {createTour.tour.map((item, index) => (
-                                <TimelineItem>
+                                <TimelineItem key={index}>
                                     <TimelineSeparator>
                                         <TimelineDot className={index === idx ? classes.activeDot : classes.unactiveDot} />
                                         <TimelineConnector />
@@ -149,7 +149,7 @@ export default function AddTour(props) {
                     </div>
                     {
                         createTour.tour[idx].tour.map((item, index) => (
-                            <Location location={item} indexDate={idx} indexLocation={index} edit={true} />
+                            <Location location={item} indexDate={idx} indexLocation={index} edit={true} key={index} />
                         ))
                     }
                     <div className={classes.addContainer}>
