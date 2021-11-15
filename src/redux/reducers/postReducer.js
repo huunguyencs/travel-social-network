@@ -2,6 +2,8 @@ import * as POST_TYPES from '../constants/postConstant';
 
 const INIT_STATE = {
     posts: [],
+    page: 2,
+    scrollTop: false,
     loading: false,
     error: null,
 }
@@ -11,7 +13,8 @@ const postRecuder = (state = INIT_STATE, action) => {
         case POST_TYPES.GET_POSTS: {  // tai danh sach cac post (thanh cong)
             return {
                 ...state,
-                posts: action.payload.posts,
+                posts: [...action.payload.posts],
+                page: state.page + 1,
                 loading: false,
                 error: null,
             }

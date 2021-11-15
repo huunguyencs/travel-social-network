@@ -6,6 +6,7 @@ export const getPosts = (data) => async (dispatch) => {
     dispatch(postAction.loading());
 
     try {
+        const { page } = data;
         // call api to get post list
         const res = [
             {

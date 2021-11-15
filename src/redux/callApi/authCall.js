@@ -8,10 +8,17 @@ export const login = (data) => async (dispatch) => {
     try {
         // call api to login
 
-        const res = null;
+        const res = {
+            user: {
+                firstName: "Hữu",
+                lastName: "Nguyễn",
+                avatarImage: "https://www.w3schools.com/howto/img_avatar.png"
+            },
+            token: "adaskjdhasdhjkasdh",
+        };
         // stop loading
         dispatch(notifyAction.callSuccess());
-        dispatch(authAction.auth({ user: res.data.user }));
+        dispatch(authAction.auth({ user: res.user, token: res.token }));
 
     }
     catch (err) {

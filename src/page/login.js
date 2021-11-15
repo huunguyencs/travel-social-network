@@ -1,10 +1,32 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import TextField from '@material-ui/core/TextField/TextField';
 import Button from '@material-ui/core/Button/Button';
 import { Link } from "react-router-dom";
+import { useDispatch, useSelector } from "react-redux";
+import { login } from '../redux/callApi/authCall';
+import { useHistory } from 'react-router-dom'
 
 
 export default function Login(props) {
+
+    const history = useHistory();
+
+    const dispatch = useDispatch();
+    const { auth } = useSelector(state => state);
+
+    const [email, setEmail] = useState("");
+    const [password, setPassword] = useState("");
+
+    const handleLogin = (e) => {
+        e.preventDefault();
+        dispatch(login({ email: email, password: password }))
+    }
+
+    useEffect(() => {
+        if (auth.token) {
+            history.push("/")
+        }
+    }, [auth.token, history])
 
     return (
         <div className="login">
@@ -28,7 +50,7 @@ export default function Login(props) {
                     }}
                     noValidate
                     autoComplete="off"
-                    method="POST"
+                    onSubmit={handleLogin}
                 >
                     <TextField
                         autoComplete=""
@@ -37,6 +59,8 @@ export default function Login(props) {
                         name="email"
                         className="form-input"
                         required
+                        value={email}
+                        onChange={e => setEmail(e.target.value)}
                     >
                     </TextField>
                     <TextField
@@ -47,6 +71,8 @@ export default function Login(props) {
                         name="password"
                         type="password"
                         className="form-input"
+                        value={password}
+                        onChange={e => setPassword(e.target.password)}
                     >
                     </TextField>
                     <p style={{
@@ -59,7 +85,6 @@ export default function Login(props) {
                     <div className="login-group">
                         <Button
                             variant="contained"
-                            // color="primary"
                             type="submit"
                             className="login-button"
                         >

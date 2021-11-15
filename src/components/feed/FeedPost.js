@@ -28,8 +28,7 @@ export default function FeedPost(props) {
     }
 
     useEffect(() => {
-        // console.log("Render post list");
-        dispatch(getPosts());
+        dispatch(getPosts({ page: post.page }));
     }, [dispatch])
 
 
