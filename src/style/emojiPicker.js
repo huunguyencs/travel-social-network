@@ -6,7 +6,7 @@ const emoijPickerStyles = makeStyles((theme) => ({
         display: "flex",
         flexWrap: "wrap",
         alignItems: "flex-start",
-        width: "280px",
+        width: "266px",
         height: "300px",
     },
     iconItem: {

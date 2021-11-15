@@ -9,21 +9,7 @@ import { inputStyles } from "../../style";
 export default function InputComment(props) {
 
     const classes = inputStyles();
-
-    const [showPicker, setShowPicker] = useState(null);
     const [text, setText] = useState("");
-
-    const handleShowPicker = (e) => {
-        setShowPicker(e.currentTarget)
-    }
-
-    const handleClosePicker = (e) => {
-        setShowPicker(null);
-    }
-
-    const onEmojiClick = (e, emojiObject) => {
-        setText(prevInput => prevInput + emojiObject.emoji);
-    }
 
     return (
         <div className={classes.writeCmt}>
