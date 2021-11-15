@@ -24,11 +24,19 @@ import {
     Cancel
 } from "@material-ui/icons";
 import { Link } from "react-router-dom";
+import { useDispatch, useSelector } from "react-redux";
 
 import { headerStyles } from "../../style";
+import { logout } from "../../redux/callApi/authCall";
+
+
+
 
 
 export default function Header(props) {
+
+    const { auth } = useSelector(state => state);
+    const dispatch = useDispatch();
 
     const [open, setOpen] = useState(false);
     const [toggleMenuUser, setToggleMenuUser] = useState(null);
@@ -50,9 +58,12 @@ export default function Header(props) {
         setToggleNoti(null);
     }
 
+    const handleLogout = () => {
+        dispatch(logout());
+    }
+
     const classes = headerStyles({ open });
 
-    const temp = true;
 
     return (
         <AppBar positionSticky style={{ zIndex: 1 }}>
@@ -75,7 +86,7 @@ export default function Header(props) {
                 </div>
                 <div className={classes.icons}>
                     {
-                        temp ? (
+                        auth.token ? (
                             <>
                                 <div class={classes.user}>
                                     <Button className={classes.button} onClick={handleToggleUser} controls={toggleMenuUser ? "user-menu" : undefined}>
@@ -103,7 +114,7 @@ export default function Header(props) {
                                                 <MenuList autoFocusItem={toggleMenuUser} id="user-menu">
                                                     <MenuItem aria-label="profile-post" component={Link} to="/profile/465/" onClick={handleCloseUser}>Trang cá nhân</MenuItem>
                                                     <MenuItem onClick={handleCloseUser}>Thay đổi mật khẩu</MenuItem>
-                                                    <MenuItem onClick={handleCloseUser}>Đăng xuất</MenuItem>
+                                                    <MenuItem onClick={handleCloseUser} onClick={handleLogout}>Đăng xuất</MenuItem>
                                                 </MenuList>
                                             </ClickAwayListener>
                                         </Grow>

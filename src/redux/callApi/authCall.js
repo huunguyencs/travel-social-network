@@ -48,5 +48,5 @@ export const signup = (data) => async (dispatch) => {
 }
 
 export const logout = (data) => async (dispatch) => {
-
+    dispatch(authAction.logout());
 }

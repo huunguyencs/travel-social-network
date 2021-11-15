@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React from "react";
 import { Route } from "react-router-dom";
 
 import Header from "./components/header/Header";
@@ -10,30 +10,25 @@ import HomePage from './page/home';
 import './App.css'
 import { WithRouterScroll } from './components/scroll';
 import { useLocation } from "react-router-dom";
-import { useSelector } from "react-redux";
-import Login from "./page/login";
 
 
 function App() {
   const location = useLocation();
 
-  const { auth } = useSelector(state => state);
+
 
   const displayHeader = () => {
-    if (!auth.token) return false;
-    return location.pathname !== '/login' && location.pathname !== "/register";
+    if (location.pathname === "/login" || location.pathname === "/register")
+      return false;
+    return true;
   }
-
-  // useEffect(() => {
-  //   if(authReducer.)
-  // })
 
   return (
     <div style={{ backgroundColor: color.background }}>
       <WithRouterScroll />
       <Scroll showBelow={500} />
       {displayHeader() && <Header />}
-      <Route path="/" component={auth.token ? HomePage : Login} exact />
+      <Route path="/" component={HomePage} exact />
       <CustomRouter path='/:page' component={PageRender} exact />
       <CustomRouter path='/:page/:id' component={PageRender} exact />
       <CustomRouter path='/:page/:id/:subpage' component={PageRender} exact />

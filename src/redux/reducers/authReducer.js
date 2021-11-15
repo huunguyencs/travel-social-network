@@ -14,6 +14,9 @@ const authReducer = (state = INIT_STATE, action) => {
                 token: action.payload.token,
             }
         }
+        case AUTH_TYPES.LOGOUT: {
+            return INIT_STATE
+        }
         default: {
             return state
         }

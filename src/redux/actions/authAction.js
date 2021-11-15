@@ -6,3 +6,9 @@ export const auth = (props) => {
         payload: props,
     }
 }
+
+export const logout = (prop) => {
+    return {
+        type: AUTH_TYPES.LOGOUT,
+    }
+}

@@ -1,6 +1,6 @@
 import { makeStyles } from "@material-ui/core";
 
-import shareStyles from "./share";
+
 import commentStyles from "./comment";
 import postStyles from './post';
 import leftbarStyles from "./leftbar";
@@ -31,7 +31,6 @@ import emojiPickerStyles from "./emojiPicker";
 
 
 const useStyles = makeStyles((theme) => ({
-    ...shareStyles,
     rightbar: {
         [theme.breakpoints.down("md")]: {
             display: "none",
