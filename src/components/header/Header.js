@@ -78,7 +78,7 @@ export default function Header(props) {
                         temp ? (
                             <>
                                 <div class={classes.user}>
-                                    <Button className={classes.button} onClick={handleToggleUser}>
+                                    <Button className={classes.button} onClick={handleToggleUser} controls={toggleMenuUser ? "user-menu" : undefined}>
                                         <Avatar className={classes.avatar} alt="avatar" src="" />
                                         <Typography className={classes.userName}>Trần Văn A</Typography>
                                     </Button>
@@ -86,6 +86,7 @@ export default function Header(props) {
                                         open={Boolean(toggleMenuUser)}
                                         anchorEl={toggleMenuUser}
                                         onClose={handleCloseUser}
+                                        arial
                                         transformOrigin={{
                                             vertical: "top",
                                             horizontal: "left"
@@ -99,7 +100,7 @@ export default function Header(props) {
                                             style={{ transformOrigin: 'center bottom' }}
                                         >
                                             <ClickAwayListener onClickAway={handleCloseUser}>
-                                                <MenuList autoFocusItem={toggleMenuUser}>
+                                                <MenuList autoFocusItem={toggleMenuUser} id="user-menu">
                                                     <MenuItem aria-label="profile-post" component={Link} to="/profile/465/" onClick={handleCloseUser}>Trang cá nhân</MenuItem>
                                                     <MenuItem onClick={handleCloseUser}>Thay đổi mật khẩu</MenuItem>
                                                     <MenuItem onClick={handleCloseUser}>Đăng xuất</MenuItem>

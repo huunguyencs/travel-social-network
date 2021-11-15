@@ -24,7 +24,7 @@ import { Rating } from "@material-ui/lab";
 import Comment from "../comment/Comment";
 import InputComment from "../input/comment";
 import { postStyles } from "../../style";
-import ImageList from "../imagelist/ImageList";
+import ImageList from "../imageModal/ImageList";
 import { Link } from "react-router-dom";
 import UserList from "../modalList/userList";
 

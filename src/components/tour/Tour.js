@@ -25,7 +25,6 @@ import {
 import Comment from "../comment/Comment";
 import { postStyles } from "../../style";
 import InputComment from "../input/comment";
-import ImageList from "../imagelist/ImageList";
 import UserList from "../modalList/userList";
 
 const userList = [

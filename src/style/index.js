@@ -26,6 +26,7 @@ import eventStyles from "./event";
 import locationCardStyles from "./locationCard";
 import serviceStyles from "./service";
 import modalListStyles from "./modalList";
+import emojiPickerStyles from "./emojiPicker";
 
 
 
@@ -70,4 +71,5 @@ export {
     locationCardStyles,
     serviceStyles,
     modalListStyles,
+    emojiPickerStyles,
 };

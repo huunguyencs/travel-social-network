@@ -14,7 +14,6 @@
     "@testing-library/user-event": "^12.8.3",
     "@wojtekmaj/date-utils": "^1.0.3",
     "date-fns": "^2.25.0",
-    "emoji-picker-react": "^3.4.8",
     "google-map-react": "^2.1.10",
     "react": "^17.0.2",
     "react-calendar": "^3.5.0",
