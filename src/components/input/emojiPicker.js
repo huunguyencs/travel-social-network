@@ -37,7 +37,7 @@ export default function EmojiPicker(props) {
     return (
         <>
             <IconButton aria-describedby={id} variant="contained" onClick={handleClick}>
-                <InsertEmoticon />
+                <InsertEmoticon titleAccess="Chèn cảm xúc" />
             </IconButton>
             <Popover
                 id={id}
@@ -53,14 +53,12 @@ export default function EmojiPicker(props) {
                     horizontal: "center"
                 }}
             >
-                <Paper>
-                    <div className={classes.iconWrap}>
-                        {emojiList.map((item, index) => (
-                            <div key={index} className={classes.iconItem} onClick={() => addIcon(item)}>
-                                {item}
-                            </div>
-                        ))}
-                    </div>
+                <Paper className={classes.iconWrap}>
+                    {emojiList.map((item, index) => (
+                        <div key={index} className={classes.iconItem} onClick={() => addIcon(item)}>
+                            {item}
+                        </div>
+                    ))}
                 </Paper>
             </Popover>
         </>

@@ -44,9 +44,9 @@ export const signup = (data) => async (dispatch) => {
     catch (err) {
         dispatch(notifyAction.callFail({ error: err }));
     }
-
 }
 
 export const logout = (data) => async (dispatch) => {
+    document.cookie = "refreshtoken=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;";
     dispatch(authAction.logout());
 }

@@ -15,9 +15,16 @@ const formStyles = makeStyles((theme) => ({
         display: "flex",
         justifyContent: "center",
     },
+    formAction: {
+        display: "flex",
+        justifyContent: "space-between",
+    },
     button: {
-        width: "100%",
+        // width: "100%",
         padding: 10,
+    },
+    postContentInput: {
+        width: "500px",
     },
     input: {
         backgroundColor: color.lightgray,

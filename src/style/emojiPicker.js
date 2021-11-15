@@ -1,13 +1,16 @@
 import { makeStyles } from "@material-ui/core";
+import attr from "./attr";
 import color from "./color";
 
 const emoijPickerStyles = makeStyles((theme) => ({
     iconWrap: {
+        padding: "5px",
         display: "flex",
         flexWrap: "wrap",
         alignItems: "flex-start",
         width: "266px",
-        height: "300px",
+        height: "270px",
+        borderRadius: attr.borderRadius.sm,
     },
     iconItem: {
         fontSize: "1.5em",
@@ -15,7 +18,7 @@ const emoijPickerStyles = makeStyles((theme) => ({
         padding: "5px",
         paddingInline: "7px",
         cursor: "pointer",
-        borderRadius: "3px",
+        borderRadius: attr.borderRadius.sm,
         "&:hover": {
             backgroundColor: color.lightgray,
         }

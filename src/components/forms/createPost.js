@@ -1,14 +1,21 @@
-import { InputBase, Typography, Grid, Button, Paper } from "@material-ui/core";
-import { AddCircleOutline, Create } from "@material-ui/icons";
+import { InputBase, Typography, Grid, Button, Paper, IconButton } from "@material-ui/core";
+import { AddCircleOutline, Create, Image, InsertEmoticon } from "@material-ui/icons";
 import React, { useState } from "react";
 import { ScrollMenu } from 'react-horizontal-scrolling-menu';
 
 import { formStyles } from '../../style';
+import EmojiPicker from "../input/emojiPicker";
 
 
 export default function CreatePostForm(props) {
 
     const [imageUpload, setImageUpload] = useState([]);
+
+    const [text, setText] = useState("");
+
+    const handleChange = e => {
+        setText(e.target.value);
+    }
 
     const handleChangeImageUpload = (e) => {
         setImageUpload(oldImage => [...oldImage, ...e.target.files])
@@ -31,8 +38,8 @@ export default function CreatePostForm(props) {
                 </Typography>
             </div>
             <form>
-                <Grid container className={classes.formContainer}>
-                    <Grid item md={12}>
+                <div className={classes.formContainer}>
+                    <div className={classes.postContentInput}>
                         <InputBase
                             placeholder="Bạn đang nghĩ gì?..."
                             rows={10}
@@ -40,35 +47,39 @@ export default function CreatePostForm(props) {
                             id="content"
                             multiline
                             className={classes.input}
+                            value={text}
+                            onChange={(e) => handleChange(e)}
                         />
-                    </Grid>
-                    <Grid item md={6}>
-                        <input
-                            accept="image/*"
-                            className={classes.input}
-                            style={{ display: 'none' }}
-                            id="input-image"
-                            name="input-image"
-                            multiple
-                            type="file"
-                            onChange={handleChangeImageUpload}
-                        />
-                        <label htmlFor="input-image">
-                            <Button className={classes.button} variant="raised" component="span">
-                                <AddCircleOutline style={{ marginRight: 10 }} />
-                                Thêm ảnh
+                    </div>
+                    <div className={classes.formAction}>
+                        <div>
+                            <input
+                                accept="image/*"
+                                className={classes.input}
+                                style={{ display: 'none' }}
+                                id="input-image"
+                                name="input-image"
+                                multiple
+                                type="file"
+                                onChange={handleChangeImageUpload}
+                            />
+                            <label htmlFor="input-image">
+                                <IconButton className={classes.button} variant="raised" component="span">
+                                    <Image titleAccess="Thêm ảnh" />
+                                </IconButton>
+                            </label>
+                            <EmojiPicker content={text} setContent={setText} />
+                        </div>
+                        <div>
+                            <Button className={classes.button}>
+                                <Create style={{ marginRight: 10 }} />
+                                Đăng
                             </Button>
-                        </label>
-                    </Grid>
-                    <Grid item md={6}>
-                        <Button className={classes.button}>
-                            <Create style={{ marginRight: 10 }} />
-                            Đăng
-                        </Button>
-                    </Grid>
+                        </div>
+                    </div>
 
 
-                </Grid>
+                </div>
             </form>
             <div
                 style={{
