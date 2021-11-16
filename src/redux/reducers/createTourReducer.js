@@ -2,7 +2,9 @@ import * as TOUR_TYPES from '../constants/createTourConstant';
 import * as dateUtils from '../../utils/date';
 
 const INIT_STATE = {
-    name: null,
+    name: "",
+    content: "",
+    hashtag: [],
     tour: [],
     isFetching: false,
     error: null,
@@ -110,6 +112,14 @@ const createTourReducer = (state = INIT_STATE, action) => {
                 ...state,
                 name: "",
                 tour: []
+            }
+        }
+        case TOUR_TYPES.UPDATE_INFO: {
+            return {
+                ...state,
+                name: action.payload.name,
+                hashtag: action.payload.hashtag,
+                content: action.payload.content,
             }
         }
         default: {

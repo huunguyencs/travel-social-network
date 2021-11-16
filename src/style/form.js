@@ -23,6 +23,9 @@ const formStyles = makeStyles((theme) => ({
         // width: "100%",
         padding: 10,
     },
+    hashtag: {
+        width: "100%",
+    },
     postContentInput: {
         width: "500px",
     },
@@ -52,6 +55,10 @@ const formStyles = makeStyles((theme) => ({
     datepicker: {
         marginInline: 50,
         marginBottom: 30,
+    },
+    tourNameInput: {
+        width: "100%",
+        marginBottom: 20,
     }
 }))
 

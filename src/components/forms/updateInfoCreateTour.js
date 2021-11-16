@@ -7,7 +7,7 @@ import { formStyles } from '../../style';
 import EmojiPicker from "../input/emojiPicker";
 
 
-export default function CreatePostForm(props) {
+export default function UpdateTourInfo(props) {
 
     const [imageUpload, setImageUpload] = useState([]);
 
@@ -34,15 +34,22 @@ export default function CreatePostForm(props) {
         <Paper className={classes.paperContainer}>
             <div className={classes.textTitle}>
                 <Typography variant="h5">
-                    Tạo bài viết
+                    Thay đổi thông tin
                 </Typography>
             </div>
             <form>
                 <div className={classes.formContainer}>
+                    <TextField
+                        name="name"
+                        id="name"
+                        label="Tên tour"
+                        variant="outlined"
+                        className={classes.tourNameInput}
+                    />
                     <div className={classes.postContentInput}>
                         <InputBase
-                            placeholder="Bạn đang nghĩ gì?..."
-                            rows={10}
+                            placeholder="Nội dung tour ..."
+                            rows={7}
                             name="content"
                             id="content"
                             multiline
@@ -68,7 +75,6 @@ export default function CreatePostForm(props) {
                                 style={{ display: 'none' }}
                                 id="input-image"
                                 name="input-image"
-                                multiple
                                 type="file"
                                 onChange={handleChangeImageUpload}
                             />
@@ -82,7 +88,7 @@ export default function CreatePostForm(props) {
                         <div>
                             <Button className={classes.button}>
                                 <Create style={{ marginRight: 10 }} />
-                                Đăng
+                                Xong
                             </Button>
                         </div>
                     </div>

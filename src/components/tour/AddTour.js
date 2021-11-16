@@ -9,6 +9,7 @@ import Location from './Location';
 import * as tourAction from '../../redux/actions/createTourAction';
 // import { useHistory } from "react-router-dom";
 import UpdateDateForm from "../forms/updateDate";
+import UpdateTourInfo from "../forms/updateInfoCreateTour";
 
 
 
@@ -24,6 +25,7 @@ export default function AddTour(props) {
     const [addLoc, setAddLoc] = useState(false);
     const [showUpdateDate, setShowUpdateDate] = useState(false);
     const [showDeleteDate, setShowDeteleDate] = useState(false);
+    const [showChangeInfo, setShowChangeInfo] = useState(false);
 
     const handleShow = () => {
         setAddLoc(true);
@@ -74,6 +76,34 @@ export default function AddTour(props) {
             <div className={classes.coverTitle}>
                 <Typography variant="h3" className={classes.title}>{createTour.name}</Typography>
             </div>
+            <div className={classes.info}>
+                <Typography variant="body1" className={classes.content}>
+                    {createTour.content}
+                </Typography>
+                <div className={classes.hashtagWrap}>
+                    {createTour.hashtag.map((hashtag) => (
+                        <Typography className={classes.hashtag}>{hashtag}</Typography>
+                    ))}
+                </div>
+                <Button onClick={() => setShowChangeInfo(true)}>Chỉnh sửa thông tin</Button>
+                <Modal
+                    aria-labelledby="transition-modal-title"
+                    aria-describedby="transition-modal-description"
+                    className={classes.modal}
+                    open={showChangeInfo}
+                    onClose={() => setShowChangeInfo(false)}
+                    closeAfterTransition
+                    BackdropComponent={Backdrop}
+                    BackdropProps={{
+                        timeout: 500,
+                    }}
+                >
+                    <Fade in={showChangeInfo}>
+                        <UpdateTourInfo />
+                    </Fade>
+                </Modal>
+            </div>
+
             <Grid container className={classes.container}>
                 <Grid item md={2} >
                     <Container className={classes.timeline}>

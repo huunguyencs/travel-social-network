@@ -52,6 +52,18 @@ const postStyles = makeStyles((theme) => ({
         alignItems: 'center',
         justifyContent: 'center',
     },
+    hashtagWrap: {
+        marginTop: 10,
+    },
+    hashtag: {
+        display: "inline",
+        marginRight: 5,
+        color: color.brightgreek,
+        cursor: "pointer",
+        "&:hover": {
+            textDecorationLine: 'underline',
+        }
+    }
 }))
 
 export default postStyles;

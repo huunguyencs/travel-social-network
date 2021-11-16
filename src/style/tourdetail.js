@@ -108,6 +108,25 @@ const tourdetailStyles = makeStyles((theme) => ({
         marginTop: 40,
         backgroundColor: color.turquoise,
         marginLeft: 20,
+    },
+    info: {
+        display: "flex",
+        justifyContent: "center",
+    },
+    content: {
+
+    },
+    hashtagWrap: {
+        marginTop: 10,
+    },
+    hashtag: {
+        display: "inline",
+        marginRight: 5,
+        color: color.brightgreek,
+        cursor: "pointer",
+        "&:hover": {
+            textDecorationLine: 'underline',
+        }
     }
 }))
 

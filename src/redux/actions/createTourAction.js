@@ -56,3 +56,10 @@ export const resetTour = (props) => {
         payload: null,
     }
 }
+
+export const updateInfo = (props) => {
+    return {
+        type: TOUR_TYPES.UPDATE_INFO,
+        payload: props,
+    }
+}

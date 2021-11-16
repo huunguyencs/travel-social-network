@@ -27,6 +27,7 @@ import { postStyles } from "../../style";
 import ImageList from "../imageModal/ImageList";
 import { Link } from "react-router-dom";
 import UserList from "../modalList/userList";
+import { SeeMoreText } from "../seeMoreText";
 
 const userList = [
     {
@@ -101,9 +102,16 @@ export default function Post(props) {
 
             <CardContent>
                 {props.post.isPostReview && <Rating name="location-rating" value={props.post.rate} readOnly style={{ marginBottom: 20 }} />}
-                <Typography variant="body1" color="#2F3542" component="p">
-                    {props.post.content}
-                </Typography>
+                <SeeMoreText
+                    variant="body1"
+                    maxText={6}
+                    text={props.post.content}
+                />
+                <div className={classes.hashtagWrap}>
+                    {props.post.hashtags.map((item) =>
+                        <Typography className={classes.hashtag}>{item}</Typography>
+                    )}
+                </div>
             </CardContent>
 
             <CardMedia>

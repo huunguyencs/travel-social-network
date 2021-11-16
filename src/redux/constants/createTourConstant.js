@@ -6,3 +6,4 @@ export const RESET_TOUR = "RESET_TOUR";
 export const ADD_TOUR = "ADD_TOUR";
 export const UPDATE_DATE = "UPDATE_DATE";
 export const UPDATE_LOCATION = "UPDATE_LOCATION";
+export const UPDATE_INFO = "UPDATE_INFO";

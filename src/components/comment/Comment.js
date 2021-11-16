@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import { Avatar, Typography } from "@material-ui/core";
 
 import { commentStyles } from "../../style";
+import { SeeMoreText } from "../seeMoreText";
 
 export default function Comment(props) {
 
@@ -30,9 +31,14 @@ export default function Comment(props) {
                     {props.comment.user.userName}
                 </Typography>
                 <div className={classes.content}>
-                    <Typography variant="body2">
+                    {/* <Typography variant="body2">
                         {props.comment.content}
-                    </Typography>
+                    </Typography> */}
+                    <SeeMoreText
+                        variant="body2"
+                        maxText={10}
+                        text={props.comment.content}
+                    />
                 </div>
                 <div className={classes.cmtSubinfo}>
                     <div className={classes.like}>
