@@ -3,7 +3,8 @@ import { WhatsApp, Cancel, RssFeed } from "@material-ui/icons";
 import { Avatar, Button, Container, Typography, Modal, Backdrop, List, ListItem, ListItemText, ListItemAvatar, ListItemSecondaryAction } from "@material-ui/core";
 
 import { profileStyles } from "../../style";
-import UserList from "../modalList/userList";
+import UserList from "../modal/userList";
+import ImageModal from "../modal/image";
 
 const userList = [
   {
@@ -32,6 +33,8 @@ export default function Profile_Avatar(props) {
   const classes = profileStyles();
   const [openFollowing, setOpenFollowing] = useState(false);
   const [openFollower, setOpenFollower] = useState(false);
+  const [openAvatar, setOpenAvatar] = useState(false);
+  const [openCover, setOpenCover] = useState(false);
 
 
   const handleOpenFollowing = () => {
@@ -50,16 +53,42 @@ export default function Profile_Avatar(props) {
     setOpenFollower(false);
   };
 
+  const handleOpenAvatar = () => {
+    setOpenAvatar(true);
+  }
+
+  const handleCloseAvatar = () => {
+    setOpenAvatar(false);
+  }
+
+  const handleOpenCover = () => {
+    setOpenCover(true);
+  }
+
+  const handleCloseCover = () => {
+    setOpenCover(false);
+  }
+
   return (
     <Container className={classes.container}>
       <div>
-        <img className={classes.profile_overImage} src="https://img.thuthuatphanmem.vn/uploads/2018/10/26/anh-dep-cau-rong-da-nang-viet-nam_055418962.jpg" alt="cover" />
+        <img className={classes.profile_overImage} src="https://img.thuthuatphanmem.vn/uploads/2018/10/26/anh-dep-cau-rong-da-nang-viet-nam_055418962.jpg" alt="cover" onClick={handleOpenCover} />
+        <ImageModal
+          open={openCover}
+          handleClose={handleCloseCover}
+          img="https://img.thuthuatphanmem.vn/uploads/2018/10/26/anh-dep-cau-rong-da-nang-viet-nam_055418962.jpg"
+        />
       </div>
       <div className={classes.profile_info}>
         <div className={classes.profile_avatar}>
-          <Avatar className={classes.profile_avatar__img} src="https://img.thuthuatphanmem.vn/uploads/2018/10/26/anh-dep-cau-rong-da-nang-viet-nam_055418962.jpg" alt="avatar" />
+          <Avatar className={classes.profile_avatar__img} src="https://img.thuthuatphanmem.vn/uploads/2018/10/26/anh-dep-cau-rong-da-nang-viet-nam_055418962.jpg" alt="avatar" onClick={handleOpenAvatar} />
+          <ImageModal
+            open={openAvatar}
+            handleClose={handleCloseAvatar}
+            img="https://img.thuthuatphanmem.vn/uploads/2018/10/26/anh-dep-cau-rong-da-nang-viet-nam_055418962.jpg"
+          />
         </div>
-        <div style={{ display: "flex", flexDirection: "column", justifyContent: "center", marginTop: "100px", marginLeft: "5vw", }}>
+        <div className={classes.infoUser}>
           <Typography variant="body1" color="black" component="p" style={{ fontSize: "35px", }}>
             Tran Van A
           </Typography>
@@ -98,11 +127,11 @@ export default function Profile_Avatar(props) {
             </Typography>
           </div>
         </div>
-        <div className={classes.profile_button} style={{ marginTop: "120px", marginLeft: "10vw", }}>
-          <Button variant="outlined" startIcon={< RssFeed />} style={{ backgroundColor: "#A5DEC8", marginRight: "20px", }}>
+        <div className={classes.profile_button}>
+          <Button startIcon={< RssFeed />} className={classes.button}>
             Follow
           </Button>
-          <Button style={{ backgroundColor: "#A5DEC8" }} variant="outlined" startIcon={<WhatsApp />}>
+          <Button startIcon={<WhatsApp />} className={classes.button}>
             Chat
           </Button>
         </div>

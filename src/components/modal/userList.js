@@ -1,5 +1,5 @@
-import { Avatar, Button, List, ListItem, ListItemAvatar, ListItemSecondaryAction, ListItemText } from "@material-ui/core";
-import { Cancel } from "@material-ui/icons";
+import { Avatar, Button, IconButton, List, ListItem, ListItemAvatar, ListItemSecondaryAction, ListItemText } from "@material-ui/core";
+import { Close } from "@material-ui/icons";
 import React from "react";
 import { modalListStyles } from "../../style";
 
@@ -12,7 +12,9 @@ export default function UserList(props) {
             <div className={classes.modal_header}>
                 <h2 className={classes.modal_header_left}>{props.title}</h2>
                 <div className={classes.modal_header_right}>
-                    <Cancel className={classes.modal_header_closeIcon} onClick={props.handleClose} />
+                    <IconButton>
+                        <Close className={classes.modal_header_closeIcon} onClick={props.handleClose} />
+                    </IconButton>
                 </div>
             </div>
             <List className={classes.modal_body}>

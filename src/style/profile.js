@@ -1,4 +1,6 @@
 import { makeStyles } from "@material-ui/core";
+import attr from "./attr";
+import color from "./color";
 
 const profileStyles = makeStyles((theme) => ({
   root: {
@@ -65,24 +67,34 @@ const profileStyles = makeStyles((theme) => ({
   ,
   container: {
     position: "relative",
-    maxWidth: "70%",
+    maxWidth: "80%",
     height: "65vh",
     display: "flex",
-    marginTop: "10vh",
+    marginTop: 70,
     flexDirection: "column",
   },
   profile_overImage: {
-    borderRadius: "30px",
+    borderRadius: "10px",
     position: "absolute",
     width: "100%",
     top: 0,
     left: 0,
     height: "90%",
+    cursor: "pointer",
+    transition: "0.8s",
+    "&:hover": {
+      filter: "brightness(90%)",
+    }
   },
   profile_avatar__img: {
     height: "200px",
     width: "200px",
     border: "5px solid white",
+    cursor: "pointer",
+    transition: "0.8s",
+    "&:hover": {
+      filter: "brightness(90%)",
+    }
   },
   profile_avatar: {
 
@@ -98,6 +110,24 @@ const profileStyles = makeStyles((theme) => ({
     alignItems: 'center',
     justifyContent: 'center',
   },
+  profile_button: {
+    marginTop: "140px",
+    marginLeft: "15vw",
+  },
+  button: {
+    backgroundColor: color.turquoise,
+    marginRight: "20px",
+    padding: "8px",
+    paddingInline: "16px",
+    borderRadius: attr.borderRadius.md,
+  },
+  infoUser: {
+    display: "flex",
+    flexDirection: "column",
+    justifyContent: "center",
+    marginTop: "120px",
+    marginLeft: "2vw",
+  }
 }));
 
 export default profileStyles;

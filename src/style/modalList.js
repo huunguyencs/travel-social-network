@@ -1,4 +1,5 @@
 import { makeStyles } from "@material-ui/core";
+import color from "./color";
 
 const modalListStyles = makeStyles((theme) => ({
     paper: {
@@ -25,11 +26,10 @@ const modalListStyles = makeStyles((theme) => ({
         color: "#0f1419",
     },
     modal_header_closeIcon: {
-        width: "40px",
-        height: "40px",
-        color: "rgb(165, 222, 200)",
-        fontSize: "12px",
-        cursor: "pointer"
+        color: color.gray,
+        fontSize: "20px",
+        width: "25px",
+        height: "25px",
     },
     modal_body: {
         maxHeight: "590px",
@@ -52,7 +52,7 @@ const modalListStyles = makeStyles((theme) => ({
             color: "white"
         }
 
-    }
+    },
 }))
 
 export default modalListStyles;

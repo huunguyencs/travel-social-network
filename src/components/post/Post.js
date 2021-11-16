@@ -24,9 +24,9 @@ import { Rating } from "@material-ui/lab";
 import Comment from "../comment/Comment";
 import InputComment from "../input/comment";
 import { postStyles } from "../../style";
-import ImageList from "../imageModal/ImageList";
+import ImageList from "../modal/ImageList";
 import { Link } from "react-router-dom";
-import UserList from "../modalList/userList";
+import UserList from "../modal/userList";
 import { SeeMoreText } from "../seeMoreText";
 
 const userList = [

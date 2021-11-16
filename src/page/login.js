@@ -4,7 +4,9 @@ import Button from '@material-ui/core/Button/Button';
 import { Link } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { login } from '../redux/callApi/authCall';
-import { useHistory } from 'react-router-dom'
+import { useHistory } from 'react-router-dom';
+
+import Validator from '../utils/validator';
 
 
 export default function Login(props) {
@@ -13,20 +15,74 @@ export default function Login(props) {
 
     const dispatch = useDispatch();
     const { auth } = useSelector(state => state);
+    const [state, setState] = useState({
+        email: '',
+        password: '',
+        errors: {},
+        submit: false,
+    })
 
-    const [email, setEmail] = useState("");
-    const [password, setPassword] = useState("");
+    const { errors } = state;
 
-    const handleLogin = (e) => {
-        e.preventDefault();
-        dispatch(login({ email: email, password: password }))
+    const rules = [
+        {
+            field: "email",
+            method: "isEmpty",
+            validWhen: false,
+            message: "Email không được bỏ trống!",
+        },
+        {
+            field: "email",
+            method: "isEmail",
+            validWhen: true,
+            message: "Email không hợp lệ!",
+        },
+        {
+            field: "password",
+            method: "isEmpty",
+            validWhen: false,
+            message: "Mật khẩu không được bỏ trống!",
+        }
+    ]
+    const validator = new Validator(rules);
+
+    const handleInput = (e) => {
+        setState({
+            ...state,
+            errors: {},
+            [e.target.name]: e.target.value,
+        })
     }
+
+    const handleSubmit = (e) => {
+        e.preventDefault();
+        setState({
+            ...state,
+            submit: true,
+            errors: validator.validate(state)
+        })
+    }
+
 
     useEffect(() => {
         if (auth.token) {
             history.push("/")
         }
     }, [auth.token, history])
+
+    useEffect(() => {
+        if (state.submit) {
+            if (Object.keys(errors).length === 0) {
+                dispatch(login({ email: state.email, password: state.password }));
+            }
+            else {
+                setState({
+                    ...state,
+                    submit: false,
+                })
+            }
+        }
+    }, [errors, dispatch, state])
 
     return (
         <div className="login">
@@ -50,29 +106,37 @@ export default function Login(props) {
                     }}
                     noValidate
                     autoComplete="off"
-                    onSubmit={handleLogin}
+                    onSubmit={handleSubmit}
                 >
                     <TextField
                         autoComplete=""
                         label="Email"
                         variant="outlined"
                         name="email"
+                        id="email"
+                        type="email"
                         className="form-input"
                         required
-                        value={email}
-                        onChange={e => setEmail(e.target.value)}
+                        error={errors?.email}
+                        helperText={errors?.email}
+                        // value={email}
+                        value={state.email}
+                        onChange={handleInput}
                     >
                     </TextField>
                     <TextField
                         autoComplete=""
-                        label="Password (6+ Charactor)"
+                        label="Password"
                         variant="outlined"
                         required
+                        id="password"
                         name="password"
                         type="password"
+                        error={errors?.password}
+                        helperText={errors?.password}
                         className="form-input"
-                        value={password}
-                        onChange={e => setPassword(e.target.password)}
+                        value={state.password}
+                        onChange={handleInput}
                     >
                     </TextField>
                     <p style={{

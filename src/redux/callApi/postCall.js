@@ -117,6 +117,64 @@ export const getPosts = (data) => async (dispatch) => {
                 isPostService: false,
                 provinceId: 3123,
             },
+            {
+                _id: 78,
+                user: {
+                    _id: "3132",
+                    userName: "huunguyen",
+                    firstName: "A",
+                    lastName: "Trần Văn",
+                    avatarImage: "",
+                },
+                content: "Đây là lần đầu tôi post bài",
+                time: "11/11/2021",
+                comments: [
+                    {
+                        _id: 46546,
+                        likes: [46, 461, 134],
+                        content: "Đây là nội dung của comment",
+                        time: "13/11/2021",
+                        user: {
+                            userName: "huunguyen",
+                            avatarImage: "",
+                        },
+                    },
+                    {
+                        _id: 4656,
+                        likes: [46, 461, 134],
+                        content: "Đây là nội dung của comment",
+                        time: "13/11/2021",
+                        user: {
+                            userName: "huunguyen",
+                            avatarImage: "",
+                        },
+                    }
+                ],
+                isPublic: 1,
+                likes: [13133, 1313, 132132, 13],
+                postImages: [
+                    {
+                        imageId: 1313,
+                        url: "https://toptour.com.vn/wp-content/uploads/2019/08/nhung-dia-diem-dep1.jpg",
+                    },
+                    {
+                        imageId: 4654,
+                        url: "https://img.thuthuatphanmem.vn/uploads/2018/10/26/anh-dep-cau-rong-da-nang-viet-nam_055418962.jpg"
+                    },
+                    {
+                        imageId: 4456,
+                        url: "https://www.w3schools.com/howto/img_snow.jpg"
+                    }
+                ],
+                isPostReview: false,
+                star: 0,
+                cost: null,
+                locationId: null,
+                hashtags: ["#bien", "#quangngai"],
+                taggedIds: [4656, 466, 1313],
+                isPostService: false,
+                provinceId: 3123,
+            },
 
         ];
 

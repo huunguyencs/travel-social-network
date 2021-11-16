@@ -29,7 +29,7 @@ export default function FeedPost(props) {
 
     useEffect(() => {
         dispatch(getPosts({ page: post.page }));
-    }, [dispatch])
+    }, [dispatch, post.page])
 
 
     return (
