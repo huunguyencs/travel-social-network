@@ -50,6 +50,7 @@ export default function AdminHome(props) {
                     <Menu menuList={adminListMenu} />
                 </LeftBar>
             </Grid>
+            
             <Grid item md={9} style={{ height: "100vh" }}>
                 <div className={classes.appBarSpacer} />
                 <Grid container>
@@ -86,36 +87,45 @@ export default function AdminHome(props) {
                             </Typography>
                         </Card>
                     </Grid>
-
                 </Grid>
+                
                 <Grid>
-                    <div
+                    <div 
                     style={{
-                        backgroundColor: "#FFFFFF",
-                        paddingTop:"20px",
-                        borderRadius: "15px",
-                        width: "80%",
-                        alignItems: "center",
-                        justifyContent:"center",
-                    }}
-                    >
-                        <ResponsiveContainer className="chart" height={300}>
-                            <LineChart 
-                            width={600} 
-                            height={300} 
-                            data={data}
-                            margin={{top: 5, right: 20, left: 10, bottom: 5}}
-                            >
-                                <XAxis dataKey="month"/>
-                                <YAxis/>
-                                <CartesianGrid strokeDasharray="3 3"/>
-                                <Tooltip/>
-                                <Legend />
-                                <Line type="monotone" dataKey="user" stroke="#8884d8" activeDot={{r: 8}}/>
-                                <Line type="monotone" dataKey="post" stroke="#82ca9d" />
-                                <Line type="monotone" dataKey="group" stroke="#ECCC68" />
-                            </LineChart>
-                        </ResponsiveContainer>
+                        display: "flex",
+                        justifyContent: "center",
+                        marginTop: "20px"
+                    }}>
+
+                        <div
+                        style={{
+                            backgroundColor: "#FFFFFF",
+                            paddingTop:"20px",
+                            borderRadius: "15px",
+                            width: "90%",
+                            justifyContent:"center",
+                            display: "flex",
+                        }}
+                        >
+                            <ResponsiveContainer className="chart" height={300}>
+                                <LineChart 
+                                width={600} 
+                                height={300} 
+                                data={data}
+                                margin={{top: 5, right: 20, left: 10, bottom: 5}}
+                                >
+                                    <XAxis dataKey="month"/>
+                                    <YAxis/>
+                                    <CartesianGrid strokeDasharray="3 3"/>
+                                    <Tooltip/>
+                                    <Legend />
+                                    <Line type="monotone" dataKey="user" stroke="#8884d8" activeDot={{r: 8}}/>
+                                    <Line type="monotone" dataKey="post" stroke="#82ca9d" />
+                                    <Line type="monotone" dataKey="group" stroke="#ECCC68" />
+                                </LineChart>
+                            </ResponsiveContainer>
+                        </div>
+                        
                     </div>
                 </Grid>
             </Grid>
