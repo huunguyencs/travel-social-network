@@ -53,7 +53,7 @@ export default function EditLocationForm(props) {
     const classes = formStyles();
 
     return (
-        <Paper className={[classes.paperContainer, classes.addFormContainer]}>
+        <Paper className={`${classes.paperContainer} ${classes.addFormContainer}`}>
             <div className={classes.textTitle}>
                 <Typography variant="h5">
                     Chỉnh sửa địa điểm

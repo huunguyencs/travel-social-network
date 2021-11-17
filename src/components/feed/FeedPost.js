@@ -28,7 +28,7 @@ export default function FeedPost(props) {
     }
 
     useEffect(() => {
-        dispatch(getPosts({ type: "posts" }));
+        dispatch(getPosts({ type: "post" }));
     }, [dispatch])
 
 
@@ -70,6 +70,7 @@ export default function FeedPost(props) {
                         post.posts.map((post) => (
                             <Post
                                 post={post}
+                                key={post._id}
                             />
                         ))
                     }

@@ -11,28 +11,28 @@ import profileStyles from "../../style";
 const listEvent = [
 
     {
-        eventId: 1,
+        _id: 1,
         name: "Du lịch Quảng Nam",
         time: "Thứ 7, 06/11/2021",
         img: "https://img.thuthuatphanmem.vn/uploads/2018/10/26/anh-dep-cau-rong-da-nang-viet-nam_055418962.jpg",
         user: "Trần Văn An"
     },
     {
-        eventId: 2,
+        _id: 2,
         name: "Du lịch Quảng Nam",
         time: "Thứ 7, 06/11/2021",
         img: "https://img.thuthuatphanmem.vn/uploads/2018/10/26/anh-dep-cau-rong-da-nang-viet-nam_055418962.jpg",
         user: "Trần Văn An"
     },
     {
-        eventId: 3,
+        _id: 3,
         name: "Du lịch Quảng Nam",
         time: "Thứ 7, 06/11/2021",
         img: "https://img.thuthuatphanmem.vn/uploads/2018/10/26/anh-dep-cau-rong-da-nang-viet-nam_055418962.jpg",
         user: "Trần Văn An"
     },
     {
-        eventId: 4,
+        _id: 4,
         name: "Du lịch Quảng Nam",
         time: "Thứ 7, 06/11/2021",
         img: "https://img.thuthuatphanmem.vn/uploads/2018/10/26/anh-dep-cau-rong-da-nang-viet-nam_055418962.jpg",
@@ -84,6 +84,7 @@ function GroupEvent(props) {
                                         marginLeft: "50px",
                                         alignItems: "center"
                                     }}
+                                    key={item._id}
                                 >
                                     <div
                                         style={{

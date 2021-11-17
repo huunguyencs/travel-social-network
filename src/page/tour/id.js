@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { useParams } from "react-router-dom";
 
 import Tour from "../../components/tour/TourDetail";
@@ -75,7 +75,12 @@ const tour = {
 export default function TourDetail(props) {
 
     const { id } = useParams();
-    console.log(id);
+
+    useEffect(() => {
+        console.log(id);
+        // call api to get tour data
+
+    }, [id]);
 
     return (
         <Tour tour={tour} />

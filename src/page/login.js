@@ -95,15 +95,7 @@ export default function Login(props) {
                     <h4 className="login-register-switch__active">Đăng nhập</h4>
                     <h4><Link to='/register' style={{ color: "#2F3542" }}> Đăng ký </Link></h4>
                 </div>
-                <p style={{
-                    opacity: 0.5,
-                    marginTop: '1rem',
-                    marginBottom: '1rem'
-                }}>Đăng nhập bằng tài khoản</p>
                 <form
-                    style={{
-                        marginTop: '-10px'
-                    }}
                     noValidate
                     autoComplete="off"
                     onSubmit={handleSubmit}
@@ -119,7 +111,7 @@ export default function Login(props) {
                         required
                         error={errors?.email}
                         helperText={errors?.email}
-                        // value={email}
+                        required
                         value={state.email}
                         onChange={handleInput}
                     >

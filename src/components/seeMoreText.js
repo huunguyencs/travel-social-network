@@ -12,13 +12,15 @@ const useStyles = makeStyles((theme) => ({
     }
 }))
 
-export function SeeMoreText({ variant, maxText, text }) {
+export function SeeMoreText(props) {
     const [more, setMore] = useState(false);
 
     const classes = useStyles();
 
+    const { maxText, text } = props;
+
     return (
-        <Typography variant={variant}>
+        <Typography {...props}>
             {text.length < maxText ? text :
                 (
                     <>

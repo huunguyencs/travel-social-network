@@ -121,15 +121,7 @@ export default function Register(props) {
                     <h4 className="login-register-switch__notactive"><Link to="/login" style={{ color: "#2F3542" }}> Đăng nhập </Link></h4>
                     <h4 className="login-register-switch__active__register">Đăng ký</h4>
                 </div>
-                <p style={{
-                    opacity: 0.5,
-                    marginTop: '1rem',
-                    marginBottom: '1rem'
-                }}>Đăng ký tài khoản</p>
                 <form
-                    // style={{
-                    //     marginTop: '-10px'
-                    // }}
                     noValidate
                     autoComplete="off"
                     onSubmit={handleSubmit}
@@ -141,6 +133,7 @@ export default function Register(props) {
                             variant="outlined"
                             id="lastname"
                             name="lastname"
+                            required
                             className="form-input-half"
                             error={errors?.lastname}
                             onChange={handleInput}
@@ -152,6 +145,7 @@ export default function Register(props) {
                             id="firstname"
                             variant="outlined"
                             name="firstname"
+                            required
                             className="form-input-half"
                             error={errors?.firstname}
                             onChange={handleInput}
@@ -164,6 +158,7 @@ export default function Register(props) {
                         variant="outlined"
                         id="email"
                         name="email"
+                        required
                         className="form-input"
                         error={errors?.email}
                         onChange={handleInput}
@@ -185,6 +180,7 @@ export default function Register(props) {
                         variant="outlined"
                         name="password"
                         type="password"
+                        required
                         className="form-input"
                         error={errors?.password}
                         helperText={errors?.password}
@@ -196,6 +192,7 @@ export default function Register(props) {
                         variant="outlined"
                         name="confirmPassword"
                         type="password"
+                        required
                         className="form-input"
                         error={errors?.confirmPassword}
                         helperText={errors?.confirmPassword}

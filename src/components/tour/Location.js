@@ -174,7 +174,7 @@ export default function Location(props) {
                         <Typography variant="h4" className={classes.locationName} component={Link} to={"/location/" + locationInfo.location._id}>{locationInfo.location.locationName}</Typography>
                         <Typography variant="h5">{locationInfo.province}</Typography>
                         {isReviewed ?
-                            <Button className={classes.reviewBtn} onClick={() => setShowRv((value) => setShowRv(!value))}>{showRv ? "Ẩn" : "Xem"} Review</Button> :
+                            <Button className={classes.reviewBtn} onClick={() => setShowRv(value => !value)}>{showRv ? "Ẩn" : "Xem"} Review</Button> :
                             <Button className={classes.reviewBtn} onClick={handleShow}>Tạo Review</Button>
                         }
 

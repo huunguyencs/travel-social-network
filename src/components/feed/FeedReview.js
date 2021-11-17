@@ -142,6 +142,7 @@ export default function FeedReview(props) {
                         post.posts.map((post) => (
                             <Post
                                 post={post}
+                                key={post._id}
                             />
                         ))
                     }

@@ -18,6 +18,9 @@ export const getTours = (data) => async (dispatch) => {
                 tourDate: [1465, 1324, 1313],
                 tourName: "Đây là tên của tour",
                 isPublic: true,
+                content: "Cùng khám phá Hà Nội",
+                hashtags: ["#dulich", '#bien'],
+                image: "https://toplist.vn/images/800px/le-hoi-giong-362211.jpg",
                 taggedIds: [13221, 1654, 131],
                 likeIds: [132, 132456, 132],
                 comment: [
@@ -44,6 +47,9 @@ export const getTours = (data) => async (dispatch) => {
                 },
                 tourDate: [1465, 1324, 1313],
                 tourName: "Đây là tên của tour",
+                content: "Cùng khám phá Hà Nội",
+                hashtags: ["#dulich", '#bien'],
+                image: "",
                 isPublic: true,
                 taggedIds: [13221, 1654, 131],
                 likeIds: [132, 132456, 132],
@@ -119,6 +125,8 @@ export const getTourDetail = (data) => async (dispatch) => {
                     ]
                 }
             ],
+            content: "Cùng khám phá Hà Nội",
+            hashtags: ["#dulich", '#bien'],
             isPublic: true,
             taggedIds: [],
             likeIds: [],

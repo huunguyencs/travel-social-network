@@ -6,6 +6,8 @@ import { eventStyles } from "../../style";
 
 export default function EventItem(props) {
 
+    const { event } = props;
+
     const classes = eventStyles();
 
     return (
@@ -16,23 +18,23 @@ export default function EventItem(props) {
             <CardActionArea>
                 <CardMedia
                     className={classes.media}
-                    image={props.event.image}
-                    title={props.event.name}
+                    image={event.image}
+                    title={event.name}
                 />
             </CardActionArea>
             <CardContent>
                 <Typography gutterBottom variant="h5">
-                    {props.event.name}
+                    {event.name}
                 </Typography>
                 <Typography>
-                    {props.event.time}
+                    {event.time}
                 </Typography>
                 <Typography variant="body2" color="textSecondary">
-                    {props.event.description}
+                    {event.description}
                 </Typography>
             </CardContent>
             <CardActions>
-                <Button size="small" color="primary" component={Link} to={'/event/' + props.event.id}>
+                <Button size="small" color="primary" component={Link} to={'/event/' + event._id}>
                     Xem chi tiết
                 </Button>
             </CardActions>

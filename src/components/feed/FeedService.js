@@ -142,6 +142,7 @@ export default function FeedService(props) {
                         post.posts.map((service) => (
                             <Post
                                 post={service}
+                                key={service._id}
                             />
                         ))
                     }

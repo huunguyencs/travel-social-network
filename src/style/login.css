@@ -36,10 +36,12 @@
  }
  
  .login-group {
-    margin-top: 20px;
+    margin-top: 40px;
+    display: flex;
+    justify-content: center;
  }
  .login-group button{
-    width: 80%;
+    width: 50%;
     background-color: rgb(54, 190, 156);
     color: white;
     padding : 10px 0;

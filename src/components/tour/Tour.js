@@ -26,6 +26,7 @@ import Comment from "../comment/Comment";
 import { postStyles } from "../../style";
 import InputComment from "../input/comment";
 import UserList from "../modal/userList";
+import { SeeMoreText } from "../seeMoreText";
 
 const userList = [
     {
@@ -51,9 +52,11 @@ const userList = [
 
 export default function Tour(props) {
 
+    const { tour } = props;
+
     const [showCmt, setShowCmt] = useState(false);
-    const [like, setLike] = useState(props.tour.liked);
-    const [numLike, setNumLike] = useState(props.tour.numLike);
+    const [like, setLike] = useState(tour.liked);
+    const [numLike, setNumLike] = useState(tour.numLike);
 
     const classes = postStyles({ showCmt });
 
@@ -78,7 +81,7 @@ export default function Tour(props) {
         <Card className={classes.cardContainer}>
             <CardHeader
                 avatar={
-                    <Avatar alt="avatar" src={props.tour.user.avarImage} />
+                    <Avatar alt="avatar" src={tour.user.avarImage} />
                 }
                 action={
                     <IconButton aria-label="settings">
@@ -86,27 +89,32 @@ export default function Tour(props) {
                     </IconButton>
                 }
                 title={
-                    <Typography className={classes.userName}>{props.tour.user.lastName + " " + props.tour.user.firstName}</Typography>
+                    <Typography className={classes.userName}>{tour.user.lastName + " " + tour.user.firstName}</Typography>
                 }
             />
 
-            {/* <CardMedia>
+            <CardMedia>
 
-                <ImageList imgList={props.tour.imgList} />
-            </CardMedia> */}
+                {tour?.image !== "" && <img src={tour.image} width="100%" alt="Can not load image" />}
+            </CardMedia>
 
             <CardContent>
                 <Link>
                     <Typography variant="h6" className={classes.title}>
-                        {props.tour.tourName}
+                        {tour.tourName}
                     </Typography>
                 </Link>
-                {/* <Typography>
-                    Chi phí: {props.tour.cost}
-                </Typography> */}
-                <Typography>
-                    Thời gian: {props.tour.tourDate.length} ngày
+                <SeeMoreText
+                    variant="body1"
+                    maxText={6}
+                    text={tour.content}
+                />
+                <Typography style={{ marginTop: 20 }}>
+                    Thời gian: {tour.tourDate.length} ngày
                 </Typography>
+                <div>
+                    <Typography>Thành viên tham gia: {tour.taggedIds.length + 1}</Typography>
+                </div>
                 {/* <Typography>
                     Địa điểm: {props.tour.location.map((item) => {
                         return (
@@ -114,6 +122,13 @@ export default function Tour(props) {
                         )
                     })}
                 </Typography> */}
+
+                <div className={classes.hashtagWrap}>
+                    {tour.hashtags.map((item) =>
+                        <Typography className={classes.hashtag}>{item}</Typography>
+                    )}
+                </div>
+
             </CardContent>
 
             <CardActions>
@@ -124,7 +139,7 @@ export default function Tour(props) {
 
                 </IconButton>
                 <Typography className={classes.numLike} onClick={handleOpen}>
-                    {props.tour.likeIds.length}
+                    {tour.likeIds.length}
                 </Typography>
                 <Modal
                     aria-labelledby="transition-modal-title"
@@ -140,11 +155,11 @@ export default function Tour(props) {
                 >
                     <UserList listUser={userList} title={"Liked"} handleClose={handleClose} />
                 </Modal>
-                <IconButton onClick={(e) => (setShowCmt(!showCmt))}>
+                <IconButton onClick={() => (setShowCmt(value => !value))}>
                     <QuestionAnswer />
                 </IconButton>
                 <Typography className={classes.numCmt}>
-                    {props.tour.comment.length}
+                    {tour.comment.length}
                 </Typography>
                 <IconButton>
                     <Share />
@@ -155,8 +170,8 @@ export default function Tour(props) {
             <Collapse className={classes.cmt} in={showCmt}>
                 <hr className={classes.line} />
                 <div className={classes.listCmt}>
-                    {props.tour.comment.map((cmt, index) => (
-                        <Comment comment={cmt} key={index} />
+                    {tour.comment.map((cmt) => (
+                        <Comment comment={cmt} key={cmt._id} />
                     ))}
                 </div>
             </Collapse>

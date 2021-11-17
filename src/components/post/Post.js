@@ -54,9 +54,11 @@ const userList = [
 
 export default function Post(props) {
 
+    const { post } = props;
+
     const [showCmt, setShowCmt] = useState(false);
-    const [like, setLike] = useState(props.post.liked);
-    const [numLike, setNumLike] = useState(props.post.numLike);
+    const [like, setLike] = useState(post.liked);
+    const [numLike, setNumLike] = useState(post.numLike);
 
     const classes = postStyles({ showCmt });
 
@@ -85,7 +87,7 @@ export default function Post(props) {
         <Card className={classes.cardContainer}>
             <CardHeader
                 avatar={
-                    <Avatar alt="avatar" src={props.post.user.avatarImage} />
+                    <Avatar alt="avatar" src={post.user.avatarImage} />
                 }
                 action={
                     <IconButton aria-label="settings">
@@ -93,23 +95,23 @@ export default function Post(props) {
                     </IconButton>
                 }
                 title={
-                    <Link to={"/profile/" + props.post.user._id} >
-                        <Typography className={classes.userName}>{props.post.user.lastName + " " + props.post.user.firstName}</Typography>
+                    <Link to={"/profile/" + post.user._id} >
+                        <Typography className={classes.userName}>{post.user.lastName + " " + post.user.firstName}</Typography>
                     </Link>
                 }
-                subheader={props.post.time}
+                subheader={post.time}
             />
 
             <CardContent>
-                {props.post.isPostReview && <Rating name="location-rating" value={props.post.rate} readOnly style={{ marginBottom: 20 }} />}
+                {post.isPostReview && <Rating name="location-rating" value={post.rate} readOnly style={{ marginBottom: 20 }} />}
                 <SeeMoreText
                     variant="body1"
                     maxText={6}
-                    text={props.post.content}
+                    text={post.content}
                 />
                 <div className={classes.hashtagWrap}>
-                    {props.post.hashtags.map((item) =>
-                        <Typography className={classes.hashtag}>{item}</Typography>
+                    {post.hashtags.map((item, index) =>
+                        <Typography className={classes.hashtag} key={index}>{item}</Typography>
                     )}
                 </div>
             </CardContent>
@@ -117,7 +119,7 @@ export default function Post(props) {
             <CardMedia>
 
                 {/* <img src="https://img.thuthuatphanmem.vn/uploads/2018/10/26/anh-dep-cau-rong-da-nang-viet-nam_055418962.jpg" alt="img" /> */}
-                <ImageList imgList={props.post.postImages} />
+                <ImageList imgList={post.postImages} />
             </CardMedia>
 
             <CardActions>
@@ -128,7 +130,7 @@ export default function Post(props) {
 
                 </IconButton>
                 <Typography className={classes.numLike} onClick={handleOpen}>
-                    {props.post.likes.length}
+                    {post.likes.length}
                 </Typography>
                 <Modal
                     aria-labelledby="transition-modal-title"
@@ -148,7 +150,7 @@ export default function Post(props) {
                     <QuestionAnswer />
                 </IconButton>
                 <Typography className={classes.numCmt}>
-                    {props.post.comments.length}
+                    {post.comments.length}
                 </Typography>
                 <IconButton>
                     <Share />
@@ -158,8 +160,8 @@ export default function Post(props) {
             <Collapse className={classes.cmt} in={showCmt}>
                 <hr className={classes.line} />
                 <div className={classes.listCmt}>
-                    {props.post.comments.map((cmt) => (
-                        <Comment comment={cmt} />
+                    {post.comments.map((cmt) => (
+                        <Comment comment={cmt} key={cmt._id} />
                     ))}
                 </div>
             </Collapse>

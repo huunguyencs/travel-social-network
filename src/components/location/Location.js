@@ -7,6 +7,8 @@ import { locationCardStyles } from "../../style";
 
 export default function LocationCard(props) {
 
+    const { location } = props;
+
     const classes = locationCardStyles();
 
     return (
@@ -14,21 +16,21 @@ export default function LocationCard(props) {
             <CardActionArea>
                 <CardMedia
                     className={classes.media}
-                    image={props.location.image}
-                    title={props.location.name}
+                    image={location.image}
+                    title={location.name}
                 />
             </CardActionArea>
             <CardContent className={classes.content}>
                 <Typography variant="h5">
-                    {props.location.locationName}
+                    {location.locationName}
                 </Typography>
-                <Rating name="read-only" value={props.location.rate} readOnly size="small" />
+                <Rating name="read-only" value={location.rate} readOnly size="small" />
                 {/* <Typography variant="body1">
                     {props.location.description}
                 </Typography> */}
             </CardContent>
             <CardActions>
-                <Button className={classes.seeMoreBtn} component={Link} to={"/location/" + props.location._id}>
+                <Button className={classes.seeMoreBtn} component={Link} to={"/location/" + location._id}>
                     Xem chi tiết
                 </Button>
             </CardActions>

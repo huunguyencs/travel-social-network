@@ -47,8 +47,8 @@ export default function Menu(props) {
 
 
         <List className={classes.panel}>
-            {menuList.menu.slice(0, 4).map((item) => (
-                <Link style={{ textDecoration: "none", }} to={renderLink(item.link)}>
+            {menuList.menu.slice(0, 4).map((item, index) => (
+                <Link style={{ textDecoration: "none", }} to={renderLink(item.link)} key={index}>
                     <ListItem button className={isActive(item.link) ? [classes.item, classes.itemActive] : classes.item}>
                         <ListItemIcon>
                             {<item.icon className={classes.icon} />}
@@ -64,8 +64,8 @@ export default function Menu(props) {
                 hasMoreBtn && (
                     <>
                         <Collapse in={more}>
-                            {menuList.menu.slice(4).map((item) => (
-                                <Link style={{ textDecoration: "none", }} to={renderLink(item.link)}>
+                            {menuList.menu.slice(4).map((item, index) => (
+                                <Link style={{ textDecoration: "none", }} to={renderLink(item.link)} key={index}>
                                     <ListItem button className={isActive(item.link) ? [classes.item, classes.itemActive] : classes.item}>
                                         <ListItemIcon>
                                             {<item.icon className={classes.icon} />}

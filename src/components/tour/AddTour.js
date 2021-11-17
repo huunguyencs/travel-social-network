@@ -81,8 +81,8 @@ export default function AddTour(props) {
                     {createTour.content}
                 </Typography>
                 <div className={classes.hashtagWrap}>
-                    {createTour.hashtag.map((hashtag) => (
-                        <Typography className={classes.hashtag}>{hashtag}</Typography>
+                    {createTour.hashtag.map((hashtag, index) => (
+                        <Typography className={classes.hashtag} key={index}>{hashtag}</Typography>
                     ))}
                 </div>
                 <Button onClick={() => setShowChangeInfo(true)}>Chỉnh sửa thông tin</Button>

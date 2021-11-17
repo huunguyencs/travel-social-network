@@ -9,17 +9,19 @@ import * as dateUtils from '../../utils/date';
 
 export default function UpdateDateForm(props) {
 
+    const { currentDate, indexDate, handleClose } = props;
+
     const dispatch = useDispatch();
 
-    const [selectedDate, setSelectedDate] = useState(dateUtils.convertStrToDate(props.currentDate));
+    const [selectedDate, setSelectedDate] = useState(dateUtils.convertStrToDate(currentDate));
     const handleDateChange = (date) => {
         setSelectedDate(date);
     };
 
     const handleSubmit = (e) => {
         e.preventDefault();
-        dispatch(tourAction.updateDate({ indexDate: props.indexDate, newDate: selectedDate }));
-        props.handleClose();
+        dispatch(tourAction.updateDate({ indexDate: indexDate, newDate: selectedDate }));
+        handleClose();
     }
 
     return (

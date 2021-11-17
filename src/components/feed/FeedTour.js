@@ -148,6 +148,7 @@ export default function FeedTour(props) {
                         tour.tours.map((tour) => (
                             <Tour
                                 tour={tour}
+                                key={tour._id}
                             />
                         ))
                     }

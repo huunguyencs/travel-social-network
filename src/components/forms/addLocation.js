@@ -33,7 +33,7 @@ export default function AddLocationForm(props) {
     const classes = formStyles();
 
     return (
-        <Paper className={[classes.paperContainer, classes.addFormContainer]}>
+        <Paper className={`${classes.paperContainer} ${classes.addFormContainer}`}>
             <div className={classes.textTitle}>
                 <Typography variant="h5">
                     Thêm địa điểm
@@ -69,6 +69,6 @@ export default function AddLocationForm(props) {
                     </Button>
                 </div>
             </form>
-        </Paper >
+        </ Paper >
     )
 }
