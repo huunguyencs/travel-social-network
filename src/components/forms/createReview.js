@@ -39,7 +39,7 @@ export default function CreateReviewForm(props) {
                 <Paper className={classes.paperContainer}>
                     <div className={classes.textTitle}>
                         <Typography variant="h5">
-                            Tạo bài viết
+                            Tạo review
                         </Typography>
                     </div>
                     <form>

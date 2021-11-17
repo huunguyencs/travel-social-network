@@ -48,7 +48,7 @@ export default function ImageList(props) {
                         setPictureIndex(0);
                     }}
                 >
-                    <img src={imageList[0].url} alt={imageList[0].title} />
+                    <img src={imageList[0].url} alt={imageList[0]?.title} />
                 </ImageListItem>
                 {imageList.length > 1 && (
                     <ImageListItem
@@ -59,7 +59,7 @@ export default function ImageList(props) {
                             setPictureIndex(1);
                         }}
                     >
-                        <img src={imageList[1].url} alt={imageList[1].title} />
+                        <img src={imageList[1].url} alt={imageList[1]?.title} />
                         {(imageList.length > 2) && <Typography variant="h2" className={classes.textCenter}>{imageList.length - 1}+</Typography>}
                     </ImageListItem>
                 )}
@@ -70,10 +70,10 @@ export default function ImageList(props) {
                     mainSrc={imageList[pictureIndex].url}
                     nextSrc={imageList[(pictureIndex + 1) % imageList.length].url}
                     prevSrc={imageList[(pictureIndex + imageList.length - 1) % imageList.length].url}
-                    mainSrcThumbnail={imageList[pictureIndex].title}
+                    mainSrcThumbnail={imageList[pictureIndex]?.title}
                     imageCaption={imageList[pictureIndex]?.title}
-                    nextSrcThumbnail={imageList[(pictureIndex + 1) % imageList.length].title}
-                    prevSrcThumbnail={imageList[(pictureIndex + imageList.length - 1) % imageList.length].title}
+                    nextSrcThumbnail={imageList[(pictureIndex + 1) % imageList.length]?.title}
+                    prevSrcThumbnail={imageList[(pictureIndex + imageList.length - 1) % imageList.length]?.title}
                     onCloseRequest={() => setOpen(false)}
                     onMoveNextRequest={() => setPictureIndex((pictureIndex + 1) % imageList.length)}
                     onMovePrevRequest={() => setPictureIndex((pictureIndex + imageList.length - 1) % imageList.length)}
