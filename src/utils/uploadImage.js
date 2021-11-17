@@ -1,3 +1,5 @@
+import * as env from '../key/env';
+
 export const checkSizeImage = (file) => {
     if (!file)
         return "Tệp không tồn tại!";
@@ -14,16 +16,15 @@ export const uploadImages = async (images) => {
     for (const image of images) {
         const formData = new FormData();
         formData.append("file", image);
-        formData.append("upload_preset", "");
-        formData.append("cloud_name", "");
+        formData.append("upload_preset", env.CLOUDINARY_UPLOAD_PRESET);
 
         try {
-            const data = await fetch("", {
+            const data = await fetch(env.CLOUDINARY_UPLOAD_URL, {
                 method: "POST",
                 body: formData
             })
             const res = await data.json();
-            imageArr.push({ public_id: res.public_id, url: res.secure_url });
+            imageArr.push({ _id: res.public_id, url: res.secure_url });
         }
         catch (err) {
 
