@@ -176,7 +176,7 @@ export default function Register(props) {
                     />
                     <TextField
                         autoComplete=""
-                        label="Password (8+ Charactor)"
+                        label="Mật khẩu (8+ kí tự)"
                         variant="outlined"
                         name="password"
                         type="password"
@@ -188,7 +188,7 @@ export default function Register(props) {
                     />
                     <TextField
                         autoComplete=""
-                        label="Confirm password"
+                        label="Xác nhận mật khẩu"
                         variant="outlined"
                         name="confirmPassword"
                         type="password"

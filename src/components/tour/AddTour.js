@@ -67,8 +67,13 @@ export default function AddTour(props) {
         setShowDeteleDate(false);
     }
 
+    const handleCloseUpdateInfo = () => {
+        setShowChangeInfo(false)
+    }
+
 
     const classes = tourdetailStyles();
+
 
 
     return (
@@ -77,21 +82,25 @@ export default function AddTour(props) {
                 <Typography variant="h3" className={classes.title}>{createTour.name}</Typography>
             </div>
             <div className={classes.info}>
-                <Typography variant="body1" className={classes.content}>
-                    {createTour.content}
-                </Typography>
+                <div className={classes.itemInfo}>
+                    <Typography variant="body1" className={classes.content}>
+                        {createTour.content}
+                    </Typography>
+                </div>
                 <div className={classes.hashtagWrap}>
-                    {createTour.hashtag.map((hashtag, index) => (
+                    {createTour.hashtag.split(" ").map((hashtag, index) => (
                         <Typography className={classes.hashtag} key={index}>{hashtag}</Typography>
                     ))}
                 </div>
-                <Button onClick={() => setShowChangeInfo(true)}>Chỉnh sửa thông tin</Button>
+                <div className={classes.itemInfo}>
+                    <Button onClick={() => setShowChangeInfo(true)}>Chỉnh sửa thông tin</Button>
+                </div>
                 <Modal
                     aria-labelledby="transition-modal-title"
                     aria-describedby="transition-modal-description"
                     className={classes.modal}
                     open={showChangeInfo}
-                    onClose={() => setShowChangeInfo(false)}
+                    onClose={handleCloseUpdateInfo}
                     closeAfterTransition
                     BackdropComponent={Backdrop}
                     BackdropProps={{
@@ -99,7 +108,7 @@ export default function AddTour(props) {
                     }}
                 >
                     <Fade in={showChangeInfo}>
-                        <UpdateTourInfo />
+                        <UpdateTourInfo name={createTour.name} content={createTour.content} hashtag={createTour.hashtag} image={createTour.image} handleClose={handleCloseUpdateInfo} />
                     </Fade>
                 </Modal>
             </div>

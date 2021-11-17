@@ -59,7 +59,7 @@ export default function CreatePostForm(props) {
                             </div>
                             <div >
                                 <InputBase
-                                    placeholder="Hashtag. Ex: #bien #lehoi ..."
+                                    placeholder="Hashtag (cách nhau bằng dấu cách). Vd: #bien #lehoi ..."
                                     variant="outlined"
                                     name="hashtag"
                                     id="hashtag"

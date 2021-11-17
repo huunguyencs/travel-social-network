@@ -111,14 +111,13 @@ export default function Login(props) {
                         required
                         error={errors?.email}
                         helperText={errors?.email}
-                        required
                         value={state.email}
                         onChange={handleInput}
                     >
                     </TextField>
                     <TextField
                         autoComplete=""
-                        label="Password"
+                        label="Mật khẩu"
                         variant="outlined"
                         required
                         id="password"

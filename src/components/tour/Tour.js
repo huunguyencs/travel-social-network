@@ -95,7 +95,7 @@ export default function Tour(props) {
 
             <CardMedia>
 
-                {tour?.image !== "" && <img src={tour.image} width="100%" alt="Can not load image" />}
+                {tour?.image !== "" && <img src={tour.image} width="100%" alt="Can not load" />}
             </CardMedia>
 
             <CardContent>

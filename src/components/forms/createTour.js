@@ -7,7 +7,7 @@ import { Button, Paper, TextField, Typography } from "@material-ui/core";
 import { useHistory } from "react-router-dom";
 
 import { formStyles } from "../../style";
-import * as tourAction from '../../redux/actions/createTourAction';
+import { createTour } from '../../redux/actions/createTourAction';
 import LoginModal from "../modal/login";
 
 
@@ -34,7 +34,7 @@ export default function CreateTourForm(props) {
     const handleClick = (e) => {
         e.preventDefault();
         if (name !== "") {
-            dispatch(tourAction.createTour({ name: name, date: selectedDate }));
+            dispatch(createTour({ name: name, date: selectedDate }));
             history.push("/createtour");
         }
 

@@ -4,7 +4,8 @@ import * as dateUtils from '../../utils/date';
 const INIT_STATE = {
     name: "",
     content: "",
-    hashtag: [],
+    hashtag: "",
+    image: null,
     tour: [],
     isFetching: false,
     error: null,
@@ -111,13 +112,17 @@ const createTourReducer = (state = INIT_STATE, action) => {
             return {
                 ...state,
                 name: "",
-                tour: []
+                tour: [],
+                image: null,
+                hashtag: "",
+                content: "",
             }
         }
         case TOUR_TYPES.UPDATE_INFO: {
             return {
                 ...state,
                 name: action.payload.name,
+                image: action.payload.image,
                 hashtag: action.payload.hashtag,
                 content: action.payload.content,
             }

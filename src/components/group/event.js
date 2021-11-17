@@ -2,7 +2,7 @@ import React from "react";
 import { List } from "@material-ui/core";
 import { ListItem } from "@material-ui/core";
 import { CheckCircle, Stars } from "@material-ui/icons";
-import { Avatar, Container, Divider, Typography } from "@material-ui/core";
+import { Container, Typography } from "@material-ui/core";
 
 import profileStyles from "../../style";
 

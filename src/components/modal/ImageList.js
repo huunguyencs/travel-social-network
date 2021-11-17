@@ -10,14 +10,14 @@ const useStyles = makeStyles((theme) => ({
         margin: 20,
     },
     imageItem: {
-        cursor: "pointer"
+        cursor: "pointer",
+        transition: "0.5s",
+        "&:hover": {
+            filter: "brightness(85%)",
+        }
     },
     more: {
         filter: "brightness(90%)",
-        transition: "0.5s",
-        "&:hover": {
-            filter: "brightness(80%)",
-        }
     },
     textCenter: {
         position: "absolute",

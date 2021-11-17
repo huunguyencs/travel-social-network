@@ -1,7 +1,7 @@
-import { Button, Card, CardActions, CardContent, CardMedia, Collapse, Grid, IconButton, Modal, Typography, Backdrop, Fade, Menu, MenuItem, Dialog, DialogTitle, DialogActions } from "@material-ui/core";
+import { Button, Card, CardContent, CardMedia, Collapse, Grid, IconButton, Modal, Typography, Backdrop, Fade, Menu, MenuItem, Dialog, DialogTitle, DialogActions } from "@material-ui/core";
 import React, { useState } from "react";
-import { Rating } from '@material-ui/lab'
-import { Favorite, FavoriteBorderOutlined, MoreVert } from "@material-ui/icons";
+// import { Rating } from '@material-ui/lab'
+import { MoreVert } from "@material-ui/icons";
 import { useDispatch } from "react-redux";
 import { Link } from "react-router-dom";
 
@@ -47,9 +47,9 @@ export default function Location(props) {
     const isReviewed = false;
     const [showRv, setShowRv] = useState(false);
     const [showCreateRv, setShowCreateRv] = useState(false);
-    const [like, setLike] = useState(false);
-    const [numLike, setNumLike] = useState(0);
-    const [valueRate, setValueRate] = useState(0);
+    // const [like, setLike] = useState(false);
+    // const [numLike, setNumLike] = useState(0);
+    // const [valueRate, setValueRate] = useState(0);
     const [anchorEl, setAnchorEl] = useState(null);
     const [editLoc, setEditLoc] = useState(false);
     const [showDeleteLocation, setShowDeleteLocation] = useState(false);
@@ -71,11 +71,11 @@ export default function Location(props) {
         handleCloseMenu();
     }
 
-    const likeHandle = (e) => {
-        setLike(!like);
-        if (!like) setNumLike(numLike + 1);
-        else setNumLike(numLike - 1);
-    }
+    // const likeHandle = (e) => {
+    //     setLike(!like);
+    //     if (!like) setNumLike(numLike + 1);
+    //     else setNumLike(numLike - 1);
+    // }
 
     const handleShow = () => {
         setShowCreateRv(true);
@@ -104,7 +104,7 @@ export default function Location(props) {
         <Card className={classes.cardContainer}>
 
             <Grid container>
-                <Grid item md={5}>
+                <Grid item md={5} className={classes.imageLocation}>
                     <CardMedia className={classes.imgContainer}>
                         <img src={locationInfo.location.image} alt="location" className={classes.img} />
                     </CardMedia>

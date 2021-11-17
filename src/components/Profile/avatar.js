@@ -1,6 +1,6 @@
 import React, { useState } from "react";
-import { WhatsApp, Cancel, RssFeed } from "@material-ui/icons";
-import { Avatar, Button, Container, Typography, Modal, Backdrop, List, ListItem, ListItemText, ListItemAvatar, ListItemSecondaryAction } from "@material-ui/core";
+import { WhatsApp, RssFeed } from "@material-ui/icons";
+import { Avatar, Button, Container, Typography, Modal, Backdrop } from "@material-ui/core";
 
 import { profileStyles } from "../../style";
 import UserList from "../modal/userList";
@@ -94,7 +94,7 @@ export default function Profile_Avatar(props) {
           </Typography>
           <div >
             <Typography variant="body1" color="#9b9696" component="p" style={{ display: "flex", fontSize: "20px", }}>
-              <Typography style={{ marginRight: "20px", cursor: "pointer", }} onClick={handleOpenFollowing} >30 Following</Typography>
+              <Typography style={{ marginRight: "20px", cursor: "pointer", }} onClick={handleOpenFollowing} >30 đang theo dõi</Typography>
               <Modal
                 aria-labelledby="transition-modal-title"
                 aria-describedby="transition-modal-description"
@@ -107,9 +107,9 @@ export default function Profile_Avatar(props) {
                   timeout: 500,
                 }}
               >
-                <UserList listUser={userList} title={"Following"} handleClose={handleCloseFollowing} />
+                <UserList listUser={userList} title={"Đang theo dõi"} handleClose={handleCloseFollowing} />
               </Modal>
-              <Typography style={{ cursor: "pointer", }} onClick={handleOpenFollower} >30 Follower</Typography>
+              <Typography style={{ cursor: "pointer", }} onClick={handleOpenFollower} >30 người theo dõi</Typography>
               <Modal
                 aria-labelledby="transition-modal-title"
                 aria-describedby="transition-modal-description"
@@ -122,17 +122,17 @@ export default function Profile_Avatar(props) {
                   timeout: 500,
                 }}
               >
-                <UserList listUser={userList} title={"Follower"} handleClose={handleCloseFollower} />
+                <UserList listUser={userList} title={"Người theo dõi"} handleClose={handleCloseFollower} />
               </Modal>
             </Typography>
           </div>
         </div>
         <div className={classes.profile_button}>
           <Button startIcon={< RssFeed />} className={classes.button}>
-            Follow
+            Theo dõi
           </Button>
           <Button startIcon={<WhatsApp />} className={classes.button}>
-            Chat
+            Nhắn tin
           </Button>
         </div>
       </div>

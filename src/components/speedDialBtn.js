@@ -10,9 +10,9 @@ import CreateTourForm from "./forms/createTour";
 import { speedDialStyles } from "../style";
 
 const actions = [
-    { icon: < CreatePostIcon />, name: "Create Post" },
-    { icon: < CreateTourIcon />, name: "Create Tour" },
-    { icon: <IconButton component={Link} to={"/message"}><WhatsApp /></IconButton>, name: "Message" },
+    { icon: < CreatePostIcon />, name: "Tạo bài viết" },
+    { icon: < CreateTourIcon />, name: "Tạo hành trình" },
+    { icon: <IconButton component={Link} to={"/message"}><WhatsApp /></IconButton>, name: "Tin nhắn" },
 ]
 
 function CreatePostIcon(props) {
