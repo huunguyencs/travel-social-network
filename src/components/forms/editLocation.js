@@ -46,7 +46,7 @@ export default function EditLocationForm(props) {
             dispatch(getLocations());
         }
 
-    })
+    }, [location.locations, dispatch])
 
     // onEffect load listLocation
 

@@ -131,7 +131,7 @@ export default function FeedReview(props) {
 
     useEffect(() => {
         dispatch(getPosts({ type: "review" }));
-    })
+    }, [dispatch])
 
     return (
         <Container className={classes.container}>
