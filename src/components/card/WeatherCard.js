@@ -5,6 +5,25 @@ import { cardStyles } from "../../style";
 import { weatherFocast } from "../../utils/weather";
 import { convertDateToStr } from "../../utils/date";
 
+const convertToVN = (main) => {
+    switch (main) {
+        case "Thunderstorm":
+            return "Có giông";
+        case "Drizzle":
+            return "Mưa nhẹ";
+        case "Rain":
+            return "Có mưa";
+        case "Snow":
+            return "Có tuyết";
+        case "Clear":
+            return "Trong lành";
+        case "Clouds":
+            return "Có mây";
+        default:
+            return main;
+    }
+}
+
 export default function WeatherCard(props) {
 
     const { name } = props;
@@ -36,7 +55,7 @@ export default function WeatherCard(props) {
 
                         <div className={classes.temp}>
                             <Typography variant="h4">~ {weather.main.temp - 273.15} °C</Typography>
-                            <Typography variant="h6">{weather.weather[0].main}</Typography>
+                            <Typography variant="h6">{convertToVN(weather.weather[0].main)}</Typography>
                         </div>
 
                         <div style={{ display: "flex", justifyContent: "center", marginTop: 10 }}>
