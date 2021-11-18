@@ -1,22 +1,26 @@
 const Posts = require('../Models/post.model')
+const Comments = require('../Models/comment.model')
 
 class PostController {
-
-    ///
+    //co hai loai post
     async createPost(req, res){
         try{
-            const  {content, images, postType, start, timeStart, cost} = req.body
+            const  {content, images, isPostReview, start, cost, isPublic,locationId} = req.body
 
             const newPost = new Posts({
-                userId: req.user._id, content, postImages:images, isPortReview, start, timeStart, cost
+                userId: req.user._id, content, images, isPostReview, start, cost, isPublic, locationId
             })
              await newPost.save()
              res.json({
                  success:true,
-                 message:"create post successful",
+                 message:"Create post successful",
                  newPost: {
                     ...newPost._doc,
-                    userId: req.user
+                    userId: {
+                        fullname: req.user.fullname,
+                        _id: req.user._id,
+                        avatar: req.user.avatar
+                    }
                 }
              })
         }catch(err){
@@ -28,10 +32,10 @@ class PostController {
     
     async updatePost(req, res){
         try{
-            const  {content, images, isPortReview, start, timeStart, cost} = req.body
+            const  {content, images, start, cost, isPublic,locationId} = req.body
             const post = await Posts.findOneAndUpdate({ _id: req.params.id }, {
-                content, postImages:images, isPortReview, start, timeStart, cost
-            })
+                content, images, start, cost, isPublic, locationId
+            }, { new: true })
             res.json({success:true, message:"update post successful", post})
 
         }catch(err){
@@ -42,7 +46,7 @@ class PostController {
     //lấy pots của 1 user cụ thể (params.id)
     async getUserPost(req, res){
         try{
-            const posts = await Posts.find({ user: req.params.id }).sort("-createdAt")
+            const posts = await Posts.find({ userId: req.params.id }).sort("-createdAt")
 
             res.json({success:true, message:"get user post successful", posts})
 
@@ -63,7 +67,7 @@ class PostController {
         }
     }
     
-    // lấy thông tin 1 post theo id
+    // lấy thông tin 1 post theo params.id
     async getPost(req, res){
         try{
             const post = await Posts.findById(req.params.id)
@@ -76,7 +80,7 @@ class PostController {
                     },
                 })
             res.json({
-                success:true, message:"get info 1 post success"
+                success:true, message:"get info 1 post success", post
             });
         }catch(err){
             console.log(err)
@@ -118,7 +122,7 @@ class PostController {
             })
 
             res.json({
-                success:true, message:"like post success"
+                success:true, message:"unlike post success"
             });
         }catch(err){
             console.log(err)
@@ -129,11 +133,10 @@ class PostController {
     async deletePost(req, res){
         try{
             const post = await Posts.findOneAndDelete({ _id: req.params.id, userId: req.user._id });
-
-            await Comments.deleteMany({ _id: { $in: post.comments } });
+            if(post.comments != null) await Comments.deleteMany({ _id: { $in: post.comments } });
 
             res.json({
-                success:true, message:"delete post success"
+                success:true, message:"Delete post success"
             });
         }catch(err){
             console.log(err)

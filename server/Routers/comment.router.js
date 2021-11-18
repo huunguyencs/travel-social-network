@@ -1,6 +1,7 @@
 const express = require('express');
 const router = express.Router();
 const CommentController = require('../Controllers/comment.controller');
+const auth = require('../Middlewares/auth');
 
 router.post('/create_comment', auth, CommentController.createComment);
 
@@ -9,8 +10,8 @@ router.delete('/:id', auth, CommentController.deleteComment)
 
 
 router.patch('/:id/like', auth, CommentController.likeComment)
-
 router.patch('/:id/unlike', auth, CommentController.unlikeComment)
+
 
 
 
