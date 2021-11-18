@@ -9,6 +9,7 @@ export const getPosts = (data) => async (dispatch) => {
 
     try {
         const { type } = data;
+        console.log(type);
         // call api to get post list
         const res = [
             {
@@ -186,6 +187,23 @@ export const getPosts = (data) => async (dispatch) => {
         dispatch(postAction.error({ error: err }))
     }
 
+}
+
+export const getMorePost = (data) => async (dispatch) => {
+    dispatch(postAction.loading());
+
+    try {
+        const { type } = data;
+
+        console.log(type);
+        // call api to get more post
+        const res = [];
+
+        dispatch(postAction.getMorePost({ posts: res }));
+    }
+    catch (err) {
+        dispatch(postAction.error({ error: err }));
+    }
 }
 
 export const createPost = (data) => async (dispatch) => {

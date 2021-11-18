@@ -13,6 +13,15 @@ const postRecuder = (state = INIT_STATE, action) => {
         case POST_TYPES.GET_POSTS: {  // tai danh sach cac post (thanh cong)
             return {
                 ...state,
+                posts: action.payload.posts,
+                page: 2,
+                loading: false,
+                error: null,
+            }
+        }
+        case POST_TYPES.GET_MORE_POSTS: {
+            return {
+                ...state,
                 posts: [...action.payload.posts],
                 page: state.page + 1,
                 loading: false,

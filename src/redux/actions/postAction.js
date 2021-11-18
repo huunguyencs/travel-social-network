@@ -14,6 +14,13 @@ export const getPosts = (props) => {
     }
 }
 
+export const getMorePost = (props) => {
+    return {
+        type: POST_TYPES.GET_MORE_POSTS,
+        payload: props,
+    }
+}
+
 export const updatePost = (props) => {
     return {
         type: POST_TYPES.UPDATE_POST,

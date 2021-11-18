@@ -136,7 +136,8 @@ export default function FeedTour(props) {
     const { tour } = useSelector(state => state);
 
     useEffect(() => {
-        dispatch(getTours());
+        if (tour.tours.length === 0)
+            dispatch(getTours());
     }, [dispatch])
 
     return (
