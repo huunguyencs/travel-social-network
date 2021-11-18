@@ -1,7 +1,8 @@
 const mongoose = require('mongoose');
 
 const groupSchema = new mongoose.Schema({
-   groupName:{
+    members:[{ type: mongoose.Types.ObjectId, ref: 'users'}],
+    groupName:{
        type:String,
        required: true
    },
@@ -9,7 +10,6 @@ const groupSchema = new mongoose.Schema({
        type: Boolean,
        default: true
    },
-   members:[{ type: mongoose.Types.ObjectId, ref: 'users'}],
    description:{
        type:String,
        required: true

@@ -1,15 +1,25 @@
 const mongoose = require('mongoose');
 
 const serviceSchema = new mongoose.Schema({
-   serviceName:{
+   name:{
        type:String,
        required: true
    },
    description: String,
    price: Number,
-   typeService: String,
-   location: {type: mongoose.Types.ObjectId, ref: 'locations'},
-   rate: Number
+   type: String,
+   locationId: {type: mongoose.Types.ObjectId, ref: 'locations'},
+   rate: [
+       {
+            userId: {type: mongoose.Types.ObjectId, ref: 'users'},
+            rate: Number,
+            content: String
+       }
+    ],
+    images:[
+        {type:String}
+    ]
+
 },{
     timestamps: true
 })

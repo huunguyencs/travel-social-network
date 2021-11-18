@@ -1,16 +1,14 @@
 const mongoose = require('mongoose');
 
 const provinceSchema = new mongoose.Schema({
-   Name:{
+   name:{
        type:String,
        required: true
    },
-   information:{
-       type: String,
-       required: true
-   },
+   information: String,
    locations:[{ type: mongoose.Types.ObjectId, ref: 'locations'}],
-//    service: [{ type: mongoose.Types.ObjectId, ref: 'service'}]
+   services: [{ type: mongoose.Types.ObjectId, ref: 'services'}],
+   image: {type: String}
 },{
     timestamps: true
 })

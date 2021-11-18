@@ -39,10 +39,10 @@ const userSchema = new mongoose.Schema({
         type:String,
         default: 'male'
     },
-    brithday: Date,
-    comfirmCooperator: {
-        type:Boolean,
-        default: false
+    birthday: Date,
+    confirmAccount: {
+        state: {type:Boolean, default: false},
+        confirmId: { type: mongoose.Types.ObjectId, ref: 'confirms'}
     },
     hobbies: Array,
     address: {
@@ -50,7 +50,8 @@ const userSchema = new mongoose.Schema({
         default: ''
     },
     followings:[{ type: mongoose.Types.ObjectId, ref: 'users'}], // nguoi minh theo doi
-    followers:[{type: mongoose.Types.ObjectId, ref: 'users'}]  //nguoi khac theo doi minh
+    followers:[{type: mongoose.Types.ObjectId, ref: 'users'}],  //nguoi khac theo doi minh
+    contract: { type: mongoose.Types.ObjectId, ref: 'contracts'}
 },{
     timestamps: true
 })

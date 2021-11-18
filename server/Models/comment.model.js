@@ -1,18 +1,18 @@
 const mongoose = require('mongoose');
 
 const commentSchema = new mongoose.Schema({
-    postId:{ type: mongoose.Types.ObjectId, ref: 'posts'},
+    commentType:{ 
+       type: String
+    },
     likes: [{ type: mongoose.Types.ObjectId, ref: 'users' }],
     content:{
         type:String, 
         required:true
     },
     userId:{ type: mongoose.Types.ObjectId, ref: 'users' },
-    // fullname: String,
-    // avatarUser:{
-    //     type:String,
-    //     default: 'https://res.cloudinary.com/devatchannel/image/upload/v1602752402/avatar/avatar_cugq40.png'
-    // }
+    postId: {type: mongoose.Types.ObjectId, ref: 'posts'},
+    tourId: { type: mongoose.Types.ObjectId, ref: 'tours' },
+    activityId: { type: mongoose.Types.ObjectId, ref: 'activities' }
 },{
     timestamps: true
 })
