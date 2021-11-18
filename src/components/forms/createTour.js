@@ -79,7 +79,7 @@ export default function CreateTourForm(props) {
                                 />
                             </MuiPickersUtilsProvider>
                         </div>
-                        <div>
+                        <div style={{ display: "flex", justifyContent: "center" }}>
                             <Button className={classes.button} onClick={handleClick} type="submit">
                                 Tạo
                             </Button>

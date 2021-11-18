@@ -3,12 +3,14 @@ import { Typography, Grid, Box, Tab, Tabs, IconButton, TextField, Button, Radio 
 import { PhotoCamera } from "@material-ui/icons";
 import PropTypes from 'prop-types';
 import { RadioGroup, FormControlLabel } from "@material-ui/core";
+import DateFnsUtils from '@date-io/date-fns';
 
 import { profileMenu } from "../../../constant/menu";
 import Header from "../../../components/header/Header";
 import LeftBar from "../../../components/leftbar/LeftBar";
 import { profileStyles } from "../../../style";
 import Menu from "../../../components/leftbar/menu";
+import { KeyboardDatePicker, MuiPickersUtilsProvider } from "@material-ui/pickers";
 
 
 function TabPanel(props) {
@@ -84,44 +86,45 @@ function ChangeInfo(props) {
                             variant="outlined"
                             name="name"
                             className="form-input"
-                            required={true}
-                        >
-                        </TextField>
+                            required
+                        />
                         <TextField
                             autoComplete=""
                             label="Email"
                             variant="outlined"
                             name="email"
                             className="form-input"
-                            required={true}
-                        >
-                        </TextField>
+                            required
+                        />
                         <TextField
                             autoComplete=""
                             label="Số điện thoại"
                             variant="outlined"
                             name="phone"
                             className="form-input"
-                            required={true}
-                        >
-                        </TextField>
+                        />
                         <TextField
                             autoComplete=""
                             label="Sở thích du lịch"
                             variant="outlined"
-                            required={true}
                             name="hobby"
                             type="text"
                             className="form-input"
-                        >
-                        </TextField>
-                        <TextField
-                            id="date"
-                            label="Birthday"
-                            type="date"
-                            defaultValue="2017-05-24"
-                            style={{ margin: "10px 0", width: "30%" }}
-                        ></TextField>
+                        />
+                        <MuiPickersUtilsProvider utils={DateFnsUtils}>
+                            <KeyboardDatePicker
+                                name="date"
+                                disableToolbar
+                                variant="inline"
+                                format="dd/MM/yyyy"
+                                margin="normal"
+                                id="date-picker-inline"
+                                label="Chọn ngày khởi hành"
+                                KeyboardButtonProps={{
+                                    'aria-label': 'change date',
+                                }}
+                            />
+                        </MuiPickersUtilsProvider>
                         <RadioGroup row aria-label="position" name="position" defaultValue="man" style={{ marginBottom: "10px" }}>
                             <FormControlLabel value="man" control={<Radio color="primary" />} label="Nam" />
                             <FormControlLabel value="male" control={<Radio color="primary" />} label="Nữ" />

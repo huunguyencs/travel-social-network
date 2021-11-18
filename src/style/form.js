@@ -21,7 +21,9 @@ const formStyles = makeStyles((theme) => ({
     },
     button: {
         // width: "100%",
+        backgroundColor: color.turquoise,
         padding: 10,
+        paddingInline: 30,
     },
     hashtag: {
         width: "100%",

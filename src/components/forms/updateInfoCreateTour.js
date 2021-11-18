@@ -105,7 +105,7 @@ export default function UpdateTourInfo({ name, content, hashtag, image, handleCl
                                 onChange={handleChangeImageUpload}
                             />
                             <label htmlFor="input-image">
-                                <IconButton className={classes.button} variant="raised" component="span">
+                                <IconButton variant="raised" component="span">
                                     <Image titleAccess="Thêm ảnh" />
                                 </IconButton>
                             </label>

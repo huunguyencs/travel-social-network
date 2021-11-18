@@ -79,7 +79,7 @@ export default function CreatePostForm(props) {
                                         onChange={handleChangeImageUpload}
                                     />
                                     <label htmlFor="input-image">
-                                        <IconButton className={classes.button} variant="raised" component="span">
+                                        <IconButton variant="raised" component="span">
                                             <Image titleAccess="Thêm ảnh" />
                                         </IconButton>
                                     </label>

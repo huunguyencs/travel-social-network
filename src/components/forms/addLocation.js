@@ -42,14 +42,16 @@ export default function AddLocationForm(props) {
             <form
                 className={classes.addLocationForm}
             >
-                <Autocomplete
-                    id="choose-location"
-                    options={location.locations}
-                    getOptionLabel={(option) => option.locationName}
-                    style={{ width: 400, marginTop: 30 }}
-                    onChange={(e, value) => setLoc(value)}
-                    renderInput={(params) => <TextField {...params} name="location" label="Địa điểm" variant="outlined" required />}
-                />
+                <div style={{ display: "flex", justifyContent: "center" }}>
+                    <Autocomplete
+                        id="choose-location"
+                        options={location.locations}
+                        getOptionLabel={(option) => option.locationName}
+                        style={{ width: 400, marginTop: 30 }}
+                        onChange={(e, value) => setLoc(value)}
+                        renderInput={(params) => <TextField {...params} name="location" label="Địa điểm" variant="outlined" required />}
+                    />
+                </div>
                 <TextField
                     label="Chi phí dự kiến (nghìn VND)"
                     variant="outlined"
@@ -61,7 +63,7 @@ export default function AddLocationForm(props) {
                 />
                 <div>
                     <Button
-                        className={classes.addLocationSubmit}
+                        className={classes.button}
                         type="submit"
                         onClick={handleSubmit}
                     >
