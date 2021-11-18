@@ -2,7 +2,7 @@ import axios from 'axios';
 
 const client = (token) => {
     const defaultOptions = {
-        baseURL: "",
+        baseURL: "http://localhost:5000",
         headers: {
             Authorization: token,
             "Content-Type": "application/json",

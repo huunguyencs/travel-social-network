@@ -9,11 +9,13 @@ export const callStart = (props) => {
 export const callSuccess = (props) => {
     return {
         type: NOTIFY_TYPES.CALL_SUCCESS,
+        payload: props,
     }
 }
 
 export const callFail = (props) => {
     return {
         type: NOTIFY_TYPES.CALL_FAIL,
+        payload: props,
     }
 }

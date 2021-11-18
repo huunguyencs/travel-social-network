@@ -5,12 +5,19 @@ import Button from '@material-ui/core/Button/Button';
 import { Link } from "react-router-dom";
 
 import Validator, { validatePassword, validatePhoneNumber } from "../utils/validator";
+import { useDispatch, useSelector } from "react-redux";
+import { CircularProgress } from "@material-ui/core";
+import { register } from "../redux/callApi/authCall";
 
 export default function Register(props) {
 
+    const dispatch = useDispatch();
+
+    const { notify } = useSelector(state => state);
+
     const [state, setState] = useState({
-        firstname: "",
-        lastname: "",
+        username: "",
+        fullname: "",
         email: "",
         phone: "",
         password: "",
@@ -25,16 +32,16 @@ export default function Register(props) {
 
     const rules = [
         {
-            field: "firstname",
+            field: "username",
             method: "isEmpty",
             validWhen: false,
-            message: "Họ và chữ lót không được bỏ trống!"
+            message: "Tên tài khoản không được bỏ trống!"
         },
         {
-            field: "lastname",
+            field: "fullname",
             method: "isEmpty",
             validWhen: false,
-            message: "Tên không được bỏ trống!"
+            message: "Tên đầy đủ không được bỏ trống!"
         },
         {
             field: "email",
@@ -97,18 +104,23 @@ export default function Register(props) {
     useEffect(() => {
         if (state.submit) {
             if (Object.keys(errors).length === 0) {
-                console.log("register success")
+                // console.log("register success")
 
                 // call api to register
+                dispatch(register({
+                    username: state.username,
+                    fullname: state.fullname,
+                    password: state.password,
+                    email: state.email,
+                    phone: state.phone,
+                }))
             }
-            else {
-                setState({
-                    ...state,
-                    submit: false,
-                })
-            }
+            setState({
+                ...state,
+                submit: false,
+            })
         }
-    }, [errors, state])
+    }, [errors, state, dispatch])
 
     return (
         <div className="login">
@@ -122,36 +134,32 @@ export default function Register(props) {
                     <h4 className="login-register-switch__active__register">Đăng ký</h4>
                 </div>
                 <form
-                    noValidate
-                    autoComplete="off"
                     onSubmit={handleSubmit}
                 >
-                    <div style={{ display: "flex", margin: 0 }}>
-                        <TextField
-                            autoComplete=""
-                            label="Họ và chữ lót"
-                            variant="outlined"
-                            id="lastname"
-                            name="lastname"
-                            required
-                            className="form-input-half"
-                            error={errors?.lastname}
-                            onChange={handleInput}
-                            helperText={errors?.lastname}
-                        />
-                        <TextField
-                            autoComplete=""
-                            label="Tên"
-                            id="firstname"
-                            variant="outlined"
-                            name="firstname"
-                            required
-                            className="form-input-half"
-                            error={errors?.firstname}
-                            onChange={handleInput}
-                            helperText={errors?.firstname}
-                        />
-                    </div>
+                    <TextField
+                        autoComplete=""
+                        label="Tên tài khoản"
+                        variant="outlined"
+                        id="username"
+                        name="username"
+                        required
+                        className="form-input-half"
+                        error={errors?.username}
+                        onChange={handleInput}
+                        helperText={errors?.username}
+                    />
+                    <TextField
+                        autoComplete=""
+                        label="Tên đầy đủ"
+                        id="fullname"
+                        variant="outlined"
+                        name="fullname"
+                        required
+                        className="form-input-half"
+                        error={errors?.fullname}
+                        onChange={handleInput}
+                        helperText={errors?.fullname}
+                    />
                     <TextField
                         autoComplete=""
                         label="Email"
@@ -222,6 +230,8 @@ export default function Register(props) {
                         </p>
                     </div> */}
 
+                    {notify?.message}
+
                     <div className="login-group">
                         <Button
                             variant="contained"
@@ -229,7 +239,11 @@ export default function Register(props) {
                             type="submit"
                             className="login-button"
                         >
-                            Đăng nhập
+                            {notify.loading ?
+                                <CircularProgress size="25px" color="white" />
+                                : "Đăng ký"
+                            }
+
                         </Button>
                     </div>
                 </form>

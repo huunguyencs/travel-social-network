@@ -5,13 +5,15 @@ const jwt = require('jsonwebtoken');
 class UserController {
     async register(req, res) {
         try {
-            const { fullname, username, email, phone, gender, password } = req.body;
+            const { fullname, username, email, phone, password } = req.body;
 
             // khong can
             //simple validation
-            if (!username || !password || !fullname || !email || !phone || !gender) {
+            console.log(req.body);
+            if (!username || !password || !fullname || !email) {
                 return res.status(400).json({ success: false, message: "Missing field" })
             }
+
             const user_name = await Users.findOne({ username })
             if (user_name) return res.status(400).json({ success: false, message: "This user name already exists." })
 
@@ -25,7 +27,7 @@ class UserController {
             const passwordHash = await bcrypt.hash(password, 12)
 
             const userNew = new Users({
-                fullname, username, email, password: passwordHash, phone, gender
+                fullname, username, email, password: passwordHash, phone
             })
 
 

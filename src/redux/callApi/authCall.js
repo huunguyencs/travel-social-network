@@ -34,11 +34,14 @@ export const register = (data) => async (dispatch) => {
     dispatch(notifyAction.callStart());
     try {
         // call api to login
-        // const res = await request.post("register", data);
+        const res = await request.post("user/register", data, {
+            "Content-Type": "application/json",
+        });
 
-        const res = null;
+        console.log(res);
+
         // stop loading
-        dispatch(notifyAction.callSuccess());
+        dispatch(notifyAction.callSuccess({ message: res.data.message }));
 
         // redirect
 
