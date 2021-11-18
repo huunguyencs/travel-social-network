@@ -1,5 +1,6 @@
 import * as notifyAction from '../actions/notifyAction';
 import * as authAction from '../actions/authAction';
+import request from '../../utils/fetchData';
 
 export const login = (data) => async (dispatch) => {
 
@@ -7,6 +8,7 @@ export const login = (data) => async (dispatch) => {
     dispatch(notifyAction.callStart());
     try {
         // call api to login
+        // const res = await request.post("login", data);
 
         const res = {
             user: {
@@ -16,6 +18,7 @@ export const login = (data) => async (dispatch) => {
             },
             token: "adaskjdhasdhjkasdh",
         };
+
         // stop loading
         dispatch(notifyAction.callSuccess());
         dispatch(authAction.auth({ user: res.user, token: res.token }));
@@ -24,15 +27,14 @@ export const login = (data) => async (dispatch) => {
     catch (err) {
         dispatch(notifyAction.callFail({ error: err }));
     }
-
-
 }
 
-export const signup = (data) => async (dispatch) => {
+export const register = (data) => async (dispatch) => {
 
     dispatch(notifyAction.callStart());
     try {
         // call api to login
+        // const res = await request.post("register", data);
 
         const res = null;
         // stop loading

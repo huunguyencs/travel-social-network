@@ -1,6 +1,14 @@
 import * as notifyAction from '../actions/notifyAction';
 import * as commentAction from '../actions/commentAction';
 
+export const getCommentPost = (data) => async (dispatch) => {
+
+}
+
+export const getCommentTour = (data) => async (dispatch) => {
+
+}
+
 export const createCommentPost = (data) => async (dispatch) => {
     dispatch(notifyAction.callStart());
     const newComments;

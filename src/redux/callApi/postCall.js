@@ -1,5 +1,7 @@
+import request from '../../utils/fetchData';
 import * as notifyAction from '../actions/notifyAction'
 import * as postAction from '../actions/postAction';
+import * as imageUtils from '../../utils/uploadImage';
 
 
 export const getPosts = (data) => async (dispatch) => {
@@ -191,9 +193,12 @@ export const createPost = (data) => async (dispatch) => {
     dispatch(notifyAction.callStart());
     try {
         // call api to save post
+        let image = [];
+        if (data.image.length > 0) image = await imageUtils.uploadImages(data.image);
+
+        // const res = await request.post("post", data);
 
         dispatch(notifyAction.callSuccess());
-
 
     }
     catch (err) {
