@@ -7,6 +7,7 @@ import { login } from '../redux/callApi/authCall';
 import { useHistory } from 'react-router-dom';
 
 import Validator from '../utils/validator';
+import { CircularProgress } from "@material-ui/core";
 
 
 export default function Login(props) {
@@ -14,7 +15,7 @@ export default function Login(props) {
     const history = useHistory();
 
     const dispatch = useDispatch();
-    const { auth } = useSelector(state => state);
+    const { auth, notify } = useSelector(state => state);
     const [state, setState] = useState({
         email: '',
         password: '',
@@ -73,7 +74,10 @@ export default function Login(props) {
     useEffect(() => {
         if (state.submit) {
             if (Object.keys(errors).length === 0) {
-                dispatch(login({ email: state.email, password: state.password }));
+                dispatch(login({
+                    email: state.email,
+                    password: state.password
+                }));
             }
             setState({
                 ...state,
@@ -141,7 +145,10 @@ export default function Login(props) {
                             type="submit"
                             className="login-button"
                         >
-                            Đăng nhập
+                            {notify.loading ?
+                                <CircularProgress size="25px" color="white" />
+                                : "Đăng nhập"
+                            }
                         </Button>
                     </div>
                 </form>

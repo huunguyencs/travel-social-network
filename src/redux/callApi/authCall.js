@@ -8,21 +8,23 @@ export const login = (data) => async (dispatch) => {
     dispatch(notifyAction.callStart());
     try {
         // call api to login
-        // const res = await request.post("login", data);
+        const res = await request.post("user/login", data, {
+            "Content-Type": "application/json",
+        });
 
-        const res = {
-            user: {
-                firstName: "Hữu",
-                lastName: "Nguyễn",
-                avatarImage: "https://www.w3schools.com/howto/img_avatar.png"
-            },
-            token: "adaskjdhasdhjkasdh",
-        };
+        // const res = {
+        //     user: {
+        //         firstName: "Hữu",
+        //         lastName: "Nguyễn",
+        //         avatarImage: "https://www.w3schools.com/howto/img_avatar.png"
+        //     },
+        //     token: "adaskjdhasdhjkasdh",
+        // };
 
         // stop loading
-        dispatch(notifyAction.callSuccess({ message: "Đăng nhập thành công" }));
+        dispatch(notifyAction.callSuccess({ message: "" }));
         console.log(res);
-        dispatch(authAction.auth({ user: res.user, token: res.token }));
+        dispatch(authAction.auth({ user: res.data.user, token: res.data.accessToken }));
 
     }
     catch (err) {
@@ -45,7 +47,6 @@ export const register = (data) => async (dispatch) => {
         // stop loading
         dispatch(notifyAction.callSuccess({ message: res.data.message }));
 
-        // redirect
 
     }
     catch (err) {

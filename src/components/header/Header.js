@@ -36,6 +36,7 @@ import { logout } from "../../redux/callApi/authCall";
 export default function Header(props) {
 
     const { auth } = useSelector(state => state);
+    const user = auth.user;
     const dispatch = useDispatch();
 
     const [open, setOpen] = useState(false);
@@ -90,8 +91,8 @@ export default function Header(props) {
                             <>
                                 <div class={classes.user}>
                                     <Button className={classes.button} onClick={handleToggleUser} controls={toggleMenuUser ? "user-menu" : undefined}>
-                                        <Avatar className={classes.avatar} alt="avatar" src="" />
-                                        <Typography className={classes.userName}>Trần Văn A</Typography>
+                                        <Avatar className={classes.avatar} alt="avatar" src={user.avatar} />
+                                        <Typography className={classes.userName}>{user.fullname}</Typography>
                                     </Button>
                                     <Popover
                                         open={Boolean(toggleMenuUser)}
@@ -112,7 +113,7 @@ export default function Header(props) {
                                         >
                                             <ClickAwayListener onClickAway={handleCloseUser}>
                                                 <MenuList autoFocusItem={toggleMenuUser} id="user-menu">
-                                                    <MenuItem aria-label="profile-post" component={Link} to="/profile/465/" onClick={handleCloseUser}>Trang cá nhân</MenuItem>
+                                                    <MenuItem aria-label="profile-post" component={Link} to={`/profile/${user.username}/`} onClick={handleCloseUser}>Trang cá nhân</MenuItem>
                                                     <MenuItem onClick={handleCloseUser}>Thay đổi mật khẩu</MenuItem>
                                                     <MenuItem onClick={handleLogout}>Đăng xuất</MenuItem>
                                                 </MenuList>
