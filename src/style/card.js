@@ -42,9 +42,9 @@ const cardStyles = makeStyles((theme) => ({
         padding: 10,
     },
     icon: {
-        width: 100,
-        marginTop: 30,
-        marginBottom: 30,
+        width: 150,
+        marginTop: 0,
+        marginBottom: 0,
     },
     weatherTitle: {
         textAlign: "center",

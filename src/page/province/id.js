@@ -190,7 +190,7 @@ export default function Province(props) {
                         ))}
 
                     </Grid>
-                    <div style={{ marginTop: 30, display: "flex", justifyContent: "center" }}>
+                    <div style={{ display: "flex", justifyContent: "center" }}>
                         <Pagination count={Math.ceil(listLocation.length / ITEM_PER_PAGE)} page={pageLoc} onChange={handleChangeLoc} color="primary" />
                     </div>
                 </div>
@@ -206,14 +206,14 @@ export default function Province(props) {
                         ))}
 
                     </Grid>
-                    <div style={{ marginTop: 30, display: "flex", justifyContent: "center" }}>
+                    <div style={{ display: "flex", justifyContent: "center" }}>
                         <Pagination count={Math.ceil(listService.length / ITEM_PER_PAGE)} page={pageSer} onChange={handleChangeSer} color="primary" />
                     </div>
                 </div>
             </Grid>
             <Grid item md={3}>
                 <RightBar>
-                    <WeatherCard weather={weather} />
+                    <WeatherCard name={"Hanoi"} />
                     <CovidCard />
                 </RightBar>
             </Grid>
