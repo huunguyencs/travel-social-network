@@ -14,42 +14,48 @@ const columns = [
         width: 150,
     },
     {
-        field: 'provice',
-        headerName: 'Tỉnh',
+        field: 'user',
+        headerName: 'Người sáng lập',
         width: 150,
     },
     {
-        field: 'numReview',
-        headerName: 'Số lượng bài đánh giá',
+        field: 'date',
+        headerName: 'Thời gian thành lập',
         width: 150,
     },
     {
-        field: 'star',
-        headerName: 'Đánh giá',
+        field: 'numMenber',
+        headerName: 'Số lượng thành viên',
         width: 150,
     },
-
+    {
+        field: 'numPost',
+        headerName: 'Số lượng bài viết',
+        width: 150,
+    },
 ];
 
 const rows = [
-    { id: 1, name: 'Hồ Hoàn Kiếm', provice: 'Hà Nội', numReview: 10, star: 4.5},
-    { id: 2, name: 'Hồ Hoàn Kiếm', provice: 'Hà Nội', numReview: 10, star: 4.5},
-    { id: 3, name: 'Hồ Hoàn Kiếm', provice: 'Hà Nội', numReview: 10, star: 4.5},
-    { id: 4, name: 'Hồ Hoàn Kiếm', provice: 'Hà Nội', numReview: 10, star: 4.5},
-    { id: 5, name: 'Hồ Hoàn Kiếm', provice: 'Hà Nội', numReview: 10, star: 4.5},
-    { id: 6, name: 'Hồ Hoàn Kiếm', provice: 'Hà Nội', numReview: 10, star: 4.5},
-    { id: 7, name: 'Hồ Hoàn Kiếm', provice: 'Hà Nội', numReview: 10, star: 4.5},
-    { id: 8, name: 'Hồ Hoàn Kiếm', provice: 'Hà Nội', numReview: 10, star: 4.5},
-    { id: 9, name: 'Hồ Hoàn Kiếm', provice: 'Hà Nội', numReview: 10, star: 4.5},
-    { id: 10, name: 'Hồ Hoàn Kiếm', provice: 'Hà Nội', numReview: 10, star: 4.5},
-    { id: 11, name: 'Hồ Hoàn Kiếm', provice: 'Hà Nội', numReview: 10, star: 4.5},
-    { id: 12, name: 'Hồ Hoàn Kiếm', provice: 'Hà Nội', numReview: 10, star: 4.5},
-    { id: 13, name: 'Hồ Hoàn Kiếm', provice: 'Hà Nội', numReview: 10, star: 4.5},
-    { id: 14, name: 'Hồ Hoàn Kiếm', provice: 'Hà Nội', numReview: 10, star: 4.5},
-    { id: 15, name: 'Hồ Hoàn Kiếm', provice: 'Hà Nội', numReview: 10, star: 4.5},
-    { id: 16, name: 'Hồ Hoàn Kiếm', provice: 'Hà Nội', numReview: 10, star: 4.5},
-    { id: 17, name: 'Hồ Hoàn Kiếm', provice: 'Hà Nội', numReview: 10, star: 4.5},
-    { id: 18, name: 'Hồ Hoàn Kiếm', provice: 'Hà Nội', numReview: 10, star: 4.5},
+    { id: 1, name: 'Du lịch cùng ABC', user: 'Trần Văn A', date: 'Mon Nov 08 2021 12:55:31 GMT+0700 (Giờ Đông Dương)', numMenber: 100, numPost: 100},
+    { id: 2, name: 'Du lịch cùng ABC', user: 'Trần Văn A', date: 'Mon Nov 08 2021 12:55:31 GMT+0700 (Giờ Đông Dương)', numMenber: 100, numPost: 100},
+    { id: 3, name: 'Du lịch cùng ABC', user: 'Trần Văn A', date: 'Mon Nov 08 2021 12:55:31 GMT+0700 (Giờ Đông Dương)', numMenber: 100, numPost: 100},
+    { id: 4, name: 'Du lịch cùng ABC', user: 'Trần Văn A', date: 'Mon Nov 08 2021 12:55:31 GMT+0700 (Giờ Đông Dương)', numMenber: 100, numPost: 100},
+    { id: 5, name: 'Du lịch cùng ABC', user: 'Trần Văn A', date: 'Mon Nov 08 2021 12:55:31 GMT+0700 (Giờ Đông Dương)', numMenber: 100, numPost: 100},
+    { id: 6, name: 'Du lịch cùng ABC', user: 'Trần Văn A', date: 'Mon Nov 08 2021 12:55:31 GMT+0700 (Giờ Đông Dương)', numMenber: 100, numPost: 100},
+    { id: 7, name: 'Du lịch cùng ABC', user: 'Trần Văn A', date: 'Mon Nov 08 2021 12:55:31 GMT+0700 (Giờ Đông Dương)', numMenber: 100, numPost: 100},
+    { id: 8, name: 'Du lịch cùng ABC', user: 'Trần Văn A', date: 'Mon Nov 08 2021 12:55:31 GMT+0700 (Giờ Đông Dương)', numMenber: 100, numPost: 100},
+    { id: 9, name: 'Du lịch cùng ABC', user: 'Trần Văn A', date: 'Mon Nov 08 2021 12:55:31 GMT+0700 (Giờ Đông Dương)', numMenber: 100, numPost: 100},
+    { id: 10, name: 'Du lịch cùng ABC', user: 'Trần Văn A', date: 'Mon Nov 08 2021 12:55:31 GMT+0700 (Giờ Đông Dương)', numMenber: 100, numPost: 100},
+    { id: 11, name: 'Du lịch cùng ABC', user: 'Trần Văn A', date: 'Mon Nov 08 2021 12:55:31 GMT+0700 (Giờ Đông Dương)', numMenber: 100, numPost: 100},
+    { id: 12, name: 'Du lịch cùng ABC', user: 'Trần Văn A', date: 'Mon Nov 08 2021 12:55:31 GMT+0700 (Giờ Đông Dương)', numMenber: 100, numPost: 100},
+    { id: 13, name: 'Du lịch cùng ABC', user: 'Trần Văn A', date: 'Mon Nov 08 2021 12:55:31 GMT+0700 (Giờ Đông Dương)', numMenber: 100, numPost: 100},
+    { id: 14, name: 'Du lịch cùng ABC', user: 'Trần Văn A', date: 'Mon Nov 08 2021 12:55:31 GMT+0700 (Giờ Đông Dương)', numMenber: 100, numPost: 100},
+    { id: 15, name: 'Du lịch cùng ABC', user: 'Trần Văn A', date: 'Mon Nov 08 2021 12:55:31 GMT+0700 (Giờ Đông Dương)', numMenber: 100, numPost: 100},
+    { id: 16, name: 'Du lịch cùng ABC', user: 'Trần Văn A', date: 'Mon Nov 08 2021 12:55:31 GMT+0700 (Giờ Đông Dương)', numMenber: 100, numPost: 100},
+    { id: 17, name: 'Du lịch cùng ABC', user: 'Trần Văn A', date: 'Mon Nov 08 2021 12:55:31 GMT+0700 (Giờ Đông Dương)', numMenber: 100, numPost: 100},
+    { id: 18, name: 'Du lịch cùng ABC', user: 'Trần Văn A', date: 'Mon Nov 08 2021 12:55:31 GMT+0700 (Giờ Đông Dương)', numMenber: 100, numPost: 100},
+    { id: 19, name: 'Du lịch cùng ABC', user: 'Trần Văn A', date: 'Mon Nov 08 2021 12:55:31 GMT+0700 (Giờ Đông Dương)', numMenber: 100, numPost: 100},
+    { id: 20, name: 'Du lịch cùng ABC', user: 'Trần Văn A', date: 'Mon Nov 08 2021 12:55:31 GMT+0700 (Giờ Đông Dương)', numMenber: 100, numPost: 100},
 ];
 
 const useStyles = makeStyles((theme) => ({
@@ -69,7 +75,7 @@ const useStyles = makeStyles((theme) => ({
     }
 }))
 
-function AdminLocation(props) {
+function AdminGroup(props) {
     const classes = useStyles();
     return (
         <Container className={classes.container} style={{ marginTop: "160px" }}>
@@ -84,19 +90,8 @@ function AdminLocation(props) {
                 }}
                 >
                     <div className={classes.admin_location_header_left}>
-                        <Typography>200 Địa điểm du lịch</Typography>
-                    </div>
-                    <div className={classes.admin_location_header_right}>
-                        <Button variant="contained"
-                        style={{
-                            backgroundColor: "#179250",
-                            borderRadius: "10px",
-                        }}
-                        >
-                            <AddCircle></AddCircle>
-                            <Typography>Thêm địa điểm</Typography>
-                        </Button>
-                    </div>     
+                        <Typography>200 nhóm du lịch</Typography>
+                    </div>    
                 </div>
                 <div className={classes.admin_location_body}>
                     <div className={classes.tableContainer}>
@@ -114,4 +109,4 @@ function AdminLocation(props) {
     );
 }
 
-export default AdminLocation;
+export default AdminGroup;
