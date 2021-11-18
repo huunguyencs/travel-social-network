@@ -75,12 +75,10 @@ export default function Login(props) {
             if (Object.keys(errors).length === 0) {
                 dispatch(login({ email: state.email, password: state.password }));
             }
-            else {
-                setState({
-                    ...state,
-                    submit: false,
-                })
-            }
+            setState({
+                ...state,
+                submit: false,
+            })
         }
     }, [errors, dispatch, state])
 

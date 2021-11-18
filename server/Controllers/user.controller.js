@@ -9,7 +9,7 @@ class UserController {
 
             // khong can
             //simple validation
-            console.log(req.body);
+            // console.log(req.body);
             if (!username || !password || !fullname || !email) {
                 return res.status(400).json({ success: false, message: "Missing field" })
             }

@@ -20,11 +20,13 @@ export const login = (data) => async (dispatch) => {
         };
 
         // stop loading
-        dispatch(notifyAction.callSuccess());
+        dispatch(notifyAction.callSuccess({ message: "Đăng nhập thành công" }));
+        console.log(res);
         dispatch(authAction.auth({ user: res.user, token: res.token }));
 
     }
     catch (err) {
+        console.log(err);
         dispatch(notifyAction.callFail({ error: err }));
     }
 }

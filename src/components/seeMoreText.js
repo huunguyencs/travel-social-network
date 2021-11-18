@@ -17,10 +17,10 @@ export function SeeMoreText(props) {
 
     const classes = useStyles();
 
-    const { maxText, text } = props;
+    const { maxText, text, variant } = props;
 
     return (
-        <Typography {...props}>
+        <Typography variant={variant}>
             {text.length < maxText ? text :
                 (
                     <>
