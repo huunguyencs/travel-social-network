@@ -2,6 +2,8 @@ const express = require('express');
 const cors = require('cors');
 const app = express();
 const mongoose = require('mongoose');
+const cookieParser = require('cookie-parser');
+
 // Port
 const PORT = process.env.port || 5000;
 
@@ -11,6 +13,8 @@ const MONGO_URL = process.env.MONGO_URL || "mongodb+srv://admin:RvZetzfl04aNUtRf
 // Middleware 
 app.use(cors());
 app.use(express.json());
+// app.use(cookieParser());
+app.use(cookieParser());
 
 // Router
 app.use('/post', require('./Routers/post.router'));
