@@ -1,0 +1,186 @@
+# POST http://localhost:5000/user/register
+# Content-Type: application/json
+
+# {
+#     "email":"test1@gmail.com",
+#     "username": "test1",
+#     "password": "123456",
+#     "gender":"male",
+#     "phone": "0123456",
+#     "fullname": "huythunhat"
+# }
+
+###
+#PATCH là một cập nhập một phần
+# #PUT là cập nhập tât cả
+
+# POST http://localhost:5000/user/login
+# Content-Type: application/json
+
+# {
+#     "email": "test@gmail.com",
+#     "password": "123456"
+# }
+
+
+
+# PATCH  http://localhost:5000/user/change_avatar
+# Content-Type: application/json
+# Authorization: Bearer 
+
+# {
+#     "avatar": "newAvatar1"
+# }
+
+# PATCH http://localhost:5000/user/change_profile
+# Content-Type: application/json
+# Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjYxOTRiNmViMTQxNDk5YzUyZmJiMzg1NCIsImlhdCI6MTYzNzEzODc5NH0.jape8JJwSftn6hdlwHDNyVIymh5NXTcuRTRpF8bZjpg
+
+# {
+#     "fullname": "huythuhai",
+#     "gender":"male",
+#     "phone": "0123456",
+#     "address":"hi",
+#     "birthday": "2014-02-10",
+#     "hobbies": ["a","b"]
+# }
+
+# GET http://localhost:5000/user/6194b6eb141499c52fbb3854
+# Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjYxOTRiNmViMTQxNDk5YzUyZmJiMzg1NCIsImlhdCI6MTYzNzEzODc5NH0.jape8JJwSftn6hdlwHDNyVIymh5NXTcuRTRpF8bZjpg
+
+
+# PUT http://localhost:5000/user/6194c34c3548f2730fc6b8c5/unfollow
+# Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjYxOTRiNmViMTQxNDk5YzUyZmJiMzg1NCIsImlhdCI6MTYzNzEzODc5NH0.jape8JJwSftn6hdlwHDNyVIymh5NXTcuRTRpF8bZjpg
+
+
+########################################   POST  #####################
+# POST http://localhost:5000/post/create_post
+# Content-Type: application/json
+# Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjYxOTRiNmViMTQxNDk5YzUyZmJiMzg1NCIsImlhdCI6MTYzNzEzODc5NH0.jape8JJwSftn6hdlwHDNyVIymh5NXTcuRTRpF8bZjpg
+
+# {
+#     "content":"second post",
+#     "images": ["url1","url2"],
+#     "isPostReview":false,
+#     "start": null,
+#     "cost": null,
+#     "isPublic": true,
+#     "locationId":null
+# }
+
+# PATCH http://localhost:5000/post/6194d11d9c8cddd869acf1c9
+# Content-Type: application/json
+# Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjYxOTRiNmViMTQxNDk5YzUyZmJiMzg1NCIsImlhdCI6MTYzNzEzODc5NH0.jape8JJwSftn6hdlwHDNyVIymh5NXTcuRTRpF8bZjpg
+
+# {
+#     "content":"firt update post",
+#     "images": ["url1","url2"],
+#     "start": null,
+#     "cost": null,
+#     "isPublic": true,
+#     "locationId":null
+# }
+
+# DELETE http://localhost:5000/post/6194d260e28395e6ba3e74b7
+# Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjYxOTRiNmViMTQxNDk5YzUyZmJiMzg1NCIsImlhdCI6MTYzNzEzODc5NH0.jape8JJwSftn6hdlwHDNyVIymh5NXTcuRTRpF8bZjpg
+
+
+# PATCH  http://localhost:5000/post/6194d8592e798a328d1832ea/unlike
+# Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjYxOTRiNmViMTQxNDk5YzUyZmJiMzg1NCIsImlhdCI6MTYzNzEzODc5NH0.jape8JJwSftn6hdlwHDNyVIymh5NXTcuRTRpF8bZjpg
+
+
+
+#######################  COMMENT #########################
+
+# POST http://localhost:5000/comment/create_comment
+# Content-Type: application/json
+# Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjYxOTRiNmViMTQxNDk5YzUyZmJiMzg1NCIsImlhdCI6MTYzNzEzODc5NH0.jape8JJwSftn6hdlwHDNyVIymh5NXTcuRTRpF8bZjpg
+
+# {
+#     "commentType":"post",
+#     "content":"testComment",
+#     "postId": "6194d8592e798a328d1832ea",
+#     "tourId": null,
+#     "activityId":null
+# }
+
+# DELETE  http://localhost:5000/comment/619536fbb187bf4615519c36
+# Content-Type: application/json
+# Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjYxOTRiNmViMTQxNDk5YzUyZmJiMzg1NCIsImlhdCI6MTYzNzEzODc5NH0.jape8JJwSftn6hdlwHDNyVIymh5NXTcuRTRpF8bZjpg
+
+# POST http://localhost:5000/tour/create_tour
+# Content-Type: application/json
+# Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjYxOTRiNmViMTQxNDk5YzUyZmJiMzg1NCIsImlhdCI6MTYzNzEzODc5NH0.jape8JJwSftn6hdlwHDNyVIymh5NXTcuRTRpF8bZjpg
+
+# {
+#     "content": "content first tour",
+#     "tourName": "first tour",
+#     "isPublic": true,
+#     "taggedIds": null,
+#     "hashtag": null,
+#     "image": "url1",
+#     "tourDate": [{
+#         "date": "2020-10-10",
+#         "locations": [
+#             {
+#                 "locationId": null,
+#                 "cost": 123,
+#                 "postId": null 
+#             },
+#             {
+#                  "locationId": null,
+#                 "cost": 456,
+#                 "postId": null 
+#             }
+
+#         ]
+#     }]
+# }
+
+
+# POST http://localhost:5000/province/create_province
+# Content-Type: application/json
+# Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjYxOTRiNmViMTQxNDk5YzUyZmJiMzg1NCIsImlhdCI6MTYzNzEzODc5NH0.jape8JJwSftn6hdlwHDNyVIymh5NXTcuRTRpF8bZjpg
+ 
+# {
+#     "name": "QN",
+#     "information":"tesst province",
+#     "image": "url"
+# }
+
+
+POST http://localhost:5000/service/create_service
+Content-Type: application/json
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjYxOTRiNmViMTQxNDk5YzUyZmJiMzg1NCIsImlhdCI6MTYzNzEzODc5NH0.jape8JJwSftn6hdlwHDNyVIymh5NXTcuRTRpF8bZjpg
+ 
+{
+    "name":"KS",
+    "description":"kh test",
+    "price": 2000,
+    "type": "KS",
+    "locationId": "619602ef550c059fe6afff2e",
+    "rate": [
+        {
+            "userId":"6194b6eb141499c52fbb3854",
+            "rate":4,
+            "content": "good"
+        }
+    ],
+    "images": ["url","url1"]
+}
+
+# POST http://localhost:5000/location/create_location
+# Content-Type: application/json
+# Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjYxOTRiNmViMTQxNDk5YzUyZmJiMzg1NCIsImlhdCI6MTYzNzEzODc5NH0.jape8JJwSftn6hdlwHDNyVIymh5NXTcuRTRpF8bZjpg
+ 
+# {
+#     "name":"Lys sonw",
+#     "information":"lys son test",
+#     "position": {
+#         "longitude":"123",
+#         "latitude": "1234"
+#     },
+#     "province": "619600972be868ebb7179ea9",
+#     "images": ["url","url1"]
+# }
+

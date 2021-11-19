@@ -1,29 +1,31 @@
 import { Button, Container, Grid, Modal, Typography, Backdrop, Fade, Dialog, DialogActions, DialogTitle } from "@material-ui/core";
 import React, { useState } from "react";
 import { Timeline, TimelineItem, TimelineSeparator, TimelineConnector, TimelineContent, TimelineDot } from '@material-ui/lab'
+import { useDispatch, useSelector } from "react-redux";
 
 import { tourdetailStyles } from "../../style";
 import AddLocationForm from "../forms/addLocation";
 import Location from './Location';
-import { useDispatch, useSelector } from "react-redux";
-import * as tourAction from '../../redux/actions/tourAction';
-import { useHistory } from "react-router-dom";
+import * as tourAction from '../../redux/actions/createTourAction';
+// import { useHistory } from "react-router-dom";
 import UpdateDateForm from "../forms/updateDate";
+import UpdateTourInfo from "../forms/updateInfoCreateTour";
 
 
 
 export default function AddTour(props) {
 
-    const history = useHistory();
+    // const history = useHistory();
 
     const dispatch = useDispatch();
-    const { tour } = useSelector(state => state);
+    const { createTour } = useSelector(state => state);
 
 
     const [idx, setIdx] = useState(0);
     const [addLoc, setAddLoc] = useState(false);
     const [showUpdateDate, setShowUpdateDate] = useState(false);
     const [showDeleteDate, setShowDeteleDate] = useState(false);
+    const [showChangeInfo, setShowChangeInfo] = useState(false);
 
     const handleShow = () => {
         setAddLoc(true);
@@ -39,9 +41,8 @@ export default function AddTour(props) {
     }
 
     const handleSave = () => {
-        dispatch(tourAction.resetTour());
-        // dispatch(tourAction.saveTour());
-        history.push("/tour");
+
+        console.log("save tour");
     }
 
     const handleDeleteDate = () => {
@@ -66,21 +67,58 @@ export default function AddTour(props) {
         setShowDeteleDate(false);
     }
 
+    const handleCloseUpdateInfo = () => {
+        setShowChangeInfo(false)
+    }
+
 
     const classes = tourdetailStyles();
+
 
 
     return (
         <div>
             <div className={classes.coverTitle}>
-                <Typography variant="h3" className={classes.title}>{tour.name}</Typography>
+                <Typography variant="h3" className={classes.title}>{createTour.name}</Typography>
             </div>
+            <div className={classes.info}>
+                <div className={classes.itemInfo}>
+                    <Typography variant="body1" className={classes.content}>
+                        {createTour.content}
+                    </Typography>
+                </div>
+                <div className={classes.hashtagWrap}>
+                    {createTour.hashtag.split(" ").map((hashtag, index) => (
+                        <Typography className={classes.hashtag} key={index}>{hashtag}</Typography>
+                    ))}
+                </div>
+                <div className={classes.itemInfo}>
+                    <Button onClick={() => setShowChangeInfo(true)}>Chỉnh sửa thông tin</Button>
+                </div>
+                <Modal
+                    aria-labelledby="transition-modal-title"
+                    aria-describedby="transition-modal-description"
+                    className={classes.modal}
+                    open={showChangeInfo}
+                    onClose={handleCloseUpdateInfo}
+                    closeAfterTransition
+                    BackdropComponent={Backdrop}
+                    BackdropProps={{
+                        timeout: 500,
+                    }}
+                >
+                    <Fade in={showChangeInfo}>
+                        <UpdateTourInfo name={createTour.name} content={createTour.content} hashtag={createTour.hashtag} image={createTour.image} handleClose={handleCloseUpdateInfo} />
+                    </Fade>
+                </Modal>
+            </div>
+
             <Grid container className={classes.container}>
                 <Grid item md={2} >
                     <Container className={classes.timeline}>
                         <Timeline align="right">
-                            {tour.tour.map((item, index) => (
-                                <TimelineItem>
+                            {createTour.tour.map((item, index) => (
+                                <TimelineItem key={index}>
                                     <TimelineSeparator>
                                         <TimelineDot className={index === idx ? classes.activeDot : classes.unactiveDot} />
                                         <TimelineConnector />
@@ -144,13 +182,13 @@ export default function AddTour(props) {
                             }}
                         >
                             <Fade in={showUpdateDate}>
-                                <UpdateDateForm handleClose={handleCloseUpdate} indexDate={idx} currentDate={tour.tour[idx].time} />
+                                <UpdateDateForm handleClose={handleCloseUpdate} indexDate={idx} currentDate={createTour.tour[idx].time} />
                             </Fade>
                         </Modal>
                     </div>
                     {
-                        tour.tour[idx].tour.map((item, index) => (
-                            <Location tour={item} indexDate={idx} indexLocation={index} edit={true} />
+                        createTour.tour[idx].tour.map((item, index) => (
+                            <Location location={item} indexDate={idx} indexLocation={index} edit={true} key={index} />
                         ))
                     }
                     <div className={classes.addContainer}>

@@ -15,9 +15,21 @@ const formStyles = makeStyles((theme) => ({
         display: "flex",
         justifyContent: "center",
     },
+    formAction: {
+        display: "flex",
+        justifyContent: "space-between",
+    },
     button: {
-        width: "100%",
+        // width: "100%",
+        backgroundColor: color.turquoise,
         padding: 10,
+        paddingInline: 30,
+    },
+    hashtag: {
+        width: "100%",
+    },
+    postContentInput: {
+        width: "500px",
     },
     input: {
         backgroundColor: color.lightgray,
@@ -45,6 +57,10 @@ const formStyles = makeStyles((theme) => ({
     datepicker: {
         marginInline: 50,
         marginBottom: 30,
+    },
+    tourNameInput: {
+        width: "100%",
+        marginBottom: 20,
     }
 }))
 

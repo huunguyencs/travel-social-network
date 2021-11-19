@@ -24,16 +24,24 @@
  }
  
  .form-input {
-    width: 80%;
-    margin: 10px 0 !important;
+    width: 97%;
+    margin: 10px !important;
+    background-color: white;
+ }
+ .form-input-half {
+    width: 100%;
+    margin: 10px !important;
+    margin-right: 0;
     background-color: white;
  }
  
  .login-group {
-    margin-top: 20px;
+    margin-top: 40px;
+    display: flex;
+    justify-content: center;
  }
  .login-group button{
-    width: 80%;
+    width: 50%;
     background-color: rgb(54, 190, 156);
     color: white;
     padding : 10px 0;

@@ -16,14 +16,14 @@ export default function LocationCard(props) {
                 image={props.location.image}
             />
             <CardContent>
-                <Typography className={classes.locationName} variant="h6">{props.location.name}</Typography>
+                <Typography className={classes.locationName} variant="h6">{props.location.locationName}</Typography>
             </CardContent>
             <CardActions className={classes.footer}>
                 <div className={classes.star}>
                     <Typography>{props.location.star}</Typography>
                     <Star className={classes.starIcon} />
                 </div>
-                <Button className={classes.seeMore} component={Link} to={"/location/" + props.location.id}>
+                <Button className={classes.seeMore} component={Link} to={"/location/" + props.location._id}>
                     Xem thêm
                 </Button>
             </CardActions>

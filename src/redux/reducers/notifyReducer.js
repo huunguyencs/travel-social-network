@@ -1,33 +1,37 @@
 import * as NOTIFY_TYPES from '../constants/notifyConstant';
 
 const INIT_STATE = {
-    isFetching: false,
+    loading: false,
     success: false,
     error: null,
+    message: "",
 }
 
 const notifyReducer = (state = INIT_STATE, action) => {
     switch (action.type) {
-        case NOTIFY_TYPES.CALL_START: {
+        case NOTIFY_TYPES.CALL_START: { // bat dau goi api
             return {
                 ...state,
-                isFetching: true,
+                loading: true,
+                message: "",
             }
         }
-        case NOTIFY_TYPES.CALL_SUCCESS: {
+        case NOTIFY_TYPES.CALL_SUCCESS: { // goi api thanh cong
             return {
                 ...state,
-                isFetching: false,
+                loading: false,
                 success: true,
                 error: null,
+                message: action.payload.message,
             }
         }
-        case NOTIFY_TYPES.CALL_FAIL: {
+        case NOTIFY_TYPES.CALL_FAIL: { // goi api that bai
             return {
                 ...state,
-                isFetching: false,
+                loading: false,
                 success: false,
                 error: action.payload.error,
+                message: "",
             }
         }
         default: {

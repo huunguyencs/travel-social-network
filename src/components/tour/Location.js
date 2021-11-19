@@ -1,11 +1,15 @@
-import { Button, Card, CardActions, CardContent, CardMedia, Collapse, Grid, IconButton, Modal, Typography, Backdrop, Fade, Menu, MenuItem } from "@material-ui/core";
+import { Button, Card, CardContent, CardMedia, Collapse, Grid, IconButton, Modal, Typography, Backdrop, Fade, Menu, MenuItem, Dialog, DialogTitle, DialogActions } from "@material-ui/core";
 import React, { useState } from "react";
-import { Rating } from '@material-ui/lab'
-import { Favorite, FavoriteBorderOutlined, MoreVert } from "@material-ui/icons";
+// import { Rating } from '@material-ui/lab'
+import { MoreVert } from "@material-ui/icons";
+import { useDispatch } from "react-redux";
+import { Link } from "react-router-dom";
+
 import { tourdetailStyles } from "../../style";
 import CreateReviewForm from "../forms/createReview";
 import EditLocationForm from "../forms/editLocation";
-import { Link } from "react-router-dom";
+import * as tourAction from '../../redux/actions/createTourAction';
+
 
 const MenuListProps = {
     elevation: 0,
@@ -37,15 +41,18 @@ export default function Location(props) {
 
     const classes = tourdetailStyles();
 
+    const dispatch = useDispatch();
+
 
     const isReviewed = false;
     const [showRv, setShowRv] = useState(false);
     const [showCreateRv, setShowCreateRv] = useState(false);
-    const [like, setLike] = useState(false);
-    const [numLike, setNumLike] = useState(0);
-    const [valueRate, setValueRate] = useState(0);
+    // const [like, setLike] = useState(false);
+    // const [numLike, setNumLike] = useState(0);
+    // const [valueRate, setValueRate] = useState(0);
     const [anchorEl, setAnchorEl] = useState(null);
     const [editLoc, setEditLoc] = useState(false);
+    const [showDeleteLocation, setShowDeleteLocation] = useState(false);
 
     const handleShowMenu = (e) => {
         setAnchorEl(e.currentTarget);
@@ -64,11 +71,11 @@ export default function Location(props) {
         handleCloseMenu();
     }
 
-    const likeHandle = (e) => {
-        setLike(!like);
-        if (!like) setNumLike(numLike + 1);
-        else setNumLike(numLike - 1);
-    }
+    // const likeHandle = (e) => {
+    //     setLike(!like);
+    //     if (!like) setNumLike(numLike + 1);
+    //     else setNumLike(numLike - 1);
+    // }
 
     const handleShow = () => {
         setShowCreateRv(true);
@@ -78,15 +85,28 @@ export default function Location(props) {
         setShowCreateRv(false);
     }
 
-    const tourInfo = props.tour;
+    const handleShowDelete = () => {
+        setShowDeleteLocation(true);
+    }
+    const handleCloseDelete = () => {
+        setShowDeleteLocation(false);
+    }
+
+    const handleDeleteLocation = () => {
+        dispatch(tourAction.deleteLocation({ indexDate: props.indexDate, indexLocation: props.indexLocation }));
+        handleCloseDelete();
+        handleCloseMenu();
+    }
+
+    const locationInfo = props.location;
 
     return (
         <Card className={classes.cardContainer}>
 
             <Grid container>
-                <Grid item md={5}>
+                <Grid item md={5} className={classes.imageLocation}>
                     <CardMedia className={classes.imgContainer}>
-                        <img src={tourInfo.img} alt="hehe" className={classes.img} />
+                        <img src={locationInfo.location.image} alt="location" className={classes.img} />
                     </CardMedia>
 
                 </Grid>
@@ -95,8 +115,8 @@ export default function Location(props) {
                         <div className={classes.tourHeader}>
                             <Typography variant="body1" style={{ paddingTop: 20 }}>
                                 {
-                                    tourInfo.fromPrev ?
-                                        tourInfo.fromPrev === 0 ? "Điểm bắt đầu" : `Khoảng ${tourInfo.fromPrev} phút đi xe từ điểm trước đó.`
+                                    locationInfo.fromPrev ?
+                                        locationInfo.fromPrev === 0 ? "Điểm bắt đầu" : `Khoảng ${locationInfo.fromPrev} phút đi xe từ điểm trước đó.`
                                         : "Đang xử lý thời gian"
                                 }
                             </Typography>
@@ -126,19 +146,35 @@ export default function Location(props) {
                                     }}
                                 >
                                     <Fade in={editLoc}>
-                                        <EditLocationForm handleCloseParent={handleCloseMenu} handleClose={handleCloseEdit} indexDate={props.indexDate} indexLocation={props.indexLocation} locationInfo={tourInfo} />
+                                        <EditLocationForm handleCloseParent={handleCloseMenu} handleClose={handleCloseEdit} indexDate={props.indexDate} indexLocation={props.indexLocation} location={locationInfo} />
                                     </Fade>
                                 </Modal>
-                                <MenuItem>
+                                <MenuItem onClick={handleShowDelete}>
                                     Xóa
                                 </MenuItem>
+                                <Dialog
+                                    open={showDeleteLocation}
+                                    onClose={handleCloseDelete}
+                                    aria-labelledby="alert-dialog-title"
+                                    aria-describedby="alert-dialog-description"
+                                >
+                                    <DialogTitle id="alert-dialog-title">{"Bạn có chắc chắn muốn xóa?"}</DialogTitle>
+                                    <DialogActions>
+                                        <Button onClick={handleCloseDelete}>
+                                            Hủy
+                                        </Button>
+                                        <Button onClick={handleDeleteLocation}>
+                                            Xóa
+                                        </Button>
+                                    </DialogActions>
+                                </Dialog>
                             </Menu>
                         </div>
 
-                        <Typography variant="h4" className={classes.locationName} component={Link} to={"/location/" + tourInfo.id}>{tourInfo.location}</Typography>
-                        <Typography variant="h5">{tourInfo.province}</Typography>
+                        <Typography variant="h4" className={classes.locationName} component={Link} to={"/location/" + locationInfo.location._id}>{locationInfo.location.locationName}</Typography>
+                        <Typography variant="h5">{locationInfo.province}</Typography>
                         {isReviewed ?
-                            <Button className={classes.reviewBtn} onClick={() => setShowRv((value) => setShowRv(!value))}>{showRv ? "Ẩn" : "Xem"} Review</Button> :
+                            <Button className={classes.reviewBtn} onClick={() => setShowRv(value => !value)}>{showRv ? "Ẩn" : "Xem"} Review</Button> :
                             <Button className={classes.reviewBtn} onClick={handleShow}>Tạo Review</Button>
                         }
 
@@ -160,12 +196,12 @@ export default function Location(props) {
                             </Fade>
                         </Modal>
                         <div className={classes.costContainer}>
-                            <Typography variant="body1">Chi phí: {tourInfo.cost}.000 VND</Typography>
+                            <Typography variant="body1">Chi phí: {locationInfo.cost}.000 VND</Typography>
                         </div>
                     </CardContent>
                 </Grid>
                 <Collapse in={showRv}>
-                    <Grid item md={12}>
+                    {/* <Grid item md={12}>
                         <CardContent className={classes.review}>
                             <Typography component="legend">Đánh giá: </Typography>
                             <Rating
@@ -189,7 +225,7 @@ export default function Location(props) {
                             </Typography>
                             <Button>Xem chi tiết</Button>
                         </CardActions>
-                    </Grid>
+                    </Grid> */}
                 </Collapse>
 
             </Grid>

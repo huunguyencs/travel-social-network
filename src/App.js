@@ -15,8 +15,12 @@ import { useLocation } from "react-router-dom";
 function App() {
   const location = useLocation();
 
+
+
   const displayHeader = () => {
-    return location.pathname !== '/login' && location.pathname !== "/register";
+    if (location.pathname === "/login" || location.pathname === "/register")
+      return false;
+    return true;
   }
 
   return (

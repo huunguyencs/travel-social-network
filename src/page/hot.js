@@ -1,5 +1,6 @@
 import { Grid } from "@material-ui/core";
 import React from "react";
+
 import FeedHot from "../components/feed/FeedHot";
 import LeftBar from "../components/leftbar/LeftBar";
 import Menu from "../components/leftbar/menu";

@@ -40,7 +40,7 @@ const provinceStyles = makeStyles((theme) => ({
         paddingBottom: 20,
     },
     listContainer: {
-        height: 700,
+        height: 650,
     }
 }))
 

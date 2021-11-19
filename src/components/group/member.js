@@ -1,46 +1,45 @@
 import React from "react";
-
+import { List } from "@material-ui/core";
+import { ListItem } from "@material-ui/core";
 import { Avatar, Container, Divider, Typography } from "@material-ui/core";
 
 import profileStyles from "../../style";
 
-import { List } from "@material-ui/core";
-import { ListItem } from "@material-ui/core";
 
 const listAdmin = [
     {
-        menberId: 1,
+        _id: 1,
         name: "Trần Văn An",
         avatar: "https://media.istockphoto.com/vectors/default-profile-picture-avatar-photo-placeholder-vector-illustration-vector-id1223671392",
     },
     {
-        menberId: 2,
+        _id: 2,
         name: "Trần Văn An",
         avatar: "https://media.istockphoto.com/vectors/default-profile-picture-avatar-photo-placeholder-vector-illustration-vector-id1223671392",
     },
 ]
-const listMenber = [
+const listMember = [
 
     {
-        menberId: 1,
+        _id: 1,
         name: "Trần Văn An",
         avatar: "https://media.istockphoto.com/vectors/default-profile-picture-avatar-photo-placeholder-vector-illustration-vector-id1223671392",
         admin: false,
     },
     {
-        menberId: 2,
+        _id: 2,
         name: "Trần Văn An",
         avatar: "https://media.istockphoto.com/vectors/default-profile-picture-avatar-photo-placeholder-vector-illustration-vector-id1223671392",
         admin: false,
     },
     {
-        menberId: 3,
+        _id: 3,
         name: "Trần Văn An",
         avatar: "https://media.istockphoto.com/vectors/default-profile-picture-avatar-photo-placeholder-vector-illustration-vector-id1223671392",
         admin: false,
     },
     {
-        menberId: 4,
+        _id: 4,
         name: "Trần Văn An",
         avatar: "https://media.istockphoto.com/vectors/default-profile-picture-avatar-photo-placeholder-vector-illustration-vector-id1223671392",
         admin: false,
@@ -76,6 +75,7 @@ function GroupMember(props) {
                                         padding: "10px",
                                         marginLeft: "50px"
                                     }}
+                                    key={item._id}
                                 >
                                     <Avatar
                                         className={classes.group_avatar__img}
@@ -99,7 +99,7 @@ function GroupMember(props) {
                     </Typography>
                     <div className={classes.listMenber}>
                         <List>
-                            {listMenber.map(item => (
+                            {listMember.map(item => (
                                 <ListItem
                                     style={{
                                         backgroundColor: "#DFE4EA",
@@ -109,6 +109,7 @@ function GroupMember(props) {
                                         padding: "10px",
                                         marginLeft: "50px"
                                     }}
+                                    key={item._id}
                                 >
                                     <Avatar
                                         className={classes.group_avatar__img}

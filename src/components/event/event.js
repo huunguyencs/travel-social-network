@@ -2,6 +2,7 @@ import { IconButton } from "@material-ui/core";
 import { ChevronLeft, ChevronRight } from "@material-ui/icons";
 import React, { useContext } from "react";
 import { ScrollMenu, VisibilityContext } from 'react-horizontal-scrolling-menu';
+
 import EventItem from "./eventItem";
 
 function LeftArrow(props) {
@@ -32,42 +33,42 @@ function RightArrow(props) {
 
 const listEvent = [
     {
-        id: "1",
+        _id: "1",
         image: "https://toplist.vn/images/800px/le-hoi-truyen-thong-o-nuoc-ta-9886.jpg",
         name: "Tết Nguyên Đán",
         description: "Tết cổ truyền Việt Nam",
         time: "30/1/2022",
     },
     {
-        id: "2",
+        _id: "2",
         image: "https://toplist.vn/images/800px/le-hoi-truyen-thong-o-nuoc-ta-9886.jpg",
         name: "Tết Nguyên Đán",
         description: "Tết cổ truyền Việt Nam",
         time: "30/1/2022",
     },
     {
-        id: "3",
+        _id: "3",
         image: "https://toplist.vn/images/800px/le-hoi-truyen-thong-o-nuoc-ta-9886.jpg",
         name: "Tết Nguyên Đán",
         description: "Tết cổ truyền Việt Nam",
         time: "30/1/2022",
     },
     {
-        id: "4",
+        _id: "4",
         image: "https://toplist.vn/images/800px/le-hoi-truyen-thong-o-nuoc-ta-9886.jpg",
         name: "Tết Nguyên Đán",
         description: "Tết cổ truyền Việt Nam",
         time: "30/1/2022",
     },
     {
-        id: "5",
+        _id: "5",
         image: "https://toplist.vn/images/800px/le-hoi-truyen-thong-o-nuoc-ta-9886.jpg",
         name: "Tết Nguyên Đán",
         description: "Tết cổ truyền Việt Nam",
         time: "30/1/2022",
     },
     {
-        id: "6",
+        _id: "6",
         image: "https://toplist.vn/images/800px/le-hoi-truyen-thong-o-nuoc-ta-9886.jpg",
         name: "Tết Nguyên Đán",
         description: "Tết cổ truyền Việt Nam",
@@ -86,7 +87,7 @@ export default function Event(props) {
                 {listEvent.map((item) =>
                     <EventItem
                         itemId={item.id}
-                        key={item.id}
+                        key={item._id}
                         event={item}
                     />
                 )}

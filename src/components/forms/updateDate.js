@@ -3,23 +3,25 @@ import { KeyboardDatePicker, MuiPickersUtilsProvider } from "@material-ui/picker
 import React, { useState } from "react";
 import DateFnsUtils from '@date-io/date-fns';
 
-import * as tourAction from '../../redux/actions/tourAction';
+import * as tourAction from '../../redux/actions/createTourAction';
 import { useDispatch } from "react-redux";
 import * as dateUtils from '../../utils/date';
 
 export default function UpdateDateForm(props) {
 
+    const { currentDate, indexDate, handleClose } = props;
+
     const dispatch = useDispatch();
 
-    const [selectedDate, setSelectedDate] = useState(dateUtils.convertStrToDate(props.currentDate));
+    const [selectedDate, setSelectedDate] = useState(dateUtils.convertStrToDate(currentDate));
     const handleDateChange = (date) => {
         setSelectedDate(date);
     };
 
     const handleSubmit = (e) => {
         e.preventDefault();
-        dispatch(tourAction.updateDate({ indexDate: props.indexDate, newDate: selectedDate }));
-        props.handleClose();
+        dispatch(tourAction.updateDate({ indexDate: indexDate, newDate: selectedDate }));
+        handleClose();
     }
 
     return (

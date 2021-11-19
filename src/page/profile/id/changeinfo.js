@@ -3,12 +3,14 @@ import { Typography, Grid, Box, Tab, Tabs, IconButton, TextField, Button, Radio 
 import { PhotoCamera } from "@material-ui/icons";
 import PropTypes from 'prop-types';
 import { RadioGroup, FormControlLabel } from "@material-ui/core";
+import DateFnsUtils from '@date-io/date-fns';
 
 import { profileMenu } from "../../../constant/menu";
 import Header from "../../../components/header/Header";
 import LeftBar from "../../../components/leftbar/LeftBar";
 import { profileStyles } from "../../../style";
 import Menu from "../../../components/leftbar/menu";
+import { KeyboardDatePicker, MuiPickersUtilsProvider } from "@material-ui/pickers";
 
 
 function TabPanel(props) {
@@ -44,6 +46,161 @@ function a11yProps(index) {
     };
 }
 
+function ChangeInfo(props) {
+
+    const classes = profileStyles();
+    return (
+        <div className={classes.change_info}>
+            <div className={classes.change_background}>
+                <div className={classes.change_background_upload}>
+                    <input accept="image/*" style={{ display: "none" }} id="icon-button-file" type="file" />
+                    <label htmlFor="icon-button-file">
+                        <IconButton color="primary" aria-label="upload picture" component="span">
+                            <PhotoCamera />
+                        </IconButton>
+                    </label>
+                </div>
+                <img className={classes.change_bg} src="https://res.cloudinary.com/dxnfxl89q/image/upload/v1625327484/Toho/close-up-opened-umbrella-mockup_53876-98796_nj3un5.jpg" alt="cover"></img>
+            </div>
+            <div className={classes.change_wrapper}>
+                <div className={classes.change_avatar}>
+                    <div className={classes.change_avatar_upload}>
+                        <input accept="image/*" style={{ display: "none" }} id="icon-button-file" type="file" />
+                        <label htmlFor="icon-button-file">
+                            <IconButton color="primary" aria-label="upload picture" component="span">
+                                <PhotoCamera />
+                            </IconButton>
+                        </label>
+                    </div>
+                    <img className={classes.change_avatar_img} src="https://res.cloudinary.com/dxnfxl89q/image/upload/v1625327484/Toho/close-up-opened-umbrella-mockup_53876-98796_nj3un5.jpg" alt="avatar"></img>
+                </div>
+                <div className={classes.change_form}>
+                    <form
+
+                        noValidate
+                        autoComplete="off"
+                    >
+                        <TextField
+                            autoComplete=""
+                            label="Họ và Tên"
+                            variant="outlined"
+                            name="name"
+                            className="form-input"
+                            required
+                        />
+                        <TextField
+                            autoComplete=""
+                            label="Email"
+                            variant="outlined"
+                            name="email"
+                            className="form-input"
+                            required
+                        />
+                        <TextField
+                            autoComplete=""
+                            label="Số điện thoại"
+                            variant="outlined"
+                            name="phone"
+                            className="form-input"
+                        />
+                        <TextField
+                            autoComplete=""
+                            label="Sở thích du lịch"
+                            variant="outlined"
+                            name="hobby"
+                            type="text"
+                            className="form-input"
+                        />
+                        <MuiPickersUtilsProvider utils={DateFnsUtils}>
+                            <KeyboardDatePicker
+                                name="date"
+                                disableToolbar
+                                variant="inline"
+                                format="dd/MM/yyyy"
+                                margin="normal"
+                                id="date-picker-inline"
+                                label="Chọn ngày khởi hành"
+                                KeyboardButtonProps={{
+                                    'aria-label': 'change date',
+                                }}
+                            />
+                        </MuiPickersUtilsProvider>
+                        <RadioGroup row aria-label="position" name="position" defaultValue="man" style={{ marginBottom: "10px" }}>
+                            <FormControlLabel value="man" control={<Radio color="primary" />} label="Nam" />
+                            <FormControlLabel value="male" control={<Radio color="primary" />} label="Nữ" />
+                            <FormControlLabel value="other" control={<Radio color="primary" />} label="Khác" />
+                        </RadioGroup>
+                        <div className="login-group">
+                            <Button
+                                variant="contained"
+                                // color="primary"
+                                type="submit"
+                                className="login-button"
+                            >
+                                Cập nhập
+                            </Button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    )
+}
+
+function ChangePassword(props) {
+    const classes = profileStyles();
+    return (
+        <div className={classes.change_password}>
+            <div className={classes.change_password_form}>
+                <form
+
+                    noValidate
+                    autoComplete="off"
+                >
+                    <TextField
+                        autoComplete=""
+                        label="Mật khẩu cũ"
+                        variant="outlined"
+                        name="oldPassword"
+                        className="form-input"
+                        required={true}
+                    >
+                    </TextField>
+                    <TextField
+                        autoComplete=""
+                        label="Mật khẩu mới"
+                        variant="outlined"
+                        name="newPassword"
+                        className="form-input"
+                        required={true}
+                    >
+                    </TextField>
+                    <TextField
+                        autoComplete=""
+                        label="Xác nhận mật khẩu"
+                        variant="outlined"
+                        name="confirmPassword"
+                        className="form-input"
+                        required={true}
+                    >
+                    </TextField>
+
+                    <div className="login-group">
+                        <Button
+                            variant="contained"
+                            // color="primary"
+                            type="submit"
+                            className="login-button"
+
+                        >
+                            Cập nhập
+                        </Button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    )
+}
 
 export default function Change_info(props) {
     const classes = profileStyles();
@@ -77,151 +234,10 @@ export default function Change_info(props) {
                             <Tab className={classes.tab} label="Bảo mật và riêng tư" {...a11yProps(2)} />
                         </Tabs>
                         <TabPanel value={value} index={0} className={classes.tabPanel}>
-                            <div className={classes.change_info}>
-                                <div className={classes.change_background}>
-                                    <div className={classes.change_background_upload}>
-                                        <input accept="image/*" style={{ display: "none" }} id="icon-button-file" type="file" />
-                                        <label htmlFor="icon-button-file">
-                                            <IconButton color="primary" aria-label="upload picture" component="span">
-                                                <PhotoCamera />
-                                            </IconButton>
-                                        </label>
-                                    </div>
-                                    <img className={classes.change_bg} src="https://res.cloudinary.com/dxnfxl89q/image/upload/v1625327484/Toho/close-up-opened-umbrella-mockup_53876-98796_nj3un5.jpg" alt="cover"></img>
-                                </div>
-                                <div className={classes.change_wrapper}>
-                                    <div className={classes.change_avatar}>
-                                        <div className={classes.change_avatar_upload}>
-                                            <input accept="image/*" style={{ display: "none" }} id="icon-button-file" type="file" />
-                                            <label htmlFor="icon-button-file">
-                                                <IconButton color="primary" aria-label="upload picture" component="span">
-                                                    <PhotoCamera />
-                                                </IconButton>
-                                            </label>
-                                        </div>
-                                        <img className={classes.change_avatar_img} src="https://res.cloudinary.com/dxnfxl89q/image/upload/v1625327484/Toho/close-up-opened-umbrella-mockup_53876-98796_nj3un5.jpg" alt="avatar"></img>
-                                    </div>
-                                    <div className={classes.change_form}>
-                                        <form
-
-                                            noValidate
-                                            autoComplete="off"
-                                        >
-                                            <TextField
-                                                autoComplete=""
-                                                label="Họ và Tên"
-                                                variant="outlined"
-                                                name="name"
-                                                className="form-input"
-                                                required={true}
-                                            >
-                                            </TextField>
-                                            <TextField
-                                                autoComplete=""
-                                                label="Email"
-                                                variant="outlined"
-                                                name="email"
-                                                className="form-input"
-                                                required={true}
-                                            >
-                                            </TextField>
-                                            <TextField
-                                                autoComplete=""
-                                                label="Số điện thoại"
-                                                variant="outlined"
-                                                name="phone"
-                                                className="form-input"
-                                                required={true}
-                                            >
-                                            </TextField>
-                                            <TextField
-                                                autoComplete=""
-                                                label="Sở thích du lịch"
-                                                variant="outlined"
-                                                required={true}
-                                                name="hobby"
-                                                type="text"
-                                                className="form-input"
-                                            >
-                                            </TextField>
-                                            <TextField
-                                                id="date"
-                                                label="Birthday"
-                                                type="date"
-                                                defaultValue="2017-05-24"
-                                                style={{ margin: "10px 0", width: "30%" }}
-                                            ></TextField>
-                                            <RadioGroup row aria-label="position" name="position" defaultValue="man" style={{ marginBottom: "10px" }}>
-                                                <FormControlLabel value="man" control={<Radio color="primary" />} label="Nam" />
-                                                <FormControlLabel value="male" control={<Radio color="primary" />} label="Nữ" />
-                                                <FormControlLabel value="other" control={<Radio color="primary" />} label="Khác" />
-                                            </RadioGroup>
-                                            <div className="login-group">
-                                                <Button
-                                                    variant="contained"
-                                                    // color="primary"
-                                                    type="submit"
-                                                    className="login-button"
-
-                                                >
-                                                    Cập nhập
-                                                </Button>
-                                            </div>
-                                        </form>
-                                    </div>
-                                </div>
-                            </div>
+                            <ChangeInfo />
                         </TabPanel>
                         <TabPanel value={value} index={1} className={classes.tabPanel}>
-                            <div className={classes.change_password}>
-                                <div className={classes.change_password_form}>
-                                    <form
-
-                                        noValidate
-                                        autoComplete="off"
-                                    >
-                                        <TextField
-                                            autoComplete=""
-                                            label="Mật khẩu cũ"
-                                            variant="outlined"
-                                            name="oldPassword"
-                                            className="form-input"
-                                            required={true}
-                                        >
-                                        </TextField>
-                                        <TextField
-                                            autoComplete=""
-                                            label="Mật khẩu mới"
-                                            variant="outlined"
-                                            name="newPassword"
-                                            className="form-input"
-                                            required={true}
-                                        >
-                                        </TextField>
-                                        <TextField
-                                            autoComplete=""
-                                            label="Xác nhận mật khẩu"
-                                            variant="outlined"
-                                            name="confirmPassword"
-                                            className="form-input"
-                                            required={true}
-                                        >
-                                        </TextField>
-
-                                        <div className="login-group">
-                                            <Button
-                                                variant="contained"
-                                                // color="primary"
-                                                type="submit"
-                                                className="login-button"
-
-                                            >
-                                                Cập nhập
-                                            </Button>
-                                        </div>
-                                    </form>
-                                </div>
-                            </div>
+                            <ChangePassword />
                         </TabPanel>
                         <TabPanel value={value} index={2} className={classes.tabPanel}>
                             404

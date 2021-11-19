@@ -6,11 +6,13 @@ import { notificationStyles } from "../../style";
 
 export default function NotificationItem(props) {
 
+    const { noti } = props;
+
     const classes = notificationStyles();
 
     return (
         <Link button to="/">
-            <ListItem className={props.noti.isSeen ? classes.itemContainer : [classes.itemContainer, classes.unSeen]}>
+            <ListItem className={noti.isSeen ? classes.itemContainer : [classes.itemContainer, classes.unSeen]}>
                 <ListItemAvatar>
                     <Avatar
                         alt="avatar"
@@ -18,10 +20,10 @@ export default function NotificationItem(props) {
                 </ListItemAvatar>
                 <ListItemText>
                     <Typography variant="caption">
-                        {props.noti.time}
+                        {noti.time}
                     </Typography>
                     <Typography variant="body1">
-                        {props.noti.content}
+                        {noti.content}
                     </Typography>
                 </ListItemText>
             </ListItem>

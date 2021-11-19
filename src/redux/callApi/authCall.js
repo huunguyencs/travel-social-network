@@ -1,5 +1,6 @@
 import * as notifyAction from '../actions/notifyAction';
 import * as authAction from '../actions/authAction';
+import request from '../../utils/fetchData';
 
 export const login = (data) => async (dispatch) => {
 
@@ -7,29 +8,42 @@ export const login = (data) => async (dispatch) => {
     dispatch(notifyAction.callStart());
     try {
         // call api to login
+        // const res = await request.post("login", data);
 
-        const res = null;
+        const res = {
+            user: {
+                firstName: "Hữu",
+                lastName: "Nguyễn",
+                avatarImage: "https://www.w3schools.com/howto/img_avatar.png"
+            },
+            token: "adaskjdhasdhjkasdh",
+        };
+
         // stop loading
-        dispatch(notifyAction.callSuccess());
-        dispatch(authAction.auth({ user: res.data.user }));
+        dispatch(notifyAction.callSuccess({ message: "Đăng nhập thành công" }));
+        console.log(res);
+        dispatch(authAction.auth({ user: res.user, token: res.token }));
 
     }
     catch (err) {
+        console.log(err);
         dispatch(notifyAction.callFail({ error: err }));
     }
-
-
 }
 
-export const signup = (data) => async (dispatch) => {
+export const register = (data) => async (dispatch) => {
 
     dispatch(notifyAction.callStart());
     try {
         // call api to login
+        const res = await request.post("user/register", data, {
+            "Content-Type": "application/json",
+        });
 
-        const res = null;
+        console.log(res);
+
         // stop loading
-        dispatch(notifyAction.callSuccess());
+        dispatch(notifyAction.callSuccess({ message: res.data.message }));
 
         // redirect
 
@@ -37,9 +51,9 @@ export const signup = (data) => async (dispatch) => {
     catch (err) {
         dispatch(notifyAction.callFail({ error: err }));
     }
-
 }
 
 export const logout = (data) => async (dispatch) => {
-
+    document.cookie = "refreshtoken=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;";
+    dispatch(authAction.logout());
 }

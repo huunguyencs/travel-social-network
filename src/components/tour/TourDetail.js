@@ -1,15 +1,23 @@
 import { Button, Container, Grid, Modal, Typography, Backdrop, Fade } from "@material-ui/core";
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { Timeline, TimelineItem, TimelineSeparator, TimelineConnector, TimelineContent, TimelineDot } from '@material-ui/lab'
 
 import { tourdetailStyles } from "../../style";
-
 import AddLocationForm from "../forms/addLocation";
 import Location from './Location';
+import { useDispatch, useSelector } from "react-redux";
+import { getTourDetail } from "../../redux/callApi/tourCall";
 
 
 
 export default function TourDetail(props) {
+    const dispatch = useDispatch();
+    const { tour } = useSelector(state => state);
+    // const [tour, setTour] = useState({});
+
+    useEffect(() => {
+        dispatch(getTourDetail());
+    }, [dispatch])
 
     const [idx, setIdx] = useState(0);
     const [addLoc, setAddLoc] = useState(false);
@@ -24,26 +32,26 @@ export default function TourDetail(props) {
 
     const classes = tourdetailStyles();
 
-    const listTour = props.tour.tourList;
+
 
     return (
         <div>
             <div className={classes.coverTitle}>
-                <Typography variant="h3" className={classes.title}>{props.tour.tourName}</Typography>
+                <Typography variant="h3" className={classes.title}>{tour.tourdetail?.tourName}</Typography>
             </div>
             <Grid container className={classes.container}>
                 <Grid item md={2} >
                     <Container className={classes.timeline}>
                         <Timeline align="right">
-                            {listTour.map((item, index) => (
-                                <TimelineItem>
+                            {tour.tourdetail?.tourDate.map((item, index) => (
+                                <TimelineItem key={index}>
                                     <TimelineSeparator>
                                         <TimelineDot className={index === idx ? classes.activeDot : classes.unactiveDot} />
                                         <TimelineConnector />
                                     </TimelineSeparator>
                                     <TimelineContent>
                                         <Button className={index === idx ? classes.activeTimeline : classes.unactiveTimeline} onClick={() => setIdx(index)}>
-                                            {item.time}
+                                            {item.date}
                                         </Button>
                                     </TimelineContent>
                                 </TimelineItem>
@@ -58,8 +66,8 @@ export default function TourDetail(props) {
                 </Grid>
                 <Grid item md={6} className={classes.feedTour}>
                     {
-                        listTour[idx].tour.map((item, index) => (
-                            <Location tour={item} index={index} edit={false} />
+                        tour.tourdetail?.tourDate[idx].locations.map((item, index) => (
+                            <Location location={item} index={index} edit={false} key={item._id} />
                         ))
                     }
                     <div className={classes.addContainer}>

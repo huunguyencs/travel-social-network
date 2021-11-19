@@ -1,46 +1,91 @@
-import { Card, CardContent, Typography } from "@material-ui/core";
-import React from "react";
+import { Card, CardContent, CircularProgress, Typography } from "@material-ui/core";
+import React, { useEffect, useState } from "react";
 
-import icon from "./weather-icon";
 import { cardStyles } from "../../style";
+import { weatherFocast } from "../../utils/weather";
+import { convertDateToStr } from "../../utils/date";
+
+const convertToVN = (main) => {
+    switch (main) {
+        case "Thunderstorm":
+            return "Có giông";
+        case "Drizzle":
+            return "Mưa nhẹ";
+        case "Rain":
+            return "Có mưa";
+        case "Snow":
+            return "Có tuyết";
+        case "Clear":
+            return "Trong lành";
+        case "Clouds":
+            return "Có mây";
+        default:
+            return main;
+    }
+}
 
 export default function WeatherCard(props) {
 
+    const { name } = props;
+    const [weather, setWeather] = useState(null);
+
+    useEffect(() => {
+        weatherFocast(name, (respone) => {
+            setWeather(respone);
+        });
+    }, [name, setWeather])
+
     const classes = cardStyles();
+
+    const firstUpperCase = (string) => {
+        return string.charAt(0).toUpperCase() + string.slice(1);
+    }
+
 
     return (
         <Card className={classes.weatherCardContainer}>
-            <CardContent className={classes.content}>
-                <div className={classes.weatherTitle}>
-                    <Typography variant="h5">{props.weather.name}</Typography>
-                    <Typography>{props.weather.time}</Typography>
-                    <img src={icon.cloudy} alt="sun" className={classes.icon} />
-                </div>
+            {
+                weather != null ?
+                    <CardContent className={classes.content}>
+                        <div className={classes.weatherTitle}>
+                            <Typography variant="h5">{weather.name}</Typography>
+                            <Typography>{convertDateToStr(new Date(weather.dt * 1000))}</Typography>
+                            <img src={`http://openweathermap.org/img/wn/${weather.weather[0].icon}@2x.png`} alt={weather.weather[0].main} className={classes.icon} />
+                        </div>
 
-                <div className={classes.temp}>
-                    <Typography variant="h4">~ {props.weather.temp} °C</Typography>
-                    <Typography variant="h6">{props.weather.describe}</Typography>
-                </div>
+                        <div className={classes.temp}>
+                            <Typography variant="h4">~ {weather.main.temp - 273.15} °C</Typography>
+                            <Typography variant="h6">{convertToVN(weather.weather[0].main)}</Typography>
+                        </div>
 
-                <div className={classes.detailInfo}>
-                    <div className={classes.itemInfo}>
-                        <Typography>Độ ẩm: </Typography>
-                        <Typography className={classes.value}>{props.weather.humidity} %</Typography>
-                    </div>
-                    <div className={classes.itemInfo}>
+                        <div style={{ display: "flex", justifyContent: "center", marginTop: 10 }}>
+                            <Typography variant="h6">{firstUpperCase(weather.weather[0].description)}</Typography>
+                        </div>
+
+                        <div className={classes.detailInfo}>
+                            <div className={classes.itemInfo}>
+                                <Typography>Độ ẩm: </Typography>
+                                <Typography className={classes.value}>{weather.main.humidity} %</Typography>
+                            </div>
+                            {/* <div className={classes.itemInfo}>
                         <Typography>Khả năng mưa: </Typography>
-                        <Typography className={classes.value}>{props.weather.rain} %</Typography>
-                    </div>
-                    <div className={classes.itemInfo}>
-                        <Typography>Tốc độ gió: </Typography>
-                        <Typography className={classes.value}>{props.weather.vWind} m/s</Typography>
-                    </div>
-                    <div className={classes.itemInfo}>
-                        <Typography>Tầm nhìn xa: </Typography>
-                        <Typography className={classes.value}>{props.weather.visibility} Km</Typography>
-                    </div>
-                </div>
-            </CardContent>
+                        <Typography className={classes.value}>{weather.rain} %</Typography>
+                    </div> */}
+                            <div className={classes.itemInfo}>
+                                <Typography>Tốc độ gió: </Typography>
+                                <Typography className={classes.value}>{weather.wind.speed} m/s</Typography>
+                            </div>
+                            <div className={classes.itemInfo}>
+                                <Typography>Tầm nhìn xa: </Typography>
+                                <Typography className={classes.value}>~ {Math.floor(weather.visibility / 1000)} Km</Typography>
+                            </div>
+                        </div>
+                    </CardContent>
+                    :
+                    <CardContent>
+                        <CircularProgress />
+                    </CardContent>
+            }
         </Card>
     )
 }

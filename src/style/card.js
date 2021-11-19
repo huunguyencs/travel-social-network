@@ -34,17 +34,17 @@ const cardStyles = makeStyles((theme) => ({
     },
     weatherCardContainer: {
         marginRight: 40,
-        marginTop: theme.spacing(6),
         top: 0,
+        marginBottom: 30,
         borderRadius: attr.borderRadius.md,
     },
     content: {
         padding: 10,
     },
     icon: {
-        width: 100,
-        marginTop: 30,
-        marginBottom: 30,
+        width: 150,
+        marginTop: 0,
+        marginBottom: 0,
     },
     weatherTitle: {
         textAlign: "center",

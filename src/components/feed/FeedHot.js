@@ -1,50 +1,24 @@
 import { Container, Typography } from "@material-ui/core";
 import React, { useEffect } from "react";
+import { useDispatch, useSelector } from "react-redux";
+
 import { feedStyles } from "../../style";
 import Event from "../event/event";
-import LocationCard from "../location/Location";
+import Location from "../location/Location";
+import { getLocationHot } from "../../redux/callApi/locationCall";
 
-
-const locationHot = [
-    {
-        id: 1,
-        image: "https://toplist.vn/images/800px/le-hoi-giong-362211.jpg",
-        name: "Địa điểm Hot",
-        description: "Địa điểm được nhiều người du lịch nhất",
-        rate: 5,
-    },
-    {
-        id: 1,
-        image: "https://toplist.vn/images/800px/le-hoi-giong-362211.jpg",
-        name: "Địa điểm Hot",
-        description: "Địa điểm được nhiều người du lịch nhất",
-        rate: 5,
-    },
-    {
-        id: 1,
-        image: "https://toplist.vn/images/800px/le-hoi-giong-362211.jpg",
-        name: "Địa điểm Hot",
-        description: "Địa điểm được nhiều người du lịch nhất",
-        rate: 4,
-    },
-    {
-        id: 1,
-        image: "https://toplist.vn/images/800px/le-hoi-giong-362211.jpg",
-        name: "Địa điểm Hot",
-        description: "Địa điểm được nhiều người du lịch nhất",
-        rate: 5
-    },
-]
 
 
 export default function FeedHot(props) {
 
     const classes = feedStyles();
+    const dispatch = useDispatch();
+    const { location } = useSelector(state => state);
 
     useEffect(() => {
-        console.log("Render list event and list hot");
-        // call api
-    }, [])
+        dispatch(getLocationHot());
+        // console.log(location.hot);
+    }, [dispatch])
 
     return (
         <Container className={classes.container}>
@@ -61,8 +35,8 @@ export default function FeedHot(props) {
                         <Typography variant="h4" style={{ paddingBottom: 20 }}>Địa điểm hot</Typography>
                     </div>
                     <div className={classes.hotFeed}>
-                        {locationHot.map((item) =>
-                            <LocationCard location={item} />
+                        {location.hot.map((item) =>
+                            <Location location={item} key={item._id} />
                         )}
                     </div>
                 </div>
