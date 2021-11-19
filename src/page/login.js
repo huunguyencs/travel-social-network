@@ -87,6 +87,8 @@ export default function Login(props) {
         }
     }, [errors, dispatch, state])
     
+
+    //Show password
     const handleChange = (prop) => (event) => {
         setState({ ...state, [prop]: event.target.value });
     };

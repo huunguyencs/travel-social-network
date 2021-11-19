@@ -9,6 +9,11 @@ import { useDispatch, useSelector } from "react-redux";
 import { CircularProgress } from "@material-ui/core";
 import { register } from "../redux/callApi/authCall";
 
+import InputAdornment from "@material-ui/core/InputAdornment";
+import Visibility from "@material-ui/icons/Visibility";
+import VisibilityOff from "@material-ui/icons/VisibilityOff";
+import IconButton from "@material-ui/core/IconButton";
+
 export default function Register(props) {
 
     const dispatch = useDispatch();
@@ -24,6 +29,7 @@ export default function Register(props) {
         confirmPassword: "",
         errors: {},
         submit: false,
+        showPassword: false,
     });
 
     const { errors } = state;
@@ -122,6 +128,19 @@ export default function Register(props) {
         }
     }, [errors, state, dispatch])
 
+    //Show password
+    const handleChange = (prop) => (event) => {
+        setState({ ...state, [prop]: event.target.value });
+    };
+    
+    const handleClickShowPassword = () => {
+        setState({ ...state, showPassword: !state.showPassword });
+    };
+    
+    const handleMouseDownPassword = (event) => {
+        event.preventDefault();
+    };
+
     return (
         <div className="login">
             <div className="login-img">
@@ -187,24 +206,52 @@ export default function Register(props) {
                         label="Mật khẩu (8+ kí tự)"
                         variant="outlined"
                         name="password"
-                        type="password"
+                        type={state.showPassword ? "text" : "password"}
                         required
                         className="form-input"
                         error={errors?.password}
                         helperText={errors?.password}
                         onChange={handleInput}
+                        InputProps={{
+                            endAdornment: (
+                                <InputAdornment position="end">
+                                    <IconButton
+                                    aria-label="toggle password visibility"
+                                    onClick={handleClickShowPassword}
+                                    onMouseDown={handleMouseDownPassword}
+                                    edge="end"
+                                    >
+                                    {state.showPassword ? <Visibility /> : <VisibilityOff />}
+                                    </IconButton>
+                                </InputAdornment>
+                            )
+                        }}
                     />
                     <TextField
                         autoComplete=""
                         label="Xác nhận mật khẩu"
                         variant="outlined"
                         name="confirmPassword"
-                        type="password"
+                        type={state.showPassword ? "text" : "password"}
                         required
                         className="form-input"
                         error={errors?.confirmPassword}
                         helperText={errors?.confirmPassword}
                         onChange={handleInput}
+                        InputProps={{
+                            endAdornment: (
+                                <InputAdornment position="end">
+                                    <IconButton
+                                    aria-label="toggle password visibility"
+                                    onClick={handleClickShowPassword}
+                                    onMouseDown={handleMouseDownPassword}
+                                    edge="end"
+                                    >
+                                    {state.showPassword ? <Visibility /> : <VisibilityOff />}
+                                    </IconButton>
+                                </InputAdornment>
+                            )
+                        }}
                     />
                     {/* <div style={{
                         display: 'flex',
