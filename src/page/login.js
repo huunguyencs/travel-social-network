@@ -8,6 +8,10 @@ import { useHistory } from 'react-router-dom';
 
 import Validator from '../utils/validator';
 
+import InputAdornment from "@material-ui/core/InputAdornment";
+import Visibility from "@material-ui/icons/Visibility";
+import VisibilityOff from "@material-ui/icons/VisibilityOff";
+import IconButton from "@material-ui/core/IconButton";
 
 export default function Login(props) {
 
@@ -15,11 +19,12 @@ export default function Login(props) {
 
     const dispatch = useDispatch();
     const { auth } = useSelector(state => state);
-    const [state, setState] = useState({
+    const [state, setState] = React.useState({
         email: '',
         password: '',
         errors: {},
         submit: false,
+        showPassword: false,
     })
 
     const { errors } = state;
@@ -81,6 +86,18 @@ export default function Login(props) {
             })
         }
     }, [errors, dispatch, state])
+    
+    const handleChange = (prop) => (event) => {
+        setState({ ...state, [prop]: event.target.value });
+    };
+    
+    const handleClickShowPassword = () => {
+        setState({ ...state, showPassword: !state.showPassword });
+    };
+    
+    const handleMouseDownPassword = (event) => {
+        event.preventDefault();
+    };
 
     return (
         <div className="login">
@@ -120,12 +137,27 @@ export default function Login(props) {
                         required
                         id="password"
                         name="password"
-                        type="password"
+                        type={state.showPassword ? "text" : "password"}
                         error={errors?.password}
                         helperText={errors?.password}
                         className="form-input"
                         value={state.password}
                         onChange={handleInput}
+                        // onChange={handleChange("password")}
+                        InputProps={{
+                            endAdornment: (
+                                <InputAdornment position="end">
+                                    <IconButton
+                                    aria-label="toggle password visibility"
+                                    onClick={handleClickShowPassword}
+                                    onMouseDown={handleMouseDownPassword}
+                                    edge="end"
+                                    >
+                                    {state.showPassword ? <Visibility /> : <VisibilityOff />}
+                                    </IconButton>
+                                </InputAdornment>
+                            )
+                        }}
                     >
                     </TextField>
                     <p style={{
