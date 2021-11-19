@@ -7,26 +7,10 @@ import SpeedDialButton from "../../components/speedDialBtn";
 import { eventStyles } from "../../style";
 
 const imageList = [
-    {
-        _id: 1,
-        url: "http://hanoimoi.com.vn/Uploads/images/tuandiep/2020/02/07/den%20hung.jpg",
-        title: "le hoi den hung",
-    },
-    {
-        _id: 2,
-        url: "http://baodautu.vn/Images/thutrang/2020/04/01/le-hoi-den-hung-ngay-hoi-non-song-ngay-hoi-toan-dan1585742636.jpg",
-        title: "le hoi den hung",
-    },
-    {
-        _id: 3,
-        url: "https://hanoimoi.com.vn/Uploads/lequyen/2019/4/8/3.jpg",
-        title: "le hoi den hung",
-    },
-    {
-        _id: 4,
-        url: "https://img.nhandan.com.vn/Files/Images/2021/02/23/2_9-1614068063580.JPG",
-        title: "le hoi den hung",
-    }
+    "http://hanoimoi.com.vn/Uploads/images/tuandiep/2020/02/07/den%20hung.jpg",
+    "http://baodautu.vn/Images/thutrang/2020/04/01/le-hoi-den-hung-ngay-hoi-non-song-ngay-hoi-toan-dan1585742636.jpg",
+    "https://hanoimoi.com.vn/Uploads/lequyen/2019/4/8/3.jpg",
+    "https://img.nhandan.com.vn/Files/Images/2021/02/23/2_9-1614068063580.JPG",
 ]
 
 export default function EventPage(props) {

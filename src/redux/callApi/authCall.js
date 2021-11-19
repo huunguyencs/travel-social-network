@@ -9,7 +9,10 @@ export const login = (data) => async (dispatch) => {
     dispatch(notifyAction.callStart());
     try {
         // call api to login
-        const res = await customAxios().post("user/login", data);
+        const res = await customAxios().post("user/login", data, {
+            withCredentials: true,
+            credentials: 'include'
+        });
 
 
         // stop loading
@@ -19,6 +22,7 @@ export const login = (data) => async (dispatch) => {
 
     }
     catch (err) {
+        console.log(err.response.data);
         dispatch(notifyAction.callFail({ error: err.response.data.message }));
     }
 }
@@ -38,6 +42,19 @@ export const register = (data) => async (dispatch) => {
     catch (err) {
         console.log(err);
         dispatch(notifyAction.callFail({ error: err.response.data.message }));
+    }
+}
+
+export const refreshToken = (data) => async (dispatch) => {
+    try {
+        const res = await customAxios().post("user/refresh_token", data, {
+            withCredentials: true,
+            credentials: 'include'
+        });
+        console.log(res);
+    }
+    catch (err) {
+        console.log(err);
     }
 }
 

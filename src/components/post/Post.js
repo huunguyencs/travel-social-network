@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import {
     Avatar,
     Backdrop,
@@ -29,6 +29,7 @@ import { Link } from "react-router-dom";
 import UserList from "../modal/userList";
 import { SeeMoreText } from "../seeMoreText";
 import { timeAgo } from "../../utils/date";
+import { useDispatch, useSelector } from "react-redux";
 
 const userList = [
     {
@@ -57,16 +58,34 @@ export default function Post(props) {
 
     const { post } = props;
 
+    const { auth } = useSelector(state => state);
+    const dispatch = useDispatch();
+
     const [showCmt, setShowCmt] = useState(false);
-    const [like, setLike] = useState(post.liked);
-    const [numLike, setNumLike] = useState(post.numLike);
+    const [like, setLike] = useState(false);
+    const [numLike, setNumLike] = useState(post.likes.length);
 
     const classes = postStyles({ showCmt });
 
-    const likeHandle = (e) => {
-        setLike(!like);
-        if (!like) setNumLike(numLike + 1);
-        else setNumLike(numLike - 1);
+    const likePress = () => {
+        if (!auth.user) return;
+        if (like) {
+            handleUnlike();
+        }
+        else handleLike();
+    }
+
+    const handleLike = () => {
+        setLike(true);
+        setNumLike(state => state + 1);
+        // call api
+
+    }
+
+    const handleUnlike = () => {
+        setLike(false);
+        setNumLike(state => state - 1);
+        // call api
     }
 
     const [showLike, setShowLike] = useState(false);
@@ -83,6 +102,12 @@ export default function Post(props) {
     const handleShowCmt = () => {
         setShowCmt(!showCmt)
     }
+
+    useEffect(() => {
+        if (auth.user && post.likes.find(like => like._id === auth.user._id)) {
+            setLike(true);
+        }
+    }, [post.likes, auth.user]);
 
     return (
         <Card className={classes.cardContainer}>
@@ -126,14 +151,14 @@ export default function Post(props) {
 
 
             <CardActions>
-                <IconButton onClick={likeHandle}>
+                <IconButton onClick={likePress}>
                     {
                         like ? <Favorite className={classes.likeIcon} /> : <FavoriteBorderOutlined />
                     }
 
                 </IconButton>
                 <Typography className={classes.numLike} onClick={handleOpen}>
-                    {post.likes.length}
+                    {numLike}
                 </Typography>
                 <Modal
                     aria-labelledby="transition-modal-title"

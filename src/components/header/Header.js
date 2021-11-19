@@ -65,6 +65,10 @@ export default function Header(props) {
 
     const classes = headerStyles({ open });
 
+    const handleSearch = (e) => {
+        e.preventDefault();
+        console.log(e);
+    }
 
     return (
         <AppBar positionSticky style={{ zIndex: 1 }}>
@@ -77,7 +81,9 @@ export default function Header(props) {
 
                 <div className={classes.search}>
                     <Search className={classes.searchIcon} />
-                    <InputBase placeholder="Tìm kiếm ..." className={classes.input} />
+                    <form style={{ width: "100%" }} onSubmit={handleSearch}>
+                        <InputBase placeholder="Tìm kiếm ..." className={classes.input} />
+                    </form>
                     <Cancel className={classes.cancel} onClick={(e) => setOpen(false)} />
                 </div>
                 <div>
