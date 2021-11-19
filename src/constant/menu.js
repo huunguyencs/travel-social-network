@@ -1,78 +1,87 @@
 import { Accessibility, Explore, Home, SupervisorAccount, Tune, Whatshot } from "@material-ui/icons";
 
-const homeMenu = [
-    {
-        name: "Trang chủ",
-        icon: Home,
-        link: "/",
-    },
-    {
-        name: "Hành trình",
-        icon: Explore,
-        link: "/tour",
-    },
-    {
-        name: "Hot",
-        icon: Whatshot,
-        link: "/hot"
-    },
-    {
-        name: "Dịch vụ",
-        icon: Accessibility,
-        link: "/service",
-    },
-    {
-        name: "Cài đặt",
-        icon: Tune,
-        link: "/setting",
-    }
-];
+const homeMenu = {
+    prefix: "",
+    menu: [
+        {
+            name: "Trang chủ",
+            icon: Home,
+            link: "/",
+        },
+        {
+            name: "Hành trình",
+            icon: Explore,
+            link: "/tour",
+        },
+        {
+            name: "Hot",
+            icon: Whatshot,
+            link: "/hot"
+        },
+        {
+            name: "Dịch vụ",
+            icon: Accessibility,
+            link: "/service",
+        },
+        {
+            name: "Cài đặt",
+            icon: Tune,
+            link: "/setting",
+        }
+    ]
+};
 
-const profileMenu = [
-    {
-        name: "Giới Thiệu",
-        icon: Home,
-        link: "/profile/intro",
-    },
-    {
-        name: "Bài Viết",
-        icon: Explore,
-        link: "/profile/posts",
-    },
-    {
-        name: "Hành Trình",
-        icon: Accessibility,
-        link: "/profile/tours",
-    },
-    {
-        name: "Nhóm",
-        icon: SupervisorAccount,
-        link: "/profile/group",
-    },
-    {
-        name: "Thay đổi thông tin",
-        icon: Tune,
-        link: "/profile/changeinfo",
-    }
-]
+const profileMenu = {
+    prefix: "profile",
+    menu: [
+        {
+            name: "Giới Thiệu",
+            icon: Home,
+            link: "/",
+        },
+        {
+            name: "Bài Viết",
+            icon: Explore,
+            link: "/posts",
+        },
+        {
+            name: "Hành Trình",
+            icon: Accessibility,
+            link: "/tours",
+        },
+        {
+            name: "Nhóm",
+            icon: SupervisorAccount,
+            link: "/group",
+        },
+        {
+            name: "Thay đổi thông tin",
+            icon: Tune,
+            link: "/changeinfo",
+        }
+    ]
+};
 
-const groupMenu = [
-    {
-        name: "Giới Thiệu",
-        icon: Home,
-        link: "/group",
-    },
-    {
-        name: "Bài Viết",
-        icon: Explore,
-        link: "/group/posts",
-    },
-    {
-        name: "Thành Viên",
-        icon: Accessibility,
-        link: "/group/member",
-    }
-]
+const groupMenu = {
+    prefix: "group",
+    menu: [
+        {
+            name: "Giới Thiệu",
+            icon: Home,
+            link: "/group",
+        },
+        {
+            name: "Bài Viết",
+            icon: Explore,
+            link: "/group/posts",
+        },
+        {
+            name: "Thành Viên",
+            icon: Accessibility,
+            link: "/group/member",
+        }
+    ]
+};
 
 export { homeMenu, profileMenu, groupMenu };
 

@@ -1,36 +1,21 @@
 import { Button, Paper, TextField, Typography } from "@material-ui/core";
 import { Autocomplete } from "@material-ui/lab";
-import React, { useRef, useState } from "react";
-import { useDispatch } from "react-redux";
+import React, { useEffect, useRef, useState } from "react";
+import { useDispatch, useSelector } from "react-redux";
 
 import { formStyles } from '../../style';
-import * as tourAction from '../../redux/actions/tourAction';
-
-const listLocation = [
-    { id: "1", name: "Chùa Một Cột" },
-    { id: "2", name: "Hồ Gươm" },
-    { id: "3", name: "Lăng Chủ tịch" },
-    { id: "4", name: "Vịnh Hạ Long" },
-    { id: "5", name: "Biển Mỹ Khê" },
-    { id: "6", name: "Biển Vũng Tàu" },
-    { id: "7", name: "Biển Nha Trang" },
-    { id: "8", name: "Phố cổ Hội An" },
-    { id: "9", name: "Chùa Một Cột" },
-    { id: "10", name: "Chùa Một Cột" },
-    { id: "11", name: "Chùa Một Cột" },
-    { id: "12", name: "Chùa Một Cột" },
-    { id: "13", name: "Chùa Một Cột" },
-]
-
+import * as tourAction from '../../redux/actions/createTourAction';
+import { getLocations } from "../../redux/callApi/locationCall";
 
 
 export default function EditLocationForm(props) {
 
     // const idRef = useRef(props.locationId);
-    const [loc, setLoc] = useState({ id: props.locationInfo.id, name: props.locationInfo.location });
+    const [loc, setLoc] = useState(props.location.location);
     const costRef = useRef('');
 
     const dispatch = useDispatch();
+    const { location } = useSelector(state => state);
 
     const handleSubmit = (e) => {
         e.preventDefault();
@@ -39,13 +24,19 @@ export default function EditLocationForm(props) {
         props.handleCloseParent();
     }
 
+    useEffect(() => {
+        if (location.locations.length === 0) {
+            dispatch(getLocations());
+        }
+
+    }, [location.locations, dispatch])
 
     // onEffect load listLocation
 
     const classes = formStyles();
 
     return (
-        <Paper className={[classes.paperContainer, classes.addFormContainer]}>
+        <Paper className={`${classes.paperContainer} ${classes.addFormContainer}`}>
             <div className={classes.textTitle}>
                 <Typography variant="h5">
                     Chỉnh sửa địa điểm
@@ -56,12 +47,12 @@ export default function EditLocationForm(props) {
             >
                 <Autocomplete
                     id="choose-location"
-                    options={listLocation}
-                    getOptionLabel={(option) => option.name}
+                    options={location.locations}
+                    getOptionLabel={(option) => option.locationName}
                     style={{ width: 400, marginTop: 30 }}
                     defaultValue={loc}
                     onChange={(e, value) => setLoc(value)}
-                    renderInput={(params) => <TextField {...params} name="location" label="Địa điểm" variant="outlined" required defaultValue={props.locationInfo.location} />}
+                    renderInput={(params) => <TextField {...params} name="location" label="Địa điểm" variant="outlined" required defaultValue={loc.locationName} />}
                 />
                 <TextField
                     label="Chi phí dự kiến (nghìn VND)"
@@ -71,7 +62,7 @@ export default function EditLocationForm(props) {
                     style={{ width: 400, marginTop: 30 }}
                     type="number"
                     inputRef={costRef}
-                    defaultValue={props.locationInfo.cost}
+                    defaultValue={props.location.cost}
                 />
                 <div>
                     <Button

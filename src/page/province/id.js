@@ -13,49 +13,49 @@ import ServiceCard from "../../components/card/ServiceCard";
 
 const listLocation = [
     {
-        id: "1",
+        _id: "1",
         image: "https://recmiennam.com/wp-content/uploads/2020/10/nhung-canh-dep-viet-nam-sao-ma-yeu-den-the-1.jpg",
         name: "Test1",
         star: 4,
     },
     {
-        id: "2",
+        _id: "2",
         image: "https://recmiennam.com/wp-content/uploads/2020/10/nhung-canh-dep-viet-nam-sao-ma-yeu-den-the-1.jpg",
         name: "Test2",
         star: 4,
     },
     {
-        id: "3",
+        _id: "3",
         image: "https://recmiennam.com/wp-content/uploads/2020/10/nhung-canh-dep-viet-nam-sao-ma-yeu-den-the-1.jpg",
         name: "Test3",
         star: 4,
     },
     {
-        id: "4",
+        _id: "4",
         image: "https://recmiennam.com/wp-content/uploads/2020/10/nhung-canh-dep-viet-nam-sao-ma-yeu-den-the-1.jpg",
         name: "Test4",
         star: 4,
     },
     {
-        id: "5",
+        _id: "5",
         image: "https://recmiennam.com/wp-content/uploads/2020/10/nhung-canh-dep-viet-nam-sao-ma-yeu-den-the-1.jpg",
         name: "Test5",
         star: 4,
     },
     {
-        id: "6",
+        _id: "6",
         image: "https://recmiennam.com/wp-content/uploads/2020/10/nhung-canh-dep-viet-nam-sao-ma-yeu-den-the-1.jpg",
         name: "Test6",
         star: 4,
     },
     {
-        id: "7",
+        _id: "7",
         image: "https://recmiennam.com/wp-content/uploads/2020/10/nhung-canh-dep-viet-nam-sao-ma-yeu-den-the-1.jpg",
         name: "Test7",
         star: 4,
     },
     {
-        id: "8",
+        _id: "8",
         image: "https://recmiennam.com/wp-content/uploads/2020/10/nhung-canh-dep-viet-nam-sao-ma-yeu-den-the-1.jpg",
         name: "Test8",
         star: 4,
@@ -70,55 +70,55 @@ const listLocation = [
 
 const listService = [
     {
-        id: "1",
+        _id: "1",
         image: "https://recmiennam.com/wp-content/uploads/2020/10/nhung-canh-dep-viet-nam-sao-ma-yeu-den-the-1.jpg",
         name: "Test1",
         star: 4,
     },
     {
-        id: "2",
+        _id: "2",
         image: "https://recmiennam.com/wp-content/uploads/2020/10/nhung-canh-dep-viet-nam-sao-ma-yeu-den-the-1.jpg",
         name: "Test2",
         star: 4,
     },
     {
-        id: "3",
+        _id: "3",
         image: "https://recmiennam.com/wp-content/uploads/2020/10/nhung-canh-dep-viet-nam-sao-ma-yeu-den-the-1.jpg",
         name: "Test3",
         star: 4,
     },
     {
-        id: "4",
+        _id: "4",
         image: "https://recmiennam.com/wp-content/uploads/2020/10/nhung-canh-dep-viet-nam-sao-ma-yeu-den-the-1.jpg",
         name: "Test4",
         star: 4,
     },
     {
-        id: "5",
+        _id: "5",
         image: "https://recmiennam.com/wp-content/uploads/2020/10/nhung-canh-dep-viet-nam-sao-ma-yeu-den-the-1.jpg",
         name: "Test5",
         star: 4,
     },
     {
-        id: "6",
+        _id: "6",
         image: "https://recmiennam.com/wp-content/uploads/2020/10/nhung-canh-dep-viet-nam-sao-ma-yeu-den-the-1.jpg",
         name: "Test6",
         star: 4,
     },
     {
-        id: "7",
+        _id: "7",
         image: "https://recmiennam.com/wp-content/uploads/2020/10/nhung-canh-dep-viet-nam-sao-ma-yeu-den-the-1.jpg",
         name: "Test7",
         star: 4,
     },
     {
-        id: "8",
+        _id: "8",
         image: "https://recmiennam.com/wp-content/uploads/2020/10/nhung-canh-dep-viet-nam-sao-ma-yeu-den-the-1.jpg",
         name: "Test8",
         star: 4,
     },
     {
-        id: "9",
+        _id: "9",
         image: "https://recmiennam.com/wp-content/uploads/2020/10/nhung-canh-dep-viet-nam-sao-ma-yeu-den-the-1.jpg",
         name: "Test9",
         star: 4,
@@ -184,13 +184,13 @@ export default function Province(props) {
                     </div>
                     <Grid className={classes.listContainer} container>
                         {listLocation.slice((pageLoc - 1) * ITEM_PER_PAGE, pageLoc * ITEM_PER_PAGE).map((item) => (
-                            <Grid item md={4} sm={6} xs={12} key={item.id}>
+                            <Grid item md={4} sm={6} xs={12} key={item._id}>
                                 <LocationCard location={item} />
                             </Grid>
                         ))}
 
                     </Grid>
-                    <div style={{ marginTop: 30, display: "flex", justifyContent: "center" }}>
+                    <div style={{ display: "flex", justifyContent: "center" }}>
                         <Pagination count={Math.ceil(listLocation.length / ITEM_PER_PAGE)} page={pageLoc} onChange={handleChangeLoc} color="primary" />
                     </div>
                 </div>
@@ -200,20 +200,20 @@ export default function Province(props) {
                     </div>
                     <Grid className={classes.listContainer} container>
                         {listService.slice((pageSer - 1) * ITEM_PER_PAGE, pageSer * ITEM_PER_PAGE).map((item) => (
-                            <Grid item md={4} sm={6} xs={12} key={item.id}>
+                            <Grid item md={4} sm={6} xs={12} key={item._id}>
                                 <ServiceCard service={item} />
                             </Grid>
                         ))}
 
                     </Grid>
-                    <div style={{ marginTop: 30, display: "flex", justifyContent: "center" }}>
+                    <div style={{ display: "flex", justifyContent: "center" }}>
                         <Pagination count={Math.ceil(listService.length / ITEM_PER_PAGE)} page={pageSer} onChange={handleChangeSer} color="primary" />
                     </div>
                 </div>
             </Grid>
             <Grid item md={3}>
                 <RightBar>
-                    <WeatherCard weather={weather} />
+                    <WeatherCard name={"Hanoi"} />
                     <CovidCard />
                 </RightBar>
             </Grid>

@@ -14,7 +14,8 @@ const tourdetailStyles = makeStyles((theme) => ({
     },
     container: {
         maxWidth: "90%",
-        margin: 80,
+        marginInline: 80,
+        marginTop: 20,
         marginBottom: 0,
     },
     timeline: {
@@ -108,6 +109,30 @@ const tourdetailStyles = makeStyles((theme) => ({
         marginTop: 40,
         backgroundColor: color.turquoise,
         marginLeft: 20,
+    },
+    itemInfo: {
+        marginTop: 10,
+        display: "flex",
+        justifyContent: "center",
+    },
+    hashtagWrap: {
+        display: "flex",
+        justifyContent: "center",
+        marginTop: 10,
+    },
+    hashtag: {
+        display: "inline",
+        marginRight: 5,
+        color: color.brightgreek,
+        cursor: "pointer",
+        "&:hover": {
+            textDecorationLine: 'underline',
+        }
+    },
+    imageLocation: {
+        [theme.breakpoints.down("md")]: {
+            display: "none",
+        }
     }
 }))
 

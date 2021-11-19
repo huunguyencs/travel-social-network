@@ -1,6 +1,6 @@
 import { makeStyles } from "@material-ui/core";
 
-import shareStyles from "./share";
+
 import commentStyles from "./comment";
 import postStyles from './post';
 import leftbarStyles from "./leftbar";
@@ -25,11 +25,12 @@ import speedDialStyles from "./speeddial";
 import eventStyles from "./event";
 import locationCardStyles from "./locationCard";
 import serviceStyles from "./service";
+import modalListStyles from "./modalList";
+import emojiPickerStyles from "./emojiPicker";
 
 
 
 const useStyles = makeStyles((theme) => ({
-    ...shareStyles,
     rightbar: {
         [theme.breakpoints.down("md")]: {
             display: "none",
@@ -68,4 +69,6 @@ export {
     eventStyles,
     locationCardStyles,
     serviceStyles,
+    modalListStyles,
+    emojiPickerStyles,
 };

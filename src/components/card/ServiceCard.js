@@ -23,7 +23,7 @@ export default function ServiceCard(props) {
                     <Typography>{props.service.star}</Typography>
                     <Star className={classes.starIcon} />
                 </div>
-                <Button className={classes.seeMore} component={Link} to={"/service/" + props.service.id}>
+                <Button className={classes.seeMore} component={Link} to={"/service/" + props.service._id}>
                     Xem thêm
                 </Button>
             </CardActions>

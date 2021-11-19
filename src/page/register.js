@@ -1,10 +1,126 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import TextField from '@material-ui/core/TextField/TextField';
 import Button from '@material-ui/core/Button/Button';
-import Checkbox from "@material-ui/core/Checkbox";
+// import Checkbox from "@material-ui/core/Checkbox";
 import { Link } from "react-router-dom";
 
+import Validator, { validatePassword, validatePhoneNumber } from "../utils/validator";
+import { useDispatch, useSelector } from "react-redux";
+import { CircularProgress } from "@material-ui/core";
+import { register } from "../redux/callApi/authCall";
+
 export default function Register(props) {
+
+    const dispatch = useDispatch();
+
+    const { notify } = useSelector(state => state);
+
+    const [state, setState] = useState({
+        username: "",
+        fullname: "",
+        email: "",
+        phone: "",
+        password: "",
+        confirmPassword: "",
+        errors: {},
+        submit: false,
+    });
+
+    const { errors } = state;
+
+    const confirmPass = (value, field, sta) => value === sta[field];
+
+    const rules = [
+        {
+            field: "username",
+            method: "isEmpty",
+            validWhen: false,
+            message: "Tên tài khoản không được bỏ trống!"
+        },
+        {
+            field: "fullname",
+            method: "isEmpty",
+            validWhen: false,
+            message: "Tên đầy đủ không được bỏ trống!"
+        },
+        {
+            field: "email",
+            method: "isEmpty",
+            validWhen: false,
+            message: "Email không được bỏ trống!"
+        },
+        {
+            field: "password",
+            method: "isEmpty",
+            validWhen: false,
+            message: "Mật khẩu không được bỏ trống!"
+        },
+        {
+            field: "email",
+            method: "isEmail",
+            validWhen: true,
+            message: "Email không hợp lệ!"
+        },
+        {
+            field: "password",
+            method: validatePassword,
+            validWhen: true,
+            message: "Mật khẩu phải chứa ít nhất một chữ cái viết hoa, một chữ cái viết thường, một kí tự đặc biệt, một chữ số và có độ dài lớn hơn 8"
+        },
+        {
+            field: "confirmPassword",
+            method: confirmPass,
+            args: ['password'],
+            validWhen: true,
+            message: "Xác nhận mật khẩu không khớp"
+        },
+        {
+            field: "phone",
+            method: validatePhoneNumber,
+            validWhen: true,
+            message: "Số điện thoại không hợp lệ"
+        }
+    ];
+
+    const validator = new Validator(rules);
+
+    const handleInput = e => {
+        setState({
+            ...state,
+            errors: {},
+            [e.target.name]: e.target.value,
+        })
+    }
+
+    const handleSubmit = e => {
+        e.preventDefault();
+        setState({
+            ...state,
+            submit: true,
+            errors: validator.validate(state)
+        })
+    }
+
+    useEffect(() => {
+        if (state.submit) {
+            if (Object.keys(errors).length === 0) {
+                // console.log("register success")
+
+                // call api to register
+                dispatch(register({
+                    username: state.username,
+                    fullname: state.fullname,
+                    password: state.password,
+                    email: state.email,
+                    phone: state.phone,
+                }))
+            }
+            setState({
+                ...state,
+                submit: false,
+            })
+        }
+    }, [errors, state, dispatch])
 
     return (
         <div className="login">
@@ -17,67 +133,80 @@ export default function Register(props) {
                     <h4 className="login-register-switch__notactive"><Link to="/login" style={{ color: "#2F3542" }}> Đăng nhập </Link></h4>
                     <h4 className="login-register-switch__active__register">Đăng ký</h4>
                 </div>
-                <p style={{
-                    opacity: 0.5,
-                    marginTop: '1rem',
-                    marginBottom: '1rem'
-                }}>Đăng ký tài khoản</p>
                 <form
-                    style={{
-                        marginTop: '-10px'
-                    }}
-                    noValidate
-                    autoComplete="off"
-                    method="POST"
+                    onSubmit={handleSubmit}
                 >
                     <TextField
                         autoComplete=""
-                        label="Họ và Tên"
+                        label="Tên tài khoản"
                         variant="outlined"
-                        name="name"
-                        className="form-input"
+                        id="username"
+                        name="username"
                         required
-                    >
-                    </TextField>
+                        className="form-input-half"
+                        error={errors?.username}
+                        onChange={handleInput}
+                        helperText={errors?.username}
+                    />
+                    <TextField
+                        autoComplete=""
+                        label="Tên đầy đủ"
+                        id="fullname"
+                        variant="outlined"
+                        name="fullname"
+                        required
+                        className="form-input-half"
+                        error={errors?.fullname}
+                        onChange={handleInput}
+                        helperText={errors?.fullname}
+                    />
                     <TextField
                         autoComplete=""
                         label="Email"
                         variant="outlined"
+                        id="email"
                         name="email"
-                        className="form-input"
                         required
-                    >
-                    </TextField>
+                        className="form-input"
+                        error={errors?.email}
+                        onChange={handleInput}
+                        helperText={errors?.email}
+                    />
                     <TextField
                         autoComplete=""
                         label="Số điện thoại"
                         variant="outlined"
                         name="phone"
                         className="form-input"
-                        required
-                    >
-                    </TextField>
+                        error={errors?.phone}
+                        helperText={errors?.phone}
+                        onChange={handleInput}
+                    />
                     <TextField
                         autoComplete=""
-                        label="Password (6+ Charactor)"
+                        label="Mật khẩu (8+ kí tự)"
                         variant="outlined"
-                        required
                         name="password"
                         type="password"
+                        required
                         className="form-input"
-                    >
-                    </TextField>
+                        error={errors?.password}
+                        helperText={errors?.password}
+                        onChange={handleInput}
+                    />
                     <TextField
                         autoComplete=""
-                        label="Confirm password"
+                        label="Xác nhận mật khẩu"
                         variant="outlined"
-                        required
-                        name="password"
+                        name="confirmPassword"
                         type="password"
+                        required
                         className="form-input"
-                    >
-                    </TextField>
-                    <div style={{
+                        error={errors?.confirmPassword}
+                        helperText={errors?.confirmPassword}
+                        onChange={handleInput}
+                    />
+                    {/* <div style={{
                         display: 'flex',
                         textAlign: 'center',
                     }}
@@ -86,6 +215,7 @@ export default function Register(props) {
                             style={{
                                 display: 'inline-block',
                             }}
+                            name="agree"
                             // checked
                             // onChange={handleChange}
                             inputProps={{ 'aria-label': 'controlled' }}
@@ -98,7 +228,9 @@ export default function Register(props) {
                         }}>
                             Tôi đồng ý với các quy định của GoGo
                         </p>
-                    </div>
+                    </div> */}
+
+                    {notify?.message}
 
                     <div className="login-group">
                         <Button
@@ -107,7 +239,11 @@ export default function Register(props) {
                             type="submit"
                             className="login-button"
                         >
-                            Đăng nhập
+                            {notify.loading ?
+                                <CircularProgress size="25px" color="white" />
+                                : "Đăng ký"
+                            }
+
                         </Button>
                     </div>
                 </form>

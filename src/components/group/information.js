@@ -1,9 +1,9 @@
 import React from "react";
 import { GroupAdd } from "@material-ui/icons";
 import { Avatar, Button, Container, Typography } from "@material-ui/core";
+import { Link } from "react-router-dom";
 
 import profileStyles from "../../style";
-import { Link } from "react-router-dom";
 
 function GroupInfo(props) {
   const classes = profileStyles();

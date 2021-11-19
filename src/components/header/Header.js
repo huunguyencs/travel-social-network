@@ -23,11 +23,20 @@ import {
     WhatsApp,
     Cancel
 } from "@material-ui/icons";
+import { Link } from "react-router-dom";
+import { useDispatch, useSelector } from "react-redux";
 
 import { headerStyles } from "../../style";
-import { Link } from "react-router-dom";
+import { logout } from "../../redux/callApi/authCall";
+
+
+
+
 
 export default function Header(props) {
+
+    const { auth } = useSelector(state => state);
+    const dispatch = useDispatch();
 
     const [open, setOpen] = useState(false);
     const [toggleMenuUser, setToggleMenuUser] = useState(null);
@@ -49,9 +58,12 @@ export default function Header(props) {
         setToggleNoti(null);
     }
 
+    const handleLogout = () => {
+        dispatch(logout());
+    }
+
     const classes = headerStyles({ open });
 
-    const temp = true;
 
     return (
         <AppBar positionSticky style={{ zIndex: 1 }}>
@@ -74,10 +86,10 @@ export default function Header(props) {
                 </div>
                 <div className={classes.icons}>
                     {
-                        temp ? (
+                        auth.token ? (
                             <>
                                 <div class={classes.user}>
-                                    <Button className={classes.button} onClick={handleToggleUser}>
+                                    <Button className={classes.button} onClick={handleToggleUser} controls={toggleMenuUser ? "user-menu" : undefined}>
                                         <Avatar className={classes.avatar} alt="avatar" src="" />
                                         <Typography className={classes.userName}>Trần Văn A</Typography>
                                     </Button>
@@ -85,6 +97,7 @@ export default function Header(props) {
                                         open={Boolean(toggleMenuUser)}
                                         anchorEl={toggleMenuUser}
                                         onClose={handleCloseUser}
+                                        // arial
                                         transformOrigin={{
                                             vertical: "top",
                                             horizontal: "left"
@@ -98,10 +111,10 @@ export default function Header(props) {
                                             style={{ transformOrigin: 'center bottom' }}
                                         >
                                             <ClickAwayListener onClickAway={handleCloseUser}>
-                                                <MenuList autoFocusItem={toggleMenuUser}>
-                                                    <MenuItem aria-label="profile-post" component={Link} to="/profile/posts" onClick={handleCloseUser}>Trang cá nhân</MenuItem>
+                                                <MenuList autoFocusItem={toggleMenuUser} id="user-menu">
+                                                    <MenuItem aria-label="profile-post" component={Link} to="/profile/465/" onClick={handleCloseUser}>Trang cá nhân</MenuItem>
                                                     <MenuItem onClick={handleCloseUser}>Thay đổi mật khẩu</MenuItem>
-                                                    <MenuItem onClick={handleCloseUser}>Đăng xuất</MenuItem>
+                                                    <MenuItem onClick={handleLogout}>Đăng xuất</MenuItem>
                                                 </MenuList>
                                             </ClickAwayListener>
                                         </Grow>

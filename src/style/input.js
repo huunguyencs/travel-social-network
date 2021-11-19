@@ -3,13 +3,16 @@ import attr from "./attr";
 
 const inputStyles = makeStyles((theme) => ({
     writeCmt: {
+        display: "flex",
+        justifyContent: "space-between",
         backgroundColor: "#ededed",
         margin: 20,
-        borderRadius: attr.borderRadius.md,
+        borderRadius: attr.borderRadius.lg,
     },
     writeCmtText: {
-        paddingInline: 20,
-        width: "92%",
+        paddingInline: 5,
+        width: "100%",
+
     },
 }))
 

@@ -2,9 +2,12 @@ import { Button, Card, CardActionArea, CardActions, CardContent, CardMedia, Typo
 import { Rating } from "@material-ui/lab";
 import React from "react";
 import { Link } from "react-router-dom";
+
 import { locationCardStyles } from "../../style";
 
 export default function LocationCard(props) {
+
+    const { location } = props;
 
     const classes = locationCardStyles();
 
@@ -13,21 +16,21 @@ export default function LocationCard(props) {
             <CardActionArea>
                 <CardMedia
                     className={classes.media}
-                    image={props.location.image}
-                    title={props.location.name}
+                    image={location.image}
+                    title={location.name}
                 />
             </CardActionArea>
             <CardContent className={classes.content}>
                 <Typography variant="h5">
-                    {props.location.name}
+                    {location.locationName}
                 </Typography>
-                <Rating name="read-only" value={props.location.rate} readOnly size="small" />
-                <Typography variant="body1">
+                <Rating name="read-only" value={location.rate} readOnly size="small" />
+                {/* <Typography variant="body1">
                     {props.location.description}
-                </Typography>
+                </Typography> */}
             </CardContent>
             <CardActions>
-                <Button className={classes.seeMoreBtn} component={Link} to={"/location/" + props.location.id}>
+                <Button className={classes.seeMoreBtn} component={Link} to={"/location/" + location._id}>
                     Xem chi tiết
                 </Button>
             </CardActions>

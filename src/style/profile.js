@@ -1,4 +1,6 @@
 import { makeStyles } from "@material-ui/core";
+import attr from "./attr";
+import color from "./color";
 
 const profileStyles = makeStyles((theme) => ({
   root: {
@@ -65,24 +67,34 @@ const profileStyles = makeStyles((theme) => ({
   ,
   container: {
     position: "relative",
-    maxWidth: "70%",
+    maxWidth: "80%",
     height: "65vh",
     display: "flex",
-    marginTop: "10vh",
+    marginTop: 70,
     flexDirection: "column",
   },
   profile_overImage: {
-    borderRadius: "30px",
+    borderRadius: "10px",
     position: "absolute",
     width: "100%",
     top: 0,
     left: 0,
     height: "90%",
+    cursor: "pointer",
+    transition: "0.8s",
+    "&:hover": {
+      filter: "brightness(90%)",
+    }
   },
   profile_avatar__img: {
     height: "200px",
     width: "200px",
     border: "5px solid white",
+    cursor: "pointer",
+    transition: "0.8s",
+    "&:hover": {
+      filter: "brightness(90%)",
+    }
   },
   profile_avatar: {
 
@@ -93,65 +105,28 @@ const profileStyles = makeStyles((theme) => ({
     marginTop: "45vh",
     marginLeft: "7vw",
   },
-
-
-
   modal: {
     display: 'flex',
     alignItems: 'center',
     justifyContent: 'center',
   },
-  paper: {
-    width: "600px",
-    height: "650px",
-    backgroundColor: theme.palette.background.paper,
-    // padding: theme.spacing(2, 4, 3),
-    border: '0.5px solid #000',
-    borderRadius: "15px",
-    overflow: "hidden",
-    padding: "2px",
-    // boxShadow: theme.shadows[5]
+  profile_button: {
+    marginTop: "140px",
+    marginLeft: "15vw",
   },
-  modal_header: {
+  button: {
+    backgroundColor: color.turquoise,
+    marginRight: "20px",
+    padding: "8px",
+    paddingInline: "16px",
+    borderRadius: attr.borderRadius.md,
+  },
+  infoUser: {
     display: "flex",
-    alignItems: "center",
-    justifyContent: "space-between",
-    padding: "0 20px",
-    borderBottom: "1px solid #f1f1f1"
-  },
-  modal_header_left: {
-    fontSize: "22px",
-    fontWeight: 800,
-    color: "#0f1419",
-  },
-  modal_header_closeIcon: {
-    width: "40px",
-    height: "40px",
-    color: "rgb(165, 222, 200)",
-    fontSize: "12px",
-    cursor: "pointer"
-  },
-  modal_body: {
-    maxHeight: "590px",
-    height: "590px",
-    overflowY: "auto"
-  },
-  modal_body_user: {
-    minHeight: "90px",
-    borderBottom: "1px solid #f1f1f1",
-    position: "relative",
-    zIndex: 8,
-    transition: "all .15s linear"
-  },
-  modal_body_user_button: {
-    color: "rgb(165, 222, 200)",
-    width: "120px",
-    cursor: "pointer",
-    '&:hover': {
-      backgroundColor: "rgb(165, 222, 200)",
-      color: "white"
-    }
-
+    flexDirection: "column",
+    justifyContent: "center",
+    marginTop: "120px",
+    marginLeft: "2vw",
   }
 }));
 

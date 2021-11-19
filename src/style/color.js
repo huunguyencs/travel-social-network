@@ -9,6 +9,7 @@ const color = {
     yellow: "#FFA502",
     gray: "#A4B0BE",
     lightgray: "#DFE4EA",
+    brightgreek: "#3742fa"
 };
 
 export default color;

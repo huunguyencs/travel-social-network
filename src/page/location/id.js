@@ -2,12 +2,12 @@ import { Grid, Typography } from "@material-ui/core";
 import { LocationOn } from "@material-ui/icons";
 import React from "react";
 import { Link } from "react-router-dom";
+
 import MapCard from "../../components/card/MapCard";
 import RatingChart from "../../components/card/RatingChart";
 import WeatherCard from "../../components/card/WeatherCard";
 import FeedReview from "../../components/feed/FeedReview";
 import SpeedDialButton from "../../components/speedDialBtn";
-
 import { locationStyles } from "../../style";
 
 
@@ -79,7 +79,7 @@ export default function Location(props) {
             </Grid>
             <Grid item md={3}>
                 <RatingChart />
-                <WeatherCard weather={weather} />
+                <WeatherCard name={"Hanoi"} />
 
             </Grid>
         </Grid>

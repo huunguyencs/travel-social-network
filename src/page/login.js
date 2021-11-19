@@ -1,10 +1,86 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import TextField from '@material-ui/core/TextField/TextField';
 import Button from '@material-ui/core/Button/Button';
 import { Link } from "react-router-dom";
+import { useDispatch, useSelector } from "react-redux";
+import { login } from '../redux/callApi/authCall';
+import { useHistory } from 'react-router-dom';
+
+import Validator from '../utils/validator';
 
 
 export default function Login(props) {
+
+    const history = useHistory();
+
+    const dispatch = useDispatch();
+    const { auth } = useSelector(state => state);
+    const [state, setState] = useState({
+        email: '',
+        password: '',
+        errors: {},
+        submit: false,
+    })
+
+    const { errors } = state;
+
+    const rules = [
+        {
+            field: "email",
+            method: "isEmpty",
+            validWhen: false,
+            message: "Email không được bỏ trống!",
+        },
+        {
+            field: "email",
+            method: "isEmail",
+            validWhen: true,
+            message: "Email không hợp lệ!",
+        },
+        {
+            field: "password",
+            method: "isEmpty",
+            validWhen: false,
+            message: "Mật khẩu không được bỏ trống!",
+        }
+    ]
+    const validator = new Validator(rules);
+
+    const handleInput = (e) => {
+        setState({
+            ...state,
+            errors: {},
+            [e.target.name]: e.target.value,
+        })
+    }
+
+    const handleSubmit = (e) => {
+        e.preventDefault();
+        setState({
+            ...state,
+            submit: true,
+            errors: validator.validate(state)
+        })
+    }
+
+
+    useEffect(() => {
+        if (auth.token) {
+            history.push("/")
+        }
+    }, [auth.token, history])
+
+    useEffect(() => {
+        if (state.submit) {
+            if (Object.keys(errors).length === 0) {
+                dispatch(login({ email: state.email, password: state.password }));
+            }
+            setState({
+                ...state,
+                submit: false,
+            })
+        }
+    }, [errors, dispatch, state])
 
     return (
         <div className="login">
@@ -17,36 +93,39 @@ export default function Login(props) {
                     <h4 className="login-register-switch__active">Đăng nhập</h4>
                     <h4><Link to='/register' style={{ color: "#2F3542" }}> Đăng ký </Link></h4>
                 </div>
-                <p style={{
-                    opacity: 0.5,
-                    marginTop: '1rem',
-                    marginBottom: '1rem'
-                }}>Đăng nhập bằng tài khoản</p>
                 <form
-                    style={{
-                        marginTop: '-10px'
-                    }}
                     noValidate
                     autoComplete="off"
-                    method="POST"
+                    onSubmit={handleSubmit}
                 >
                     <TextField
                         autoComplete=""
                         label="Email"
                         variant="outlined"
                         name="email"
+                        id="email"
+                        type="email"
                         className="form-input"
                         required
+                        error={errors?.email}
+                        helperText={errors?.email}
+                        value={state.email}
+                        onChange={handleInput}
                     >
                     </TextField>
                     <TextField
                         autoComplete=""
-                        label="Password (6+ Charactor)"
+                        label="Mật khẩu"
                         variant="outlined"
                         required
+                        id="password"
                         name="password"
                         type="password"
+                        error={errors?.password}
+                        helperText={errors?.password}
                         className="form-input"
+                        value={state.password}
+                        onChange={handleInput}
                     >
                     </TextField>
                     <p style={{
@@ -59,7 +138,6 @@ export default function Login(props) {
                     <div className="login-group">
                         <Button
                             variant="contained"
-                            // color="primary"
                             type="submit"
                             className="login-button"
                         >
