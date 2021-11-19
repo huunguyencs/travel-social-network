@@ -28,6 +28,7 @@ import ImageList from "../modal/ImageList";
 import { Link } from "react-router-dom";
 import UserList from "../modal/userList";
 import { SeeMoreText } from "../seeMoreText";
+import { timeAgo } from "../../utils/date";
 
 const userList = [
     {
@@ -99,7 +100,7 @@ export default function Post(props) {
                         <Typography className={classes.userName}>{post.userId.fullname}</Typography>
                     </Link>
                 }
-                subheader={post.updatedAt}
+                subheader={timeAgo(new Date(post.updatedAt))}
             />
 
             <CardContent>

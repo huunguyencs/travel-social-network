@@ -8,16 +8,16 @@ export const getTours = (data) => async (dispatch) => {
         const res = [
             {
                 _id: 32123,
-                user: {
+                userId: {
                     _id: "3132",
                     userName: "huunguyen",
-                    firstName: "A",
-                    lastName: "Trần Văn",
-                    avatarImage: "",
+                    fullname: "A",
+                    avatar: "",
                 },
                 tourDate: [1465, 1324, 1313],
                 tourName: "Đây là tên của tour",
                 isPublic: true,
+                updatedAt: "11/11/2021",
                 content: "Cùng khám phá Hà Nội",
                 hashtags: ["#dulich", '#bien'],
                 image: "https://toplist.vn/images/800px/le-hoi-giong-362211.jpg",
@@ -28,28 +28,29 @@ export const getTours = (data) => async (dispatch) => {
                         _id: 46546,
                         likes: [46, 461, 134],
                         content: "Đây là nội dung của comment",
-                        time: "13/11/2021",
-                        user: {
-                            userName: "huunguyen",
-                            avatarImage: "",
+                        updatedAt: "13/11/2021",
+                        userId: {
+                            _id: 79,
+                            fullname: "huunguyen",
+                            avatar: "",
                         },
                     },
                 ]
             },
             {
                 _id: 1346,
-                user: {
+                userId: {
                     _id: "3132",
                     userName: "huunguyen",
-                    firstName: "A",
-                    lastName: "Trần Văn",
-                    avatarImage: "",
+                    fullname: "Trần Văn A",
+                    avatar: "",
                 },
                 tourDate: [1465, 1324, 1313],
                 tourName: "Đây là tên của tour",
                 content: "Cùng khám phá Hà Nội",
                 hashtags: ["#dulich", '#bien'],
                 image: "",
+                updatedAt: "11/11/2021",
                 isPublic: true,
                 taggedIds: [13221, 1654, 131],
                 likeIds: [132, 132456, 132],
@@ -58,10 +59,10 @@ export const getTours = (data) => async (dispatch) => {
                         _id: 46546,
                         likes: [46, 461, 134],
                         content: "Đây là nội dung của comment",
-                        time: "13/11/2021",
-                        user: {
-                            userName: "huunguyen",
-                            avatarImage: "",
+                        updatedAt: "13/11/2021",
+                        userId: {
+                            fullname: "huunguyen",
+                            avatar: "",
                         },
                     },
                 ]

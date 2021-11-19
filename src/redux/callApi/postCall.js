@@ -27,34 +27,31 @@ export const getPosts = (data) => async (dispatch) => {
                         _id: 46546,
                         likes: [46, 461, 134],
                         content: "Đây là nội dung của comment",
-                        time: "13/11/2021",
-                        user: {
-                            userName: "huunguyen",
-                            avatarImage: "",
+                        updatedAt: "11/11/2021",
+                        userId: {
+                            _id: 54,
+                            fullname: "huunguyen",
+                            avatar: "",
                         },
                     },
                     {
                         _id: 4654,
                         likes: [46, 461, 134],
                         content: "Đây là nội dung của comment",
-                        time: "13/11/2021",
-                        user: {
-                            userName: "huunguyen",
-                            avatarImage: "",
+                        updatedAt: "11/11/2021",
+                        userId: {
+                            _id: 46465,
+                            fullname: "huunguyen",
+                            avatar: "",
                         },
                     }
                 ],
                 isPublic: 1,
                 likes: [13133, 1313, 132132, 13],
                 images: [
-                    {
-                        _id: 65465,
-                        url: "https://toptour.com.vn/wp-content/uploads/2019/08/nhung-dia-diem-dep1.jpg",
-                    },
-                    {
-                        _id: 465,
-                        url: "https://img.thuthuatphanmem.vn/uploads/2018/10/26/anh-dep-cau-rong-da-nang-viet-nam_055418962.jpg",
-                    }
+
+                    "https://toptour.com.vn/wp-content/uploads/2019/08/nhung-dia-diem-dep1.jpg",
+                    "https://img.thuthuatphanmem.vn/uploads/2018/10/26/anh-dep-cau-rong-da-nang-viet-nam_055418962.jpg",
 
                 ],
                 isPostReview: false,
@@ -79,30 +76,29 @@ export const getPosts = (data) => async (dispatch) => {
                         _id: 46546,
                         likes: [46, 461, 134],
                         content: "Đây là nội dung của comment",
-                        time: "13/11/2021",
-                        user: {
-                            userName: "huunguyen",
-                            avatarImage: "",
+                        updatedAt: "11/11/2021",
+                        userId: {
+                            _id: 7984654,
+                            fullname: "huunguyen",
+                            avatar: "",
                         },
                     },
                     {
                         _id: 4656,
                         likes: [46, 461, 134],
                         content: "Đây là nội dung của comment",
-                        time: "13/11/2021",
-                        user: {
-                            userName: "huunguyen",
-                            avatarImage: "",
+                        updatedAt: "11/11/2021",
+                        userId: {
+                            _id: 12313,
+                            fullname: "huunguyen",
+                            avatar: "",
                         },
                     }
                 ],
                 isPublic: 1,
                 likes: [13133, 1313, 132132, 13],
                 images: [
-                    {
-                        _id: 65465,
-                        url: "https://toptour.com.vn/wp-content/uploads/2019/08/nhung-dia-diem-dep1.jpg",
-                    }
+                    "https://toptour.com.vn/wp-content/uploads/2019/08/nhung-dia-diem-dep1.jpg",
                 ],
                 isPostReview: false,
                 star: 0,

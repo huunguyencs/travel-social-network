@@ -30,7 +30,6 @@ export const login = (data) => async (dispatch) => {
 
     }
     catch (err) {
-        // console.log(err.response.data);
         dispatch(notifyAction.callFail({ error: err.response.data.message }));
     }
 }

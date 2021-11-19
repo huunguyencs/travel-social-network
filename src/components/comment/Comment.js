@@ -3,6 +3,7 @@ import { Avatar, Typography } from "@material-ui/core";
 
 import { commentStyles } from "../../style";
 import { SeeMoreText } from "../seeMoreText";
+import { timeAgo } from "../../utils/date";
 
 export default function Comment(props) {
 
@@ -24,13 +25,13 @@ export default function Comment(props) {
         <div className={classes.comment}>
             <div className={classes.avatar}>
                 <Avatar
-                    src={comment.user.avatarImage}
+                    src={comment.userId.avatar}
                     atl="Avatar"
                 />
             </div>
             <div className={classes.cmtInfo}>
                 <Typography variant="subtitle2" className={classes.userName}>
-                    {comment.user.userName}
+                    {comment.userId.fullname}
                 </Typography>
                 <div className={classes.content}>
                     {/* <Typography variant="body2">
@@ -51,7 +52,7 @@ export default function Comment(props) {
                     </div>
                     <div className={classes.time}>
                         <Typography className={classes.smallText}>
-                            {comment.time}
+                            {timeAgo(new Date(comment.updatedAt))}
                         </Typography>
 
                     </div>

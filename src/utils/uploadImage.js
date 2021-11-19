@@ -24,7 +24,7 @@ export const uploadImages = async (images) => {
                 body: formData
             })
             const res = await data.json();
-            imageArr.push({ _id: res.public_id, url: res.secure_url });
+            imageArr.push(res.secure_url);
         }
         catch (err) {
 
