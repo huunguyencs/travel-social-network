@@ -116,12 +116,14 @@ export default function Post(props) {
                     )}
                 </div>
             </CardContent>
+            {
+                post.images.length > 0 &&
+                <CardMedia>
+                    <ImageList imgList={post.images} />
+                </CardMedia>
+            }
 
-            <CardMedia>
 
-                {/* <img src="https://img.thuthuatphanmem.vn/uploads/2018/10/26/anh-dep-cau-rong-da-nang-viet-nam_055418962.jpg" alt="img" /> */}
-                <ImageList imgList={post.images} />
-            </CardMedia>
 
             <CardActions>
                 <IconButton onClick={likeHandle}>

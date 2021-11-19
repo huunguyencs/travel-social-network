@@ -238,6 +238,12 @@ export default function Register(props) {
                     </div> */}
 
                     {notify?.message}
+                    {
+                        notify.error &&
+                        <div>
+                            {notify?.error}
+                        </div>
+                    }
 
                     <div className="login-group">
                         <Button

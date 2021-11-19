@@ -11,7 +11,7 @@ export const getTours = (data) => async (dispatch) => {
                 userId: {
                     _id: "3132",
                     userName: "huunguyen",
-                    fullname: "A",
+                    fullname: "Trần A",
                     avatar: "",
                 },
                 tourDate: [1465, 1324, 1313],

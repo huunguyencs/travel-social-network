@@ -1,8 +1,7 @@
 import * as notifyAction from '../actions/notifyAction';
 import * as authAction from '../actions/authAction';
-import client from '../../utils/fetchData';
+import customAxios from '../../utils/fetchData';
 
-const request = client("");
 
 export const login = (data) => async (dispatch) => {
 
@@ -10,18 +9,8 @@ export const login = (data) => async (dispatch) => {
     dispatch(notifyAction.callStart());
     try {
         // call api to login
-        const res = await request.post("user/login", data, {
-            "Content-Type": "application/json",
-        });
+        const res = await customAxios().post("user/login", data);
 
-        // const res = {
-        //     user: {
-        //         firstName: "Hữu",
-        //         lastName: "Nguyễn",
-        //         avatarImage: "https://www.w3schools.com/howto/img_avatar.png"
-        //     },
-        //     token: "adaskjdhasdhjkasdh",
-        // };
 
         // stop loading
         dispatch(notifyAction.callSuccess({ message: "" }));
@@ -38,20 +27,17 @@ export const register = (data) => async (dispatch) => {
 
     dispatch(notifyAction.callStart());
     try {
-        // call api to login
-        const res = await request.post("user/register", data, {
-            "Content-Type": "application/json",
-        });
+        // call api to register
+        const res = await customAxios().post("user/register", data);
 
         console.log(res);
 
         // stop loading
         dispatch(notifyAction.callSuccess({ message: res.data.message }));
-
-
     }
     catch (err) {
-        dispatch(notifyAction.callFail({ error: err }));
+        console.log(err);
+        dispatch(notifyAction.callFail({ error: err.response.data.message }));
     }
 }
 

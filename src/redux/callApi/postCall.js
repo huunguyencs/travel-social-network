@@ -1,7 +1,7 @@
-import client from '../../utils/fetchData';
 import * as notifyAction from '../actions/notifyAction'
 import * as postAction from '../actions/postAction';
 import * as imageUtils from '../../utils/uploadImage';
+import customAxios from '../../utils/fetchData';
 
 
 export const getPosts = (data) => async (dispatch) => {
@@ -147,8 +147,9 @@ export const createPost = (data, token) => async (dispatch) => {
             images: image
         }
 
-        const request = client(token);
-        const res = await request.post("post/create_post", post);
+
+        const res = await customAxios(token).post("post/create_post", post);
+
         console.log(res.data);
         dispatch(notifyAction.callSuccess({ message: res.data.message }));
         dispatch(postAction.addPost({ post: res.data.newPost }))
