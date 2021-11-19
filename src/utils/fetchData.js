@@ -1,11 +1,11 @@
 import axios from 'axios';
-import { useSelector } from 'react-redux';
+// import { useSelector } from 'react-redux';
 
 const client = (token) => {
     const defaultOptions = {
         baseURL: "http://localhost:5000",
         headers: {
-            Authorization: token,
+            Authorization: "Bearer " + token,
             "Content-Type": "application/json",
         },
     }
@@ -19,7 +19,7 @@ const client = (token) => {
     }
 }
 
-const request = client("token");
+// const request = client("token");
 
-export default request;
+export default client;
 export { client };

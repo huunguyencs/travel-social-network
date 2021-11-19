@@ -139,6 +139,7 @@ export default function Login(props) {
                     }}>
                         Quên mật khẩu?
                     </p>
+                    <span>{notify?.error}</span>
                     <div className="login-group">
                         <Button
                             variant="contained"

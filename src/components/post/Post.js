@@ -87,7 +87,7 @@ export default function Post(props) {
         <Card className={classes.cardContainer}>
             <CardHeader
                 avatar={
-                    <Avatar alt="avatar" src={post.user.avatarImage} />
+                    <Avatar alt="avatar" src={post.userId.avatar} />
                 }
                 action={
                     <IconButton aria-label="settings">
@@ -95,11 +95,11 @@ export default function Post(props) {
                     </IconButton>
                 }
                 title={
-                    <Link to={"/profile/" + post.user._id} >
-                        <Typography className={classes.userName}>{post.user.lastName + " " + post.user.firstName}</Typography>
+                    <Link to={"/profile/" + post.userId._id} >
+                        <Typography className={classes.userName}>{post.userId.fullname}</Typography>
                     </Link>
                 }
-                subheader={post.time}
+                subheader={post.updatedAt}
             />
 
             <CardContent>
@@ -119,7 +119,7 @@ export default function Post(props) {
             <CardMedia>
 
                 {/* <img src="https://img.thuthuatphanmem.vn/uploads/2018/10/26/anh-dep-cau-rong-da-nang-viet-nam_055418962.jpg" alt="img" /> */}
-                <ImageList imgList={post.postImages} />
+                <ImageList imgList={post.images} />
             </CardMedia>
 
             <CardActions>

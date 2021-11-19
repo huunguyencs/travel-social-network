@@ -13,10 +13,11 @@ const notifyReducer = (state = INIT_STATE, action) => {
             return {
                 ...state,
                 loading: true,
+                success: false,
                 message: "",
             }
         }
-        case NOTIFY_TYPES.CALL_SUCCESS: { // goi api thanh cong
+        case NOTIFY_TYPES.CALL_SUCCESS: {
             return {
                 ...state,
                 loading: false,
@@ -25,7 +26,7 @@ const notifyReducer = (state = INIT_STATE, action) => {
                 message: action.payload.message,
             }
         }
-        case NOTIFY_TYPES.CALL_FAIL: { // goi api that bai
+        case NOTIFY_TYPES.CALL_FAIL: {
             return {
                 ...state,
                 loading: false,

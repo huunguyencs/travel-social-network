@@ -58,7 +58,7 @@ export default function FeedPost(props) {
                         }}
                     >
                         <Fade in={show}>
-                            <CreatePostForm />
+                            <CreatePostForm handleClose={handleClose} />
                         </Fade>
                     </Modal>
 

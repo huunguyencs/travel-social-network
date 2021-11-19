@@ -1,8 +1,9 @@
-import { InputBase, Typography, Button, Paper, IconButton } from "@material-ui/core";
+import { InputBase, Typography, Button, Paper, IconButton, CircularProgress } from "@material-ui/core";
 import { Create, Image } from "@material-ui/icons";
 import React, { useState } from "react";
 import { ScrollMenu } from 'react-horizontal-scrolling-menu';
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
+import { createPost } from "../../redux/callApi/postCall";
 
 import { formStyles } from '../../style';
 import EmojiPicker from "../input/emojiPicker";
@@ -11,7 +12,9 @@ import LoginModal from "../modal/login";
 
 export default function CreatePostForm(props) {
 
-    const { auth } = useSelector(state => state);
+    const dispatch = useDispatch();
+
+    const { auth, notify } = useSelector(state => state);
 
     const [imageUpload, setImageUpload] = useState([]);
 
@@ -30,6 +33,12 @@ export default function CreatePostForm(props) {
             ...oldImage.slice(0, index),
             ...oldImage.slice(index + 1)
         ])
+    }
+
+    const handleSubmit = (e) => {
+        e.preventDefault();
+        dispatch(createPost({ content: text, image: imageUpload }, auth.token));
+        props.handleClose();
     }
 
     const classes = formStyles();
@@ -86,9 +95,15 @@ export default function CreatePostForm(props) {
                                     <EmojiPicker content={text} setContent={setText} />
                                 </div>
                                 <div>
-                                    <Button className={classes.button}>
-                                        <Create style={{ marginRight: 10 }} />
-                                        Đăng
+                                    <Button className={classes.button} onClick={handleSubmit}>
+                                        {
+                                            notify.loading ?
+                                                <CircularProgress size="25px" color="white" /> :
+                                                <>
+                                                    <Create style={{ marginRight: 10 }} />
+                                                    Đăng
+                                                </>
+                                        }
                                     </Button>
                                 </div>
                             </div>

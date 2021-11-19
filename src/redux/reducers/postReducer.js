@@ -19,10 +19,18 @@ const postRecuder = (state = INIT_STATE, action) => {
                 error: null,
             }
         }
+        case POST_TYPES.ADD_POST: {
+            return {
+                ...state,
+                posts: [action.payload.post, ...state.posts],
+                loading: false,
+                error: null,
+            }
+        }
         case POST_TYPES.GET_MORE_POSTS: {
             return {
                 ...state,
-                posts: [...action.payload.posts],
+                posts: [...state.posts, ...action.payload.posts],
                 page: state.page + 1,
                 loading: false,
                 error: null,

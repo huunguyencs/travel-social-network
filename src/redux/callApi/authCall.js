@@ -1,6 +1,8 @@
 import * as notifyAction from '../actions/notifyAction';
 import * as authAction from '../actions/authAction';
-import request from '../../utils/fetchData';
+import client from '../../utils/fetchData';
+
+const request = client("");
 
 export const login = (data) => async (dispatch) => {
 
@@ -28,8 +30,8 @@ export const login = (data) => async (dispatch) => {
 
     }
     catch (err) {
-        console.log(err);
-        dispatch(notifyAction.callFail({ error: err }));
+        // console.log(err.response.data);
+        dispatch(notifyAction.callFail({ error: err.response.data.message }));
     }
 }
 

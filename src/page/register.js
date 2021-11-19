@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import TextField from '@material-ui/core/TextField/TextField';
 import Button from '@material-ui/core/Button/Button';
 // import Checkbox from "@material-ui/core/Checkbox";
-import { Link } from "react-router-dom";
+import { Link, useHistory } from "react-router-dom";
 
 import Validator, { validatePassword, validatePhoneNumber } from "../utils/validator";
 import { useDispatch, useSelector } from "react-redux";
@@ -10,6 +10,8 @@ import { CircularProgress } from "@material-ui/core";
 import { register } from "../redux/callApi/authCall";
 
 export default function Register(props) {
+
+    const history = useHistory();
 
     const dispatch = useDispatch();
 
@@ -104,7 +106,6 @@ export default function Register(props) {
     useEffect(() => {
         if (state.submit) {
             if (Object.keys(errors).length === 0) {
-                // console.log("register success")
 
                 // call api to register
                 dispatch(register({
@@ -121,6 +122,12 @@ export default function Register(props) {
             })
         }
     }, [errors, state, dispatch])
+
+    useEffect(() => {
+        if (notify.success) {
+            history.push("/login");
+        }
+    })
 
     return (
         <div className="login">
