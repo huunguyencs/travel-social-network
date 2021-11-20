@@ -6,6 +6,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { createPost } from "../../redux/callApi/postCall";
 
 import { formStyles } from '../../style';
+import { checkImage } from "../../utils/uploadImage";
 import EmojiPicker from "../input/emojiPicker";
 import LoginModal from "../modal/login";
 
@@ -17,6 +18,7 @@ export default function CreatePostForm(props) {
     const { auth, notify } = useSelector(state => state);
 
     const [imageUpload, setImageUpload] = useState([]);
+    const [showWarning, setShowWarning] = useState("");
 
     const [text, setText] = useState("");
 
@@ -25,7 +27,18 @@ export default function CreatePostForm(props) {
     }
 
     const handleChangeImageUpload = (e) => {
-        setImageUpload(oldImage => [...oldImage, ...e.target.files])
+        setShowWarning("");
+        let valid = true;
+        for (const file of e.target.files) {
+            const check = checkImage(file);
+            if (check != "") {
+                setShowWarning(check);
+                valid = false;
+                break;
+            }
+        }
+        if (valid)
+            setImageUpload(oldImage => [...oldImage, ...e.target.files])
     }
 
     const removeImage = (index) => {
@@ -111,12 +124,14 @@ export default function CreatePostForm(props) {
 
                         </div>
                     </form>
+                    <div style={{ fontSize: "20px", color: "red", marginInline: "25px" }}>{showWarning}</div>
                     <div
                         style={{
                             marginInline: "20px",
                             maxWidth: "500px"
                         }}
                     >
+
                         {imageUpload.length > 0 &&
                             <ScrollMenu
                                 height="300px"

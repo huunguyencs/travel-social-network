@@ -35,6 +35,7 @@ export default function Register(props) {
 
     const [showPassword, setShowPassword] = useState(false);
     const [showConfirm, setShowConfirm] = useState(false);
+    const [errorServer, setErrorServer] = useState(null);
 
     const { errors } = state;
 
@@ -119,8 +120,8 @@ export default function Register(props) {
 
     useEffect(() => {
         if (state.submit) {
+            setErrorServer(null);
             if (Object.keys(errors).length === 0) {
-
                 // call api to register
                 dispatch(register({
                     username: state.username,
@@ -128,6 +129,8 @@ export default function Register(props) {
                     password: state.password.trim(),
                     email: state.email,
                     phone: state.phone,
+                }, (err) => {
+                    setErrorServer(err);
                 }))
             }
             setState({
@@ -170,7 +173,7 @@ export default function Register(props) {
                 >
                     <TextField
                         autoComplete=""
-                        label="Tên tài khoản"
+                        label="Username"
                         variant="outlined"
                         id="username"
                         name="username"
@@ -288,13 +291,7 @@ export default function Register(props) {
                         </p>
                     </div> */}
 
-                    {notify?.message}
-                    {
-                        notify.error &&
-                        <div>
-                            {notify?.error}
-                        </div>
-                    }
+                    <span style={{ fontSize: "15px", color: "red", marginInline: "20px", marginTop: "10px" }}>{errorServer}</span>
 
                     <div className="login-group">
                         <Button

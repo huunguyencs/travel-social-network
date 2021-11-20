@@ -28,6 +28,7 @@ export default function Login(props) {
     })
 
     const [showPassword, setShowPassword] = useState(false);
+    const [errorServer, setErrorServer] = useState(null);
 
     const { errors } = state;
 
@@ -79,10 +80,13 @@ export default function Login(props) {
 
     useEffect(() => {
         if (state.submit) {
+            setErrorServer(null);
             if (Object.keys(errors).length === 0) {
                 dispatch(login({
                     email: state.email,
                     password: state.password.trim()
+                }, (err) => {
+                    setErrorServer(err);
                 }));
             }
             setState({
@@ -166,7 +170,7 @@ export default function Login(props) {
                     }}>
                         Quên mật khẩu?
                     </p>
-                    <span>{notify?.error}</span>
+                    <span style={{ fontSize: "15px", color: "red", marginInline: "20px", marginTop: "10px" }}>{errorServer}</span>
                     <div className="login-group">
                         <Button
                             variant="contained"

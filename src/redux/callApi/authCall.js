@@ -3,7 +3,7 @@ import * as authAction from '../actions/authAction';
 import customAxios from '../../utils/fetchData';
 
 
-export const login = (data) => async (dispatch) => {
+export const login = (data, callback) => async (dispatch) => {
 
     // begin loading
     dispatch(notifyAction.callStart());
@@ -22,11 +22,12 @@ export const login = (data) => async (dispatch) => {
     }
     catch (err) {
         console.log(err);
+        callback(err.response.data.message);
         dispatch(notifyAction.callFail({ error: err.response.data.message }));
     }
 }
 
-export const register = (data) => async (dispatch) => {
+export const register = (data, callback) => async (dispatch) => {
 
     dispatch(notifyAction.callStart());
     try {
@@ -40,6 +41,7 @@ export const register = (data) => async (dispatch) => {
     }
     catch (err) {
         console.log(err);
+        callback(err.response.data.message);
         dispatch(notifyAction.callFail({ error: err.response.data.message }));
     }
 }

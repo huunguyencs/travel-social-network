@@ -1,6 +1,6 @@
 import * as env from '../key/env';
 
-export const checkSizeImage = (file) => {
+export const checkImage = (file) => {
     if (!file)
         return "Tệp không tồn tại!";
     if (file.size > 2 * 1024 * 1024) // 2mb
