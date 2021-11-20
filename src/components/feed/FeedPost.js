@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { Container, InputBase, Modal, Backdrop, Fade } from "@material-ui/core";
+import { Container, InputBase, Modal, Backdrop, Fade, CircularProgress } from "@material-ui/core";
 import { useSelector, useDispatch } from "react-redux";
 
 
@@ -67,12 +67,16 @@ export default function FeedPost(props) {
 
                 <div>
                     {
-                        post.posts.map((post) => (
-                            <Post
-                                post={post}
-                                key={post._id}
-                            />
-                        ))
+                        post.loading ?
+                            <CircularProgress color={"black"} />
+                            : post.error ?
+                                <div>Có lỗi xảy ra</div> :
+                                post.posts.map((post) => (
+                                    <Post
+                                        post={post}
+                                        key={post._id}
+                                    />
+                                ))
                     }
                 </div>
             </div>

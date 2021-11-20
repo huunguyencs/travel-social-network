@@ -7,6 +7,7 @@ import UserList from "../modal/userList";
 import ImageModal from "../modal/image";
 import { useSelector } from "react-redux";
 import { useParams, useHistory } from "react-router-dom";
+import customAxios from "../../utils/fetchData";
 
 const userList = [
   {
@@ -79,14 +80,27 @@ export default function Profile_Avatar(props) {
     setOpenCover(false);
   }
 
+  const getUser = async (id) => {
+    try {
+      const res = await customAxios().get(`/user/${id}`);
+      setUser(res.data.user);
+    }
+    catch (err) {
+      console.log(err);
+    }
+  }
+
   useEffect(() => {
     console.log(id);
-    if (!auth.user) {
-      history.push("/")
-    }
-    setUser(auth.user);
+    if (!auth.token) history.push("/")
 
-  }, [id, setUser, auth.user]);
+    if (auth.user._id === id) {
+      setUser(auth.user);
+    }
+    else {
+      getUser(id);
+    }
+  }, [id, setUser, auth.user, history]);
 
   return (
     <Container className={classes.container}>
@@ -113,7 +127,7 @@ export default function Profile_Avatar(props) {
           </Typography>
           <div >
             <Typography variant="body1" color="#9b9696" component="p" style={{ display: "flex", fontSize: "20px", }}>
-              <Typography style={{ marginRight: "20px", cursor: "pointer", }} onClick={handleOpenFollowing} >30 đang theo dõi</Typography>
+              <Typography style={{ marginRight: "20px", cursor: "pointer", }} onClick={handleOpenFollowing} >{user?.followings.length} đang theo dõi</Typography>
               <Modal
                 aria-labelledby="transition-modal-title"
                 aria-describedby="transition-modal-description"
@@ -126,9 +140,9 @@ export default function Profile_Avatar(props) {
                   timeout: 500,
                 }}
               >
-                <UserList listUser={userList} title={"Đang theo dõi"} handleClose={handleCloseFollowing} />
+                <UserList listUser={user.followings} title={"Đang theo dõi"} handleClose={handleCloseFollowing} />
               </Modal>
-              <Typography style={{ cursor: "pointer", }} onClick={handleOpenFollower} >30 người theo dõi</Typography>
+              <Typography style={{ cursor: "pointer", }} onClick={handleOpenFollower} >{user?.followers.length} người theo dõi</Typography>
               <Modal
                 aria-labelledby="transition-modal-title"
                 aria-describedby="transition-modal-description"
@@ -141,7 +155,7 @@ export default function Profile_Avatar(props) {
                   timeout: 500,
                 }}
               >
-                <UserList listUser={userList} title={"Người theo dõi"} handleClose={handleCloseFollower} />
+                <UserList listUser={user.followers} title={"Người theo dõi"} handleClose={handleCloseFollower} />
               </Modal>
             </Typography>
           </div>

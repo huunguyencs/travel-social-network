@@ -134,7 +134,7 @@ export default function Post(props) {
                 {post.isPostReview && <Rating name="location-rating" value={post.rate} readOnly style={{ marginBottom: 20 }} />}
                 <SeeMoreText
                     variant="body1"
-                    maxText={6}
+                    maxText={100}
                     text={post.content}
                 />
                 <div className={classes.hashtagWrap}>

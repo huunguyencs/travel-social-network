@@ -23,9 +23,9 @@ export default function UserList(props) {
                 {listUser.map((user) => (
                     <ListItem button className={classes.modal_body_user} key={user._id}>
                         <ListItemAvatar>
-                            <Avatar alt="avatar" src={user.avatarImage} />
+                            <Avatar alt="avatar" src={user.avatar} />
                         </ListItemAvatar>
-                        <ListItemText primary={user.lastName + " " + user.firstName} />
+                        <ListItemText primary={user.fullname} />
                         <ListItemSecondaryAction>
                             <Button variant="outlined" className={classes.modal_body_user_button}  >
                                 Follow
