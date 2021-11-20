@@ -13,7 +13,6 @@ const MONGO_URL = process.env.MONGO_URL || "mongodb+srv://admin:RvZetzfl04aNUtRf
 // Middleware 
 app.use(cors());
 app.use(express.json());
-// app.use(cookieParser());
 app.use(cookieParser());
 
 // Router

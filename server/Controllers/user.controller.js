@@ -75,9 +75,9 @@ class UserController {
             const accessToken = jwt.sign({ id: user._id }, process.env.ACCESS_TOKEN_SECRET || "abcdefghiklmn")
             //trả về dữ liệu user khi login thành công
 
-            const refresh_token = jwt.sign({ id: user._id }, process.env.REFRESH_TOKEN_SECRET || "REFRESH_TOKEN_SECRET", { expiresIn: '1d' })
+            const refreshToken = jwt.sign({ id: user._id }, process.env.REFRESH_TOKEN_SECRET || "REFRESH_TOKEN_SECRET")
 
-            res.cookie('refreshtoken', refresh_token, {
+            res.cookie('refreshtoken', refreshToken, {
                 httpOnly: true,
                 // path: '/user/refresh_token',
                 maxAge: 30 * 24 * 60 * 60 * 1000 // 30days
@@ -130,7 +130,7 @@ class UserController {
 
     async logout(req, res) {
         try {
-            // res.clearCookie('refreshtoken', { path: '/api/refresh_token' })
+            res.clearCookie('refreshtoken', { path: '/' })
             return res.json({ success: true, message: "logout successful!" })
         } catch (err) {
             console.log(err)

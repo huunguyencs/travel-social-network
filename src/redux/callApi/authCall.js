@@ -10,8 +10,7 @@ export const login = (data) => async (dispatch) => {
     try {
         // call api to login
         const res = await customAxios().post("user/login", data, {
-            withCredentials: true,
-            credentials: 'include'
+            credentials: "include",
         });
 
 
@@ -22,7 +21,7 @@ export const login = (data) => async (dispatch) => {
 
     }
     catch (err) {
-        console.log(err.response.data);
+        console.log(err);
         dispatch(notifyAction.callFail({ error: err.response.data.message }));
     }
 }
@@ -48,17 +47,28 @@ export const register = (data) => async (dispatch) => {
 export const refreshToken = (data) => async (dispatch) => {
     try {
         const res = await customAxios().post("user/refresh_token", data, {
-            withCredentials: true,
+            // withCredentials: true,
             credentials: 'include'
         });
         console.log(res);
+        dispatch(authAction.auth({ user: res.data.user, token: res.data.accessToken }));
     }
     catch (err) {
         console.log(err);
+        // dispatch(notifyAction.callFail({ error: err.response.data.message }));
     }
 }
 
 export const logout = (data) => async (dispatch) => {
-    document.cookie = "refreshtoken=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;";
-    dispatch(authAction.logout());
+    try {
+        const res = await customAxios().post("user/logout", data, {
+            credentials: "include"
+        })
+        console.log(res);
+        dispatch(authAction.logout());
+    }
+    catch (err) {
+        dispatch(notifyAction.callFail({ error: err.response.data.message }));
+    }
+
 }
