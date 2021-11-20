@@ -17,6 +17,12 @@ function InfoProfile() {
 
     // const classes = useStyles();
 
+    const { id } = useParams();
+
+    useEffect(() => {
+        console.log(id);
+    }, [id]);
+
     return (
         <div>
             <Scroll showBelow={500} />

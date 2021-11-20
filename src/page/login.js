@@ -6,7 +6,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { login } from '../redux/callApi/authCall';
 import { useHistory } from 'react-router-dom';
 
-import Validator from '../utils/validator';
+import Validator, { isEmpty } from '../utils/validator';
 import { CircularProgress } from "@material-ui/core";
 
 import InputAdornment from "@material-ui/core/InputAdornment";
@@ -46,7 +46,7 @@ export default function Login(props) {
         },
         {
             field: "password",
-            method: "isEmpty",
+            method: isEmpty,
             validWhen: false,
             message: "Mật khẩu không được bỏ trống!",
         }
@@ -82,7 +82,7 @@ export default function Login(props) {
             if (Object.keys(errors).length === 0) {
                 dispatch(login({
                     email: state.email,
-                    password: state.password
+                    password: state.password.trim()
                 }));
             }
             setState({

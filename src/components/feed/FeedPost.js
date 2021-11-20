@@ -15,7 +15,7 @@ export default function FeedPost(props) {
     const [show, setShow] = useState(false);
 
     const { post } = useSelector(state => state);
-    const dispatch = useDispatch();
+    // const dispatch = useDispatch();
 
     const classes = feedStyles();
 
@@ -26,10 +26,6 @@ export default function FeedPost(props) {
     const handleClose = () => {
         setShow(false);
     }
-
-    useEffect(() => {
-        dispatch(getPosts("post", ""));
-    }, [dispatch])
 
 
     return (

@@ -22,12 +22,12 @@ export function timeAgo(datetime) {
         return "Vài giây trước";
     }
     if (now - datetime < 60 * 60 * 1000) {
-        var ago = Math.round((now - datetime) / (60 * 1000));
+        let ago = Math.round((now - datetime) / (60 * 1000));
         return `${ago} phút trước`;
     }
     if (now - datetime < 24 * 60 * 60 * 1000) {
         if (datetime.getDate() === now.getDate()) {
-            var ago = Math.round((now - datetime) / (60 * 60 * 1000));
+            let ago = Math.round((now - datetime) / (60 * 60 * 1000));
             return `${ago} giờ trước`
         }
         else {

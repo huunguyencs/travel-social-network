@@ -1,5 +1,5 @@
 import { Grid } from "@material-ui/core";
-import React from "react";
+import React, { useEffect } from "react";
 
 import LeftBar from "../components/leftbar/LeftBar";
 import FeedPost from "../components/feed/FeedPost";
@@ -11,12 +11,20 @@ import SpeedDialButton from "../components/speedDialBtn";
 import Menu from "../components/leftbar/menu";
 import Calendar from '../components/card/CalendarCard';
 import FriendRecommendCard from '../components/card/FriendRecommend';
+import { useDispatch } from "react-redux";
+import { getPosts } from "../redux/callApi/postCall";
 
 
 
 function HomePage() {
 
   const classes = useStyles();
+
+  const dispatch = useDispatch();
+
+  useEffect(() => {
+    dispatch(getPosts("post", ""));
+  }, [dispatch])
 
 
   return (

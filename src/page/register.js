@@ -4,7 +4,7 @@ import Button from '@material-ui/core/Button/Button';
 // import Checkbox from "@material-ui/core/Checkbox";
 import { Link, useHistory } from "react-router-dom";
 
-import Validator, { validatePassword, validatePhoneNumber } from "../utils/validator";
+import Validator, { nonSpace, username, validatePassword, validatePhoneNumber } from "../utils/validator";
 import { useDispatch, useSelector } from "react-redux";
 import { CircularProgress } from "@material-ui/core";
 import { register } from "../redux/callApi/authCall";
@@ -43,9 +43,9 @@ export default function Register(props) {
     const rules = [
         {
             field: "username",
-            method: "isEmpty",
-            validWhen: false,
-            message: "Tên tài khoản không được bỏ trống!"
+            method: username,
+            validWhen: true,
+            message: "Tên tài khoản không hợp lệ!"
         },
         {
             field: "fullname",
@@ -70,6 +70,12 @@ export default function Register(props) {
             method: "isEmail",
             validWhen: true,
             message: "Email không hợp lệ!"
+        },
+        {
+            field: "password",
+            method: nonSpace,
+            validWhen: true,
+            message: "Mật khẩu không được chứa khoảng cách",
         },
         {
             field: "password",
@@ -119,7 +125,7 @@ export default function Register(props) {
                 dispatch(register({
                     username: state.username,
                     fullname: state.fullname,
-                    password: state.password,
+                    password: state.password.trim(),
                     email: state.email,
                     phone: state.phone,
                 }))
