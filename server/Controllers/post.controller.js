@@ -60,7 +60,18 @@ class PostController {
     //lấy nhiều post gắn lên trang feed theo người mình theo dõi  hoặc  group 
     async getPosts(req, res) {
         try {
-
+            const posts = await Posts.find({})
+                .populate("userId likes", "username email fullname avatar followers")
+                .populate({
+                    path: "comments",
+                    populate: {
+                        path: "userId likes",
+                        select: "-password"
+                    }
+                });
+            res.json({
+                posts,
+            });
         } catch (err) {
             console.log(err)
             res.status(500).json({ success: false, message: err.message })
@@ -91,19 +102,21 @@ class PostController {
     //A(user._id) like post B(params.id)
     async likePost(req, res) {
         try {
-            const post = await Posts.find({ _id: req.params.id, likes: req.user._id });
+            var post = await Posts.find({ _id: req.params.id, likes: req.user._id });
             if (post.length > 0) {
                 return res.status(400).json({ success: false, message: "You liked this post." })
             }
 
-            await Posts.findOneAndUpdate({ _id: req.params.id }, {
+            post = await Posts.findOneAndUpdate({ _id: req.params.id }, {
                 $push: {
                     likes: req.user._id
                 }
-            })
+            }, { new: true })
+
 
             res.json({
-                success: true, message: "like post success"
+                success: true, message: "like post success",
+                likes: post.likes,
             });
 
 
@@ -115,14 +128,15 @@ class PostController {
     //A(user._id) unlike post B(params.id)
     async unlikePost(req, res) {
         try {
-            await Posts.findOneAndUpdate({ _id: req.params.id }, {
+            const post = await Posts.findOneAndUpdate({ _id: req.params.id }, {
                 $pull: {
                     likes: req.user._id
                 }
-            })
+            }, { new: true })
 
             res.json({
-                success: true, message: "unlike post success"
+                success: true, message: "unlike post success",
+                likes: post.likes,
             });
         } catch (err) {
             console.log(err)

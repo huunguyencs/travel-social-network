@@ -63,10 +63,28 @@ const postRecuder = (state = INIT_STATE, action) => {
             return {
                 ...state,
                 error: null,
-                post: [
+                posts: [
                     action.payload.post,
                     ...state.post,
                 ]
+            }
+        }
+        case POST_TYPES.UPDATE_LIKE: {
+            return {
+                ...state,
+                posts: state.posts.map(item => item._id === action.payload.id ? {
+                    ...item,
+                    likes: action.payload.likes
+                } : item)
+            }
+        }
+        case POST_TYPES.UPDATE_COMMENT: {
+            return {
+                ...state,
+                posts: state.posts.map(item => item._id === action.payload.id ? {
+                    ...item,
+                    comments: action.payload.comments
+                } : item)
             }
         }
         case POST_TYPES.ERROR: { // loi trong khi tai danh sach cac post

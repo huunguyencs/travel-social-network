@@ -34,5 +34,8 @@ export function timeAgo(datetime) {
             return `Hôm qua - ${('0' + datetime.getHours()).slice(-2)}:${('0' + datetime.getMinutes()).slice(-2)}`
         }
     }
+    if ((now - datetime < 48 * 60 * 60 * 1000) && (datetime.getDate() === now.getDate() - 1)) {
+        return `Hôm qua - ${('0' + datetime.getHours()).slice(-2)}:${('0' + datetime.getMinutes()).slice(-2)}`
+    }
     return convertDateToStrTime(datetime);
 }

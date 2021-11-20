@@ -28,7 +28,7 @@ export default function FeedPost(props) {
     }
 
     useEffect(() => {
-        dispatch(getPosts({ type: "post" }));
+        dispatch(getPosts("post", ""));
     }, [dispatch])
 
 
