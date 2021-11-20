@@ -7,6 +7,7 @@ import { login } from '../redux/callApi/authCall';
 import { useHistory } from 'react-router-dom';
 
 import Validator from '../utils/validator';
+import { CircularProgress } from "@material-ui/core";
 
 import InputAdornment from "@material-ui/core/InputAdornment";
 import Visibility from "@material-ui/icons/Visibility";
@@ -19,7 +20,7 @@ export default function Login(props) {
 
     const dispatch = useDispatch();
     const { auth } = useSelector(state => state);
-    const [state, setState] = React.useState({
+    const [state, setState] = useState({
         email: '',
         password: '',
         errors: {},
@@ -78,7 +79,10 @@ export default function Login(props) {
     useEffect(() => {
         if (state.submit) {
             if (Object.keys(errors).length === 0) {
-                dispatch(login({ email: state.email, password: state.password }));
+                dispatch(login({
+                    email: state.email,
+                    password: state.password
+                }));
             }
             setState({
                 ...state,
@@ -86,17 +90,17 @@ export default function Login(props) {
             })
         }
     }, [errors, dispatch, state])
-    
+
 
     //Show password
     const handleChange = (prop) => (event) => {
         setState({ ...state, [prop]: event.target.value });
     };
-    
+
     const handleClickShowPassword = () => {
         setState({ ...state, showPassword: !state.showPassword });
     };
-    
+
     const handleMouseDownPassword = (event) => {
         event.preventDefault();
     };
@@ -150,12 +154,12 @@ export default function Login(props) {
                             endAdornment: (
                                 <InputAdornment position="end">
                                     <IconButton
-                                    aria-label="toggle password visibility"
-                                    onClick={handleClickShowPassword}
-                                    onMouseDown={handleMouseDownPassword}
-                                    edge="end"
+                                        aria-label="toggle password visibility"
+                                        onClick={handleClickShowPassword}
+                                        onMouseDown={handleMouseDownPassword}
+                                        edge="end"
                                     >
-                                    {state.showPassword ? <Visibility /> : <VisibilityOff />}
+                                        {state.showPassword ? <Visibility /> : <VisibilityOff />}
                                     </IconButton>
                                 </InputAdornment>
                             )
@@ -169,13 +173,17 @@ export default function Login(props) {
                     }}>
                         Quên mật khẩu?
                     </p>
+                    <span>{notify?.error}</span>
                     <div className="login-group">
                         <Button
                             variant="contained"
                             type="submit"
                             className="login-button"
                         >
-                            Đăng nhập
+                            {notify.loading ?
+                                <CircularProgress size="25px" color="white" />
+                                : "Đăng nhập"
+                            }
                         </Button>
                     </div>
                 </form>

@@ -1,24 +1,16 @@
 import axios from 'axios';
 
-const client = (token) => {
-    const defaultOptions = {
-        baseURL: "http://localhost:5000",
+const customAxios = (token = "") => {
+    const instance = axios.create({
+        // baseURL: "http://localhost:5000",
         headers: {
-            Authorization: token,
             "Content-Type": "application/json",
+            Authorization: "Bearer " + token,
         },
-    }
-
-    return {
-        get: (url, options = {}) => axios.get(url, { ...defaultOptions, ...options }),
-        post: (url, data, options = {}) => axios.post(url, data, { ...defaultOptions, ...options }),
-        put: (url, data, options = {}) => axios.put(url, data, { ...defaultOptions, ...options }),
-        patch: (url, data, options = {}) => axios.patch(url, data, { ...defaultOptions, ...options }),
-        delete: (url, options = {}) => axios.delete(url, { ...defaultOptions, ...options })
-    }
+        // withCredentials: true,
+        timeout: 10 * 1000,
+    })
+    return instance;
 }
 
-const request = client("token");
-
-export default request;
-export { client };
+export default customAxios;

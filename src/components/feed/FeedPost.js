@@ -28,7 +28,7 @@ export default function FeedPost(props) {
     }
 
     useEffect(() => {
-        dispatch(getPosts({ type: "post" }));
+        dispatch(getPosts("post", ""));
     }, [dispatch])
 
 
@@ -58,7 +58,7 @@ export default function FeedPost(props) {
                         }}
                     >
                         <Fade in={show}>
-                            <CreatePostForm />
+                            <CreatePostForm handleClose={handleClose} />
                         </Fade>
                     </Modal>
 

@@ -75,13 +75,14 @@ class UserController {
             const accessToken = jwt.sign({ id: user._id }, process.env.ACCESS_TOKEN_SECRET || "abcdefghiklmn")
             //trả về dữ liệu user khi login thành công
 
-            // const refresh_token = createRefreshToken({ id: user._id })
+            const refreshToken = jwt.sign({ id: user._id }, process.env.REFRESH_TOKEN_SECRET || "REFRESH_TOKEN_SECRET")
 
-            // res.cookie('refreshtoken', refresh_token, {
-            //     httpOnly: true,
-            //     path: '/api/refresh_token',
-            //     maxAge: 30 * 24 * 60 * 60 * 1000 // 30days
-            // })
+            res.cookie('refreshtoken', refreshToken, {
+                httpOnly: true,
+                // path: '/user/refresh_token',
+                maxAge: 30 * 24 * 60 * 60 * 1000 // 30days
+            })
+
             res.json({
                 success: true,
                 message: "login successful!",
@@ -98,9 +99,38 @@ class UserController {
         }
     }
 
+    async refreshToken(req, res) {
+        try {
+            const refresh_token = req.cookies.refreshtoken;
+            if (!refresh_token) return res.status(400).json({ message: "No token 1" });
+
+            jwt.verify(refresh_token, "REFRESH_TOKEN_SECRET", async (err, result) => {
+                if (err) return res.status(400).json({ message: "No token 2" });
+
+                const user = await Users.findById(result.id).select("-password").populate("followers followings", "username avatar fullname followers followings")
+                if (!user) return res.status(400).json("No token 3");
+
+                const accessToken = jwt.sign({ id: user._id }, process.env.ACCESS_TOKEN_SECRET || "abcdefghiklmn")
+
+                res.json({
+                    success: true,
+                    message: "successful!",
+                    accessToken,
+                    user: {
+                        ...user._doc,
+                        password: ''
+                    }
+                })
+            })
+        }
+        catch (err) {
+            res.status(500).json({ success: false, message: err.message })
+        }
+    }
+
     async logout(req, res) {
         try {
-            // res.clearCookie('refreshtoken', { path: '/api/refresh_token' })
+            res.clearCookie('refreshtoken', { path: '/' })
             return res.json({ success: true, message: "logout successful!" })
         } catch (err) {
             console.log(err)

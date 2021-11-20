@@ -1,187 +1,20 @@
-import request from '../../utils/fetchData';
 import * as notifyAction from '../actions/notifyAction'
 import * as postAction from '../actions/postAction';
 import * as imageUtils from '../../utils/uploadImage';
+import customAxios from '../../utils/fetchData';
 
 
-export const getPosts = (data) => async (dispatch) => {
+export const getPosts = (type, token) => async (dispatch) => {
     dispatch(postAction.loading());
 
     try {
-        const { type } = data;
         console.log(type);
         // call api to get post list
-        const res = [
-            {
-                _id: 46794,
-                user: {
-                    _id: "3132",
-                    userName: "huunguyen",
-                    firstName: "A",
-                    lastName: "Trần Văn",
-                    avatarImage: "",
-                },
-                content: "Đây là lần đầu tôi post bài",
-                time: "11/11/2021",
-                comments: [
-                    {
-                        _id: 46546,
-                        likes: [46, 461, 134],
-                        content: "Đây là nội dung của comment",
-                        time: "13/11/2021",
-                        user: {
-                            userName: "huunguyen",
-                            avatarImage: "",
-                        },
-                    },
-                    {
-                        _id: 4654,
-                        likes: [46, 461, 134],
-                        content: "Đây là nội dung của comment",
-                        time: "13/11/2021",
-                        user: {
-                            userName: "huunguyen",
-                            avatarImage: "",
-                        },
-                    }
-                ],
-                isPublic: 1,
-                likes: [13133, 1313, 132132, 13],
-                postImages: [
-                    {
-                        imageId: 1313,
-                        url: "https://toptour.com.vn/wp-content/uploads/2019/08/nhung-dia-diem-dep1.jpg",
-                    },
-                    {
-                        imageId: 4654,
-                        url: "https://img.thuthuatphanmem.vn/uploads/2018/10/26/anh-dep-cau-rong-da-nang-viet-nam_055418962.jpg"
-                    }
-                ],
-                isPostReview: false,
-                star: 0,
-                cost: null,
-                locationId: null,
-                hashtags: ["#anuong", "#dulich"],
-                taggedIds: [4656, 466, 1313],
-                isPostService: false,
-                provinceId: 3123,
-            },
-            {
-                _id: 4465456,
-                user: {
-                    _id: "3132",
-                    userName: "huunguyen",
-                    firstName: "A",
-                    lastName: "Trần Văn",
-                    avatarImage: "",
-                },
-                content: "Đây là lần đầu tôi post bài",
-                time: "11/11/2021",
-                comments: [
-                    {
-                        _id: 46546,
-                        likes: [46, 461, 134],
-                        content: "Đây là nội dung của comment",
-                        time: "13/11/2021",
-                        user: {
-                            userName: "huunguyen",
-                            avatarImage: "",
-                        },
-                    },
-                    {
-                        _id: 4656,
-                        likes: [46, 461, 134],
-                        content: "Đây là nội dung của comment",
-                        time: "13/11/2021",
-                        user: {
-                            userName: "huunguyen",
-                            avatarImage: "",
-                        },
-                    }
-                ],
-                isPublic: 1,
-                likes: [13133, 1313, 132132, 13],
-                postImages: [
-                    {
-                        imageId: 1313,
-                        url: "https://toptour.com.vn/wp-content/uploads/2019/08/nhung-dia-diem-dep1.jpg",
-                    },
-                    {
-                        imageId: 4654,
-                        url: "https://img.thuthuatphanmem.vn/uploads/2018/10/26/anh-dep-cau-rong-da-nang-viet-nam_055418962.jpg"
-                    }
-                ],
-                isPostReview: false,
-                star: 0,
-                cost: null,
-                locationId: null,
-                hashtags: ["#bien", "#quangngai"],
-                taggedIds: [4656, 466, 1313],
-                isPostService: false,
-                provinceId: 3123,
-            },
-            {
-                _id: 78,
-                user: {
-                    _id: "3132",
-                    userName: "huunguyen",
-                    firstName: "A",
-                    lastName: "Trần Văn",
-                    avatarImage: "",
-                },
-                content: "Đây là lần đầu tôi post bài",
-                time: "11/11/2021",
-                comments: [
-                    {
-                        _id: 46546,
-                        likes: [46, 461, 134],
-                        content: "Đây là nội dung của comment",
-                        time: "13/11/2021",
-                        user: {
-                            userName: "huunguyen",
-                            avatarImage: "",
-                        },
-                    },
-                    {
-                        _id: 4656,
-                        likes: [46, 461, 134],
-                        content: "Đây là nội dung của comment",
-                        time: "13/11/2021",
-                        user: {
-                            userName: "huunguyen",
-                            avatarImage: "",
-                        },
-                    }
-                ],
-                isPublic: 1,
-                likes: [13133, 1313, 132132, 13],
-                postImages: [
-                    {
-                        imageId: 1313,
-                        url: "https://toptour.com.vn/wp-content/uploads/2019/08/nhung-dia-diem-dep1.jpg",
-                    },
-                    {
-                        imageId: 4654,
-                        url: "https://img.thuthuatphanmem.vn/uploads/2018/10/26/anh-dep-cau-rong-da-nang-viet-nam_055418962.jpg"
-                    },
-                    {
-                        imageId: 4456,
-                        url: "https://www.w3schools.com/howto/img_snow.jpg"
-                    }
-                ],
-                isPostReview: false,
-                star: 0,
-                cost: null,
-                locationId: null,
-                hashtags: ["#bien", "#quangngai"],
-                taggedIds: [4656, 466, 1313],
-                isPostService: false,
-                provinceId: 3123,
-            },
+        const res = await customAxios(token).get("post/posts");
 
-        ];
+        console.log(res);
 
-        dispatch(postAction.getPosts({ posts: res }));
+        dispatch(postAction.getPosts({ posts: res.data.posts }));
     }
     catch (err) {
         dispatch(postAction.error({ error: err }))
@@ -206,21 +39,28 @@ export const getMorePost = (data) => async (dispatch) => {
     }
 }
 
-export const createPost = (data) => async (dispatch) => {
+export const createPost = (data, token) => async (dispatch) => {
     // post api
     dispatch(notifyAction.callStart());
     try {
         // call api to save post
         let image = [];
         if (data.image.length > 0) image = await imageUtils.uploadImages(data.image);
+        const post = {
+            ...data,
+            images: image
+        }
 
-        // const res = await request.post("post", data);
 
-        dispatch(notifyAction.callSuccess());
+        const res = await customAxios(token).post("post/create_post", post);
+
+        console.log(res.data);
+        dispatch(notifyAction.callSuccess({ message: res.data.message }));
+        dispatch(postAction.addPost({ post: res.data.newPost }))
 
     }
     catch (err) {
-        dispatch(notifyAction.callFail({ error: err }))
+        dispatch(notifyAction.callFail({ error: err.data.message }))
     }
 }
 
@@ -249,13 +89,13 @@ export const deletePost = (data) => async (dispatch) => {
     }
 }
 
-export const likePost = (data) => async (dispatch) => {
+export const likePost = (id, token) => async (dispatch) => {
     dispatch(notifyAction.callStart());
 
     try {
 
-        const res = 0;
-        dispatch(postAction.updateLike({ like: res }));
+        const res = await customAxios(token).patch(`/post/${id}/like`);
+        dispatch(postAction.updateLike({ id: id, likes: res.data.likes }));
         dispatch(notifyAction.callSuccess());
     }
     catch (err) {
@@ -263,13 +103,13 @@ export const likePost = (data) => async (dispatch) => {
     }
 }
 
-export const unlikePost = (data) => async (dispatch) => {
+export const unlikePost = (id, token) => async (dispatch) => {
     dispatch(notifyAction.callStart());
 
     try {
 
-        const res = 0;
-        dispatch(postAction.updateLike({ like: res }));
+        const res = await customAxios(token).patch(`/post/${id}/unlike`);
+        dispatch(postAction.updateLike({ id: id, likes: res.data.likes }));
         dispatch(notifyAction.callSuccess());
     }
     catch (err) {

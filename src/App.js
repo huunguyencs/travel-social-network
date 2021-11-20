@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { Route } from "react-router-dom";
 
 import Header from "./components/header/Header";
@@ -10,11 +10,15 @@ import HomePage from './page/home';
 import './App.css'
 import { WithRouterScroll } from './components/scroll';
 import { useLocation } from "react-router-dom";
+import { useDispatch, useSelector } from "react-redux";
+import { refreshToken } from "./redux/callApi/authCall";
 
 
 function App() {
   const location = useLocation();
 
+  const { auth } = useSelector(state => state);
+  const dispatch = useDispatch();
 
 
   const displayHeader = () => {
@@ -22,6 +26,12 @@ function App() {
       return false;
     return true;
   }
+
+  useEffect(() => {
+    if (!auth.token) {
+      dispatch(refreshToken());
+    }
+  }, [dispatch, auth.token])
 
   return (
     <div style={{ backgroundColor: color.background }}>
