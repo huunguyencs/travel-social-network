@@ -39,7 +39,7 @@ export default function Comment(props) {
                     </Typography> */}
                     <SeeMoreText
                         variant="body2"
-                        maxText={10}
+                        maxText={100}
                         text={comment.content}
                     />
                 </div>

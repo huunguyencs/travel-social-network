@@ -177,7 +177,7 @@ export default function Tour(props) {
                 </div>
             </Collapse>
 
-            <InputComment />
+            <InputComment type="tour" id={tour._id} />
 
         </Card>
     )

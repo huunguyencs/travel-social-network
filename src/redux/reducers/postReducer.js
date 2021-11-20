@@ -83,7 +83,7 @@ const postRecuder = (state = INIT_STATE, action) => {
                 ...state,
                 posts: state.posts.map(item => item._id === action.payload.id ? {
                     ...item,
-                    comments: action.payload.comments
+                    comments: [...item.comments, action.payload.comment]
                 } : item)
             }
         }

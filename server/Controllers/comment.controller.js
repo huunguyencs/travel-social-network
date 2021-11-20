@@ -4,8 +4,8 @@ const Tours = require('../Models/tour.model')
 // const Activities = require('../Models/activity.model')
 
 class CommentController {
-    async createComment(req, res){
-        try{
+    async createComment(req, res) {
+        try {
             const { commentType, content, postId, tourId, activityId } = req.body;
 
             const newComment = new Comments({
@@ -14,24 +14,24 @@ class CommentController {
 
             await newComment.save()
 
-            switch(commentType){
+            switch (commentType) {
                 case "post":
                     const post = await Posts.findById(postId);
                     if (!post) {
-                        return res.status(400).json({success:false, message: "This post is not exist." })
+                        return res.status(400).json({ success: false, message: "This post is not exist." })
                     }
 
                     await Posts.findOneAndUpdate({ _id: postId }, {
                         $push: {
                             comments: newComment._id
                         }
-                    })
+                    });
                     break;
-                    
+
                 case "tour":
                     const tour = await Tours.findById(tourId);
                     if (!tour) {
-                        return res.status(400).json({success:false, message: "This tour is not exist." })
+                        return res.status(400).json({ success: false, message: "This tour is not exist." })
                     }
 
                     await Tours.findOneAndUpdate({ _id: tourId }, {
@@ -54,32 +54,32 @@ class CommentController {
                 //     })
                 //     break;
             }
-            res.json({success: true, message:"Create comment successful"})
-        }catch(err){
+            res.json({ success: true, message: "Create comment successful", newComment })
+        } catch (err) {
             console.log(err)
-            res.status(500).json({success: false, message: err.message})
+            res.status(500).json({ success: false, message: err.message })
         }
     }
 
-    async updateComment(req, res){
-        try{
-            const {content} = req.body;
+    async updateComment(req, res) {
+        try {
+            const { content } = req.body;
             await Comments.findOneAndUpdate({ _id: req.params.id, user: req.user._id }, { content });
 
-            res.json({success: true, message:"Update comment successful"})
-        }catch(err){
+            res.json({ success: true, message: "Update comment successful" })
+        } catch (err) {
             console.log(err)
-            res.status(500).json({success: false, message: err.message})
+            res.status(500).json({ success: false, message: err.message })
         }
     }
 
     // A(req.user._id) like comment B(params.id)
-    async likeComment(req, res){
-        try{
+    async likeComment(req, res) {
+        try {
             const comment = await Comments.findOne({ _id: req.params.id, likes: req.user._id });
 
             if (comment && comment.length > 0) {
-                return res.status(400).json({success: false, message: "You liked this comment." })
+                return res.status(400).json({ success: false, message: "You liked this comment." })
             }
 
             await Comments.findOneAndUpdate({ _id: req.params.id }, {
@@ -87,31 +87,31 @@ class CommentController {
                     likes: req.user._id
                 }
             })
-            res.json({success: true, message:"Like comment"})
-        }catch(err){
+            res.json({ success: true, message: "Like comment" })
+        } catch (err) {
             console.log(err)
-            res.status(500).json({success: false, message: err.message})
+            res.status(500).json({ success: false, message: err.message })
         }
     }
 
     // A(req.user._id) unlike comment B(params.id)
-    async unlikeComment(req, res){
-        try{
+    async unlikeComment(req, res) {
+        try {
             await Comments.findOneAndUpdate({ _id: req.params.id }, {
                 $pull: {
                     likes: req.user._id
                 }
             })
-            res.json({success: true, message:"Unlike comment"})
-        }catch(err){
+            res.json({ success: true, message: "Unlike comment" })
+        } catch (err) {
             console.log(err)
-            res.status(500).json({success: false, message: err.message})
+            res.status(500).json({ success: false, message: err.message })
         }
     }
-    
+
     // A(req.user._id) delete comment B(params.id)
-    async deleteComment(req, res){
-        try{
+    async deleteComment(req, res) {
+        try {
             const comment = await Comments.findOneAndDelete({
                 _id: req.params.id, userId: req.user._id
             })
@@ -133,14 +133,14 @@ class CommentController {
                 //     })
                 //     break;
             }
-            res.json({success: true, message:"Delete comment"})
-        }catch(err){
+            res.json({ success: true, message: "Delete comment" })
+        } catch (err) {
             console.log(err)
-            res.status(500).json({success: false, message: err.message})
+            res.status(500).json({ success: false, message: err.message })
         }
     }
 
-    
+
 }
 
 module.exports = new CommentController;

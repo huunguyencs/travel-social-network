@@ -1,5 +1,6 @@
 import * as notifyAction from '../actions/notifyAction';
 import * as commentAction from '../actions/commentAction';
+import customAxios from '../../utils/fetchData';
 
 export const getCommentPost = (data) => async (dispatch) => {
 
@@ -9,14 +10,26 @@ export const getCommentTour = (data) => async (dispatch) => {
 
 }
 
-export const createCommentPost = (data) => async (dispatch) => {
+export const createCommentPost = (id, comment, auth) => async (dispatch) => {
     dispatch(notifyAction.callStart());
-    const newComments;
 
-    dispatch(commentAction.updateCommentPost({ comments: newComments }))
+
     try {
         // call api to update comment
-        dispatch(notifyAction.callSuccess());
+        const res = await customAxios(auth.token).post("comment/create_comment", {
+            commentType: "post",
+            content: comment,
+            postId: id,
+        })
+        console.log(res);
+
+        const newComment = {
+            ...res.data.newComment,
+            userId: auth.user,
+        }
+        dispatch(commentAction.updateCommentPost({ id: id, comment: newComment }))
+        dispatch(notifyAction.callSuccess({ message: "" }));
+
     }
     catch (err) {
         dispatch(notifyAction.callFail({ error: err }));
@@ -25,9 +38,9 @@ export const createCommentPost = (data) => async (dispatch) => {
 
 export const createCommentTour = (data) => async (dispatch) => {
     dispatch(notifyAction.callStart());
-    const newComments;
+    // const newComments;
 
-    dispatch(commentAction.updateCommentTour({ comments: newComments }))
+    // dispatch(commentAction.updateCommentTour({ comments: newComments }))
     try {
         // call api to update comment
         dispatch(notifyAction.callSuccess());
@@ -39,9 +52,9 @@ export const createCommentTour = (data) => async (dispatch) => {
 
 export const updateCommentPost = (data) => async (dispatch) => {
     dispatch(notifyAction.callStart());
-    const newComments;
+    // const newComments;
 
-    dispatch(commentAction.updateCommentPost({ comments: newComments }))
+    // dispatch(commentAction.updateCommentPost({ comments: newComments }))
     try {
         // call api to update comment
         dispatch(notifyAction.callSuccess());
@@ -53,9 +66,9 @@ export const updateCommentPost = (data) => async (dispatch) => {
 
 export const updateCommentTour = (data) => async (dispatch) => {
     dispatch(notifyAction.callStart());
-    const newComments;
+    // const newComments;
 
-    dispatch(commentAction.updateCommentTour({ comments: newComments }))
+    // dispatch(commentAction.updateCommentTour({ comments: newComments }))
     try {
         // call api to update comment
         dispatch(notifyAction.callSuccess());
@@ -67,9 +80,9 @@ export const updateCommentTour = (data) => async (dispatch) => {
 
 export const deleteCommentPost = (data) => async (dispatch) => {
     dispatch(notifyAction.callStart());
-    const newComments;
+    // const newComments;
 
-    dispatch(commentAction.updateCommentPost({ comments: newComments }))
+    // dispatch(commentAction.updateCommentPost({ comments: newComments }))
     try {
         // call api to update comment
         dispatch(notifyAction.callSuccess());
@@ -81,9 +94,9 @@ export const deleteCommentPost = (data) => async (dispatch) => {
 
 export const deleteCommentTour = (data) => async (dispatch) => {
     dispatch(notifyAction.callStart());
-    const newComments;
+    // const newComments;
 
-    dispatch(commentAction.updateCommentTour({ comments: newComments }))
+    // dispatch(commentAction.updateCommentTour({ comments: newComments }))
     try {
         // call api to update comment
         dispatch(notifyAction.callSuccess());
@@ -95,8 +108,8 @@ export const deleteCommentTour = (data) => async (dispatch) => {
 
 export const likeCommentPost = (data) => async (dispatch) => {
     dispatch(notifyAction.callStart());
-    const newComments;
-    dispatch(commentAction.updateCommentPost({ comment: newComments }));
+    // const newComments;
+    // dispatch(commentAction.updateCommentPost({ comment: newComments }));
     try {
         // call api to update comment like
         dispatch(notifyAction.callSuccess());
@@ -108,8 +121,8 @@ export const likeCommentPost = (data) => async (dispatch) => {
 
 export const likeCommentTour = (data) => async (dispatch) => {
     dispatch(notifyAction.callStart());
-    const newComments;
-    dispatch(commentAction.updateCommentTour({ comment: newComments }));
+    // const newComments;
+    // dispatch(commentAction.updateCommentTour({ comment: newComments }));
     try {
         // call api to update comment like
         dispatch(notifyAction.callSuccess());
@@ -121,8 +134,8 @@ export const likeCommentTour = (data) => async (dispatch) => {
 
 export const unlikeCommentPost = (data) => async (dispatch) => {
     dispatch(notifyAction.callStart());
-    const newComments;
-    dispatch(commentAction.updateCommentPost({ comment: newComments }));
+    // const newComments;
+    // dispatch(commentAction.updateCommentPost({ comment: newComments }));
     try {
         dispatch(notifyAction.callSuccess());
     }
@@ -133,8 +146,8 @@ export const unlikeCommentPost = (data) => async (dispatch) => {
 
 export const unlikeCommentTour = (data) => async (dispatch) => {
     dispatch(notifyAction.callStart());
-    const newComments;
-    dispatch(commentAction.updateCommentTour({ comment: newComments }));
+    // const newComments;
+    // dispatch(commentAction.updateCommentTour({ comment: newComments }));
     try {
         dispatch(notifyAction.callSuccess());
     }

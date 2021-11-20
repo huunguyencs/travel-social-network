@@ -196,7 +196,7 @@ export default function Post(props) {
                 </div>
             </Collapse>
 
-            <InputComment />
+            <InputComment type="post" id={post._id} />
 
         </Card>
     )
