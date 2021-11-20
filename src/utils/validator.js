@@ -32,7 +32,7 @@ class Validator {
 }
 
 const validatePassword = (password, state) => {
-    const regex = /^(?=.*[A-Z])(?=.*[!@#$&*])(?=.*[0-9])(?=.*[a-z]).{8,}$/
+    const regex = /^(?=.*[A-Z])(?=.*[0-9])(?=.*[a-z]).{6,}$/
     return regex.test(password);
 }
 

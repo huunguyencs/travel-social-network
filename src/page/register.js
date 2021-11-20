@@ -67,7 +67,7 @@ export default function Register(props) {
             field: "password",
             method: validatePassword,
             validWhen: true,
-            message: "Mật khẩu phải chứa ít nhất một chữ cái viết hoa, một chữ cái viết thường, một kí tự đặc biệt, một chữ số và có độ dài lớn hơn 8"
+            message: "Mật khẩu phải chứa ít nhất một chữ cái viết hoa, một chữ cái viết thường, một chữ số và có độ dài lớn hơn 6"
         },
         {
             field: "confirmPassword",
@@ -191,7 +191,7 @@ export default function Register(props) {
                     />
                     <TextField
                         autoComplete=""
-                        label="Mật khẩu (8+ kí tự)"
+                        label="Mật khẩu (6+ kí tự)"
                         variant="outlined"
                         name="password"
                         type="password"
