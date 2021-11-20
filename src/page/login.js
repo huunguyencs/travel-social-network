@@ -19,14 +19,15 @@ export default function Login(props) {
     const history = useHistory();
 
     const dispatch = useDispatch();
-    const { auth } = useSelector(state => state);
+    const { auth, notify } = useSelector(state => state);
     const [state, setState] = useState({
         email: '',
         password: '',
         errors: {},
         submit: false,
-        showPassword: false,
     })
+
+    const [showPassword, setShowPassword] = useState(false);
 
     const { errors } = state;
 
@@ -92,18 +93,12 @@ export default function Login(props) {
     }, [errors, dispatch, state])
 
 
-    //Show password
-    const handleChange = (prop) => (event) => {
-        setState({ ...state, [prop]: event.target.value });
-    };
+
 
     const handleClickShowPassword = () => {
-        setState({ ...state, showPassword: !state.showPassword });
+        setShowPassword(state => !state);
     };
 
-    const handleMouseDownPassword = (event) => {
-        event.preventDefault();
-    };
 
     return (
         <div className="login">
@@ -143,23 +138,21 @@ export default function Login(props) {
                         required
                         id="password"
                         name="password"
-                        type={state.showPassword ? "text" : "password"}
+                        type={showPassword ? "text" : "password"}
                         error={errors?.password}
                         helperText={errors?.password}
                         className="form-input"
                         value={state.password}
                         onChange={handleInput}
-                        // onChange={handleChange("password")}
                         InputProps={{
                             endAdornment: (
                                 <InputAdornment position="end">
                                     <IconButton
                                         aria-label="toggle password visibility"
                                         onClick={handleClickShowPassword}
-                                        onMouseDown={handleMouseDownPassword}
                                         edge="end"
                                     >
-                                        {state.showPassword ? <Visibility /> : <VisibilityOff />}
+                                        {showPassword ? <Visibility /> : <VisibilityOff />}
                                     </IconButton>
                                 </InputAdornment>
                             )

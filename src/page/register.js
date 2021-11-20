@@ -31,8 +31,10 @@ export default function Register(props) {
         confirmPassword: "",
         errors: {},
         submit: false,
-        showPassword: false,
     });
+
+    const [showPassword, setShowPassword] = useState(false);
+    const [showConfirm, setShowConfirm] = useState(false);
 
     const { errors } = state;
 
@@ -130,17 +132,16 @@ export default function Register(props) {
     }, [errors, state, dispatch])
 
     //Show password
-    const handleChange = (prop) => (event) => {
-        setState({ ...state, [prop]: event.target.value });
-    };
 
     const handleClickShowPassword = () => {
-        setState({ ...state, showPassword: !state.showPassword });
+        setShowPassword(state => !state);
     };
 
-    const handleMouseDownPassword = (event) => {
-        event.preventDefault();
-    };
+    const handleClickShowConfirm = () => {
+        setShowConfirm(state => !state);
+    }
+
+
     useEffect(() => {
         if (notify.success) {
             history.push("/login");
@@ -212,7 +213,7 @@ export default function Register(props) {
                         label="Mật khẩu (6+ kí tự)"
                         variant="outlined"
                         name="password"
-                        type={state.showPassword ? "text" : "password"}
+                        type={showPassword ? "text" : "password"}
                         required
                         className="form-input"
                         error={errors?.password}
@@ -224,10 +225,9 @@ export default function Register(props) {
                                     <IconButton
                                         aria-label="toggle password visibility"
                                         onClick={handleClickShowPassword}
-                                        onMouseDown={handleMouseDownPassword}
                                         edge="end"
                                     >
-                                        {state.showPassword ? <Visibility /> : <VisibilityOff />}
+                                        {showPassword ? <Visibility /> : <VisibilityOff />}
                                     </IconButton>
                                 </InputAdornment>
                             )
@@ -238,7 +238,7 @@ export default function Register(props) {
                         label="Xác nhận mật khẩu"
                         variant="outlined"
                         name="confirmPassword"
-                        type={state.showPassword ? "text" : "password"}
+                        type={showConfirm ? "text" : "password"}
                         required
                         className="form-input"
                         error={errors?.confirmPassword}
@@ -249,11 +249,10 @@ export default function Register(props) {
                                 <InputAdornment position="end">
                                     <IconButton
                                         aria-label="toggle password visibility"
-                                        onClick={handleClickShowPassword}
-                                        onMouseDown={handleMouseDownPassword}
+                                        onClick={handleClickShowConfirm}
                                         edge="end"
                                     >
-                                        {state.showPassword ? <Visibility /> : <VisibilityOff />}
+                                        {showConfirm ? <Visibility /> : <VisibilityOff />}
                                     </IconButton>
                                 </InputAdornment>
                             )
