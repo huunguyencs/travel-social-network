@@ -58,7 +58,7 @@ export default function UserList(props) {
                             <Avatar alt="avatar" src={user.avatar} />
                         </div>
                         <div className={classes.fullname}>
-                            <Link to={`profile/${user._id}`}>{user.fullname}</Link>
+                            <Link to={`/profile/${user._id}`} onClick={handleClose}>{user.fullname}</Link>
                         </div>
                         <div>
                             {

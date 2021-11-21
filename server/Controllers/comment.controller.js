@@ -9,7 +9,7 @@ class CommentController {
             const { commentType, content, postId, tourId, activityId } = req.body;
 
             const newComment = new Comments({
-                userId: req.user._id, content, postId, tourId, activityId, commentType
+                userId: req.user._id, content, commentType
             })
 
             await newComment.save()
@@ -82,12 +82,12 @@ class CommentController {
                 return res.status(400).json({ success: false, message: "You liked this comment." })
             }
 
-            await Comments.findOneAndUpdate({ _id: req.params.id }, {
+            const newComment = await Comments.findOneAndUpdate({ _id: req.params.id }, {
                 $push: {
                     likes: req.user._id
                 }
-            })
-            res.json({ success: true, message: "Like comment" })
+            }, { new: true }).populate("userId", "avatar fullname username");
+            res.json({ success: true, message: "Like comment", newComment })
         } catch (err) {
             console.log(err)
             res.status(500).json({ success: false, message: err.message })
@@ -97,12 +97,12 @@ class CommentController {
     // A(req.user._id) unlike comment B(params.id)
     async unlikeComment(req, res) {
         try {
-            await Comments.findOneAndUpdate({ _id: req.params.id }, {
+            const newComment = await Comments.findOneAndUpdate({ _id: req.params.id }, {
                 $pull: {
                     likes: req.user._id
                 }
-            })
-            res.json({ success: true, message: "Unlike comment" })
+            }, { new: true }).populate("userId", "avatar fullname username");
+            res.json({ success: true, message: "Unlike comment", newComment })
         } catch (err) {
             console.log(err)
             res.status(500).json({ success: false, message: err.message })

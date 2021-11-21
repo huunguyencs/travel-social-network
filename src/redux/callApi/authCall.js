@@ -46,9 +46,9 @@ export const register = (data, callback) => async (dispatch) => {
     }
 }
 
-export const refreshToken = (data) => async (dispatch) => {
+export const refreshToken = (callback) => async (dispatch) => {
     try {
-        const res = await customAxios().post("user/refresh_token", data, {
+        const res = await customAxios().post("/user/refresh_token", null, {
             // withCredentials: true,
             credentials: 'include'
         });
@@ -57,13 +57,14 @@ export const refreshToken = (data) => async (dispatch) => {
     }
     catch (err) {
         console.log(err);
+        callback();
         // dispatch(notifyAction.callFail({ error: err.response.data.message }));
     }
 }
 
 export const logout = (data) => async (dispatch) => {
     try {
-        const res = await customAxios().post("user/logout", data, {
+        const res = await customAxios().post("/user/logout", data, {
             credentials: "include"
         })
         console.log(res);

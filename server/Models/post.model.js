@@ -1,25 +1,25 @@
 const mongoose = require('mongoose');
 
 const postSchema = new mongoose.Schema({
-    userId:{ type: mongoose.Schema.Types.ObjectId, ref: 'users'},
+    userId: { type: mongoose.Schema.Types.ObjectId, ref: 'users' },
     content: String,
     comments: [{ type: mongoose.Types.ObjectId, ref: 'comments' }],
-    isPublic:{ 
-        type:Boolean,
+    isPublic: {
+        type: Boolean,
         default: true
     },
-    likes: [{type: mongoose.Types.ObjectId, ref: 'users' }],
+    likes: [{ type: mongoose.Types.ObjectId, ref: 'users' }],
     images: Array,
     isPostReview: {
         type: Boolean,
         default: false
     },
-    start: Number,
+    star: Number,
     cost: Number,
-    locationId: {type: mongoose.Types.ObjectId, ref: 'locations'},
-    hashtags: [{type:String}],
-    taggedIds: [{type: mongoose.Types.ObjectId, ref: 'users' }]
-},{
+    locationId: { type: mongoose.Types.ObjectId, ref: 'locations' },
+    hashtags: [{ type: String }],
+    taggedIds: [{ type: mongoose.Types.ObjectId, ref: 'users' }]
+}, {
     timestamps: true
 })
 

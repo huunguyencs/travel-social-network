@@ -88,7 +88,7 @@ export const updatePost = (data) => async (dispatch) => {
 
     }
     catch (err) {
-        dispatch(notifyAction.callFail({ error: err }))
+        dispatch(notifyAction.callFail({ error: err.response.data.message }))
     }
 }
 
@@ -100,7 +100,7 @@ export const deletePost = (data) => async (dispatch) => {
         dispatch(notifyAction.callSuccess());
     }
     catch (err) {
-        dispatch(notifyAction.callFail({ error: err }))
+        dispatch(notifyAction.callFail({ error: err.response.data.message }))
     }
 }
 
@@ -114,7 +114,7 @@ export const likePost = (id, token) => async (dispatch) => {
         dispatch(notifyAction.callSuccess());
     }
     catch (err) {
-        dispatch(notifyAction.callFail({ error: err }));
+        dispatch(notifyAction.callFail({ error: err.response.data.message }));
     }
 }
 
@@ -128,6 +128,6 @@ export const unlikePost = (id, token) => async (dispatch) => {
         dispatch(notifyAction.callSuccess());
     }
     catch (err) {
-        dispatch(notifyAction.callFail({ error: err }));
+        dispatch(notifyAction.callFail({ error: err.response.data.message }));
     }
 }

@@ -9,13 +9,14 @@ import CustomRouter from "./router/CustomRouter";
 import HomePage from './page/home';
 import './App.css'
 import { WithRouterScroll } from './components/scroll';
-import { useLocation } from "react-router-dom";
+import { useLocation, useHistory } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { refreshToken } from "./redux/callApi/authCall";
 
 
 function App() {
   const location = useLocation();
+  const history = useHistory();
 
   const { auth } = useSelector(state => state);
   const dispatch = useDispatch();
@@ -29,7 +30,9 @@ function App() {
 
   useEffect(() => {
     if (!auth.token) {
-      dispatch(refreshToken());
+      dispatch(refreshToken(() => {
+        history.push("/login");
+      }));
     }
   }, [dispatch, auth.token])
 

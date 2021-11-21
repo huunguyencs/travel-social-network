@@ -8,3 +8,4 @@ export const ERROR = "ERROR";
 export const UPDATE_COMMENT = "UPDATE_COMMENT";
 export const UPDATE_LIKE = "UPDATE_LIKE";
 export const ADD_POST = "ADD_POST";
+export const ADD_COMMENT = "ADD_COMMENT";

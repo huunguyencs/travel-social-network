@@ -74,6 +74,11 @@ export default function AddTour(props) {
 
     const classes = tourdetailStyles();
 
+    const hashtagSplit = (text) => {
+        var ht = text.split(" ");
+        return ht.filter(item => item !== "");
+    }
+
 
 
     return (
@@ -88,7 +93,7 @@ export default function AddTour(props) {
                     </Typography>
                 </div>
                 <div className={classes.hashtagWrap}>
-                    {createTour.hashtag.split(" ").map((hashtag, index) => (
+                    {hashtagSplit(createTour.hashtag).map((hashtag, index) => (
                         <Typography className={classes.hashtag} key={index}>{hashtag}</Typography>
                     ))}
                 </div>

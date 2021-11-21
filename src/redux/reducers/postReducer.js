@@ -78,12 +78,22 @@ const postRecuder = (state = INIT_STATE, action) => {
                 } : item)
             }
         }
-        case POST_TYPES.UPDATE_COMMENT: {
+        case POST_TYPES.ADD_COMMENT: {
             return {
                 ...state,
                 posts: state.posts.map(item => item._id === action.payload.id ? {
                     ...item,
                     comments: [...item.comments, action.payload.comment]
+                } : item)
+            }
+        }
+        case POST_TYPES.UPDATE_COMMENT: {
+
+            return {
+                ...state,
+                posts: state.posts.map(item => item._id === action.payload.postId ? {
+                    ...item,
+                    comments: item.comments.map(comment => comment._id === action.payload.id ? action.payload.comment : comment)
                 } : item)
             }
         }

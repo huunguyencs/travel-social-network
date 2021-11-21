@@ -96,18 +96,9 @@ export default function Profile_Avatar(props) {
     }
   }
 
-  const getUser = async (id) => {
-    try {
-      const res = await customAxios(auth.token).get(`/user/${id}`);
-      setUser(res.data.user);
-    }
-    catch (err) {
-      console.log(err);
-    }
-  }
 
   const isFollowed = () => {
-    for (const u of auth.user.followings) {
+    for (const u of auth.user?.followings) {
       console.log(u._id);
       if (u._id === user?._id) {
         return true;
@@ -116,19 +107,29 @@ export default function Profile_Avatar(props) {
     return false;
   }
 
+  const getUser = async () => {
+    try {
+      const res = await customAxios(auth.token).get(`/user/${id}`);
+      setUser(res.data.user)
+    }
+    catch (err) {
+      console.log("loi");
+    }
+  }
+
   useEffect(() => {
     console.log(id);
-    if (!auth.token) history.push("/")
-
-    if (auth.user._id === id) {
-      setUser(auth.user);
+    if (auth.token) {
+      if (auth.user._id === id) {
+        setUser(auth.user);
+      }
+      else {
+        getUser();
+      }
+      if (isFollowed()) setFollowed(true);
+      else setFollowed(false);
     }
-    else {
-      getUser(id);
-    }
-    if (isFollowed()) setFollowed(true);
-    else setFollowed(false);
-  }, [id, setUser, auth.user, history]);
+  }, [id, setUser, auth, history, getUser]);
 
   return (
     <Container className={classes.container}>
@@ -189,7 +190,7 @@ export default function Profile_Avatar(props) {
           </div>
         </div>
         {
-          user?._id !== auth.user._id &&
+          user?._id !== auth.user?._id &&
           <div className={classes.profile_button}>
             <Button startIcon={< RssFeed />} className={classes.button} onClick={handleFollow}>
               {followed ? "Hủy Theo dõi" : "Theo dõi"}

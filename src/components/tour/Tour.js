@@ -172,7 +172,7 @@ export default function Tour(props) {
                 <hr className={classes.line} />
                 <div className={classes.listCmt}>
                     {tour.comment.map((cmt) => (
-                        <Comment comment={cmt} key={cmt._id} />
+                        <Comment comment={cmt} key={cmt._id} id={tour._id} type="tour" />
                     ))}
                 </div>
             </Collapse>

@@ -63,6 +63,7 @@ export default function Header(props) {
 
     const handleLogout = () => {
         dispatch(logout());
+        history.push("/login");
     }
 
     const classes = headerStyles({ open });

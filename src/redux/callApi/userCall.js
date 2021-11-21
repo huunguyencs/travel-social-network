@@ -1,6 +1,18 @@
 import customAxios from '../../utils/fetchData';
 import * as authAction from '../actions/authAction';
 
+// export const getUser = (id, token, callback) => async () => {
+//     try {
+//         console.log("hi");
+//         const res = await customAxios(token).get(`/user/${id}`);
+//         console.log(res);
+//         callback(res.data.user);
+//     }
+//     catch (err) {
+//         console.log(err.response.data.message);
+//     }
+// }
+
 
 export const follow = (user, token) => async (dispatch) => {
     try {

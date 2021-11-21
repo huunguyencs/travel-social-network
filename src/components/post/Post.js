@@ -191,7 +191,7 @@ export default function Post(props) {
                 <hr className={classes.line} />
                 <div className={classes.listCmt}>
                     {post.comments.map((cmt) => (
-                        <Comment comment={cmt} key={cmt._id} />
+                        <Comment comment={cmt} key={cmt._id} id={post._id} type="post" />
                     ))}
                 </div>
             </Collapse>

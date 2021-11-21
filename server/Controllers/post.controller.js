@@ -5,10 +5,10 @@ class PostController {
     //co hai loai post
     async createPost(req, res) {
         try {
-            const { content, images } = req.body
+            const { content, images, hashtags } = req.body
 
             const newPost = new Posts({
-                userId: req.user._id, content, images
+                userId: req.user._id, content, images, hashtags
             })
             await newPost.save()
             res.json({

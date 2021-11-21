@@ -21,6 +21,7 @@ export default function CreatePostForm(props) {
     const [showWarning, setShowWarning] = useState("");
 
     const [text, setText] = useState("");
+    const [hashtag, setHashtag] = useState("");
 
     const handleChange = e => {
         setText(e.target.value);
@@ -48,9 +49,15 @@ export default function CreatePostForm(props) {
         ])
     }
 
+    const hashtagSplit = (text) => {
+        var ht = text.split(" ");
+        return ht.filter(item => item !== "");
+    }
+
     const handleSubmit = (e) => {
         e.preventDefault();
-        dispatch(createPost({ content: text, image: imageUpload }, auth.token));
+        const ht = hashtagSplit(hashtag);
+        dispatch(createPost({ content: text, image: imageUpload, hashtag: ht }, auth.token));
         props.handleClose();
     }
 
@@ -86,6 +93,8 @@ export default function CreatePostForm(props) {
                                     name="hashtag"
                                     id="hashtag"
                                     className={classes.hashtag}
+                                    value={hashtag}
+                                    onChange={e => setHashtag(e.target.value)}
                                 />
                             </div>
                             <div className={classes.formAction}>
