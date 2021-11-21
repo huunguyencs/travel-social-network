@@ -73,12 +73,12 @@ const groupMenu = {
         {
             name: "Bài Viết",
             icon: Explore,
-            link: "/group/posts",
+            link: "/posts",
         },
         {
             name: "Thành Viên",
             icon: Accessibility,
-            link: "/group/member",
+            link: "/member",
         }
     ]
 };

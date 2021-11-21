@@ -23,7 +23,7 @@ import {
     WhatsApp,
     Cancel
 } from "@material-ui/icons";
-import { Link } from "react-router-dom";
+import { Link, useHistory } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 
 import { headerStyles } from "../../style";
@@ -38,10 +38,12 @@ export default function Header(props) {
     const { auth } = useSelector(state => state);
     const user = auth.user;
     const dispatch = useDispatch();
+    const history = useHistory();
 
     const [open, setOpen] = useState(false);
     const [toggleMenuUser, setToggleMenuUser] = useState(null);
     const [toggleNoti, setToggleNoti] = useState(null);
+    const [search, setSearch] = useState("");
 
     const handleToggleUser = (e) => {
         setToggleMenuUser(e.currentTarget);
@@ -67,7 +69,9 @@ export default function Header(props) {
 
     const handleSearch = (e) => {
         e.preventDefault();
-        console.log(e);
+        history.push(`/search?q=${search}`);
+        setSearch("");
+        console.log(search);
     }
 
     return (
@@ -82,7 +86,7 @@ export default function Header(props) {
                 <div className={classes.search}>
                     <Search className={classes.searchIcon} />
                     <form style={{ width: "100%" }} onSubmit={handleSearch}>
-                        <InputBase placeholder="Tìm kiếm ..." className={classes.input} />
+                        <InputBase placeholder="Tìm kiếm ..." className={classes.input} value={search} onChange={(e) => setSearch(e.target.value)} />
                     </form>
                     <Cancel className={classes.cancel} onClick={(e) => setOpen(false)} />
                 </div>

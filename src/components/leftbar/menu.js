@@ -27,7 +27,6 @@ export default function Menu(props) {
             return location.pathname === path;
         }
         else {
-
             const tmp = location.pathname.split("/");
             if (tmp.length === 3 && path === "/") return true;
             return "/" + tmp[tmp.length - 1] === path;
@@ -37,7 +36,11 @@ export default function Menu(props) {
     const renderLink = (link) => {
         if (props.menuList.prefix === "" || props.menuList.prefix === "admin")
             return link;
-        return "." + link;
+        const tmp = location.pathname.split("/");
+        if (tmp.length === 3) {
+            return "../" + tmp[1] + "/" + tmp[2] + link;
+        }
+        return "../" + tmp[2] + link;
     }
 
     const menuList = props.menuList;

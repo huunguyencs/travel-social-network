@@ -25,13 +25,13 @@ export default function Comment(props) {
         <div className={classes.comment}>
             <div className={classes.avatar}>
                 <Avatar
-                    src={comment.userId.avatar}
+                    src={comment.userId?.avatar}
                     atl="Avatar"
                 />
             </div>
             <div className={classes.cmtInfo}>
                 <Typography variant="subtitle2" className={classes.userName}>
-                    {comment.userId.fullname}
+                    {comment.userId?.fullname}
                 </Typography>
                 <div className={classes.content}>
                     {/* <Typography variant="body2">

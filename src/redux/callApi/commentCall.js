@@ -16,7 +16,7 @@ export const createCommentPost = (id, comment, auth) => async (dispatch) => {
 
     try {
         // call api to update comment
-        const res = await customAxios(auth.token).post("comment/create_comment", {
+        const res = await customAxios(auth.token).post("/comment/create_comment", {
             commentType: "post",
             content: comment,
             postId: id,
@@ -32,7 +32,8 @@ export const createCommentPost = (id, comment, auth) => async (dispatch) => {
 
     }
     catch (err) {
-        dispatch(notifyAction.callFail({ error: err }));
+        console.log(err.response.data.message);
+        dispatch(notifyAction.callFail({ error: err.response.data.message }));
     }
 }
 
@@ -46,7 +47,7 @@ export const createCommentTour = (data) => async (dispatch) => {
         dispatch(notifyAction.callSuccess());
     }
     catch (err) {
-        dispatch(notifyAction.callFail({ error: err }));
+        dispatch(notifyAction.callFail({ error: err.response.data.message }));
     }
 }
 
@@ -60,7 +61,7 @@ export const updateCommentPost = (data) => async (dispatch) => {
         dispatch(notifyAction.callSuccess());
     }
     catch (err) {
-        dispatch(notifyAction.callFail({ error: err }));
+        dispatch(notifyAction.callFail({ error: err.response.data.message }));
     }
 }
 
@@ -74,7 +75,7 @@ export const updateCommentTour = (data) => async (dispatch) => {
         dispatch(notifyAction.callSuccess());
     }
     catch (err) {
-        dispatch(notifyAction.callFail({ error: err }));
+        dispatch(notifyAction.callFail({ error: err.response.data.message }));
     }
 }
 
@@ -88,7 +89,7 @@ export const deleteCommentPost = (data) => async (dispatch) => {
         dispatch(notifyAction.callSuccess());
     }
     catch (err) {
-        dispatch(notifyAction.callFail({ error: err }));
+        dispatch(notifyAction.callFail({ error: err.response.data.message }));
     }
 }
 
@@ -102,7 +103,7 @@ export const deleteCommentTour = (data) => async (dispatch) => {
         dispatch(notifyAction.callSuccess());
     }
     catch (err) {
-        dispatch(notifyAction.callFail({ error: err }));
+        dispatch(notifyAction.callFail({ error: err.response.data.message }));
     }
 }
 
@@ -115,7 +116,7 @@ export const likeCommentPost = (data) => async (dispatch) => {
         dispatch(notifyAction.callSuccess());
     }
     catch (err) {
-        dispatch(notifyAction.callFail({ error: err }));
+        dispatch(notifyAction.callFail({ error: err.response.data.message }));
     }
 }
 
@@ -128,7 +129,7 @@ export const likeCommentTour = (data) => async (dispatch) => {
         dispatch(notifyAction.callSuccess());
     }
     catch (err) {
-        dispatch(notifyAction.callFail({ error: err }));
+        dispatch(notifyAction.callFail({ error: err.response.data.message }));
     }
 }
 
@@ -140,7 +141,7 @@ export const unlikeCommentPost = (data) => async (dispatch) => {
         dispatch(notifyAction.callSuccess());
     }
     catch (err) {
-        dispatch(notifyAction.callFail({ error: err }));
+        dispatch(notifyAction.callFail({ error: err.response.data.message }));
     }
 }
 
@@ -152,6 +153,6 @@ export const unlikeCommentTour = (data) => async (dispatch) => {
         dispatch(notifyAction.callSuccess());
     }
     catch (err) {
-        dispatch(notifyAction.callFail({ error: err }));
+        dispatch(notifyAction.callFail({ error: err.response.data.message }));
     }
 }

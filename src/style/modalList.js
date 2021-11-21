@@ -37,22 +37,41 @@ const modalListStyles = makeStyles((theme) => ({
         overflowY: "auto"
     },
     modal_body_user: {
+        cursor: "initial",
         minHeight: "90px",
+        display: "flex",
         borderBottom: "1px solid #f1f1f1",
         position: "relative",
         zIndex: 8,
         transition: "all .15s linear"
     },
     modal_body_user_button: {
-        color: "rgb(165, 222, 200)",
-        width: "120px",
-        cursor: "pointer",
+        color: color.gray,
+        marginTop: "27px",
+        // width: "30%",
+        paddingInline: "20px",
+        transition: "0.2s",
         '&:hover': {
-            backgroundColor: "rgb(165, 222, 200)",
-            color: "white"
+            backgroundColor: color.gray,
+            color: "white",
+            // border: "none",
         }
 
     },
+    avatar: {
+        width: "10%",
+        marginTop: "25px",
+        marginLeft: "25px",
+    },
+    fullname: {
+        marginTop: "30px",
+        width: "65%",
+        fontSize: "20px",
+        cursor: "pointer",
+        "&:hover": {
+            textDecorationLine: 'underline',
+        }
+    }
 }))
 
 export default modalListStyles;

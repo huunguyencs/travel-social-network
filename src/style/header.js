@@ -83,7 +83,8 @@ const headerStyles = makeStyles((theme) => ({
         marginInline: 5,
         padding: 10,
         borderRadius: attr.borderRadius.sm,
-    }
+        textTransform: "none",
+    },
 }));
 
 export default headerStyles;

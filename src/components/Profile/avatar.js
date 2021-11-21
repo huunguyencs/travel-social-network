@@ -82,7 +82,7 @@ export default function Profile_Avatar(props) {
 
   const getUser = async (id) => {
     try {
-      const res = await customAxios().get(`/user/${id}`);
+      const res = await customAxios(auth.token).get(`/user/${id}`);
       setUser(res.data.user);
     }
     catch (err) {
@@ -140,7 +140,7 @@ export default function Profile_Avatar(props) {
                   timeout: 500,
                 }}
               >
-                <UserList listUser={user.followings} title={"Đang theo dõi"} handleClose={handleCloseFollowing} />
+                <UserList listUser={user?.followings} title={"Đang theo dõi"} handleClose={handleCloseFollowing} />
               </Modal>
               <Typography style={{ cursor: "pointer", }} onClick={handleOpenFollower} >{user?.followers.length} người theo dõi</Typography>
               <Modal
@@ -155,13 +155,13 @@ export default function Profile_Avatar(props) {
                   timeout: 500,
                 }}
               >
-                <UserList listUser={user.followers} title={"Người theo dõi"} handleClose={handleCloseFollower} />
+                <UserList listUser={user?.followers} title={"Người theo dõi"} handleClose={handleCloseFollower} />
               </Modal>
             </Typography>
           </div>
         </div>
         {
-          user?.username !== auth.user.username &&
+          user?._id !== auth.user._id &&
           <div className={classes.profile_button}>
             <Button startIcon={< RssFeed />} className={classes.button}>
               Theo dõi

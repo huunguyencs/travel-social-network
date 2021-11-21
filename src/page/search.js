@@ -1,7 +1,7 @@
 import { Avatar, Box, Container, Grid, List, ListItem, ListItemAvatar, ListItemText, Tab, Tabs, Typography } from "@material-ui/core";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import PropTypes from 'prop-types';
-import { Link } from "react-router-dom";
+import { Link, useLocation } from "react-router-dom";
 
 import { searchStyles } from "../style";
 import SpeedDialButton from "../components/speedDialBtn";
@@ -84,10 +84,17 @@ export default function SearchPage(props) {
 
     const classes = searchStyles();
     const [value, setValue] = useState(0);
+    const location = useLocation();
+
+    const query = (new URLSearchParams(location.search)).get("q");
 
     const handleChange = (event, newValue) => {
         setValue(newValue);
     };
+
+    useEffect(() => {
+        console.log(query);
+    }, [query])
 
     return (
         <Container>
@@ -112,7 +119,7 @@ export default function SearchPage(props) {
                     </Tabs>
                 </Grid>
                 <Grid item md={9}>
-                    <Typography className={classes.query}>Hiển thị kết quả tìm kiếm cho "abcxyz"</Typography>
+                    <Typography className={classes.query}>Hiển thị kết quả tìm kiếm cho "{query}"</Typography>
                     <TabPanel value={value} index={0} />
                     <TabPanel value={value} index={1} />
                     <TabPanel value={value} index={2} />

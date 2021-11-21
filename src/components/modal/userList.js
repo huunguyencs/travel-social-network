@@ -1,11 +1,16 @@
 import { Avatar, Button, IconButton, List, ListItem, ListItemAvatar, ListItemSecondaryAction, ListItemText } from "@material-ui/core";
 import { Close } from "@material-ui/icons";
 import React from "react";
+import { useSelector } from 'react-redux';
+
 import { modalListStyles } from "../../style";
+
 
 export default function UserList(props) {
 
     const { title, listUser, handleClose } = props;
+    const { auth } = useSelector(state => state);
+    const followings = auth.user.followings;
 
     const classes = modalListStyles();
 
@@ -19,22 +24,24 @@ export default function UserList(props) {
                     </IconButton>
                 </div>
             </div>
-            <List className={classes.modal_body}>
+            <ul>
                 {listUser.map((user) => (
-                    <ListItem button className={classes.modal_body_user} key={user._id}>
-                        <ListItemAvatar>
+                    <li button className={classes.modal_body_user} key={user._id}>
+                        <div className={classes.avatar}>
                             <Avatar alt="avatar" src={user.avatar} />
-                        </ListItemAvatar>
-                        <ListItemText primary={user.fullname} />
-                        <ListItemSecondaryAction>
-                            <Button variant="outlined" className={classes.modal_body_user_button}  >
-                                Follow
-                            </Button>
-                        </ListItemSecondaryAction>
-                    </ListItem>
+                        </div>
+                        <div className={classes.fullname}>{user.fullname}  </div>
+                        <div>
+                            {
+                                user._id !== auth.user._id &&
+                                <Button variant="outlined" className={classes.modal_body_user_button}>
+                                    {followings.includes(user._id) ? "Unfollow" : "Follow"}
+                                </Button>
+                            }
+                        </div>
+                    </li>
                 ))}
-
-            </List>
+            </ul>
         </div>
     )
 }

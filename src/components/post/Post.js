@@ -174,7 +174,7 @@ export default function Post(props) {
                         timeout: 500,
                     }}
                 >
-                    <UserList listUser={userList} title={"Liked"} handleClose={handleClose} />
+                    <UserList listUser={post.likes} title={"Liked"} handleClose={handleClose} />
                 </Modal>
                 <IconButton onClick={handleShowCmt}>
                     <QuestionAnswer />

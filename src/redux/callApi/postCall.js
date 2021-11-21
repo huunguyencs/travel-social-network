@@ -4,11 +4,10 @@ import * as imageUtils from '../../utils/uploadImage';
 import customAxios from '../../utils/fetchData';
 
 
-export const getPosts = (type, token) => async (dispatch) => {
+export const getPosts = (token) => async (dispatch) => {
     dispatch(postAction.loading());
 
     try {
-        console.log(type);
         // call api to get post list
         const res = await customAxios(token).get("post/posts");
 
@@ -17,9 +16,25 @@ export const getPosts = (type, token) => async (dispatch) => {
         dispatch(postAction.getPosts({ posts: res.data.posts }));
     }
     catch (err) {
-        dispatch(postAction.error({ error: err }))
+        dispatch(postAction.error({ error: err.response.data.message }))
     }
 
+}
+
+export const getUserPost = (id, token) => async (dispatch) => {
+    dispatch(postAction.loading());
+
+    try {
+        const res = await customAxios(token).get(`post/user_posts/${id}`);
+
+        dispatch(postAction.getPosts({ posts: res.data.posts }));
+    }
+    catch (err) {
+
+        console.log(err.response.data.message);
+
+        dispatch(postAction.error({ error: err.response.data.message }))
+    }
 }
 
 export const getMorePost = (data) => async (dispatch) => {
@@ -52,7 +67,7 @@ export const createPost = (data, token) => async (dispatch) => {
         }
 
 
-        const res = await customAxios(token).post("post/create_post", post);
+        const res = await customAxios(token).post("/post/create_post", post);
 
         console.log(res.data);
         dispatch(notifyAction.callSuccess({ message: res.data.message }));
@@ -60,7 +75,7 @@ export const createPost = (data, token) => async (dispatch) => {
 
     }
     catch (err) {
-        dispatch(notifyAction.callFail({ error: err.data.message }))
+        dispatch(notifyAction.callFail({ error: err.response.data.message }))
     }
 }
 
