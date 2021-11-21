@@ -1,8 +1,10 @@
-import { Avatar, Button, IconButton, List, ListItem, ListItemAvatar, ListItemSecondaryAction, ListItemText } from "@material-ui/core";
+import { Avatar, Button, IconButton } from "@material-ui/core";
 import { Close } from "@material-ui/icons";
-import React from "react";
-import { useSelector } from 'react-redux';
+import React, { useEffect, useState } from "react";
+import { useSelector, useDispatch } from 'react-redux';
+import { Link } from 'react-router-dom';
 
+import { follow, unfollow } from "../../redux/callApi/userCall";
 import { modalListStyles } from "../../style";
 
 
@@ -10,9 +12,34 @@ export default function UserList(props) {
 
     const { title, listUser, handleClose } = props;
     const { auth } = useSelector(state => state);
-    const followings = auth.user.followings;
+    const dispatch = useDispatch();
+    const [followings, setFollowings] = useState([]);
 
     const classes = modalListStyles();
+
+    const handleFollow = (user) => {
+        console.log(user);
+        if (isFollowed(user._id)) {
+            dispatch(unfollow(user, auth.token));
+        }
+        else {
+            dispatch(follow(user, auth.token));
+        }
+    }
+
+    const isFollowed = (id) => {
+        for (const u of followings) {
+            console.log(u._id);
+            if (u._id === id) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    useEffect(() => {
+        setFollowings(auth.user.followings);
+    }, [auth.user.followings])
 
     return (
         <div className={classes.paper}>
@@ -30,12 +57,14 @@ export default function UserList(props) {
                         <div className={classes.avatar}>
                             <Avatar alt="avatar" src={user.avatar} />
                         </div>
-                        <div className={classes.fullname}>{user.fullname}  </div>
+                        <div className={classes.fullname}>
+                            <Link to={`profile/${user._id}`}>{user.fullname}</Link>
+                        </div>
                         <div>
                             {
                                 user._id !== auth.user._id &&
-                                <Button variant="outlined" className={classes.modal_body_user_button}>
-                                    {followings.includes(user._id) ? "Unfollow" : "Follow"}
+                                <Button variant="outlined" className={classes.modal_body_user_button} onClick={() => handleFollow(user)}>
+                                    {isFollowed(user._id) ? "Hủy theo dõi" : "Theo dõi"}
                                 </Button>
                             }
                         </div>

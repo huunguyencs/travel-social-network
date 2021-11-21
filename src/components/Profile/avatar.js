@@ -5,9 +5,10 @@ import { Avatar, Button, Container, Typography, Modal, Backdrop } from "@materia
 import { profileStyles } from "../../style";
 import UserList from "../modal/userList";
 import ImageModal from "../modal/image";
-import { useSelector } from "react-redux";
+import { useSelector, useDispatch } from "react-redux";
 import { useParams, useHistory } from "react-router-dom";
 import customAxios from "../../utils/fetchData";
+import { follow, unfollow } from "../../redux/callApi/userCall";
 
 const userList = [
   {
@@ -39,6 +40,8 @@ export default function Profile_Avatar(props) {
 
   const { auth } = useSelector(state => state);
 
+  const dispatch = useDispatch();
+
   const [user, setUser] = useState(null);
 
   const classes = profileStyles();
@@ -46,6 +49,7 @@ export default function Profile_Avatar(props) {
   const [openFollower, setOpenFollower] = useState(false);
   const [openAvatar, setOpenAvatar] = useState(false);
   const [openCover, setOpenCover] = useState(false);
+  const [followed, setFollowed] = useState(false);
 
 
   const handleOpenFollowing = () => {
@@ -80,6 +84,18 @@ export default function Profile_Avatar(props) {
     setOpenCover(false);
   }
 
+  const handleFollow = () => {
+    console.log(user);
+    if (followed) {
+      dispatch(unfollow(user, auth.token));
+      setFollowed(false);
+    }
+    else {
+      dispatch(follow(user, auth.token));
+      setFollowed(true);
+    }
+  }
+
   const getUser = async (id) => {
     try {
       const res = await customAxios(auth.token).get(`/user/${id}`);
@@ -88,6 +104,16 @@ export default function Profile_Avatar(props) {
     catch (err) {
       console.log(err);
     }
+  }
+
+  const isFollowed = () => {
+    for (const u of auth.user.followings) {
+      console.log(u._id);
+      if (u._id === user?._id) {
+        return true;
+      }
+    }
+    return false;
   }
 
   useEffect(() => {
@@ -100,6 +126,8 @@ export default function Profile_Avatar(props) {
     else {
       getUser(id);
     }
+    if (isFollowed()) setFollowed(true);
+    else setFollowed(false);
   }, [id, setUser, auth.user, history]);
 
   return (
@@ -163,8 +191,8 @@ export default function Profile_Avatar(props) {
         {
           user?._id !== auth.user._id &&
           <div className={classes.profile_button}>
-            <Button startIcon={< RssFeed />} className={classes.button}>
-              Theo dõi
+            <Button startIcon={< RssFeed />} className={classes.button} onClick={handleFollow}>
+              {followed ? "Hủy Theo dõi" : "Theo dõi"}
             </Button>
             <Button startIcon={<WhatsApp />} className={classes.button}>
               Nhắn tin

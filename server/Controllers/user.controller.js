@@ -49,7 +49,7 @@ class UserController {
         try {
             const { email, password } = req.body
 
-            const user = await Users.findOne({ email }).populate("followers followings", "username avatar fullname followers followings")
+            const user = await Users.findOne({ email }).populate("followers followings", "username avatar fullname")
             if (!user) return res.status(400).json({ success: false, message: "Email không đúng!" })
             const passwordValid = await bcrypt.compare(password, user.password)
             if (!passwordValid) return res.status(400).json({ success: false, message: "Mật khẩu không đúng!" })
@@ -91,7 +91,7 @@ class UserController {
             jwt.verify(refresh_token, "REFRESH_TOKEN_SECRET", async (err, result) => {
                 if (err) return res.status(400).json({ message: "No token" });
 
-                const user = await Users.findById(result.id).select("-password").populate("followers followings", "username avatar fullname followers followings")
+                const user = await Users.findById(result.id).select("-password").populate("followers followings", "username avatar fullname")
                 if (!user) return res.status(400).json("No token");
 
                 const accessToken = jwt.sign({ id: user._id }, process.env.ACCESS_TOKEN_SECRET || "abcdefghiklmn")

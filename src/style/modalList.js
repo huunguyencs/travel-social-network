@@ -56,7 +56,6 @@ const modalListStyles = makeStyles((theme) => ({
             color: "white",
             // border: "none",
         }
-
     },
     avatar: {
         width: "10%",
@@ -65,7 +64,7 @@ const modalListStyles = makeStyles((theme) => ({
     },
     fullname: {
         marginTop: "30px",
-        width: "65%",
+        width: "60%",
         fontSize: "20px",
         cursor: "pointer",
         "&:hover": {
