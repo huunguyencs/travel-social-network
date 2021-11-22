@@ -111,10 +111,11 @@ export const likePost = (id, token) => async (dispatch) => {
 
         const res = await customAxios(token).patch(`/post/${id}/like`);
         dispatch(postAction.updateLike({ id: id, likes: res.data.likes }));
-        dispatch(notifyAction.callSuccess());
+        dispatch(notifyAction.callSuccess({ message: "" }));
     }
     catch (err) {
         dispatch(notifyAction.callFail({ error: err.response.data.message }));
+        console.log(err);
     }
 }
 
@@ -125,9 +126,10 @@ export const unlikePost = (id, token) => async (dispatch) => {
 
         const res = await customAxios(token).patch(`/post/${id}/unlike`);
         dispatch(postAction.updateLike({ id: id, likes: res.data.likes }));
-        dispatch(notifyAction.callSuccess());
+        dispatch(notifyAction.callSuccess({ message: "" }));
     }
     catch (err) {
         dispatch(notifyAction.callFail({ error: err.response.data.message }));
+        console.log(err);
     }
 }
