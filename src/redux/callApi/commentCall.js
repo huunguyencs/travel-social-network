@@ -44,7 +44,7 @@ export const createCommentTour = (data) => async (dispatch) => {
     // dispatch(commentAction.updateCommentTour({ comments: newComments }))
     try {
         // call api to update comment
-        dispatch(notifyAction.callSuccess());
+        dispatch(notifyAction.callSuccess({ message: "" }));
     }
     catch (err) {
         dispatch(notifyAction.callFail({ error: err.response.data.message }));
@@ -58,7 +58,7 @@ export const updateCommentPost = (data) => async (dispatch) => {
     // dispatch(commentAction.updateCommentPost({ comments: newComments }))
     try {
         // call api to update comment
-        dispatch(notifyAction.callSuccess());
+        dispatch(notifyAction.callSuccess({ message: "" }));
     }
     catch (err) {
         dispatch(notifyAction.callFail({ error: err.response.data.message }));
@@ -72,7 +72,7 @@ export const updateCommentTour = (data) => async (dispatch) => {
     // dispatch(commentAction.updateCommentTour({ comments: newComments }))
     try {
         // call api to update comment
-        dispatch(notifyAction.callSuccess());
+        dispatch(notifyAction.callSuccess({ message: "" }));
     }
     catch (err) {
         dispatch(notifyAction.callFail({ error: err.response.data.message }));
@@ -86,7 +86,7 @@ export const deleteCommentPost = (data) => async (dispatch) => {
     // dispatch(commentAction.updateCommentPost({ comments: newComments }))
     try {
         // call api to update comment
-        dispatch(notifyAction.callSuccess());
+        dispatch(notifyAction.callSuccess({ message: "" }));
     }
     catch (err) {
         dispatch(notifyAction.callFail({ error: err.response.data.message }));
@@ -100,7 +100,7 @@ export const deleteCommentTour = (data) => async (dispatch) => {
     // dispatch(commentAction.updateCommentTour({ comments: newComments }))
     try {
         // call api to update comment
-        dispatch(notifyAction.callSuccess());
+        dispatch(notifyAction.callSuccess({ message: "" }));
     }
     catch (err) {
         dispatch(notifyAction.callFail({ error: err.response.data.message }));

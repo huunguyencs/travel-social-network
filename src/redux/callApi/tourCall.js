@@ -72,7 +72,7 @@ export const getTours = (data) => async (dispatch) => {
         dispatch(tourAction.getTours({ tour: res }));
     }
     catch (err) {
-        dispatch(tourAction.error({ error: err }))
+        dispatch(tourAction.error({ error: err.response.data.message }))
     }
 }
 
@@ -143,7 +143,7 @@ export const getTourDetail = (data) => async (dispatch) => {
         dispatch(tourAction.getTourDetail({ tourdetail: res }));
     }
     catch (err) {
-        dispatch(tourAction.error({ error: err }));
+        dispatch(tourAction.error({ error: err.response.data.message }));
     }
 }
 
@@ -154,10 +154,10 @@ export const updateTour = (data) => async (dispatch) => {
         const res = 0;
 
         dispatch(tourAction.updateTour({ tour: res }));
-        dispatch(notifyAction.callSuccess());
+        dispatch(notifyAction.callSuccess({ message: "" }));
     }
     catch (err) {
-        dispatch(notifyAction.callFail({ error: err }));
+        dispatch(notifyAction.callFail({ error: err.response.data.message }));
     }
 }
 
@@ -173,10 +173,10 @@ export const createTour = (data) => async (dispatch) => {
         const res = 0;
 
         dispatch(tourAction.createTour({ tour: res }));
-        dispatch(notifyAction.callSuccess());
+        dispatch(notifyAction.callSuccess({ message: "" }));
     }
     catch (err) {
-        dispatch(notifyAction.callFail({ error: err }))
+        dispatch(notifyAction.callFail({ error: err.response.data.message }))
     }
 }
 
@@ -186,7 +186,7 @@ export const deleteTour = (data) => async (dispatch) => {
         dispatch(tourAction.deleteTour());
     }
     catch (err) {
-        dispatch(tourAction.error({ error: err }));
+        dispatch(tourAction.error({ error: err.response.data.message }));
     }
 }
 
@@ -197,10 +197,10 @@ export const likeTour = (data) => async (dispatch) => {
 
         const res = 0;
         dispatch(tourAction.updateLike({ like: res }));
-        dispatch(notifyAction.callSuccess());
+        dispatch(notifyAction.callSuccess({ message: "" }));
     }
     catch (err) {
-        dispatch(notifyAction.callFail({ error: err }));
+        dispatch(notifyAction.callFail({ error: err.response.data.message }));
     }
 }
 
@@ -211,9 +211,9 @@ export const unlikeTour = (data) => async (dispatch) => {
 
         const res = 0;
         dispatch(tourAction.updateLike({ like: res }));
-        dispatch(notifyAction.callSuccess());
+        dispatch(notifyAction.callSuccess({ message: "" }));
     }
     catch (err) {
-        dispatch(notifyAction.callFail({ error: err }));
+        dispatch(notifyAction.callFail({ error: err.response.data.message }));
     }
 }

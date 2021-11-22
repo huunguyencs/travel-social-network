@@ -48,7 +48,7 @@ export const register = (data, callback) => async (dispatch) => {
 
 export const refreshToken = (callback) => async (dispatch) => {
     try {
-        const res = await customAxios().post("/user/refresh_token", null, {
+        const res = await customAxios().post("/user/refresh_token", {}, {
             // withCredentials: true,
             credentials: 'include'
         });
@@ -56,7 +56,7 @@ export const refreshToken = (callback) => async (dispatch) => {
         dispatch(authAction.auth({ user: res.data.user, token: res.data.accessToken }));
     }
     catch (err) {
-        console.log(err);
+        // console.log(err.response.data.message);
         callback();
         // dispatch(notifyAction.callFail({ error: err.response.data.message }));
     }

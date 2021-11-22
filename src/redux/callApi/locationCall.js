@@ -23,7 +23,7 @@ export const getLocations = (data) => async (dispatch) => {
             { _id: "13", locationName: "Chùa Một Cột", province: { name: "Hà Nội" }, image: ["https://toplist.vn/images/800px/le-hoi-giong-362211.jpg"] },
         ];
         dispatch(locationActions.getLocations({ location: res }));
-        dispatch(notifyActions.callSuccess());
+        dispatch(notifyActions.callSuccess({ message: "" }));
     }
     catch (err) {
         dispatch(notifyActions.callFail({ error: err }));
@@ -63,6 +63,6 @@ export const getLocationHot = (data) => async (dispatch) => {
         dispatch(locationActions.getLocationHot({ hot: res }));
     }
     catch (err) {
-        dispatch(locationActions.error({ error: err }));
+        dispatch(locationActions.error({ error: err.response.data.message }));
     }
 }
