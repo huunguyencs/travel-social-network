@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { Container, InputBase, Modal, Backdrop, Fade } from "@material-ui/core";
+import { Container, InputBase, Modal, Backdrop, Fade, CircularProgress } from "@material-ui/core";
 import { useSelector, useDispatch } from "react-redux";
 
 
@@ -15,7 +15,7 @@ export default function FeedPost(props) {
     const [show, setShow] = useState(false);
 
     const { post } = useSelector(state => state);
-    const dispatch = useDispatch();
+    // const dispatch = useDispatch();
 
     const classes = feedStyles();
 
@@ -26,10 +26,6 @@ export default function FeedPost(props) {
     const handleClose = () => {
         setShow(false);
     }
-
-    useEffect(() => {
-        dispatch(getPosts({ type: "post" }));
-    }, [dispatch])
 
 
     return (
@@ -58,7 +54,7 @@ export default function FeedPost(props) {
                         }}
                     >
                         <Fade in={show}>
-                            <CreatePostForm />
+                            <CreatePostForm handleClose={handleClose} />
                         </Fade>
                     </Modal>
 
@@ -67,12 +63,16 @@ export default function FeedPost(props) {
 
                 <div>
                     {
-                        post.posts.map((post) => (
-                            <Post
-                                post={post}
-                                key={post._id}
-                            />
-                        ))
+                        post.loading ?
+                            <CircularProgress color={"black"} />
+                            : post.error ?
+                                <div>Có lỗi xảy ra</div> :
+                                post.posts.map((post) => (
+                                    <Post
+                                        post={post}
+                                        key={post._id}
+                                    />
+                                ))
                     }
                 </div>
             </div>

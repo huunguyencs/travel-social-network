@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import {
     Avatar,
     Backdrop,
@@ -20,6 +20,7 @@ import {
     Share
 } from "@material-ui/icons";
 import { Rating } from "@material-ui/lab";
+import { useDispatch, useSelector } from "react-redux";
 
 import Comment from "../comment/Comment";
 import InputComment from "../input/comment";
@@ -28,6 +29,8 @@ import ImageList from "../modal/ImageList";
 import { Link } from "react-router-dom";
 import UserList from "../modal/userList";
 import { SeeMoreText } from "../seeMoreText";
+import { timeAgo } from "../../utils/date";
+import { likePost, unlikePost } from '../../redux/callApi/postCall';
 
 const userList = [
     {
@@ -56,16 +59,35 @@ export default function Post(props) {
 
     const { post } = props;
 
+    const { auth } = useSelector(state => state);
+    const dispatch = useDispatch();
+
     const [showCmt, setShowCmt] = useState(false);
-    const [like, setLike] = useState(post.liked);
-    const [numLike, setNumLike] = useState(post.numLike);
+    const [like, setLike] = useState(false);
+    const [numLike, setNumLike] = useState(post.likes.length);
 
     const classes = postStyles({ showCmt });
 
-    const likeHandle = (e) => {
-        setLike(!like);
-        if (!like) setNumLike(numLike + 1);
-        else setNumLike(numLike - 1);
+    const likePress = () => {
+        if (!auth.user) return;
+        if (like) {
+            handleUnlike();
+        }
+        else handleLike();
+    }
+
+    const handleLike = () => {
+        setLike(true);
+        setNumLike(state => state + 1);
+        // call api
+        dispatch(likePost(post._id, auth.token));
+    }
+
+    const handleUnlike = () => {
+        setLike(false);
+        setNumLike(state => state - 1);
+        // call api
+        dispatch(unlikePost(post._id, auth.token));
     }
 
     const [showLike, setShowLike] = useState(false);
@@ -83,11 +105,17 @@ export default function Post(props) {
         setShowCmt(!showCmt)
     }
 
+    useEffect(() => {
+        if (auth.user && post.likes.find(like => like._id === auth.user._id)) {
+            setLike(true);
+        }
+    }, [post.likes, auth.user]);
+
     return (
         <Card className={classes.cardContainer}>
             <CardHeader
                 avatar={
-                    <Avatar alt="avatar" src={post.user.avatarImage} />
+                    <Avatar alt="avatar" src={post.userId.avatar} />
                 }
                 action={
                     <IconButton aria-label="settings">
@@ -95,18 +123,18 @@ export default function Post(props) {
                     </IconButton>
                 }
                 title={
-                    <Link to={"/profile/" + post.user._id} >
-                        <Typography className={classes.userName}>{post.user.lastName + " " + post.user.firstName}</Typography>
+                    <Link to={"/profile/" + post.userId._id} >
+                        <Typography className={classes.userName}>{post.userId.fullname}</Typography>
                     </Link>
                 }
-                subheader={post.time}
+                subheader={timeAgo(new Date(post.createdAt))}
             />
 
             <CardContent>
                 {post.isPostReview && <Rating name="location-rating" value={post.rate} readOnly style={{ marginBottom: 20 }} />}
                 <SeeMoreText
                     variant="body1"
-                    maxText={6}
+                    maxText={100}
                     text={post.content}
                 />
                 <div className={classes.hashtagWrap}>
@@ -115,22 +143,24 @@ export default function Post(props) {
                     )}
                 </div>
             </CardContent>
+            {
+                post.images.length > 0 &&
+                <CardMedia>
+                    <ImageList imgList={post.images} />
+                </CardMedia>
+            }
 
-            <CardMedia>
 
-                {/* <img src="https://img.thuthuatphanmem.vn/uploads/2018/10/26/anh-dep-cau-rong-da-nang-viet-nam_055418962.jpg" alt="img" /> */}
-                <ImageList imgList={post.postImages} />
-            </CardMedia>
 
             <CardActions>
-                <IconButton onClick={likeHandle}>
+                <IconButton onClick={likePress}>
                     {
                         like ? <Favorite className={classes.likeIcon} /> : <FavoriteBorderOutlined />
                     }
 
                 </IconButton>
                 <Typography className={classes.numLike} onClick={handleOpen}>
-                    {post.likes.length}
+                    {numLike}
                 </Typography>
                 <Modal
                     aria-labelledby="transition-modal-title"
@@ -144,7 +174,7 @@ export default function Post(props) {
                         timeout: 500,
                     }}
                 >
-                    <UserList listUser={userList} title={"Liked"} handleClose={handleClose} />
+                    <UserList listUser={post.likes} title={"Liked"} handleClose={handleClose} />
                 </Modal>
                 <IconButton onClick={handleShowCmt}>
                     <QuestionAnswer />
@@ -161,12 +191,12 @@ export default function Post(props) {
                 <hr className={classes.line} />
                 <div className={classes.listCmt}>
                     {post.comments.map((cmt) => (
-                        <Comment comment={cmt} key={cmt._id} />
+                        <Comment comment={cmt} key={cmt._id} id={post._id} type="post" />
                     ))}
                 </div>
             </Collapse>
 
-            <InputComment />
+            <InputComment type="post" id={post._id} />
 
         </Card>
     )

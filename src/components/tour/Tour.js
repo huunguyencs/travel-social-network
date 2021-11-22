@@ -81,7 +81,7 @@ export default function Tour(props) {
         <Card className={classes.cardContainer}>
             <CardHeader
                 avatar={
-                    <Avatar alt="avatar" src={tour.user.avarImage} />
+                    <Avatar alt="avatar" src={tour.userId.avatar} />
                 }
                 action={
                     <IconButton aria-label="settings">
@@ -89,7 +89,7 @@ export default function Tour(props) {
                     </IconButton>
                 }
                 title={
-                    <Typography className={classes.userName}>{tour.user.lastName + " " + tour.user.firstName}</Typography>
+                    <Typography className={classes.userName}>{tour.userId.fullname}</Typography>
                 }
             />
 
@@ -97,6 +97,7 @@ export default function Tour(props) {
 
                 {tour?.image !== "" && <img src={tour.image} width="100%" alt="Can not load" />}
             </CardMedia>
+
 
             <CardContent>
                 <Link>
@@ -171,12 +172,12 @@ export default function Tour(props) {
                 <hr className={classes.line} />
                 <div className={classes.listCmt}>
                     {tour.comment.map((cmt) => (
-                        <Comment comment={cmt} key={cmt._id} />
+                        <Comment comment={cmt} key={cmt._id} id={tour._id} type="tour" />
                     ))}
                 </div>
             </Collapse>
 
-            <InputComment />
+            <InputComment type="tour" id={tour._id} />
 
         </Card>
     )

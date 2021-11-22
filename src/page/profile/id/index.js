@@ -1,5 +1,5 @@
 import { Grid } from "@material-ui/core";
-import React from "react";
+import React, { useEffect } from "react";
 
 import LeftBar from "../../../components/leftbar/LeftBar";
 // import Feed from "../../../components/feed/FeedPost";
@@ -9,12 +9,19 @@ import ProfileAvatar from "../../../components/Profile/avatar";
 import { profileMenu } from "../../../constant/menu";
 import SpeedDialButton from "../../../components/speedDialBtn";
 import Menu from "../../../components/leftbar/menu";
+import { useParams } from "react-router-dom";
 
 
 
 function InfoProfile() {
 
     // const classes = useStyles();
+
+    const { id } = useParams();
+
+    useEffect(() => {
+        console.log(id);
+    }, [id]);
 
     return (
         <div>

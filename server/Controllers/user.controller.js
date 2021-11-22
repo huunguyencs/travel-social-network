@@ -7,22 +7,11 @@ class UserController {
         try {
             const { fullname, username, email, phone, password } = req.body;
 
-            // khong can
-            //simple validation
-            // console.log(req.body);
-            if (!username || !password || !fullname || !email) {
-                return res.status(400).json({ success: false, message: "Missing field" })
-            }
-
             const user_name = await Users.findOne({ username })
-            if (user_name) return res.status(400).json({ success: false, message: "This user name already exists." })
+            if (user_name) return res.status(400).json({ success: false, message: "Username đã tồn tại! Vui lòng chọn tên khác." })
 
             const user_email = await Users.findOne({ email })
-            if (user_email) return res.status(400).json({ success: false, message: "This email already exists" })
-
-            // khong can
-            if (password.length < 6)
-                return res.status(400).json({ success: false, message: "Password must be at least 6 characters." })
+            if (user_email) return res.status(400).json({ success: false, message: "Email này đã tồn tại!" })
 
             const passwordHash = await bcrypt.hash(password, 12)
 
@@ -47,7 +36,7 @@ class UserController {
 
             res.json({
                 success: true,
-                message: "register successful!",
+                message: "Đăng ký thành công!",
                 accessToken
             })
         } catch (err) {
@@ -60,31 +49,27 @@ class UserController {
         try {
             const { email, password } = req.body
 
-            //simple validation
-            if (!password || !email) {
-                return res.status(400).json({ success: false, message: "Missing field password or email" })
-            }
-
-            const user = await Users.findOne({ email }).populate("followers followings", "username avatar fullname followers followings")
-            if (!user) return res.status(400).json({ success: false, message: "email incorrect" })
+            const user = await Users.findOne({ email }).populate("followers followings", "username avatar fullname")
+            if (!user) return res.status(400).json({ success: false, message: "Email không đúng!" })
             const passwordValid = await bcrypt.compare(password, user.password)
-            if (!passwordValid) return res.status(400).json({ success: false, message: "password incorrect" })
+            if (!passwordValid) return res.status(400).json({ success: false, message: "Mật khẩu không đúng!" })
 
             //all Good
             //Return Token
             const accessToken = jwt.sign({ id: user._id }, process.env.ACCESS_TOKEN_SECRET || "abcdefghiklmn")
             //trả về dữ liệu user khi login thành công
 
-            // const refresh_token = createRefreshToken({ id: user._id })
+            const refreshToken = jwt.sign({ id: user._id }, process.env.REFRESH_TOKEN_SECRET || "REFRESH_TOKEN_SECRET")
 
-            // res.cookie('refreshtoken', refresh_token, {
-            //     httpOnly: true,
-            //     path: '/api/refresh_token',
-            //     maxAge: 30 * 24 * 60 * 60 * 1000 // 30days
-            // })
+            res.cookie('refreshtoken', refreshToken, {
+                httpOnly: true,
+                // path: '/user/refresh_token',
+                maxAge: 30 * 24 * 60 * 60 * 1000 // 30days
+            })
+
             res.json({
                 success: true,
-                message: "login successful!",
+                message: "Đăng nhập thành công!",
                 accessToken,
                 user: {
                     ...user._doc,
@@ -98,10 +83,39 @@ class UserController {
         }
     }
 
+    async refreshToken(req, res) {
+        try {
+            const refresh_token = req.cookies.refreshtoken;
+            if (!refresh_token) return res.status(400).json({ message: "No token" });
+
+            jwt.verify(refresh_token, "REFRESH_TOKEN_SECRET", async (err, result) => {
+                if (err) return res.status(400).json({ message: "No token" });
+
+                const user = await Users.findById(result.id).select("-password").populate("followers followings", "username avatar fullname")
+                if (!user) return res.status(400).json("No token");
+
+                const accessToken = jwt.sign({ id: user._id }, process.env.ACCESS_TOKEN_SECRET || "abcdefghiklmn")
+
+                res.json({
+                    success: true,
+                    message: "Thành công!",
+                    accessToken,
+                    user: {
+                        ...user._doc,
+                        password: ''
+                    }
+                })
+            })
+        }
+        catch (err) {
+            res.status(500).json({ success: false, message: err.message })
+        }
+    }
+
     async logout(req, res) {
         try {
-            // res.clearCookie('refreshtoken', { path: '/api/refresh_token' })
-            return res.json({ success: true, message: "logout successful!" })
+            res.clearCookie('refreshtoken', { path: '/' })
+            return res.json({ success: true, message: "Đăng xuất thành công!" })
         } catch (err) {
             console.log(err)
             res.status(500).json({ success: false, message: err.message })
@@ -114,7 +128,7 @@ class UserController {
             await Users.findByIdAndUpdate(req.user._id, {
                 avatar
             })
-            res.json({ success: true, message: "Update avatar successful" })
+            res.json({ success: true, message: "Cập nhật ảnh đại diện thành công!" })
         } catch (err) {
             console.log(err)
             res.status(500).json({ success: false, message: err.message })
@@ -126,7 +140,7 @@ class UserController {
             await Users.findByIdAndUpdate(req.user._id, {
                 background
             })
-            res.json({ success: true, message: "Update background successful" })
+            res.json({ success: true, message: "Cập nhật ảnh bìa thành công!" })
         } catch (err) {
             console.log(err)
             res.status(500).json({ success: false, message: err.message })
@@ -138,7 +152,7 @@ class UserController {
             await Users.findByIdAndUpdate(req.user._id, {
                 fullname, phone, address, birthday, hobbies, gender
             })
-            res.json({ success: true, message: "Update profile successful" })
+            res.json({ success: true, message: "Cập nhật thông tin tài khoản thành công!" })
         } catch (err) {
             console.log(err)
             res.status(500).json({ success: false, message: err.message })
@@ -149,7 +163,7 @@ class UserController {
         try {
             const user = await Users.findById(req.params.id)
                 .populate("followers followings", "-password")
-            if (!user) return res.status(400).json({ success: false, massage: "User does not exist." })
+            if (!user) return res.status(400).json({ success: false, massage: "Người dùng không tồn tại" })
             res.json({ success: true, user })
 
         } catch (err) {
@@ -164,7 +178,7 @@ class UserController {
 
             const user = await Users.find({ _id: req.params.id, followers: req.user._id })
             if (user.length > 0) {
-                return res.status(400).json({ success: false, message: "You follwed this user." });
+                return res.status(400).json({ success: false, message: "Bạn đã theo dõi người dùng này!" });
             }
             //cập nhập ds follower ở B
             await Users.findOneAndUpdate({ _id: req.params.id }, {
@@ -176,7 +190,7 @@ class UserController {
                 $push: { followings: req.params.id }
             }, { new: true })
 
-            res.json({ success: true, message: "follow successful" })
+            res.json({ success: true, message: "Theo dõi thành công!" })
         } catch (err) {
             console.log(err)
             res.status(500).json({ success: false, message: err.message })
@@ -196,7 +210,7 @@ class UserController {
                 $pull: { followings: req.params.id }
             }, { new: true })
 
-            res.json({ success: true, message: "unfollow successful" })
+            res.json({ success: true, message: "Hủy theo dõi thành công!" })
         } catch (err) {
             console.log(err)
             res.status(500).json({ success: false, message: err.message })

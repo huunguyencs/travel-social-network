@@ -2,9 +2,9 @@ import React, { useEffect, useState } from "react";
 import TextField from '@material-ui/core/TextField/TextField';
 import Button from '@material-ui/core/Button/Button';
 // import Checkbox from "@material-ui/core/Checkbox";
-import { Link } from "react-router-dom";
+import { Link, useHistory } from "react-router-dom";
 
-import Validator, { validatePassword, validatePhoneNumber } from "../utils/validator";
+import Validator, { nonSpace, username, validatePassword, validatePhoneNumber } from "../utils/validator";
 import { useDispatch, useSelector } from "react-redux";
 import { CircularProgress } from "@material-ui/core";
 import { register } from "../redux/callApi/authCall";
@@ -15,6 +15,8 @@ import VisibilityOff from "@material-ui/icons/VisibilityOff";
 import IconButton from "@material-ui/core/IconButton";
 
 export default function Register(props) {
+
+    const history = useHistory();
 
     const dispatch = useDispatch();
 
@@ -29,8 +31,11 @@ export default function Register(props) {
         confirmPassword: "",
         errors: {},
         submit: false,
-        showPassword: false,
     });
+
+    const [showPassword, setShowPassword] = useState(false);
+    const [showConfirm, setShowConfirm] = useState(false);
+    const [errorServer, setErrorServer] = useState(null);
 
     const { errors } = state;
 
@@ -39,9 +44,9 @@ export default function Register(props) {
     const rules = [
         {
             field: "username",
-            method: "isEmpty",
-            validWhen: false,
-            message: "Tên tài khoản không được bỏ trống!"
+            method: username,
+            validWhen: true,
+            message: "Tên tài khoản không hợp lệ!"
         },
         {
             field: "fullname",
@@ -69,9 +74,15 @@ export default function Register(props) {
         },
         {
             field: "password",
+            method: nonSpace,
+            validWhen: true,
+            message: "Mật khẩu không được chứa khoảng cách",
+        },
+        {
+            field: "password",
             method: validatePassword,
             validWhen: true,
-            message: "Mật khẩu phải chứa ít nhất một chữ cái viết hoa, một chữ cái viết thường, một kí tự đặc biệt, một chữ số và có độ dài lớn hơn 8"
+            message: "Mật khẩu phải chứa ít nhất một chữ cái viết hoa, một chữ cái viết thường, một chữ số và có độ dài lớn hơn 6"
         },
         {
             field: "confirmPassword",
@@ -109,16 +120,17 @@ export default function Register(props) {
 
     useEffect(() => {
         if (state.submit) {
+            setErrorServer(null);
             if (Object.keys(errors).length === 0) {
-                // console.log("register success")
-
                 // call api to register
                 dispatch(register({
                     username: state.username,
                     fullname: state.fullname,
-                    password: state.password,
+                    password: state.password.trim(),
                     email: state.email,
                     phone: state.phone,
+                }, (err) => {
+                    setErrorServer(err);
                 }))
             }
             setState({
@@ -129,17 +141,21 @@ export default function Register(props) {
     }, [errors, state, dispatch])
 
     //Show password
-    const handleChange = (prop) => (event) => {
-        setState({ ...state, [prop]: event.target.value });
-    };
-    
+
     const handleClickShowPassword = () => {
-        setState({ ...state, showPassword: !state.showPassword });
+        setShowPassword(state => !state);
     };
-    
-    const handleMouseDownPassword = (event) => {
-        event.preventDefault();
-    };
+
+    const handleClickShowConfirm = () => {
+        setShowConfirm(state => !state);
+    }
+
+
+    useEffect(() => {
+        if (notify.success) {
+            history.push("/login");
+        }
+    })
 
     return (
         <div className="login">
@@ -157,7 +173,7 @@ export default function Register(props) {
                 >
                     <TextField
                         autoComplete=""
-                        label="Tên tài khoản"
+                        label="Username"
                         variant="outlined"
                         id="username"
                         name="username"
@@ -203,10 +219,10 @@ export default function Register(props) {
                     />
                     <TextField
                         autoComplete=""
-                        label="Mật khẩu (8+ kí tự)"
+                        label="Mật khẩu (6+ kí tự)"
                         variant="outlined"
                         name="password"
-                        type={state.showPassword ? "text" : "password"}
+                        type={showPassword ? "text" : "password"}
                         required
                         className="form-input"
                         error={errors?.password}
@@ -216,12 +232,11 @@ export default function Register(props) {
                             endAdornment: (
                                 <InputAdornment position="end">
                                     <IconButton
-                                    aria-label="toggle password visibility"
-                                    onClick={handleClickShowPassword}
-                                    onMouseDown={handleMouseDownPassword}
-                                    edge="end"
+                                        aria-label="toggle password visibility"
+                                        onClick={handleClickShowPassword}
+                                        edge="end"
                                     >
-                                    {state.showPassword ? <Visibility /> : <VisibilityOff />}
+                                        {showPassword ? <Visibility /> : <VisibilityOff />}
                                     </IconButton>
                                 </InputAdornment>
                             )
@@ -232,7 +247,7 @@ export default function Register(props) {
                         label="Xác nhận mật khẩu"
                         variant="outlined"
                         name="confirmPassword"
-                        type={state.showPassword ? "text" : "password"}
+                        type={showConfirm ? "text" : "password"}
                         required
                         className="form-input"
                         error={errors?.confirmPassword}
@@ -242,12 +257,11 @@ export default function Register(props) {
                             endAdornment: (
                                 <InputAdornment position="end">
                                     <IconButton
-                                    aria-label="toggle password visibility"
-                                    onClick={handleClickShowPassword}
-                                    onMouseDown={handleMouseDownPassword}
-                                    edge="end"
+                                        aria-label="toggle password visibility"
+                                        onClick={handleClickShowConfirm}
+                                        edge="end"
                                     >
-                                    {state.showPassword ? <Visibility /> : <VisibilityOff />}
+                                        {showConfirm ? <Visibility /> : <VisibilityOff />}
                                     </IconButton>
                                 </InputAdornment>
                             )
@@ -277,7 +291,7 @@ export default function Register(props) {
                         </p>
                     </div> */}
 
-                    {notify?.message}
+                    <span style={{ fontSize: "15px", color: "red", marginInline: "20px", marginTop: "10px" }}>{errorServer}</span>
 
                     <div className="login-group">
                         <Button

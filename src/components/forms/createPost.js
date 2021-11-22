@@ -1,28 +1,45 @@
-import { InputBase, Typography, Button, Paper, IconButton } from "@material-ui/core";
+import { InputBase, Typography, Button, Paper, IconButton, CircularProgress } from "@material-ui/core";
 import { Create, Image } from "@material-ui/icons";
 import React, { useState } from "react";
 import { ScrollMenu } from 'react-horizontal-scrolling-menu';
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
+import { createPost } from "../../redux/callApi/postCall";
 
 import { formStyles } from '../../style';
+import { checkImage } from "../../utils/uploadImage";
 import EmojiPicker from "../input/emojiPicker";
 import LoginModal from "../modal/login";
 
 
 export default function CreatePostForm(props) {
 
-    const { auth } = useSelector(state => state);
+    const dispatch = useDispatch();
+
+    const { auth, notify } = useSelector(state => state);
 
     const [imageUpload, setImageUpload] = useState([]);
+    const [showWarning, setShowWarning] = useState("");
 
     const [text, setText] = useState("");
+    const [hashtag, setHashtag] = useState("");
 
     const handleChange = e => {
         setText(e.target.value);
     }
 
     const handleChangeImageUpload = (e) => {
-        setImageUpload(oldImage => [...oldImage, ...e.target.files])
+        setShowWarning("");
+        let valid = true;
+        for (const file of e.target.files) {
+            const check = checkImage(file);
+            if (check != "") {
+                setShowWarning(check);
+                valid = false;
+                break;
+            }
+        }
+        if (valid)
+            setImageUpload(oldImage => [...oldImage, ...e.target.files])
     }
 
     const removeImage = (index) => {
@@ -30,6 +47,18 @@ export default function CreatePostForm(props) {
             ...oldImage.slice(0, index),
             ...oldImage.slice(index + 1)
         ])
+    }
+
+    const hashtagSplit = (text) => {
+        var ht = text.split(" ");
+        return ht.filter(item => item !== "");
+    }
+
+    const handleSubmit = (e) => {
+        e.preventDefault();
+        const ht = hashtagSplit(hashtag);
+        dispatch(createPost({ content: text, image: imageUpload, hashtag: ht }, auth.token));
+        props.handleClose();
     }
 
     const classes = formStyles();
@@ -64,6 +93,8 @@ export default function CreatePostForm(props) {
                                     name="hashtag"
                                     id="hashtag"
                                     className={classes.hashtag}
+                                    value={hashtag}
+                                    onChange={e => setHashtag(e.target.value)}
                                 />
                             </div>
                             <div className={classes.formAction}>
@@ -86,9 +117,15 @@ export default function CreatePostForm(props) {
                                     <EmojiPicker content={text} setContent={setText} />
                                 </div>
                                 <div>
-                                    <Button className={classes.button}>
-                                        <Create style={{ marginRight: 10 }} />
-                                        Đăng
+                                    <Button className={classes.button} onClick={handleSubmit}>
+                                        {
+                                            notify.loading ?
+                                                <CircularProgress size="25px" color="white" /> :
+                                                <>
+                                                    <Create style={{ marginRight: 10 }} />
+                                                    Đăng
+                                                </>
+                                        }
                                     </Button>
                                 </div>
                             </div>
@@ -96,12 +133,14 @@ export default function CreatePostForm(props) {
 
                         </div>
                     </form>
+                    <div style={{ fontSize: "20px", color: "red", marginInline: "25px" }}>{showWarning}</div>
                     <div
                         style={{
                             marginInline: "20px",
                             maxWidth: "500px"
                         }}
                     >
+
                         {imageUpload.length > 0 &&
                             <ScrollMenu
                                 height="300px"

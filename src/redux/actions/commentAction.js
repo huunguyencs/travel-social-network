@@ -15,3 +15,17 @@ export const updateCommentTour = (props) => {
         payload: props,
     }
 }
+
+export const addCommentPost = (props) => {
+    return {
+        type: POST_TYPES.ADD_COMMENT,
+        payload: props,
+    }
+}
+
+export const addCommentTour = (props) => {
+    return {
+        type: TOUR_TYPES.ADD_COMMENT,
+        payload: props,
+    }
+}

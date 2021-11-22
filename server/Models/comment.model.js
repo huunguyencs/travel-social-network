@@ -1,19 +1,16 @@
 const mongoose = require('mongoose');
 
 const commentSchema = new mongoose.Schema({
-    commentType:{ 
-       type: String
+    commentType: {
+        type: String
     },
     likes: [{ type: mongoose.Types.ObjectId, ref: 'users' }],
-    content:{
-        type:String, 
-        required:true
+    content: {
+        type: String,
+        required: true
     },
-    userId:{ type: mongoose.Types.ObjectId, ref: 'users' },
-    postId: {type: mongoose.Types.ObjectId, ref: 'posts'},
-    tourId: { type: mongoose.Types.ObjectId, ref: 'tours' },
-    activityId: { type: mongoose.Types.ObjectId, ref: 'activities' }
-},{
+    userId: { type: mongoose.Types.ObjectId, ref: 'users' }
+}, {
     timestamps: true
 })
 

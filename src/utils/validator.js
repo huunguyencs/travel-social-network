@@ -31,8 +31,21 @@ class Validator {
     }
 }
 
+const isEmpty = (text, state) => {
+    return text.trim() === "";
+}
+
+const nonSpace = (text, state) => {
+    return !text.trim().includes(" ");
+}
+
+const username = (text, state) => {
+    const regex = /^[a-zA-Z0-9._^&()@$]{3,50}$/
+    return regex.test(text);
+}
+
 const validatePassword = (password, state) => {
-    const regex = /^(?=.*[A-Z])(?=.*[!@#$&*])(?=.*[0-9])(?=.*[a-z]).{8,}$/
+    const regex = /^(?=.*[A-Z])(?=.*[0-9])(?=.*[a-z]).{6,}$/
     return regex.test(password);
 }
 
@@ -44,4 +57,4 @@ const validatePhoneNumber = (phone, state) => {
 
 export default Validator;
 
-export { validatePassword, validatePhoneNumber };
+export { validatePassword, validatePhoneNumber, isEmpty, nonSpace, username };

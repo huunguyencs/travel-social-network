@@ -19,10 +19,18 @@ const postRecuder = (state = INIT_STATE, action) => {
                 error: null,
             }
         }
+        case POST_TYPES.ADD_POST: {
+            return {
+                ...state,
+                posts: [action.payload.post, ...state.posts],
+                loading: false,
+                error: null,
+            }
+        }
         case POST_TYPES.GET_MORE_POSTS: {
             return {
                 ...state,
-                posts: [...action.payload.posts],
+                posts: [...state.posts, ...action.payload.posts],
                 page: state.page + 1,
                 loading: false,
                 error: null,
@@ -55,10 +63,38 @@ const postRecuder = (state = INIT_STATE, action) => {
             return {
                 ...state,
                 error: null,
-                post: [
+                posts: [
                     action.payload.post,
                     ...state.post,
                 ]
+            }
+        }
+        case POST_TYPES.UPDATE_LIKE: {
+            return {
+                ...state,
+                posts: state.posts.map(item => item._id === action.payload.id ? {
+                    ...item,
+                    likes: action.payload.likes
+                } : item)
+            }
+        }
+        case POST_TYPES.ADD_COMMENT: {
+            return {
+                ...state,
+                posts: state.posts.map(item => item._id === action.payload.id ? {
+                    ...item,
+                    comments: [...item.comments, action.payload.comment]
+                } : item)
+            }
+        }
+        case POST_TYPES.UPDATE_COMMENT: {
+
+            return {
+                ...state,
+                posts: state.posts.map(item => item._id === action.payload.postId ? {
+                    ...item,
+                    comments: item.comments.map(comment => comment._id === action.payload.id ? action.payload.comment : comment)
+                } : item)
             }
         }
         case POST_TYPES.ERROR: { // loi trong khi tai danh sach cac post

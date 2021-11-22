@@ -12,3 +12,17 @@ export const logout = (prop) => {
         type: AUTH_TYPES.LOGOUT,
     }
 }
+
+export const follow = (props) => {
+    return {
+        type: AUTH_TYPES.FOLLOW,
+        payload: props,
+    }
+}
+
+export const unfollow = (props) => {
+    return {
+        type: AUTH_TYPES.UNFOLLOW,
+        payload: props,
+    }
+}

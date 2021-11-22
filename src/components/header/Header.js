@@ -23,7 +23,7 @@ import {
     WhatsApp,
     Cancel
 } from "@material-ui/icons";
-import { Link } from "react-router-dom";
+import { Link, useHistory } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 
 import { headerStyles } from "../../style";
@@ -36,11 +36,14 @@ import { logout } from "../../redux/callApi/authCall";
 export default function Header(props) {
 
     const { auth } = useSelector(state => state);
+    const user = auth.user;
     const dispatch = useDispatch();
+    const history = useHistory();
 
     const [open, setOpen] = useState(false);
     const [toggleMenuUser, setToggleMenuUser] = useState(null);
     const [toggleNoti, setToggleNoti] = useState(null);
+    const [search, setSearch] = useState("");
 
     const handleToggleUser = (e) => {
         setToggleMenuUser(e.currentTarget);
@@ -60,10 +63,17 @@ export default function Header(props) {
 
     const handleLogout = () => {
         dispatch(logout());
+        history.push("/login");
     }
 
     const classes = headerStyles({ open });
 
+    const handleSearch = (e) => {
+        e.preventDefault();
+        history.push(`/search?q=${search}`);
+        setSearch("");
+        console.log(search);
+    }
 
     return (
         <AppBar positionSticky style={{ zIndex: 1 }}>
@@ -76,7 +86,9 @@ export default function Header(props) {
 
                 <div className={classes.search}>
                     <Search className={classes.searchIcon} />
-                    <InputBase placeholder="Tìm kiếm ..." className={classes.input} />
+                    <form style={{ width: "100%" }} onSubmit={handleSearch}>
+                        <InputBase placeholder="Tìm kiếm ..." className={classes.input} value={search} onChange={(e) => setSearch(e.target.value)} />
+                    </form>
                     <Cancel className={classes.cancel} onClick={(e) => setOpen(false)} />
                 </div>
                 <div>
@@ -90,8 +102,8 @@ export default function Header(props) {
                             <>
                                 <div class={classes.user}>
                                     <Button className={classes.button} onClick={handleToggleUser} controls={toggleMenuUser ? "user-menu" : undefined}>
-                                        <Avatar className={classes.avatar} alt="avatar" src="" />
-                                        <Typography className={classes.userName}>Trần Văn A</Typography>
+                                        <Avatar className={classes.avatar} alt="avatar" src={user.avatar} />
+                                        <Typography className={classes.userName}>{user.fullname}</Typography>
                                     </Button>
                                     <Popover
                                         open={Boolean(toggleMenuUser)}
@@ -112,7 +124,7 @@ export default function Header(props) {
                                         >
                                             <ClickAwayListener onClickAway={handleCloseUser}>
                                                 <MenuList autoFocusItem={toggleMenuUser} id="user-menu">
-                                                    <MenuItem aria-label="profile-post" component={Link} to="/profile/465/" onClick={handleCloseUser}>Trang cá nhân</MenuItem>
+                                                    <MenuItem aria-label="profile-post" component={Link} to={`/profile/${user._id}/`} onClick={handleCloseUser}>Trang cá nhân</MenuItem>
                                                     <MenuItem onClick={handleCloseUser}>Thay đổi mật khẩu</MenuItem>
                                                     <MenuItem onClick={handleLogout}>Đăng xuất</MenuItem>
                                                 </MenuList>
