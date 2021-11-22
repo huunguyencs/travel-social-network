@@ -99,7 +99,6 @@ export default function Profile_Avatar(props) {
 
   const isFollowed = () => {
     for (const u of auth.user?.followings) {
-      console.log(u._id);
       if (u._id === user?._id) {
         return true;
       }
@@ -118,7 +117,6 @@ export default function Profile_Avatar(props) {
   }
 
   useEffect(() => {
-    console.log(id);
     if (auth.token) {
       if (auth.user._id === id) {
         setUser(auth.user);

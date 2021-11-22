@@ -47,6 +47,14 @@ class PostController {
     async getUserPost(req, res) {
         try {
             const posts = await Posts.find({ userId: req.params.id }).sort("-createdAt")
+                .populate("userId likes", "username email fullname avatar")
+                .populate({
+                    path: "comments",
+                    populate: {
+                        path: "userId likes",
+                        select: "-password"
+                    }
+                });
 
             res.json({ success: true, message: "get user post successful", posts })
 

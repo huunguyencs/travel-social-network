@@ -25,15 +25,15 @@ export const getUserPost = (id, token) => async (dispatch) => {
     dispatch(postAction.loading());
 
     try {
-        const res = await customAxios(token).get(`post/user_posts/${id}`);
+        const res = await customAxios(token).get(`/post/user_posts/${id}`);
 
         dispatch(postAction.getPosts({ posts: res.data.posts }));
     }
     catch (err) {
 
-        console.log(err.response.data.message);
-
-        dispatch(postAction.error({ error: err.response.data.message }))
+        // console.log(err.response.data.message);
+        console.log(err);
+        // dispatch(postAction.error({ error: err.response.data.message }))
     }
 }
 

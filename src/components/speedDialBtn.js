@@ -43,7 +43,7 @@ function CreatePostIcon(props) {
                 }}
             >
                 <Fade in={show}>
-                    <CreatePostForm />
+                    <CreatePostForm handleClose={handleClose} />
                 </Fade>
             </Modal>
         </>
