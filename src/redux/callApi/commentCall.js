@@ -113,11 +113,6 @@ export const likeComment = (id, auth, type, postId) => async (dispatch) => {
         // call api to update comment like
         const res = await customAxios(auth.token).patch(`/comment/${id}/like`);
 
-        // const newComment = {
-        //     ...res.data.newComment,
-        //     userId: auth.user,
-        // }
-
         if (type === "post") {
             dispatch(commentAction.updateCommentPost({ comment: res.data.newComment, id: id, postId: postId }))
         }

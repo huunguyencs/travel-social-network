@@ -108,7 +108,6 @@ export const likePost = (id, token) => async (dispatch) => {
     dispatch(notifyAction.callStart());
 
     try {
-
         const res = await customAxios(token).patch(`/post/${id}/like`);
         dispatch(postAction.updateLike({ id: id, likes: res.data.likes }));
         dispatch(notifyAction.callSuccess({ message: "" }));
@@ -123,7 +122,6 @@ export const unlikePost = (id, token) => async (dispatch) => {
     dispatch(notifyAction.callStart());
 
     try {
-
         const res = await customAxios(token).patch(`/post/${id}/unlike`);
         dispatch(postAction.updateLike({ id: id, likes: res.data.likes }));
         dispatch(notifyAction.callSuccess({ message: "" }));

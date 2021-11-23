@@ -5,7 +5,7 @@ export const getSuggestion = (data) => async (dispatch) => {
 
     try {
 
-        const res;
+        const res = [];
 
         dispatch(suggestionAction.getSuggestion({ suggestion: res }))
     }

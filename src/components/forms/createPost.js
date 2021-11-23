@@ -57,7 +57,7 @@ export default function CreatePostForm(props) {
     const handleSubmit = (e) => {
         e.preventDefault();
         const ht = hashtagSplit(hashtag);
-        dispatch(createPost({ content: text, image: imageUpload, hashtag: ht }, auth.token));
+        dispatch(createPost({ content: text, image: imageUpload, hashtags: ht }, auth.token));
         props.handleClose();
     }
 
