@@ -2,8 +2,8 @@ const mongoose = require('mongoose');
 
 const tourSchema = new mongoose.Schema({
     content: String,
-    tourDate: [{ type: mongoose.Types.ObjectId, ref: 'tour_dates' }],
-    tourName: {
+    tour: [{ type: mongoose.Types.ObjectId, ref: 'tour_dates' }],
+    name: {
         type: String,
         required: true
     },

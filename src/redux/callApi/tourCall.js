@@ -1,5 +1,6 @@
 import * as tourAction from '../actions/tourAction';
 import * as notifyAction from '../actions/notifyAction';
+import customAxios from '../../utils/fetchData';
 
 export const getTours = (data) => async (dispatch) => {
     dispatch(tourAction.loading());
@@ -163,16 +164,25 @@ export const updateTour = (data) => async (dispatch) => {
 
 
 
-export const createTour = (data) => async (dispatch) => {
+export const createTourCall = (tour, image, token) => async (dispatch) => {
 
     dispatch(notifyAction.callStart());
 
     try {
         // call api to save tour
+        let imageUpload = [];
+        if (image) imageUpload = await imageUtils.uploadImages([image]);
+        const data = {
+            ...tour,
+            images: imageUpload[0]
+        }
 
-        const res = 0;
+        const res = await customAxios(token).post('tour/create_tour', data);
+        console.log(res);
 
-        dispatch(tourAction.createTour({ tour: res }));
+        // const res = 0;
+
+        // dispatch(tourAction.createTour({ tour: res }));
         dispatch(notifyAction.callSuccess({ message: "" }));
     }
     catch (err) {
