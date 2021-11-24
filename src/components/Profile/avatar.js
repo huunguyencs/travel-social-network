@@ -85,7 +85,7 @@ export default function Profile_Avatar(props) {
   }
 
   const handleFollow = () => {
-    console.log(user);
+    // console.log(user);
     if (followed) {
       dispatch(unfollow(user, auth.token));
       setFollowed(false);

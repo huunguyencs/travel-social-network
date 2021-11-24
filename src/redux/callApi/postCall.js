@@ -11,7 +11,7 @@ export const getPosts = (token) => async (dispatch) => {
         // call api to get post list
         const res = await customAxios(token).get("post/posts");
 
-        console.log(res);
+        // console.log(res);
 
         dispatch(postAction.getPosts({ posts: res.data.posts }));
     }
@@ -69,7 +69,7 @@ export const createPost = (data, token) => async (dispatch) => {
 
         const res = await customAxios(token).post("/post/create_post", post);
 
-        console.log(res.data);
+        // console.log(res.data);
         dispatch(notifyAction.callSuccess({ message: res.data.message }));
         dispatch(postAction.addPost({ post: res.data.newPost }))
 
@@ -114,7 +114,7 @@ export const likePost = (id, token) => async (dispatch) => {
     }
     catch (err) {
         dispatch(notifyAction.callFail({ error: err.response.data.message }));
-        console.log(err);
+        // console.log(err);
     }
 }
 
@@ -128,6 +128,6 @@ export const unlikePost = (id, token) => async (dispatch) => {
     }
     catch (err) {
         dispatch(notifyAction.callFail({ error: err.response.data.message }));
-        console.log(err);
+        // console.log(err);
     }
 }

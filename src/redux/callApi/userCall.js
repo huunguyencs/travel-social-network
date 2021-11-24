@@ -29,7 +29,7 @@ export const follow = (user, token) => async (dispatch) => {
     }
     catch (err) {
         dispatch(authAction.unfollow({ user: user._id }));
-        console.log(err.response.data.message);
+        // console.log(err.response.data.message);
     }
 }
 
@@ -49,6 +49,6 @@ export const unfollow = (user, token) => async (dispatch) => {
                 fullname: user.fullname,
             }
         }))
-        console.log(err.response.data.message);
+        // console.log(err.response.data.message);
     }
 }

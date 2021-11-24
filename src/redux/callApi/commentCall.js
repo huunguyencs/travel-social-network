@@ -21,7 +21,7 @@ export const createCommentPost = (id, comment, auth) => async (dispatch) => {
             content: comment,
             postId: id,
         })
-        console.log(res);
+        // console.log(res);
 
         const newComment = {
             ...res.data.newComment,
@@ -32,7 +32,7 @@ export const createCommentPost = (id, comment, auth) => async (dispatch) => {
 
     }
     catch (err) {
-        console.log(err.response.data.message);
+        // console.log(err.response.data.message);
         dispatch(notifyAction.callFail({ error: err.response.data.message }));
     }
 }
