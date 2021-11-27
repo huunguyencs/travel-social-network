@@ -4,7 +4,7 @@ import * as TOUR_TYPES from '../constants/createTourConstant';
 const INIT_STATE = {
     name: "",
     content: "",
-    hashtags: "",
+    hashtag: "",
     image: null,
     tour: [],
     isFetching: false,
@@ -40,10 +40,10 @@ const createTourReducer = (state = INIT_STATE, action) => {
             // goi api lay du lieu tu location id
             // console.log(location);
 
-            const newLocation = {
-                location: location._id,
-                cost: cost,
-            }
+            // const newLocation = {
+            //     location: location,
+            //     cost: cost,
+            // }
 
             return {
                 ...state,
@@ -51,7 +51,7 @@ const createTourReducer = (state = INIT_STATE, action) => {
                     ...date,
                     locations: [
                         ...date.locations,
-                        newLocation
+                        action.payload
                     ]
                 } : date)
             }
@@ -96,10 +96,10 @@ const createTourReducer = (state = INIT_STATE, action) => {
                 ...state,
                 tour: state.tour.map((date, i) => i === action.payload.indexDate ? {
                     ...date,
-                    locations: date.locations.map((loc, j) => j === action.payload.indexLocation ? {
-                        location: location._id,
-                        cost: cost,
-                    } : loc)
+                    locations: date.locations.map((loc, j) => j === action.payload.indexLocation ?
+                        // location: location._id,
+                        // cost: cost,
+                        action.payload : loc)
                 } : date)
             }
         }

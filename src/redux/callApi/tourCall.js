@@ -185,10 +185,20 @@ export const createTourCall = (tour, image, token) => async (dispatch) => {
         // call api to save tour
         let imageUpload = [];
         if (image) imageUpload = await imageUtils.uploadImages([image]);
+        // location id
         const data = {
             ...tour,
-            images: imageUpload[0]
+            tour: tour.tour.map(item => ({
+                ...item,
+                locations: item.locations.map(location => ({
+                    location: location.location._id,
+                    cost: location.cost,
+                }))
+            })),
+            image: image ? imageUpload[0] : null
         }
+
+        console.log(data);
 
         const res = await customAxios(token).post('tour/create_tour', data);
         console.log(res);

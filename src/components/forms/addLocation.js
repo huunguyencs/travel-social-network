@@ -25,10 +25,10 @@ export default function AddLocationForm(props) {
     }
 
     useEffect(() => {
-        if (location.locations.length === 0) {
+        if (location.locations?.length === 0) {
             dispatch(getLocations());
         }
-    }, [dispatch, location.locations.length])
+    }, [dispatch, location.locations])
 
     const classes = formStyles();
 
@@ -46,7 +46,7 @@ export default function AddLocationForm(props) {
                     <Autocomplete
                         id="choose-location"
                         options={location.locations}
-                        getOptionLabel={(option) => option.locationName}
+                        getOptionLabel={(option) => option?.name}
                         style={{ width: 400, marginTop: 30 }}
                         onChange={(e, value) => setLoc(value)}
                         renderInput={(params) => <TextField {...params} name="location" label="Địa điểm" variant="outlined" required />}

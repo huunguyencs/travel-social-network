@@ -5,14 +5,17 @@ const Comments = require('../Models/comment.model')
 class TourController {
     async createTour(req, res) {
         try {
-            const { content, name, taggedIds, image, hashtags, tourDate } = req.body
+            const { content, name, taggedIds, image, hashtags, tour } = req.body
+
+            // console.log(tourDate[0].locations);
 
             const newTour = new Tours({
-                userId: req.user._id, content, image, name, taggedIds, hashtags, isPublic
+                userId: req.user._id, content, image, name, taggedIds, hashtags
             })
             await newTour.save()
-            if (tourDate.length > 0) {
-                tourDate.forEach(async function (element) {
+            if (tour.length > 0) {
+                tour.forEach(async function (element) {
+                    // console.log(element);
                     const newTourDate = new TourDates({
                         date: element.date, locations: element.locations
                     })
@@ -20,7 +23,7 @@ class TourController {
 
                     await Tours.findOneAndUpdate({ _id: newTour._id }, {
                         $push: {
-                            tourDate: newTourDate._id
+                            tour: newTourDate._id
                         }
                     });
                 });
@@ -48,7 +51,7 @@ class TourController {
             const { content, tourName, isPublic, taggedIds, image, hashtag, tourDate } = req.body
 
             const tour = await Tours.findOneAndUpdate({ _id: req.params.id }, {
-                content, image, tourName, taggedIds, hashtag, isPublic
+                content, image, tourName, taggedIds, hashtag, isPublic, tourDate
             }, { new: true })
 
             res.json({ success: true, message: "update tour successful", tour })

@@ -32,7 +32,7 @@ export default function CreatePostForm(props) {
         let valid = true;
         for (const file of e.target.files) {
             const check = checkImage(file);
-            if (check != "") {
+            if (check !== "") {
                 setShowWarning(check);
                 valid = false;
                 break;

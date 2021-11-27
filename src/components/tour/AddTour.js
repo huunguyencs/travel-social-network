@@ -43,13 +43,13 @@ export default function AddTour(props) {
     }
 
     const handleSave = () => {
-        console.log(createTour);
-        // dispatch(createTourCall({
-        //     name: createTour.name,
-        //     content: createTour.content,
-        //     hashtags: createTour.hashtags,
-        //     tour: createTour.tour,
-        // }, createTour.image, auth.token))
+        // console.log(createTour);
+        dispatch(createTourCall({
+            name: createTour.name,
+            content: createTour.content,
+            hashtags: createTour.hashtags,
+            tour: createTour.tour,
+        }, createTour.image, auth.token))
 
         console.log("save tour");
     }
@@ -102,7 +102,7 @@ export default function AddTour(props) {
                     </Typography>
                 </div>
                 <div className={classes.hashtagWrap}>
-                    {hashtagSplit(createTour.hashtags).map((hashtag, index) => (
+                    {hashtagSplit(createTour.hashtag).map((hashtag, index) => (
                         <Typography className={classes.hashtag} key={index}>{hashtag}</Typography>
                     ))}
                 </div>
@@ -201,7 +201,7 @@ export default function AddTour(props) {
                         </Modal>
                     </div>
                     {
-                        createTour.tour[idx].tour.map((item, index) => (
+                        createTour.tour[idx].locations.map((item, index) => (
                             <Location location={item} indexDate={idx} indexLocation={index} edit={true} key={index} />
                         ))
                     }

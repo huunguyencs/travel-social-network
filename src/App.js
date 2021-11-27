@@ -34,7 +34,7 @@ function App() {
         history.push("/login");
       }));
     }
-  }, [dispatch, auth.token])
+  }, [dispatch, auth.token, history])
 
   return (
     <div style={{ backgroundColor: color.background }}>

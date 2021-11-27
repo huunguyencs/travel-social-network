@@ -130,8 +130,7 @@ export default function FeedService(props) {
     const { post } = useSelector(state => state);
 
     useEffect(() => {
-        if (post.posts.length === 0)
-            dispatch(getPosts());
+        dispatch(getPosts());
     }, [dispatch])
 
     return (

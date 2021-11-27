@@ -25,7 +25,7 @@ export default function EditLocationForm(props) {
     }
 
     useEffect(() => {
-        if (location.locations.length === 0) {
+        if (location.locations?.length === 0) {
             dispatch(getLocations());
         }
 
@@ -48,7 +48,7 @@ export default function EditLocationForm(props) {
                 <Autocomplete
                     id="choose-location"
                     options={location.locations}
-                    getOptionLabel={(option) => option.locationName}
+                    getOptionLabel={(option) => option.name}
                     style={{ width: 400, marginTop: 30 }}
                     defaultValue={loc}
                     onChange={(e, value) => setLoc(value)}

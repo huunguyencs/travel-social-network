@@ -106,7 +106,7 @@ export default function Location(props) {
             <Grid container>
                 <Grid item md={5} className={classes.imageLocation}>
                     <CardMedia className={classes.imgContainer}>
-                        <img src={locationInfo.location.image} alt="location" className={classes.img} />
+                        <img src={locationInfo.location.images[0]} alt="location" className={classes.img} />
                     </CardMedia>
 
                 </Grid>
@@ -170,9 +170,12 @@ export default function Location(props) {
                                 </Dialog>
                             </Menu>
                         </div>
-
-                        <Typography variant="h4" className={classes.locationName} component={Link} to={"/location/" + locationInfo.location._id}>{locationInfo.location.locationName}</Typography>
-                        <Typography variant="h5" component={Link} to={"/province/" + locationInfo.location.province._id}>{locationInfo.location.province.name}</Typography>
+                        <div>
+                            <Typography variant="h4" className={classes.locationName} component={Link} to={"/location/" + locationInfo.location._id}>{locationInfo.location.name}</Typography>
+                        </div>
+                        <div>
+                            <Typography variant="h5" component={Link} to={"/province/" + locationInfo.location.province._id}>{locationInfo.location.province.name}</Typography>
+                        </div>
                         {isReviewed ?
                             <Button className={classes.reviewBtn} onClick={() => setShowRv(value => !value)}>{showRv ? "Ẩn" : "Xem"} Review</Button> :
                             <Button className={classes.reviewBtn} onClick={handleShow}>Tạo Review</Button>
