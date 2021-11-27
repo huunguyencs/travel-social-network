@@ -54,7 +54,7 @@ export const getMorePost = (data) => async (dispatch) => {
     }
 }
 
-export const createPost = (data, token) => async (dispatch) => {
+export const createPost = (data, token, next) => async (dispatch) => {
     // post api
     dispatch(notifyAction.callStart());
     try {
@@ -72,7 +72,7 @@ export const createPost = (data, token) => async (dispatch) => {
         // console.log(res.data);
         dispatch(notifyAction.callSuccess({ message: res.data.message }));
         dispatch(postAction.addPost({ post: res.data.newPost }))
-
+        next();
     }
     catch (err) {
         dispatch(notifyAction.callFail({ error: err.response.data.message }))

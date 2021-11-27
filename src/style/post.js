@@ -38,9 +38,11 @@ const postStyles = makeStyles((theme) => ({
         marginTop: 30,
     },
     title: {
-        marginBottom: 10,
+        paddingBottom: 20,
         color: color.text,
-        cursor: "pointer"
+        "&:hover": {
+            textDecorationLine: 'underline',
+        }
     },
     location: {
         padding: 5,
@@ -62,6 +64,13 @@ const postStyles = makeStyles((theme) => ({
         cursor: "pointer",
         "&:hover": {
             textDecorationLine: 'underline',
+        }
+    },
+    image: {
+        cursor: "pointer",
+        transition: "0.8s",
+        "&:hover": {
+            filter: "brightness(90%)",
         }
     }
 }))

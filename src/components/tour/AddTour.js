@@ -7,7 +7,7 @@ import { tourdetailStyles } from "../../style";
 import AddLocationForm from "../forms/addLocation";
 import Location from './Location';
 import * as tourAction from '../../redux/actions/createTourAction';
-// import { useHistory } from "react-router-dom";
+import { useHistory } from "react-router-dom";
 import UpdateDateForm from "../forms/updateDate";
 import UpdateTourInfo from "../forms/updateInfoCreateTour";
 import { createTourCall } from "../../redux/callApi/tourCall";
@@ -17,7 +17,7 @@ import { convertDateToStr } from "../../utils/date";
 
 export default function AddTour(props) {
 
-    // const history = useHistory();
+    const history = useHistory();
 
     const dispatch = useDispatch();
     const { createTour, auth } = useSelector(state => state);
@@ -49,9 +49,9 @@ export default function AddTour(props) {
             content: createTour.content,
             hashtags: createTour.hashtags,
             tour: createTour.tour,
-        }, createTour.image, auth.token))
-
-        console.log("save tour");
+        }, createTour.image, auth.token, () => {
+            history.push("/tour")
+        }))
     }
 
     const handleDeleteDate = () => {

@@ -115,6 +115,25 @@ class TourController {
         }
     }
 
+    async getTours(req, res) {
+        try {
+            const tours = await Tours.find({}).sort("-createdAt")
+                .populate("userId likes", "username email fullname avatar")
+                .populate({
+                    path: "comments",
+                    populate: {
+                        path: "userId likes",
+                        select: "-password"
+                    }
+                })
+            res.json({ success: true, message: "get tours successful", tours })
+        }
+        catch (err) {
+            console.log(err);
+            res.status(500).json({ success: false, message: err.message });
+        }
+    }
+
     //lấy tours của 1 user cụ thể (params.id)
     async getUserTour(req, res) {
         try {

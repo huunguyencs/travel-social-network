@@ -3,6 +3,7 @@ import { Create, Image } from "@material-ui/icons";
 import React, { useState } from "react";
 import { ScrollMenu } from 'react-horizontal-scrolling-menu';
 import { useDispatch, useSelector } from "react-redux";
+import { useHistory } from "react-router-dom";
 import { createPost } from "../../redux/callApi/postCall";
 
 import { formStyles } from '../../style';
@@ -14,6 +15,8 @@ import LoginModal from "../modal/login";
 export default function CreatePostForm(props) {
 
     const dispatch = useDispatch();
+
+    const history = useHistory();
 
     const { auth, notify } = useSelector(state => state);
 
@@ -57,8 +60,11 @@ export default function CreatePostForm(props) {
     const handleSubmit = (e) => {
         e.preventDefault();
         const ht = hashtagSplit(hashtag);
-        dispatch(createPost({ content: text, image: imageUpload, hashtags: ht }, auth.token));
-        props.handleClose();
+        dispatch(createPost({ content: text, image: imageUpload, hashtags: ht }, auth.token, () => {
+            props.handleClose();
+            history.push("/");
+        }));
+
     }
 
     const classes = formStyles();

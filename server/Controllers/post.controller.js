@@ -76,7 +76,8 @@ class PostController {
                         path: "userId likes",
                         select: "-password"
                     }
-                });
+                })
+                .sort({ "createdAt": -1 });
             res.json({
                 posts,
             });
