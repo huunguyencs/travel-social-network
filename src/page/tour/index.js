@@ -30,12 +30,12 @@ export default function TourPage(props) {
                 <Grid item md={12} xs={12}>
                     <Slider />
                 </Grid>
-                <Grid item md={3} sm={12} xs={12}>
+                <Grid item md={3} sm={12} xs={12} className={classes.leftbar}>
                     <LeftBar >
                         <Menu menuList={homeMenu} />
                     </LeftBar>
                 </Grid>
-                <Grid item md={6} sm={12} xs={12}>
+                <Grid item md={6} sm={12} xs={12} className={classes.content}>
                     <FeedTour />
                 </Grid>
                 <Grid item md={3} className={classes.rightbar}>

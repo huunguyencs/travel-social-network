@@ -1,6 +1,7 @@
 import * as tourAction from '../actions/tourAction';
 import * as notifyAction from '../actions/notifyAction';
 import customAxios from '../../utils/fetchData';
+import * as imageUtils from '../../utils/uploadImage'
 
 export const getTours = (data) => async (dispatch) => {
     dispatch(tourAction.loading());
@@ -94,6 +95,10 @@ export const getTourDetail = (data) => async (dispatch) => {
                                 _id: 1313,
                                 image: "https://toplist.vn/images/800px/le-hoi-giong-362211.jpg",
                                 locationName: "Chùa Một Cột",
+                                province: {
+                                    _id: 45456,
+                                    name: "Hà Nội"
+                                }
                             },
                             cost: 200,
                             postId: 221,
@@ -104,6 +109,10 @@ export const getTourDetail = (data) => async (dispatch) => {
                                 _id: 1313,
                                 image: "https://toplist.vn/images/800px/le-hoi-giong-362211.jpg",
                                 locationName: "Chùa Một Cột",
+                                province: {
+                                    _id: 45456,
+                                    name: "Hà Nội"
+                                }
                             },
                             cost: 200,
                             postId: 221,
@@ -120,6 +129,10 @@ export const getTourDetail = (data) => async (dispatch) => {
                                 _id: 1313,
                                 image: "https://toplist.vn/images/800px/le-hoi-giong-362211.jpg",
                                 locationName: "Chùa Một Cột",
+                                province: {
+                                    _id: 45456,
+                                    name: "Hà Nội"
+                                }
                             },
                             cost: 200,
                             postId: 221,

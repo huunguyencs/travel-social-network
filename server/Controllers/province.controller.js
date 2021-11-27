@@ -1,79 +1,89 @@
-const Provinces = require('../Models/province.model')
+const Provinces = require('../Models/province.model');
+const Locations = require('../Models/location.model');
+const Services = require('../Models/service.model');
 
 class ProvinceController {
-    async createProvince(req, res){
-        try{
-            const  {name, information, image} = req.body
+    async createProvince(req, res) {
+        try {
+            const { name, information, image } = req.body
 
             const newProvince = new Provinces({
                 image, name, information
             })
             await newProvince.save()
 
-             res.json({
-                 success:true,
-                 message:"Create province successful",
-                 newProvince: {
+            res.json({
+                success: true,
+                message: "Create province successful",
+                newProvince: {
                     ...newProvince._doc,
                 }
-             })
-        }catch(err){
+            })
+        } catch (err) {
             console.log(err)
-            res.status(500).json({success: false, message: err.message})
+            res.status(500).json({ success: false, message: err.message })
         }
     }
-    
-    async updateProvince(req, res){
-        try{
-            const  {name, information, image} = req.body
+
+    async updateProvince(req, res) {
+        try {
+            const { name, information, image } = req.body
 
             const province = await Provinces.findOneAndUpdate({ _id: req.params.id }, {
-                name, information, image            
+                name, information, image
             }, { new: true })
 
-            res.json({success:true, message:"update province successful", province})
-        }catch(err){
+            res.json({ success: true, message: "update province successful", province })
+        } catch (err) {
             console.log(err)
-            res.status(500).json({success: false, message: err.message})
+            res.status(500).json({ success: false, message: err.message })
         }
     }
 
-    async deleteProvince(req, res){
-        try{
-            await Provinces.findOneAndDelete({ _id: req.params.id});
+    async deleteProvince(req, res) {
+        try {
+            await Provinces.findOneAndDelete({ _id: req.params.id });
 
             res.json({
-                success:true, message:"Delete province success"
+                success: true, message: "Delete province success"
             });
-        }catch(err){
+        } catch (err) {
             console.log(err)
-            res.status(500).json({success: false, message: err.message})
+            res.status(500).json({ success: false, message: err.message })
         }
     }
 
     // lấy thông tin 1 Province theo params.id
-    async getProvince(req, res){
-        try{
-            const province = await Provinces.findById(req.params.id)
-                .populate("locations services")
+    async getProvince(req, res) {
+        try {
+            const id = req.params.id;
+            var province = await Provinces.findById(id)
+            // .populate("locations services")
+            const locations = await Locations.find({ "province": id })
+            const services = await Services.find({ "province": id })
+            province = {
+                ...province,
+                locations: locations,
+                services: services,
+            }
             res.json({
-                success:true, message:"get info 1 province success", province
+                success: true, message: "get info 1 province success", province
             });
-        }catch(err){
+        } catch (err) {
             console.log(err)
-            res.status(500).json({success: false, message: err.message})
+            res.status(500).json({ success: false, message: err.message })
         }
     }
 
     //Get all province
-    async getProvinces(req, res){
-        try{
+    async getProvinces(req, res) {
+        try {
             const province = await Provinces.find()
-                .populate("locations services")
-            res.json({ success:true, message:"get info 1 Province success", province});
-        }catch(err){
+            // .populate("locations services")
+            res.json({ success: true, message: "get all provinces success", province });
+        } catch (err) {
             console.log(err)
-            res.status(500).json({success: false, message: err.message})
+            res.status(500).json({ success: false, message: err.message })
         }
     }
 

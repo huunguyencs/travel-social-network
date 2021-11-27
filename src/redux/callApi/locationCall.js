@@ -1,5 +1,6 @@
 import * as locationActions from '../actions/locationAction';
 import * as notifyActions from '../actions/notifyAction';
+import customAxios from '../../utils/fetchData';
 
 export const getLocations = (data) => async (dispatch) => {
 
@@ -7,22 +8,9 @@ export const getLocations = (data) => async (dispatch) => {
 
     try {
         // call api to get location list
-        const res = [
-            { _id: "1", locationName: "Chùa Một Cột", province: { name: "Hà Nội" }, image: ["https://toplist.vn/images/800px/le-hoi-giong-362211.jpg"] },
-            { _id: "2", locationName: "Hồ Gươm", province: { name: "Hà Nội" }, image: ["https://toplist.vn/images/800px/le-hoi-giong-362211.jpg"] },
-            { _id: "3", locationName: "Lăng Chủ tịch", province: { name: "Hà Nội" }, image: ["https://toplist.vn/images/800px/le-hoi-giong-362211.jpg"] },
-            { _id: "4", locationName: "Vịnh Hạ Long", province: { name: "Hà Nội" }, image: ["https://toplist.vn/images/800px/le-hoi-giong-362211.jpg"] },
-            { _id: "5", locationName: "Biển Mỹ Khê", province: { name: "Hà Nội" }, image: ["https://toplist.vn/images/800px/le-hoi-giong-362211.jpg"] },
-            { _id: "6", locationName: "Biển Vũng Tàu", province: { name: "Hà Nội" }, image: ["https://toplist.vn/images/800px/le-hoi-giong-362211.jpg"] },
-            { _id: "7", locationName: "Biển Nha Trang", province: { name: "Hà Nội" }, image: ["https://toplist.vn/images/800px/le-hoi-giong-362211.jpg"] },
-            { _id: "8", locationName: "Phố cổ Hội An", province: { name: "Hà Nội" }, image: ["https://toplist.vn/images/800px/le-hoi-giong-362211.jpg"] },
-            { _id: "9", locationName: "Chùa Một Cột", province: { name: "Hà Nội" }, image: ["https://toplist.vn/images/800px/le-hoi-giong-362211.jpg"] },
-            { _id: "10", locationName: "Chùa Một Cột", province: { name: "Hà Nội" }, image: ["https://toplist.vn/images/800px/le-hoi-giong-362211.jpg"] },
-            { _id: "11", locationName: "Chùa Một Cột", province: { name: "Hà Nội" }, image: ["https://toplist.vn/images/800px/le-hoi-giong-362211.jpg"] },
-            { _id: "12", locationName: "Chùa Một Cột", province: { name: "Hà Nội" }, image: ["https://toplist.vn/images/800px/le-hoi-giong-362211.jpg"] },
-            { _id: "13", locationName: "Chùa Một Cột", province: { name: "Hà Nội" }, image: ["https://toplist.vn/images/800px/le-hoi-giong-362211.jpg"] },
-        ];
-        dispatch(locationActions.getLocations({ location: res }));
+        const res = await customAxios().get("location/locations");
+        // console.log(res);
+        dispatch(locationActions.getLocations({ location: res.location }));
         dispatch(notifyActions.callSuccess({ message: "" }));
     }
     catch (err) {
