@@ -95,7 +95,7 @@ export const getTourDetail = (id, next) => async (dispatch) => {
         //     },
         // };
 
-        const res = await customAxios().get(`tour/${id}`);
+        const res = await customAxios().get(`/tour/${id}`);
         console.log(res.data.tour);
 
         next(res.data.tour);
@@ -103,7 +103,8 @@ export const getTourDetail = (id, next) => async (dispatch) => {
         // dispatch(tourAction.getTourDetail({ tourdetail: res }));
     }
     catch (err) {
-        dispatch(tourAction.error({ error: err.response.data.message }));
+        console.log(err);
+        // dispatch(tourAction.error({ error: err.response.data.message }));
     }
 }
 

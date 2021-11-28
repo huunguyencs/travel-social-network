@@ -151,7 +151,21 @@ class TourController {
         try {
             const tour = await Tours.findById(req.params.id)
                 .populate("tour")
-                .populate("userId likeIds", "username email fullname avatar followers")
+                .populate({
+                    path: "tour",
+                    populate: {
+                        path: "locations",
+                        populate: {
+                            path: "location",
+                            select: "name images",
+                            populate: {
+                                path: "province",
+                                select: "name"
+                            }
+                        }
+                    }
+                })
+                .populate("userId likes", "username email fullname avatar followers")
                 .populate({
                     path: "comments",
                     populate: {

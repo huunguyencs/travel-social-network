@@ -1,38 +1,30 @@
 import { Button, Container, Grid, Typography, CircularProgress } from "@material-ui/core";
-import React, { useState, useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { Timeline, TimelineItem, TimelineSeparator, TimelineConnector, TimelineContent, TimelineDot } from '@material-ui/lab'
-import { useParams } from "react-router-dom";
 
 import { tourdetailStyles } from "../../style";
 import Location from './Location';
-import { useDispatch } from "react-redux";
-import { getTourDetail } from "../../redux/callApi/tourCall";
 import { convertDateToStr } from "../../utils/date";
+import { useSelector } from "react-redux";
 
 
 
 
 export default function TourDetail(props) {
-    const dispatch = useDispatch();
-    // const { tour } = useSelector(state => state);
-    const [tour, setTour] = useState(null);
-    const { id } = useParams();
-
-    useEffect(() => {
-        dispatch(getTourDetail(id, (tour) => {
-            setTour(tour);
-        }));
-    }, [dispatch, id, setTour])
-
-    const [idx, setIdx] = useState(0);
 
     const classes = tourdetailStyles();
+    const [isOwn, setIsOwn] = useState(false);
 
-    const hashtagSplit = (text) => {
-        var ht = text.split(" ");
-        return ht.filter(item => item !== "");
-    }
+    const { auth } = useSelector(state => state);
 
+    const { tour } = props;
+
+
+    useEffect(() => {
+        setIsOwn(tour?.userId === auth.user._id);
+    }, [setIsOwn, tour, auth])
+
+    const [idx, setIdx] = useState(0);
 
     return (
         <>
@@ -49,7 +41,7 @@ export default function TourDetail(props) {
                                 </Typography>
                             </div>
                             <div className={classes.hashtagWrap}>
-                                {hashtagSplit(tour.hashtags).map((hashtag, index) => (
+                                {tour.hashtags.map((hashtag, index) => (
                                     <Typography className={classes.hashtag} key={index}>{hashtag}</Typography>
                                 ))}
                             </div>
@@ -66,7 +58,7 @@ export default function TourDetail(props) {
                                                 </TimelineSeparator>
                                                 <TimelineContent>
                                                     <Button className={index === idx ? classes.activeTimeline : classes.unactiveTimeline} onClick={() => setIdx(index)}>
-                                                        {convertDateToStr(item.date)}
+                                                        {convertDateToStr(new Date(item.date))}
                                                     </Button>
                                                 </TimelineContent>
                                             </TimelineItem>
@@ -79,7 +71,7 @@ export default function TourDetail(props) {
                             <Grid item md={6} className={classes.feedTour}>
                                 {
                                     tour.tour[idx].locations.map((item, index) => (
-                                        <Location location={item} index={index} edit={false} key={item._id} />
+                                        <Location location={item} index={index} edit={false} key={item._id} isOwn={isOwn} />
                                     ))
                                 }
 

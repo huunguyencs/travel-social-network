@@ -1,4 +1,4 @@
-import { Button, Card, CardContent, CardMedia, Collapse, Grid, IconButton, Modal, Typography, Backdrop, Fade, Menu, MenuItem, Dialog, DialogTitle, DialogActions } from "@material-ui/core";
+import { Button, Card, CardContent, CardMedia, Grid, IconButton, Modal, Typography, Backdrop, Fade, Menu, MenuItem, Dialog, DialogTitle, DialogActions } from "@material-ui/core";
 import React, { useState } from "react";
 // import { Rating } from '@material-ui/lab'
 import { MoreVert } from "@material-ui/icons";
@@ -43,13 +43,8 @@ export default function Location(props) {
 
     const dispatch = useDispatch();
 
-
-    const isReviewed = false;
-    const [showRv, setShowRv] = useState(false);
+    // const [showRv, setShowRv] = useState(false);
     const [showCreateRv, setShowCreateRv] = useState(false);
-    // const [like, setLike] = useState(false);
-    // const [numLike, setNumLike] = useState(0);
-    // const [valueRate, setValueRate] = useState(0);
     const [anchorEl, setAnchorEl] = useState(null);
     const [editLoc, setEditLoc] = useState(false);
     const [showDeleteLocation, setShowDeleteLocation] = useState(false);
@@ -70,12 +65,6 @@ export default function Location(props) {
         setEditLoc(false);
         handleCloseMenu();
     }
-
-    // const likeHandle = (e) => {
-    //     setLike(!like);
-    //     if (!like) setNumLike(numLike + 1);
-    //     else setNumLike(numLike - 1);
-    // }
 
     const handleShow = () => {
         setShowCreateRv(true);
@@ -113,13 +102,8 @@ export default function Location(props) {
                 <Grid item md={7}>
                     <CardContent className={classes.contentContainer}>
                         <div className={classes.tourHeader}>
-                            <Typography variant="body1" style={{ paddingTop: 20 }}>
-                                {
-                                    locationInfo.fromPrev ?
-                                        locationInfo.fromPrev === 0 ? "Điểm bắt đầu" : `Khoảng ${locationInfo.fromPrev} phút đi xe từ điểm trước đó.`
-                                        : "Đang xử lý thời gian"
-                                }
-                            </Typography>
+                            <div>
+                            </div>
                             <IconButton aria-label="settings" onClick={handleShowMenu}>
                                 <MoreVert style={{ fontSize: "20px" }} />
                             </IconButton>
@@ -176,9 +160,10 @@ export default function Location(props) {
                         <div>
                             <Typography variant="h5" component={Link} to={"/province/" + locationInfo.location.province._id}>{locationInfo.location.province.name}</Typography>
                         </div>
-                        {isReviewed ?
-                            <Button className={classes.reviewBtn} onClick={() => setShowRv(value => !value)}>{showRv ? "Ẩn" : "Xem"} Review</Button> :
-                            <Button className={classes.reviewBtn} onClick={handleShow}>Tạo Review</Button>
+                        {
+                            props.isOwn ?
+                                <Button className={classes.reviewBtn}>Xem Review</Button> :
+                                <Button className={classes.reviewBtn} onClick={handleShow}>Tạo Review</Button>
                         }
 
 
@@ -203,8 +188,8 @@ export default function Location(props) {
                         </div>
                     </CardContent>
                 </Grid>
-                <Collapse in={showRv}>
-                    {/* <Grid item md={12}>
+                {/* <Collapse in={showRv}>
+                    <Grid item md={12}>
                         <CardContent className={classes.review}>
                             <Typography component="legend">Đánh giá: </Typography>
                             <Rating
@@ -228,8 +213,8 @@ export default function Location(props) {
                             </Typography>
                             <Button>Xem chi tiết</Button>
                         </CardActions>
-                    </Grid> */}
-                </Collapse>
+                    </Grid>
+                </Collapse> */}
 
             </Grid>
         </Card>
