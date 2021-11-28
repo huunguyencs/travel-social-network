@@ -2,6 +2,7 @@
 export function convertDateToStr(date) {
     // date is Date object
     return date.toLocaleDateString("vi-VN");
+    // return "11/11"
 }
 
 export function convertStrToDate(dateStr) {

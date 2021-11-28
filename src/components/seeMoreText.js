@@ -21,11 +21,11 @@ export function SeeMoreText(props) {
 
     return (
         <Typography variant={variant}>
-            {text.length < maxText ? text :
+            {text?.length < maxText ? text :
                 (
                     <>
-                        <span>{text.slice(0, maxText)}</span>
-                        {more ? <span>{text.slice(maxText)}</span> : <span>...</span>}
+                        <span>{text?.slice(0, maxText)}</span>
+                        {more ? <span>{text?.slice(maxText)}</span> : <span>...</span>}
                         {!more && <span onClick={() => setMore(true)} className={classes.moreButton}>Xem thêm</span>}
                     </>
                 )

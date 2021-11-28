@@ -11,6 +11,7 @@ const leftbarStyles = makeStyles((theme) => ({
         // marginTop: theme.spacing(10),
         paddingBottom: theme.spacing(4),
         marginLeft: 15,
+
         top: 0,
     },
     panel: {
@@ -21,6 +22,7 @@ const leftbarStyles = makeStyles((theme) => ({
         paddingTop: theme.spacing(4),
         paddingBottom: theme.spacing(4),
         paddingInline: theme.spacing(0),
+        marginRight: 10,
     },
     item: {
         paddingInline: theme.spacing(4),

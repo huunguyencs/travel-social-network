@@ -37,15 +37,15 @@ function HomePage() {
       <Grid item md={12} >
         <Slider />
       </Grid>
-      <Grid item md={3} sm={12}>
+      <Grid item md={3} sm={12} xs={12} className={classes.leftbar}>
         <LeftBar >
           <Menu menuList={homeMenu} />
         </LeftBar>
       </Grid>
-      <Grid item md={6}>
+      <Grid item md={6} sm={12} xs={12} className={classes.content}>
         <FeedPost />
       </Grid>
-      <Grid item md={3} sm={0} className={classes.rightbar}>
+      <Grid item md={3} className={classes.rightbar}>
         <RightBar>
           <Calendar />
           <FriendRecommendCard />

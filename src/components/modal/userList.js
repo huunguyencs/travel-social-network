@@ -18,7 +18,7 @@ export default function UserList(props) {
     const classes = modalListStyles();
 
     const handleFollow = (user) => {
-        console.log(user);
+        // console.log(user);
         if (isFollowed(user._id)) {
             dispatch(unfollow(user, auth.token));
         }
@@ -29,7 +29,7 @@ export default function UserList(props) {
 
     const isFollowed = (id) => {
         for (const u of followings) {
-            console.log(u._id);
+            // console.log(u._id);
             if (u._id === id) {
                 return true;
             }

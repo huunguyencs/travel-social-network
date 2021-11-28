@@ -16,12 +16,12 @@ export const login = (data, callback) => async (dispatch) => {
 
         // stop loading
         dispatch(notifyAction.callSuccess({ message: "" }));
-        console.log(res);
+        // console.log(res);
         dispatch(authAction.auth({ user: res.data.user, token: res.data.accessToken }));
 
     }
     catch (err) {
-        console.log(err);
+        // console.log(err);
         callback(err.response.data.message);
         dispatch(notifyAction.callFail({ error: err.response.data.message }));
     }
@@ -34,13 +34,13 @@ export const register = (data, callback) => async (dispatch) => {
         // call api to register
         const res = await customAxios().post("user/register", data);
 
-        console.log(res);
+        // console.log(res);
 
         // stop loading
         dispatch(notifyAction.callSuccess({ message: res.data.message }));
     }
     catch (err) {
-        console.log(err);
+        // console.log(err);
         callback(err.response.data.message);
         dispatch(notifyAction.callFail({ error: err.response.data.message }));
     }
@@ -48,15 +48,15 @@ export const register = (data, callback) => async (dispatch) => {
 
 export const refreshToken = (callback) => async (dispatch) => {
     try {
-        const res = await customAxios().post("/user/refresh_token", null, {
+        const res = await customAxios().post("/user/refresh_token", {}, {
             // withCredentials: true,
             credentials: 'include'
         });
-        console.log(res);
+        // console.log(res);
         dispatch(authAction.auth({ user: res.data.user, token: res.data.accessToken }));
     }
     catch (err) {
-        console.log(err);
+        // console.log(err.response.data.message);
         callback();
         // dispatch(notifyAction.callFail({ error: err.response.data.message }));
     }
@@ -67,7 +67,7 @@ export const logout = (data) => async (dispatch) => {
         const res = await customAxios().post("/user/logout", data, {
             credentials: "include"
         })
-        console.log(res);
+        // console.log(res);
         dispatch(authAction.logout());
     }
     catch (err) {

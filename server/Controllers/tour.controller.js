@@ -3,32 +3,35 @@ const TourDates = require('../Models/tourDate.model')
 const Comments = require('../Models/comment.model')
 
 class TourController {
-    async createTour(req, res){
-        try{
-            const  {content,tourName,isPublic, taggedIds, image, hashtag, tourDate} = req.body
+    async createTour(req, res) {
+        try {
+            const { content, name, taggedIds, image, hashtags, tour } = req.body
+
+            // console.log(tourDate[0].locations);
 
             const newTour = new Tours({
-                userId: req.user._id, content, image, tourName,taggedIds, hashtag, isPublic
+                userId: req.user._id, content, image, name, taggedIds, hashtags
             })
             await newTour.save()
-            if(tourDate.length >0){
-                tourDate.forEach(async function(element){
+            if (tour.length > 0) {
+                tour.forEach(async function (element) {
+                    // console.log(element);
                     const newTourDate = new TourDates({
-                        date: element.date, locations:element.locations
+                        date: element.date, locations: element.locations
                     })
                     await newTourDate.save();
 
                     await Tours.findOneAndUpdate({ _id: newTour._id }, {
                         $push: {
-                            tourDate: newTourDate._id
+                            tour: newTourDate._id
                         }
                     });
                 });
             }
-             res.json({
-                 success:true,
-                 message:"Create Tour successful",
-                 newTour: {
+            res.json({
+                success: true,
+                message: "Create Tour successful",
+                newTour: {
                     ...newTour._doc,
                     userId: {
                         fullname: req.user.fullname,
@@ -36,99 +39,135 @@ class TourController {
                         avatar: req.user.avatar
                     }
                 }
-             })
-        }catch(err){
+            })
+        } catch (err) {
             console.log(err)
-            res.status(500).json({success: false, message: err.message})
+            res.status(500).json({ success: false, message: err.message })
         }
     }
     ///
-    async updateTour(req, res){
-        try{
-            const  {content,tourName,isPublic, taggedIds, image, hashtag, tourDate} = req.body
+    async updateTour(req, res) {
+        try {
+            const { content, tourName, isPublic, taggedIds, image, hashtag, tourDate } = req.body
 
             const tour = await Tours.findOneAndUpdate({ _id: req.params.id }, {
-                content, image, tourName,taggedIds, hashtag, isPublic
+                content, image, tourName, taggedIds, hashtag, isPublic, tourDate
             }, { new: true })
 
-            res.json({success:true, message:"update tour successful", tour})
-        }catch(err){
+            res.json({ success: true, message: "update tour successful", tour })
+        } catch (err) {
             console.log(err)
-            res.status(500).json({success: false, message: err.message})
+            res.status(500).json({ success: false, message: err.message })
         }
     }
 
     //A(user._id) like tour B(params.id)
-    async likeTour(req, res){
-        try{
-            const tour = await Tours.find({ _id: req.params.id, likes: req.user._id });
+    async likeTour(req, res) {
+        try {
+            var tour = await Tours.find({ _id: req.params.id, likes: req.user._id });
             if (tour.length > 0) {
-                return res.status(400).json({success:false, message: "You liked this tour." })
+                return res.status(400).json({ success: false, message: "You liked this tour." })
             }
 
-            await Tours.findOneAndUpdate({ _id: req.params.id }, {
+            tour = await Tours.findOneAndUpdate({ _id: req.params.id }, {
                 $push: {
-                    likeIds: req.user._id
+                    likes: req.user._id
                 }
-            })
+            }, { new: true })
             res.json({
-                success:true, message:"like tour success"
+                success: true, message: "like tour success",
+                likes: tour.likes
             });
-        }catch(err){
+        } catch (err) {
             console.log(err)
-            res.status(500).json({success: false, message: err.message})
+            res.status(500).json({ success: false, message: err.message })
         }
     }
 
     //A(user._id) unlike tour B(params.id)
-    async unlikeTour(req, res){
-        try{
-            await Tours.findOneAndUpdate({ _id: req.params.id }, {
+    async unlikeTour(req, res) {
+        try {
+            const tour = await Tours.findOneAndUpdate({ _id: req.params.id }, {
                 $pull: {
-                    likeIds: req.user._id
+                    likes: req.user._id
                 }
-            })
+            }, { new: true })
 
             res.json({
-                success:true, message:"unlike tour success"
+                success: true, message: "unlike tour success",
+                likes: tour.likes
             });
-        }catch(err){
+        } catch (err) {
             console.log(err)
-            res.status(500).json({success: false, message: err.message})
+            res.status(500).json({ success: false, message: err.message })
         }
     }
 
-    async deleteTour(req, res){
-        try{
+    async deleteTour(req, res) {
+        try {
             const tour = await Tours.findOneAndDelete({ _id: req.params.id, userId: req.user._id });
-            if(tour.comments != null) await Comments.deleteMany({ _id: { $in: tour.comments } });
+            if (tour.comments != null) await Comments.deleteMany({ _id: { $in: tour.comments } });
 
             res.json({
-                success:true, message:"Delete tour success"
+                success: true, message: "Delete tour success"
             });
-        }catch(err){
+        } catch (err) {
             console.log(err)
-            res.status(500).json({success: false, message: err.message})
+            res.status(500).json({ success: false, message: err.message })
+        }
+    }
+
+    async getTours(req, res) {
+        try {
+            const tours = await Tours.find({}).sort("-createdAt")
+                .populate("userId likes", "username email fullname avatar")
+                .populate({
+                    path: "comments",
+                    populate: {
+                        path: "userId likes",
+                        select: "-password"
+                    }
+                })
+            res.json({ success: true, message: "get tours successful", tours })
+        }
+        catch (err) {
+            console.log(err);
+            res.status(500).json({ success: false, message: err.message });
         }
     }
 
     //lấy tours của 1 user cụ thể (params.id)
-    async getUserTour(req, res){
-        try{
+    async getUserTour(req, res) {
+        try {
             const tours = await Tours.find({ userId: req.params.id }).sort("-createdAt")
 
-            res.json({success:true, message:"get user tour successful", tours})
-        }catch(err){
+            res.json({ success: true, message: "get user tour successful", tours })
+        } catch (err) {
             console.log(err)
-            res.status(500).json({success: false, message: err.message})
+            res.status(500).json({ success: false, message: err.message })
         }
     }
 
     // lấy thông tin 1 tour theo params.id
-    async getTour(req, res){
-        try{
+    async getTour(req, res) {
+        try {
             const tour = await Tours.findById(req.params.id)
-                .populate("userId likeIds", "username email fullname avatar followers")
+                .populate("tour")
+                .populate({
+                    path: "tour",
+                    populate: {
+                        path: "locations",
+                        populate: {
+                            path: "location",
+                            select: "name images",
+                            populate: {
+                                path: "province",
+                                select: "name"
+                            }
+                        }
+                    }
+                })
+                .populate("userId likes", "username email fullname avatar followers")
                 .populate({
                     path: "comments",
                     populate: {
@@ -137,11 +176,11 @@ class TourController {
                     },
                 })
             res.json({
-                success:true, message:"get info 1 tour success", tour
+                success: true, message: "get info 1 tour success", tour
             });
-        }catch(err){
+        } catch (err) {
             console.log(err)
-            res.status(500).json({success: false, message: err.message})
+            res.status(500).json({ success: false, message: err.message })
         }
     }
 

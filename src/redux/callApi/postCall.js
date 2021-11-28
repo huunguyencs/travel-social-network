@@ -11,7 +11,7 @@ export const getPosts = (token) => async (dispatch) => {
         // call api to get post list
         const res = await customAxios(token).get("post/posts");
 
-        console.log(res);
+        // console.log(res);
 
         dispatch(postAction.getPosts({ posts: res.data.posts }));
     }
@@ -25,15 +25,15 @@ export const getUserPost = (id, token) => async (dispatch) => {
     dispatch(postAction.loading());
 
     try {
-        const res = await customAxios(token).get(`post/user_posts/${id}`);
+        const res = await customAxios(token).get(`/post/user_posts/${id}`);
 
         dispatch(postAction.getPosts({ posts: res.data.posts }));
     }
     catch (err) {
 
-        console.log(err.response.data.message);
-
-        dispatch(postAction.error({ error: err.response.data.message }))
+        // console.log(err.response.data.message);
+        console.log(err);
+        // dispatch(postAction.error({ error: err.response.data.message }))
     }
 }
 
@@ -54,9 +54,8 @@ export const getMorePost = (data) => async (dispatch) => {
     }
 }
 
-export const createPost = (data, token) => async (dispatch) => {
+export const createPost = (data, token, next) => async (dispatch) => {
     // post api
-    dispatch(notifyAction.callStart());
     try {
         // call api to save post
         let image = [];
@@ -69,13 +68,12 @@ export const createPost = (data, token) => async (dispatch) => {
 
         const res = await customAxios(token).post("/post/create_post", post);
 
-        console.log(res.data);
-        dispatch(notifyAction.callSuccess({ message: res.data.message }));
+        // console.log(res.data);
         dispatch(postAction.addPost({ post: res.data.newPost }))
-
+        next();
     }
     catch (err) {
-        dispatch(notifyAction.callFail({ error: err.response.data.message }))
+        console.log(err);
     }
 }
 
@@ -104,30 +102,26 @@ export const deletePost = (data) => async (dispatch) => {
     }
 }
 
-export const likePost = (id, token) => async (dispatch) => {
-    dispatch(notifyAction.callStart());
+export const likePost = (id, token, next) => async (dispatch) => {
 
     try {
-
         const res = await customAxios(token).patch(`/post/${id}/like`);
         dispatch(postAction.updateLike({ id: id, likes: res.data.likes }));
-        dispatch(notifyAction.callSuccess());
     }
     catch (err) {
-        dispatch(notifyAction.callFail({ error: err.response.data.message }));
+        next();
+        // console.log(err);
     }
 }
 
-export const unlikePost = (id, token) => async (dispatch) => {
-    dispatch(notifyAction.callStart());
+export const unlikePost = (id, token, next) => async (dispatch) => {
 
     try {
-
         const res = await customAxios(token).patch(`/post/${id}/unlike`);
         dispatch(postAction.updateLike({ id: id, likes: res.data.likes }));
-        dispatch(notifyAction.callSuccess());
     }
     catch (err) {
-        dispatch(notifyAction.callFail({ error: err.response.data.message }));
+        next();
+        // console.log(err);
     }
 }

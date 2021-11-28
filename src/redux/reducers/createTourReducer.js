@@ -1,5 +1,5 @@
 import * as TOUR_TYPES from '../constants/createTourConstant';
-import * as dateUtils from '../../utils/date';
+// import * as dateUtils from '../../utils/date';
 
 const INIT_STATE = {
     name: "",
@@ -15,26 +15,24 @@ const INIT_STATE = {
 const createTourReducer = (state = INIT_STATE, action) => {
     switch (action.type) {
         case TOUR_TYPES.ADD_TOUR: {   // them tour (chua cap nhat len database)
-            var dateStr = dateUtils.convertDateToStr(action.payload.date);
+            // var dateStr = dateUtils.convertDateToStr(action.payload.date);
             return {
                 ...state,
                 name: action.payload.name,
-                tour: [...state.tour, { time: dateStr, tour: [] }]
+                tour: [...state.tour, { date: action.payload.date, locations: [] }]
             }
         }
         case TOUR_TYPES.ADD_NEW_DATE: {
-            var newDate = dateUtils.convertStrToDate(state.tour[state.tour.length - 1].time);
+            var newDate = new Date(state.tour[state.tour.length - 1].date);
             newDate.setDate(newDate.getDate() + 1);
-            dateStr = dateUtils.convertDateToStr(newDate);
+            // dateStr = dateUtils.convertDateToStr(newDate);
 
             return {
                 ...state,
-                tour: [...state.tour,
-                {
-                    time: dateStr,
-                    tour: [],
-                }
-                ]
+                tour: [...state.tour, {
+                    date: newDate,
+                    locations: [],
+                }]
             }
         }
         case TOUR_TYPES.ADD_NEW_LOCATION: {
@@ -42,20 +40,18 @@ const createTourReducer = (state = INIT_STATE, action) => {
             // goi api lay du lieu tu location id
             // console.log(location);
 
-            const newLocation = {
-                _id: 1321,
-                location: location,
-                province: "Hà Nội",
-                cost: cost,
-            }
+            // const newLocation = {
+            //     location: location,
+            //     cost: cost,
+            // }
 
             return {
                 ...state,
                 tour: state.tour.map((date, i) => i === action.payload.indexDate ? {
                     ...date,
-                    tour: [
-                        ...date.tour,
-                        newLocation
+                    locations: [
+                        ...date.locations,
+                        action.payload
                     ]
                 } : date)
             }
@@ -74,21 +70,21 @@ const createTourReducer = (state = INIT_STATE, action) => {
                 ...state,
                 tour: state.tour.map((date, i) => i === action.payload.indexDate ? {
                     ...date,
-                    tour: [
-                        ...date.tour.slice(0, action.payload.indexLocation),
-                        ...date.tour.slice(action.payload.indexLocation + 1)
+                    locations: [
+                        ...date.locations.slice(0, action.payload.indexLocation),
+                        ...date.locations.slice(action.payload.indexLocation + 1)
                     ]
 
                 } : date)
             }
         }
         case TOUR_TYPES.UPDATE_DATE: {
-            dateStr = dateUtils.convertDateToStr(action.payload.newDate);
+            // dateStr = dateUtils.convertDateToStr(action.payload.newDate);
             return {
                 ...state,
                 tour: state.tour.map((date, i) => i === action.payload.indexDate ? {
                     ...date,
-                    time: dateStr
+                    date: action.payload.newDate
                 } : date)
             }
         }
@@ -100,11 +96,10 @@ const createTourReducer = (state = INIT_STATE, action) => {
                 ...state,
                 tour: state.tour.map((date, i) => i === action.payload.indexDate ? {
                     ...date,
-                    tour: date.tour.map((loc, j) => j === action.payload.indexLocation ? {
-                        ...loc,
-                        location: location,
-                        cost: cost,
-                    } : loc)
+                    locations: date.locations.map((loc, j) => j === action.payload.indexLocation ?
+                        // location: location._id,
+                        // cost: cost,
+                        action.payload : loc)
                 } : date)
             }
         }
@@ -114,7 +109,7 @@ const createTourReducer = (state = INIT_STATE, action) => {
                 name: "",
                 tour: [],
                 image: null,
-                hashtag: "",
+                hashtags: "",
                 content: "",
             }
         }
@@ -123,7 +118,7 @@ const createTourReducer = (state = INIT_STATE, action) => {
                 ...state,
                 name: action.payload.name,
                 image: action.payload.image,
-                hashtag: action.payload.hashtag,
+                hashtags: action.payload.hashtag,
                 content: action.payload.content,
             }
         }

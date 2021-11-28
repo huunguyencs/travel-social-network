@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import {
     Avatar,
     Backdrop,
@@ -9,7 +9,6 @@ import {
     CardMedia,
     Collapse,
     IconButton,
-    Link,
     Modal,
     Typography
 } from "@material-ui/core";
@@ -20,6 +19,7 @@ import {
     QuestionAnswer,
     Share
 } from "@material-ui/icons";
+import { Link } from 'react-router-dom'
 
 
 import Comment from "../comment/Comment";
@@ -27,43 +27,54 @@ import { postStyles } from "../../style";
 import InputComment from "../input/comment";
 import UserList from "../modal/userList";
 import { SeeMoreText } from "../seeMoreText";
-
-const userList = [
-    {
-        _id: 132123,
-        firstName: "An",
-        lastName: "Nguyễn",
-        avatarImage: "",
-    },
-    {
-        _id: 456,
-        firstName: "An",
-        lastName: "Nguyễn",
-        avatarImage: "",
-    },
-    {
-        _id: 798,
-        firstName: "An",
-        lastName: "Nguyễn",
-        avatarImage: "",
-    }
-]
+import ImageModal from "../modal/image";
+import { useDispatch, useSelector } from "react-redux";
+import { likeTour, unlikeTour } from "../../redux/callApi/tourCall";
 
 
 export default function Tour(props) {
 
     const { tour } = props;
+    const { auth } = useSelector(state => state);
+    const dispatch = useDispatch();
 
     const [showCmt, setShowCmt] = useState(false);
-    const [like, setLike] = useState(tour.liked);
-    const [numLike, setNumLike] = useState(tour.numLike);
+    const [like, setLike] = useState(false);
+    const [numLike, setNumLike] = useState(tour.likes?.length);
+    const [open, setOpen] = useState(false);
+
+    const handleCloseImage = () => {
+        setOpen(false);
+    }
 
     const classes = postStyles({ showCmt });
 
-    const likeHandle = (e) => {
-        setLike(!like);
-        if (!like) setNumLike(numLike + 1);
-        else setNumLike(numLike - 1);
+    const likePress = () => {
+        if (!auth.user) return;
+        if (like) {
+            handleUnlike();
+        }
+        else handleLike();
+    }
+
+    const handleLike = () => {
+        setLike(true);
+        setNumLike(state => state + 1);
+
+        dispatch(likeTour(tour._id, auth.token, () => {
+            setLike(false);
+            setNumLike(state => state - 1);
+        }))
+    }
+
+    const handleUnlike = () => {
+        setLike(false);
+        setNumLike(state => state - 1);
+
+        dispatch(unlikeTour(tour._id, auth.token, () => {
+            setLike(true);
+            setNumLike(state => state + 1);
+        }))
     }
 
     const [showLike, setShowLike] = useState(false);
@@ -75,6 +86,12 @@ export default function Tour(props) {
     const handleClose = () => {
         setShowLike(false);
     };
+
+    useEffect(() => {
+        if (auth.user && tour.likes.find(like => like._id === auth.user._id)) {
+            setLike(true);
+        }
+    }, [tour.likes, auth.user])
 
 
     return (
@@ -92,37 +109,33 @@ export default function Tour(props) {
                     <Typography className={classes.userName}>{tour.userId.fullname}</Typography>
                 }
             />
-
-            <CardMedia>
-
-                {tour?.image !== "" && <img src={tour.image} width="100%" alt="Can not load" />}
-            </CardMedia>
+            {tour.image !== "" &&
+                <CardMedia>
+                    <img src={tour.image} className={classes.image} width="100%" alt="Can not load" onClick={() => setOpen(true)} />
+                    <ImageModal
+                        open={open}
+                        handleClose={handleCloseImage}
+                        img={tour.image}
+                    />
+                </CardMedia>
+            }
 
 
             <CardContent>
-                <Link>
-                    <Typography variant="h6" className={classes.title}>
-                        {tour.tourName}
-                    </Typography>
-                </Link>
+                <Typography variant="h6" className={classes.title} component={Link} to={`tour/${tour._id}`}>
+                    {tour.name}
+                </Typography>
                 <SeeMoreText
                     variant="body1"
                     maxText={6}
                     text={tour.content}
                 />
                 <Typography style={{ marginTop: 20 }}>
-                    Thời gian: {tour.tourDate.length} ngày
+                    Thời gian: {tour.tour?.length} ngày
                 </Typography>
                 <div>
                     <Typography>Thành viên tham gia: {tour.taggedIds.length + 1}</Typography>
                 </div>
-                {/* <Typography>
-                    Địa điểm: {props.tour.location.map((item) => {
-                        return (
-                            <Link className={classes.location}>{item}</Link>
-                        )
-                    })}
-                </Typography> */}
 
                 <div className={classes.hashtagWrap}>
                     {tour.hashtags.map((item) =>
@@ -133,14 +146,14 @@ export default function Tour(props) {
             </CardContent>
 
             <CardActions>
-                <IconButton onClick={likeHandle}>
+                <IconButton onClick={likePress}>
                     {
                         like ? <Favorite className={classes.likeIcon} /> : <FavoriteBorderOutlined />
                     }
 
                 </IconButton>
                 <Typography className={classes.numLike} onClick={handleOpen}>
-                    {tour.likeIds.length}
+                    {numLike}
                 </Typography>
                 <Modal
                     aria-labelledby="transition-modal-title"
@@ -154,13 +167,13 @@ export default function Tour(props) {
                         timeout: 500,
                     }}
                 >
-                    <UserList listUser={userList} title={"Liked"} handleClose={handleClose} />
+                    <UserList listUser={tour.likes} title={"Đã thích"} handleClose={handleClose} />
                 </Modal>
                 <IconButton onClick={() => (setShowCmt(value => !value))}>
                     <QuestionAnswer />
                 </IconButton>
                 <Typography className={classes.numCmt}>
-                    {tour.comment.length}
+                    {tour.comments.length}
                 </Typography>
                 <IconButton>
                     <Share />
@@ -171,7 +184,7 @@ export default function Tour(props) {
             <Collapse className={classes.cmt} in={showCmt}>
                 <hr className={classes.line} />
                 <div className={classes.listCmt}>
-                    {tour.comment.map((cmt) => (
+                    {tour.comments.map((cmt) => (
                         <Comment comment={cmt} key={cmt._id} id={tour._id} type="tour" />
                     ))}
                 </div>

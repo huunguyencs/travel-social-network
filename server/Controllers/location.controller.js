@@ -55,10 +55,10 @@ class LocationController {
     // lấy thông tin 1 Location theo params.id
     async getLocation(req, res) {
         try {
-            const Location = await Locations.findById(req.params.id)
-                .populate("posts province")
+            const location = await Locations.findById(req.params.id)
+                .populate("province")
             res.json({
-                success: true, message: "get info 1 Location success", Location
+                success: true, message: "get info 1 Location success", location
             });
         } catch (err) {
             console.log(err)
@@ -69,9 +69,9 @@ class LocationController {
     //Get all Location
     async getLocations(req, res) {
         try {
-            const Location = await Locations.find()
-                .populate("posts province")
-            res.json({ success: true, message: "get info 1 Location success", Location });
+            const location = await Locations.find()
+                .populate("province")
+            res.json({ success: true, message: "get all locations success", location });
         } catch (err) {
             console.log(err)
             res.status(500).json({ success: false, message: err.message })

@@ -2,8 +2,8 @@ const mongoose = require('mongoose');
 
 const tourSchema = new mongoose.Schema({
     content: String,
-    tourDate: [{ type: mongoose.Types.ObjectId, ref: 'tour_dates' }],
-    tourName: {
+    tour: [{ type: mongoose.Types.ObjectId, ref: 'tour_dates' }],
+    name: {
         type: String,
         required: true
     },
@@ -12,7 +12,7 @@ const tourSchema = new mongoose.Schema({
         default: true
     },
     taggedIds: [{ type: mongoose.Types.ObjectId, ref: 'users' }],
-    likeIds: [{ type: mongoose.Types.ObjectId, ref: 'users' }],
+    likes: [{ type: mongoose.Types.ObjectId, ref: 'users' }],
     comments: [{ type: mongoose.Types.ObjectId, ref: 'comments' }],
     userId: { type: mongoose.Types.ObjectId, ref: 'users' },
     hashtags: Array,

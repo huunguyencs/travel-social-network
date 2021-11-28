@@ -32,28 +32,6 @@ import { SeeMoreText } from "../seeMoreText";
 import { timeAgo } from "../../utils/date";
 import { likePost, unlikePost } from '../../redux/callApi/postCall';
 
-const userList = [
-    {
-        _id: 132123,
-        firstName: "An",
-        lastName: "Nguyễn",
-        avatarImage: "",
-    },
-    {
-        _id: 456,
-        firstName: "An",
-        lastName: "Nguyễn",
-        avatarImage: "",
-    },
-    {
-        _id: 798,
-        firstName: "An",
-        lastName: "Nguyễn",
-        avatarImage: "",
-    }
-]
-
-
 
 export default function Post(props) {
 
@@ -64,7 +42,7 @@ export default function Post(props) {
 
     const [showCmt, setShowCmt] = useState(false);
     const [like, setLike] = useState(false);
-    const [numLike, setNumLike] = useState(post.likes.length);
+    const [numLike, setNumLike] = useState(post.likes?.length);
 
     const classes = postStyles({ showCmt });
 
@@ -80,14 +58,20 @@ export default function Post(props) {
         setLike(true);
         setNumLike(state => state + 1);
         // call api
-        dispatch(likePost(post._id, auth.token));
+        dispatch(likePost(post._id, auth.token, () => {
+            setLike(false);
+            setNumLike(state => state - 1)
+        }));
     }
 
     const handleUnlike = () => {
         setLike(false);
         setNumLike(state => state - 1);
         // call api
-        dispatch(unlikePost(post._id, auth.token));
+        dispatch(unlikePost(post._id, auth.token, () => {
+            setLike(true);
+            setNumLike(state => state + 1);
+        }));
     }
 
     const [showLike, setShowLike] = useState(false);
@@ -174,7 +158,7 @@ export default function Post(props) {
                         timeout: 500,
                     }}
                 >
-                    <UserList listUser={post.likes} title={"Liked"} handleClose={handleClose} />
+                    <UserList listUser={post.likes} title={"Đã thích"} handleClose={handleClose} />
                 </Modal>
                 <IconButton onClick={handleShowCmt}>
                     <QuestionAnswer />

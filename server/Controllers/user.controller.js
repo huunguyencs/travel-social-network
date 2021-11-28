@@ -21,23 +21,14 @@ class UserController {
 
 
             //Return Token
-            const accessToken = jwt.sign({ id: userNew._id }, process.env.ACCESS_TOKEN_SECRET || "abcdefghiklmn")
-
-            //Cookie
-            // const refresh_token = createRefreshToken({ id: newUser._id })
-
-            // res.cookie('refreshtoken', refresh_token, {
-            //     httpOnly: true,
-            //     path: '/api/refresh_token',
-            //     maxAge: 30 * 24 * 60 * 60 * 1000 // 30days
-            // })
+            // const accessToken = jwt.sign({ id: userNew._id }, process.env.ACCESS_TOKEN_SECRET || "abcdefghiklmn")
 
             await userNew.save();
 
             res.json({
                 success: true,
                 message: "Đăng ký thành công!",
-                accessToken
+                // accessToken
             })
         } catch (err) {
             console.log(err)
@@ -49,7 +40,7 @@ class UserController {
         try {
             const { email, password } = req.body
 
-            const user = await Users.findOne({ email }).populate("followers followings", "username avatar fullname")
+            const user = await Users.findOne({ email }).populate("followers followings", "username avatar fullname followings")
             if (!user) return res.status(400).json({ success: false, message: "Email không đúng!" })
             const passwordValid = await bcrypt.compare(password, user.password)
             if (!passwordValid) return res.status(400).json({ success: false, message: "Mật khẩu không đúng!" })
@@ -91,7 +82,7 @@ class UserController {
             jwt.verify(refresh_token, "REFRESH_TOKEN_SECRET", async (err, result) => {
                 if (err) return res.status(400).json({ message: "No token" });
 
-                const user = await Users.findById(result.id).select("-password").populate("followers followings", "username avatar fullname")
+                const user = await Users.findById(result.id).select("-password").populate("followers followings", "username avatar fullname followings")
                 if (!user) return res.status(400).json("No token");
 
                 const accessToken = jwt.sign({ id: user._id }, process.env.ACCESS_TOKEN_SECRET || "abcdefghiklmn")

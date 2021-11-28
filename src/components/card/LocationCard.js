@@ -7,23 +7,25 @@ import { cardStyles } from "../../style";
 
 export default function LocationCard(props) {
 
+    const { location } = props;
+
     const classes = cardStyles();
 
     return (
         <Card className={classes.cardContainer}>
             <CardMedia
                 className={classes.image}
-                image={props.location.image}
+                image={location.images[0]}
             />
             <CardContent>
-                <Typography className={classes.locationName} variant="h6">{props.location.locationName}</Typography>
+                <Typography className={classes.locationName} variant="h6">{location.name}</Typography>
             </CardContent>
             <CardActions className={classes.footer}>
                 <div className={classes.star}>
-                    <Typography>{props.location.star}</Typography>
+                    <Typography>{location.starTotal}</Typography>
                     <Star className={classes.starIcon} />
                 </div>
-                <Button className={classes.seeMore} component={Link} to={"/location/" + props.location._id}>
+                <Button className={classes.seeMore} component={Link} to={"/location/" + location._id}>
                     Xem thêm
                 </Button>
             </CardActions>

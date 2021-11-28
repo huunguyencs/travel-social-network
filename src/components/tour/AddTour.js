@@ -7,18 +7,20 @@ import { tourdetailStyles } from "../../style";
 import AddLocationForm from "../forms/addLocation";
 import Location from './Location';
 import * as tourAction from '../../redux/actions/createTourAction';
-// import { useHistory } from "react-router-dom";
+import { useHistory } from "react-router-dom";
 import UpdateDateForm from "../forms/updateDate";
 import UpdateTourInfo from "../forms/updateInfoCreateTour";
+import { createTourCall } from "../../redux/callApi/tourCall";
+import { convertDateToStr } from "../../utils/date";
 
 
 
 export default function AddTour(props) {
 
-    // const history = useHistory();
+    const history = useHistory();
 
     const dispatch = useDispatch();
-    const { createTour } = useSelector(state => state);
+    const { createTour, auth } = useSelector(state => state);
 
 
     const [idx, setIdx] = useState(0);
@@ -41,8 +43,15 @@ export default function AddTour(props) {
     }
 
     const handleSave = () => {
-
-        console.log("save tour");
+        // console.log(createTour);
+        dispatch(createTourCall({
+            name: createTour.name,
+            content: createTour.content,
+            hashtags: createTour.hashtags,
+            tour: createTour.tour,
+        }, createTour.image, auth.token, () => {
+            history.push("/tour")
+        }))
     }
 
     const handleDeleteDate = () => {
@@ -130,7 +139,7 @@ export default function AddTour(props) {
                                     </TimelineSeparator>
                                     <TimelineContent>
                                         <Button className={index === idx ? classes.activeTimeline : classes.unactiveTimeline} onClick={() => setIdx(index)}>
-                                            {item.time}
+                                            {convertDateToStr(item.date)}
                                         </Button>
                                     </TimelineContent>
                                 </TimelineItem>
@@ -192,8 +201,8 @@ export default function AddTour(props) {
                         </Modal>
                     </div>
                     {
-                        createTour.tour[idx].tour.map((item, index) => (
-                            <Location location={item} indexDate={idx} indexLocation={index} edit={true} key={index} />
+                        createTour.tour[idx].locations.map((item, index) => (
+                            <Location location={item} indexDate={idx} indexLocation={index} edit={true} key={index} isOwn={true} />
                         ))
                     }
                     <div className={classes.addContainer}>

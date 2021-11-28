@@ -16,14 +16,6 @@ const tourReducer = (state = INIT_STATE, action) => {
                 error: null,
             }
         }
-        case TOUR_TYPES.GET_TOUR_DETAIL: {
-            return {
-                ...state,
-                tourdetail: action.payload.tourdetail,
-                loading: false,
-                error: null,
-            }
-        }
         case TOUR_TYPES.CREATE_TOUR: {
             return {
                 ...state,
@@ -53,6 +45,33 @@ const tourReducer = (state = INIT_STATE, action) => {
                 ...state,
                 loading: false,
                 error: action.payload.error,
+            }
+        }
+        case TOUR_TYPES.UPDATE_LIKE: {
+            return {
+                ...state,
+                tours: state.tours.map(item => item._id === action.payload.id ? {
+                    ...item,
+                    likes: action.payload.likes,
+                } : item)
+            }
+        }
+        case TOUR_TYPES.ADD_COMMENT: {
+            return {
+                ...state,
+                tours: state.tours.map(item => item._id === action.payload.id ? {
+                    ...item,
+                    comments: [...item.comments, action.payload.comment]
+                } : item)
+            }
+        }
+        case TOUR_TYPES.UPDATE_COMMENT: {
+            return {
+                ...state,
+                tours: state.tours.map(item => item._id === action.payload.tourId ? {
+                    ...item,
+                    comments: item.comments.map(comment => comment._id === action.payload.id ? action.payload.comment : comment)
+                } : item)
             }
         }
         default: {

@@ -27,7 +27,7 @@ export default function InputComment(props) {
                 dispatch(createCommentPost(id, text, auth));
             }
             else if (type === "tour") {
-
+                dispatch(createCommentTour(id, text, auth));
             }
             else if (type === "service") {
 

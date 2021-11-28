@@ -45,8 +45,10 @@ export default function UpdateTourInfo({ name, content, hashtag, image, handleCl
     }
 
     const handleSubmit = () => {
-        console.log(state);
+        // console.log(state);
         dispatch(updateInfo({ name: state.name, content: text, hashtag: state.hashtag, image: state.image }));
+        console.log(text);
+        console.log(state);
         handleClose();
     }
 

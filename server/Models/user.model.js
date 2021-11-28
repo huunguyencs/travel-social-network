@@ -11,48 +11,48 @@ const userSchema = new mongoose.Schema({
         required: true,
         unique: true
     },
-    email:{
+    email: {
         type: String,
         required: true,
         unique: true
     },
-    password:{
+    password: {
         type: String,
         required: true
     },
     avatar: {
         type: String,
-        default: 'https://res.cloudinary.com/devatchannel/image/upload/v1602752402/avatar/avatar_cugq40.png'
+        default: 'https://res.cloudinary.com/huunguyencs/image/upload/v1638075935/default-avatar_fxfl6s.png'
     },
-    background:{
-        type:String,
-        default: 'https://res.cloudinary.com/dxnfxl89q/image/upload/v1625327484/Toho/close-up-opened-umbrella-mockup_53876-98796_nj3un5.jpg'
-    }, 
-    phone:{
+    background: {
+        type: String,
+        default: 'https://res.cloudinary.com/huunguyencs/image/upload/v1638075905/background_wwpwxy.jpg'
+    },
+    phone: {
         type: String,
     },
-    role:{
+    role: {
         type: Number,
         default: 0
     },
-    gender:{
-        type:String,
+    gender: {
+        type: String,
         default: 'male'
     },
     birthday: Date,
     confirmAccount: {
-        state: {type:Boolean, default: false},
-        confirmId: { type: mongoose.Types.ObjectId, ref: 'confirms'}
+        state: { type: Boolean, default: false },
+        confirmId: { type: mongoose.Types.ObjectId, ref: 'confirms' }
     },
     hobbies: Array,
     address: {
         type: String,
         default: ''
     },
-    followings:[{ type: mongoose.Types.ObjectId, ref: 'users'}], // nguoi minh theo doi
-    followers:[{type: mongoose.Types.ObjectId, ref: 'users'}],  //nguoi khac theo doi minh
-    contract: { type: mongoose.Types.ObjectId, ref: 'contracts'}
-},{
+    followings: [{ type: mongoose.Types.ObjectId, ref: 'users' }], // nguoi minh theo doi
+    followers: [{ type: mongoose.Types.ObjectId, ref: 'users' }],  //nguoi khac theo doi minh
+    contract: { type: mongoose.Types.ObjectId, ref: 'contracts' }
+}, {
     timestamps: true
 })
 

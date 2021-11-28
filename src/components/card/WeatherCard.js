@@ -26,7 +26,7 @@ const convertToVN = (main) => {
 
 export default function WeatherCard(props) {
 
-    const { name } = props;
+    const { name, nameShow } = props;
     const [weather, setWeather] = useState(null);
 
     useEffect(() => {
@@ -45,16 +45,16 @@ export default function WeatherCard(props) {
     return (
         <Card className={classes.weatherCardContainer}>
             {
-                weather != null ?
+                weather && weather.weather ?
                     <CardContent className={classes.content}>
                         <div className={classes.weatherTitle}>
-                            <Typography variant="h5">{weather.name}</Typography>
+                            <Typography variant="h5">{nameShow}</Typography>
                             <Typography>{convertDateToStr(new Date(weather.dt * 1000))}</Typography>
                             <img src={`http://openweathermap.org/img/wn/${weather.weather[0].icon}@2x.png`} alt={weather.weather[0].main} className={classes.icon} />
                         </div>
 
                         <div className={classes.temp}>
-                            <Typography variant="h4">~ {weather.main.temp - 273.15} °C</Typography>
+                            <Typography variant="h4">~ {Math.floor(weather.main.temp - 273.15)} °C</Typography>
                             <Typography variant="h6">{convertToVN(weather.weather[0].main)}</Typography>
                         </div>
 
