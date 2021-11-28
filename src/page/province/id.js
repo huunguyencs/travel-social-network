@@ -36,21 +36,25 @@ export default function Province(props) {
         setPageSer(value);
     }
 
-    const classes = provinceStyles();
+    const classes = provinceStyles({ image: province?.image });
 
     const getProvince = async (id, next) => {
-        const res = await customAxios().get(`/province/${id}`);
-        console.log(res.data);
-        next(res.data.province, res.data.locations, res.data.services);
+        if (id) {
+            const res = await customAxios().get(`/province/${id}`);
+            next(res.data.province, res.data.locations, res.data.services);
+        }
+
     }
 
     useEffect(() => {
-        console.log(id);
-        getProvince(id, (province, locations, services) => {
-            setProvince(province);
-            setLocations(locations);
-            setServices(services);
-        });
+        if (id) {
+            getProvince(id, (province, locations, services) => {
+                setProvince(province);
+                setLocations(locations);
+                setServices(services);
+            });
+        }
+
     }, [id, setProvince, setLocations, setServices]);
 
     return (
@@ -58,10 +62,10 @@ export default function Province(props) {
             <SpeedDialButton />
             <Grid item md={12}>
                 <div
-                    style={{
-                        backgroundImage: `url(https://upload.wikimedia.org/wikipedia/commons/5/5d/TPQUANGNGAI.jpg)`,
-                    }}
                     className={classes.img}
+                    style={{
+                        backgroundImage: `url(https://3.bp.blogspot.com/-MYz47-CD_ig/Whw2P_O0m6I/AAAAAAABP8Y/piWDhHo0BA0S77PYhXh8OVPf64kezZ-6ACKgBGAs/s1600/dao-ly-son-o-dau-2.jpg)`,
+                    }}
                 >
                     <Typography className={classes.provinceName} variant="h1">
                         {province?.name}

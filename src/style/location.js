@@ -10,6 +10,7 @@ const locationStyles = makeStyles((theme) => ({
         maxWidth: "100%",
         overflow: "hidden",
         width: "100%",
+        backgroundImage: props => `url(${props.image})`,
         backgroundSize: "cover",
         backgroundRepeat: "no-repeat",
     },

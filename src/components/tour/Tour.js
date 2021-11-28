@@ -106,7 +106,7 @@ export default function Tour(props) {
                     </IconButton>
                 }
                 title={
-                    <Typography className={classes.userName}>{tour.userId.fullname}</Typography>
+                    <Typography className={classes.userName} component={Link} to={`/profile/${tour.userId._id}`}>{tour.userId.fullname}</Typography>
                 }
             />
             {tour.image !== "" &&

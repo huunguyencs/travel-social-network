@@ -36,14 +36,6 @@ const createTourReducer = (state = INIT_STATE, action) => {
             }
         }
         case TOUR_TYPES.ADD_NEW_LOCATION: {
-            const { location, cost } = action.payload;
-            // goi api lay du lieu tu location id
-            // console.log(location);
-
-            // const newLocation = {
-            //     location: location,
-            //     cost: cost,
-            // }
 
             return {
                 ...state,
@@ -89,8 +81,6 @@ const createTourReducer = (state = INIT_STATE, action) => {
             }
         }
         case TOUR_TYPES.UPDATE_LOCATION: {
-            // goi api lay du lieu
-            const { location, cost } = action.payload;
 
             return {
                 ...state,

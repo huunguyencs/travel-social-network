@@ -14,15 +14,15 @@ import customAxios from "../../utils/fetchData";
 
 export default function Location(props) {
 
-    const classes = locationStyles();
+
     const [location, setLocation] = useState(null);
+    const classes = locationStyles({ image: location?.images[0] });
     const { id } = useParams();
 
     const getLocation = async (id) => {
         if (id) {
             const res = await customAxios().get(`/location/${id}`);
             setLocation(res.data.location);
-
         }
     }
 
