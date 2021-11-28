@@ -3,21 +3,13 @@ import color from "./color";
 import attr from "./attr";
 
 const locationStyles = makeStyles((theme) => ({
-    container: {
-
-    },
-    coverImg: {
-        // height: "50vh",
-    },
-    imgBg: {
-        backgroundImage: `url(https://toquoc.mediacdn.vn/2018/12/25/cau-vang-ba-na-3-15457134861131150541874.jpg)`,
-        height: 700,
+    img: {
+        height: 600,
         display: "flex",
-        textAlign: "center",
+        justifyContent: "center",
         maxWidth: "100%",
         overflow: "hidden",
         width: "100%",
-        justifyContent: "space-between",
         backgroundSize: "cover",
         backgroundRepeat: "no-repeat",
     },

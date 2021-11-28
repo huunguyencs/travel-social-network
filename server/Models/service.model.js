@@ -9,6 +9,7 @@ const serviceSchema = new mongoose.Schema({
     price: Number,
     type: String,
     province: { type: mongoose.Types.ObjectId, ref: 'provinces' },
+    rateTotal: Double,
     rate: [
         {
             userId: { type: mongoose.Types.ObjectId, ref: 'users' },
