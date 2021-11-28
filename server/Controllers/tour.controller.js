@@ -64,18 +64,19 @@ class TourController {
     //A(user._id) like tour B(params.id)
     async likeTour(req, res) {
         try {
-            const tour = await Tours.find({ _id: req.params.id, likes: req.user._id });
+            var tour = await Tours.find({ _id: req.params.id, likes: req.user._id });
             if (tour.length > 0) {
                 return res.status(400).json({ success: false, message: "You liked this tour." })
             }
 
-            await Tours.findOneAndUpdate({ _id: req.params.id }, {
+            tour = await Tours.findOneAndUpdate({ _id: req.params.id }, {
                 $push: {
-                    likeIds: req.user._id
+                    likes: req.user._id
                 }
-            })
+            }, { new: true })
             res.json({
-                success: true, message: "like tour success"
+                success: true, message: "like tour success",
+                likes: tour.likes
             });
         } catch (err) {
             console.log(err)
@@ -86,14 +87,15 @@ class TourController {
     //A(user._id) unlike tour B(params.id)
     async unlikeTour(req, res) {
         try {
-            await Tours.findOneAndUpdate({ _id: req.params.id }, {
+            const tour = await Tours.findOneAndUpdate({ _id: req.params.id }, {
                 $pull: {
-                    likeIds: req.user._id
+                    likes: req.user._id
                 }
-            })
+            }, { new: true })
 
             res.json({
-                success: true, message: "unlike tour success"
+                success: true, message: "unlike tour success",
+                likes: tour.likes
             });
         } catch (err) {
             console.log(err)

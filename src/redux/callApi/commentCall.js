@@ -11,8 +11,6 @@ export const getCommentTour = (data) => async (dispatch) => {
 }
 
 export const createCommentPost = (id, comment, auth) => async (dispatch) => {
-    dispatch(notifyAction.callStart());
-
 
     try {
         // call api to update comment
@@ -21,33 +19,38 @@ export const createCommentPost = (id, comment, auth) => async (dispatch) => {
             content: comment,
             postId: id,
         })
-        // console.log(res);
 
         const newComment = {
             ...res.data.newComment,
             userId: auth.user,
         }
         dispatch(commentAction.addCommentPost({ id: id, comment: newComment }))
-        dispatch(notifyAction.callSuccess({ message: "" }));
 
     }
     catch (err) {
         // console.log(err.response.data.message);
-        dispatch(notifyAction.callFail({ error: err.response.data.message }));
+
     }
 }
 
-export const createCommentTour = (data) => async (dispatch) => {
-    dispatch(notifyAction.callStart());
-    // const newComments;
+export const createCommentTour = (id, comment, auth) => async (dispatch) => {
 
-    // dispatch(commentAction.updateCommentTour({ comments: newComments }))
     try {
         // call api to update comment
-        dispatch(notifyAction.callSuccess({ message: "" }));
+        const res = await customAxios(auth.token).post("/comment/create_comment", {
+            commentType: "tour",
+            content: comment,
+            tourId: id,
+        })
+
+        const newComment = {
+            ...res.data.newComment,
+            userId: auth.user,
+        }
+        dispatch(commentAction.addCommentTour({ id: id, comment: newComment }))
     }
     catch (err) {
-        dispatch(notifyAction.callFail({ error: err.response.data.message }));
+        console.log(err);
     }
 }
 

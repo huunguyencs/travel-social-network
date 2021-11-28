@@ -1,5 +1,4 @@
 import * as tourAction from '../actions/tourAction';
-import * as notifyAction from '../actions/notifyAction';
 import customAxios from '../../utils/fetchData';
 import * as imageUtils from '../../utils/uploadImage'
 
@@ -13,87 +12,15 @@ export const getTours = (data) => async (dispatch) => {
         dispatch(tourAction.getTours({ tour: res.data.tours }));
     }
     catch (err) {
-        // console.log(err.response.data.message);
-        dispatch(tourAction.error({ error: err.response.data.message }))
+        console.log(err);
+        // dispatch(tourAction.error({ error: err.response.data.message }))
+
     }
 }
 
 export const getTourDetail = (id, next) => async (dispatch) => {
     dispatch(tourAction.loading());
     try {
-        // const res = {
-        //     _id: 1321,
-        //     tourName: "Đây là tiêu đề của tour",
-        //     tourDate: [
-        //         {
-        //             _id: 3123,
-        //             date: "12/11/2021",
-        //             locations: [
-        //                 {
-        //                     _id: 2514,
-        //                     location: {
-        //                         _id: 1313,
-        //                         image: "https://toplist.vn/images/800px/le-hoi-giong-362211.jpg",
-        //                         locationName: "Chùa Một Cột",
-        //                         province: {
-        //                             _id: 45456,
-        //                             name: "Hà Nội"
-        //                         }
-        //                     },
-        //                     cost: 200,
-        //                     postId: 221,
-        //                 },
-        //                 {
-        //                     _id: 525,
-        //                     location: {
-        //                         _id: 1313,
-        //                         image: "https://toplist.vn/images/800px/le-hoi-giong-362211.jpg",
-        //                         locationName: "Chùa Một Cột",
-        //                         province: {
-        //                             _id: 45456,
-        //                             name: "Hà Nội"
-        //                         }
-        //                     },
-        //                     cost: 200,
-        //                     postId: 221,
-        //                 }
-        //             ]
-        //         },
-        //         {
-        //             _id: 789,
-        //             date: "13/11/2021",
-        //             locations: [
-        //                 {
-        //                     _id: 2514,
-        //                     location: {
-        //                         _id: 1313,
-        //                         image: "https://toplist.vn/images/800px/le-hoi-giong-362211.jpg",
-        //                         locationName: "Chùa Một Cột",
-        //                         province: {
-        //                             _id: 45456,
-        //                             name: "Hà Nội"
-        //                         }
-        //                     },
-        //                     cost: 200,
-        //                     postId: 221,
-        //                 },
-        //             ]
-        //         }
-        //     ],
-        //     content: "Cùng khám phá Hà Nội",
-        //     hashtags: ["#dulich", '#bien'],
-        //     isPublic: true,
-        //     taggedIds: [],
-        //     likeIds: [],
-        //     comment: [],
-        //     user: {
-        //         _id: "3132",
-        //         userName: "huunguyen",
-        //         firstName: "A",
-        //         lastName: "Trần Văn",
-        //         avatarImage: "",
-        //     },
-        // };
 
         const res = await customAxios().get(`/tour/${id}`);
         console.log(res.data.tour);
@@ -109,16 +36,16 @@ export const getTourDetail = (id, next) => async (dispatch) => {
 }
 
 export const updateTour = (data) => async (dispatch) => {
-    dispatch(notifyAction.callStart());
+
     try {
         // 
         const res = 0;
 
         dispatch(tourAction.updateTour({ tour: res }));
-        dispatch(notifyAction.callSuccess({ message: "" }));
+
     }
     catch (err) {
-        dispatch(notifyAction.callFail({ error: err.response.data.message }));
+
     }
 }
 
@@ -172,30 +99,30 @@ export const deleteTour = (data) => async (dispatch) => {
     }
 }
 
-export const likeTour = (data) => async (dispatch) => {
-    dispatch(notifyAction.callStart());
+export const likeTour = (id, token, next) => async (dispatch) => {
+
 
     try {
 
-        const res = 0;
-        dispatch(tourAction.updateLike({ like: res }));
-        dispatch(notifyAction.callSuccess({ message: "" }));
+        const res = await customAxios(token).patch(`tour/${id}/like`)
+        dispatch(tourAction.updateLike({ id: id, likes: res.data.likes }));
+
     }
     catch (err) {
-        dispatch(notifyAction.callFail({ error: err.response.data.message }));
+        next();
     }
 }
 
-export const unlikeTour = (data) => async (dispatch) => {
-    dispatch(notifyAction.callStart());
+export const unlikeTour = (id, token, next) => async (dispatch) => {
+
 
     try {
 
-        const res = 0;
-        dispatch(tourAction.updateLike({ like: res }));
-        dispatch(notifyAction.callSuccess({ message: "" }));
+        const res = await customAxios(token).patch(`tour/${id}/unlike`);
+        dispatch(tourAction.updateLike({ id: id, likes: res.data.likes }));
+
     }
     catch (err) {
-        dispatch(notifyAction.callFail({ error: err.response.data.message }));
+        next();
     }
 }

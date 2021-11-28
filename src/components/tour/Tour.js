@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import {
     Avatar,
     Backdrop,
@@ -28,36 +28,19 @@ import InputComment from "../input/comment";
 import UserList from "../modal/userList";
 import { SeeMoreText } from "../seeMoreText";
 import ImageModal from "../modal/image";
-
-const userList = [
-    {
-        _id: 132123,
-        firstName: "An",
-        lastName: "Nguyễn",
-        avatarImage: "",
-    },
-    {
-        _id: 456,
-        firstName: "An",
-        lastName: "Nguyễn",
-        avatarImage: "",
-    },
-    {
-        _id: 798,
-        firstName: "An",
-        lastName: "Nguyễn",
-        avatarImage: "",
-    }
-]
+import { useDispatch, useSelector } from "react-redux";
+import { likeTour, unlikeTour } from "../../redux/callApi/tourCall";
 
 
 export default function Tour(props) {
 
     const { tour } = props;
+    const { auth } = useSelector(state => state);
+    const dispatch = useDispatch();
 
     const [showCmt, setShowCmt] = useState(false);
-    const [like, setLike] = useState(tour.liked);
-    const [numLike, setNumLike] = useState(tour.numLike);
+    const [like, setLike] = useState(false);
+    const [numLike, setNumLike] = useState(tour.likes?.length);
     const [open, setOpen] = useState(false);
 
     const handleCloseImage = () => {
@@ -66,10 +49,32 @@ export default function Tour(props) {
 
     const classes = postStyles({ showCmt });
 
-    const likeHandle = (e) => {
-        setLike(!like);
-        if (!like) setNumLike(numLike + 1);
-        else setNumLike(numLike - 1);
+    const likePress = () => {
+        if (!auth.user) return;
+        if (like) {
+            handleUnlike();
+        }
+        else handleLike();
+    }
+
+    const handleLike = () => {
+        setLike(true);
+        setNumLike(state => state + 1);
+
+        dispatch(likeTour(tour._id, auth.token, () => {
+            setLike(false);
+            setNumLike(state => state - 1);
+        }))
+    }
+
+    const handleUnlike = () => {
+        setLike(false);
+        setNumLike(state => state - 1);
+
+        dispatch(unlikeTour(tour._id, auth.token, () => {
+            setLike(true);
+            setNumLike(state => state + 1);
+        }))
     }
 
     const [showLike, setShowLike] = useState(false);
@@ -81,6 +86,12 @@ export default function Tour(props) {
     const handleClose = () => {
         setShowLike(false);
     };
+
+    useEffect(() => {
+        if (auth.user && tour.likes.find(like => like._id === auth.user._id)) {
+            setLike(true);
+        }
+    }, [tour.likes, auth.user])
 
 
     return (
@@ -125,13 +136,6 @@ export default function Tour(props) {
                 <div>
                     <Typography>Thành viên tham gia: {tour.taggedIds.length + 1}</Typography>
                 </div>
-                {/* <Typography>
-                    Địa điểm: {props.tour.location.map((item) => {
-                        return (
-                            <Link className={classes.location}>{item}</Link>
-                        )
-                    })}
-                </Typography> */}
 
                 <div className={classes.hashtagWrap}>
                     {tour.hashtags.map((item) =>
@@ -142,14 +146,14 @@ export default function Tour(props) {
             </CardContent>
 
             <CardActions>
-                <IconButton onClick={likeHandle}>
+                <IconButton onClick={likePress}>
                     {
                         like ? <Favorite className={classes.likeIcon} /> : <FavoriteBorderOutlined />
                     }
 
                 </IconButton>
                 <Typography className={classes.numLike} onClick={handleOpen}>
-                    {tour.likes.length}
+                    {numLike}
                 </Typography>
                 <Modal
                     aria-labelledby="transition-modal-title"
@@ -163,7 +167,7 @@ export default function Tour(props) {
                         timeout: 500,
                     }}
                 >
-                    <UserList listUser={userList} title={"Liked"} handleClose={handleClose} />
+                    <UserList listUser={tour.likes} title={"Đã thích"} handleClose={handleClose} />
                 </Modal>
                 <IconButton onClick={() => (setShowCmt(value => !value))}>
                     <QuestionAnswer />

@@ -101,59 +101,61 @@ export default function Location(props) {
                 </Grid>
                 <Grid item md={7}>
                     <CardContent className={classes.contentContainer}>
-                        <div className={classes.tourHeader}>
-                            <div>
+                        {props.isOwn &&
+                            <div className={classes.tourHeader}>
+                                <div>
+                                </div>
+                                <IconButton aria-label="settings" onClick={handleShowMenu}>
+                                    <MoreVert style={{ fontSize: "20px" }} />
+                                </IconButton>
+                                <Menu
+                                    anchorEl={anchorEl}
+                                    open={Boolean(anchorEl)}
+                                    onClose={handleCloseMenu}
+                                    MenuListProps={MenuListProps}
+                                    transformOrigin={{ horizontal: 'right', vertical: 'top' }}
+                                    anchorOrigin={{ horizontal: 'right', vertical: 'bottom' }}
+                                >
+                                    <MenuItem onClick={handleShowEdit}>
+                                        Chỉnh sửa
+                                    </MenuItem>
+                                    <Modal
+                                        aria-labelledby="transition-modal-edit"
+                                        aria-describedby="transition-modal-edit-description"
+                                        open={editLoc}
+                                        className={classes.modal}
+                                        onClose={handleCloseEdit}
+                                        BackdropComponent={Backdrop}
+                                        BackdropProps={{
+                                            timeout: 500,
+                                        }}
+                                    >
+                                        <Fade in={editLoc}>
+                                            <EditLocationForm handleCloseParent={handleCloseMenu} handleClose={handleCloseEdit} indexDate={props.indexDate} indexLocation={props.indexLocation} location={locationInfo} />
+                                        </Fade>
+                                    </Modal>
+                                    <MenuItem onClick={handleShowDelete}>
+                                        Xóa
+                                    </MenuItem>
+                                    <Dialog
+                                        open={showDeleteLocation}
+                                        onClose={handleCloseDelete}
+                                        aria-labelledby="alert-dialog-title"
+                                        aria-describedby="alert-dialog-description"
+                                    >
+                                        <DialogTitle id="alert-dialog-title">{"Bạn có chắc chắn muốn xóa?"}</DialogTitle>
+                                        <DialogActions>
+                                            <Button onClick={handleCloseDelete}>
+                                                Hủy
+                                            </Button>
+                                            <Button onClick={handleDeleteLocation}>
+                                                Xóa
+                                            </Button>
+                                        </DialogActions>
+                                    </Dialog>
+                                </Menu>
                             </div>
-                            <IconButton aria-label="settings" onClick={handleShowMenu}>
-                                <MoreVert style={{ fontSize: "20px" }} />
-                            </IconButton>
-                            <Menu
-                                anchorEl={anchorEl}
-                                open={Boolean(anchorEl)}
-                                onClose={handleCloseMenu}
-                                MenuListProps={MenuListProps}
-                                transformOrigin={{ horizontal: 'right', vertical: 'top' }}
-                                anchorOrigin={{ horizontal: 'right', vertical: 'bottom' }}
-                            >
-                                <MenuItem onClick={handleShowEdit}>
-                                    Chỉnh sửa
-                                </MenuItem>
-                                <Modal
-                                    aria-labelledby="transition-modal-edit"
-                                    aria-describedby="transition-modal-edit-description"
-                                    open={editLoc}
-                                    className={classes.modal}
-                                    onClose={handleCloseEdit}
-                                    BackdropComponent={Backdrop}
-                                    BackdropProps={{
-                                        timeout: 500,
-                                    }}
-                                >
-                                    <Fade in={editLoc}>
-                                        <EditLocationForm handleCloseParent={handleCloseMenu} handleClose={handleCloseEdit} indexDate={props.indexDate} indexLocation={props.indexLocation} location={locationInfo} />
-                                    </Fade>
-                                </Modal>
-                                <MenuItem onClick={handleShowDelete}>
-                                    Xóa
-                                </MenuItem>
-                                <Dialog
-                                    open={showDeleteLocation}
-                                    onClose={handleCloseDelete}
-                                    aria-labelledby="alert-dialog-title"
-                                    aria-describedby="alert-dialog-description"
-                                >
-                                    <DialogTitle id="alert-dialog-title">{"Bạn có chắc chắn muốn xóa?"}</DialogTitle>
-                                    <DialogActions>
-                                        <Button onClick={handleCloseDelete}>
-                                            Hủy
-                                        </Button>
-                                        <Button onClick={handleDeleteLocation}>
-                                            Xóa
-                                        </Button>
-                                    </DialogActions>
-                                </Dialog>
-                            </Menu>
-                        </div>
+                        }
                         <div>
                             <Typography variant="h4" className={classes.locationName} component={Link} to={"/location/" + locationInfo.location._id}>{locationInfo.location.name}</Typography>
                         </div>
