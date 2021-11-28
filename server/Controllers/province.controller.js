@@ -57,17 +57,12 @@ class ProvinceController {
     async getProvince(req, res) {
         try {
             const id = req.params.id;
-            var province = await Provinces.findById(id)
+            var province = await Provinces.findById(id);
             // .populate("locations services")
             const locations = await Locations.find({ "province": id })
             const services = await Services.find({ "province": id })
-            province = {
-                ...province,
-                locations: locations,
-                services: services,
-            }
             res.json({
-                success: true, message: "get info 1 province success", province
+                success: true, message: "get info 1 province success", province, locations, services
             });
         } catch (err) {
             console.log(err)

@@ -9,17 +9,24 @@ import KEY from "../../key/googlemap";
 
 
 export default function MapCard(props) {
+
+    const { position, zoom } = props;
+
     const classes = mapCardStyles();
     return (
         <Card className={classes.container}>
-            <GoogleMapReact
-                bootstrapURLKeys={{ key: KEY }}
-                defaultCenter={props.location}
-                defaultZoom={15}
-                onGoogleApiLoaded={({ map, maps }) => renderMarkers(map, maps)}
-            >
-                <Room lat={props.location.lat} lng={props.location.lng} style={{ fontSize: "40px", color: "red" }} />
-            </GoogleMapReact>
+            {
+                position &&
+                <GoogleMapReact
+                    bootstrapURLKeys={{ key: KEY }}
+                    defaultCenter={position}
+                    defaultZoom={zoom}
+                // onGoogleApiLoaded={({ map, maps }) => renderMarkers(map, maps)}
+                >
+                    {/* <Room lat={position.lat} lng={position.lng} style={{ fontSize: "40px", color: "red" }} /> */}
+                </GoogleMapReact>
+            }
+
         </Card>
     )
 }

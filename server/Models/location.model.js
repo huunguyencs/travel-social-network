@@ -6,15 +6,18 @@ const locationSchema = new mongoose.Schema({
         type: String,
         required: true
     },
-    starTotal: Double,
+    starTotal: {
+        type: Number,
+        default: 0
+    },
     star: {
         type: Array,
         default: [0, 0, 0, 0, 0]
     },
     province: { type: mongoose.Types.ObjectId, ref: 'provinces' },
     position: {
-        lng: String,
-        lat: String
+        lng: Number,
+        lat: Number
     },
     information: String,
     weatherName: String

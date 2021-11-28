@@ -55,10 +55,10 @@ class LocationController {
     // lấy thông tin 1 Location theo params.id
     async getLocation(req, res) {
         try {
-            const Location = await Locations.findById(req.params.id)
+            const location = await Locations.findById(req.params.id)
                 .populate("province")
             res.json({
-                success: true, message: "get info 1 Location success", Location
+                success: true, message: "get info 1 Location success", location
             });
         } catch (err) {
             console.log(err)

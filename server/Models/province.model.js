@@ -9,8 +9,8 @@ const provinceSchema = new mongoose.Schema({
     image: { type: String },
     weatherName: String,
     position: {
-        lng: String,
-        lat: String
+        lng: Number,
+        lat: Number
     }
 }, {
     timestamps: true

@@ -1,11 +1,20 @@
 import { Box, Card, CardContent, LinearProgress, Typography } from "@material-ui/core";
 import { Star } from "@material-ui/icons";
-import React from "react";
+import React, { useEffect, useState } from "react";
 
 import { cardStyles } from "../../style";
 
 
 export default function RatingChart(props) {
+
+    const { star, starTotal } = props;
+    const [totalRate, setTotalRate] = useState(0);
+    useEffect(() => {
+        if (star) {
+            let tmp = star?.reduce((a, b) => a + b, 0);
+            setTotalRate(tmp);
+        }
+    }, [star, setTotalRate])
 
     const classes = cardStyles();
 
@@ -16,35 +25,23 @@ export default function RatingChart(props) {
             </div>
             <CardContent className={classes.starContent}>
                 <div className={classes.totalRating}>
-                    <Typography variant="h1">
-                        <Star className={classes.iconStar} />
-                        4.5 /5
-                    </Typography>
+                    <div style={{ display: "flex", justifyContent: "center" }}>
+                        <Typography variant="h1">
+                            <Star className={classes.iconStar} />
+                            {starTotal} /5
+                        </Typography>
+                    </div>
                     <Typography variant="h5" className={classes.center}>
-                        200+
+                        {totalRate}
                     </Typography>
                 </div>
                 <div className={classes.chart}>
-                    <Box display="flex" alignItems="center">
-                        <Box minWidth={35}><Typography>5</Typography></Box>
-                        <Box width="80%" mr={1}><LinearProgress variant="determinate" value="70" className={classes.line} /></Box>
-                    </Box>
-                    <Box display="flex" alignItems="center">
-                        <Box minWidth={35}><Typography>4</Typography></Box>
-                        <Box width="80%" mr={1}><LinearProgress variant="determinate" value="10" className={classes.line} /></Box>
-                    </Box>
-                    <Box display="flex" alignItems="center">
-                        <Box minWidth={35}><Typography>3</Typography></Box>
-                        <Box width="80%" mr={1}><LinearProgress variant="determinate" value="5" className={classes.line} /></Box>
-                    </Box>
-                    <Box display="flex" alignItems="center">
-                        <Box minWidth={35}><Typography>2</Typography></Box>
-                        <Box width="80%" mr={1}><LinearProgress variant="determinate" value="0" className={classes.line} /></Box>
-                    </Box>
-                    <Box display="flex" alignItems="center">
-                        <Box minWidth={35}><Typography>1</Typography></Box>
-                        <Box width="80%" mr={1}><LinearProgress variant="determinate" value="5" className={classes.line} /></Box>
-                    </Box>
+                    {star?.map((item, index) => (
+                        <Box display="flex" alignItems="center">
+                            <Box minWidth={35}><Typography>{index + 1}</Typography></Box>
+                            <Box width="80%" mr={1}><LinearProgress variant="determinate" value={totalRate !== 0 ? (item * 100 / totalRate) : 0} className={classes.line} /></Box>
+                        </Box>
+                    ))}
                 </div>
             </CardContent>
         </Card>

@@ -14,20 +14,24 @@ import customAxios from "../../utils/fetchData";
 
 export default function Location(props) {
 
-    const classes = locationStyles({ imgBg: location?.images[0] });
+    const classes = locationStyles();
     const [location, setLocation] = useState(null);
     const { id } = useParams();
 
-    const getLocation = async (id, next) => {
-        const res = await customAxios().get(`location/${id}`);
-        next(res.data.location);
+    const getLocation = async (id) => {
+        if (id) {
+            const res = await customAxios().get(`/location/${id}`);
+            setLocation(res.data.location);
+
+        }
     }
 
     useEffect(() => {
-        getLocation(id, (location) => {
-            setLocation(location)
-        })
-    }, [id, setLocation])
+        if (id) {
+            getLocation(id);
+        }
+
+    }, [id])
 
     return (
         <Grid container className={classes.container}>
@@ -36,7 +40,7 @@ export default function Location(props) {
                 <div
                     className={classes.img}
                     style={{
-                        backgroundImage: `url(${location?.images[0]})`,
+                        backgroundImage: `url(https://3.bp.blogspot.com/-MYz47-CD_ig/Whw2P_O0m6I/AAAAAAABP8Y/piWDhHo0BA0S77PYhXh8OVPf64kezZ-6ACKgBGAs/s1600/dao-ly-son-o-dau-2.jpg)`,
                     }}
                 >
                     <div className={classes.coverText}>
@@ -45,7 +49,7 @@ export default function Location(props) {
                         </Typography>
                         <div>
                             <LocationOn style={{ fontSize: "50px", marginRight: "30px", color: "black" }} />
-                            <Typography variant="h2" component={Link} to={"/province/1"}>
+                            <Typography variant="h2" component={Link} to={`/province/${location?.province._id}`}>
                                 {location?.province.name}
                             </Typography>
                         </div>
@@ -53,6 +57,7 @@ export default function Location(props) {
                     </div>
                 </div>
             </Grid>
+
             <Grid item md={3} sm={12}>
                 <div className={classes.infoPanel}>
                     <div className={classes.infoHeader}>
@@ -66,7 +71,7 @@ export default function Location(props) {
                 </div>
 
                 <div className={classes.map}>
-                    <MapCard location={location?.position} />
+                    <MapCard position={location?.position} zoom={12} />
                 </div>
             </Grid>
             <Grid item md={6} sm={12}>
@@ -74,12 +79,12 @@ export default function Location(props) {
 
                 </div>
                 <div className={classes.reviewPosts}>
-                    {/* <FeedReview /> */}
+
                 </div>
             </Grid>
             <Grid item md={3}>
-                <RatingChart star={location?.star} />
-                <WeatherCard name={location?.weatherName} />
+                <RatingChart star={location?.star} starTotal={location?.starTotal} />
+                <WeatherCard name={location?.weatherName} nameShow={location?.name} />
 
             </Grid>
         </Grid>
