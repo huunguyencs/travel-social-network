@@ -150,6 +150,7 @@ class TourController {
     async getTour(req, res) {
         try {
             const tour = await Tours.findById(req.params.id)
+                .populate("tour")
                 .populate("userId likeIds", "username email fullname avatar followers")
                 .populate({
                     path: "comments",

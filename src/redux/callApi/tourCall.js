@@ -18,83 +18,89 @@ export const getTours = (data) => async (dispatch) => {
     }
 }
 
-export const getTourDetail = (data) => async (dispatch) => {
+export const getTourDetail = (id, next) => async (dispatch) => {
     dispatch(tourAction.loading());
     try {
-        const res = {
-            _id: 1321,
-            tourName: "Đây là tiêu đề của tour",
-            tourDate: [
-                {
-                    _id: 3123,
-                    date: "12/11/2021",
-                    locations: [
-                        {
-                            _id: 2514,
-                            location: {
-                                _id: 1313,
-                                image: "https://toplist.vn/images/800px/le-hoi-giong-362211.jpg",
-                                locationName: "Chùa Một Cột",
-                                province: {
-                                    _id: 45456,
-                                    name: "Hà Nội"
-                                }
-                            },
-                            cost: 200,
-                            postId: 221,
-                        },
-                        {
-                            _id: 525,
-                            location: {
-                                _id: 1313,
-                                image: "https://toplist.vn/images/800px/le-hoi-giong-362211.jpg",
-                                locationName: "Chùa Một Cột",
-                                province: {
-                                    _id: 45456,
-                                    name: "Hà Nội"
-                                }
-                            },
-                            cost: 200,
-                            postId: 221,
-                        }
-                    ]
-                },
-                {
-                    _id: 789,
-                    date: "13/11/2021",
-                    locations: [
-                        {
-                            _id: 2514,
-                            location: {
-                                _id: 1313,
-                                image: "https://toplist.vn/images/800px/le-hoi-giong-362211.jpg",
-                                locationName: "Chùa Một Cột",
-                                province: {
-                                    _id: 45456,
-                                    name: "Hà Nội"
-                                }
-                            },
-                            cost: 200,
-                            postId: 221,
-                        },
-                    ]
-                }
-            ],
-            content: "Cùng khám phá Hà Nội",
-            hashtags: ["#dulich", '#bien'],
-            isPublic: true,
-            taggedIds: [],
-            likeIds: [],
-            comment: [],
-            user: {
-                _id: "3132",
-                userName: "huunguyen",
-                firstName: "A",
-                lastName: "Trần Văn",
-                avatarImage: "",
-            },
-        };
-        dispatch(tourAction.getTourDetail({ tourdetail: res }));
+        // const res = {
+        //     _id: 1321,
+        //     tourName: "Đây là tiêu đề của tour",
+        //     tourDate: [
+        //         {
+        //             _id: 3123,
+        //             date: "12/11/2021",
+        //             locations: [
+        //                 {
+        //                     _id: 2514,
+        //                     location: {
+        //                         _id: 1313,
+        //                         image: "https://toplist.vn/images/800px/le-hoi-giong-362211.jpg",
+        //                         locationName: "Chùa Một Cột",
+        //                         province: {
+        //                             _id: 45456,
+        //                             name: "Hà Nội"
+        //                         }
+        //                     },
+        //                     cost: 200,
+        //                     postId: 221,
+        //                 },
+        //                 {
+        //                     _id: 525,
+        //                     location: {
+        //                         _id: 1313,
+        //                         image: "https://toplist.vn/images/800px/le-hoi-giong-362211.jpg",
+        //                         locationName: "Chùa Một Cột",
+        //                         province: {
+        //                             _id: 45456,
+        //                             name: "Hà Nội"
+        //                         }
+        //                     },
+        //                     cost: 200,
+        //                     postId: 221,
+        //                 }
+        //             ]
+        //         },
+        //         {
+        //             _id: 789,
+        //             date: "13/11/2021",
+        //             locations: [
+        //                 {
+        //                     _id: 2514,
+        //                     location: {
+        //                         _id: 1313,
+        //                         image: "https://toplist.vn/images/800px/le-hoi-giong-362211.jpg",
+        //                         locationName: "Chùa Một Cột",
+        //                         province: {
+        //                             _id: 45456,
+        //                             name: "Hà Nội"
+        //                         }
+        //                     },
+        //                     cost: 200,
+        //                     postId: 221,
+        //                 },
+        //             ]
+        //         }
+        //     ],
+        //     content: "Cùng khám phá Hà Nội",
+        //     hashtags: ["#dulich", '#bien'],
+        //     isPublic: true,
+        //     taggedIds: [],
+        //     likeIds: [],
+        //     comment: [],
+        //     user: {
+        //         _id: "3132",
+        //         userName: "huunguyen",
+        //         firstName: "A",
+        //         lastName: "Trần Văn",
+        //         avatarImage: "",
+        //     },
+        // };
+
+        const res = await customAxios().get(`tour/${id}`);
+        console.log(res.data.tour);
+
+        next(res.data.tour);
+
+        // dispatch(tourAction.getTourDetail({ tourdetail: res }));
     }
     catch (err) {
         dispatch(tourAction.error({ error: err.response.data.message }));

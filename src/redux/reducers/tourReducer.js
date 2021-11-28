@@ -16,14 +16,6 @@ const tourReducer = (state = INIT_STATE, action) => {
                 error: null,
             }
         }
-        case TOUR_TYPES.GET_TOUR_DETAIL: {
-            return {
-                ...state,
-                tourdetail: action.payload.tourdetail,
-                loading: false,
-                error: null,
-            }
-        }
         case TOUR_TYPES.CREATE_TOUR: {
             return {
                 ...state,
