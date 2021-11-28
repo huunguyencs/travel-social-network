@@ -90,12 +90,15 @@ export default function Profile_Avatar(props) {
 
   useEffect(() => {
     const isFollowed = () => {
-      for (const u of auth.user?.followings) {
-        if (u._id === user?._id) {
-          return true;
+      if (auth.user && user) {
+        for (const u of auth.user.followings) {
+          if (u._id === user._id) {
+            return true;
+          }
         }
+        return false;
       }
-      return false;
+
     }
 
     if (auth.token) {
@@ -108,7 +111,7 @@ export default function Profile_Avatar(props) {
       if (isFollowed()) setFollowed(true);
       else setFollowed(false);
     }
-  }, [id, setUser, auth, history, getUser]);
+  }, [id, setUser, auth, history, getUser, user.id]);
 
   return (
     <Container className={classes.container}>

@@ -1,5 +1,6 @@
 import * as tourAction from '../actions/tourAction';
 import customAxios from '../../utils/fetchData';
+import * as notifyAction from '../actions/notifyAction';
 import * as imageUtils from '../../utils/uploadImage'
 
 export const getTours = (data) => async (dispatch) => {
@@ -53,7 +54,7 @@ export const updateTour = (data) => async (dispatch) => {
 
 export const createTourCall = (tour, image, token, next) => async (dispatch) => {
 
-    // dispatch(notifyAction.callStart());
+    dispatch(notifyAction.callStart());
 
     try {
         // call api to save tour
@@ -80,12 +81,12 @@ export const createTourCall = (tour, image, token, next) => async (dispatch) => 
         // const res = 0;
 
         // dispatch(tourAction.createTour({ tour: res }));
-        // dispatch(notifyAction.callSuccess({ message: "" }));
+        dispatch(notifyAction.callSuccess({ message: "" }));
         next();
     }
     catch (err) {
         console.log(err);
-        // dispatch(notifyAction.callFail({ error: err.response.data.message }))
+        dispatch(notifyAction.callFail({ error: err.response.data.message }))
     }
 }
 

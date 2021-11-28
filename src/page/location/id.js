@@ -16,7 +16,7 @@ export default function Location(props) {
 
 
     const [location, setLocation] = useState(null);
-    const classes = locationStyles({ image: location?.images[0] });
+    const classes = locationStyles();
     const { id } = useParams();
 
     const getLocation = async (id) => {
@@ -39,17 +39,15 @@ export default function Location(props) {
             <Grid item md={12}>
                 <div
                     className={classes.img}
-                    style={{
-                        backgroundImage: `url(https://3.bp.blogspot.com/-MYz47-CD_ig/Whw2P_O0m6I/AAAAAAABP8Y/piWDhHo0BA0S77PYhXh8OVPf64kezZ-6ACKgBGAs/s1600/dao-ly-son-o-dau-2.jpg)`,
-                    }}
                 >
+                    <img src={location?.images[0]} alt={"Location"} style={{ width: "100%", height: "650px" }} />
                     <div className={classes.coverText}>
-                        <Typography variant="h1" style={{ color: "black" }}>
+                        <Typography variant="h1" className={classes.name}>
                             {location?.name}
                         </Typography>
                         <div>
-                            <LocationOn style={{ fontSize: "50px", marginRight: "30px", color: "black" }} />
-                            <Typography variant="h2" component={Link} to={`/province/${location?.province._id}`}>
+                            <LocationOn className={classes.iconProvince} />
+                            <Typography className={classes.provinceName} variant="h2" component={Link} to={`/province/${location?.province._id}`}>
                                 {location?.province.name}
                             </Typography>
                         </div>

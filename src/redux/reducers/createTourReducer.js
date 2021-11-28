@@ -4,7 +4,7 @@ import * as TOUR_TYPES from '../constants/createTourConstant';
 const INIT_STATE = {
     name: "",
     content: "",
-    hashtag: "",
+    hashtags: "",
     image: null,
     tour: [],
     isFetching: false,
@@ -108,7 +108,7 @@ const createTourReducer = (state = INIT_STATE, action) => {
                 ...state,
                 name: action.payload.name,
                 image: action.payload.image,
-                hashtags: action.payload.hashtag,
+                hashtags: action.payload.hashtags,
                 content: action.payload.content,
             }
         }

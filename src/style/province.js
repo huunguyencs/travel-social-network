@@ -4,19 +4,18 @@ import attr from "./attr";
 
 const provinceStyles = makeStyles((theme) => ({
     img: {
-        height: 600,
-        display: "flex",
-        justifyContent: "center",
-        maxWidth: "100%",
-        overflow: "hidden",
-        width: "100%",
-        backgroundImage: props => `url(${props.image})`,
-        backgroundSize: "cover",
-        backgroundRepeat: "no-repeat",
+        position: "relative",
+        textAlign: "center",
+        color: "white",
     },
     provinceName: {
-        color: color.white,
-        paddingTop: 250,
+        position: 'absolute',
+        color: color.black,
+        fontWeight: 500,
+        fontSize: 100,
+        top: "50%",
+        left: "50%",
+        transform: "translate(-50%, -50%)"
     },
     desContainer: {
         margin: 50,
@@ -40,8 +39,13 @@ const provinceStyles = makeStyles((theme) => ({
         // marginBottom: 20,
         paddingBottom: 20,
     },
-    listContainer: {
-        // height: 650,
+    map: {
+        margin: 30,
+    },
+    patination: {
+        display: "flex",
+        justifyContent: "center",
+        marginTop: 10
     }
 }))
 

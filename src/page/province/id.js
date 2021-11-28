@@ -36,7 +36,7 @@ export default function Province(props) {
         setPageSer(value);
     }
 
-    const classes = provinceStyles({ image: province?.image });
+    const classes = provinceStyles();
 
     const getProvince = async (id, next) => {
         if (id) {
@@ -63,10 +63,8 @@ export default function Province(props) {
             <Grid item md={12}>
                 <div
                     className={classes.img}
-                    style={{
-                        backgroundImage: `url(https://3.bp.blogspot.com/-MYz47-CD_ig/Whw2P_O0m6I/AAAAAAABP8Y/piWDhHo0BA0S77PYhXh8OVPf64kezZ-6ACKgBGAs/s1600/dao-ly-son-o-dau-2.jpg)`,
-                    }}
                 >
+                    <img src={province?.image} alt="Province" style={{ width: "100%", height: "600px" }} />
                     <Typography className={classes.provinceName} variant="h1">
                         {province?.name}
                     </Typography>
@@ -101,7 +99,7 @@ export default function Province(props) {
                                 ))}
 
                             </Grid>
-                            <div style={{ display: "flex", justifyContent: "center" }}>
+                            <div className={classes.patination}>
                                 <Pagination count={Math.ceil(locations.length / ITEM_PER_PAGE)} page={pageLoc} onChange={handleChangeLoc} color="primary" />
                             </div>
                         </>
@@ -122,7 +120,7 @@ export default function Province(props) {
                                 ))}
 
                             </Grid>
-                            <div style={{ display: "flex", justifyContent: "center" }}>
+                            <div className={classes.patination}>
                                 <Pagination count={Math.ceil(services.length / ITEM_PER_PAGE)} page={pageSer} onChange={handleChangeSer} color="primary" />
                             </div>
                         </>

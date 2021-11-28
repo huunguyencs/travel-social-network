@@ -127,7 +127,7 @@ export default function Tour(props) {
                 </Typography>
                 <SeeMoreText
                     variant="body1"
-                    maxText={6}
+                    maxText={100}
                     text={tour.content}
                 />
                 <Typography style={{ marginTop: 20 }}>
