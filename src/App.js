@@ -37,7 +37,7 @@ function App() {
   }, [dispatch, auth.token, history])
 
   return (
-    <div style={{ backgroundColor: color.background }}>
+    <div style={{ backgroundColor: color.background, backgroundSize: "100%" }}>
       <WithRouterScroll />
       <Scroll showBelow={500} />
       {displayHeader() && <Header />}

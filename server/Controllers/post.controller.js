@@ -39,9 +39,11 @@ class PostController {
             });
             await newPost.save();
 
-            // await TourDates.findOneAndUpdate({ _id: tourDateId }, {
-
-            // })
+            await TourDates.findOneAndUpdate({ _id: tourDateId, locations: { $elemMatch: { _id: indexLocation } } }, {
+                $set: {
+                    'locations.$.postId': newPost._doc._id
+                }
+            }, { new: true, safe: true, upsert: true })
 
             res.json({
                 success: true,

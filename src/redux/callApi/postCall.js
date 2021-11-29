@@ -69,6 +69,7 @@ export const getMorePost = (data) => async (dispatch) => {
 }
 
 export const createPost = (data, token, next) => async (dispatch) => {
+    dispatch(notifyAction.callStart());
     // post api
     try {
         // call api to save post
@@ -84,14 +85,17 @@ export const createPost = (data, token, next) => async (dispatch) => {
 
         // console.log(res.data);
         dispatch(postAction.addPost({ post: res.data.newPost }))
+        dispatch(notifyAction.callSuccess({ message: "" }));
         next();
     }
     catch (err) {
         console.log(err);
+        dispatch(notifyAction.callFail({ error: err.response.data.message }))
     }
 }
 
 export const createReview = (data, token, next) => async (dispatch) => {
+    dispatch(notifyAction.callStart());
     // post api
     try {
         // call api to save post
@@ -107,10 +111,12 @@ export const createReview = (data, token, next) => async (dispatch) => {
 
         // console.log(res.data);
         dispatch(postAction.addPost({ post: res.data.newPost }))
+        dispatch(notifyAction.callSuccess({ message: "" }))
         next();
     }
     catch (err) {
         console.log(err);
+        dispatch(notifyAction.callFail({ err: err.response.data.message }));
     }
 }
 

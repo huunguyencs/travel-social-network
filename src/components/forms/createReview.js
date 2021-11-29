@@ -73,6 +73,7 @@ export default function CreateReviewForm(props) {
                 history.push(`/location/${location}`);
             }
         ))
+
     }
 
 

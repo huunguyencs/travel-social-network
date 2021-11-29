@@ -169,12 +169,11 @@ export default function Location(props) {
                         <div>
                             <Typography variant="h5" component={Link} to={"/province/" + location.location.province._id}>{location.location.province.name}</Typography>
                         </div>
-
                         {
-                            isSave &&
-                                isOwn ?
-                                <Button className={classes.reviewBtn} onClick={handleShow}>Tạo Review</Button> :
-                                <Button className={classes.reviewBtn}>Xem Review</Button>
+                            isSave && isOwn && !location.postId && <Button className={classes.reviewBtn} onClick={handleShow}>Tạo Review</Button>
+                        }
+                        {
+                            isSave && location.postId && <Button className={classes.reviewBtn}>Xem Review</Button>
                         }
 
 
@@ -196,7 +195,7 @@ export default function Location(props) {
                                     cost={location.cost}
                                     handleClose={handleClose}
                                     tourDateId={tourDateId}
-                                    indexLocation={indexLocation}
+                                    indexLocation={location._id}
                                 />
                             </Fade>
                         </Modal>

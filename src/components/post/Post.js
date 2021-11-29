@@ -111,7 +111,11 @@ export default function Post(props) {
                         <Typography className={classes.userName}>{post.userId.fullname}</Typography>
                     </Link>
                 }
-                subheader={timeAgo(new Date(post.createdAt))}
+                subheader={
+                    <Link to={`/post/${post._id}`} style={{ cursor: "pointer" }}>
+                        {timeAgo(new Date(post.createdAt))}
+                    </Link>
+                }
             />
 
             <CardContent>

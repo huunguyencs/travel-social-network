@@ -78,7 +78,7 @@ export default function TourDetail(props) {
                                             key={item._id}
                                             isOwn={isOwn}
                                             isSave={true}
-                                            tourId={tour._id}
+                                            tourDateId={tour.tour[idx]._id}
                                             indexDate={idx}
                                             indexLocation={index}
                                         />

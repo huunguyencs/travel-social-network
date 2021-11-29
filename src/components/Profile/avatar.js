@@ -111,7 +111,7 @@ export default function Profile_Avatar(props) {
       if (isFollowed()) setFollowed(true);
       else setFollowed(false);
     }
-  }, [id, setUser, auth, history, getUser, user.id]);
+  }, [id, setUser, auth, history, getUser, user]);
 
   return (
     <Container className={classes.container}>
