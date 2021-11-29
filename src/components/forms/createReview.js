@@ -1,20 +1,47 @@
-import { InputBase, Typography, Grid, Button, Paper } from "@material-ui/core";
-import { AddCircleOutline, Create } from "@material-ui/icons";
+import { InputBase, Typography, Grid, Button, Paper, IconButton, CircularProgress } from "@material-ui/core";
+import { Create, Image } from "@material-ui/icons";
 import { Rating } from "@material-ui/lab";
 import React, { useState } from "react";
 import { ScrollMenu } from "react-horizontal-scrolling-menu";
-import { useSelector } from "react-redux";
+import { useSelector, useDispatch } from "react-redux";
+import { useHistory } from "react-router-dom";
 
+import { createReview } from "../../redux/callApi/postCall";
 import { formStyles } from '../../style';
 import LoginModal from "../modal/login";
+import EmojiPicker from "../input/emojiPicker";
 
 
 export default function CreateReviewForm(props) {
 
-    const { auth } = useSelector(state => state);
+    const dispatch = useDispatch();
+    const history = useHistory();
+    const { auth, notify } = useSelector(state => state);
+    const { location, handleClose, cost, tourDateId, indexLocation } = props;
 
 
     const [imageUpload, setImageUpload] = useState([]);
+    const [state, setState] = useState({
+        hashtags: "",
+        rate: 0,
+    })
+    const [text, setText] = useState("");
+
+    const handleInput = (e) => {
+        setState({
+            ...state,
+            [e.target.name]: e.target.value,
+        })
+    }
+
+    const handleChange = e => {
+        setText(e.target.value);
+    }
+
+    const hashtagSplit = (text) => {
+        var ht = text.split(" ");
+        return ht.filter(item => item !== "");
+    }
 
     const handleChangeImageUpload = (e) => {
         setImageUpload(oldImage => [...oldImage, ...e.target.files])
@@ -27,10 +54,30 @@ export default function CreateReviewForm(props) {
         ])
     }
 
+    const handleSubmit = (e) => {
+        e.preventDefault();
+        var ht = hashtagSplit(state.hashtags);
+        dispatch(createReview({
+            content: text,
+            image: imageUpload,
+            hashtags: ht,
+            rate: state.rate,
+            locationId: location,
+            cost: cost,
+            tourDateId: tourDateId,
+            indexLocation: indexLocation
+        },
+            auth.token,
+            () => {
+                handleClose();
+                history.push(`/location/${location}`);
+            }
+        ))
+    }
+
 
     const classes = formStyles();
 
-    const [rate, setRate] = useState();
 
     return (
         <>
@@ -43,51 +90,69 @@ export default function CreateReviewForm(props) {
                         </Typography>
                     </div>
                     <form>
-                        <Grid container className={classes.formContainer}>
-                            <Grid item md={12}>
-                                <div className={classes.formCreateReview}>
-                                    <Rating
-                                        name={"rating"}
-                                        value={rate}
-                                        onChange={(e, newValue) => {
-                                            setRate(newValue);
-                                        }}
-                                    />
-                                </div>
-                            </Grid>
-                            <Grid item md={12}>
+                        <div className={classes.formContainer}>
+                            <div className={classes.formCreateReview}>
+                                <Rating
+                                    name="rate"
+                                    value={state.rate}
+                                    onChange={handleInput}
+                                />
+                            </div>
+                            <div className={classes.postContentInput}>
                                 <InputBase
                                     placeholder="Bạn cảm thấy địa điểm này như thế nào?..."
                                     rows={10}
                                     multiline
+                                    name="content"
                                     className={classes.input}
+                                    value={text}
+                                    onChange={handleChange}
                                 />
-                            </Grid>
-                            <Grid item md={6}>
-                                <input
-                                    accept="image/*"
-                                    className={classes.input}
-                                    style={{ display: 'none' }}
-                                    id="input-image"
-                                    name="input-image"
-                                    multiple
-                                    type="file"
-                                    onChange={handleChangeImageUpload}
+                            </div>
+                            <div >
+                                <InputBase
+                                    placeholder="Hashtag (cách nhau bằng dấu cách). Vd: #bien #lehoi ..."
+                                    variant="outlined"
+                                    name="hashtags"
+                                    id="hashtag"
+                                    className={classes.hashtag}
+                                    value={state.hashtags}
+                                    onChange={handleInput}
                                 />
-                                <label htmlFor="input-image">
-                                    <Button className={classes.button} variant="raised" component="span">
-                                        <AddCircleOutline style={{ marginRight: 10 }} />
-                                        Thêm ảnh
+                            </div>
+                            <div className={classes.formAction}>
+                                <div >
+                                    <input
+                                        accept="image/*"
+                                        className={classes.input}
+                                        style={{ display: 'none' }}
+                                        id="input-image"
+                                        name="images"
+                                        multiple
+                                        type="file"
+                                        onChange={handleChangeImageUpload}
+                                    />
+                                    <label htmlFor="input-image">
+                                        <IconButton variant="raised" component="span">
+                                            <Image titleAccess="Thêm ảnh" />
+                                        </IconButton>
+                                    </label>
+                                    <EmojiPicker content={text} setContent={setText} />
+                                </div>
+                                <div>
+                                    <Button className={classes.button} onClick={handleSubmit}>
+                                        {
+                                            notify.loading ?
+                                                <CircularProgress size="25px" color="white" /> :
+                                                <>
+                                                    <Create style={{ marginRight: 10 }} />
+                                                    Đăng
+                                                </>
+                                        }
                                     </Button>
-                                </label>
-                            </Grid>
-                            <Grid item md={6}>
-                                <Button className={classes.button}>
-                                    <Create style={{ marginRight: 10 }} />
-                                    Đăng
-                                </Button>
-                            </Grid>
-                        </Grid>
+                                </div>
+                            </div>
+                        </div>
                     </form>
                     <div
                         style={{

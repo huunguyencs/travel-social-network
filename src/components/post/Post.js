@@ -115,7 +115,15 @@ export default function Post(props) {
             />
 
             <CardContent>
-                {post.isPostReview && <Rating name="location-rating" value={post.rate} readOnly style={{ marginBottom: 20 }} />}
+                {post.isPostReview &&
+                    <>
+                        <div>
+                            <Typography variant="body1" component={Link} to={`/location/${post.locationId._id}`}>{post.locationId.name}</Typography>
+                        </div>
+                        <Rating name="location-rating" value={post.rate} readOnly style={{ marginBottom: 20 }} />
+
+                    </>
+                }
                 <SeeMoreText
                     variant="body1"
                     maxText={100}

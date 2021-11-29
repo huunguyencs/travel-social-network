@@ -43,6 +43,8 @@ export default function Location(props) {
 
     const dispatch = useDispatch();
 
+    const { location, isOwn, isSave, tourDateId, indexDate, indexLocation } = props;
+
     // const [showRv, setShowRv] = useState(false);
     const [showCreateRv, setShowCreateRv] = useState(false);
     const [anchorEl, setAnchorEl] = useState(null);
@@ -82,12 +84,11 @@ export default function Location(props) {
     }
 
     const handleDeleteLocation = () => {
-        dispatch(tourAction.deleteLocation({ indexDate: props.indexDate, indexLocation: props.indexLocation }));
+        dispatch(tourAction.deleteLocation({ indexDate: indexDate, indexLocation: indexLocation }));
         handleCloseDelete();
         handleCloseMenu();
     }
 
-    const locationInfo = props.location;
 
     return (
         <Card className={classes.cardContainer}>
@@ -95,7 +96,7 @@ export default function Location(props) {
             <Grid container>
                 <Grid item md={5} className={classes.imageLocation}>
                     <CardMedia className={classes.imgContainer}>
-                        <img src={locationInfo.location.images[0]} alt="location" className={classes.img} />
+                        <img src={location.location.images[0]} alt="location" className={classes.img} />
                     </CardMedia>
 
                 </Grid>
@@ -131,7 +132,13 @@ export default function Location(props) {
                                         }}
                                     >
                                         <Fade in={editLoc}>
-                                            <EditLocationForm handleCloseParent={handleCloseMenu} handleClose={handleCloseEdit} indexDate={props.indexDate} indexLocation={props.indexLocation} location={locationInfo} />
+                                            <EditLocationForm
+                                                handleCloseParent={handleCloseMenu}
+                                                handleClose={handleCloseEdit}
+                                                indexDate={indexDate}
+                                                indexLocation={indexLocation}
+                                                location={location}
+                                            />
                                         </Fade>
                                     </Modal>
                                     <MenuItem onClick={handleShowDelete}>
@@ -157,15 +164,17 @@ export default function Location(props) {
                             </div>
                         }
                         <div>
-                            <Typography variant="h4" className={classes.locationName} component={Link} to={"/location/" + locationInfo.location._id}>{locationInfo.location.name}</Typography>
+                            <Typography variant="h4" className={classes.locationName} component={Link} to={"/location/" + location.location._id}>{location.location.name}</Typography>
                         </div>
                         <div>
-                            <Typography variant="h5" component={Link} to={"/province/" + locationInfo.location.province._id}>{locationInfo.location.province.name}</Typography>
+                            <Typography variant="h5" component={Link} to={"/province/" + location.location.province._id}>{location.location.province.name}</Typography>
                         </div>
+
                         {
-                            props.isOwn ?
-                                <Button className={classes.reviewBtn}>Xem Review</Button> :
-                                <Button className={classes.reviewBtn} onClick={handleShow}>Tạo Review</Button>
+                            isSave &&
+                                isOwn ?
+                                <Button className={classes.reviewBtn} onClick={handleShow}>Tạo Review</Button> :
+                                <Button className={classes.reviewBtn}>Xem Review</Button>
                         }
 
 
@@ -182,11 +191,17 @@ export default function Location(props) {
                             }}
                         >
                             <Fade in={showCreateRv}>
-                                <CreateReviewForm />
+                                <CreateReviewForm
+                                    location={location.location._id}
+                                    cost={location.cost}
+                                    handleClose={handleClose}
+                                    tourDateId={tourDateId}
+                                    indexLocation={indexLocation}
+                                />
                             </Fade>
                         </Modal>
                         <div className={classes.costContainer}>
-                            <Typography variant="body1">Chi phí: {locationInfo.cost}.000 VND</Typography>
+                            <Typography variant="body1">Chi phí: {location.cost}.000 VND</Typography>
                         </div>
                     </CardContent>
                 </Grid>

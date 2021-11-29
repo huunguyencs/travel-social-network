@@ -208,7 +208,15 @@ export default function AddTour(props) {
                     </div>
                     {
                         createTour.tour[idx].locations.map((item, index) => (
-                            <Location location={item} indexDate={idx} indexLocation={index} edit={true} key={index} isOwn={true} />
+                            <Location
+                                location={item}
+                                indexDate={idx}
+                                indexLocation={index}
+                                edit={true}
+                                key={index}
+                                isOwn={true}
+                                isSave={false}
+                            />
                         ))
                     }
                     <div className={classes.addContainer}>

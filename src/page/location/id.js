@@ -1,20 +1,22 @@
 import { Grid, Typography } from "@material-ui/core";
 import { LocationOn } from "@material-ui/icons";
 import React, { useEffect, useState } from "react";
+import { useDispatch } from "react-redux";
 import { Link, useParams } from "react-router-dom";
 
 import MapCard from "../../components/card/MapCard";
 import RatingChart from "../../components/card/RatingChart";
 import WeatherCard from "../../components/card/WeatherCard";
-// import FeedReview from "../../components/feed/FeedReview";
+import FeedReview from "../../components/feed/FeedReview";
 import { SeeMoreText } from "../../components/seeMoreText";
 import SpeedDialButton from "../../components/speedDialBtn";
 import { locationStyles } from "../../style";
 import customAxios from "../../utils/fetchData";
+import { getPostsLocation } from "../../redux/callApi/postCall";
 
 export default function Location(props) {
 
-
+    const dispatch = useDispatch();
     const [location, setLocation] = useState(null);
     const classes = locationStyles();
     const { id } = useParams();
@@ -30,7 +32,12 @@ export default function Location(props) {
         if (id) {
             getLocation(id);
         }
+    }, [id])
 
+    useEffect(() => {
+        if (id) {
+            dispatch(getPostsLocation(id));
+        }
     }, [id])
 
     return (
@@ -74,7 +81,7 @@ export default function Location(props) {
             </Grid>
             <Grid item md={6} sm={12}>
                 <div className={classes.review}>
-
+                    <FeedReview />
                 </div>
                 <div className={classes.reviewPosts}>
 

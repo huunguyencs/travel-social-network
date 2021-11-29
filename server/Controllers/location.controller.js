@@ -1,4 +1,5 @@
 const Locations = require('../Models/location.model')
+const Posts = require('../Models/post.model');
 
 class LocationController {
     async createLocation(req, res) {
@@ -61,6 +62,26 @@ class LocationController {
                 success: true, message: "get info 1 Location success", location
             });
         } catch (err) {
+            console.log(err)
+            res.status(500).json({ success: false, message: err.message })
+        }
+    }
+
+    async getPosts(req, res) {
+        try {
+            const posts = await Posts.find({ isPostReview: true, locationId: req.params.id })
+                .populate("userId likes", "username email fullname avatar")
+                .populate({
+                    path: "comments",
+                    populate: {
+                        path: "userId likes",
+                        select: "-password"
+                    }
+                })
+                .populate("locationId", "name");
+            res.json({ success: true, message: "successful", posts })
+        }
+        catch (err) {
             console.log(err)
             res.status(500).json({ success: false, message: err.message })
         }
