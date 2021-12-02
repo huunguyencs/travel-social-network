@@ -127,3 +127,23 @@ export const unlikeTour = (id, token, next) => async (dispatch) => {
         next();
     }
 }
+
+export const joinTour = (id, token, next) => async (dispatch) => {
+    try {
+        const res = await customAxios(token).patch(`tour/${id}/join`);
+        dispatch(tourAction.updateJoin({ id: id, joinIds: res.data.joinIds }));
+    }
+    catch (err) {
+        next();
+    }
+}
+
+export const unJoinTour = (id, token, next) => async (dispatch) => {
+    try {
+        const res = await customAxios(token).patch(`tour/${id}/un_join`);
+        dispatch(tourAction.updateJoin({ id: id, joinIds: res.data.joinIds }));
+    }
+    catch (err) {
+        next();
+    }
+}

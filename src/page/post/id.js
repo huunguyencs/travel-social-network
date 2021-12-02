@@ -9,12 +9,14 @@ export default function PostDetail() {
     const { id } = useParams();
     const [post, setPost] = useState(null);
 
-    const getPost = async () => {
-        const res = await customAxios().get(`/post/${id}`)
-        setPost(res.data.post);
-    }
+
 
     useEffect(() => {
+        const getPost = async () => {
+            const res = await customAxios().get(`/post/${id}`)
+            setPost(res.data.post);
+        }
+
         getPost(id);
     }, [id])
 

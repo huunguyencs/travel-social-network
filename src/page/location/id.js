@@ -38,7 +38,7 @@ export default function Location(props) {
         if (id) {
             dispatch(getPostsLocation(id));
         }
-    }, [id])
+    }, [id, dispatch])
 
     return (
         <Grid container className={classes.container}>

@@ -1,6 +1,6 @@
-import { Button, Card, CardContent, CardMedia, Grid, IconButton, Modal, Typography, Backdrop, Fade, Menu, MenuItem, Dialog, DialogTitle, DialogActions } from "@material-ui/core";
+import { Button, Card, CardContent, CardMedia, Grid, IconButton, Modal, Typography, Backdrop, Fade, Menu, MenuItem, Dialog, DialogTitle, DialogActions, Collapse, CircularProgress, CardActions } from "@material-ui/core";
 import React, { useState } from "react";
-// import { Rating } from '@material-ui/lab'
+import { Rating } from '@material-ui/lab'
 import { MoreVert } from "@material-ui/icons";
 import { useDispatch } from "react-redux";
 import { Link } from "react-router-dom";
@@ -9,6 +9,7 @@ import { tourdetailStyles } from "../../style";
 import CreateReviewForm from "../forms/createReview";
 import EditLocationForm from "../forms/editLocation";
 import * as tourAction from '../../redux/actions/createTourAction';
+import customAxios from "../../utils/fetchData";
 
 
 const MenuListProps = {
@@ -45,11 +46,12 @@ export default function Location(props) {
 
     const { location, isOwn, isSave, tourDateId, indexDate, indexLocation } = props;
 
-    // const [showRv, setShowRv] = useState(false);
+    const [showRv, setShowRv] = useState(false);
     const [showCreateRv, setShowCreateRv] = useState(false);
     const [anchorEl, setAnchorEl] = useState(null);
     const [editLoc, setEditLoc] = useState(false);
     const [showDeleteLocation, setShowDeleteLocation] = useState(false);
+    const [review, setReview] = useState(null);
 
     const handleShowMenu = (e) => {
         setAnchorEl(e.currentTarget);
@@ -87,6 +89,22 @@ export default function Location(props) {
         dispatch(tourAction.deleteLocation({ indexDate: indexDate, indexLocation: indexLocation }));
         handleCloseDelete();
         handleCloseMenu();
+    }
+
+    const getReviewPost = async () => {
+        const res = await customAxios().get(`/post/${location.postId}`);
+        setReview(res.data.post);
+    }
+
+    const handleShowReview = () => {
+        if (!showRv) {
+            setShowRv(true);
+            if (location.postId) {
+                getReviewPost();
+            }
+        }
+        else setShowRv(false);
+
     }
 
 
@@ -173,7 +191,7 @@ export default function Location(props) {
                             isSave && isOwn && !location.postId && <Button className={classes.reviewBtn} onClick={handleShow}>Tạo Review</Button>
                         }
                         {
-                            isSave && location.postId && <Button className={classes.reviewBtn}>Xem Review</Button>
+                            isSave && location.postId && <Button className={classes.reviewBtn} onClick={handleShowReview}>Xem Review</Button>
                         }
 
 
@@ -204,33 +222,26 @@ export default function Location(props) {
                         </div>
                     </CardContent>
                 </Grid>
-                {/* <Collapse in={showRv}>
-                    <Grid item md={12}>
-                        <CardContent className={classes.review}>
-                            <Typography component="legend">Đánh giá: </Typography>
-                            <Rating
-                                name={"rating" + tourInfo.id}
-                                value={valueRate}
-                                onChange={(e, newValue) => {
-                                    setValueRate(newValue);
-                                }}
-                            />
-                            <Typography>Đây là review</Typography>
-                        </CardContent>
-                        <CardActions>
-                            <IconButton onClick={likeHandle} className={classes.marginIcon}>
-                                {
-                                    like ? <Favorite className={classes.likeIcon} /> : <FavoriteBorderOutlined />
-                                }
+                <Collapse in={showRv}>
+                    {review ?
+                        <Grid item md={12}>
+                            <CardContent className={classes.review}>
+                                <Typography component="legend">Đánh giá: </Typography>
+                                <Rating
+                                    name={"rating" + review._id}
+                                    value={review.rate}
+                                />
+                                <Typography>{review.content}</Typography>
+                            </CardContent>
+                            <CardMedia>
 
-                            </IconButton>
-                            <Typography className={classes.numLike}>
-                                {numLike}
-                            </Typography>
-                            <Button>Xem chi tiết</Button>
-                        </CardActions>
-                    </Grid>
-                </Collapse> */}
+                            </CardMedia>
+                            <CardActions>
+                                <Button component={Link} to={`post/${review._id}`}>Xem chi tiết</Button>
+                            </CardActions>
+                        </Grid>
+                        : <CircularProgress />}
+                </Collapse>
 
             </Grid>
         </Card>
