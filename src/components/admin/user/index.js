@@ -1,8 +1,6 @@
 import React from "react";
-import { AddCircle, Group, GroupAdd, GroupWork, LocationOn, Public, RemoveRedEye } from "@material-ui/icons";
-import { makeStyles, Button, Container, Divider, Typography } from "@material-ui/core";
+import { makeStyles, Container, Typography } from "@material-ui/core";
 
-import profileStyles from "../../../style";
 import { DataGrid } from "@mui/x-data-grid";
 
 
@@ -78,7 +76,7 @@ function AdminUsers(props) {
     return (
         <Container className={classes.container} style={{ marginTop: "160px" }}>
             <div className={classes.appBarSpacer} />
-                <div className={classes.admin_location_header}
+            <div className={classes.admin_location_header}
                 style={{
                     display: "flex",
                     flexDirection: "row",
@@ -86,23 +84,23 @@ function AdminUsers(props) {
                     paddingLeft: "20px",
                     paddingRight: "20px"
                 }}
-                >
-                    <div className={classes.admin_location_header_left}>
-                        <Typography>200 Người dùng</Typography>
-                    </div>    
+            >
+                <div className={classes.admin_location_header_left}>
+                    <Typography>200 Người dùng</Typography>
                 </div>
-                <div className={classes.admin_location_body}>
-                    <div className={classes.tableContainer}>
-                        <DataGrid
-                            className={classes.table}
-                            rows={rows}
-                            columns={columns}
-                            pageSize={5}
-                            rowsPerPageOptions={[5]}
-                            disableSelectionOnClick
-                        />
-                    </div>
+            </div>
+            <div className={classes.admin_location_body}>
+                <div className={classes.tableContainer}>
+                    <DataGrid
+                        className={classes.table}
+                        rows={rows}
+                        columns={columns}
+                        pageSize={5}
+                        rowsPerPageOptions={[5]}
+                        disableSelectionOnClick
+                    />
                 </div>
+            </div>
         </Container>
     );
 }

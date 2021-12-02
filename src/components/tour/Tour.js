@@ -44,7 +44,7 @@ export default function Tour(props) {
     const [numLike, setNumLike] = useState(0);
     const [open, setOpen] = useState(false);
     const [join, setJoin] = useState(false);
-    const [numJoin, setNumJoin] = useState()
+    const [numJoin, setNumJoin] = useState(0);
 
 
     const handleCloseImage = () => {
@@ -101,8 +101,8 @@ export default function Tour(props) {
     useEffect(() => {
         if (auth.user && tour.joinIds.includes(auth.user._id)) {
             setJoin(true);
-            setNumJoin(tour.joinIds?.length)
         }
+        setNumJoin(tour.joinIds?.length);
     }, [tour.joinIds, auth.user]);
 
     const handleJoin = async () => {

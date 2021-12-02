@@ -1,7 +1,7 @@
 import { Grid } from "@material-ui/core";
 import React from "react";
 
-import Calendar from '../../components/card/CalendarCard';
+import Calendar from '../../components/calendar';
 import FriendRecommendCard from "../../components/card/FriendRecommend";
 import FeedService from "../../components/feed/FeedService";
 import LeftBar from "../../components/leftbar/LeftBar";

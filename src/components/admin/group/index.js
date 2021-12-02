@@ -1,8 +1,6 @@
 import React from "react";
-import { AddCircle, Group, GroupAdd, GroupWork, LocationOn, Public, RemoveRedEye } from "@material-ui/icons";
-import { makeStyles, Button, Container, Divider, Typography } from "@material-ui/core";
+import { makeStyles, Container, Typography } from "@material-ui/core";
 
-import profileStyles from "../../../style";
 import { DataGrid } from "@mui/x-data-grid";
 
 
@@ -36,26 +34,26 @@ const columns = [
 ];
 
 const rows = [
-    { id: 1, name: 'Du lịch cùng ABC', user: 'Trần Văn A', date: 'Mon Nov 08 2021 12:55:31 GMT+0700 (Giờ Đông Dương)', numMenber: 100, numPost: 100},
-    { id: 2, name: 'Du lịch cùng ABC', user: 'Trần Văn A', date: 'Mon Nov 08 2021 12:55:31 GMT+0700 (Giờ Đông Dương)', numMenber: 100, numPost: 100},
-    { id: 3, name: 'Du lịch cùng ABC', user: 'Trần Văn A', date: 'Mon Nov 08 2021 12:55:31 GMT+0700 (Giờ Đông Dương)', numMenber: 100, numPost: 100},
-    { id: 4, name: 'Du lịch cùng ABC', user: 'Trần Văn A', date: 'Mon Nov 08 2021 12:55:31 GMT+0700 (Giờ Đông Dương)', numMenber: 100, numPost: 100},
-    { id: 5, name: 'Du lịch cùng ABC', user: 'Trần Văn A', date: 'Mon Nov 08 2021 12:55:31 GMT+0700 (Giờ Đông Dương)', numMenber: 100, numPost: 100},
-    { id: 6, name: 'Du lịch cùng ABC', user: 'Trần Văn A', date: 'Mon Nov 08 2021 12:55:31 GMT+0700 (Giờ Đông Dương)', numMenber: 100, numPost: 100},
-    { id: 7, name: 'Du lịch cùng ABC', user: 'Trần Văn A', date: 'Mon Nov 08 2021 12:55:31 GMT+0700 (Giờ Đông Dương)', numMenber: 100, numPost: 100},
-    { id: 8, name: 'Du lịch cùng ABC', user: 'Trần Văn A', date: 'Mon Nov 08 2021 12:55:31 GMT+0700 (Giờ Đông Dương)', numMenber: 100, numPost: 100},
-    { id: 9, name: 'Du lịch cùng ABC', user: 'Trần Văn A', date: 'Mon Nov 08 2021 12:55:31 GMT+0700 (Giờ Đông Dương)', numMenber: 100, numPost: 100},
-    { id: 10, name: 'Du lịch cùng ABC', user: 'Trần Văn A', date: 'Mon Nov 08 2021 12:55:31 GMT+0700 (Giờ Đông Dương)', numMenber: 100, numPost: 100},
-    { id: 11, name: 'Du lịch cùng ABC', user: 'Trần Văn A', date: 'Mon Nov 08 2021 12:55:31 GMT+0700 (Giờ Đông Dương)', numMenber: 100, numPost: 100},
-    { id: 12, name: 'Du lịch cùng ABC', user: 'Trần Văn A', date: 'Mon Nov 08 2021 12:55:31 GMT+0700 (Giờ Đông Dương)', numMenber: 100, numPost: 100},
-    { id: 13, name: 'Du lịch cùng ABC', user: 'Trần Văn A', date: 'Mon Nov 08 2021 12:55:31 GMT+0700 (Giờ Đông Dương)', numMenber: 100, numPost: 100},
-    { id: 14, name: 'Du lịch cùng ABC', user: 'Trần Văn A', date: 'Mon Nov 08 2021 12:55:31 GMT+0700 (Giờ Đông Dương)', numMenber: 100, numPost: 100},
-    { id: 15, name: 'Du lịch cùng ABC', user: 'Trần Văn A', date: 'Mon Nov 08 2021 12:55:31 GMT+0700 (Giờ Đông Dương)', numMenber: 100, numPost: 100},
-    { id: 16, name: 'Du lịch cùng ABC', user: 'Trần Văn A', date: 'Mon Nov 08 2021 12:55:31 GMT+0700 (Giờ Đông Dương)', numMenber: 100, numPost: 100},
-    { id: 17, name: 'Du lịch cùng ABC', user: 'Trần Văn A', date: 'Mon Nov 08 2021 12:55:31 GMT+0700 (Giờ Đông Dương)', numMenber: 100, numPost: 100},
-    { id: 18, name: 'Du lịch cùng ABC', user: 'Trần Văn A', date: 'Mon Nov 08 2021 12:55:31 GMT+0700 (Giờ Đông Dương)', numMenber: 100, numPost: 100},
-    { id: 19, name: 'Du lịch cùng ABC', user: 'Trần Văn A', date: 'Mon Nov 08 2021 12:55:31 GMT+0700 (Giờ Đông Dương)', numMenber: 100, numPost: 100},
-    { id: 20, name: 'Du lịch cùng ABC', user: 'Trần Văn A', date: 'Mon Nov 08 2021 12:55:31 GMT+0700 (Giờ Đông Dương)', numMenber: 100, numPost: 100},
+    { id: 1, name: 'Du lịch cùng ABC', user: 'Trần Văn A', date: 'Mon Nov 08 2021 12:55:31 GMT+0700 (Giờ Đông Dương)', numMenber: 100, numPost: 100 },
+    { id: 2, name: 'Du lịch cùng ABC', user: 'Trần Văn A', date: 'Mon Nov 08 2021 12:55:31 GMT+0700 (Giờ Đông Dương)', numMenber: 100, numPost: 100 },
+    { id: 3, name: 'Du lịch cùng ABC', user: 'Trần Văn A', date: 'Mon Nov 08 2021 12:55:31 GMT+0700 (Giờ Đông Dương)', numMenber: 100, numPost: 100 },
+    { id: 4, name: 'Du lịch cùng ABC', user: 'Trần Văn A', date: 'Mon Nov 08 2021 12:55:31 GMT+0700 (Giờ Đông Dương)', numMenber: 100, numPost: 100 },
+    { id: 5, name: 'Du lịch cùng ABC', user: 'Trần Văn A', date: 'Mon Nov 08 2021 12:55:31 GMT+0700 (Giờ Đông Dương)', numMenber: 100, numPost: 100 },
+    { id: 6, name: 'Du lịch cùng ABC', user: 'Trần Văn A', date: 'Mon Nov 08 2021 12:55:31 GMT+0700 (Giờ Đông Dương)', numMenber: 100, numPost: 100 },
+    { id: 7, name: 'Du lịch cùng ABC', user: 'Trần Văn A', date: 'Mon Nov 08 2021 12:55:31 GMT+0700 (Giờ Đông Dương)', numMenber: 100, numPost: 100 },
+    { id: 8, name: 'Du lịch cùng ABC', user: 'Trần Văn A', date: 'Mon Nov 08 2021 12:55:31 GMT+0700 (Giờ Đông Dương)', numMenber: 100, numPost: 100 },
+    { id: 9, name: 'Du lịch cùng ABC', user: 'Trần Văn A', date: 'Mon Nov 08 2021 12:55:31 GMT+0700 (Giờ Đông Dương)', numMenber: 100, numPost: 100 },
+    { id: 10, name: 'Du lịch cùng ABC', user: 'Trần Văn A', date: 'Mon Nov 08 2021 12:55:31 GMT+0700 (Giờ Đông Dương)', numMenber: 100, numPost: 100 },
+    { id: 11, name: 'Du lịch cùng ABC', user: 'Trần Văn A', date: 'Mon Nov 08 2021 12:55:31 GMT+0700 (Giờ Đông Dương)', numMenber: 100, numPost: 100 },
+    { id: 12, name: 'Du lịch cùng ABC', user: 'Trần Văn A', date: 'Mon Nov 08 2021 12:55:31 GMT+0700 (Giờ Đông Dương)', numMenber: 100, numPost: 100 },
+    { id: 13, name: 'Du lịch cùng ABC', user: 'Trần Văn A', date: 'Mon Nov 08 2021 12:55:31 GMT+0700 (Giờ Đông Dương)', numMenber: 100, numPost: 100 },
+    { id: 14, name: 'Du lịch cùng ABC', user: 'Trần Văn A', date: 'Mon Nov 08 2021 12:55:31 GMT+0700 (Giờ Đông Dương)', numMenber: 100, numPost: 100 },
+    { id: 15, name: 'Du lịch cùng ABC', user: 'Trần Văn A', date: 'Mon Nov 08 2021 12:55:31 GMT+0700 (Giờ Đông Dương)', numMenber: 100, numPost: 100 },
+    { id: 16, name: 'Du lịch cùng ABC', user: 'Trần Văn A', date: 'Mon Nov 08 2021 12:55:31 GMT+0700 (Giờ Đông Dương)', numMenber: 100, numPost: 100 },
+    { id: 17, name: 'Du lịch cùng ABC', user: 'Trần Văn A', date: 'Mon Nov 08 2021 12:55:31 GMT+0700 (Giờ Đông Dương)', numMenber: 100, numPost: 100 },
+    { id: 18, name: 'Du lịch cùng ABC', user: 'Trần Văn A', date: 'Mon Nov 08 2021 12:55:31 GMT+0700 (Giờ Đông Dương)', numMenber: 100, numPost: 100 },
+    { id: 19, name: 'Du lịch cùng ABC', user: 'Trần Văn A', date: 'Mon Nov 08 2021 12:55:31 GMT+0700 (Giờ Đông Dương)', numMenber: 100, numPost: 100 },
+    { id: 20, name: 'Du lịch cùng ABC', user: 'Trần Văn A', date: 'Mon Nov 08 2021 12:55:31 GMT+0700 (Giờ Đông Dương)', numMenber: 100, numPost: 100 },
 ];
 
 const useStyles = makeStyles((theme) => ({
@@ -80,7 +78,7 @@ function AdminGroup(props) {
     return (
         <Container className={classes.container} style={{ marginTop: "160px" }}>
             <div className={classes.appBarSpacer} />
-                <div className={classes.admin_location_header}
+            <div className={classes.admin_location_header}
                 style={{
                     display: "flex",
                     flexDirection: "row",
@@ -88,23 +86,23 @@ function AdminGroup(props) {
                     paddingLeft: "20px",
                     paddingRight: "20px"
                 }}
-                >
-                    <div className={classes.admin_location_header_left}>
-                        <Typography>200 nhóm du lịch</Typography>
-                    </div>    
+            >
+                <div className={classes.admin_location_header_left}>
+                    <Typography>200 nhóm du lịch</Typography>
                 </div>
-                <div className={classes.admin_location_body}>
-                    <div className={classes.tableContainer}>
-                        <DataGrid
-                            className={classes.table}
-                            rows={rows}
-                            columns={columns}
-                            pageSize={5}
-                            rowsPerPageOptions={[5]}
-                            disableSelectionOnClick
-                        />
-                    </div>
+            </div>
+            <div className={classes.admin_location_body}>
+                <div className={classes.tableContainer}>
+                    <DataGrid
+                        className={classes.table}
+                        rows={rows}
+                        columns={columns}
+                        pageSize={5}
+                        rowsPerPageOptions={[5]}
+                        disableSelectionOnClick
+                    />
                 </div>
+            </div>
         </Container>
     );
 }

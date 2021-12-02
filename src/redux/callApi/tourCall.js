@@ -8,7 +8,6 @@ export const getTours = (data) => async (dispatch) => {
     try {
 
         const res = await customAxios().get("/tour/tours");
-        console.log(res);
 
         dispatch(tourAction.getTours({ tour: res.data.tours }));
     }
@@ -24,7 +23,6 @@ export const getTourDetail = (id, next) => async (dispatch) => {
     try {
 
         const res = await customAxios().get(`/tour/${id}`);
-        console.log(res.data.tour);
 
         next(res.data.tour);
 
@@ -73,10 +71,9 @@ export const createTourCall = (tour, image, token, next) => async (dispatch) => 
             image: image ? imageUpload[0] : ""
         }
 
-        console.log(data);
 
-        const res = await customAxios(token).post('tour/create_tour', data);
-        console.log(res);
+        await customAxios(token).post('tour/create_tour', data);
+
 
         // const res = 0;
 

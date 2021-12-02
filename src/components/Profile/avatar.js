@@ -78,16 +78,6 @@ export default function Profile_Avatar(props) {
 
 
 
-  const getUser = async () => {
-    try {
-      const res = await customAxios(auth.token).get(`/user/${id}`);
-      setUser(res.data.user)
-    }
-    catch (err) {
-      console.log("loi");
-    }
-  }
-
   useEffect(() => {
     const isFollowed = () => {
       if (auth.user && user) {
@@ -101,6 +91,16 @@ export default function Profile_Avatar(props) {
 
     }
 
+    const getUser = async () => {
+      try {
+        const res = await customAxios(auth.token).get(`/user/${id}`);
+        setUser(res.data.user)
+      }
+      catch (err) {
+        console.log("loi");
+      }
+    }
+
     if (auth.token) {
       if (auth.user._id === id) {
         setUser(auth.user);
@@ -111,7 +111,7 @@ export default function Profile_Avatar(props) {
       if (isFollowed()) setFollowed(true);
       else setFollowed(false);
     }
-  }, [id, setUser, auth, history, getUser, user]);
+  }, [id, setUser, auth, history, user]);
 
   return (
     <Container className={classes.container}>

@@ -10,6 +10,8 @@ import FeedTour from "../../../components/feed/FeedTour";
 import ProfileAvatar from "../../../components/Profile/avatar";
 import SpeedDialButton from "../../../components/speedDialBtn";
 import Menu from "../../../components/leftbar/menu";
+import Calendar from "../../../components/calendar";
+import FriendRecommendCard from "../../../components/card/FriendRecommend";
 
 
 function ProfileTours() {
@@ -29,7 +31,10 @@ function ProfileTours() {
           <FeedTour />
         </Grid>
         <Grid item md={3} className={classes.rightbar}>
-          <RightBar />
+          <RightBar>
+            <Calendar />
+            <FriendRecommendCard />
+          </RightBar>
         </Grid>
       </Grid>
     </div>

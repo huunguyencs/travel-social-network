@@ -10,6 +10,8 @@ import { profileMenu } from "../../../constant/menu";
 import SpeedDialButton from "../../../components/speedDialBtn";
 import Menu from "../../../components/leftbar/menu";
 import { useParams } from "react-router-dom";
+import Calendar from "../../../components/calendar";
+import FriendRecommendCard from "../../../components/card/FriendRecommend";
 
 
 
@@ -38,7 +40,10 @@ function InfoProfile() {
 
                 </Grid>
                 <Grid item sm={3}>
-                    <RightBar />
+                    <RightBar>
+                        <Calendar />
+                        <FriendRecommendCard />
+                    </RightBar>
                 </Grid>
             </Grid>
         </div>

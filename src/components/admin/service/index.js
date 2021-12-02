@@ -1,8 +1,6 @@
 import React from "react";
-import { AddCircle, Group, GroupAdd, GroupWork, LocationOn, Public, RemoveRedEye } from "@material-ui/icons";
-import { makeStyles, Button, Container, Divider, Typography } from "@material-ui/core";
+import { makeStyles, Container, Typography } from "@material-ui/core";
 
-import profileStyles from "../../../style";
 import { DataGrid } from "@mui/x-data-grid";
 
 
@@ -48,25 +46,25 @@ const columns = [
 ];
 
 const rows = [
-    { id: 1, name: 'Service 1', price: "120$", type: "Hotel",cooperator: "Cooperator 1"},
-    { id: 2, name: 'Service 1', price: "120$", type: "Hotel",cooperator: "Cooperator 1"},
-    { id: 3, name: 'Service 1', price: "120$", type: "Hotel",cooperator: "Cooperator 1"},
-    { id: 4, name: 'Service 1', price: "120$", type: "Hotel",cooperator: "Cooperator 1"},
-    { id: 5, name: 'Service 1', price: "120$", type: "Hotel",cooperator: "Cooperator 1"},
-    { id: 6, name: 'Service 1', price: "120$", type: "Hotel",cooperator: "Cooperator 1"},
-    { id: 7, name: 'Service 1', price: "120$", type: "Hotel",cooperator: "Cooperator 1"},
-    { id: 8, name: 'Service 1', price: "120$", type: "Hotel",cooperator: "Cooperator 1"},
-    { id: 9, name: 'Service 1', price: "120$", type: "Hotel",cooperator: "Cooperator 1"},
-    { id: 10, name: 'Service 1', price: "120$", type: "Hotel",cooperator: "Cooperator 1"},
-    { id: 11, name: 'Service 1', price: "120$", type: "Hotel",cooperator: "Cooperator 1"},
-    { id: 12, name: 'Service 1', price: "120$", type: "Hotel",cooperator: "Cooperator 1"},
-    { id: 13, name: 'Service 1', price: "120$", type: "Hotel",cooperator: "Cooperator 1"},
-    { id: 14, name: 'Service 1', price: "120$", type: "Hotel",cooperator: "Cooperator 1"},
-    { id: 15, name: 'Service 1', price: "120$", type: "Hotel",cooperator: "Cooperator 1"},
-    { id: 16, name: 'Service 1', price: "120$", type: "Hotel",cooperator: "Cooperator 1"},
-    { id: 17, name: 'Service 1', price: "120$", type: "Hotel",cooperator: "Cooperator 1"},
-    { id: 18, name: 'Service 1', price: "120$", type: "Hotel",cooperator: "Cooperator 1"},
-    { id: 19, name: 'Service 1', price: "120$", type: "Hotel",cooperator: "Cooperator 1"},
+    { id: 1, name: 'Service 1', price: "120$", type: "Hotel", cooperator: "Cooperator 1" },
+    { id: 2, name: 'Service 1', price: "120$", type: "Hotel", cooperator: "Cooperator 1" },
+    { id: 3, name: 'Service 1', price: "120$", type: "Hotel", cooperator: "Cooperator 1" },
+    { id: 4, name: 'Service 1', price: "120$", type: "Hotel", cooperator: "Cooperator 1" },
+    { id: 5, name: 'Service 1', price: "120$", type: "Hotel", cooperator: "Cooperator 1" },
+    { id: 6, name: 'Service 1', price: "120$", type: "Hotel", cooperator: "Cooperator 1" },
+    { id: 7, name: 'Service 1', price: "120$", type: "Hotel", cooperator: "Cooperator 1" },
+    { id: 8, name: 'Service 1', price: "120$", type: "Hotel", cooperator: "Cooperator 1" },
+    { id: 9, name: 'Service 1', price: "120$", type: "Hotel", cooperator: "Cooperator 1" },
+    { id: 10, name: 'Service 1', price: "120$", type: "Hotel", cooperator: "Cooperator 1" },
+    { id: 11, name: 'Service 1', price: "120$", type: "Hotel", cooperator: "Cooperator 1" },
+    { id: 12, name: 'Service 1', price: "120$", type: "Hotel", cooperator: "Cooperator 1" },
+    { id: 13, name: 'Service 1', price: "120$", type: "Hotel", cooperator: "Cooperator 1" },
+    { id: 14, name: 'Service 1', price: "120$", type: "Hotel", cooperator: "Cooperator 1" },
+    { id: 15, name: 'Service 1', price: "120$", type: "Hotel", cooperator: "Cooperator 1" },
+    { id: 16, name: 'Service 1', price: "120$", type: "Hotel", cooperator: "Cooperator 1" },
+    { id: 17, name: 'Service 1', price: "120$", type: "Hotel", cooperator: "Cooperator 1" },
+    { id: 18, name: 'Service 1', price: "120$", type: "Hotel", cooperator: "Cooperator 1" },
+    { id: 19, name: 'Service 1', price: "120$", type: "Hotel", cooperator: "Cooperator 1" },
 ];
 
 function AdminService(props) {
@@ -74,7 +72,7 @@ function AdminService(props) {
     return (
         <Container className={classes.container} style={{ marginTop: "160px" }}>
             <div className={classes.appBarSpacer} />
-                <div className={classes.admin_location_header}
+            <div className={classes.admin_location_header}
                 style={{
                     display: "flex",
                     flexDirection: "row",
@@ -82,23 +80,23 @@ function AdminService(props) {
                     paddingLeft: "20px",
                     paddingRight: "20px"
                 }}
-                >
-                    <div className={classes.admin_location_header_left}>
-                        <Typography>200 Dịch vụ liên kết</Typography>
-                    </div>    
+            >
+                <div className={classes.admin_location_header_left}>
+                    <Typography>200 Dịch vụ liên kết</Typography>
                 </div>
-                <div className={classes.admin_location_body}>
-                    <div className={classes.tableContainer}>
-                        <DataGrid
-                            className={classes.table}
-                            rows={rows}
-                            columns={columns}
-                            pageSize={5}
-                            rowsPerPageOptions={[5]}
-                            disableSelectionOnClick
-                        />
-                    </div>
+            </div>
+            <div className={classes.admin_location_body}>
+                <div className={classes.tableContainer}>
+                    <DataGrid
+                        className={classes.table}
+                        rows={rows}
+                        columns={columns}
+                        pageSize={5}
+                        rowsPerPageOptions={[5]}
+                        disableSelectionOnClick
+                    />
                 </div>
+            </div>
         </Container>
     );
 }

@@ -13,6 +13,8 @@ import { useDispatch, useSelector } from "react-redux";
 import { useParams } from "react-router-dom";
 import { getUserPost } from "../../../redux/callApi/postCall";
 import Post from "../../../components/post/Post";
+import Calendar from "../../../components/calendar";
+import FriendRecommendCard from "../../../components/card/FriendRecommend";
 
 
 
@@ -56,7 +58,10 @@ function ProfilePosts() {
           </div>
         </Grid>
         <Grid item sm={3}>
-          <RightBar />
+          <RightBar>
+            <Calendar />
+            <FriendRecommendCard />
+          </RightBar>
         </Grid>
       </Grid>
     </div>
