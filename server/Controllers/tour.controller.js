@@ -121,6 +121,7 @@ class TourController {
         try {
             const tours = await Tours.find({}).sort("-createdAt")
                 .populate("userId likes", "username email fullname avatar")
+                .populate("tour", "date")
                 .populate({
                     path: "comments",
                     populate: {
@@ -180,6 +181,44 @@ class TourController {
             });
         } catch (err) {
             console.log(err)
+            res.status(500).json({ success: false, message: err.message })
+        }
+    }
+
+    async joinTour(req, res) {
+        try {
+            var tour = await Tours.find({ _id: req.params.id, joinIds: req.user._id });
+            if (tour.length > 0) {
+                return res.status(400).json({ success: false, message: "You joined this tour." })
+            }
+
+            tour = await Tours.findOneAndUpdate({ _id: req.params.id }, {
+                $push: {
+                    joinIds: req.user._id
+                }
+            }, { new: true })
+            res.json({
+                success: true, message: "like tour success",
+                joinIds: tour.joinIds
+            });
+        } catch (err) {
+            res.status(500).json({ success: false, message: err.message })
+        }
+    }
+
+    async unJoinTour(req, res) {
+        try {
+            const tour = await Tours.findOneAndUpdate({ _id: req.params.id }, {
+                $pull: {
+                    joinIds: req.user._id
+                }
+            }, { new: true })
+
+            res.json({
+                success: true, message: "unlike tour success",
+                joinIds: tour.joinIds
+            });
+        } catch (err) {
             res.status(500).json({ success: false, message: err.message })
         }
     }

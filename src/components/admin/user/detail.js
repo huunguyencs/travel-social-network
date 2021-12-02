@@ -1,27 +1,14 @@
 import React from "react";
 import {
-  AddCircle,
-  Group,
-  GroupAdd,
-  GroupWork,
-  LocationOn,
-  Public,
-  RemoveRedEye,
-} from "@material-ui/icons";
-import {
   makeStyles,
   Button,
   Container,
-  Divider,
-  Typography,
   RadioGroup,
   FormControlLabel,
   Radio,
   TextField,
 } from "@material-ui/core";
 
-import profileStyles from "../../../style";
-import { DataGrid } from "@mui/x-data-grid";
 
 const useStyles = makeStyles((theme) => ({
   appBarSpacer: {

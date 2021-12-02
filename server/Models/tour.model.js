@@ -11,7 +11,7 @@ const tourSchema = new mongoose.Schema({
         type: Boolean,
         default: true
     },
-    taggedIds: [{ type: mongoose.Types.ObjectId, ref: 'users' }],
+    joinIds: [{ type: mongoose.Types.ObjectId, ref: 'users' }],
     likes: [{ type: mongoose.Types.ObjectId, ref: 'users' }],
     comments: [{ type: mongoose.Types.ObjectId, ref: 'comments' }],
     userId: { type: mongoose.Types.ObjectId, ref: 'users' },

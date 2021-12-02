@@ -1,5 +1,6 @@
 const Posts = require('../Models/post.model')
 const Comments = require('../Models/comment.model')
+const TourDates = require('../Models/tourDate.model');
 
 class PostController {
     //co hai loai post
@@ -29,6 +30,39 @@ class PostController {
         }
     }
 
+    async createReview(req, res) {
+        try {
+            const { content, images, hashtags, locationId, rate, cost, tourDateId, indexLocation } = req.body;
+            let isPostReview = true;
+            const newPost = new Posts({
+                userId: req.user._id, content, images, hashtags, isPostReview, locationId, rate, cost
+            });
+            await newPost.save();
+
+            await TourDates.findOneAndUpdate({ _id: tourDateId, locations: { $elemMatch: { _id: indexLocation } } }, {
+                $set: {
+                    'locations.$.postId': newPost._doc._id
+                }
+            }, { new: true, safe: true, upsert: true })
+
+            res.json({
+                success: true,
+                message: "Create review successful",
+                newPost: {
+                    ...newPost._doc,
+                    userId: {
+                        _id: req.user._id,
+                        fullname: req.user.fullname,
+                        avatar: req.user.avatar
+                    }
+                }
+            })
+        }
+        catch (err) {
+            console.log(err)
+            res.status(500).json({ success: false, message: err.message })
+        }
+    }
 
     async updatePost(req, res) {
         try {
@@ -77,6 +111,7 @@ class PostController {
                         select: "-password"
                     }
                 })
+                .populate("locationId", "name")
                 .sort({ "createdAt": -1 });
             res.json({
                 posts,
@@ -99,6 +134,7 @@ class PostController {
                         select: "-password"
                     },
                 })
+                .populate("locationId", "name")
             res.json({
                 success: true, message: "get info 1 post success", post
             });

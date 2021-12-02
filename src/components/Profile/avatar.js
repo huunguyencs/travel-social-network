@@ -10,27 +10,6 @@ import { useParams, useHistory } from "react-router-dom";
 import customAxios from "../../utils/fetchData";
 import { follow, unfollow } from "../../redux/callApi/userCall";
 
-const userList = [
-  {
-    _id: 132123,
-    firstName: "An",
-    lastName: "Nguyễn",
-    avatarImage: "",
-  },
-  {
-    _id: 456,
-    firstName: "An",
-    lastName: "Nguyễn",
-    avatarImage: "",
-  },
-  {
-    _id: 798,
-    firstName: "An",
-    lastName: "Nguyễn",
-    avatarImage: "",
-  }
-]
-
 
 
 export default function Profile_Avatar(props) {
@@ -97,26 +76,31 @@ export default function Profile_Avatar(props) {
   }
 
 
-  const isFollowed = () => {
-    for (const u of auth.user?.followings) {
-      if (u._id === user?._id) {
-        return true;
-      }
-    }
-    return false;
-  }
 
-  const getUser = async () => {
-    try {
-      const res = await customAxios(auth.token).get(`/user/${id}`);
-      setUser(res.data.user)
-    }
-    catch (err) {
-      console.log("loi");
-    }
-  }
 
   useEffect(() => {
+    const isFollowed = () => {
+      if (auth.user && user) {
+        for (const u of auth.user.followings) {
+          if (u._id === user._id) {
+            return true;
+          }
+        }
+        return false;
+      }
+
+    }
+
+    const getUser = async () => {
+      try {
+        const res = await customAxios(auth.token).get(`/user/${id}`);
+        setUser(res.data.user)
+      }
+      catch (err) {
+        console.log("loi");
+      }
+    }
+
     if (auth.token) {
       if (auth.user._id === id) {
         setUser(auth.user);
@@ -127,7 +111,7 @@ export default function Profile_Avatar(props) {
       if (isFollowed()) setFollowed(true);
       else setFollowed(false);
     }
-  }, [id, setUser, auth, history, getUser]);
+  }, [id, setUser, auth, history, user]);
 
   return (
     <Container className={classes.container}>

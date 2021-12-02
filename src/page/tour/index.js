@@ -9,7 +9,7 @@ import useStyles from "../../style";
 import { homeMenu } from "../../constant/menu";
 import SpeedDialButton from "../../components/speedDialBtn";
 import Menu from "../../components/leftbar/menu";
-import Calendar from '../../components/card/CalendarCard';
+import Calendar from '../../components/calendar';
 import FriendRecommendCard from '../../components/card/FriendRecommend';
 
 

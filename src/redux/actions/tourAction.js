@@ -49,6 +49,13 @@ export const updateLike = (props) => {
     }
 }
 
+export const updateJoin = (props) => {
+    return {
+        type: TOUR_TYPES.UPDATE_JOIN,
+        payload: props,
+    }
+}
+
 export const getTourDetail = (props) => {
     return {
         type: TOUR_TYPES.GET_TOUR_DETAIL,

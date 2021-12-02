@@ -8,7 +8,7 @@ import RightBar from "../components/rightbar/RightBar";
 import SpeedDialButton from "../components/speedDialBtn";
 import { homeMenu } from "../constant/menu";
 import useStyles from "../style";
-import Calendar from '../components/card/CalendarCard';
+import Calendar from '../components/calendar';
 import FriendRecommendCard from '../components/card/FriendRecommend';
 import Slider from "../components/slider/slider";
 

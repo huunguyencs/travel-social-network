@@ -1,12 +1,11 @@
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import { Container, InputBase, Modal, Backdrop, Fade, CircularProgress } from "@material-ui/core";
-import { useSelector, useDispatch } from "react-redux";
+import { useSelector } from "react-redux";
 
 
 import Post from '../post/Post';
 import { feedStyles } from "../../style";
 import CreatePostForm from "../forms/createPost";
-import { getPosts } from "../../redux/callApi/postCall";
 
 
 

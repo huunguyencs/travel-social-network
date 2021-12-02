@@ -111,11 +111,23 @@ export default function Post(props) {
                         <Typography className={classes.userName}>{post.userId.fullname}</Typography>
                     </Link>
                 }
-                subheader={timeAgo(new Date(post.createdAt))}
+                subheader={
+                    <Link to={`/post/${post._id}`} style={{ cursor: "pointer" }}>
+                        {timeAgo(new Date(post.createdAt))}
+                    </Link>
+                }
             />
 
             <CardContent>
-                {post.isPostReview && <Rating name="location-rating" value={post.rate} readOnly style={{ marginBottom: 20 }} />}
+                {post.isPostReview &&
+                    <>
+                        <div>
+                            <Typography variant="body1" component={Link} to={`/location/${post.locationId._id}`}>{post.locationId.name}</Typography>
+                        </div>
+                        <Rating name="location-rating" value={post.rate} readOnly style={{ marginBottom: 20 }} />
+
+                    </>
+                }
                 <SeeMoreText
                     variant="body1"
                     maxText={100}

@@ -64,9 +64,7 @@ export const refreshToken = (callback) => async (dispatch) => {
 
 export const logout = (data) => async (dispatch) => {
     try {
-        const res = await customAxios().post("/user/logout", data, {
-            credentials: "include"
-        })
+        await customAxios().post("/user/logout", data)
         // console.log(res);
         dispatch(authAction.logout());
     }

@@ -1,4 +1,4 @@
-import { Card, CardContent, CardMedia, Container, Grid, Paper, Typography } from "@material-ui/core";
+import { Card, CardContent, CardMedia, Container, Grid, Typography } from "@material-ui/core";
 import { Event, LocationOn } from "@material-ui/icons";
 import React from "react";
 import { Link } from "react-router-dom";

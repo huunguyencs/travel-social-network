@@ -10,6 +10,7 @@ export default function calendar(props) {
     return (
         <Card className={classes.container}>
             <Calendar />
+            {/* <div id="amlich-month"></div> */}
         </Card>
     )
 }

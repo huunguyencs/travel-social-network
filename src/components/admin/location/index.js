@@ -1,22 +1,14 @@
 import React from "react";
 import {
-  AddCircle,
-  Group,
-  GroupAdd,
-  GroupWork,
-  LocationOn,
-  Public,
-  RemoveRedEye,
+  AddCircle
 } from "@material-ui/icons";
 import {
   makeStyles,
   Button,
   Container,
-  Divider,
   Typography,
 } from "@material-ui/core";
 
-import profileStyles from "../../../style";
 import { DataGrid } from "@mui/x-data-grid";
 import { Link } from "react-router-dom";
 

@@ -1,5 +1,6 @@
 import * as tourAction from '../actions/tourAction';
 import customAxios from '../../utils/fetchData';
+import * as notifyAction from '../actions/notifyAction';
 import * as imageUtils from '../../utils/uploadImage'
 
 export const getTours = (data) => async (dispatch) => {
@@ -7,7 +8,6 @@ export const getTours = (data) => async (dispatch) => {
     try {
 
         const res = await customAxios().get("/tour/tours");
-        console.log(res);
 
         dispatch(tourAction.getTours({ tour: res.data.tours }));
     }
@@ -23,7 +23,6 @@ export const getTourDetail = (id, next) => async (dispatch) => {
     try {
 
         const res = await customAxios().get(`/tour/${id}`);
-        console.log(res.data.tour);
 
         next(res.data.tour);
 
@@ -53,7 +52,7 @@ export const updateTour = (data) => async (dispatch) => {
 
 export const createTourCall = (tour, image, token, next) => async (dispatch) => {
 
-    // dispatch(notifyAction.callStart());
+    dispatch(notifyAction.callStart());
 
     try {
         // call api to save tour
@@ -72,20 +71,19 @@ export const createTourCall = (tour, image, token, next) => async (dispatch) => 
             image: image ? imageUpload[0] : ""
         }
 
-        console.log(data);
 
-        const res = await customAxios(token).post('tour/create_tour', data);
-        console.log(res);
+        await customAxios(token).post('tour/create_tour', data);
+
 
         // const res = 0;
 
         // dispatch(tourAction.createTour({ tour: res }));
-        // dispatch(notifyAction.callSuccess({ message: "" }));
+        dispatch(notifyAction.callSuccess({ message: "" }));
         next();
     }
     catch (err) {
         console.log(err);
-        // dispatch(notifyAction.callFail({ error: err.response.data.message }))
+        dispatch(notifyAction.callFail({ error: err.response.data.message }))
     }
 }
 
@@ -121,6 +119,26 @@ export const unlikeTour = (id, token, next) => async (dispatch) => {
         const res = await customAxios(token).patch(`tour/${id}/unlike`);
         dispatch(tourAction.updateLike({ id: id, likes: res.data.likes }));
 
+    }
+    catch (err) {
+        next();
+    }
+}
+
+export const joinTour = (id, token, next) => async (dispatch) => {
+    try {
+        const res = await customAxios(token).patch(`tour/${id}/join`);
+        dispatch(tourAction.updateJoin({ id: id, joinIds: res.data.joinIds }));
+    }
+    catch (err) {
+        next();
+    }
+}
+
+export const unJoinTour = (id, token, next) => async (dispatch) => {
+    try {
+        const res = await customAxios(token).patch(`tour/${id}/un_join`);
+        dispatch(tourAction.updateJoin({ id: id, joinIds: res.data.joinIds }));
     }
     catch (err) {
         next();

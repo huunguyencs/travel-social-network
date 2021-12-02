@@ -21,7 +21,7 @@ export default function TourDetail(props) {
 
 
     useEffect(() => {
-        setIsOwn(tour?.userId === auth.user._id);
+        setIsOwn(tour?.userId._id === auth.user._id);
     }, [setIsOwn, tour, auth])
 
     const [idx, setIdx] = useState(0);
@@ -71,7 +71,17 @@ export default function TourDetail(props) {
                             <Grid item md={6} className={classes.feedTour}>
                                 {
                                     tour.tour[idx].locations.map((item, index) => (
-                                        <Location location={item} index={index} edit={false} key={item._id} isOwn={isOwn} />
+                                        <Location
+                                            location={item}
+                                            index={index}
+                                            edit={false}
+                                            key={item._id}
+                                            isOwn={isOwn}
+                                            isSave={true}
+                                            tourDateId={tour.tour[idx]._id}
+                                            indexDate={idx}
+                                            indexLocation={index}
+                                        />
                                     ))
                                 }
 

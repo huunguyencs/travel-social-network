@@ -1,4 +1,4 @@
-import { Button, Container, Grid, Modal, Typography, Backdrop, Fade, Dialog, DialogActions, DialogTitle } from "@material-ui/core";
+import { Button, Container, Grid, Modal, Typography, Backdrop, Fade, Dialog, DialogActions, DialogTitle, CircularProgress } from "@material-ui/core";
 import React, { useState } from "react";
 import { Timeline, TimelineItem, TimelineSeparator, TimelineConnector, TimelineContent, TimelineDot } from '@material-ui/lab'
 import { useDispatch, useSelector } from "react-redux";
@@ -20,7 +20,7 @@ export default function AddTour(props) {
     const history = useHistory();
 
     const dispatch = useDispatch();
-    const { createTour, auth } = useSelector(state => state);
+    const { createTour, auth, notify } = useSelector(state => state);
 
 
     const [idx, setIdx] = useState(0);
@@ -42,12 +42,19 @@ export default function AddTour(props) {
         dispatch(tourAction.addDate());
     }
 
+    const hashtagSplit = (text) => {
+        var ht = text.split(" ");
+        return ht.filter(item => item !== "");
+    }
+
     const handleSave = () => {
         // console.log(createTour);
+        let ht = hashtagSplit(createTour.hashtags)
+
         dispatch(createTourCall({
             name: createTour.name,
             content: createTour.content,
-            hashtags: createTour.hashtags,
+            hashtags: ht,
             tour: createTour.tour,
         }, createTour.image, auth.token, () => {
             history.push("/tour")
@@ -83,10 +90,6 @@ export default function AddTour(props) {
 
     const classes = tourdetailStyles();
 
-    const hashtagSplit = (text) => {
-        var ht = text.split(" ");
-        return ht.filter(item => item !== "");
-    }
 
 
 
@@ -102,7 +105,7 @@ export default function AddTour(props) {
                     </Typography>
                 </div>
                 <div className={classes.hashtagWrap}>
-                    {hashtagSplit(createTour.hashtag).map((hashtag, index) => (
+                    {hashtagSplit(createTour.hashtags).map((hashtag, index) => (
                         <Typography className={classes.hashtag} key={index}>{hashtag}</Typography>
                     ))}
                 </div>
@@ -122,7 +125,7 @@ export default function AddTour(props) {
                     }}
                 >
                     <Fade in={showChangeInfo}>
-                        <UpdateTourInfo name={createTour.name} content={createTour.content} hashtag={createTour.hashtag} image={createTour.image} handleClose={handleCloseUpdateInfo} />
+                        <UpdateTourInfo name={createTour.name} content={createTour.content} hashtags={createTour.hashtags} image={createTour.image} handleClose={handleCloseUpdateInfo} />
                     </Fade>
                 </Modal>
             </div>
@@ -152,7 +155,10 @@ export default function AddTour(props) {
                         </div>
                         <div>
                             <Button className={classes.addDay} onClick={handleSave}>
-                                Lưu lại
+                                {notify.loading ?
+                                    <CircularProgress size="25px" color="white" />
+                                    : "Lưu lại"
+                                }
                             </Button>
                         </div>
                     </Container>
@@ -202,7 +208,15 @@ export default function AddTour(props) {
                     </div>
                     {
                         createTour.tour[idx].locations.map((item, index) => (
-                            <Location location={item} indexDate={idx} indexLocation={index} edit={true} key={index} isOwn={true} />
+                            <Location
+                                location={item}
+                                indexDate={idx}
+                                indexLocation={index}
+                                edit={true}
+                                key={index}
+                                isOwn={true}
+                                isSave={false}
+                            />
                         ))
                     }
                     <div className={classes.addContainer}>

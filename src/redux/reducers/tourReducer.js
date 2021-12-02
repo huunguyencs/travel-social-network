@@ -56,6 +56,15 @@ const tourReducer = (state = INIT_STATE, action) => {
                 } : item)
             }
         }
+        case TOUR_TYPES.UPDATE_JOIN: {
+            return {
+                ...state,
+                tours: state.tours.map(item => item._id === action.payload.id ? {
+                    ...item,
+                    tourIds: action.payload.tourIds
+                } : item)
+            }
+        }
         case TOUR_TYPES.ADD_COMMENT: {
             return {
                 ...state,

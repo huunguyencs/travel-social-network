@@ -9,16 +9,30 @@ export const getPosts = (token) => async (dispatch) => {
 
     try {
         // call api to get post list
-        const res = await customAxios(token).get("post/posts");
+        const res = await customAxios().get("post/posts");
 
         // console.log(res);
 
         dispatch(postAction.getPosts({ posts: res.data.posts }));
     }
     catch (err) {
-        dispatch(postAction.error({ error: err.response.data.message }))
+        console.log(err);
+        // dispatch(postAction.error({ error: err.response.data.message }))
     }
 
+}
+
+export const getPostsLocation = (id) => async (dispatch) => {
+    dispatch(postAction.loading());
+
+    try {
+        const res = await customAxios().get(`/location/${id}/posts`);
+
+        dispatch(postAction.getPosts({ posts: res.data.posts }));
+    }
+    catch (err) {
+        dispatch(postAction.error({ error: err.response.data.message }))
+    }
 }
 
 export const getUserPost = (id, token) => async (dispatch) => {
@@ -55,6 +69,7 @@ export const getMorePost = (data) => async (dispatch) => {
 }
 
 export const createPost = (data, token, next) => async (dispatch) => {
+    dispatch(notifyAction.callStart());
     // post api
     try {
         // call api to save post
@@ -70,10 +85,38 @@ export const createPost = (data, token, next) => async (dispatch) => {
 
         // console.log(res.data);
         dispatch(postAction.addPost({ post: res.data.newPost }))
+        dispatch(notifyAction.callSuccess({ message: "" }));
         next();
     }
     catch (err) {
         console.log(err);
+        dispatch(notifyAction.callFail({ error: err.response.data.message }))
+    }
+}
+
+export const createReview = (data, token, next) => async (dispatch) => {
+    dispatch(notifyAction.callStart());
+    // post api
+    try {
+        // call api to save post
+        let image = [];
+        if (data.image.length > 0) image = await imageUtils.uploadImages(data.image);
+        const review = {
+            ...data,
+            images: image
+        }
+
+
+        const res = await customAxios(token).post("/post/create_review", review);
+
+        // console.log(res.data);
+        dispatch(postAction.addPost({ post: res.data.newPost }))
+        dispatch(notifyAction.callSuccess({ message: "" }))
+        next();
+    }
+    catch (err) {
+        console.log(err);
+        dispatch(notifyAction.callFail({ err: err.response.data.message }));
     }
 }
 

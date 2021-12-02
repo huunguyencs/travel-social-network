@@ -39,18 +39,22 @@ export default function Province(props) {
     const classes = provinceStyles();
 
     const getProvince = async (id, next) => {
-        const res = await customAxios().get(`/province/${id}`);
-        console.log(res.data);
-        next(res.data.province, res.data.locations, res.data.services);
+        if (id) {
+            const res = await customAxios().get(`/province/${id}`);
+            next(res.data.province, res.data.locations, res.data.services);
+        }
+
     }
 
     useEffect(() => {
-        console.log(id);
-        getProvince(id, (province, locations, services) => {
-            setProvince(province);
-            setLocations(locations);
-            setServices(services);
-        });
+        if (id) {
+            getProvince(id, (province, locations, services) => {
+                setProvince(province);
+                setLocations(locations);
+                setServices(services);
+            });
+        }
+
     }, [id, setProvince, setLocations, setServices]);
 
     return (
@@ -58,11 +62,9 @@ export default function Province(props) {
             <SpeedDialButton />
             <Grid item md={12}>
                 <div
-                    style={{
-                        backgroundImage: `url(https://upload.wikimedia.org/wikipedia/commons/5/5d/TPQUANGNGAI.jpg)`,
-                    }}
                     className={classes.img}
                 >
+                    <img src={province?.image} alt="Province" style={{ width: "100%", height: "600px" }} />
                     <Typography className={classes.provinceName} variant="h1">
                         {province?.name}
                     </Typography>
@@ -97,7 +99,7 @@ export default function Province(props) {
                                 ))}
 
                             </Grid>
-                            <div style={{ display: "flex", justifyContent: "center" }}>
+                            <div className={classes.patination}>
                                 <Pagination count={Math.ceil(locations.length / ITEM_PER_PAGE)} page={pageLoc} onChange={handleChangeLoc} color="primary" />
                             </div>
                         </>
@@ -118,7 +120,7 @@ export default function Province(props) {
                                 ))}
 
                             </Grid>
-                            <div style={{ display: "flex", justifyContent: "center" }}>
+                            <div className={classes.patination}>
                                 <Pagination count={Math.ceil(services.length / ITEM_PER_PAGE)} page={pageSer} onChange={handleChangeSer} color="primary" />
                             </div>
                         </>

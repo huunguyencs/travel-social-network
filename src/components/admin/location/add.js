@@ -1,17 +1,7 @@
 import React from "react";
 import {
-  Group,
-  GroupAdd,
-  GroupWork,
-  LocationOn,
-  Public,
-  RemoveRedEye,
-} from "@material-ui/icons";
-import {
-  Avatar,
   Button,
   Container,
-  Divider,
   TextField,
   Typography,
 } from "@material-ui/core";
@@ -39,7 +29,7 @@ function AdminAddLocation(props) {
   return (
     <Container className={classes.container} style={{ marginTop: "160px" }}>
       <div>
-        <Typography variant="h4" color= "primary">Thêm địa điểm</Typography>
+        <Typography variant="h4" color="primary">Thêm địa điểm</Typography>
       </div>
       <div className={classes.adminLocation_body} style={{ width: "700px" }}>
         <form
@@ -109,7 +99,7 @@ function AdminAddLocation(props) {
 
           <div>
             <Button>
-                Chọn vị trí
+              Chọn vị trí
             </Button>
           </div>
 

@@ -14,7 +14,7 @@ const postSchema = new mongoose.Schema({
         type: Boolean,
         default: false
     },
-    star: Number,
+    rate: Number,
     cost: Number,
     locationId: { type: mongoose.Types.ObjectId, ref: 'locations' },
     hashtags: [{ type: String }],

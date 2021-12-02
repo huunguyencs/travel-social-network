@@ -8,13 +8,13 @@ import { updateInfo } from '../../redux/actions/createTourAction';
 import EmojiPicker from "../input/emojiPicker";
 
 
-export default function UpdateTourInfo({ name, content, hashtag, image, handleClose }) {
+export default function UpdateTourInfo({ name, content, hashtags, image, handleClose }) {
 
     const dispatch = useDispatch();
 
     const [state, setState] = useState({
         name: name,
-        hashtag: hashtag,
+        hashtags: hashtags,
         image: image,
     })
 
@@ -46,9 +46,7 @@ export default function UpdateTourInfo({ name, content, hashtag, image, handleCl
 
     const handleSubmit = () => {
         // console.log(state);
-        dispatch(updateInfo({ name: state.name, content: text, hashtag: state.hashtag, image: state.image }));
-        console.log(text);
-        console.log(state);
+        dispatch(updateInfo({ name: state.name, content: text, hashtags: state.hashtags, image: state.image }));
         handleClose();
     }
 
@@ -88,9 +86,9 @@ export default function UpdateTourInfo({ name, content, hashtag, image, handleCl
                         <InputBase
                             placeholder="Hashtag. Ex: #bien #lehoi ..."
                             variant="outlined"
-                            name="hashtag"
-                            id="hashtag"
-                            value={state.hashtag}
+                            name="hashtags"
+                            id="hashtags"
+                            value={state.hashtags}
                             className={classes.hashtag}
                             onChange={handleInput}
                         />

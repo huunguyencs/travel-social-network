@@ -1,6 +1,6 @@
-import { Button, Card, CardContent, CardMedia, Grid, IconButton, Modal, Typography, Backdrop, Fade, Menu, MenuItem, Dialog, DialogTitle, DialogActions } from "@material-ui/core";
+import { Button, Card, CardContent, CardMedia, Grid, IconButton, Modal, Typography, Backdrop, Fade, Menu, MenuItem, Dialog, DialogTitle, DialogActions, Collapse, CircularProgress, CardActions } from "@material-ui/core";
 import React, { useState } from "react";
-// import { Rating } from '@material-ui/lab'
+import { Rating } from '@material-ui/lab'
 import { MoreVert } from "@material-ui/icons";
 import { useDispatch } from "react-redux";
 import { Link } from "react-router-dom";
@@ -9,6 +9,7 @@ import { tourdetailStyles } from "../../style";
 import CreateReviewForm from "../forms/createReview";
 import EditLocationForm from "../forms/editLocation";
 import * as tourAction from '../../redux/actions/createTourAction';
+import customAxios from "../../utils/fetchData";
 
 
 const MenuListProps = {
@@ -43,11 +44,14 @@ export default function Location(props) {
 
     const dispatch = useDispatch();
 
-    // const [showRv, setShowRv] = useState(false);
+    const { location, isOwn, isSave, tourDateId, indexDate, indexLocation } = props;
+
+    const [showRv, setShowRv] = useState(false);
     const [showCreateRv, setShowCreateRv] = useState(false);
     const [anchorEl, setAnchorEl] = useState(null);
     const [editLoc, setEditLoc] = useState(false);
     const [showDeleteLocation, setShowDeleteLocation] = useState(false);
+    const [review, setReview] = useState(null);
 
     const handleShowMenu = (e) => {
         setAnchorEl(e.currentTarget);
@@ -82,12 +86,27 @@ export default function Location(props) {
     }
 
     const handleDeleteLocation = () => {
-        dispatch(tourAction.deleteLocation({ indexDate: props.indexDate, indexLocation: props.indexLocation }));
+        dispatch(tourAction.deleteLocation({ indexDate: indexDate, indexLocation: indexLocation }));
         handleCloseDelete();
         handleCloseMenu();
     }
 
-    const locationInfo = props.location;
+    const getReviewPost = async () => {
+        const res = await customAxios().get(`/post/${location.postId}`);
+        setReview(res.data.post);
+    }
+
+    const handleShowReview = () => {
+        if (!showRv) {
+            setShowRv(true);
+            if (location.postId) {
+                getReviewPost();
+            }
+        }
+        else setShowRv(false);
+
+    }
+
 
     return (
         <Card className={classes.cardContainer}>
@@ -95,7 +114,7 @@ export default function Location(props) {
             <Grid container>
                 <Grid item md={5} className={classes.imageLocation}>
                     <CardMedia className={classes.imgContainer}>
-                        <img src={locationInfo.location.images[0]} alt="location" className={classes.img} />
+                        <img src={location.location.images[0]} alt="location" className={classes.img} />
                     </CardMedia>
 
                 </Grid>
@@ -131,7 +150,13 @@ export default function Location(props) {
                                         }}
                                     >
                                         <Fade in={editLoc}>
-                                            <EditLocationForm handleCloseParent={handleCloseMenu} handleClose={handleCloseEdit} indexDate={props.indexDate} indexLocation={props.indexLocation} location={locationInfo} />
+                                            <EditLocationForm
+                                                handleCloseParent={handleCloseMenu}
+                                                handleClose={handleCloseEdit}
+                                                indexDate={indexDate}
+                                                indexLocation={indexLocation}
+                                                location={location}
+                                            />
                                         </Fade>
                                     </Modal>
                                     <MenuItem onClick={handleShowDelete}>
@@ -157,15 +182,16 @@ export default function Location(props) {
                             </div>
                         }
                         <div>
-                            <Typography variant="h4" className={classes.locationName} component={Link} to={"/location/" + locationInfo.location._id}>{locationInfo.location.name}</Typography>
+                            <Typography variant="h4" className={classes.locationName} component={Link} to={"/location/" + location.location._id}>{location.location.name}</Typography>
                         </div>
                         <div>
-                            <Typography variant="h5" component={Link} to={"/province/" + locationInfo.location.province._id}>{locationInfo.location.province.name}</Typography>
+                            <Typography variant="h5" component={Link} to={"/province/" + location.location.province._id}>{location.location.province.name}</Typography>
                         </div>
                         {
-                            props.isOwn ?
-                                <Button className={classes.reviewBtn}>Xem Review</Button> :
-                                <Button className={classes.reviewBtn} onClick={handleShow}>Tạo Review</Button>
+                            isSave && isOwn && !location.postId && <Button className={classes.reviewBtn} onClick={handleShow}>Tạo Review</Button>
+                        }
+                        {
+                            isSave && location.postId && <Button className={classes.reviewBtn} onClick={handleShowReview}>Xem Review</Button>
                         }
 
 
@@ -182,41 +208,40 @@ export default function Location(props) {
                             }}
                         >
                             <Fade in={showCreateRv}>
-                                <CreateReviewForm />
+                                <CreateReviewForm
+                                    location={location.location._id}
+                                    cost={location.cost}
+                                    handleClose={handleClose}
+                                    tourDateId={tourDateId}
+                                    indexLocation={location._id}
+                                />
                             </Fade>
                         </Modal>
                         <div className={classes.costContainer}>
-                            <Typography variant="body1">Chi phí: {locationInfo.cost}.000 VND</Typography>
+                            <Typography variant="body1">Chi phí: {location.cost}.000 VND</Typography>
                         </div>
                     </CardContent>
                 </Grid>
-                {/* <Collapse in={showRv}>
-                    <Grid item md={12}>
-                        <CardContent className={classes.review}>
-                            <Typography component="legend">Đánh giá: </Typography>
-                            <Rating
-                                name={"rating" + tourInfo.id}
-                                value={valueRate}
-                                onChange={(e, newValue) => {
-                                    setValueRate(newValue);
-                                }}
-                            />
-                            <Typography>Đây là review</Typography>
-                        </CardContent>
-                        <CardActions>
-                            <IconButton onClick={likeHandle} className={classes.marginIcon}>
-                                {
-                                    like ? <Favorite className={classes.likeIcon} /> : <FavoriteBorderOutlined />
-                                }
+                <Collapse in={showRv}>
+                    {review ?
+                        <Grid item md={12}>
+                            <CardContent className={classes.review}>
+                                <Typography component="legend">Đánh giá: </Typography>
+                                <Rating
+                                    name={"rating" + review._id}
+                                    value={review.rate}
+                                />
+                                <Typography>{review.content}</Typography>
+                            </CardContent>
+                            <CardMedia>
 
-                            </IconButton>
-                            <Typography className={classes.numLike}>
-                                {numLike}
-                            </Typography>
-                            <Button>Xem chi tiết</Button>
-                        </CardActions>
-                    </Grid>
-                </Collapse> */}
+                            </CardMedia>
+                            <CardActions>
+                                <Button component={Link} to={`post/${review._id}`}>Xem chi tiết</Button>
+                            </CardActions>
+                        </Grid>
+                        : <CircularProgress />}
+                </Collapse>
 
             </Grid>
         </Card>
