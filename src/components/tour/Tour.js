@@ -33,6 +33,7 @@ import ImageModal from "../modal/image";
 import { likeTour, unlikeTour, joinTour, unJoinTour } from "../../redux/callApi/tourCall";
 import { convertDateToStr } from "../../utils/date";
 import ManageUserJoin from "../modal/manageUserJoin";
+import SharePost from "../forms/share";
 
 
 export default function Tour(props) {
@@ -47,6 +48,7 @@ export default function Tour(props) {
     const [join, setJoin] = useState(false);
     const [openJoin, setOpenJoin] = useState(false);
     const [tour, setTour] = useState(null);
+    const [share, setShare] = useState(false);
 
     const updateLike = (likes) => {
         setTour({
@@ -262,8 +264,8 @@ export default function Tour(props) {
                         {tour?.likes.length}
                     </Typography>
                     <Modal
-                        aria-labelledby="transition-modal-title"
-                        aria-describedby="transition-modal-description"
+                        aria-labelledby="like"
+                        aria-describedby="user-like-this-tour"
                         className={classes.modal}
                         open={showLike}
                         onClose={handleClose}
@@ -282,8 +284,22 @@ export default function Tour(props) {
                         {tour.comments.length}
                     </Typography>
                     <IconButton>
-                        <Share />
+                        <Share onClick={() => setShare(true)} />
                     </IconButton>
+                    <Modal
+                        aria-labelledby="share"
+                        aria-describedby="share-this-tour"
+                        className={classes.modal}
+                        open={share}
+                        onClose={() => setShare(false)}
+                        closeAfterTransition
+                        BackdropComponent={Backdrop}
+                        BackdropProps={{
+                            timeout: 500,
+                        }}
+                    >
+                        <SharePost object={tour} type="tour" />
+                    </Modal>
                 </CardActions>
 
 

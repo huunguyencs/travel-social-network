@@ -1,10 +1,11 @@
-import React, { useEffect } from "react";
-import { Container } from "@material-ui/core";
+import React, { useEffect, useState } from "react";
+import { Backdrop, Button, Container, Fade, Modal } from "@material-ui/core";
 
 import Tour from "../tour/Tour";
 import { feedStyles } from "../../style";
 import { useDispatch, useSelector } from "react-redux";
 import { getTours } from "../../redux/callApi/tourCall";
+import CreateTourForm from "../forms/createTour";
 
 
 // const listTour = [
@@ -135,6 +136,8 @@ export default function FeedTour(props) {
     const dispatch = useDispatch();
     const { tour } = useSelector(state => state);
 
+    const [show, setShow] = useState(false);
+
     useEffect(() => {
         dispatch(getTours());
     }, [dispatch])
@@ -142,6 +145,27 @@ export default function FeedTour(props) {
     return (
         <Container className={classes.container}>
             <div className={classes.content}>
+                <div className={classes.create}>
+                    <Button className={classes.createTour} onClick={() => setShow(true)}>
+                        Lên lịch trình ngay!
+                    </Button>
+                    <Modal
+                        aria-labelledby="transition-modal-title"
+                        aria-describedby="transition-modal-description"
+                        className={classes.modal}
+                        open={show}
+                        onClose={() => setShow(false)}
+                        closeAfterTransition
+                        BackdropComponent={Backdrop}
+                        BackdropProps={{
+                            timeout: 500,
+                        }}
+                    >
+                        <Fade in={show}>
+                            <CreateTourForm handleClose={() => setShow(false)} />
+                        </Fade>
+                    </Modal>
+                </div>
 
                 <div>
                     {

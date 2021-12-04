@@ -64,7 +64,7 @@ export default function Province(props) {
                 <div
                     className={classes.img}
                 >
-                    <img src={province?.image} alt="Province" style={{ width: "100%", height: "600px" }} />
+                    <img src={province?.image} alt="Province" style={{ width: "100%", height: "700px" }} />
                     <Typography className={classes.provinceName} variant="h1">
                         {province?.name}
                     </Typography>

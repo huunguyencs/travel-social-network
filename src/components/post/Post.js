@@ -31,6 +31,7 @@ import UserList from "../modal/userList";
 import { SeeMoreText } from "../seeMoreText";
 import { timeAgo } from "../../utils/date";
 import { likePost, unlikePost } from '../../redux/callApi/postCall';
+import SharePost from "../forms/share";
 
 
 export default function Post(props) {
@@ -41,6 +42,7 @@ export default function Post(props) {
     const [showCmt, setShowCmt] = useState(false);
     const [like, setLike] = useState(false);
     const [post, setPost] = useState(null);
+    const [share, setShare] = useState(false);
 
     const classes = postStyles({ showCmt });
 
@@ -180,8 +182,8 @@ export default function Post(props) {
                         {post.likes?.length}
                     </Typography>
                     <Modal
-                        aria-labelledby="transition-modal-title"
-                        aria-describedby="transition-modal-description"
+                        aria-labelledby="like"
+                        aria-describedby="user-like-this-post"
                         className={classes.modal}
                         open={showLike}
                         onClose={handleClose}
@@ -200,8 +202,22 @@ export default function Post(props) {
                         {post.comments.length}
                     </Typography>
                     <IconButton>
-                        <Share />
+                        <Share onClick={() => setShare(true)} />
                     </IconButton>
+                    <Modal
+                        aria-labelledby="share"
+                        aria-describedby="share-this-post"
+                        className={classes.modal}
+                        open={share}
+                        onClose={() => setShare(false)}
+                        closeAfterTransition
+                        BackdropComponent={Backdrop}
+                        BackdropProps={{
+                            timeout: 500,
+                        }}
+                    >
+                        <SharePost object={post} type="post" />
+                    </Modal>
                 </CardActions>
 
                 <Collapse className={classes.cmt} in={showCmt}>

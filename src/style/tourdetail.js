@@ -9,8 +9,12 @@ const tourdetailStyles = makeStyles((theme) => ({
         textAlign: "center",
         paddingTop: 30,
     },
-    title: {
-
+    seeDetail: {
+        marginBottom: 20,
+        marginInline: 30,
+        backgroundColor: color.turquoise,
+        borderRadius: attr.borderRadius.md,
+        paddingInline: 20,
     },
     container: {
         maxWidth: "90%",

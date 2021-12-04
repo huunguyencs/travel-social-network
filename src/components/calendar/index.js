@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react'
-import { Button, Card, Modal, Paper, Typography } from '@material-ui/core';
+import { Backdrop, Button, Card, Modal, Paper, Typography } from '@material-ui/core';
 
 import * as utils from './utils';
 import './style.css';
@@ -281,6 +281,11 @@ export default function Calendar() {
                     padding: 10,
                     alignItems: 'center',
                     justifyContent: 'center',
+                }}
+                closeAfterTransition
+                BackdropComponent={Backdrop}
+                BackdropProps={{
+                    timeout: 500,
                 }}
             >
                 <ShowDetail content={content} setDetail={setDetail} setContent={setContent} />
