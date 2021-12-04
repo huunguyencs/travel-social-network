@@ -11,7 +11,7 @@ import { getLocations } from "../../redux/callApi/locationCall";
 
 export default function AddLocationForm(props) {
 
-    const [loc, setLoc] = useState({});
+    const [loc, setLoc] = useState(null);
     const costRef = useRef('');
 
     const { location } = useSelector(state => state);
@@ -20,7 +20,8 @@ export default function AddLocationForm(props) {
 
     const handleSubmit = (e) => {
         e.preventDefault();
-        dispatch(tourAction.addLocation({ location: loc, cost: costRef.current.value, indexDate: props.indexDate }))
+        if (loc)
+            dispatch(tourAction.addLocation({ location: loc, cost: costRef.current.value, indexDate: props.indexDate }))
         props.handleClose();
     }
 

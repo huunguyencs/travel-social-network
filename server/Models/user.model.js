@@ -44,14 +44,14 @@ const userSchema = new mongoose.Schema({
         state: { type: Boolean, default: false },
         confirmId: { type: mongoose.Types.ObjectId, ref: 'confirms' }
     },
-    hobbies: Array,
+    hobbies: [{ type: String }],
     address: {
         type: String,
         default: ''
     },
     followings: [{ type: mongoose.Types.ObjectId, ref: 'users' }], // nguoi minh theo doi
     followers: [{ type: mongoose.Types.ObjectId, ref: 'users' }],  //nguoi khac theo doi minh
-    contract: { type: mongoose.Types.ObjectId, ref: 'contracts' }
+    // contract: { type: mongoose.Types.ObjectId, ref: 'contracts' }
 }, {
     timestamps: true
 })

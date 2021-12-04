@@ -1,7 +1,8 @@
 
 export function convertDateToStr(date) {
     // date is Date object
-    return date.toLocaleDateString("vi-VN");
+    let temp = new Date(date);
+    return temp.toLocaleDateString("vi-VN");
     // return "11/11"
 }
 

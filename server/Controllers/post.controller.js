@@ -156,7 +156,7 @@ class PostController {
                 $push: {
                     likes: req.user._id
                 }
-            }, { new: true })
+            }, { new: true }).populate("likes", "username fullname avatar")
 
 
             res.json({
@@ -177,7 +177,7 @@ class PostController {
                 $pull: {
                     likes: req.user._id
                 }
-            }, { new: true })
+            }, { new: true }).populate("likes", "username fullname avatar")
 
             res.json({
                 success: true, message: "unlike post success",
@@ -202,7 +202,6 @@ class PostController {
             res.status(500).json({ success: false, message: err.message })
         }
     }
-
 
 }
 
