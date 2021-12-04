@@ -236,7 +236,7 @@ export default function Tour(props) {
                             }}
                         >
                             {auth.user._id === tour.userId._id ?
-                                <ManageUserJoin listUser={new Array([tour.userId, ...tour.joinIds])} updateJoin={updateJoin} tourId={tour._id} title={"Thành viên tham gia"} handleClose={() => setOpenJoin(false)} /> :
+                                <ManageUserJoin listUser={[tour.userId, ...tour.joinIds]} updateJoin={updateJoin} tourId={tour._id} title={"Thành viên tham gia"} handleClose={() => setOpenJoin(false)} /> :
                                 <UserList listUser={[tour.userId, ...tour.joinIds]} title={"Thành viên tham gia"} handleClose={() => setOpenJoin(false)} />
                             }
 

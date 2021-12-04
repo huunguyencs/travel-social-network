@@ -1,6 +1,6 @@
 import { Avatar, Button, IconButton } from "@material-ui/core";
 import { Close } from "@material-ui/icons";
-import React from "react";
+import React, { useState } from "react";
 import { useSelector, useDispatch } from 'react-redux';
 import { Link } from 'react-router-dom';
 
@@ -13,7 +13,7 @@ export default function ManageUserJoin(props) {
     const { tourId, title, handleClose, updateJoin } = props;
     const { auth } = useSelector(state => state);
     const dispatch = useDispatch();
-    const [listUser, setListUser] = props.listUser;
+    const [listUser, setListUser] = useState(props.listUser);
 
     const classes = modalListStyles();
 

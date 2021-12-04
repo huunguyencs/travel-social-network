@@ -72,7 +72,7 @@ export const createTourCall = (tour, image, token, next) => async (dispatch) => 
         }
 
 
-        await customAxios(token).post('tour/create_tour', data);
+        await customAxios(token).post('/tour/create_tour', data);
 
 
         // const res = 0;
@@ -101,7 +101,7 @@ export const likeTour = (id, token, next) => async (dispatch) => {
 
     try {
 
-        const res = await customAxios(token).patch(`tour/${id}/like`)
+        const res = await customAxios(token).patch(`/tour/${id}/like`)
         // dispatch(tourAction.updateLike({ id: id, likes: res.data.likes }));
         console.log(res.data.likes);
 
@@ -116,7 +116,7 @@ export const unlikeTour = (id, token, next) => async (dispatch) => {
 
     try {
 
-        const res = await customAxios(token).patch(`tour/${id}/unlike`);
+        const res = await customAxios(token).patch(`/tour/${id}/unlike`);
         // dispatch(tourAction.updateLike({ id: id, likes: res.data.likes }));
         console.log(res.data.likes);
 
@@ -128,7 +128,7 @@ export const unlikeTour = (id, token, next) => async (dispatch) => {
 
 export const joinTour = (id, token, next) => async (dispatch) => {
     try {
-        const res = await customAxios(token).patch(`tour/${id}/join`);
+        const res = await customAxios(token).patch(`/tour/${id}/join`);
         dispatch(tourAction.updateJoin({ id: id, joinIds: res.data.joinIds }));
     }
     catch (err) {
@@ -138,7 +138,7 @@ export const joinTour = (id, token, next) => async (dispatch) => {
 
 export const unJoinTour = (id, token, next) => async (dispatch) => {
     try {
-        const res = await customAxios(token).patch(`tour/${id}/unjoin`);
+        const res = await customAxios(token).patch(`/tour/${id}/unjoin`);
         dispatch(tourAction.updateJoin({ id: id, joinIds: res.data.joinIds }));
     }
     catch (err) {
@@ -148,10 +148,10 @@ export const unJoinTour = (id, token, next) => async (dispatch) => {
 
 export const removeJoin = (tourId, userId, token, next) => async (dispatch) => {
     try {
-        const res = await customAxios(token).patch(`tour/${tourId}/remove_join`, {
+        const res = await customAxios(token).patch(`/tour/${tourId}/remove_join`, {
             user: userId
         });
-        dispatch(tourAction.updateJoin({ id: userId, joinIds: res.data.joinIds }));
+        dispatch(tourAction.updateJoin({ id: tourId, joinIds: res.data.joinIds }));
     }
     catch (err) {
         next();
