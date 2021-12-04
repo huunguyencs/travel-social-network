@@ -131,7 +131,7 @@ export default function Province(props) {
             <Grid item md={3}>
                 <RightBar>
                     <WeatherCard name={province?.weatherName} nameShow={province?.name} />
-                    <CovidCard />
+                    <CovidCard name={province?.name} />
                 </RightBar>
             </Grid>
         </Grid>
