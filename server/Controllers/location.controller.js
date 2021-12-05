@@ -70,12 +70,12 @@ class LocationController {
     async getPosts(req, res) {
         try {
             const posts = await Posts.find({ isPostReview: true, locationId: req.params.id })
-                .populate("userId likes", "username email fullname avatar")
+                .populate("userId likes", "username fullname avatar")
                 .populate({
                     path: "comments",
                     populate: {
                         path: "userId likes",
-                        select: "-password"
+                        select: "username fullname avatar"
                     }
                 })
                 .populate("locationId", "name");

@@ -46,8 +46,8 @@ export const getUserPost = (id, token) => async (dispatch) => {
     catch (err) {
 
         // console.log(err.response.data.message);
-        console.log(err);
-        // dispatch(postAction.error({ error: err.response.data.message }))
+        // console.log(err);
+        dispatch(postAction.error({ error: err.response.data.message }))
     }
 }
 

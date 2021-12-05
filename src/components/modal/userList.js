@@ -54,6 +54,7 @@ export default function UserList(props) {
             <ul>
                 {listUser.map((user) => (
                     <li button className={classes.modal_body_user} key={user._id}>
+
                         <div className={classes.avatar}>
                             <Avatar alt="avatar" src={user.avatar} />
                         </div>

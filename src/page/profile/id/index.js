@@ -22,7 +22,7 @@ function InfoProfile() {
     const { id } = useParams();
 
     useEffect(() => {
-        console.log(id);
+        // console.log(id);
     }, [id]);
 
     return (

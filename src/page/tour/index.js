@@ -1,5 +1,5 @@
 import { Grid } from "@material-ui/core";
-import React from "react";
+import React, { useEffect } from "react";
 
 import LeftBar from "../../components/leftbar/LeftBar";
 import FeedTour from "../../components/feed/FeedTour";
@@ -11,15 +11,24 @@ import SpeedDialButton from "../../components/speedDialBtn";
 import Menu from "../../components/leftbar/menu";
 import Calendar from '../../components/calendar';
 import FriendRecommendCard from '../../components/card/FriendRecommend';
+import { useDispatch, useSelector } from "react-redux";
+import { getTours } from "../../redux/callApi/tourCall";
 
 
 export default function TourPage(props) {
 
     const classes = useStyles();
 
-    // useEffect(() => {
-    //     document.title = "Hành trình"
-    // }, [])
+    const { auth } = useSelector(state => state);
+
+    const dispatch = useDispatch();
+
+    useEffect(() => {
+        if (auth.token) {
+            dispatch(getTours(auth.token));
+        }
+
+    }, [dispatch, auth.token])
 
 
     return (

@@ -120,13 +120,13 @@ class TourController {
     async getTours(req, res) {
         try {
             const tours = await Tours.find({}).sort("-createdAt")
-                .populate("userId joinIds likes", "username email fullname avatar")
+                .populate("userId joinIds likes", "username fullname avatar")
                 .populate("tour", "date")
                 .populate({
                     path: "comments",
                     populate: {
                         path: "userId likes",
-                        select: "-password"
+                        select: "username fullname avatar"
                     }
                 })
             res.json({ success: true, message: "get tours successful", tours })
@@ -141,6 +141,15 @@ class TourController {
     async getUserTour(req, res) {
         try {
             const tours = await Tours.find({ userId: req.params.id }).sort("-createdAt")
+                .populate("userId joinIds likes", "username fullname avatar")
+                .populate("tour", "date")
+                .populate({
+                    path: "comments",
+                    populate: {
+                        path: "userId likes",
+                        select: "username fullname avatar"
+                    }
+                })
 
             res.json({ success: true, message: "get user tour successful", tours })
         } catch (err) {

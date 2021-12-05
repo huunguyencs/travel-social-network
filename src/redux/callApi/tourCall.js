@@ -12,8 +12,8 @@ export const getTours = (data) => async (dispatch) => {
         dispatch(tourAction.getTours({ tour: res.data.tours }));
     }
     catch (err) {
-        console.log(err);
-        // dispatch(tourAction.error({ error: err.response.data.message }))
+        // console.log(err);
+        dispatch(tourAction.error({ error: err.response.data.message }))
 
     }
 }
@@ -29,8 +29,21 @@ export const getTourDetail = (id, next) => async (dispatch) => {
         // dispatch(tourAction.getTourDetail({ tourdetail: res }));
     }
     catch (err) {
-        console.log(err);
-        // dispatch(tourAction.error({ error: err.response.data.message }));
+        // console.log(err);
+        dispatch(tourAction.error({ error: err.response.data.message }));
+    }
+}
+
+export const getUserTour = (id, token) => async (dispatch) => {
+    dispatch(tourAction.loading())
+    try {
+        const res = await customAxios(token).get(`/tour/user_tours/${id}`);
+        // console.log(res.data.tours);
+        dispatch(tourAction.getTours({ tour: res.data.tours }))
+    }
+    catch (err) {
+        dispatch(tourAction.error({ error: err.response.data.message }))
+        // console.log(err);
     }
 }
 
