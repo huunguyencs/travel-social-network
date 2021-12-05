@@ -1,5 +1,7 @@
 import { Grid } from "@material-ui/core";
-import React from "react";
+import React, { useEffect } from "react";
+import { useParams } from "react-router-dom";
+import { useDispatch, useSelector } from "react-redux";
 
 import LeftBar from "../../../components/leftbar/LeftBar";
 import RightBar from "../../../components/rightbar/RightBar";
@@ -12,10 +14,22 @@ import SpeedDialButton from "../../../components/speedDialBtn";
 import Menu from "../../../components/leftbar/menu";
 import Calendar from "../../../components/calendar";
 import FriendRecommendCard from "../../../components/card/FriendRecommend";
+import { getUserTour } from "../../../redux/callApi/tourCall";
+
+
 
 
 function ProfileTours() {
   const classes = useStyles();
+
+  const { id } = useParams();
+  const dispatch = useDispatch();
+  const { auth } = useSelector(state => state);
+
+  useEffect(() => {
+    dispatch(getUserTour(id, auth.token));
+  }, [dispatch, id, auth.token])
+
   return (
     <div>
       <Scroll showBelow={500} />

@@ -16,7 +16,7 @@ const locationStyles = makeStyles((theme) => ({
     },
     name: {
         fontSize: 120,
-        fontWeight: 500,
+        fontWeight: 400,
         color: color.black
     },
     provinceName: {

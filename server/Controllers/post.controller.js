@@ -81,12 +81,12 @@ class PostController {
     async getUserPost(req, res) {
         try {
             const posts = await Posts.find({ userId: req.params.id }).sort("-createdAt")
-                .populate("userId likes", "username email fullname avatar")
+                .populate("userId likes", "username fullname avatar")
                 .populate({
                     path: "comments",
                     populate: {
                         path: "userId likes",
-                        select: "-password"
+                        select: "username fullname avatar"
                     }
                 });
 
@@ -103,12 +103,12 @@ class PostController {
     async getPosts(req, res) {
         try {
             const posts = await Posts.find({})
-                .populate("userId likes", "username email fullname avatar")
+                .populate("userId likes", "username fullname avatar")
                 .populate({
                     path: "comments",
                     populate: {
                         path: "userId likes",
-                        select: "-password"
+                        select: "username fullname avatar"
                     }
                 })
                 .populate("locationId", "name")
@@ -126,12 +126,12 @@ class PostController {
     async getPost(req, res) {
         try {
             const post = await Posts.findById(req.params.id)
-                .populate("userId likes", "username email fullname avatar")
+                .populate("userId likes", "username fullname avatar")
                 .populate({
                     path: "comments",
                     populate: {
                         path: "userId likes",
-                        select: "-password"
+                        select: "username fullname avatar"
                     },
                 })
                 .populate("locationId", "name")
@@ -156,7 +156,7 @@ class PostController {
                 $push: {
                     likes: req.user._id
                 }
-            }, { new: true })
+            }, { new: true }).populate("likes", "username fullname avatar")
 
 
             res.json({
@@ -177,7 +177,7 @@ class PostController {
                 $pull: {
                     likes: req.user._id
                 }
-            }, { new: true })
+            }, { new: true }).populate("likes", "username fullname avatar")
 
             res.json({
                 success: true, message: "unlike post success",
@@ -202,7 +202,6 @@ class PostController {
             res.status(500).json({ success: false, message: err.message })
         }
     }
-
 
 }
 

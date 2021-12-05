@@ -191,7 +191,7 @@ export default function Location(props) {
                             isSave && isOwn && !location.postId && <Button className={classes.reviewBtn} onClick={handleShow}>Tạo Review</Button>
                         }
                         {
-                            isSave && location.postId && <Button className={classes.reviewBtn} onClick={handleShowReview}>Xem Review</Button>
+                            isSave && location.postId && <Button className={classes.reviewBtn} onClick={handleShowReview}>{showRv ? "Ẩn" : "Xem"} Review</Button>
                         }
 
 
@@ -237,7 +237,7 @@ export default function Location(props) {
 
                             </CardMedia>
                             <CardActions>
-                                <Button component={Link} to={`post/${review._id}`}>Xem chi tiết</Button>
+                                <Button component={Link} to={`/post/${review._id}`} className={classes.seeDetail}>Xem chi tiết</Button>
                             </CardActions>
                         </Grid>
                         : <CircularProgress />}

@@ -1,17 +1,26 @@
+import { Button, CircularProgress, InputBase, Paper, Typography } from '@material-ui/core';
+import { Share } from '@material-ui/icons';
 import React, { useState } from 'react';
 import { useSelector } from 'react-redux';
 
 import { formStyles } from "../../style";
+import EmojiPicker from '../input/emojiPicker';
 import LoginModal from "../modal/login";
 
-export default function sharePost(props) {
+export default function SharePost(props) {
 
-    const { auth } = useSelector(state => state);
+    const { object, type } = props;
+
+    const { auth, notify } = useSelector(state => state);
 
     const [text, setText] = useState("");
     const [hashtag, setHashtag] = useState("");
 
     const classes = formStyles();
+
+    const handleShare = () => {
+
+    }
 
     return (
         <>
@@ -19,7 +28,7 @@ export default function sharePost(props) {
                 <Paper className={classes.paperContainer}>
                     <div className={classes.textTitle}>
                         <Typography variant="h5">
-                            Chia sẻ bài viết của
+                            Chia sẻ {type === "post" ? "bài viết" : "lịch trình"} của {object.userId.fullname}
                         </Typography>
                     </div>
                     <form>
@@ -49,7 +58,20 @@ export default function sharePost(props) {
                             </div>
                             <div className={classes.formAction}>
                                 <EmojiPicker content={text} setContent={setText} />
+                                <div>
+                                    <Button className={classes.button} onClick={handleShare}>
+                                        {
+                                            notify.loading ?
+                                                <CircularProgress size="25px" color="white" /> :
+                                                <>
+                                                    <Share style={{ marginRight: 10 }} />
+                                                    Chia sẻ
+                                                </>
+                                        }
+                                    </Button>
+                                </div>
                             </div>
+
                         </div>
                     </form>
                 </Paper>

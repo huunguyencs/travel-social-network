@@ -18,7 +18,8 @@ router.patch('/:id/like', auth, TourController.likeTour);
 router.patch('/:id/unlike', auth, TourController.unlikeTour);
 
 router.patch('/:id/join', auth, TourController.joinTour);
-router.patch('/:id/un_join', auth, TourController.unJoinTour);
+router.patch('/:id/unjoin', auth, TourController.unJoinTour);
+router.patch('/:id/remove_join', auth, TourController.removeJoin);
 
 
 module.exports = router;

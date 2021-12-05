@@ -10,12 +10,13 @@ const provinceStyles = makeStyles((theme) => ({
     },
     provinceName: {
         position: 'absolute',
-        color: color.black,
-        fontWeight: 500,
+        color: color.white,
+        fontWeight: 400,
         fontSize: 100,
         top: "50%",
         left: "50%",
-        transform: "translate(-50%, -50%)"
+        transform: "translate(-50%, -50%)",
+        backgroundColor: color.black,
     },
     desContainer: {
         margin: 50,

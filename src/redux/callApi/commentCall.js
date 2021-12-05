@@ -10,7 +10,7 @@ export const getCommentTour = (data) => async (dispatch) => {
 
 }
 
-export const createCommentPost = (id, comment, auth) => async (dispatch) => {
+export const createCommentPost = (id, comment, auth, next) => async (dispatch) => {
 
     try {
         // call api to update comment
@@ -24,7 +24,9 @@ export const createCommentPost = (id, comment, auth) => async (dispatch) => {
             ...res.data.newComment,
             userId: auth.user,
         }
-        dispatch(commentAction.addCommentPost({ id: id, comment: newComment }))
+
+        next(newComment);
+        // dispatch(commentAction.addCommentPost({ id: id, comment: newComment }))
 
     }
     catch (err) {
@@ -33,7 +35,7 @@ export const createCommentPost = (id, comment, auth) => async (dispatch) => {
     }
 }
 
-export const createCommentTour = (id, comment, auth) => async (dispatch) => {
+export const createCommentTour = (id, comment, auth, next) => async (dispatch) => {
 
     try {
         // call api to update comment
@@ -47,7 +49,8 @@ export const createCommentTour = (id, comment, auth) => async (dispatch) => {
             ...res.data.newComment,
             userId: auth.user,
         }
-        dispatch(commentAction.addCommentTour({ id: id, comment: newComment }))
+        next(newComment);
+        // dispatch(commentAction.addCommentTour({ id: id, comment: newComment }))
     }
     catch (err) {
         console.log(err);

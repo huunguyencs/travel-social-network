@@ -73,7 +73,7 @@ class TourController {
                 $push: {
                     likes: req.user._id
                 }
-            }, { new: true })
+            }, { new: true }).populate("likes", "username fullname avatar")
             res.json({
                 success: true, message: "like tour success",
                 likes: tour.likes
@@ -91,7 +91,7 @@ class TourController {
                 $pull: {
                     likes: req.user._id
                 }
-            }, { new: true })
+            }, { new: true }).populate("likes", "username fullname avatar")
 
             res.json({
                 success: true, message: "unlike tour success",
@@ -120,13 +120,13 @@ class TourController {
     async getTours(req, res) {
         try {
             const tours = await Tours.find({}).sort("-createdAt")
-                .populate("userId likes", "username email fullname avatar")
+                .populate("userId joinIds likes", "username fullname avatar")
                 .populate("tour", "date")
                 .populate({
                     path: "comments",
                     populate: {
                         path: "userId likes",
-                        select: "-password"
+                        select: "username fullname avatar"
                     }
                 })
             res.json({ success: true, message: "get tours successful", tours })
@@ -141,6 +141,15 @@ class TourController {
     async getUserTour(req, res) {
         try {
             const tours = await Tours.find({ userId: req.params.id }).sort("-createdAt")
+                .populate("userId joinIds likes", "username fullname avatar")
+                .populate("tour", "date")
+                .populate({
+                    path: "comments",
+                    populate: {
+                        path: "userId likes",
+                        select: "username fullname avatar"
+                    }
+                })
 
             res.json({ success: true, message: "get user tour successful", tours })
         } catch (err) {
@@ -198,7 +207,7 @@ class TourController {
                 }
             }, { new: true })
             res.json({
-                success: true, message: "like tour success",
+                success: true, message: "join tour success",
                 joinIds: tour.joinIds
             });
         } catch (err) {
@@ -215,10 +224,35 @@ class TourController {
             }, { new: true })
 
             res.json({
-                success: true, message: "unlike tour success",
+                success: true, message: "unjoin tour success",
                 joinIds: tour.joinIds
             });
         } catch (err) {
+            res.status(500).json({ success: false, message: err.message })
+        }
+    }
+
+    async removeJoin(req, res) {
+        try {
+            let tour = await Tours.findById(req.params.id);
+            if (tour.userId.toString() !== req.user._id.toString()) {
+                res.status(500).json({ success: false, message: "Không được quyền" })
+                return;
+            }
+            const { user } = req.body;
+            tour = await Tours.findOneAndUpdate({ _id: req.params.id }, {
+                $pull: {
+                    joinIds: user
+                }
+            }, { new: true })
+
+            res.json({
+                success: true, message: "remove user success",
+                joinIds: tour.joinIds
+            });
+
+        }
+        catch (err) {
             res.status(500).json({ success: false, message: err.message })
         }
     }

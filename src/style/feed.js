@@ -8,11 +8,25 @@ const feedStyles = makeStyles((theme) => ({
         color: 'black',
         alignContent: "center",
     },
+    title: {
+        display: "flex",
+        justifyContent: "center",
+        marginBottom: 10,
+    },
     create: {
+        display: "flex",
+        justifyContent: "center",
         margin: 30,
         marginBottom: 50,
     },
+    createTour: {
+        backgroundColor: color.turquoise,
+        borderRadius: attr.borderRadius.md,
+        padding: 10,
+        paddingInline: 30,
+    },
     containerText: {
+        width: "90%",
         backgroundColor: color.white,
         paddingInline: theme.spacing(5),
         paddingTop: theme.spacing(1),

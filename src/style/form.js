@@ -27,6 +27,7 @@ const formStyles = makeStyles((theme) => ({
     },
     hashtag: {
         width: "100%",
+        marginBottom: 15,
     },
     postContentInput: {
         width: "500px",
