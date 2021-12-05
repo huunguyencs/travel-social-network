@@ -114,9 +114,9 @@ export const likeTour = (id, token, next) => async (dispatch) => {
 
     try {
 
-        const res = await customAxios(token).patch(`/tour/${id}/like`)
+        await customAxios(token).patch(`/tour/${id}/like`)
         // dispatch(tourAction.updateLike({ id: id, likes: res.data.likes }));
-        console.log(res.data.likes);
+        // console.log(res.data.likes);
 
     }
     catch (err) {
@@ -129,9 +129,9 @@ export const unlikeTour = (id, token, next) => async (dispatch) => {
 
     try {
 
-        const res = await customAxios(token).patch(`/tour/${id}/unlike`);
+        await customAxios(token).patch(`/tour/${id}/unlike`);
         // dispatch(tourAction.updateLike({ id: id, likes: res.data.likes }));
-        console.log(res.data.likes);
+        // console.log(res.data.likes);
 
     }
     catch (err) {
