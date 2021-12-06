@@ -90,22 +90,21 @@ export function WeatherFocastItem(props) {
         return string.charAt(0).toUpperCase() + string.slice(1);
     }
 
-    const { weather, nameShow } = props;
+    const { weather } = props;
 
     return (
-        <Card style={{ width: 500, margin: 10 }}>
+        <Card style={{ width: 500, margin: 10, borderRadius: 5 }}>
             <CardContent className={classes.content}>
                 <div className={classes.weatherTitle}>
-                    <Typography variant="h5">{nameShow}</Typography>
-                    <Typography>{convertDateToStr(weather.dt * 1000)}</Typography>
+                    <Typography variant="h6">{convertDateToStr(weather.dt * 1000)}</Typography>
                     <img src={`http://openweathermap.org/img/wn/${weather.weather[0].icon}@2x.png`} alt={weather.weather[0].main} className={classes.icon} />
                 </div>
 
                 <div className={classes.temp}>
                     <div>
-                        <Typography>{weather.temp.min} - {weather.temp.max} °C</Typography>
-                        <Typography>Ngày: {weather.temp.day} °C</Typography>
-                        <Typography>Đêm: {weather.temp.night} °C</Typography>
+                        <Typography variant="h6">{weather.temp.min} - {weather.temp.max} °C</Typography>
+                        <Typography variant="h6">Ngày: {weather.temp.day} °C</Typography>
+                        <Typography variant="h6">Đêm: {weather.temp.night} °C</Typography>
                     </div>
                     <Typography variant="h5">{convertToVN(weather.weather[0].main)}</Typography>
                 </div>

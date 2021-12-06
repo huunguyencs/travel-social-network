@@ -8,7 +8,7 @@ export default function WeatherFocast({ weather, handleClose, nameShow, alert })
     return (
         <Paper style={{ margin: 30, borderRadius: 10, padding: 15 }}>
             <div style={{ display: "flex", justifyContent: "center", margin: 30 }}>
-                <Typography variant={"h5"}>Dựa báo thời tiết {nameShow}</Typography>
+                <Typography variant={"h4"}>Dự báo thời tiết {nameShow}</Typography>
             </div>
             {alert &&
                 <div style={{ margin: "auto" }}>
@@ -22,7 +22,7 @@ export default function WeatherFocast({ weather, handleClose, nameShow, alert })
             }
             <ScrollMenu>
                 {weather && weather.map(item =>
-                    <WeatherFocastItem weather={item} nameShow={nameShow} />
+                    <WeatherFocastItem weather={item} />
                 )}
             </ScrollMenu>
             <div style={{ display: "flex", justifyContent: "center", margin: 20 }}>
