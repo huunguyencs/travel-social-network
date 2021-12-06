@@ -13,7 +13,7 @@ export default function WeatherFocast({ weather, handleClose, nameShow, alert })
             {alert &&
                 <div style={{ margin: "auto" }}>
                     <Typography>
-                        Cảnh báo
+                        ⚠️⚠️⚠️ Cảnh báo ⚠️⚠️⚠️
                     </Typography>
                     <Typography>{alert.event}</Typography>
                     <Typography>Từ {alert.start} đến {alert.end}</Typography>

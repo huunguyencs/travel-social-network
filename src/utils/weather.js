@@ -6,7 +6,7 @@ export const weatherFocast = async (position, callback) => {
 
     try {
         if (position) {
-            const data = await fetch(`https://api.openweathermap.org/data/2.5/onecall?lat=${lat}&lon=${lon}&exclude=minutely,hourly&appid=${env.WEATHER_API_KEY}&lang=vi`);
+            const data = await fetch(`https://api.openweathermap.org/data/2.5/onecall?lat=${lat}&lon=${lon}&exclude=minutely,hourly&appid=${env.WEATHER_API_KEY}&lang=vi&units=metric`);
             const res = await data.json();
             callback(res);
         }
