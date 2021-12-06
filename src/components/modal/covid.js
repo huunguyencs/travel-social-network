@@ -1,12 +1,24 @@
 
-import { Box, IconButton, Paper, Table, TableBody, TableCell, TableHead, TableRow, Tooltip, Typography } from '@material-ui/core'
+import { Box, IconButton, Paper, Table, TableBody, TableCell, TableContainer, TableHead, TablePagination, TableRow, Tooltip, Typography } from '@material-ui/core'
 import { Close } from '@material-ui/icons';
-import React from 'react'
+import React, { useState } from 'react'
 import { CartesianGrid, Legend, Line, LineChart, ResponsiveContainer, XAxis, YAxis } from 'recharts';
 
 export default function CovidModal(props) {
 
     const { covid, handleClose } = props;
+
+    const [page, setPage] = useState(0);
+    const [rowsPerPage, setRowsPerPage] = useState(10);
+
+    const handleChangePage = (event, newPage) => {
+        setPage(newPage);
+    };
+
+    const handleChangeRowsPerPage = (event) => {
+        setRowsPerPage(+event.target.value);
+        setPage(0);
+    };
 
     return (
         <Paper style={{ height: "80%", width: "80%", margin: 'auto', marginTop: 50, padding: 20 }}>
@@ -35,57 +47,57 @@ export default function CovidModal(props) {
                 <div style={{ display: "flex", justifyContent: "center" }}>
                     <Typography variant="h6">Tất cả</Typography>
                 </div>
-                <div style={{ width: "70%", margin: "auto", marginBottom: 20 }}>
+                <div style={{ width: "70%", margin: "auto", marginBottom: 40 }}>
                     <Table>
                         <TableHead>
                             <TableRow>
                                 <TableCell />
-                                <TableCell>Tổng ca nhiễm</TableCell>
-                                <TableCell>Phục hồi</TableCell>
-                                <TableCell>Tử vong</TableCell>
+                                <TableCell align="center">Tổng ca nhiễm</TableCell>
+                                <TableCell align="center">Phục hồi</TableCell>
+                                <TableCell align="center">Tử vong</TableCell>
                             </TableRow>
                         </TableHead>
                         <TableBody>
                             <TableRow>
                                 <TableCell>Thế giới</TableCell>
-                                <TableCell>{covid.total.world.cases}</TableCell>
-                                <TableCell>{covid.total.world.recovered}</TableCell>
-                                <TableCell>{covid.total.world.death}</TableCell>
+                                <TableCell align="center">{covid.total.world.cases}</TableCell>
+                                <TableCell align="center">{covid.total.world.recovered}</TableCell>
+                                <TableCell align="center">{covid.total.world.death}</TableCell>
                             </TableRow>
                             <TableRow>
                                 <TableCell>Việt Nam</TableCell>
-                                <TableCell>{covid.total.internal.cases}</TableCell>
-                                <TableCell>{covid.total.internal.recovered}</TableCell>
-                                <TableCell>{covid.total.internal.death}</TableCell>
+                                <TableCell align="center">{covid.total.internal.cases}</TableCell>
+                                <TableCell align="center">{covid.total.internal.recovered}</TableCell>
+                                <TableCell align="center">{covid.total.internal.death}</TableCell>
                             </TableRow>
                         </TableBody>
                     </Table>
                 </div>
                 <div style={{ display: "flex", justifyContent: "center" }}>
-                    <Typography variant="h6">Hôm nay</Typography>
+                    <Typography variant="h6">Hôm nay (ngày cập nhật gần nhất)</Typography>
                 </div>
-                <div style={{ width: "70%", margin: "auto", marginBottom: 20 }}>
+                <div style={{ width: "70%", margin: "auto", marginBottom: 40 }}>
                     <Table>
                         <TableHead>
                             <TableRow>
                                 <TableCell />
-                                <TableCell>Tổng ca nhiễm</TableCell>
-                                <TableCell>Phục hồi</TableCell>
-                                <TableCell>Tử vong</TableCell>
+                                <TableCell align="center">Tổng ca nhiễm</TableCell>
+                                <TableCell align="center">Phục hồi</TableCell>
+                                <TableCell align="center">Tử vong</TableCell>
                             </TableRow>
                         </TableHead>
                         <TableBody>
                             <TableRow>
                                 <TableCell>Thế giới</TableCell>
-                                <TableCell>{covid.today.world.cases}</TableCell>
-                                <TableCell>{covid.today.world.recovered}</TableCell>
-                                <TableCell>{covid.today.world.death}</TableCell>
+                                <TableCell align="center">{covid.today.world.cases}</TableCell>
+                                <TableCell align="center">{covid.today.world.recovered}</TableCell>
+                                <TableCell align="center">{covid.today.world.death}</TableCell>
                             </TableRow>
                             <TableRow>
                                 <TableCell>Việt Nam</TableCell>
-                                <TableCell>{covid.today.internal.cases}</TableCell>
-                                <TableCell>{covid.today.internal.recovered}</TableCell>
-                                <TableCell>{covid.today.internal.death}</TableCell>
+                                <TableCell align="center">{covid.today.internal.cases}</TableCell>
+                                <TableCell align="center">{covid.today.internal.recovered}</TableCell>
+                                <TableCell align="center">{covid.today.internal.death}</TableCell>
                             </TableRow>
                         </TableBody>
                     </Table>
@@ -93,7 +105,7 @@ export default function CovidModal(props) {
                 <div style={{ display: "flex", justifyContent: "center" }}>
                     <Typography variant="h6">Gần đây:</Typography>
                 </div>
-                <div style={{ width: "70%", margin: "auto", marginBottom: 20 }}>
+                <div style={{ width: "70%", margin: "auto", marginBottom: 40 }}>
                     <ResponsiveContainer height={500}>
                         <LineChart
                             width={700}
@@ -106,34 +118,34 @@ export default function CovidModal(props) {
                                 bottom: 5,
                             }}
                         >
-                            <CartesianGrid strokeDasharray="3 3" />
                             <XAxis dataKey="date" />
                             <YAxis />
+                            <CartesianGrid strokeDasharray="3 3" />
                             <Tooltip />
                             <Legend />
-                            <Line type="monotone" dataKey="cases" stroke="#00f" />
+                            <Line type="monotone" dataKey="cases" stroke="#00f" activeDot={{ r: 6 }} />
                             <Line type="monotone" dataKey="recovered" stroke="#0f0" />
                             <Line type="monotone" dataKey="death" stroke="#f00" />
                         </LineChart>
                     </ResponsiveContainer>
                 </div>
-                <div style={{ width: "70%", margin: "auto", marginBottom: 20 }}>
+                <div style={{ width: "70%", margin: "auto", marginBottom: 40 }}>
                     <Table>
                         <TableHead>
                             <TableRow>
-                                <TableCell>Ngày</TableCell>
-                                <TableCell>Số ca nhiễm</TableCell>
-                                <TableCell>Phục hồi</TableCell>
-                                <TableCell>Tử vong</TableCell>
+                                <TableCell align="center">Ngày</TableCell>
+                                <TableCell align="center">Số ca nhiễm</TableCell>
+                                <TableCell align="center">Phục hồi</TableCell>
+                                <TableCell align="center">Tử vong</TableCell>
                             </TableRow>
                         </TableHead>
                         <TableBody>
                             {covid.overview.map(item =>
                                 <TableRow>
-                                    <TableCell>{item.date}</TableCell>
-                                    <TableCell>{item.cases}</TableCell>
-                                    <TableCell>{item.recovered}</TableCell>
-                                    <TableCell>{item.death}</TableCell>
+                                    <TableCell align="center">{item.date}</TableCell>
+                                    <TableCell align="center">{item.cases}</TableCell>
+                                    <TableCell align="center">{item.recovered}</TableCell>
+                                    <TableCell align="center">{item.death}</TableCell>
                                 </TableRow>
                             )}
                         </TableBody>
@@ -142,27 +154,43 @@ export default function CovidModal(props) {
                 <div style={{ display: "flex", justifyContent: "center" }}>
                     <Typography variant="h6">Chi tiết</Typography>
                 </div>
-                <div style={{ width: "70%", margin: "auto", marginBottom: 20 }}>
-                    <Table>
-                        <TableHead>
+                <div style={{ width: "70%", margin: "auto", marginBottom: 40 }}>
+                    <TableContainer>
+                        <Table>
+                            <TableHead>
+                                <TableRow>
+                                    <TableCell align="center">Tỉnh/Thành phố</TableCell>
+                                    <TableCell align="center">Tổng ca nhiễm</TableCell>
+                                    <TableCell align="center">Ca nhiễm mới</TableCell>
+                                    <TableCell align="center">Tử vong</TableCell>
+                                </TableRow>
+                            </TableHead>
+                            <TableBody>
+                                {
+                                    covid.locations.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage).map((row) => {
+                                        return (
+                                            <TableRow>
+                                                <TableCell>{row.name}</TableCell>
+                                                <TableCell align="center">{row.cases}</TableCell>
+                                                <TableCell align="center">{row.casesToday}</TableCell>
+                                                <TableCell align="center">{row.death}</TableCell>
+                                            </TableRow>
+                                        )
+                                    })}
+                            </TableBody>
+                        </Table>
+                    </TableContainer>
 
+                    <TablePagination
+                        rowsPerPageOptions={[10, 25, 100]}
+                        component="div"
+                        count={covid.locations.length}
+                        rowsPerPage={rowsPerPage}
+                        page={page}
+                        onPageChange={handleChangePage}
+                        onRowsPerPageChange={handleChangeRowsPerPage}
+                    />
 
-                            <TableRow>
-                                <TableCell>Tỉnh</TableCell>
-                                <TableCell>Tổng ca nhiễm</TableCell>
-                                <TableCell>Ca nhiễm mới</TableCell>
-                                <TableCell>Tử vong</TableCell>
-                            </TableRow>
-                        </TableHead>
-                        {covid.locations.map(item =>
-                            <TableRow>
-                                <TableCell>{item.name}</TableCell>
-                                <TableCell>{item.cases}</TableCell>
-                                <TableCell>{item.casesToday}</TableCell>
-                                <TableCell>{item.death}</TableCell>
-                            </TableRow>
-                        )}
-                    </Table>
                 </div>
             </Box>
         </Paper>

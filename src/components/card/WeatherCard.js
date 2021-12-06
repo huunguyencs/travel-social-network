@@ -45,7 +45,7 @@ function WeatherCard(props) {
             </div>
 
             <div className={classes.temp}>
-                <Typography variant="h4">~ {weather.temp} °C</Typography>
+                <Typography variant="h4">~ {Math.round(weather.temp)} °C</Typography>
                 <Typography variant="h6">{convertToVN(weather.weather[0].main)}</Typography>
             </div>
 
@@ -102,9 +102,9 @@ export function WeatherFocastItem(props) {
 
                 <div className={classes.temp}>
                     <div>
-                        <Typography variant="h6">{Math.floor(weather.temp.min)} - {Math.floor(weather.temp.max)} °C</Typography>
-                        <Typography variant="h6">Ngày: {Math.floor(weather.temp.day)} °C</Typography>
-                        <Typography variant="h6">Đêm: {Math.floor(weather.temp.night)} °C</Typography>
+                        <Typography variant="h6">{Math.round(weather.temp.min)} - {Math.round(weather.temp.max)} °C</Typography>
+                        <Typography variant="h6">Ngày: {Math.round(weather.temp.day)} °C</Typography>
+                        <Typography variant="h6">Đêm: {Math.round(weather.temp.night)} °C</Typography>
                     </div>
                     <Typography variant="h5">{convertToVN(weather.weather[0].main)}</Typography>
                 </div>
