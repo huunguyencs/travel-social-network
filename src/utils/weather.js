@@ -1,9 +1,12 @@
 import * as env from '../key/env';
 
-export const weatherFocast = async (location, callback) => {
+export const weatherFocast = async (position, callback) => {
+
+    const { lon, lat } = position;
+
     try {
-        if (location) {
-            const data = await fetch(`http://api.openweathermap.org/data/2.5/weather?q=${location}&appid=${env.WEATHER_API_KEY}&lang=vi`);
+        if (position) {
+            const data = await fetch(`https://api.openweathermap.org/data/2.5/onecall?lat=${lat}&lon=${lon}&exclude=minutely,hourly&appid=${env.WEATHER_API_KEY}&lang=vi`);
             const res = await data.json();
             callback(res);
         }

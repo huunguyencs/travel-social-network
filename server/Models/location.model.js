@@ -16,7 +16,7 @@ const locationSchema = new mongoose.Schema({
     },
     province: { type: mongoose.Types.ObjectId, ref: 'provinces' },
     position: {
-        lng: Number,
+        lon: Number,
         lat: Number
     },
     information: String,

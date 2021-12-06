@@ -6,7 +6,7 @@ import { Link, useParams } from "react-router-dom";
 
 import MapCard from "../../components/card/MapCard";
 import RatingChart from "../../components/card/RatingChart";
-import WeatherCard from "../../components/card/WeatherCard";
+import WeatherCardGeneral from "../../components/card/WeatherCard";
 import FeedReview from "../../components/feed/FeedReview";
 import { SeeMoreText } from "../../components/seeMoreText";
 import SpeedDialButton from "../../components/speedDialBtn";
@@ -42,56 +42,61 @@ export default function Location(props) {
 
     return (
         <Grid container className={classes.container}>
-            <SpeedDialButton />
-            <Grid item md={12}>
-                <div
-                    className={classes.img}
-                >
-                    <img src={location?.images[0]} alt={"Location"} style={{ width: "100%", height: "650px" }} />
-                    <div className={classes.coverText}>
-                        <Typography variant="h1" className={classes.name}>
-                            {location?.name}
-                        </Typography>
-                        <div>
-                            <LocationOn className={classes.iconProvince} />
-                            <Typography className={classes.provinceName} variant="h2" component={Link} to={`/province/${location?.province._id}`}>
-                                {location?.province.name}
-                            </Typography>
+            {
+                location &&
+                <>
+                    <SpeedDialButton />
+                    <Grid item md={12}>
+                        <div
+                            className={classes.img}
+                        >
+                            <img src={location?.images[0]} alt={"Location"} style={{ width: "100%", height: "650px" }} />
+                            <div className={classes.coverText}>
+                                <Typography variant="h1" className={classes.name}>
+                                    {location?.name}
+                                </Typography>
+                                <div>
+                                    <LocationOn className={classes.iconProvince} />
+                                    <Typography className={classes.provinceName} variant="h2" component={Link} to={`/province/${location?.province._id}`}>
+                                        {location?.province.name}
+                                    </Typography>
+                                </div>
+
+                            </div>
+                        </div>
+                    </Grid>
+
+                    <Grid item md={3} sm={12}>
+                        <div className={classes.infoPanel}>
+                            <div className={classes.infoHeader}>
+                                <Typography variant="h6">
+                                    Thông tin chung
+                                </Typography>
+                            </div>
+                            <div className={classes.infoContent}>
+                                <SeeMoreText maxText={300} text={location?.information} variant="body1" />
+                            </div>
                         </div>
 
-                    </div>
-                </div>
-            </Grid>
+                        <div className={classes.map}>
+                            <MapCard position={location?.position} zoom={12} />
+                        </div>
+                    </Grid>
+                    <Grid item md={6} sm={12}>
+                        <div className={classes.review}>
+                            <FeedReview />
+                        </div>
+                        <div className={classes.reviewPosts}>
 
-            <Grid item md={3} sm={12}>
-                <div className={classes.infoPanel}>
-                    <div className={classes.infoHeader}>
-                        <Typography variant="h6">
-                            Thông tin chung
-                        </Typography>
-                    </div>
-                    <div className={classes.infoContent}>
-                        <SeeMoreText maxText={300} text={location?.information} variant="body1" />
-                    </div>
-                </div>
+                        </div>
+                    </Grid>
+                    <Grid item md={3}>
+                        <RatingChart star={location?.star} starTotal={location?.starTotal} />
+                        <WeatherCardGeneral position={location?.position} nameShow={location?.name} />
 
-                <div className={classes.map}>
-                    <MapCard position={location?.position} zoom={12} />
-                </div>
-            </Grid>
-            <Grid item md={6} sm={12}>
-                <div className={classes.review}>
-                    <FeedReview />
-                </div>
-                <div className={classes.reviewPosts}>
-
-                </div>
-            </Grid>
-            <Grid item md={3}>
-                <RatingChart star={location?.star} starTotal={location?.starTotal} />
-                <WeatherCard name={location?.weatherName} nameShow={location?.name} />
-
-            </Grid>
+                    </Grid>
+                </>
+            }
         </Grid>
     )
 }

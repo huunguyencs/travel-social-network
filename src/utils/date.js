@@ -6,6 +6,11 @@ export function convertDateToStr(date) {
     // return "11/11"
 }
 
+export function getTime(date) {
+    let temp = new Date(date);
+    return ('0' + temp.getHours()).slice(-2) + ":" + ('0' + temp.getMinutes()).slice(-2);
+}
+
 export function convertStrToDate(dateStr) {
     // dateStr is str at format dd/mm/yyyy
     var date = dateStr.split("/");
