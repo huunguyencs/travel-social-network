@@ -102,9 +102,9 @@ export function WeatherFocastItem(props) {
 
                 <div className={classes.temp}>
                     <div>
-                        <Typography variant="h6">{weather.temp.min} - {weather.temp.max} °C</Typography>
-                        <Typography variant="h6">Ngày: {weather.temp.day} °C</Typography>
-                        <Typography variant="h6">Đêm: {weather.temp.night} °C</Typography>
+                        <Typography variant="h6">{Math.floor(weather.temp.min)} - {Math.floor(weather.temp.max)} °C</Typography>
+                        <Typography variant="h6">Ngày: {Math.floor(weather.temp.day)} °C</Typography>
+                        <Typography variant="h6">Đêm: {Math.floor(weather.temp.night)} °C</Typography>
                     </div>
                     <Typography variant="h5">{convertToVN(weather.weather[0].main)}</Typography>
                 </div>
@@ -168,7 +168,7 @@ export default function WeatherCardGeneral(props) {
                 <>
                     <WeatherCard weather={weather.current} nameShow={nameShow} />
                     <div style={{ display: "flex", justifyContent: "center", margin: 20 }}>
-                        <Button onClick={() => setShow(true)}>
+                        <Button onClick={() => setShow(true)} style={{ paddingInline: 20, backgroundColor: "#A5DEC8" }}>
                             Xem dự báo
                         </Button>
                     </div>

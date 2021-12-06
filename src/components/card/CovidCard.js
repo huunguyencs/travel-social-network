@@ -1,19 +1,23 @@
-import { Card, CardContent, CircularProgress, Typography } from "@material-ui/core";
+import { Backdrop, Button, Card, CardContent, CircularProgress, Fade, Modal, Typography } from "@material-ui/core";
 import React, { useEffect, useState } from "react";
 
 import { cardStyles } from "../../style";
+import CovidModal from "../modal/covid";
 
 export default function CovidCard(props) {
 
     const { name } = props;
+    const [covid, setCovid] = useState(null);
     const [data, setData] = useState(null);
     const [updateDate, setUpdateDate] = useState('');
+    const [show, setShow] = useState(false);
 
     const classes = cardStyles();
 
     useEffect(() => {
         const getData = async () => {
             await fetch('https://static.pipezero.com/covid/data.json').then(res => res.json()).then(data => {
+                setCovid(data);
                 for (var loc of data.locations) {
                     if (loc.name === name) {
                         setData(loc);
@@ -57,10 +61,30 @@ export default function CovidCard(props) {
                                 <Typography>Tử vong:</Typography>
                                 <Typography className={classes.value}>{data.death}</Typography>
                             </div>
+                            <div style={{ display: 'flex', justifyContent: 'center' }}>
+                                <Button onClick={() => setShow(true)} style={{ paddingInline: 20, backgroundColor: "#A5DEC8", marginTop: 20 }}>
+                                    Xem tổng quát
+                                </Button>
+                            </div>
+                            <Modal
+                                aria-labelledby="transition-modal-title"
+                                aria-describedby="transition-modal-description"
+                                className={classes.modal}
+                                open={show}
+                                onClose={() => setShow(false)}
+                                closeAfterTransition
+                                BackdropComponent={Backdrop}
+                                BackdropProps={{
+                                    timeout: 500,
+                                }}
+                            >
+                                <Fade in={show}>
+                                    <CovidModal covid={covid} handleClose={() => setShow(false)} />
+                                </Fade>
+                            </Modal>
                         </div> :
                         <CircularProgress />
                 }
-
             </CardContent>
         </Card>
     )
