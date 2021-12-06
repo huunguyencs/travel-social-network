@@ -19,8 +19,7 @@ const locationSchema = new mongoose.Schema({
         lon: Number,
         lat: Number
     },
-    information: String,
-    weatherName: String
+    information: String
 }, {
     timestamps: true
 })

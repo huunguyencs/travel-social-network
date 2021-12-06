@@ -7,7 +7,6 @@ const provinceSchema = new mongoose.Schema({
     },
     information: String,
     image: { type: String },
-    weatherName: String,
     position: {
         lon: Number,
         lat: Number
