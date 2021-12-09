@@ -60,15 +60,15 @@ export default function CovidModal(props) {
                         <TableBody>
                             <TableRow>
                                 <TableCell>Thế giới</TableCell>
-                                <TableCell align="center">{covid.total.world.cases}</TableCell>
-                                <TableCell align="center">{covid.total.world.recovered}</TableCell>
-                                <TableCell align="center">{covid.total.world.death}</TableCell>
+                                <TableCell align="center">{new Intl.NumberFormat().format(covid.total.world.cases)}</TableCell>
+                                <TableCell align="center">{new Intl.NumberFormat().format(covid.total.world.recovered)}</TableCell>
+                                <TableCell align="center">{new Intl.NumberFormat().format(covid.total.world.death)}</TableCell>
                             </TableRow>
                             <TableRow>
                                 <TableCell>Việt Nam</TableCell>
-                                <TableCell align="center">{covid.total.internal.cases}</TableCell>
-                                <TableCell align="center">{covid.total.internal.recovered}</TableCell>
-                                <TableCell align="center">{covid.total.internal.death}</TableCell>
+                                <TableCell align="center">{new Intl.NumberFormat().format(covid.total.internal.cases)}</TableCell>
+                                <TableCell align="center">{new Intl.NumberFormat().format(covid.total.internal.recovered)}</TableCell>
+                                <TableCell align="center">{new Intl.NumberFormat().format(covid.total.internal.death)}</TableCell>
                             </TableRow>
                         </TableBody>
                     </Table>
@@ -89,15 +89,15 @@ export default function CovidModal(props) {
                         <TableBody>
                             <TableRow>
                                 <TableCell>Thế giới</TableCell>
-                                <TableCell align="center">{covid.today.world.cases}</TableCell>
-                                <TableCell align="center">{covid.today.world.recovered}</TableCell>
-                                <TableCell align="center">{covid.today.world.death}</TableCell>
+                                <TableCell align="center">{new Intl.NumberFormat().format(covid.today.world.cases)}</TableCell>
+                                <TableCell align="center">{new Intl.NumberFormat().format(covid.today.world.recovered)}</TableCell>
+                                <TableCell align="center">{new Intl.NumberFormat().format(covid.today.world.death)}</TableCell>
                             </TableRow>
                             <TableRow>
                                 <TableCell>Việt Nam</TableCell>
-                                <TableCell align="center">{covid.today.internal.cases}</TableCell>
-                                <TableCell align="center">{covid.today.internal.recovered}</TableCell>
-                                <TableCell align="center">{covid.today.internal.death}</TableCell>
+                                <TableCell align="center">{new Intl.NumberFormat().format(covid.today.internal.cases)}</TableCell>
+                                <TableCell align="center">{new Intl.NumberFormat().format(covid.today.internal.recovered)}</TableCell>
+                                <TableCell align="center">{new Intl.NumberFormat().format(covid.today.internal.death)}</TableCell>
                             </TableRow>
                         </TableBody>
                     </Table>
@@ -143,9 +143,9 @@ export default function CovidModal(props) {
                             {covid.overview.map(item =>
                                 <TableRow>
                                     <TableCell align="center">{item.date}</TableCell>
-                                    <TableCell align="center">{item.cases}</TableCell>
-                                    <TableCell align="center">{item.recovered}</TableCell>
-                                    <TableCell align="center">{item.death}</TableCell>
+                                    <TableCell align="center">{new Intl.NumberFormat().format(item.cases)}</TableCell>
+                                    <TableCell align="center">{new Intl.NumberFormat().format(item.recovered)}</TableCell>
+                                    <TableCell align="center">{new Intl.NumberFormat().format(item.death)}</TableCell>
                                 </TableRow>
                             )}
                         </TableBody>
@@ -171,9 +171,9 @@ export default function CovidModal(props) {
                                         return (
                                             <TableRow>
                                                 <TableCell>{row.name}</TableCell>
-                                                <TableCell align="center">{row.cases}</TableCell>
-                                                <TableCell align="center">{row.casesToday}</TableCell>
-                                                <TableCell align="center">{row.death}</TableCell>
+                                                <TableCell align="center">{new Intl.NumberFormat().format(row.cases)}</TableCell>
+                                                <TableCell align="center">{new Intl.NumberFormat().format(row.casesToday)}</TableCell>
+                                                <TableCell align="center">{new Intl.NumberFormat().format(row.death)}</TableCell>
                                             </TableRow>
                                         )
                                     })}

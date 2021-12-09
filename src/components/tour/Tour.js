@@ -31,7 +31,7 @@ import UserList from "../modal/userList";
 import { SeeMoreText } from "../seeMoreText";
 import ImageModal from "../modal/image";
 import { likeTour, unlikeTour, joinTour, unJoinTour } from "../../redux/callApi/tourCall";
-import { convertDateToStr } from "../../utils/date";
+import { convertDateToStr, timeAgo } from "../../utils/date";
 import ManageUserJoin from "../modal/manageUserJoin";
 import SharePost from "../forms/share";
 
@@ -187,6 +187,11 @@ export default function Tour(props) {
                     }
                     title={
                         <Typography className={classes.userName} component={Link} to={`/profile/${tour.userId._id}`}>{tour.userId.fullname}</Typography>
+                    }
+                    subheader={
+                        <Link to={`/tour/${tour._id}`} style={{ cursor: "pointer" }}>
+                            {timeAgo(new Date(tour.createdAt))}
+                        </Link>
                     }
                 />
                 {tour.image !== "" &&

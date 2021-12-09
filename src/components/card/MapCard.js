@@ -17,7 +17,10 @@ export default function MapCard(props) {
                 position &&
                 <GoogleMapReact
                     bootstrapURLKeys={{ key: KEY }}
-                    defaultCenter={position}
+                    defaultCenter={{
+                        lat: position.lat,
+                        lng: position.lon
+                    }}
                     defaultZoom={zoom}
                 // onGoogleApiLoaded={({ map, maps }) => renderMarkers(map, maps)}
                 >
