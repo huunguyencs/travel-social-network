@@ -205,7 +205,7 @@ class TourController {
                 $push: {
                     joinIds: req.user._id
                 }
-            }, { new: true })
+            }, { new: true }).populate("joinIds", "avatar fullname username")
             res.json({
                 success: true, message: "join tour success",
                 joinIds: tour.joinIds
@@ -221,7 +221,7 @@ class TourController {
                 $pull: {
                     joinIds: req.user._id
                 }
-            }, { new: true })
+            }, { new: true }).populate("joinIds", "avatar fullname username")
 
             res.json({
                 success: true, message: "unjoin tour success",
@@ -244,7 +244,7 @@ class TourController {
                 $pull: {
                     joinIds: user
                 }
-            }, { new: true })
+            }, { new: true }).populate("joinIds", "avatar fullname username")
 
             res.json({
                 success: true, message: "remove user success",
