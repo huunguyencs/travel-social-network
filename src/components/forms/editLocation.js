@@ -53,7 +53,7 @@ export default function EditLocationForm(props) {
                         style={{ width: 400, marginTop: 30 }}
                         defaultValue={loc}
                         onChange={(e, value) => setLoc(value)}
-                        renderInput={(params) => <TextField {...params} name="location" label="Địa điểm" variant="outlined" required defaultValue={loc.locationName} />}
+                        renderInput={(params) => <TextField {...params} name="location" label="Địa điểm" variant="outlined" required defaultValue={loc?.locationName} />}
                     />
                 </div>
                 <TextField
