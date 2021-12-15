@@ -1,5 +1,5 @@
 import { Typography, Avatar, Grid, List, ListItem, ListItemText, ListItemAvatar } from "@material-ui/core";
-import React from "react";
+import React, { useState } from "react";
 import { Search, Cancel } from "@material-ui/icons";
 
 import Header from "../../components/header/Header";
@@ -11,27 +11,29 @@ import { messageStyles } from "../../style";
 export default function Message(props) {
     const classes = messageStyles();
 
+    const [search, setSearch] = useState('');
+
+    const handleSearch = (e) => {
+        e.preventDefault();
+        setSearch('');
+    }
+
     return (
         <div>
             <Header />
             <Grid container style={{ margin: 0, padding: 0 }}>
-                {/* <Grid item sm={3}>
-                    <LeftBar
-                        menuList={profileMenu}
-                    />
-                </Grid> */}
-                <Grid item sm={4}>
+                <Grid item sm={3}>
                     <div className={classes.message_conversations}>
                         <div className={classes.message_header}>
                             <div className={classes.message_header_right}>
-                                <h2 className={classes.message_header_title}>MESSAGES</h2>
+                                <h2 className={classes.message_header_title}>TIN NHẮN</h2>
                             </div>
                         </div>
                         <div className={classes.message_search}>
-                            <form className={classes.message_search_form}>
+                            <form className={classes.message_search_form} onSubmit={handleSearch}>
                                 <Search className={classes.message_searchIcon} />
-                                <input placeholder="Tìm bạn bè..." type="text" name="search" className={classes.message_input}></input>
-                                <Cancel className={classes.message_closeIcon} />
+                                <input placeholder="Tìm bạn bè..." type="text" name="search" className={classes.message_input} value={search} onChange={e => setSearch(e.target.value)} />
+                                {search !== '' && <Cancel className={classes.message_closeIcon} />}
                             </form>
                             <List className={classes.message_users_list}>
                                 <ListItem button>

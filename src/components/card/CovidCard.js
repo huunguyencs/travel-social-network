@@ -79,7 +79,7 @@ export default function CovidCard(props) {
                                 }}
                             >
                                 <Fade in={show}>
-                                    <CovidModal covid={covid} handleClose={() => setShow(false)} />
+                                    <CovidModal covid={covid} handleClose={() => setShow(false)} updateDate={updateDate} />
                                 </Fade>
                             </Modal>
                         </div> :

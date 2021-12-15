@@ -60,7 +60,7 @@ export default function Comment(props) {
                 />
             </div>
             <div className={classes.cmtInfo}>
-                <Typography variant="subtitle2" className={classes.userName} component={Link} to={`profile/${comment.userId?._id}`}>
+                <Typography variant="subtitle2" className={classes.userName} component={Link} to={`/profile/${comment.userId?._id}`}>
                     {comment.userId?.fullname}
                 </Typography>
                 <div className={classes.content}>

@@ -147,7 +147,7 @@ export default function Post(props) {
                             <div>
                                 <Typography variant="body1" component={Link} to={`/location/${post.locationId._id}`}>{post.locationId.name}</Typography>
                             </div>
-                            <Rating name="location-rating" value={post.rate} readOnly style={{ marginBottom: 20 }} />
+                            <Rating name="location-rating" value={post.rate} readOnly style={{ marginBottom: 10 }} />
 
                         </>
                     }
@@ -156,6 +156,7 @@ export default function Post(props) {
                         maxText={100}
                         text={post.content}
                     />
+                    {post.cost && <Typography>Chi phí: {new Intl.NumberFormat().format(post.cost * 1000)} VND</Typography>}
                     <div className={classes.hashtagWrap}>
                         {post.hashtags.map((item, index) =>
                             <Typography className={classes.hashtag} key={index}>{item}</Typography>

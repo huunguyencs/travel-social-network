@@ -21,12 +21,12 @@ export default function RatingChart(props) {
     return (
         <Card className={classes.starContainer}>
             <div className={classes.header}>
-                <Typography variant="h6">Đánh giá</Typography>
+                <Typography variant="h5">Đánh giá</Typography>
             </div>
             <CardContent className={classes.starContent}>
                 <div className={classes.totalRating}>
                     <div style={{ display: "flex", justifyContent: "center" }}>
-                        <Typography variant="h1">
+                        <Typography variant="h2">
                             <Star className={classes.iconStar} />
                             {starTotal} /5
                         </Typography>
@@ -36,9 +36,9 @@ export default function RatingChart(props) {
                     </Typography>
                 </div>
                 <div className={classes.chart}>
-                    {star?.map((item, index) => (
+                    {star && star.reverse().map((item, index) => (
                         <Box display="flex" alignItems="center">
-                            <Box minWidth={45}><Typography>{index + 1}</Typography></Box>
+                            <Box minWidth={45}><Typography>{5 - index}</Typography></Box>
                             <Box width="80%" mr={1}><LinearProgress variant="determinate" value={totalRate !== 0 ? (item * 100 / totalRate) : 0} className={classes.line} /></Box>
                         </Box>
                     ))}

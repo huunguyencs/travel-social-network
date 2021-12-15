@@ -136,7 +136,7 @@ export function WeatherFocastItem(props) {
                     </div>
                     <div className={classes.itemInfo}>
                         <Typography>Mưa: </Typography>
-                        <Typography className={classes.value}>{weather.rain} mm</Typography>
+                        <Typography className={classes.value}>{weather.rain || 0} mm</Typography>
                     </div>
                     <div className={classes.itemInfo}>
                         <Typography>UVI: </Typography>

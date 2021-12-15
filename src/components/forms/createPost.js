@@ -60,11 +60,12 @@ export default function CreatePostForm(props) {
     const handleSubmit = (e) => {
         e.preventDefault();
         var ht = hashtagSplit(hashtag);
-        dispatch(createPost({ content: text, image: imageUpload, hashtags: ht }, auth.token, () => {
-            props.handleClose();
-            history.push("/");
-        }));
-
+        if (text !== '' || imageUpload.length > 0 || ht.length > 0) {
+            dispatch(createPost({ content: text, image: imageUpload, hashtags: ht }, auth.token, () => {
+                props.handleClose();
+                history.push("/");
+            }));
+        }
     }
 
     const classes = formStyles();

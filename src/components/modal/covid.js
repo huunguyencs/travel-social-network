@@ -6,7 +6,7 @@ import { CartesianGrid, Legend, Line, LineChart, ResponsiveContainer, XAxis, YAx
 
 export default function CovidModal(props) {
 
-    const { covid, handleClose } = props;
+    const { covid, handleClose, updateDate } = props;
 
     const [page, setPage] = useState(0);
     const [rowsPerPage, setRowsPerPage] = useState(10);
@@ -74,7 +74,7 @@ export default function CovidModal(props) {
                     </Table>
                 </div>
                 <div style={{ display: "flex", justifyContent: "center" }}>
-                    <Typography variant="h6">Hôm nay (ngày cập nhật gần nhất)</Typography>
+                    <Typography variant="h6">Hôm nay (ngày cập nhật {updateDate})</Typography>
                 </div>
                 <div style={{ width: "70%", margin: "auto", marginBottom: 40 }}>
                     <Table>
