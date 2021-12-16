@@ -26,7 +26,7 @@ export const createCommentPost = (id, comment, auth, next) => async (dispatch) =
         }
 
         next(newComment);
-        // dispatch(commentAction.addCommentPost({ id: id, comment: newComment }))
+        dispatch(commentAction.addCommentPost({ id: id, comment: newComment }))
 
     }
     catch (err) {
@@ -50,7 +50,7 @@ export const createCommentTour = (id, comment, auth, next) => async (dispatch) =
             userId: auth.user,
         }
         next(newComment);
-        // dispatch(commentAction.addCommentTour({ id: id, comment: newComment }))
+        dispatch(commentAction.addCommentTour({ id: id, comment: newComment }))
     }
     catch (err) {
         console.log(err);
@@ -123,7 +123,7 @@ export const likeComment = (id, auth, type, postId) => async (dispatch) => {
             dispatch(commentAction.updateCommentPost({ comment: res.data.newComment, id: id, postId: postId }))
         }
         else if (type === "tour") {
-            dispatch(commentAction.updateCommentPost({ comment: res.data.newComment, id: id, tourId: postId }))
+            dispatch(commentAction.updateCommentTour({ comment: res.data.newComment, id: id, tourId: postId }))
         }
     }
     catch (err) {
