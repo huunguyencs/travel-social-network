@@ -73,9 +73,11 @@ export default function Post(props) {
         updateLike([...post.likes, auth.user]);
         // call api
         dispatch(likePost(post._id, auth.token, () => {
-            setLike(false);
-            let newLikes = post.likes.filter(user => user._id !== auth.user._id);
-            updateLike(newLikes);
+            if (like) {
+                setLike(false);
+                let newLikes = post.likes.filter(user => user._id !== auth.user._id);
+                updateLike(newLikes);
+            }
         }));
     }
 
@@ -85,8 +87,10 @@ export default function Post(props) {
         updateLike(newLikes);
         // call api
         dispatch(unlikePost(post._id, auth.token, () => {
-            setLike(true);
-            updateLike([...post.likes, auth.user]);
+            if (!like) {
+                setLike(true);
+                updateLike([...post.likes, auth.user]);
+            }
         }));
     }
 
@@ -131,7 +135,7 @@ export default function Post(props) {
                     }
                     title={
                         <Link to={"/profile/" + post.userId._id} >
-                            <Typography className={classes.userName}>{post.userId.fullname}</Typography>
+                            <Typography noWrap={false} className={classes.userName}>{post.userId.fullname}</Typography>
                         </Link>
                     }
                     subheader={

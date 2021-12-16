@@ -43,7 +43,6 @@ export default function Tour(props) {
 
     const [showCmt, setShowCmt] = useState(false);
     const [like, setLike] = useState(false);
-    // const [numLike, setNumLike] = useState(0);
     const [open, setOpen] = useState(false);
     const [join, setJoin] = useState(false);
     const [openJoin, setOpenJoin] = useState(false);
@@ -92,8 +91,10 @@ export default function Tour(props) {
         updateLike(newLike);
 
         dispatch(likeTour(tour._id, auth.token, () => {
-            setLike(false);
-            updateLike(prevLike);
+            if (like) {
+                setLike(false);
+                updateLike(prevLike);
+            }
         }))
     }
 
@@ -104,8 +105,10 @@ export default function Tour(props) {
         updateLike(newLikes);
 
         dispatch(unlikeTour(tour._id, auth.token, () => {
-            setLike(true);
-            updateLike(prevLike);
+            if (!like) {
+                setLike(true);
+                updateLike(prevLike);
+            }
         }))
     }
 
@@ -127,7 +130,6 @@ export default function Tour(props) {
     useEffect(() => {
         if (auth.user && tour && tour.likes.find(like => like._id === auth.user._id)) {
             setLike(true);
-            // setNumLike(tour.likes?.length)
         }
 
     }, [tour, auth.user])
@@ -143,25 +145,25 @@ export default function Tour(props) {
         setJoin(true);
         var prevJoin = tour.joinIds;
         updateJoin([...prevJoin, auth.user]);
-        // setNumJoin(state => state + 1);
         dispatch(joinTour(tour._id, auth.token, () => {
-            setJoin(false);
-            // setNumJoin(state => state - 1)
-            updateJoin(prevJoin);
+            if (join) {
+                setJoin(false);
+                updateJoin(prevJoin);
+            }
         }))
     }
 
     const handleUnJoin = () => {
         setJoin(false);
         var prevJoin = tour.joinIds;
-        // setNumJoin(state => state - 1)
         var newJoin = prevJoin.filter(user => user._id !== auth.user._id);
         updateJoin(newJoin);
 
         dispatch(unJoinTour(tour._id, auth.token, () => {
-            setJoin(true);
-            // updateJoin([...tour.joinIds, auth.user]);
-            updateJoin(prevJoin);
+            if (!join) {
+                setJoin(true);
+                updateJoin(prevJoin);
+            }
         }))
     }
 
@@ -186,7 +188,7 @@ export default function Tour(props) {
                         </IconButton>
                     }
                     title={
-                        <Typography className={classes.userName} component={Link} to={`/profile/${tour.userId._id}`}>{tour.userId.fullname}</Typography>
+                        <Typography noWrap={false} className={classes.userName} component={Link} to={`/profile/${tour.userId._id}`}>{tour.userId.fullname}</Typography>
                     }
                     subheader={
                         <Link to={`/tour/${tour._id}`} style={{ cursor: "pointer" }}>

@@ -101,6 +101,8 @@ const postRecuder = (state = INIT_STATE, action) => {
             return {
                 ...state,
                 loading: false,
+                posts: [],
+                page: 2,
                 error: action.payload.error,
             }
         }
