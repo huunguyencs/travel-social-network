@@ -128,17 +128,16 @@ export default function Tour(props) {
 
 
     useEffect(() => {
-        if (auth.user && tour && tour.likes.find(like => like._id === auth.user._id)) {
+        if (tour?.likes.find(like => like._id === auth?.user._id)) {
             setLike(true);
         }
 
     }, [tour, auth.user])
 
     useEffect(() => {
-        if (auth.user && tour && tour.joinIds.includes(auth.user._id)) {
+        if (tour?.joinIds.find(join => join._id === auth?.user._id)) {
             setJoin(true);
         }
-
     }, [tour, auth.user]);
 
     const handleJoin = async () => {
