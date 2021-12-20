@@ -1,7 +1,7 @@
 export function getStar(stars) {
     var totalStar = 0, sum = 0;
     var i = 1;
-    for (star in stars) {
+    for (var star of stars) {
         totalStar += i * star;
         sum += 1 * star;
         i++;

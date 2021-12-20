@@ -12,7 +12,7 @@ export default function RatingChart(props) {
     const [totalRate, setTotalRate] = useState(0);
     useEffect(() => {
         if (star) {
-            let tmp = star?.reduce((a, b) => a + b, 0);
+            let tmp = star.reduce((a, b) => a + b, 0);
             setTotalRate(tmp);
         }
     }, [star, setTotalRate])
@@ -37,9 +37,9 @@ export default function RatingChart(props) {
                     </Typography>
                 </div>
                 <div className={classes.chart}>
-                    {star && star.reverse().map((item, index) => (
+                    {star?.map((item, index) => (
                         <Box display="flex" alignItems="center">
-                            <Box minWidth={45}><Typography>{5 - index}</Typography></Box>
+                            <Box minWidth={45}><Typography>{index + 1}</Typography></Box>
                             <Box width="80%" mr={1}><LinearProgress variant="determinate" value={totalRate !== 0 ? (item * 100 / totalRate) : 0} className={classes.line} /></Box>
                         </Box>
                     ))}
