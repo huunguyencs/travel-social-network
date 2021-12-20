@@ -6,10 +6,6 @@ const locationSchema = new mongoose.Schema({
         type: String,
         required: true
     },
-    starTotal: {
-        type: Number,
-        default: 0
-    },
     star: {
         type: Array,
         default: [0, 0, 0, 0, 0]

@@ -9,9 +9,9 @@ const serviceSchema = new mongoose.Schema({
     price: Number,
     type: String,
     province: { type: mongoose.Types.ObjectId, ref: 'provinces' },
-    rateTotal: {
-        type: Number,
-        default: 0
+    star: {
+        type: Array,
+        default: [0, 0, 0, 0, 0]
     },
     rate: [
         {

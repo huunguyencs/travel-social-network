@@ -91,7 +91,7 @@ export default function Location(props) {
                         </div>
                     </Grid>
                     <Grid item md={3}>
-                        <RatingChart star={location.star} starTotal={location?.starTotal} />
+                        <RatingChart star={location.star} />
                         <WeatherCardGeneral position={location.position} nameShow={location.name} />
 
                     </Grid>

@@ -3,11 +3,12 @@ import { Star } from "@material-ui/icons";
 import React, { useEffect, useState } from "react";
 
 import { cardStyles } from "../../style";
+import { getStar } from "../../utils/utils";
 
 
 export default function RatingChart(props) {
 
-    const { star, starTotal } = props;
+    const { star } = props;
     const [totalRate, setTotalRate] = useState(0);
     useEffect(() => {
         if (star) {
@@ -28,7 +29,7 @@ export default function RatingChart(props) {
                     <div style={{ display: "flex", justifyContent: "center" }}>
                         <Typography variant="h2">
                             <Star className={classes.iconStar} />
-                            {starTotal} /5
+                            {getStar(star)} /5
                         </Typography>
                     </div>
                     <Typography variant="h6" className={classes.center}>

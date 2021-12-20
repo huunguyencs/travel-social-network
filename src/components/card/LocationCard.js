@@ -4,6 +4,7 @@ import React from "react";
 import { Link } from "react-router-dom";
 
 import { cardStyles } from "../../style";
+import { getStar } from "../../utils/utils";
 
 export default function LocationCard(props) {
 
@@ -22,7 +23,7 @@ export default function LocationCard(props) {
             </CardContent>
             <CardActions className={classes.footer}>
                 <div className={classes.star}>
-                    <Typography>{location.starTotal}</Typography>
+                    <Typography>{getStar(location.star)}</Typography>
                     <Star className={classes.starIcon} />
                 </div>
                 <Button className={classes.seeMore} component={Link} to={"/location/" + location._id}>

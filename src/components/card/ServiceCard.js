@@ -4,6 +4,7 @@ import React from "react";
 import { Link } from "react-router-dom";
 
 import { cardStyles } from "../../style";
+import { getStar } from "../../utils/utils";
 
 export default function ServiceCard(props) {
 
@@ -22,7 +23,7 @@ export default function ServiceCard(props) {
             </CardContent>
             <CardActions className={classes.footer}>
                 <div className={classes.star}>
-                    <Typography>{service.starTotal}</Typography>
+                    <Typography>{getStar(service.star)}</Typography>
                     <Star className={classes.starIcon} />
                 </div>
                 <Button className={classes.seeMore} component={Link} to={"/service/" + service._id}>
