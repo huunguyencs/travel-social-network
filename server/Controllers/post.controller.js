@@ -14,7 +14,7 @@ class PostController {
             await newPost.save()
             res.json({
                 success: true,
-                message: "Create post successful",
+                message: "Tạo bài viết thành công",
                 newPost: {
                     ...newPost._doc,
                     userId: {
@@ -26,6 +26,26 @@ class PostController {
             })
         } catch (err) {
             console.log(err)
+            res.status(500).json({ success: false, message: err.message })
+        }
+    }
+
+    async sharePost(req, res) {
+        try {
+            const { content, hashtags, shareId } = req.body;
+
+            const newPost = new Posts({
+                userId: req.user._id, content, hashtags, shareId
+            })
+
+            await newPost.save()
+
+            res.json({
+                success: true,
+                message: 'Chia sẻ thành công!',
+            })
+        }
+        catch (err) {
             res.status(500).json({ success: false, message: err.message })
         }
     }
@@ -202,6 +222,8 @@ class PostController {
             res.status(500).json({ success: false, message: err.message })
         }
     }
+
+
 
 }
 

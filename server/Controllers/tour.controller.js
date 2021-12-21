@@ -45,13 +45,32 @@ class TourController {
             res.status(500).json({ success: false, message: err.message })
         }
     }
+
+    async shareTour(req, res) {
+        try {
+            const { content, hashtags, shareId } = req.body
+            const newTour = new Tours({
+                userId: req.user._id, content, hashtags, shareId
+            })
+            await newTour.save();
+
+            res.json({
+                success: true,
+                message: 'Chia sẻ thành công!'
+            })
+        }
+        catch (err) {
+            res.status(500).json({ success: false, message: err.message })
+        }
+    }
+
     ///
     async updateTour(req, res) {
         try {
-            const { content, tourName, isPublic, taggedIds, image, hashtag, tourDate } = req.body
+            const { content, tourName, isPublic, taggedIds, image, hashtags, tourDate } = req.body
 
             const tour = await Tours.findOneAndUpdate({ _id: req.params.id }, {
-                content, image, tourName, taggedIds, hashtag, isPublic, tourDate
+                content, image, tourName, taggedIds, hashtags, isPublic, tourDate
             }, { new: true })
 
             res.json({ success: true, message: "update tour successful", tour })

@@ -19,7 +19,8 @@ const tourSchema = new mongoose.Schema({
     image: {
         type: String,
         default: ''
-    }
+    },
+    shareId: { type: mongoose.Types.ObjectId, ref: 'tours' }
 }, {
     timestamps: true
 })
