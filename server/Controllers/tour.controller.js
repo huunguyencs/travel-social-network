@@ -148,6 +148,7 @@ class TourController {
                         select: "username fullname avatar"
                     }
                 })
+                .populate("shareId")
             res.json({ success: true, message: "get tours successful", tours })
         }
         catch (err) {
@@ -169,6 +170,7 @@ class TourController {
                         select: "username fullname avatar"
                     }
                 })
+                .populate("shareId")
 
             res.json({ success: true, message: "get user tour successful", tours })
         } catch (err) {
@@ -180,7 +182,16 @@ class TourController {
     // lấy thông tin 1 tour theo params.id
     async getTour(req, res) {
         try {
-            const tour = await Tours.findById(req.params.id)
+
+            let tour = await Tours.findById(req.params.id);
+            let requestId;
+            if (tour.shareId) {
+                requestId = tour.shareId;
+            }
+            else
+                requestId = tour._id;
+
+            tour = await Tour.findById(requestId)
                 .populate("tour")
                 .populate({
                     path: "tour",

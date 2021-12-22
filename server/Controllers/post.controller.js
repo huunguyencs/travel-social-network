@@ -108,7 +108,14 @@ class PostController {
                         path: "userId likes",
                         select: "username fullname avatar"
                     }
-                });
+                })
+                .populate({
+                    path: "shareId",
+                    populate: {
+                        path: "userId",
+                        select: "username fullname avatar"
+                    }
+                })
 
             res.json({ success: true, message: "get user post successful", posts })
 
@@ -132,6 +139,13 @@ class PostController {
                     }
                 })
                 .populate("locationId", "name")
+                .populate({
+                    path: "shareId",
+                    populate: {
+                        path: "userId",
+                        select: "username fullname avatar"
+                    }
+                })
                 .sort({ "createdAt": -1 });
             res.json({
                 posts,
@@ -155,6 +169,13 @@ class PostController {
                     },
                 })
                 .populate("locationId", "name")
+                .populate({
+                    path: "shareId",
+                    populate: {
+                        path: "userId",
+                        select: "username fullname avatar"
+                    }
+                })
             res.json({
                 success: true, message: "get info 1 post success", post
             });

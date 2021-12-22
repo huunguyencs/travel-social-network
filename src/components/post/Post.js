@@ -1,12 +1,8 @@
 import React, { useEffect, useState } from "react";
 import {
-    Avatar,
     Backdrop,
     Card,
     CardActions,
-    CardContent,
-    CardHeader,
-    CardMedia,
     Collapse,
     IconButton,
     Modal,
@@ -15,23 +11,18 @@ import {
 import {
     Favorite,
     FavoriteBorderOutlined,
-    MoreVert,
     QuestionAnswer,
     Share
 } from "@material-ui/icons";
-import { Rating } from "@material-ui/lab";
 import { useDispatch, useSelector } from "react-redux";
 
 import Comment from "../comment/Comment";
 import InputComment from "../input/comment";
 import { postStyles } from "../../style";
-import ImageList from "../modal/ImageList";
-import { Link } from "react-router-dom";
 import UserList from "../modal/userList";
-import { SeeMoreText } from "../seeMoreText";
-import { timeAgo } from "../../utils/date";
 import { likePost, unlikePost } from '../../redux/callApi/postCall';
 import SharePost from "../forms/share";
+import PostContent from "./content";
 
 
 export default function Post(props) {
@@ -124,57 +115,7 @@ export default function Post(props) {
     return (
         <Card className={classes.cardContainer}>
             {post && <>
-                <CardHeader
-                    avatar={
-                        <Avatar alt="avatar" src={post.userId.avatar} />
-                    }
-                    action={
-                        <IconButton aria-label="settings">
-                            <MoreVert />
-                        </IconButton>
-                    }
-                    title={
-                        <Link to={"/profile/" + post.userId._id} >
-                            <Typography noWrap={false} className={classes.userName}>{post.userId.fullname}</Typography>
-                        </Link>
-                    }
-                    subheader={
-                        <Link to={`/post/${post._id}`} style={{ cursor: "pointer" }}>
-                            {timeAgo(new Date(post.createdAt))}
-                        </Link>
-                    }
-                />
-
-                <CardContent>
-                    {post.isPostReview &&
-                        <>
-                            <div>
-                                <Typography variant="body1" component={Link} to={`/location/${post.locationId._id}`}>{post.locationId.name}</Typography>
-                            </div>
-                            <Rating name="location-rating" value={post.rate} readOnly style={{ marginBottom: 10 }} />
-
-                        </>
-                    }
-                    <SeeMoreText
-                        variant="body1"
-                        maxText={100}
-                        text={post.content}
-                    />
-                    {post.cost && <Typography>Chi phí: {new Intl.NumberFormat().format(post.cost * 1000)} VND</Typography>}
-                    <div className={classes.hashtagWrap}>
-                        {post.hashtags.map((item, index) =>
-                            <Typography className={classes.hashtag} key={index}>{item}</Typography>
-                        )}
-                    </div>
-                </CardContent>
-                {
-                    post.images.length > 0 &&
-                    <CardMedia>
-                        <ImageList imgList={post.images} />
-                    </CardMedia>
-                }
-
-
+                <PostContent post={post} />
 
                 <CardActions>
                     <IconButton onClick={likePress}>
