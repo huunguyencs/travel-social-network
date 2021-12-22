@@ -3,8 +3,8 @@ const mongoose = require('mongoose');
 const locationSchema = new mongoose.Schema({
     name: {
         type: String,
-        required,
-        unique,
+        required: true,
+        unique: true,
     },
     images: [{ type: String }],
     fullname: String,

@@ -5,8 +5,8 @@ const eventSchema = new mongoose.Schema({
     timedes: String,
     name: {
         type: String,
-        required,
-        unique
+        required: true,
+        unique: true
     },
     fullname: String,
     provinceId: { type: mongoose.Types.ObjectId, ref: 'provinces' },
