@@ -43,12 +43,14 @@ function ShareContent({ tour }) {
                     </Link>
                 }
             />
-            <BaseContent tour={tourShare} setTour={setTourShare} />
+            {tourShare && <BaseContent tour={tourShare} setTour={setTourShare} />}
         </>
     )
 }
 
-function BaseContent({ tour, setTour }) {
+function BaseContent(props) {
+
+    const { tour, setTour } = props;
 
     const { auth } = useSelector(state => state);
     const dispatch = useDispatch();
@@ -195,7 +197,7 @@ function BaseContent({ tour, setTour }) {
 export default function TourContent({ tour, setTour }) {
     return (
         <>
-            {tour.shareId ? <ShareContent tour={tour} /> : <BaseContent tour={tour} setTour={setTour} />}
+            {tour && tour.shareId ? <ShareContent tour={tour} /> : <BaseContent tour={tour} setTour={setTour} />}
         </>
     )
 }

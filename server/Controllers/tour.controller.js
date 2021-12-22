@@ -148,7 +148,20 @@ class TourController {
                         select: "username fullname avatar"
                     }
                 })
-                .populate("shareId")
+                .populate({
+                    path: "shareId",
+                    populate: {
+                        path: "userId",
+                        select: "username fullname avatar"
+                    }
+                })
+                .populate({
+                    path: "shareId",
+                    populate: {
+                        path: "tour",
+                        select: "date"
+                    }
+                })
             res.json({ success: true, message: "get tours successful", tours })
         }
         catch (err) {
@@ -170,7 +183,13 @@ class TourController {
                         select: "username fullname avatar"
                     }
                 })
-                .populate("shareId")
+                .populate({
+                    path: "shareId",
+                    populate: {
+                        path: "userId",
+                        select: "username fullname avatar"
+                    }
+                })
 
             res.json({ success: true, message: "get user tour successful", tours })
         } catch (err) {

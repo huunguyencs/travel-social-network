@@ -13,7 +13,7 @@ export const getTours = (data) => async (dispatch) => {
     }
     catch (err) {
         // console.log(err);
-        dispatch(tourAction.error({ error: err.response.data.message }))
+        // dispatch(tourAction.error({ error: err.response.data.message }))
 
     }
 }

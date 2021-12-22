@@ -164,7 +164,7 @@ export default function Tour(props) {
                             timeout: 500,
                         }}
                     >
-                        <SharePost object={tour} type="tour" />
+                        <SharePost object={tour.shareId ? tour.shareId : tour} type="tour" handleClose={() => setShare(false)} />
                     </Modal>
                 </CardActions>
 

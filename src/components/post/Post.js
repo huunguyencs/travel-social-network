@@ -162,7 +162,7 @@ export default function Post(props) {
                             timeout: 500,
                         }}
                     >
-                        <SharePost object={post} type="post" handleClose={() => setShare(false)} />
+                        <SharePost object={post.shareId ? post.shareId : post} type="post" handleClose={() => setShare(false)} />
                     </Modal>
                 </CardActions>
 
