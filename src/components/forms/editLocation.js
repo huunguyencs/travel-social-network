@@ -5,17 +5,33 @@ import { useDispatch, useSelector } from "react-redux";
 
 import { formStyles } from '../../style';
 import * as tourAction from '../../redux/actions/createTourAction';
-import { getLocations } from "../../redux/callApi/locationCall";
+import { getProvinces } from "../../redux/callApi/locationCall";
+import customAxios from "../../utils/fetchData";
 
 
 export default function EditLocationForm(props) {
 
     // const idRef = useRef(props.locationId);
+    const [currentProvince, setCurrentProvince] = useState('');
     const [loc, setLoc] = useState(props.location.location);
     const costRef = useRef('');
 
     const dispatch = useDispatch();
     const { location } = useSelector(state => state);
+    const [locations, setLocations] = useState([]);
+
+    const getLoc = async (province) => {
+        if (province._id !== currentProvince) {
+            await customAxios().get('location/locations', {
+                province: province._id
+            }).then((req) => {
+                setLocations(req.data.locations)
+            }).catch(err => {
+                setLocations([]);
+            })
+            setCurrentProvince(province._id);
+        }
+    }
 
     const handleSubmit = (e) => {
         e.preventDefault();
@@ -25,11 +41,11 @@ export default function EditLocationForm(props) {
     }
 
     useEffect(() => {
-        if (location.locations?.length === 0) {
-            dispatch(getLocations());
+        if (location.provinces?.length === 0) {
+            dispatch(getProvinces());
         }
 
-    }, [location.locations, dispatch])
+    }, [location.provinces, dispatch])
 
     // onEffect load listLocation
 
@@ -47,9 +63,19 @@ export default function EditLocationForm(props) {
             >
                 <div style={{ display: "flex", justifyContent: "center" }}>
                     <Autocomplete
+                        id="choose-province"
+                        options={location.provinces}
+                        getOptionLabel={(option) => option?.fullname}
+                        style={{ width: 400, marginTop: 30 }}
+                        onChange={(e, value) => getLoc(value)}
+                        renderInput={(params) => <TextField {...params} name="location" label="Chọn tỉnh thành" variant="outlined" required />}
+                    />
+                </div>
+                <div style={{ display: "flex", justifyContent: "center" }}>
+                    <Autocomplete
                         id="choose-location"
-                        options={location.locations}
-                        getOptionLabel={(option) => option.name}
+                        options={locations}
+                        getOptionLabel={(option) => option?.fullname}
                         style={{ width: 400, marginTop: 30 }}
                         defaultValue={loc}
                         onChange={(e, value) => setLoc(value)}

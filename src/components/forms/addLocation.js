@@ -19,14 +19,14 @@ export default function AddLocationForm(props) {
     const [locations, setLocations] = useState([]);
 
     const getLoc = async (province) => {
-        if (province._id !== currentProvince) {
-            await customAxios().get('location/locations', {
-                province: province._id
-            }).then((req) => {
-                setLocations(req.data.locations)
-            }).catch(err => {
-                setLocations([]);
-            })
+        if (province && province._id !== currentProvince) {
+            await customAxios().get(`location/locations/${province._id}`)
+                .then((req) => {
+                    console.log(req.data);
+                    setLocations(req.data.locations);
+                }).catch(err => {
+                    setLocations([]);
+                })
             setCurrentProvince(province._id);
         }
     }
@@ -44,7 +44,7 @@ export default function AddLocationForm(props) {
         if (location.provinces?.length === 0) {
             dispatch(getProvinces());
         }
-    }, [dispatch, location.locations])
+    }, [dispatch, location.provinces])
 
     const classes = formStyles();
 
@@ -65,7 +65,7 @@ export default function AddLocationForm(props) {
                         getOptionLabel={(option) => option?.fullname}
                         style={{ width: 400, marginTop: 30 }}
                         onChange={(e, value) => getLoc(value)}
-                        renderInput={(params) => <TextField {...params} name="location" label="Chọn tỉnh thành" variant="outlined" required />}
+                        renderInput={(params) => <TextField {...params} name="provinces" label="Chọn tỉnh thành" variant="outlined" />}
                     />
                 </div>
                 <div style={{ display: "flex", justifyContent: "center" }}>
@@ -75,7 +75,7 @@ export default function AddLocationForm(props) {
                         getOptionLabel={(option) => option?.fullname}
                         style={{ width: 400, marginTop: 30 }}
                         onChange={(e, value) => setLoc(value)}
-                        renderInput={(params) => <TextField {...params} name="location" label="Chọn địa điểm" variant="outlined" required />}
+                        renderInput={(params) => <TextField {...params} name="location" label="Chọn địa điểm" variant="outlined" />}
                     />
                 </div>
                 <TextField
