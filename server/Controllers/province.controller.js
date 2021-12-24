@@ -73,9 +73,8 @@ class ProvinceController {
     //Get all province
     async getProvinces(req, res) {
         try {
-            const province = await Provinces.find()
-            // .populate("locations services")
-            res.json({ success: true, message: "get all provinces success", province });
+            const provinces = await Provinces.find();
+            res.json({ success: true, message: "get all provinces success", provinces });
         } catch (err) {
             console.log(err)
             res.status(500).json({ success: false, message: err.message })

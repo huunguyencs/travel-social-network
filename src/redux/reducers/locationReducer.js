@@ -2,6 +2,7 @@ import * as LOC_TYPES from '../constants/locationConstant';
 
 const INIT_STATE = {
     locations: [],
+    provinces: [],
     hot: [],
     loading: false,
     error: null,
@@ -10,10 +11,10 @@ const INIT_STATE = {
 
 const locationReducer = (state = INIT_STATE, action) => {
     switch (action.type) {
-        case LOC_TYPES.GET_LOCATION_LIST: { // lay danh sach de chon dia diem trong luc tao tour
+        case LOC_TYPES.GET_PROVINCE_LIST: {
             return {
                 ...state,
-                locations: action.payload.location
+                provinces: action.payload.provinces
             }
         }
         case LOC_TYPES.GET_LOCATION_HOT: { // lay danh sach cac dia diem hot

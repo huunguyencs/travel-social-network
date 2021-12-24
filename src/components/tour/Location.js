@@ -182,10 +182,10 @@ export default function Location(props) {
                             </div>
                         }
                         <div>
-                            <Typography variant="h4" className={classes.locationName} component={Link} to={"/location/" + location.location._id}>{location.location.name}</Typography>
+                            <Typography variant="h4" className={classes.locationName} component={Link} to={"/location/" + location.location._id}>{location.location.fullname}</Typography>
                         </div>
                         <div>
-                            <Typography variant="h5" component={Link} to={"/province/" + location.location.province._id}>{location.location.province.name}</Typography>
+                            <Typography variant="h5" component={Link} to={"/province/" + location.location.province._id}>{location.location.province.fullname}</Typography>
                         </div>
                         {
                             isSave && isOwn && !location.postId && <Button className={classes.reviewBtn} onClick={handleShow}>Tạo Review</Button>

@@ -53,12 +53,12 @@ export default function Location(props) {
                             <img src={location?.images[0]} alt={"Location"} style={{ width: "100%", height: "650px" }} />
                             <div className={classes.coverText}>
                                 <Typography variant="h1" className={classes.name}>
-                                    {location.name}
+                                    {location.fullname}
                                 </Typography>
                                 <div>
                                     <LocationOn className={classes.iconProvince} />
                                     <Typography className={classes.provinceName} variant="h2" component={Link} to={`/province/${location.province._id}`}>
-                                        {location.province.name}
+                                        {location.province.fullname}
                                     </Typography>
                                 </div>
 

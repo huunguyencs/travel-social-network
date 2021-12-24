@@ -79,7 +79,7 @@ function BaseContent({ post }) {
                 {post.isPostReview &&
                     <>
                         <div>
-                            <Typography variant="body1" component={Link} to={`/location/${post.locationId._id}`}>{post.locationId.name}</Typography>
+                            <Typography variant="body1" component={Link} to={`/location/${post.locationId._id}`}>{post.locationId.fullname}</Typography>
                         </div>
                         <Rating name="location-rating" value={post.rate} readOnly style={{ marginBottom: 10 }} />
 

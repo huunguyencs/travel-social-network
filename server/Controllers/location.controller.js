@@ -87,12 +87,12 @@ class LocationController {
         }
     }
 
-    //Get all Location
+    //Get Location at a province
     async getLocations(req, res) {
         try {
-            const location = await Locations.find()
-                .populate("province")
-            res.json({ success: true, message: "get all locations success", location });
+            const location = await Locations.find({ province: req.body.province })
+                .populate("province", "fullname")
+            res.json({ success: true, message: "get locations success", location });
         } catch (err) {
             console.log(err)
             res.status(500).json({ success: false, message: err.message })

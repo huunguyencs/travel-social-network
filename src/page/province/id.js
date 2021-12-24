@@ -69,7 +69,7 @@ export default function Province(props) {
                         >
                             <img src={province?.image} alt="Province" style={{ width: "100%", height: "700px" }} />
                             <Typography className={classes.provinceName} variant="h1">
-                                {province?.name}
+                                {province?.fullname}
                             </Typography>
                         </div>
                     </Grid>

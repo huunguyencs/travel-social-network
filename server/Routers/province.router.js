@@ -3,7 +3,7 @@ const router = express.Router();
 const ProvinceController = require('../Controllers/province.controller');
 const auth = require('../Middlewares/auth')
 
-router.post('/create_province',auth, ProvinceController.createProvince);
+router.post('/create_province', auth, ProvinceController.createProvince);
 router.get('/provinces', ProvinceController.getProvinces);
 
 router.get('/:id', ProvinceController.getProvince);
