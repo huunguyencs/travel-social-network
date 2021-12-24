@@ -22,7 +22,6 @@ export default function AddLocationForm(props) {
         if (province && province._id !== currentProvince) {
             await customAxios().get(`location/locations/${province._id}`)
                 .then((req) => {
-                    console.log(req.data);
                     setLocations(req.data.locations);
                 }).catch(err => {
                     setLocations([]);
