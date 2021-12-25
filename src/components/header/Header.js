@@ -103,7 +103,7 @@ export default function Header(props) {
                                 <div class={classes.user}>
                                     <Button className={classes.button} onClick={handleToggleUser} controls={toggleMenuUser ? "user-menu" : undefined}>
                                         <Avatar className={classes.avatar} alt="avatar" src={user.avatar} />
-                                        <Typography className={classes.userName}>{user.fullname}</Typography>
+                                        <Typography noWrap={false} className={classes.userName}>{user.fullname}</Typography>
                                     </Button>
                                     <Popover
                                         open={Boolean(toggleMenuUser)}

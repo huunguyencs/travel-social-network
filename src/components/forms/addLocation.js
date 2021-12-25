@@ -5,16 +5,30 @@ import { useDispatch, useSelector } from "react-redux";
 
 import { formStyles } from '../../style';
 import * as tourAction from '../../redux/actions/createTourAction';
-import { getLocations } from "../../redux/callApi/locationCall";
-
+import { getProvinces } from "../../redux/callApi/locationCall";
+import customAxios from "../../utils/fetchData";
 
 
 export default function AddLocationForm(props) {
 
     const [loc, setLoc] = useState(null);
+    const [currentProvince, setCurrentProvince] = useState('');
     const costRef = useRef('');
 
     const { location } = useSelector(state => state);
+    const [locations, setLocations] = useState([]);
+
+    const getLoc = async (province) => {
+        if (province && province._id !== currentProvince) {
+            await customAxios().get(`location/locations/${province._id}`)
+                .then((req) => {
+                    setLocations(req.data.locations);
+                }).catch(err => {
+                    setLocations([]);
+                })
+            setCurrentProvince(province._id);
+        }
+    }
 
     const dispatch = useDispatch();
 
@@ -26,10 +40,10 @@ export default function AddLocationForm(props) {
     }
 
     useEffect(() => {
-        if (location.locations?.length === 0) {
-            dispatch(getLocations());
+        if (location.provinces?.length === 0) {
+            dispatch(getProvinces());
         }
-    }, [dispatch, location.locations])
+    }, [dispatch, location.provinces])
 
     const classes = formStyles();
 
@@ -45,12 +59,22 @@ export default function AddLocationForm(props) {
             >
                 <div style={{ display: "flex", justifyContent: "center" }}>
                     <Autocomplete
+                        id="choose-province"
+                        options={location.provinces}
+                        getOptionLabel={(option) => option?.fullname}
+                        style={{ width: 400, marginTop: 30 }}
+                        onChange={(e, value) => getLoc(value)}
+                        renderInput={(params) => <TextField {...params} name="provinces" label="Chọn tỉnh thành" variant="outlined" />}
+                    />
+                </div>
+                <div style={{ display: "flex", justifyContent: "center" }}>
+                    <Autocomplete
                         id="choose-location"
-                        options={location.locations}
-                        getOptionLabel={(option) => option?.name}
+                        options={locations}
+                        getOptionLabel={(option) => option?.fullname}
                         style={{ width: 400, marginTop: 30 }}
                         onChange={(e, value) => setLoc(value)}
-                        renderInput={(params) => <TextField {...params} name="location" label="Địa điểm" variant="outlined" required />}
+                        renderInput={(params) => <TextField {...params} name="location" label="Chọn địa điểm" variant="outlined" />}
                     />
                 </div>
                 <TextField

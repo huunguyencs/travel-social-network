@@ -2,6 +2,7 @@ import * as TOUR_TYPES from '../constants/tourConstant';
 
 const INIT_STATE = {
     tours: [],
+    page: 2,
     loading: false,
     error: null,
 }
@@ -44,6 +45,8 @@ const tourReducer = (state = INIT_STATE, action) => {
             return {
                 ...state,
                 loading: false,
+                tours: [],
+                page: 2,
                 error: action.payload.error,
             }
         }

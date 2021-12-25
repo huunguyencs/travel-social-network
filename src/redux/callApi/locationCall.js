@@ -2,19 +2,15 @@ import * as locationActions from '../actions/locationAction';
 import * as notifyActions from '../actions/notifyAction';
 import customAxios from '../../utils/fetchData';
 
-export const getLocations = (data) => async (dispatch) => {
-
+export const getProvinces = (data) => async (dispatch) => {
     dispatch(notifyActions.callStart());
-
     try {
-        // call api to get location list
-        const res = await customAxios().get("location/locations");
-        // console.log(res.data.location);
-        dispatch(locationActions.getLocations({ location: res.data.location }));
-        dispatch(notifyActions.callSuccess({ message: "" }));
+        const res = await customAxios().get('province/provinces');
+        dispatch(locationActions.getProvinces({ provinces: res.data.provinces }));
+        dispatch(notifyActions.callSuccess({ message: "" }))
     }
     catch (err) {
-        dispatch(notifyActions.callFail({ error: err }));
+        dispatch(notifyActions.callFail({ error: err }))
     }
 }
 

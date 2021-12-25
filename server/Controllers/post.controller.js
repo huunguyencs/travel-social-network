@@ -14,7 +14,7 @@ class PostController {
             await newPost.save()
             res.json({
                 success: true,
-                message: "Create post successful",
+                message: "Tạo bài viết thành công",
                 newPost: {
                     ...newPost._doc,
                     userId: {
@@ -26,6 +26,26 @@ class PostController {
             })
         } catch (err) {
             console.log(err)
+            res.status(500).json({ success: false, message: err.message })
+        }
+    }
+
+    async sharePost(req, res) {
+        try {
+            const { content, hashtags, shareId } = req.body;
+
+            const newPost = new Posts({
+                userId: req.user._id, content, hashtags, shareId
+            })
+
+            await newPost.save()
+
+            res.json({
+                success: true,
+                message: 'Chia sẻ thành công!',
+            })
+        }
+        catch (err) {
             res.status(500).json({ success: false, message: err.message })
         }
     }
@@ -88,7 +108,14 @@ class PostController {
                         path: "userId likes",
                         select: "username fullname avatar"
                     }
-                });
+                })
+                .populate({
+                    path: "shareId",
+                    populate: {
+                        path: "userId",
+                        select: "username fullname avatar"
+                    }
+                })
 
             res.json({ success: true, message: "get user post successful", posts })
 
@@ -112,6 +139,13 @@ class PostController {
                     }
                 })
                 .populate("locationId", "name")
+                .populate({
+                    path: "shareId",
+                    populate: {
+                        path: "userId",
+                        select: "username fullname avatar"
+                    }
+                })
                 .sort({ "createdAt": -1 });
             res.json({
                 posts,
@@ -135,6 +169,13 @@ class PostController {
                     },
                 })
                 .populate("locationId", "name")
+                .populate({
+                    path: "shareId",
+                    populate: {
+                        path: "userId",
+                        select: "username fullname avatar"
+                    }
+                })
             res.json({
                 success: true, message: "get info 1 post success", post
             });
@@ -202,6 +243,8 @@ class PostController {
             res.status(500).json({ success: false, message: err.message })
         }
     }
+
+
 
 }
 

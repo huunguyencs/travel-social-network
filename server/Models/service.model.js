@@ -3,15 +3,17 @@ const mongoose = require('mongoose');
 const serviceSchema = new mongoose.Schema({
     name: {
         type: String,
-        required: true
+        required: true,
+        unique: true
     },
+    fullname: String,
     description: String,
     price: Number,
     type: String,
     province: { type: mongoose.Types.ObjectId, ref: 'provinces' },
-    rateTotal: {
-        type: Number,
-        default: 0
+    star: {
+        type: Array,
+        default: [0, 0, 0, 0, 0]
     },
     rate: [
         {

@@ -45,13 +45,32 @@ class TourController {
             res.status(500).json({ success: false, message: err.message })
         }
     }
+
+    async shareTour(req, res) {
+        try {
+            const { content, hashtags, shareId } = req.body
+            const newTour = new Tours({
+                userId: req.user._id, content, hashtags, shareId
+            })
+            await newTour.save();
+
+            res.json({
+                success: true,
+                message: 'Chia sẻ thành công!'
+            })
+        }
+        catch (err) {
+            res.status(500).json({ success: false, message: err.message })
+        }
+    }
+
     ///
     async updateTour(req, res) {
         try {
-            const { content, tourName, isPublic, taggedIds, image, hashtag, tourDate } = req.body
+            const { content, tourName, isPublic, taggedIds, image, hashtags, tourDate } = req.body
 
             const tour = await Tours.findOneAndUpdate({ _id: req.params.id }, {
-                content, image, tourName, taggedIds, hashtag, isPublic, tourDate
+                content, image, tourName, taggedIds, hashtags, isPublic, tourDate
             }, { new: true })
 
             res.json({ success: true, message: "update tour successful", tour })
@@ -129,6 +148,20 @@ class TourController {
                         select: "username fullname avatar"
                     }
                 })
+                .populate({
+                    path: "shareId",
+                    populate: {
+                        path: "userId",
+                        select: "username fullname avatar"
+                    }
+                })
+                .populate({
+                    path: "shareId",
+                    populate: {
+                        path: "tour",
+                        select: "date"
+                    }
+                })
             res.json({ success: true, message: "get tours successful", tours })
         }
         catch (err) {
@@ -150,6 +183,13 @@ class TourController {
                         select: "username fullname avatar"
                     }
                 })
+                .populate({
+                    path: "shareId",
+                    populate: {
+                        path: "userId",
+                        select: "username fullname avatar"
+                    }
+                })
 
             res.json({ success: true, message: "get user tour successful", tours })
         } catch (err) {
@@ -161,7 +201,16 @@ class TourController {
     // lấy thông tin 1 tour theo params.id
     async getTour(req, res) {
         try {
-            const tour = await Tours.findById(req.params.id)
+
+            let tour = await Tours.findById(req.params.id);
+            let requestId;
+            if (tour.shareId) {
+                requestId = tour.shareId;
+            }
+            else
+                requestId = tour._id;
+
+            tour = await Tour.findById(requestId)
                 .populate("tour")
                 .populate({
                     path: "tour",
@@ -205,7 +254,7 @@ class TourController {
                 $push: {
                     joinIds: req.user._id
                 }
-            }, { new: true })
+            }, { new: true }).populate("joinIds", "avatar fullname username")
             res.json({
                 success: true, message: "join tour success",
                 joinIds: tour.joinIds
@@ -221,7 +270,7 @@ class TourController {
                 $pull: {
                     joinIds: req.user._id
                 }
-            }, { new: true })
+            }, { new: true }).populate("joinIds", "avatar fullname username")
 
             res.json({
                 success: true, message: "unjoin tour success",
@@ -244,7 +293,7 @@ class TourController {
                 $pull: {
                     joinIds: user
                 }
-            }, { new: true })
+            }, { new: true }).populate("joinIds", "avatar fullname username")
 
             res.json({
                 success: true, message: "remove user success",

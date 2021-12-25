@@ -1,12 +1,8 @@
 import React, { useEffect, useState } from "react";
 import {
-    Avatar,
     Backdrop,
     Card,
     CardActions,
-    CardContent,
-    CardHeader,
-    CardMedia,
     Collapse,
     IconButton,
     Modal,
@@ -15,23 +11,18 @@ import {
 import {
     Favorite,
     FavoriteBorderOutlined,
-    MoreVert,
     QuestionAnswer,
     Share
 } from "@material-ui/icons";
-import { Rating } from "@material-ui/lab";
 import { useDispatch, useSelector } from "react-redux";
 
 import Comment from "../comment/Comment";
 import InputComment from "../input/comment";
 import { postStyles } from "../../style";
-import ImageList from "../modal/ImageList";
-import { Link } from "react-router-dom";
 import UserList from "../modal/userList";
-import { SeeMoreText } from "../seeMoreText";
-import { timeAgo } from "../../utils/date";
 import { likePost, unlikePost } from '../../redux/callApi/postCall';
 import SharePost from "../forms/share";
+import PostContent from "./content";
 
 
 export default function Post(props) {
@@ -73,9 +64,11 @@ export default function Post(props) {
         updateLike([...post.likes, auth.user]);
         // call api
         dispatch(likePost(post._id, auth.token, () => {
-            setLike(false);
-            let newLikes = post.likes.filter(user => user._id !== auth.user._id);
-            updateLike(newLikes);
+            if (like) {
+                setLike(false);
+                let newLikes = post.likes.filter(user => user._id !== auth.user._id);
+                updateLike(newLikes);
+            }
         }));
     }
 
@@ -85,8 +78,10 @@ export default function Post(props) {
         updateLike(newLikes);
         // call api
         dispatch(unlikePost(post._id, auth.token, () => {
-            setLike(true);
-            updateLike([...post.likes, auth.user]);
+            if (!like) {
+                setLike(true);
+                updateLike([...post.likes, auth.user]);
+            }
         }));
     }
 
@@ -120,56 +115,7 @@ export default function Post(props) {
     return (
         <Card className={classes.cardContainer}>
             {post && <>
-                <CardHeader
-                    avatar={
-                        <Avatar alt="avatar" src={post.userId.avatar} />
-                    }
-                    action={
-                        <IconButton aria-label="settings">
-                            <MoreVert />
-                        </IconButton>
-                    }
-                    title={
-                        <Link to={"/profile/" + post.userId._id} >
-                            <Typography className={classes.userName}>{post.userId.fullname}</Typography>
-                        </Link>
-                    }
-                    subheader={
-                        <Link to={`/post/${post._id}`} style={{ cursor: "pointer" }}>
-                            {timeAgo(new Date(post.createdAt))}
-                        </Link>
-                    }
-                />
-
-                <CardContent>
-                    {post.isPostReview &&
-                        <>
-                            <div>
-                                <Typography variant="body1" component={Link} to={`/location/${post.locationId._id}`}>{post.locationId.name}</Typography>
-                            </div>
-                            <Rating name="location-rating" value={post.rate} readOnly style={{ marginBottom: 20 }} />
-
-                        </>
-                    }
-                    <SeeMoreText
-                        variant="body1"
-                        maxText={100}
-                        text={post.content}
-                    />
-                    <div className={classes.hashtagWrap}>
-                        {post.hashtags.map((item, index) =>
-                            <Typography className={classes.hashtag} key={index}>{item}</Typography>
-                        )}
-                    </div>
-                </CardContent>
-                {
-                    post.images.length > 0 &&
-                    <CardMedia>
-                        <ImageList imgList={post.images} />
-                    </CardMedia>
-                }
-
-
+                <PostContent post={post} />
 
                 <CardActions>
                     <IconButton onClick={likePress}>
@@ -216,7 +162,7 @@ export default function Post(props) {
                             timeout: 500,
                         }}
                     >
-                        <SharePost object={post} type="post" />
+                        <SharePost object={post.shareId ? post.shareId : post} type="post" handleClose={() => setShare(false)} />
                     </Modal>
                 </CardActions>
 

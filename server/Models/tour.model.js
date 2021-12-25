@@ -4,8 +4,7 @@ const tourSchema = new mongoose.Schema({
     content: String,
     tour: [{ type: mongoose.Types.ObjectId, ref: 'tour_dates' }],
     name: {
-        type: String,
-        required: true
+        type: String
     },
     isPublic: {
         type: Boolean,
@@ -16,10 +15,8 @@ const tourSchema = new mongoose.Schema({
     comments: [{ type: mongoose.Types.ObjectId, ref: 'comments' }],
     userId: { type: mongoose.Types.ObjectId, ref: 'users' },
     hashtags: Array,
-    image: {
-        type: String,
-        default: ''
-    }
+    image: String,
+    shareId: { type: mongoose.Types.ObjectId, ref: 'tours' }
 }, {
     timestamps: true
 })

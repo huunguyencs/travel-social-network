@@ -6,6 +6,7 @@ const auth = require('../Middlewares/auth');
 router.get('/user_posts/:id', PostController.getUserPost);//bug
 
 router.post('/create_post', auth, PostController.createPost);
+router.post('/share', auth, PostController.sharePost);
 router.post('/create_review', auth, PostController.createReview);
 router.get('/posts', PostController.getPosts);
 

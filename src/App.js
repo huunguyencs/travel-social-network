@@ -31,10 +31,11 @@ function App() {
   useEffect(() => {
     if (!auth.token) {
       dispatch(refreshToken(() => {
-        history.push("/login");
+        if (location.pathname !== "/login" && location.pathname !== "/register")
+          history.push("/login");
       }));
     }
-  }, [dispatch, auth.token, history])
+  }, [dispatch, auth.token, history, location])
 
   return (
     <div style={{ backgroundColor: color.background, backgroundSize: "100%" }}>

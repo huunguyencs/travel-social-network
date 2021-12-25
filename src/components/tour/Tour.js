@@ -1,13 +1,8 @@
 import React, { useEffect, useState } from "react";
 import {
-    Avatar,
     Backdrop,
-    Button,
     Card,
     CardActions,
-    CardContent,
-    CardHeader,
-    CardMedia,
     Collapse,
     IconButton,
     Modal,
@@ -16,11 +11,9 @@ import {
 import {
     Favorite,
     FavoriteBorderOutlined,
-    MoreVert,
     QuestionAnswer,
     Share
 } from "@material-ui/icons";
-import { Link } from 'react-router-dom'
 import { useDispatch, useSelector } from "react-redux";
 
 
@@ -28,12 +21,9 @@ import Comment from "../comment/Comment";
 import { postStyles } from "../../style";
 import InputComment from "../input/comment";
 import UserList from "../modal/userList";
-import { SeeMoreText } from "../seeMoreText";
-import ImageModal from "../modal/image";
-import { likeTour, unlikeTour, joinTour, unJoinTour } from "../../redux/callApi/tourCall";
-import { convertDateToStr } from "../../utils/date";
-import ManageUserJoin from "../modal/manageUserJoin";
+import { likeTour, unlikeTour } from "../../redux/callApi/tourCall";
 import SharePost from "../forms/share";
+import TourContent from "./content";
 
 
 export default function Tour(props) {
@@ -43,10 +33,7 @@ export default function Tour(props) {
 
     const [showCmt, setShowCmt] = useState(false);
     const [like, setLike] = useState(false);
-    // const [numLike, setNumLike] = useState(0);
-    const [open, setOpen] = useState(false);
-    const [join, setJoin] = useState(false);
-    const [openJoin, setOpenJoin] = useState(false);
+
     const [tour, setTour] = useState(null);
     const [share, setShare] = useState(false);
 
@@ -57,22 +44,11 @@ export default function Tour(props) {
         })
     }
 
-    const updateJoin = (joins) => {
-        setTour({
-            ...tour,
-            joinIds: joins
-        })
-    }
-
     const addComment = (comment) => {
         setTour({
             ...tour,
             comments: [...tour.comments, comment]
         })
-    }
-
-    const handleCloseImage = () => {
-        setOpen(false);
     }
 
     const classes = postStyles({ showCmt });
@@ -92,8 +68,10 @@ export default function Tour(props) {
         updateLike(newLike);
 
         dispatch(likeTour(tour._id, auth.token, () => {
-            setLike(false);
-            updateLike(prevLike);
+            if (like) {
+                setLike(false);
+                updateLike(prevLike);
+            }
         }))
     }
 
@@ -104,8 +82,10 @@ export default function Tour(props) {
         updateLike(newLikes);
 
         dispatch(unlikeTour(tour._id, auth.token, () => {
-            setLike(true);
-            updateLike(prevLike);
+            if (!like) {
+                setLike(true);
+                updateLike(prevLike);
+            }
         }))
     }
 
@@ -125,133 +105,19 @@ export default function Tour(props) {
 
 
     useEffect(() => {
-        if (auth.user && tour && tour.likes.find(like => like._id === auth.user._id)) {
+        if (tour?.likes.find(like => like._id === auth?.user._id)) {
             setLike(true);
-            // setNumLike(tour.likes?.length)
         }
 
     }, [tour, auth.user])
 
-    useEffect(() => {
-        if (auth.user && tour && tour.joinIds.includes(auth.user._id)) {
-            setJoin(true);
-        }
 
-    }, [tour, auth.user]);
-
-    const handleJoin = async () => {
-        setJoin(true);
-        var prevJoin = tour.joinIds;
-        updateJoin([...prevJoin, auth.user]);
-        // setNumJoin(state => state + 1);
-        dispatch(joinTour(tour._id, auth.token, () => {
-            setJoin(false);
-            // setNumJoin(state => state - 1)
-            updateJoin(prevJoin);
-        }))
-    }
-
-    const handleUnJoin = () => {
-        setJoin(false);
-        var prevJoin = tour.joinIds;
-        // setNumJoin(state => state - 1)
-        var newJoin = prevJoin.filter(user => user._id !== auth.user._id);
-        updateJoin(newJoin);
-
-        dispatch(unJoinTour(tour._id, auth.token, () => {
-            setJoin(true);
-            // updateJoin([...tour.joinIds, auth.user]);
-            updateJoin(prevJoin);
-        }))
-    }
-
-    const joinClick = () => {
-        if (join) {
-            handleUnJoin();
-        }
-        else handleJoin();
-    }
 
 
     return (
         <Card className={classes.cardContainer}>
             {tour && auth.user && <>
-                <CardHeader
-                    avatar={
-                        <Avatar alt="avatar" src={tour.userId.avatar} />
-                    }
-                    action={
-                        <IconButton aria-label="settings">
-                            <MoreVert />
-                        </IconButton>
-                    }
-                    title={
-                        <Typography className={classes.userName} component={Link} to={`/profile/${tour.userId._id}`}>{tour.userId.fullname}</Typography>
-                    }
-                />
-                {tour.image !== "" &&
-                    <CardMedia>
-                        <img src={tour.image} className={classes.image} width="100%" alt="Can not load" onClick={() => setOpen(true)} />
-                        <ImageModal
-                            open={open}
-                            handleClose={handleCloseImage}
-                            img={tour.image}
-                        />
-                    </CardMedia>
-                }
-
-
-                <CardContent>
-                    <div>
-                        {new Date(tour.tour[0]?.date) > new Date() && tour.userId._id !== auth.user?._id &&
-                            <Button onClick={joinClick}>{join ? "Rời khỏi tour" : "Tham gia tour"}</Button>
-
-                        }
-                    </div>
-                    <Typography variant="h6" className={classes.title} component={Link} to={`/tour/${tour._id}`}>
-                        {tour.name}
-                    </Typography>
-                    <SeeMoreText
-                        variant="body1"
-                        maxText={100}
-                        text={tour.content}
-                    />
-                    <Typography style={{ marginTop: 20 }}>
-                        Thời gian: {tour.tour?.length} ngày - Bắt đầu {convertDateToStr(tour.tour[0]?.date)}
-                    </Typography>
-                    <div>
-                        <Typography>Thành viên tham gia:
-                            <span className={classes.numLike} onClick={() => setOpenJoin(true)} style={{ marginInline: 10 }}>
-                                {tour.joinIds.length + 1}
-                            </span>
-                        </Typography>
-                        <Modal
-                            aria-labelledby="transition-modal-title"
-                            aria-describedby="transition-modal-description"
-                            className={classes.modal}
-                            open={openJoin}
-                            onClose={() => setOpenJoin(false)}
-                            closeAfterTransition
-                            BackdropComponent={Backdrop}
-                            BackdropProps={{
-                                timeout: 500,
-                            }}
-                        >
-                            {auth.user._id === tour.userId._id ?
-                                <ManageUserJoin listUser={[tour.userId, ...tour.joinIds]} updateJoin={updateJoin} tourId={tour._id} title={"Thành viên tham gia"} handleClose={() => setOpenJoin(false)} /> :
-                                <UserList listUser={[tour.userId, ...tour.joinIds]} title={"Thành viên tham gia"} handleClose={() => setOpenJoin(false)} />
-                            }
-
-                        </Modal>
-                    </div>
-
-                    <div className={classes.hashtagWrap}>
-                        {tour.hashtags.map((item) =>
-                            <Typography className={classes.hashtag}>{item}</Typography>
-                        )}
-                    </div>
-
-                </CardContent>
+                <TourContent tour={tour} setTour={setTour} />
 
                 <CardActions>
                     <IconButton onClick={likePress}>
@@ -298,7 +164,7 @@ export default function Tour(props) {
                             timeout: 500,
                         }}
                     >
-                        <SharePost object={tour} type="tour" />
+                        <SharePost object={tour.shareId ? tour.shareId : tour} type="tour" handleClose={() => setShare(false)} />
                     </Modal>
                 </CardActions>
 

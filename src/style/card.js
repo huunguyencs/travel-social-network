@@ -92,6 +92,7 @@ const cardStyles = makeStyles((theme) => ({
     iconStar: {
         color: color.yellow,
         fontSize: "50px",
+        marginRight: 15,
     },
     starContent: {
         marginInline: 30,

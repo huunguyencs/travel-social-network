@@ -1,9 +1,9 @@
 import * as LOC_TYPES from '../constants/locationConstant';
 
-export const getLocations = (props) => {
+export const getProvinces = (props) => {
     return {
-        type: LOC_TYPES.GET_LOCATION_LIST,
-        payload: props,
+        type: LOC_TYPES.GET_PROVINCE_LIST,
+        payload: props
     }
 }
 

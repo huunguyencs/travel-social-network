@@ -5,10 +5,10 @@ const Services = require('../Models/service.model');
 class ProvinceController {
     async createProvince(req, res) {
         try {
-            const { name, information, image } = req.body
+            const { name, fullname, information, image, detail, position } = req.body
 
             const newProvince = new Provinces({
-                image, name, information
+                image, name, information, detail, fullname, position
             })
             await newProvince.save()
 
@@ -57,13 +57,21 @@ class ProvinceController {
     async getProvince(req, res) {
         try {
             const id = req.params.id;
-            var province = await Provinces.findById(id);
+            // var province = await Provinces.findById(id);
+            var province = await Provinces.findOne({ name: id });
             // .populate("locations services")
-            const locations = await Locations.find({ "province": id })
-            const services = await Services.find({ "province": id })
-            res.json({
-                success: true, message: "get info 1 province success", province, locations, services
-            });
+            if (province) {
+                const locations = await Locations.find({ "province": province._id })
+                const services = await Services.find({ "province": province._id })
+                res.json({
+                    success: true, message: "get info 1 province success", province, locations, services
+                });
+            }
+            else {
+                res.status(404).json({ success: false, message: "Không tìm thấy tỉnh!" });
+            }
+
+
         } catch (err) {
             console.log(err)
             res.status(500).json({ success: false, message: err.message })
@@ -73,9 +81,8 @@ class ProvinceController {
     //Get all province
     async getProvinces(req, res) {
         try {
-            const province = await Provinces.find()
-            // .populate("locations services")
-            res.json({ success: true, message: "get all provinces success", province });
+            const provinces = await Provinces.find();
+            res.json({ success: true, message: "get all provinces success", provinces });
         } catch (err) {
             console.log(err)
             res.status(500).json({ success: false, message: err.message })

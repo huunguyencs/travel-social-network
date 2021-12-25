@@ -3,13 +3,26 @@ const mongoose = require('mongoose');
 const provinceSchema = new mongoose.Schema({
     name: {
         type: String,
-        required: true
+        required: true,
+        unique: true
     },
+    fullname: String,
     information: String,
+    detail: {
+        overview: {
+            cultural: String,
+            geography: String,
+            weather: String
+        },
+        vehicle: {
+            airport: String,
+            traffic: String
+        },
+        food: [{ type: String }]
+    },
     image: { type: String },
-    weatherName: String,
     position: {
-        lng: Number,
+        lon: Number,
         lat: Number
     }
 }, {

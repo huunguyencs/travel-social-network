@@ -4,12 +4,13 @@ import React, { useState } from 'react';
 import { useSelector } from 'react-redux';
 
 import { formStyles } from "../../style";
+import customAxios from '../../utils/fetchData';
 import EmojiPicker from '../input/emojiPicker';
 import LoginModal from "../modal/login";
 
 export default function SharePost(props) {
 
-    const { object, type } = props;
+    const { object, type, handleClose } = props;
 
     const { auth, notify } = useSelector(state => state);
 
@@ -18,8 +19,29 @@ export default function SharePost(props) {
 
     const classes = formStyles();
 
-    const handleShare = () => {
+    const hashtagSplit = (text) => {
+        var ht = text.split(" ");
+        return ht.filter(item => item !== "");
+    }
 
+    const share = async () => {
+        var ht = hashtagSplit(hashtag);
+        await customAxios(auth.token).post(`${type}/share`, {
+            shareId: object._id,
+            content: text,
+            hashtags: ht
+        }).then((res) => {
+            if (res.status === 200) {
+                handleClose();
+            }
+        }).catch((err) => {
+            console.log(err);
+        })
+    }
+
+    const handleShare = (e) => {
+        e.preventDefault();
+        share();
     }
 
     return (

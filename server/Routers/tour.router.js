@@ -4,6 +4,7 @@ const TourController = require('../Controllers/tour.controller');
 const auth = require('../Middlewares/auth')
 
 router.post('/create_tour', auth, TourController.createTour);
+router.post('/share', auth, TourController.shareTour);
 router.get('/tours', TourController.getTours);
 
 

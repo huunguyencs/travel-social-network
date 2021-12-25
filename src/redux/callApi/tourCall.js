@@ -13,7 +13,7 @@ export const getTours = (data) => async (dispatch) => {
     }
     catch (err) {
         // console.log(err);
-        dispatch(tourAction.error({ error: err.response.data.message }))
+        // dispatch(tourAction.error({ error: err.response.data.message }))
 
     }
 }
@@ -114,8 +114,8 @@ export const likeTour = (id, token, next) => async (dispatch) => {
 
     try {
 
-        await customAxios(token).patch(`/tour/${id}/like`)
-        // dispatch(tourAction.updateLike({ id: id, likes: res.data.likes }));
+        const res = await customAxios(token).patch(`/tour/${id}/like`)
+        dispatch(tourAction.updateLike({ id: id, likes: res.data.likes }));
         // console.log(res.data.likes);
 
     }
@@ -129,8 +129,8 @@ export const unlikeTour = (id, token, next) => async (dispatch) => {
 
     try {
 
-        await customAxios(token).patch(`/tour/${id}/unlike`);
-        // dispatch(tourAction.updateLike({ id: id, likes: res.data.likes }));
+        const res = await customAxios(token).patch(`/tour/${id}/unlike`);
+        dispatch(tourAction.updateLike({ id: id, likes: res.data.likes }));
         // console.log(res.data.likes);
 
     }

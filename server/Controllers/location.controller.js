@@ -4,10 +4,9 @@ const Posts = require('../Models/post.model');
 class LocationController {
     async createLocation(req, res) {
         try {
-            const { name, images, province, position, information } = req.body
-
+            const { name, images, province, position, information, fullname } = req.body
             const newLocation = new Locations({
-                name, images, province, position, information
+                name, images, province, position, information, fullname
             })
             await newLocation.save()
 
@@ -87,12 +86,12 @@ class LocationController {
         }
     }
 
-    //Get all Location
+    //Get Location at a province
     async getLocations(req, res) {
         try {
-            const location = await Locations.find()
-                .populate("province")
-            res.json({ success: true, message: "get all locations success", location });
+            const locations = await Locations.find({ province: req.params.province })
+                .populate("province", "fullname")
+            res.json({ success: true, message: "get locations success", locations });
         } catch (err) {
             console.log(err)
             res.status(500).json({ success: false, message: err.message })

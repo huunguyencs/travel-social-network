@@ -1,26 +1,23 @@
 const mongoose = require('mongoose');
 
 const locationSchema = new mongoose.Schema({
-    images: [{ type: String }],
     name: {
         type: String,
-        required: true
+        required: true,
+        unique: true,
     },
-    starTotal: {
-        type: Number,
-        default: 0
-    },
+    images: [{ type: String }],
+    fullname: String,
     star: {
         type: Array,
         default: [0, 0, 0, 0, 0]
     },
     province: { type: mongoose.Types.ObjectId, ref: 'provinces' },
     position: {
-        lng: Number,
+        lon: Number,
         lat: Number
     },
-    information: String,
-    weatherName: String
+    information: String
 }, {
     timestamps: true
 })
