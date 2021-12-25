@@ -68,7 +68,7 @@ class ProvinceController {
                 });
             }
             else {
-                res.status(404).json({ success: false, message: "Can not find province!" });
+                res.status(404).json({ success: false, message: "Không tìm thấy tỉnh!" });
             }
 
 
