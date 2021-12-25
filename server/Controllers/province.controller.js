@@ -5,10 +5,10 @@ const Services = require('../Models/service.model');
 class ProvinceController {
     async createProvince(req, res) {
         try {
-            const { name, information, image } = req.body
+            const { name, fullname, information, image, detail, position } = req.body
 
             const newProvince = new Provinces({
-                image, name, information
+                image, name, information, detail, fullname, position
             })
             await newProvince.save()
 

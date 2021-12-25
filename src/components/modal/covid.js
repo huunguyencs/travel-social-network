@@ -1,5 +1,5 @@
 
-import { Box, IconButton, Paper, Table, TableBody, TableCell, TableContainer, TableHead, TablePagination, TableRow, Tooltip, Typography } from '@material-ui/core'
+import { Box, IconButton, Link, Paper, Table, TableBody, TableCell, TableContainer, TableHead, TablePagination, TableRow, Tooltip, Typography } from '@material-ui/core'
 import { Close } from '@material-ui/icons';
 import React, { useState } from 'react'
 import { CartesianGrid, Legend, Line, LineChart, ResponsiveContainer, XAxis, YAxis } from 'recharts';
@@ -43,6 +43,10 @@ export default function CovidModal(props) {
                     <Typography variant="h4">
                         Tình hình Covid-19
                     </Typography>
+
+                </div>
+                <div style={{ display: "flex", justifyContent: "center" }}>
+                    <Typography variant="subtitle2">Dữ liệu được lấy từ <Link href="https://covid19.gov.vn/">Bộ y tế</Link></Typography>
                 </div>
                 <div style={{ display: "flex", justifyContent: "center" }}>
                     <Typography variant="h6">Tất cả</Typography>

@@ -1,4 +1,4 @@
-import { Grid, Typography } from "@material-ui/core";
+import { Card, Grid, Typography } from "@material-ui/core";
 import React, { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 
@@ -11,7 +11,6 @@ import RightBar from "../../components/rightbar/RightBar";
 import { Pagination } from "@material-ui/lab";
 import ServiceCard from "../../components/card/ServiceCard";
 import customAxios from "../../utils/fetchData";
-import { SeeMoreText } from "../../components/seeMoreText";
 import MapCard from "../../components/card/MapCard";
 
 
@@ -74,16 +73,58 @@ export default function Province(props) {
                         </div>
                     </Grid>
                     <Grid item md={9}>
-                        <div className={classes.desContainer}>
+                        <Card className={classes.desContainer}>
                             <div className={classes.title}>
-                                <Typography variant="h5">Thông tin chung</Typography>
+                                <Typography variant="h5">Thông tin về {province.fullname}</Typography>
                             </div>
-                            <Typography className={classes.desContent}>
-                                <SeeMoreText maxText={300} text={province?.information} variant="body1" />
-                            </Typography>
+                            <div className={classes.desContent}>
+                                <Typography>
+                                    {province.information}
+                                </Typography>
+                                <div className={classes.detail}>
+                                    <div>
+                                        <Typography variant="h5">I. Tổng quan</Typography>
+                                        <div>
+                                            <div style={{ marginLeft: 10 }}>
+                                                <Typography variant="h6"> 1. Văn hóa</Typography>
+                                                <Typography style={{ marginLeft: 30 }} component="p">{province.detail.overview.cultural}</Typography>
+                                            </div>
+                                            <div style={{ marginLeft: 10 }}>
+                                                <Typography variant="h6"> 2. Địa lý</Typography>
+                                                <Typography style={{ marginLeft: 30 }} component="p">{province.detail.overview.geography}</Typography>
+                                            </div>
+                                            <div style={{ marginLeft: 10 }}>
+                                                <Typography variant="h6"> 3. Thời tiết</Typography>
+                                                <Typography style={{ marginLeft: 30 }} component="p">{province.detail.overview.weather}</Typography>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div>
+                                        <Typography variant="h5">II. Phương tiện</Typography>
+                                        <ul tyle={{ marginLeft: 10, listStyleType: 'disc' }}>
+                                            <li style={{ marginLeft: 30 }}>
+                                                Sân bay: {province.detail.vehicle.airport}
+                                            </li>
+                                            <li style={{ marginLeft: 30 }}>
+                                                Phương tiện di chuyển: {province.detail.vehicle.traffic}
+                                            </li>
+                                        </ul>
+                                    </div>
+                                    <div>
+                                        <Typography variant="h5">III. Ẩm thực</Typography>
+                                        <ul style={{ marginLeft: 10, listStyleType: 'disc' }}>
+                                            {province.detail.food.map(item => (
+                                                <li style={{ marginLeft: 30 }}>{item}</li>
+                                            ))}
+                                        </ul>
+                                    </div>
+                                </div>
+                            </div>
 
-
-                        </div>
+                            <div style={{ display: 'flex', justifyContent: "right", marginRight: 30, marginBottom: 30 }}>
+                                <i>Nguồn: Internet</i>
+                            </div>
+                        </Card>
                         <div className={classes.map}>
                             <MapCard position={province?.position} zoom={9} />
                         </div>
@@ -133,8 +174,8 @@ export default function Province(props) {
                     </Grid>
                     <Grid item md={3}>
                         <RightBar>
-                            <WeatherCardGeneral position={province?.position} nameShow={province?.name} />
-                            <CovidCard name={province?.name} />
+                            <WeatherCardGeneral position={province?.position} nameShow={province?.fullname} />
+                            <CovidCard name={province?.fullname} />
                         </RightBar>
                     </Grid>
                 </>

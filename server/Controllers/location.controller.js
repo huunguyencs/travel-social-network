@@ -4,10 +4,9 @@ const Posts = require('../Models/post.model');
 class LocationController {
     async createLocation(req, res) {
         try {
-            const { name, images, province, position, information } = req.body
-
+            const { name, images, province, position, information, fullname } = req.body
             const newLocation = new Locations({
-                name, images, province, position, information
+                name, images, province, position, information, fullname
             })
             await newLocation.save()
 

@@ -1,4 +1,4 @@
-import { Backdrop, Button, Card, CardContent, CircularProgress, Fade, Modal, Typography } from "@material-ui/core";
+import { Backdrop, Button, Card, CardContent, CircularProgress, Fade, Link, Modal, Typography } from "@material-ui/core";
 import React, { useEffect, useState } from "react";
 
 import { cardStyles } from "../../style";
@@ -171,6 +171,9 @@ export default function WeatherCardGeneral(props) {
                         <Button onClick={() => setShow(true)} style={{ paddingInline: 20, backgroundColor: "#A5DEC8" }}>
                             Xem dự báo
                         </Button>
+                    </div>
+                    <div style={{ display: "flex", justifyContent: "right", margin: 10 }}>
+                        <Typography variant="subtitle2">Dữ liệu được lấy từ <Link href="https://openweathermap.org/">OpenWeatherMap</Link></Typography>
                     </div>
                     <Modal
                         aria-labelledby="transition-modal-title"

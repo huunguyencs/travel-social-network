@@ -7,7 +7,7 @@ const provinceSchema = new mongoose.Schema({
         unique: true
     },
     fullname: String,
-    description: String,
+    information: String,
     detail: {
         overview: {
             cultural: String,
