@@ -57,7 +57,7 @@ export default function Location(props) {
                                 </Typography>
                                 <div>
                                     <LocationOn className={classes.iconProvince} />
-                                    <Typography className={classes.provinceName} variant="h2" component={Link} to={`/province/${location.province._id}`}>
+                                    <Typography className={classes.provinceName} variant="h2" component={Link} to={`/province/${location.province.name}`}>
                                         {location.province.fullname}
                                     </Typography>
                                 </div>
