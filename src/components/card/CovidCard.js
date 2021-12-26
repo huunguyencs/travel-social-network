@@ -68,7 +68,7 @@ export default function CovidCard(props) {
                                 </Button>
                             </div>
                             <div style={{ display: 'flex', justifyContent: 'right', marginTop: 10 }}>
-                                <Typography variant="subtitle2">Dữ liệu được lấy từ <Link href="https://covid19.gov.vn/">Bộ y tế</Link></Typography>
+                                <Typography variant="subtitle2">Dữ liệu được lấy từ <Link href="https://covid19.gov.vn/" target='_blank'>Bộ y tế</Link></Typography>
                             </div>
                             <Modal
                                 aria-labelledby="transition-modal-title"
