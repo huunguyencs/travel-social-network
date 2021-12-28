@@ -19,14 +19,14 @@ export default function LocationCard(props) {
                 image={location.images[0]}
             />
             <CardContent>
-                <Typography className={classes.locationName} variant="h6">{location.name}</Typography>
+                <Typography className={classes.locationName} variant="h6">{location.fullname.length > 25 ? location.fullname.slice(0, 25) + "..." : location.fullname}</Typography>
             </CardContent>
             <CardActions className={classes.footer}>
                 <div className={classes.star}>
-                    <Typography>{getStar(location.star)}</Typography>
+                    <Typography noWrap={false}>{getStar(location.star)}</Typography>
                     <Star className={classes.starIcon} />
                 </div>
-                <Button className={classes.seeMore} component={Link} to={"/location/" + location._id}>
+                <Button className={classes.seeMore} component={Link} to={"/location/" + location.name}>
                     Xem thêm
                 </Button>
             </CardActions>

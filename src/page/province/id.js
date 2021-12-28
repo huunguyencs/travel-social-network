@@ -64,7 +64,7 @@ export default function Province(props) {
 
     useEffect(() => {
         if (province && province.fullname) {
-            document.title = province.fullname + " | GOGO";
+            document.title = province.fullname;
         }
     }, [province])
 

@@ -1,4 +1,4 @@
-import { IconButton, Paper, Typography } from '@material-ui/core'
+import { IconButton, Link, Paper, Typography } from '@material-ui/core'
 import { Close } from '@material-ui/icons'
 import React from 'react'
 import { ScrollMenu } from 'react-horizontal-scrolling-menu'
@@ -32,7 +32,9 @@ export default function WeatherFocast({ weather, handleClose, nameShow, alert })
                     <WeatherFocastItem weather={item} />
                 )}
             </ScrollMenu>
-
+            <div style={{ display: "flex", justifyContent: "right", margin: 10 }}>
+                <Typography variant="subtitle2">Dữ liệu được lấy từ <Link href="https://openweathermap.org/" target='_blank'>OpenWeatherMap</Link></Typography>
+            </div>
         </Paper>
     )
 }

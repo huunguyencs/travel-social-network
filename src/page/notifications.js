@@ -1,5 +1,5 @@
 import { Box, Container, List } from "@material-ui/core";
-import React from "react";
+import React, { useEffect } from "react";
 
 import NotificationItem from "../components/notifications/notification";
 import { notificationStyles } from "../style";
@@ -79,6 +79,10 @@ const listNoti = [
 export default function NotificationPage(props) {
 
     const classes = notificationStyles();
+
+    useEffect(() => {
+        document.title = "Thông báo";
+    })
 
 
     return (

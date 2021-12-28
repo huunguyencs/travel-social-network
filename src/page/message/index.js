@@ -1,5 +1,5 @@
 import { Typography, Avatar, Grid, List, ListItem, ListItemText, ListItemAvatar } from "@material-ui/core";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { Search, Cancel } from "@material-ui/icons";
 
 import Header from "../../components/header/Header";
@@ -17,6 +17,10 @@ export default function Message(props) {
         e.preventDefault();
         setSearch('');
     }
+
+    useEffect(() => {
+        document.title = "Tin nhắn";
+    }, []);
 
     return (
         <div>

@@ -12,6 +12,12 @@ export default function TourDetail(props) {
     const [tour, setTour] = useState();
 
     useEffect(() => {
+        if (tour && tour.name) {
+            document.title = tour.name;
+        }
+    }, [tour])
+
+    useEffect(() => {
         dispatch(getTourDetail(id, (tour) => {
             setTour(tour);
         }));

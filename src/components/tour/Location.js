@@ -182,7 +182,7 @@ export default function Location(props) {
                             </div>
                         }
                         <div>
-                            <Typography variant="h4" className={classes.locationName} component={Link} to={"/location/" + location.location._id}>{location.location.fullname}</Typography>
+                            <Typography variant="h4" className={classes.locationName} component={Link} to={"/location/" + location.location.name}>{location.location.fullname}</Typography>
                         </div>
                         <div>
                             <Typography variant="h5" component={Link} to={"/province/" + location.location.province.name}>{location.location.province.fullname}</Typography>

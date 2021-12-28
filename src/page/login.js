@@ -79,6 +79,10 @@ export default function Login(props) {
     }, [auth.token, history])
 
     useEffect(() => {
+        document.title = "Đăng nhập";
+    }, [])
+
+    useEffect(() => {
         if (state.submit) {
             setErrorServer(null);
             if (Object.keys(errors).length === 0) {

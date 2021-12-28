@@ -30,6 +30,10 @@ function HomePage() {
     }
   }, [dispatch, auth.token])
 
+  useEffect(() => {
+    document.title = "GOGO";
+  })
+
 
   return (
     <Grid container style={{ margin: 0, padding: 0 }}>

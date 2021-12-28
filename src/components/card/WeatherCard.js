@@ -173,7 +173,7 @@ export default function WeatherCardGeneral(props) {
                         </Button>
                     </div>
                     <div style={{ display: "flex", justifyContent: "right", margin: 10 }}>
-                        <Typography variant="subtitle2">Dữ liệu được lấy từ <Link href="https://openweathermap.org/">OpenWeatherMap</Link></Typography>
+                        <Typography variant="subtitle2">Dữ liệu được lấy từ <Link href="https://openweathermap.org/" target='_blank'>OpenWeatherMap</Link></Typography>
                     </div>
                     <Modal
                         aria-labelledby="transition-modal-title"
