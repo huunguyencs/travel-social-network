@@ -15,6 +15,7 @@ export default function AddLocationForm(props) {
     const [currentProvince, setCurrentProvince] = useState('');
     const costRef = useRef('');
 
+
     const { location } = useSelector(state => state);
     const [locations, setLocations] = useState([]);
 
@@ -27,8 +28,28 @@ export default function AddLocationForm(props) {
                     setLocations([]);
                 })
             setCurrentProvince(province._id);
+            props.setProvinceCache(province)
         }
     }
+
+    const getLocInit = React.useCallback(async () => {
+        const cache = props.provinceCache;
+        if (cache && cache._id !== currentProvince) {
+            await customAxios().get(`location/locations/${cache._id}`)
+                .then((req) => {
+                    setLocations(req.data.locations);
+                }).catch(err => {
+                    setLocations([]);
+                })
+            setCurrentProvince(cache._id);
+        }
+    }, [props.provinceCache, currentProvince])
+
+    useEffect(() => {
+        if (props.provinceCache) {
+            getLocInit()
+        }
+    }, [props.provinceCache, getLocInit])
 
     const dispatch = useDispatch();
 
@@ -39,11 +60,17 @@ export default function AddLocationForm(props) {
         props.handleClose();
     }
 
+
+
     useEffect(() => {
         if (location.provinces?.length === 0) {
             dispatch(getProvinces());
         }
     }, [dispatch, location.provinces])
+
+
+
+
 
     const classes = formStyles();
 
@@ -64,6 +91,7 @@ export default function AddLocationForm(props) {
                         getOptionLabel={(option) => option?.fullname}
                         style={{ width: 400, marginTop: 30 }}
                         onChange={(e, value) => getLoc(value)}
+                        defaultValue={props.provinceCache}
                         renderInput={(params) => <TextField {...params} name="provinces" label="Chọn tỉnh thành" variant="outlined" />}
                     />
                 </div>

@@ -52,14 +52,20 @@ class LocationController {
         }
     }
 
-    // lấy thông tin 1 Location theo params.id
+    // lấy thông tin 1 Location theo name
     async getLocation(req, res) {
         try {
-            const location = await Locations.findById(req.params.id)
-                .populate("province")
-            res.json({
-                success: true, message: "get info 1 Location success", location
-            });
+            const location = await Locations.findOne({ name: req.params.name })
+                .populate("province", "name fullname image");
+            if (location) {
+                res.json({
+                    success: true, message: "get info 1 Location success", location
+                });
+            }
+            else {
+                res.status(404).json({ success: false, message: "Không tìm thấy địa điểm!" });
+            }
+
         } catch (err) {
             console.log(err)
             res.status(500).json({ success: false, message: err.message })
@@ -89,7 +95,7 @@ class LocationController {
     //Get Location at a province
     async getLocations(req, res) {
         try {
-            const locations = await Locations.find({ province: req.params.province })
+            const locations = await Locations.find({ province: req.params.province }, "images fullname name")
                 .populate("province", "fullname")
             res.json({ success: true, message: "get locations success", locations });
         } catch (err) {

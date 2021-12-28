@@ -6,7 +6,7 @@ const auth = require('../Middlewares/auth')
 router.post('/create_location', LocationController.createLocation);
 router.get('/locations/:province', LocationController.getLocations);
 
-router.get('/:id', LocationController.getLocation);
+router.get('/:name', LocationController.getLocation);
 router.patch('/:id', LocationController.updateLocation);
 router.delete('/:id', LocationController.deleteLocation);
 

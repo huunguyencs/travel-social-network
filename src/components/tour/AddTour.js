@@ -28,6 +28,7 @@ export default function AddTour(props) {
     const [showUpdateDate, setShowUpdateDate] = useState(false);
     const [showDeleteDate, setShowDeteleDate] = useState(false);
     const [showChangeInfo, setShowChangeInfo] = useState(false);
+    const [provinceCache, setProvinceCache] = useState(null);
 
     const handleShow = () => {
         setAddLoc(true);
@@ -236,7 +237,7 @@ export default function AddTour(props) {
                             }}
                         >
                             <Fade in={addLoc}>
-                                <AddLocationForm handleClose={handleClose} indexDate={idx} />
+                                <AddLocationForm handleClose={handleClose} indexDate={idx} provinceCache={provinceCache} setProvinceCache={setProvinceCache} />
                             </Fade>
                         </Modal>
                     </div>
