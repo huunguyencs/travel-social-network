@@ -1,5 +1,5 @@
 import { Typography } from "@material-ui/core";
-import React from "react";
+import React, { useEffect } from "react";
 import { Link } from "react-router-dom";
 
 import Header from "../components/header/Header";
@@ -7,6 +7,10 @@ import useStyles from "../style";
 
 export function NotFound() {
     const classes = useStyles();
+
+    useEffect(() => {
+        document.title = "404 not found!";
+    }, [])
 
     return (
         <div className={classes.notFoundContainer}>

@@ -50,7 +50,7 @@ export default function Location(props) {
     }, [location, dispatch])
 
     useEffect(() => {
-        if (location && location.fullname) {
+        if (location?.fullname) {
             document.title = location.fullname
         }
     }, [location])

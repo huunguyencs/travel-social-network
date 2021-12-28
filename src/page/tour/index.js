@@ -30,6 +30,10 @@ export default function TourPage(props) {
 
     }, [dispatch, auth.token])
 
+    useEffect(() => {
+        document.title = "GOGO";
+    }, [])
+
 
     return (
         <>

@@ -17,6 +17,10 @@ export default function EventPage(props) {
 
     const classes = eventStyles();
 
+    useEffect(() => {
+        document.title = "Sự kiện";
+    }, [])
+
     return (
         <Grid container className={classes.container}>
             <SpeedDialButton />

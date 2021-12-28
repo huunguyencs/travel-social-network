@@ -1,5 +1,5 @@
 import { Grid } from "@material-ui/core";
-import React from "react";
+import React, { useEffect } from "react";
 
 import Calendar from '../../components/calendar';
 import FriendRecommendCard from "../../components/card/FriendRecommend";
@@ -15,6 +15,10 @@ import useStyles from "../../style";
 export default function ServicePage(props) {
 
     const classes = useStyles();
+
+    useEffect(() => {
+        document.title = "Dịch vụ | GOGO";
+    }, [])
 
     return (
         <Grid container style={{ margin: 0, padding: 0 }}>

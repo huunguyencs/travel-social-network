@@ -20,6 +20,12 @@ export default function PostDetail() {
         getPost(id);
     }, [id])
 
+    useEffect(() => {
+        if (post?.userId.fullname) {
+            document.title = "Bài viết của " + post.userId.fullname;
+        }
+    }, [post])
+
     return (
         <div>
             <div style={{ marginTop: "200", display: "block" }}>a</div>

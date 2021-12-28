@@ -113,6 +113,12 @@ export default function Profile_Avatar(props) {
     }
   }, [id, setUser, auth, history, user]);
 
+  useEffect(() => {
+    if (user?.fullname) {
+      document.title = user.fullname;
+    }
+  }, [user])
+
   return (
     <Container className={classes.container}>
       <div>

@@ -1,5 +1,5 @@
 import { Grid } from "@material-ui/core";
-import React from "react";
+import React, { useEffect } from "react";
 
 import FeedHot from "../components/feed/FeedHot";
 import LeftBar from "../components/leftbar/LeftBar";
@@ -16,6 +16,10 @@ import Slider from "../components/slider/slider";
 export default function HotPage(props) {
 
     const classes = useStyles();
+
+    useEffect(() => {
+        document.title = "Hot";
+    }, [])
 
     return (
         <Grid container style={{ margin: 0, padding: 0 }}>

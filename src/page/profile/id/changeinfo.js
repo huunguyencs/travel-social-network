@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { Typography, Grid, Box, Tab, Tabs, IconButton, TextField, Button, Radio } from "@material-ui/core";
 import { PhotoCamera } from "@material-ui/icons";
 import PropTypes from 'prop-types';
@@ -49,6 +49,11 @@ function a11yProps(index) {
 function ChangeInfo(props) {
 
     const classes = profileStyles();
+
+    useEffect(() => {
+        document.title = "Thay đổi thông tin";
+    }, []);
+
     return (
         <div className={classes.change_info}>
             <div className={classes.change_background}>

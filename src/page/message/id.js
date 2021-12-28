@@ -1,5 +1,5 @@
 import { Typography, Avatar, Grid, List, ListItem, ListItemText, ListItemAvatar } from "@material-ui/core";
-import React from "react";
+import React, { useEffect } from "react";
 import { Search, Cancel, Call, Delete, Send } from "@material-ui/icons";
 
 import Header from "../../components/header/Header";
@@ -10,6 +10,10 @@ import { messageStyles } from "../../style";
 
 export default function Message(props) {
     const classes = messageStyles();
+
+    useEffect(() => {
+        document.title = "Tin nhắn";
+    }, [])
 
     return (
         <div>

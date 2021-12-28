@@ -140,6 +140,10 @@ export default function Register(props) {
         }
     }, [errors, state, dispatch])
 
+    useEffect(() => {
+        document.title = "Đăng kí";
+    }, []);
+
     //Show password
 
     const handleClickShowPassword = () => {

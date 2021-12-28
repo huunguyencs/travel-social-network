@@ -93,8 +93,9 @@ export default function SearchPage(props) {
     };
 
     useEffect(() => {
-        console.log(query);
+        document.title = `Kết quả tìm kiếm cho "${query}"`
     }, [query])
+
 
     return (
         <Container>
