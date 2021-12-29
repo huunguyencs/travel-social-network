@@ -7,7 +7,7 @@ import {
     Avatar,
     IconButton,
     Button,
-    Popover,
+    Popper,
     Grow,
     MenuList,
     MenuItem,
@@ -15,7 +15,8 @@ import {
     Badge,
     List,
     ListItem,
-    ListItemText
+    ListItemText,
+    Paper
 } from "@material-ui/core";
 import {
     Search,
@@ -105,10 +106,21 @@ export default function Header(props) {
                                         <Avatar className={classes.avatar} alt="avatar" src={user.avatar} />
                                         <Typography noWrap={false} className={classes.userName}>{user.fullname}</Typography>
                                     </Button>
-                                    <Popover
+                                    <Popper
+
                                         open={Boolean(toggleMenuUser)}
                                         anchorEl={toggleMenuUser}
                                         onClose={handleCloseUser}
+                                        disablePortal={true}
+                                        // modifiers={{
+                                        //     flip: {
+                                        //         enabled: true,
+                                        //     },
+                                        //     preventOverflow: {
+                                        //         enabled: true,
+                                        //         boundariesElement: 'scrollParent',
+                                        //     },
+                                        // }}
                                         // arial
                                         transformOrigin={{
                                             vertical: "top",
@@ -123,25 +135,28 @@ export default function Header(props) {
                                             style={{ transformOrigin: 'center bottom' }}
                                         >
                                             <ClickAwayListener onClickAway={handleCloseUser}>
-                                                <MenuList autoFocusItem={toggleMenuUser} id="user-menu">
-                                                    <MenuItem aria-label="profile-post" component={Link} to={`/profile/${user._id}/`} onClick={handleCloseUser}>Trang cá nhân</MenuItem>
-                                                    <MenuItem onClick={handleCloseUser}>Thay đổi mật khẩu</MenuItem>
-                                                    <MenuItem onClick={handleLogout}>Đăng xuất</MenuItem>
-                                                </MenuList>
+                                                <Paper>
+                                                    <MenuList autoFocusItem={toggleMenuUser} id="user-menu">
+                                                        <MenuItem aria-label="profile" component={Link} to={`/profile/${user._id}/`} onClick={handleCloseUser}>Trang cá nhân</MenuItem>
+                                                        <MenuItem aria-label="change-info" onClick={handleCloseUser} component={Link} to={'/change_info'}>Thay đổi thông tin</MenuItem>
+                                                        <MenuItem aria-label="log-out" onClick={handleLogout}>Đăng xuất</MenuItem>
+                                                    </MenuList>
+                                                </Paper>
                                             </ClickAwayListener>
                                         </Grow>
-                                    </Popover>
+                                    </Popper>
                                 </div>
                                 <IconButton className={classes.badge} aria-label="notifications">
                                     <Badge badgeContent={2} color="secondary" onClick={handleToggleNoti}>
                                         <Notifications />
                                     </Badge>
-                                    <Popover
+                                    <Popper
                                         open={Boolean(toggleNoti)}
                                         anchorEl={toggleNoti}
                                         onClose={handleCloseNoti}
+                                        disablePortal={true}
                                         transformOrigin={{
-                                            vertical: "top",
+                                            vertical: "bottom",
                                             horizontal: "left"
                                         }}
                                         anchorOrigin={{
@@ -152,21 +167,25 @@ export default function Header(props) {
                                         <Grow
                                             style={{ transformOrigin: 'center bottom' }}
                                         >
+
                                             <ClickAwayListener onClickAway={handleCloseNoti}>
-                                                <List>
-                                                    <ListItem>
-                                                        <ListItemText>Thông báo 1Thông báo 1</ListItemText>
-                                                    </ListItem>
-                                                    <ListItem>
-                                                        <ListItemText>Thông báo 1</ListItemText>
-                                                    </ListItem>
-                                                    <ListItem>
-                                                        <ListItemText>Thông báo 1</ListItemText>
-                                                    </ListItem>
-                                                </List>
+                                                <Paper style={{ width: 300 }}>
+                                                    <List>
+                                                        <ListItem>
+                                                            <ListItemText>Thông báo 1Thông báo 1</ListItemText>
+                                                        </ListItem>
+                                                        <ListItem>
+                                                            <ListItemText>Thông báo 1</ListItemText>
+                                                        </ListItem>
+                                                        <ListItem>
+                                                            <ListItemText>Thông báo 1</ListItemText>
+                                                        </ListItem>
+                                                    </List>
+                                                </Paper>
                                             </ClickAwayListener>
+
                                         </Grow>
-                                    </Popover>
+                                    </Popper>
                                 </IconButton>
                                 <IconButton className={classes.badge} aria-label="messages" component={Link} to="/message">
                                     <Badge>

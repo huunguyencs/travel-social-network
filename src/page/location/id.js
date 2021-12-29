@@ -25,6 +25,7 @@ export default function Location(props) {
 
     const getLocation = async (id) => {
         if (id) {
+            setNotFound(false);
             await customAxios().get(`/location/${id}`).then(res => {
                 console.log(res);
                 setLocation(res.data.location)

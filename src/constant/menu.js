@@ -53,11 +53,6 @@ const profileMenu = {
             name: "Nhóm",
             icon: SupervisorAccount,
             link: "/group",
-        },
-        {
-            name: "Thay đổi thông tin",
-            icon: Tune,
-            link: "/changeinfo",
         }
     ]
 };

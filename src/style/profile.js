@@ -23,13 +23,17 @@ const profileStyles = makeStyles((theme) => ({
   change_background: {
     width: "100%",
     height: "180px",
-    position: "relative"
+    position: "relative",
+    "&:hover": {
+
+    }
   },
   change_background_upload: {
     position: "absolute",
     top: "50%",
     left: "50%",
-    transform: "translate(-50%,-50%)"
+    transform: "translate(-50%,-50%)",
+    cursor: "pointer",
   },
   change_bg: {
     width: "100%",

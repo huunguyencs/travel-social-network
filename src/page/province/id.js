@@ -41,6 +41,7 @@ export default function Province(props) {
 
     const getProvince = async (id, next) => {
         if (id) {
+            setNotFound(false);
             await customAxios().get(`/province/${id}`).then(res => {
                 next(res.data.province, res.data.locations, res.data.services);
             }).catch(err => {

@@ -20,10 +20,10 @@ export default function UserList(props) {
     const handleFollow = (user) => {
         // console.log(user);
         if (isFollowed(user._id)) {
-            dispatch(unfollow(user, auth.token));
+            dispatch(unfollow(user, auth.token, auth.user));
         }
         else {
-            dispatch(follow(user, auth.token));
+            dispatch(follow(user, auth.token, auth.user));
         }
     }
 

@@ -1,6 +1,7 @@
 const Users = require('../Models/user.model');
 const bcrypt = require('bcrypt')
 const jwt = require('jsonwebtoken');
+const ObjectId = require('mongoose').Types.ObjectId;
 
 class UserController {
     async register(req, res) {
@@ -152,10 +153,16 @@ class UserController {
 
     async getUser(req, res) {
         try {
-            const user = await Users.findById(req.params.id)
-                .populate("followers followings", "-password")
-            if (!user) return res.status(400).json({ success: false, massage: "Người dùng không tồn tại" })
-            res.json({ success: true, user })
+            if (ObjectId.isValid(req.params.id)) {
+                const user = await Users.findById(req.params.id)
+                    .populate("followers followings", "username fullname avatar followings followers")
+                if (!user) return res.status(404).json({ success: false, massage: "Người dùng không tồn tại" })
+                res.json({ success: true, user })
+            }
+            else {
+                res.status(404).json({ success: false, massage: "Người dùng không tồn tại" })
+            }
+
 
         } catch (err) {
             console.log(err)
