@@ -11,6 +11,8 @@ const postStyles = makeStyles((theme) => ({
     },
     likeIcon: {
         color: color.like,
+        cursor: 'pointer',
+        margin: 10,
     },
     userName: {
         fontSize: 16,
@@ -71,6 +73,13 @@ const postStyles = makeStyles((theme) => ({
         transition: "0.8s",
         "&:hover": {
             filter: "brightness(90%)",
+        }
+    },
+    iconButton: {
+        cursor: 'pointer',
+        margin: 10,
+        '&:hover': {
+            color: color.darkgray,
         }
     }
 }))

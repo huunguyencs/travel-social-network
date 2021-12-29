@@ -1,6 +1,7 @@
 const Posts = require('../Models/post.model')
 const Comments = require('../Models/comment.model')
 const TourDates = require('../Models/tourDate.model');
+const Locations = require('../Models/location.model')
 
 class PostController {
     //co hai loai post
@@ -64,6 +65,35 @@ class PostController {
                     'locations.$.postId': newPost._doc._id
                 }
             }, { new: true, safe: true, upsert: true })
+
+            switch (parseInt(rate)) {
+                case 1:
+                    await Locations.findByIdAndUpdate(locationId, {
+                        $inc: { "star.0": 1 }
+                    }, { new: true })
+                    break;
+                case 2:
+                    await Locations.findByIdAndUpdate(locationId, {
+                        $inc: { "star.1": 1 }
+                    }, { new: true })
+                    break;
+                case 3:
+                    await Locations.findByIdAndUpdate(locationId, {
+                        $inc: { "star.2": 1 }
+                    }, { new: true })
+                    break;
+                case 4:
+                    await Locations.findByIdAndUpdate(locationId, {
+                        $inc: { "star.3": 1 }
+                    }, { new: true })
+                    break;
+                case 5:
+                    await Locations.findByIdAndUpdate(locationId, {
+                        $inc: { "star.4": 1 }
+                    }, { new: true })
+                    break;
+            }
+
 
             res.json({
                 success: true,

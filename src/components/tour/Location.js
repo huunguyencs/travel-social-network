@@ -214,6 +214,7 @@ export default function Location(props) {
                                     handleClose={handleClose}
                                     tourDateId={tourDateId}
                                     indexLocation={location._id}
+                                    locationName={location.location.name}
                                 />
                             </Fade>
                         </Modal>

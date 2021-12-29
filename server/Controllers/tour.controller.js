@@ -210,7 +210,7 @@ class TourController {
             else
                 requestId = tour._id;
 
-            tour = await Tour.findById(requestId)
+            tour = await Tours.findById(requestId)
                 .populate("tour")
                 .populate({
                     path: "tour",
@@ -218,10 +218,10 @@ class TourController {
                         path: "locations",
                         populate: {
                             path: "location",
-                            select: "name images",
+                            select: "name images fullname",
                             populate: {
                                 path: "province",
-                                select: "name"
+                                select: "name fullname"
                             }
                         }
                     }

@@ -17,7 +17,7 @@ export default function CreateReviewForm(props) {
     const dispatch = useDispatch();
     const history = useHistory();
     const { auth, notify } = useSelector(state => state);
-    const { location, handleClose, cost, tourDateId, indexLocation } = props;
+    const { locationName, location, handleClose, cost, tourDateId, indexLocation } = props;
 
 
     const [imageUpload, setImageUpload] = useState([]);
@@ -70,7 +70,7 @@ export default function CreateReviewForm(props) {
             auth.token,
             () => {
                 handleClose();
-                history.push(`/location/${location}`);
+                history.push(`/location/${locationName}`);
             }
         ))
 

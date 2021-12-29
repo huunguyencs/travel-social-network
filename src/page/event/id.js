@@ -1,6 +1,6 @@
 import { Card, CardContent, CardMedia, Container, Grid, Typography } from "@material-ui/core";
 import { Event, LocationOn } from "@material-ui/icons";
-import React from "react";
+import React, { useEffect } from "react";
 import { Link } from "react-router-dom";
 import ImageList from "../../components/modal/ImageList";
 import SpeedDialButton from "../../components/speedDialBtn";
