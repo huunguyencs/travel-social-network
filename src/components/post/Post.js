@@ -118,7 +118,7 @@ export default function Post(props) {
 
                 <CardActions style={{ marginLeft: 10 }}>
                     {
-                        like ? <Favorite className={classes.likeIcon} onClick={likePress} /> : <FavoriteBorderOutlined className={classes.iconButton} onClick={likePress} />
+                        like ? <Favorite className={classes.likedIcon} onClick={likePress} /> : <FavoriteBorderOutlined className={classes.iconButton} onClick={likePress} />
                     }
 
                     <Typography className={classes.numLike} onClick={handleOpen}>

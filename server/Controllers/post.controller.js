@@ -168,7 +168,7 @@ class PostController {
                         select: "username fullname avatar"
                     }
                 })
-                .populate("locationId", "name")
+                .populate("locationId", "name fullname")
                 .populate({
                     path: "shareId",
                     populate: {
@@ -198,7 +198,7 @@ class PostController {
                         select: "username fullname avatar"
                     },
                 })
-                .populate("locationId", "name")
+                .populate("locationId", "name fullname")
                 .populate({
                     path: "shareId",
                     populate: {

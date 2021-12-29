@@ -83,7 +83,7 @@ class LocationController {
                         select: "username fullname avatar"
                     }
                 })
-                .populate("locationId", "name");
+                .populate("locationId", "name fullname");
             res.json({ success: true, message: "successful", posts })
         }
         catch (err) {
@@ -96,7 +96,7 @@ class LocationController {
     async getLocations(req, res) {
         try {
             const locations = await Locations.find({ province: req.params.province }, "images fullname name")
-                .populate("province", "fullname")
+                .populate("province", "fullname name")
             res.json({ success: true, message: "get locations success", locations });
         } catch (err) {
             console.log(err)

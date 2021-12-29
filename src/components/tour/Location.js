@@ -231,6 +231,7 @@ export default function Location(props) {
                                 <Rating
                                     name={"rating" + review._id}
                                     value={review.rate}
+                                    readOnly
                                 />
                                 <Typography>{review.content}</Typography>
                             </CardContent>

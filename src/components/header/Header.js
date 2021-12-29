@@ -13,9 +13,6 @@ import {
     MenuItem,
     ClickAwayListener,
     Badge,
-    List,
-    ListItem,
-    ListItemText,
     Paper
 } from "@material-ui/core";
 import {
@@ -112,16 +109,6 @@ export default function Header(props) {
                                         anchorEl={toggleMenuUser}
                                         onClose={handleCloseUser}
                                         disablePortal={true}
-                                        // modifiers={{
-                                        //     flip: {
-                                        //         enabled: true,
-                                        //     },
-                                        //     preventOverflow: {
-                                        //         enabled: true,
-                                        //         boundariesElement: 'scrollParent',
-                                        //     },
-                                        // }}
-                                        // arial
                                         transformOrigin={{
                                             vertical: "top",
                                             horizontal: "left"
@@ -156,12 +143,12 @@ export default function Header(props) {
                                         onClose={handleCloseNoti}
                                         disablePortal={true}
                                         transformOrigin={{
-                                            vertical: "bottom",
+                                            vertical: "top",
                                             horizontal: "left"
                                         }}
                                         anchorOrigin={{
                                             vertical: "bottom",
-                                            horizontal: "end",
+                                            horizontal: "center",
                                         }}
                                     >
                                         <Grow
@@ -170,17 +157,12 @@ export default function Header(props) {
 
                                             <ClickAwayListener onClickAway={handleCloseNoti}>
                                                 <Paper style={{ width: 300 }}>
-                                                    <List>
-                                                        <ListItem>
-                                                            <ListItemText>Thông báo 1Thông báo 1</ListItemText>
-                                                        </ListItem>
-                                                        <ListItem>
-                                                            <ListItemText>Thông báo 1</ListItemText>
-                                                        </ListItem>
-                                                        <ListItem>
-                                                            <ListItemText>Thông báo 1</ListItemText>
-                                                        </ListItem>
-                                                    </List>
+                                                    <MenuList>
+                                                        <MenuItem>Thông báo 1</MenuItem>
+                                                        <MenuItem>Thông báo 2</MenuItem>
+                                                        <MenuItem>Thông báo 3</MenuItem>
+                                                        <MenuItem>Thông báo 4</MenuItem>
+                                                    </MenuList>
                                                 </Paper>
                                             </ClickAwayListener>
 

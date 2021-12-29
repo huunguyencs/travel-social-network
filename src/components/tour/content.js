@@ -43,6 +43,19 @@ function ShareContent({ tour }) {
                     </Link>
                 }
             />
+            <CardContent>
+                <SeeMoreText
+                    variant="body1"
+                    maxText={100}
+                    text={tour.content}
+                />
+
+            </CardContent>
+            <div className={classes.hashtagWrap}>
+                {tour.hashtags.map((item) =>
+                    <Typography className={classes.hashtag}>{item}</Typography>
+                )}
+            </div>
             {tourShare && <BaseContent tour={tourShare} setTour={setTourShare} />}
         </>
     )

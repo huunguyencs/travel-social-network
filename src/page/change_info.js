@@ -47,7 +47,7 @@ function ChangeInfo(props) {
 
     const classes = profileStyles();
 
-    const { auth } = useSelector(state => state);
+    const { user } = useSelector(state => state.auth);
 
     useEffect(() => {
         document.title = "Thay đổi thông tin";
@@ -62,7 +62,7 @@ function ChangeInfo(props) {
                         <PhotoCamera />
                     </label>
                 </div>
-                <img className={classes.change_bg} src={auth?.user.background} alt="cover"></img>
+                <img className={classes.change_bg} src={user?.background} alt="cover"></img>
             </div>
             <div className={classes.change_wrapper}>
                 <div className={classes.change_avatar}>
@@ -72,7 +72,7 @@ function ChangeInfo(props) {
                             <PhotoCamera />
                         </label>
                     </div>
-                    <img className={classes.change_avatar_img} src={auth?.user.avatar} alt="avatar"></img>
+                    <img className={classes.change_avatar_img} src={user?.avatar} alt="avatar"></img>
                 </div>
                 <div className={classes.change_form}>
                     <form
@@ -81,7 +81,17 @@ function ChangeInfo(props) {
                         autoComplete="off"
                     >
                         <TextField
-                            autoComplete=""
+                            value={user?.username}
+
+                            label="Tên tài khoản"
+                            variant="outlined"
+                            name="username"
+                            className="form-input"
+                            required
+                        />
+                        <TextField
+                            value={user?.fullname}
+
                             label="Họ và Tên"
                             variant="outlined"
                             name="name"
@@ -89,7 +99,8 @@ function ChangeInfo(props) {
                             required
                         />
                         <TextField
-                            autoComplete=""
+                            value={user?.email}
+
                             label="Email"
                             variant="outlined"
                             name="email"
@@ -97,14 +108,16 @@ function ChangeInfo(props) {
                             required
                         />
                         <TextField
-                            autoComplete=""
+                            value={user?.phone}
+
                             label="Số điện thoại"
                             variant="outlined"
                             name="phone"
                             className="form-input"
                         />
                         <TextField
-                            autoComplete=""
+
+
                             label="Sở thích du lịch"
                             variant="outlined"
                             name="hobby"
@@ -119,15 +132,16 @@ function ChangeInfo(props) {
                                 format="dd/MM/yyyy"
                                 margin="normal"
                                 id="date-picker-inline"
-                                label="Chọn ngày khởi hành"
+                                label="Ngày sinh"
                                 KeyboardButtonProps={{
                                     'aria-label': 'change date',
                                 }}
+                                onChange={(e) => e}
                             />
                         </MuiPickersUtilsProvider>
-                        <RadioGroup row aria-label="position" name="position" defaultValue="man" style={{ marginBottom: "10px" }}>
-                            <FormControlLabel value="man" control={<Radio color="primary" />} label="Nam" />
-                            <FormControlLabel value="male" control={<Radio color="primary" />} label="Nữ" />
+                        <RadioGroup row aria-label="position" name="position" defaultValue="male" style={{ marginBottom: "10px" }}>
+                            <FormControlLabel value="male" control={<Radio color="primary" />} label="Nam" />
+                            <FormControlLabel value="female" control={<Radio color="primary" />} label="Nữ" />
                             <FormControlLabel value="other" control={<Radio color="primary" />} label="Khác" />
                         </RadioGroup>
                         <div className="login-group">

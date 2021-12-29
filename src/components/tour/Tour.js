@@ -4,7 +4,6 @@ import {
     Card,
     CardActions,
     Collapse,
-    IconButton,
     Modal,
     Typography
 } from "@material-ui/core";
@@ -120,12 +119,11 @@ export default function Tour(props) {
                 <TourContent tour={tour} setTour={setTour} />
 
                 <CardActions>
-                    <IconButton onClick={likePress}>
-                        {
-                            like ? <Favorite className={classes.likeIcon} /> : <FavoriteBorderOutlined />
-                        }
+                    {
+                        like ? <Favorite className={classes.likedIcon} onClick={likePress} /> : <FavoriteBorderOutlined className={classes.iconButton} onClick={likePress} />
+                    }
 
-                    </IconButton>
+
                     <Typography className={classes.numLike} onClick={handleOpen}>
                         {tour?.likes.length}
                     </Typography>
@@ -143,15 +141,11 @@ export default function Tour(props) {
                     >
                         <UserList listUser={tour.likes} title={"Đã thích"} handleClose={handleClose} />
                     </Modal>
-                    <IconButton onClick={() => (setShowCmt(value => !value))}>
-                        <QuestionAnswer />
-                    </IconButton>
+                    <QuestionAnswer onClick={() => (setShowCmt(value => !value))} className={classes.iconButton} />
                     <Typography className={classes.numCmt}>
                         {tour.comments.length}
                     </Typography>
-                    <IconButton>
-                        <Share onClick={() => setShare(true)} />
-                    </IconButton>
+                    <Share onClick={() => setShare(true)} className={classes.iconButton} />
                     <Modal
                         aria-labelledby="share"
                         aria-describedby="share-this-tour"

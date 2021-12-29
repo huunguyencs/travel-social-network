@@ -6,7 +6,7 @@ const profileStyles = makeStyles((theme) => ({
   root: {
     backgroundColor: theme.palette.background.paper,
     display: "flex",
-    height: "90vh",
+    height: "100vh",
     paddingTop: "75px"
   },
   tabs: {
