@@ -33,9 +33,10 @@ const cardStyles = makeStyles((theme) => ({
         paddingInline: 20,
     },
     weatherCardContainer: {
-        marginRight: 40,
-        top: 0,
-        marginBottom: 30,
+        borderRadius: attr.borderRadius.md,
+    },
+    covidCardContainer: {
+        marginTop: 40,
         borderRadius: attr.borderRadius.md,
     },
     content: {
@@ -98,9 +99,6 @@ const cardStyles = makeStyles((theme) => ({
         marginInline: 30,
     },
     starContainer: {
-        margin: 40,
-        marginTop: 50,
-        marginLeft: 0,
         borderRadius: attr.borderRadius.md,
     },
     center: {

@@ -12,7 +12,7 @@ export default function FeedReview(props) {
     const { post } = useSelector(state => state);
 
     return (
-        <Container className={classes.container}>
+        <Container>
             <div className={classes.content}>
 
                 <div>

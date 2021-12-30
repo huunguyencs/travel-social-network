@@ -16,7 +16,7 @@ const postStyles = makeStyles((theme) => ({
         fontSize: 28,
         transition: "0.5s",
         "&:active": {
-            fontSize: 12,
+            fontSize: 20,
         }
     },
     userName: {
@@ -89,7 +89,7 @@ const postStyles = makeStyles((theme) => ({
             color: color.darkgray,
         },
         "&:active": {
-            fontSize: 12,
+            fontSize: 20,
         }
     }
 }))

@@ -3,10 +3,13 @@ import color from "./color";
 import attr from "./attr";
 
 const locationStyles = makeStyles((theme) => ({
-    img: {
-        position: "relative",
-        textAlign: "center",
-        color: "white",
+    imageList: {
+        margin: 30,
+        marginTop: 50,
+        borderRadius: attr.borderRadius.md,
+        height: 400,
+        padding: 0
+
     },
     coverText: {
         position: 'absolute',
@@ -23,7 +26,7 @@ const locationStyles = makeStyles((theme) => ({
         fontWeight: 400,
     },
     iconProvince: {
-        fontSize: "60px",
+        fontSize: "40px",
         marginRight: "10px",
         color: "black"
     },
@@ -32,6 +35,7 @@ const locationStyles = makeStyles((theme) => ({
         marginTop: 50,
         backgroundColor: color.white,
         borderRadius: attr.borderRadius.md,
+        height: 400
     },
     infoHeader: {
         backgroundColor: color.turquoise,
@@ -42,6 +46,12 @@ const locationStyles = makeStyles((theme) => ({
     },
     infoContent: {
         padding: 30,
+    },
+    map: {
+        height: 400
+    },
+    review: {
+        marginTop: 30
     }
 }))
 

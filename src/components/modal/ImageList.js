@@ -36,10 +36,11 @@ export default function ImageList(props) {
     const [pictureIndex, setPictureIndex] = useState(0);
 
     const imageList = props.imgList;
+    const show2Image = props.show2Image;
 
     return (
         <>
-            <ImgList rowHeight={600} className={classes.imageList} cols={imageList.length > 1 ? 2 : 1}>
+            <ImgList rowHeight={600} className={classes.imageList} cols={imageList.length > 1 && show2Image ? 2 : 1}>
                 <ImageListItem
                     key={imageList[0]}
                     className={classes.imageItem}
@@ -50,7 +51,7 @@ export default function ImageList(props) {
                 >
                     <img src={imageList[0]} alt={imageList[0]} />
                 </ImageListItem>
-                {imageList.length > 1 && (
+                {imageList.length > 1 && show2Image && (
                     <ImageListItem
                         key={imageList[1]}
                         className={imageList.length > 2 ? [classes.imageItem, classes.more] : classes.imageItem}

@@ -1,4 +1,4 @@
-import { Grid, Typography } from "@material-ui/core";
+import { Card, Grid, Typography } from "@material-ui/core";
 import { LocationOn } from "@material-ui/icons";
 import React, { useEffect, useState } from "react";
 import { useDispatch } from "react-redux";
@@ -14,6 +14,7 @@ import { locationStyles } from "../../style";
 import customAxios from "../../utils/fetchData";
 import { getPostsLocation } from "../../redux/callApi/postCall";
 import { NotFound } from "../404";
+import ImageList from "../../components/modal/ImageList";
 
 export default function Location(props) {
 
@@ -25,14 +26,17 @@ export default function Location(props) {
 
     const getLocation = async (id) => {
         if (id) {
+            console.log(id)
             setNotFound(false);
             await customAxios().get(`/location/${id}`).then(res => {
                 console.log(res);
                 setLocation(res.data.location)
             }).catch(err => {
+                console.log("loi")
                 console.log(err);
-                if (err.response.status === 404)
-                    setNotFound(true);
+                // if (err.response.status === 404)
+                //     setNotFound(true);
+                setNotFound(true);
             });
 
         }
@@ -67,26 +71,23 @@ export default function Location(props) {
                             <>
                                 <SpeedDialButton />
                                 <Grid item md={12}>
-                                    <div
-                                        className={classes.img}
-                                    >
-                                        <img src={location?.images[0]} alt={"Location"} style={{ width: "100%", height: "650px" }} />
-                                        <div className={classes.coverText}>
-                                            <Typography variant="h1" className={classes.name}>
-                                                {location.fullname}
-                                            </Typography>
-                                            <div>
-                                                <LocationOn className={classes.iconProvince} />
-                                                <Typography className={classes.provinceName} variant="h2" component={Link} to={`/province/${location.province.name}`}>
-                                                    {location.province.fullname}
-                                                </Typography>
-                                            </div>
-
-                                        </div>
+                                    <div style={{ margin: 'auto', marginTop: 120, display: 'flex', justifyContent: 'center' }}>
+                                        <Typography variant="h2" noWrap={false}>
+                                            {location.fullname}
+                                        </Typography>
                                     </div>
-                                </Grid>
+                                    <div style={{ display: 'flex', justifyContent: 'center', marginTop: 30 }}>
+                                        <>
+                                            <LocationOn className={classes.iconProvince} />
+                                            <Typography className={classes.provinceName} variant="h4" component={Link} to={`/province/${location.province.name}`}>
+                                                {location.province.fullname}
+                                            </Typography>
+                                        </>
+                                    </div>
 
-                                <Grid item md={3} sm={12}>
+
+                                </Grid>
+                                <Grid item md={4} sm={12}>
                                     <div className={classes.infoPanel}>
                                         <div className={classes.infoHeader}>
                                             <Typography variant="h6">
@@ -94,26 +95,36 @@ export default function Location(props) {
                                             </Typography>
                                         </div>
                                         <div className={classes.infoContent}>
-                                            <SeeMoreText maxText={300} text={location.information} variant="body1" />
+                                            <SeeMoreText maxText={500} text={location.information} variant="body1" />
                                         </div>
                                     </div>
+                                </Grid>
 
+
+                                <Grid item md={5} sm={12}>
                                     <div className={classes.map}>
                                         <MapCard position={location.position} zoom={12} name={location.fullname} />
+                                    </div>
+                                </Grid>
+                                <Grid item md={3} sm={12}>
+                                    <Card className={classes.imageList}>
+                                        <ImageList imgList={location.images} show2Image={false} />
+                                    </Card>
+                                </Grid>
+                                <Grid md={3} sm={12}>
+                                    <div style={{ margin: 30 }}>
+                                        <RatingChart star={location.star} />
                                     </div>
                                 </Grid>
                                 <Grid item md={6} sm={12}>
                                     <div className={classes.review}>
                                         <FeedReview />
                                     </div>
-                                    <div className={classes.reviewPosts}>
-
-                                    </div>
                                 </Grid>
-                                <Grid item md={3}>
-                                    <RatingChart star={location.star} />
-                                    <WeatherCardGeneral position={location.position} nameShow={location.fullname} />
-
+                                <Grid item md={3} sm={12}>
+                                    <div style={{ margin: 30 }}>
+                                        <WeatherCardGeneral position={location.position} nameShow={location.fullname} />
+                                    </div>
                                 </Grid>
                             </>
                         }
