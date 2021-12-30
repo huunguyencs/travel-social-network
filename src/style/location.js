@@ -48,7 +48,8 @@ const locationStyles = makeStyles((theme) => ({
         padding: 30,
     },
     map: {
-        height: 400
+        height: 400,
+        marginInline: 10,
     },
     review: {
         marginTop: 30

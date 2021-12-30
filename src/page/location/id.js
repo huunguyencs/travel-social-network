@@ -87,7 +87,7 @@ export default function Location(props) {
 
 
                                 </Grid>
-                                <Grid item md={4} sm={12}>
+                                <Grid item md={3} sm={12}>
                                     <div className={classes.infoPanel}>
                                         <div className={classes.infoHeader}>
                                             <Typography variant="h6">
@@ -101,7 +101,7 @@ export default function Location(props) {
                                 </Grid>
 
 
-                                <Grid item md={5} sm={12}>
+                                <Grid item md={6} sm={12}>
                                     <div className={classes.map}>
                                         <MapCard position={location.position} zoom={12} name={location.fullname} />
                                     </div>

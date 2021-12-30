@@ -131,8 +131,9 @@ export default function Location(props) {
                                     anchorEl={anchorEl}
                                     open={Boolean(anchorEl)}
                                     onClose={handleCloseMenu}
+                                    disablePortal={true}
                                     MenuListProps={MenuListProps}
-                                    transformOrigin={{ horizontal: 'right', vertical: 'top' }}
+                                    transformOrigin={{ horizontal: 'right', vertical: 'bottom' }}
                                     anchorOrigin={{ horizontal: 'right', vertical: 'bottom' }}
                                 >
                                     <MenuItem onClick={handleShowEdit}>

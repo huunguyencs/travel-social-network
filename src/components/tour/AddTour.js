@@ -203,7 +203,7 @@ export default function AddTour(props) {
                             }}
                         >
                             <Fade in={showUpdateDate}>
-                                <UpdateDateForm handleClose={handleCloseUpdate} indexDate={idx} currentDate={createTour.tour[idx].time} />
+                                <UpdateDateForm handleClose={handleCloseUpdate} indexDate={idx} currentDate={createTour.tour[idx].date} />
                             </Fade>
                         </Modal>
                     </div>

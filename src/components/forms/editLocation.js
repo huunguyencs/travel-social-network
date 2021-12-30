@@ -12,7 +12,7 @@ import customAxios from "../../utils/fetchData";
 export default function EditLocationForm(props) {
 
     // const idRef = useRef(props.locationId);
-    const [currentProvince, setCurrentProvince] = useState('');
+    const [currentProvince, setCurrentProvince] = useState(props.location.location.province);
     const [loc, setLoc] = useState(props.location.location);
     const costRef = useRef('');
 
@@ -46,6 +46,22 @@ export default function EditLocationForm(props) {
 
     }, [location.provinces, dispatch])
 
+    const getLocInit = React.useCallback(async () => {
+
+        await customAxios().get(`location/locations/${currentProvince._id}`)
+            .then((req) => {
+                setLocations(req.data.locations);
+            }).catch(err => {
+                setLocations([]);
+            })
+    }, [currentProvince])
+
+    useEffect(() => {
+        if (locations.length === 0 && currentProvince) {
+            getLocInit()
+        }
+    }, [getLocInit, currentProvince, locations])
+
     // onEffect load listLocation
 
     const classes = formStyles();
@@ -67,6 +83,7 @@ export default function EditLocationForm(props) {
                         getOptionLabel={(option) => option?.fullname}
                         style={{ width: 400, marginTop: 30 }}
                         onChange={(e, value) => getLoc(value)}
+                        defaultValue={currentProvince}
                         renderInput={(params) => <TextField {...params} name="province" label="Chọn tỉnh thành" variant="outlined" required />}
                     />
                 </div>

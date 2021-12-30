@@ -11,6 +11,7 @@ export function getTime(date) {
 }
 
 export function convertStrToDate(dateStr) {
+
     // dateStr is str at format dd/mm/yyyy
     var date = dateStr.split("/");
     var viFormatDate = date[1] + "/" + date[0] + "/" + date[2];
