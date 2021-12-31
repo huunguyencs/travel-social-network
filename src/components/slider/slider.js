@@ -68,7 +68,7 @@ export default function Slider() {
                 enableMouseEvents
             >
                 {data.map((step, index) => (
-                    <div key={step.label}>
+                    <div key={index}>
                         {Math.abs(activeStep - index) <= 1 ? (
                             <div
                                 style={{

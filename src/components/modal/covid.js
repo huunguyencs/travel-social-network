@@ -144,8 +144,8 @@ export default function CovidModal(props) {
                             </TableRow>
                         </TableHead>
                         <TableBody>
-                            {covid.overview.map(item =>
-                                <TableRow>
+                            {covid.overview.map((item, index) =>
+                                <TableRow key={index}>
                                     <TableCell align="center">{item.date}</TableCell>
                                     <TableCell align="center">{new Intl.NumberFormat().format(item.cases)}</TableCell>
                                     <TableCell align="center">{new Intl.NumberFormat().format(item.recovered)}</TableCell>
@@ -171,9 +171,9 @@ export default function CovidModal(props) {
                             </TableHead>
                             <TableBody>
                                 {
-                                    covid.locations.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage).map((row) => {
+                                    covid.locations.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage).map((row, index) => {
                                         return (
-                                            <TableRow>
+                                            <TableRow key={index + page * rowsPerPage}>
                                                 <TableCell>{row.name}</TableCell>
                                                 <TableCell align="center">{new Intl.NumberFormat().format(row.cases)}</TableCell>
                                                 <TableCell align="center">{new Intl.NumberFormat().format(row.casesToday)}</TableCell>

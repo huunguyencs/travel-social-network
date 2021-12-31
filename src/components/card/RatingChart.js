@@ -38,7 +38,7 @@ export default function RatingChart(props) {
                 </div>
                 <div className={classes.chart}>
                     {star?.map((item, index) => (
-                        <Box display="flex" alignItems="center">
+                        <Box display="flex" alignItems="center" key={index}>
                             <Box minWidth={45}><Typography>{index + 1}</Typography></Box>
                             <Box width="80%" mr={1}><LinearProgress variant="determinate" value={totalRate !== 0 ? (item * 100 / totalRate) : 0} className={classes.line} /></Box>
                         </Box>

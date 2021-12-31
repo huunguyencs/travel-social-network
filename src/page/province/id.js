@@ -132,8 +132,8 @@ export default function Province(props) {
                                                 <div>
                                                     <Typography variant="h5">III. Ẩm thực</Typography>
                                                     <ul style={{ marginLeft: 10, listStyleType: 'disc' }}>
-                                                        {province.detail.food.map(item => (
-                                                            <li style={{ marginLeft: 30 }}>{item}</li>
+                                                        {province.detail.food.map((item, index) => (
+                                                            <li style={{ marginLeft: 30 }} key={index}>{item}</li>
                                                         ))}
                                                     </ul>
                                                 </div>
