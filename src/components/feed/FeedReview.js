@@ -1,5 +1,5 @@
 import React from "react";
-import { Container } from "@material-ui/core";
+import { CircularProgress, Container, Typography } from "@material-ui/core";
 import { useSelector } from "react-redux";
 
 import Post from '../post/Post';
@@ -17,12 +17,20 @@ export default function FeedReview(props) {
 
                 <div>
                     {
-                        post.posts.map((post) => (
-                            <Post
-                                post={post}
-                                key={post._id}
-                            />
-                        ))
+                        post.posts.length === 0 ?
+                            <div style={{ display: 'flex', justifyContent: 'center', marginTop: 100 }}>
+                                <Typography>Chưa có review cho địa điểm này</Typography>
+                            </div>
+                            :
+                            post.loading ?
+                                <CircularProgress color={"black"} />
+                                :
+                                post.posts.map((post) => (
+                                    <Post
+                                        post={post}
+                                        key={post._id}
+                                    />
+                                ))
                     }
                 </div>
             </div>

@@ -29,14 +29,10 @@ export default function Location(props) {
             console.log(id)
             setNotFound(false);
             await customAxios().get(`/location/${id}`).then(res => {
-                console.log(res);
                 setLocation(res.data.location)
             }).catch(err => {
-                console.log("loi")
-                console.log(err);
-                // if (err.response.status === 404)
-                //     setNotFound(true);
-                setNotFound(true);
+                if (err.response.status === 404)
+                    setNotFound(true);
             });
 
         }

@@ -13,6 +13,7 @@ import ServiceCard from "../../components/card/ServiceCard";
 import customAxios from "../../utils/fetchData";
 import MapCard from "../../components/card/MapCard";
 import { NotFound } from "../404";
+import EventCard from "../../components/card/EventCard";
 
 
 const ITEM_PER_PAGE = 6;
@@ -23,6 +24,7 @@ export default function Province(props) {
     const [province, setProvince] = useState(null);
     const [locations, setLocations] = useState(null);
     const [services, setServices] = useState(null);
+    const [events, setEvents] = useState(null);
     const [notFound, setNotFound] = useState(false);
     const { id } = useParams();
 
@@ -43,7 +45,7 @@ export default function Province(props) {
         if (id) {
             setNotFound(false);
             await customAxios().get(`/province/${id}`).then(res => {
-                next(res.data.province, res.data.locations, res.data.services);
+                next(res.data.province, res.data.locations, res.data.services, res.data.events);
             }).catch(err => {
                 if (err.response.status === 404)
                     setNotFound(true);
@@ -54,10 +56,11 @@ export default function Province(props) {
 
     useEffect(() => {
         if (id) {
-            getProvince(id, (province, locations, services) => {
+            getProvince(id, (province, locations, services, events) => {
                 setProvince(province);
                 setLocations(locations);
                 setServices(services);
+                setEvents(events);
             });
         }
 
@@ -164,6 +167,28 @@ export default function Province(props) {
                                                 </div>
                                             </>
                                         }
+                                    </div>
+                                    <div className={classes.locationList}>
+                                        <div className={classes.title}>
+                                            <Typography variant="h6">Danh sách lễ hội</Typography>
+                                        </div>
+                                        {
+                                            events &&
+                                            <>
+                                                <Grid className={classes.listContainer} container>
+                                                    {events?.slice((pageSer - 1) * ITEM_PER_PAGE, pageSer * ITEM_PER_PAGE).map((item) => (
+                                                        <Grid item md={4} sm={6} xs={12} key={item._id}>
+                                                            <EventCard event={item} />
+                                                        </Grid>
+                                                    ))}
+
+                                                </Grid>
+                                                <div className={classes.patination}>
+                                                    <Pagination count={Math.ceil(events.length / ITEM_PER_PAGE)} page={pageSer} onChange={handleChangeSer} color="primary" />
+                                                </div>
+                                            </>
+                                        }
+
                                     </div>
                                     <div className={classes.locationList}>
                                         <div className={classes.title}>

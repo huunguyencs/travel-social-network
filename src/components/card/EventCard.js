@@ -1,0 +1,29 @@
+import { Button, Card, CardActions, CardContent, CardMedia, Typography } from "@material-ui/core";
+import React from "react";
+import { Link } from "react-router-dom";
+
+import { cardStyles } from "../../style";
+
+export default function EventCard(props) {
+
+    const { event } = props;
+
+    const classes = cardStyles();
+
+    return (
+        <Card className={classes.cardContainer}>
+            <CardMedia
+                className={classes.image}
+                image={event.images[0]}
+            />
+            <CardContent>
+                <Typography className={classes.locationName} variant="h6">{event.fullname.length > 30 ? event.fullname.slice(0, 30) + "..." : event.fullname}</Typography>
+            </CardContent>
+            <CardActions className={classes.footer}>
+                <Button className={classes.seeMore} component={Link} to={"/event/" + event.name}>
+                    Xem thêm
+                </Button>
+            </CardActions>
+        </Card>
+    )
+}

@@ -4,7 +4,7 @@ import React, { useEffect } from "react";
 import LeftBar from "../../components/leftbar/LeftBar";
 import FeedTour from "../../components/feed/FeedTour";
 import RightBar from "../../components/rightbar/RightBar";
-import Slider from "../../components/slider/slider";
+// import Slider from "../../components/slider/slider";
 import useStyles from "../../style";
 import { homeMenu } from "../../constant/menu";
 import SpeedDialButton from "../../components/speedDialBtn";
@@ -31,7 +31,7 @@ export default function TourPage(props) {
     }, [dispatch, auth.token])
 
     useEffect(() => {
-        document.title = "GOGO";
+        document.title = "Hành trình | GOGO";
     }, [])
 
 
@@ -40,9 +40,9 @@ export default function TourPage(props) {
 
             <Grid container style={{ margin: 0, padding: 0 }}>
                 <SpeedDialButton />
-                <Grid item md={12} xs={12}>
+                {/* <Grid item md={12} xs={12}>
                     <Slider />
-                </Grid>
+                </Grid> */}
                 <Grid item md={3} sm={12} xs={12} className={classes.leftbar}>
                     <LeftBar >
                         <Menu menuList={homeMenu} />

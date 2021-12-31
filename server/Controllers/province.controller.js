@@ -1,6 +1,7 @@
 const Provinces = require('../Models/province.model');
 const Locations = require('../Models/location.model');
 const Services = require('../Models/service.model');
+const Events = require('../Models/event.model');
 
 class ProvinceController {
     async createProvince(req, res) {
@@ -63,8 +64,9 @@ class ProvinceController {
             if (province) {
                 const locations = await Locations.find({ "province": province._id })
                 const services = await Services.find({ "province": province._id })
+                const events = await Events.find({ "provinceId": province._id })
                 res.json({
-                    success: true, message: "get info 1 province success", province, locations, services
+                    success: true, message: "get info 1 province success", province, locations, services, events
                 });
             }
             else {

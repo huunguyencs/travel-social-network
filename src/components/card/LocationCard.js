@@ -19,7 +19,7 @@ export default function LocationCard(props) {
                 image={location.images[0]}
             />
             <CardContent>
-                <Typography className={classes.locationName} variant="h6">{location.fullname.length > 25 ? location.fullname.slice(0, 25) + "..." : location.fullname}</Typography>
+                <Typography className={classes.locationName} variant="h6">{location.fullname.length > 30 ? location.fullname.slice(0, 30) + "..." : location.fullname}</Typography>
             </CardContent>
             <CardActions className={classes.footer}>
                 <div className={classes.star}>
