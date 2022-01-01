@@ -2,7 +2,6 @@ import { Button, Card, CardActionArea, CardActions, CardContent, CardMedia, Typo
 import React from "react";
 import { Link } from "react-router-dom";
 
-import { SeeMoreText } from "../seeMoreText";
 import { eventStyles } from "../../style";
 
 export default function EventItem(props) {
@@ -24,13 +23,13 @@ export default function EventItem(props) {
                 />
             </CardActionArea>
             <CardContent>
-                <Typography gutterBottom variant="h5">
+                <Typography variant="h5" component={Link} to={'/event/' + event.name}>
                     {event.fullname}
                 </Typography>
+                <Typography style={{ marginBottom: 10 }} variant="h6">{event.provinceId ? event.provinceId.fullname : "Cả nước"}</Typography>
                 <Typography style={{ marginBottom: 10 }}>
                     {event.timedes}
                 </Typography>
-                <SeeMoreText variant="body2" text={event.description} maxText={180} />
             </CardContent>
             <CardActions>
                 <Button size="small" color="primary" component={Link} to={'/event/' + event.name}>

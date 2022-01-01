@@ -68,16 +68,27 @@ class EventController {
             var gteLunar = (dateIntLunar + 351) % 355;
             var gteSolar = (dateIntSolar + 361) % 365;
 
-            const events = await Events.find({
+            const events1 = await Events.find({
                 $or: [
-                    { calendarType: false, time: { $gte: gteLunar > 351 ? 0 : gteLunar, $lte: (dateIntLunar + 365) % 355, $ne: 0 } },
                     { calendarType: false, time: { $gte: gteLunar > 351 ? gteLunar : 365, $lte: 355, $ne: 0 } },
-                    { calendarType: true, time: { $gte: gteSolar > 361 ? 0 : gteSolar, $lte: (dateIntSolar + 375) % 365, $ne: 0 } },
                     { calendarType: true, time: { $gte: gteSolar > 361 ? gteSolar : 366, $lte: 365, $ne: 0 } }
                 ]
-            }).sort('time')
+            }, "timedes name fullname images provinceId").populate("provinceId", "fullname").sort('time')
+
+
+            const events2 = await Events.find({
+                $or: [
+                    { calendarType: false, time: { $gte: gteLunar > 351 ? 0 : gteLunar, $lte: (dateIntLunar + 365) % 355, $ne: 0 } },
+                    { calendarType: true, time: { $gte: gteSolar > 361 ? 0 : gteSolar, $lte: (dateIntSolar + 375) % 365, $ne: 0 } },
+                ]
+            }, "timedes name fullname images provinceId").populate("provinceId", "fullname").sort('time')
 
             // console.log(events.length)
+
+            const events = [
+                ...events1,
+                ...events2,
+            ]
 
             res.json({
                 success: true,

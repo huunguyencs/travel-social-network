@@ -22,7 +22,7 @@ export default function LocationCard(props) {
                 />
             </CardActionArea>
             <CardContent className={classes.content}>
-                <Typography variant="h5">
+                <Typography variant="h5" component={Link} to={"/location/" + location.name}>
                     {location.fullname}
                 </Typography>
                 <Rating name="read-only" value={getStar(location.star)} readOnly size="small" />
