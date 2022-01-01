@@ -17,13 +17,6 @@ const locationReducer = (state = INIT_STATE, action) => {
                 provinces: action.payload.provinces
             }
         }
-        case LOC_TYPES.GET_LOCATION_HOT: { // lay danh sach cac dia diem hot
-            return {
-                ...state,
-                hot: action.payload.hot,
-                error: null,
-            }
-        }
         case LOC_TYPES.LOADING: { // loading danh sach dia diem hot
             return {
                 ...state,

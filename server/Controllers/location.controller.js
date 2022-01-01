@@ -104,6 +104,20 @@ class LocationController {
         }
     }
 
+    async getHotLocations(req, res) {
+        try {
+            const locations = await Locations.find({}).limit(5);
+            res.json({
+                success: true,
+                message: 'success',
+                locations
+            })
+        }
+        catch (err) {
+            res.status(500).json({ success: false, message: err.message })
+        }
+    }
+
 }
 
 module.exports = new LocationController;

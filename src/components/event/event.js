@@ -31,52 +31,54 @@ function RightArrow(props) {
     )
 }
 
-const listEvent = [
-    {
-        _id: "1",
-        image: "https://toplist.vn/images/800px/le-hoi-truyen-thong-o-nuoc-ta-9886.jpg",
-        name: "Tết Nguyên Đán",
-        description: "Tết cổ truyền Việt Nam",
-        time: "30/1/2022",
-    },
-    {
-        _id: "2",
-        image: "https://toplist.vn/images/800px/le-hoi-truyen-thong-o-nuoc-ta-9886.jpg",
-        name: "Tết Nguyên Đán",
-        description: "Tết cổ truyền Việt Nam",
-        time: "30/1/2022",
-    },
-    {
-        _id: "3",
-        image: "https://toplist.vn/images/800px/le-hoi-truyen-thong-o-nuoc-ta-9886.jpg",
-        name: "Tết Nguyên Đán",
-        description: "Tết cổ truyền Việt Nam",
-        time: "30/1/2022",
-    },
-    {
-        _id: "4",
-        image: "https://toplist.vn/images/800px/le-hoi-truyen-thong-o-nuoc-ta-9886.jpg",
-        name: "Tết Nguyên Đán",
-        description: "Tết cổ truyền Việt Nam",
-        time: "30/1/2022",
-    },
-    {
-        _id: "5",
-        image: "https://toplist.vn/images/800px/le-hoi-truyen-thong-o-nuoc-ta-9886.jpg",
-        name: "Tết Nguyên Đán",
-        description: "Tết cổ truyền Việt Nam",
-        time: "30/1/2022",
-    },
-    {
-        _id: "6",
-        image: "https://toplist.vn/images/800px/le-hoi-truyen-thong-o-nuoc-ta-9886.jpg",
-        name: "Tết Nguyên Đán",
-        description: "Tết cổ truyền Việt Nam",
-        time: "30/1/2022",
-    }
-]
+// const listEvent = [
+//     {
+//         _id: "1",
+//         image: "https://toplist.vn/images/800px/le-hoi-truyen-thong-o-nuoc-ta-9886.jpg",
+//         name: "Tết Nguyên Đán",
+//         description: "Tết cổ truyền Việt Nam",
+//         time: "30/1/2022",
+//     },
+//     {
+//         _id: "2",
+//         image: "https://toplist.vn/images/800px/le-hoi-truyen-thong-o-nuoc-ta-9886.jpg",
+//         name: "Tết Nguyên Đán",
+//         description: "Tết cổ truyền Việt Nam",
+//         time: "30/1/2022",
+//     },
+//     {
+//         _id: "3",
+//         image: "https://toplist.vn/images/800px/le-hoi-truyen-thong-o-nuoc-ta-9886.jpg",
+//         name: "Tết Nguyên Đán",
+//         description: "Tết cổ truyền Việt Nam",
+//         time: "30/1/2022",
+//     },
+//     {
+//         _id: "4",
+//         image: "https://toplist.vn/images/800px/le-hoi-truyen-thong-o-nuoc-ta-9886.jpg",
+//         name: "Tết Nguyên Đán",
+//         description: "Tết cổ truyền Việt Nam",
+//         time: "30/1/2022",
+//     },
+//     {
+//         _id: "5",
+//         image: "https://toplist.vn/images/800px/le-hoi-truyen-thong-o-nuoc-ta-9886.jpg",
+//         name: "Tết Nguyên Đán",
+//         description: "Tết cổ truyền Việt Nam",
+//         time: "30/1/2022",
+//     },
+//     {
+//         _id: "6",
+//         image: "https://toplist.vn/images/800px/le-hoi-truyen-thong-o-nuoc-ta-9886.jpg",
+//         name: "Tết Nguyên Đán",
+//         description: "Tết cổ truyền Việt Nam",
+//         time: "30/1/2022",
+//     }
+// ]
 
 export default function Event(props) {
+
+    const { events } = props;
 
     return (
         <div>
@@ -84,7 +86,7 @@ export default function Event(props) {
                 LeftArrow={LeftArrow}
                 RightArrow={RightArrow}
             >
-                {listEvent.map((item) =>
+                {events.map((item) =>
                     <EventItem
                         itemId={item.id}
                         key={item._id}

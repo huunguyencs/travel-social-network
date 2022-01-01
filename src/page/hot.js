@@ -10,12 +10,13 @@ import { homeMenu } from "../constant/menu";
 import useStyles from "../style";
 import Calendar from '../components/calendar';
 import FriendRecommendCard from '../components/card/FriendRecommend';
-// import Slider from "../components/slider/slider";
+
 
 
 export default function HotPage(props) {
 
     const classes = useStyles();
+
 
     useEffect(() => {
         document.title = "Hot | GOGO";

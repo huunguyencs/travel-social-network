@@ -1,24 +1,39 @@
 import { Container, Typography } from "@material-ui/core";
-import React, { useEffect } from "react";
-import { useDispatch, useSelector } from "react-redux";
+import React, { useEffect, useState } from "react";
 
 import { feedStyles } from "../../style";
 import Event from "../event/event";
 import Location from "../location/Location";
-import { getLocationHot } from "../../redux/callApi/locationCall";
+import customAxios from '../../utils/fetchData';
 
 
 
 export default function FeedHot(props) {
 
     const classes = feedStyles();
-    const dispatch = useDispatch();
-    const { location } = useSelector(state => state);
+
+    const [events, setEvents] = useState([]);
+    const [locations, setLocations] = useState([]);
+
+    const getCurrentEvent = async () => {
+        await customAxios().get('/event/get_events').then(res => {
+            setEvents(res.data.events);
+        })
+    }
+
+    const getHotLocations = async () => {
+        await customAxios().get('location/hot_locations').then(res => {
+            setLocations(res.data.locations);
+        })
+    }
 
     useEffect(() => {
-        dispatch(getLocationHot());
-        // console.log(location.hot);
-    }, [dispatch])
+        getHotLocations();
+    }, [])
+
+    useEffect(() => {
+        getCurrentEvent();
+    }, [])
 
     return (
         <Container className={classes.container}>
@@ -28,14 +43,14 @@ export default function FeedHot(props) {
                         <Typography variant="h4">Sự kiện sắp diễn ra</Typography>
                     </div>
 
-                    <Event />
+                    <Event events={events} />
                 </div>
                 <div className={classes.hot}>
                     <div className={classes.title}>
                         <Typography variant="h4" style={{ paddingBottom: 20 }}>Địa điểm hot</Typography>
                     </div>
                     <div className={classes.hotFeed}>
-                        {location.hot.map((item) =>
+                        {locations.map((item) =>
                             <Location location={item} key={item._id} />
                         )}
                     </div>

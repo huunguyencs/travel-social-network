@@ -12,6 +12,10 @@ const cardStyles = makeStyles((theme) => ({
     },
     locationName: {
         marginInline: 20,
+        cursor: 'pointer',
+        "&:hover": {
+            textDecorationLine: 'underline',
+        }
     },
     footer: {
         display: "flex",

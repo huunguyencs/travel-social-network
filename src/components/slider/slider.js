@@ -92,11 +92,13 @@ export default function Slider() {
                                 <div className={classes.textCover}>
                                     <Typography
                                         variant="h1"
+                                        className={classes.title}
                                     >
                                         {step.title}
                                     </Typography>
                                     <Typography
                                         variant="h3"
+                                        className={classes.subtitle}
                                     >
                                         {step.subtitle}
                                     </Typography>

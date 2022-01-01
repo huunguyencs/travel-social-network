@@ -9,7 +9,6 @@ const locationStyles = makeStyles((theme) => ({
         borderRadius: attr.borderRadius.md,
         height: 400,
         padding: 0
-
     },
     coverText: {
         position: 'absolute',

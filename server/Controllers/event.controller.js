@@ -1,4 +1,5 @@
 const Events = require('../Models/event.model')
+const date = require('../utils/date');
 
 class EventController {
     async createEvent(req, res) {
@@ -60,8 +61,36 @@ class EventController {
 
     }
 
-    async getEvents(req, res) {
+    async getCurrentEvent(req, res) {
+        try {
+            var dateIntLunar = date.lunarToDateInt() % 355;
+            var dateIntSolar = date.solarToDateInt() % 365;
+            var gteLunar = (dateIntLunar + 351) % 355;
+            var gteSolar = (dateIntSolar + 361) % 365;
 
+            const events = await Events.find({
+                $or: [
+                    { calendarType: false, time: { $gte: gteLunar > 351 ? 0 : gteLunar, $lte: (dateIntLunar + 365) % 355, $ne: 0 } },
+                    { calendarType: false, time: { $gte: gteLunar > 351 ? gteLunar : 365, $lte: 355, $ne: 0 } },
+                    { calendarType: true, time: { $gte: gteSolar > 361 ? 0 : gteSolar, $lte: (dateIntSolar + 375) % 365, $ne: 0 } },
+                    { calendarType: true, time: { $gte: gteSolar > 361 ? gteSolar : 366, $lte: 365, $ne: 0 } }
+                ]
+            }).sort('time')
+
+            // console.log(events.length)
+
+            res.json({
+                success: true,
+                message: 'Thành công',
+                events
+            })
+        }
+        catch (err) {
+            res.status(500).json({
+                success: false,
+                message: err.message
+            })
+        }
     }
 }
 

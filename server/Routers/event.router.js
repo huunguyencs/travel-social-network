@@ -5,8 +5,9 @@ const auth = require('../Middlewares/auth');
 
 router.post('/create_event', EventController.createEvent);
 
+router.get('/get_events', EventController.getCurrentEvent)
 router.get('/:name', EventController.getEvent);
-router.get('/get_events', EventController.getEvents)
+
 
 
 
