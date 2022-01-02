@@ -6,6 +6,9 @@ const cardStyles = makeStyles((theme) => ({
     cardContainer: {
         margin: 20,
         borderRadius: attr.borderRadius.md,
+        [theme.breakpoints.down("sm")]: {
+            margin: 5,
+        },
     },
     image: {
         height: 180,
@@ -15,7 +18,10 @@ const cardStyles = makeStyles((theme) => ({
         cursor: 'pointer',
         "&:hover": {
             textDecorationLine: 'underline',
-        }
+        },
+        [theme.breakpoints.down("sm")]: {
+            fontSize: 30,
+        },
     },
     footer: {
         display: "flex",
@@ -88,6 +94,9 @@ const cardStyles = makeStyles((theme) => ({
     },
     chart: {
         margin: 30,
+        [theme.breakpoints.down("sm")]: {
+            margin: 5,
+        },
     },
     line: {
         maxWidth: "100%",
@@ -98,6 +107,12 @@ const cardStyles = makeStyles((theme) => ({
         color: color.yellow,
         fontSize: "50px",
         marginRight: 15,
+        [theme.breakpoints.down("sm")]: {
+            fontSize: 36,
+        },
+        [theme.breakpoints.down("xs")]: {
+            fontSize: 30,
+        },
     },
     starContent: {
         marginInline: 30,
@@ -108,6 +123,14 @@ const cardStyles = makeStyles((theme) => ({
     center: {
         display: "flex",
         justifyContent: "center",
+    },
+    textStar: {
+        [theme.breakpoints.down("sm")]: {
+            fontSize: 36,
+        },
+        [theme.breakpoints.down("xs")]: {
+            fontSize: 30,
+        },
     }
 }))
 

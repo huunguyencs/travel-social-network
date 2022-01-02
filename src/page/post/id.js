@@ -1,9 +1,10 @@
 import React, { useEffect, useState } from 'react'
 import { useParams } from 'react-router-dom'
+import { CircularProgress, Container } from '@material-ui/core';
 
 import customAxios from '../../utils/fetchData';
 import Post from '../../components/post/Post';
-import { CircularProgress, Container } from '@material-ui/core';
+
 
 export default function PostDetail() {
     const { id } = useParams();

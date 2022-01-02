@@ -27,7 +27,7 @@ export default function RatingChart(props) {
             <CardContent className={classes.starContent}>
                 <div className={classes.totalRating}>
                     <div style={{ display: "flex", justifyContent: "center" }}>
-                        <Typography variant="h2">
+                        <Typography variant="h2" className={classes.textStar}>
                             <Star className={classes.iconStar} />
                             {getStar(star)} /5
                         </Typography>
