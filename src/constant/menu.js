@@ -1,4 +1,4 @@
-import { Accessibility, Explore, Home, SupervisorAccount, Tune, Whatshot } from "@material-ui/icons";
+import { Accessibility, Explore, Home, SupervisorAccount, Tune, Whatshot, Public } from "@material-ui/icons";
 
 const homeMenu = {
     prefix: "",
@@ -22,6 +22,11 @@ const homeMenu = {
             name: "Dịch vụ",
             icon: Accessibility,
             link: "/service",
+        },
+        {
+            name: "Tình nguyện",
+            icon: Public,
+            link: '/volunteer'
         },
         {
             name: "Cài đặt",

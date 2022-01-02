@@ -3,7 +3,7 @@ import { useParams } from 'react-router-dom'
 
 import customAxios from '../../utils/fetchData';
 import Post from '../../components/post/Post';
-import { CircularProgress } from '@material-ui/core';
+import { CircularProgress, Container } from '@material-ui/core';
 
 export default function PostDetail() {
     const { id } = useParams();
@@ -28,14 +28,17 @@ export default function PostDetail() {
 
     return (
         <div>
-            <div style={{ marginTop: "200", display: "block" }}>a</div>
-            <div style={{ display: "flex", marginTop: 100, justifyContent: "center", width: "100%" }}>
-                {
-                    post ?
-                        <Post post={post} /> :
-                        <CircularProgress />
-                }
-            </div>
+            <Container>
+                <div style={{ display: 'flex', justifyContent: 'center' }}>
+                    <div style={{ paddingTop: 100, width: "70%" }}>
+                        {
+                            post ?
+                                <Post post={post} /> :
+                                <CircularProgress />
+                        }
+                    </div>
+                </div>
+            </Container>
         </div>
     )
 }
