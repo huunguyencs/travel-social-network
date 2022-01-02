@@ -69,7 +69,7 @@ export default function Header(props) {
     const handleSearch = (e) => {
         e.preventDefault();
         history.push(`/search?q=${search}`);
-        setSearch("");
+        // setSearch("");
         // console.log(search);
     }
 

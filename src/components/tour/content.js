@@ -14,13 +14,7 @@ import { SeeMoreText } from '../seeMoreText'
 
 function ShareContent({ tour }) {
 
-    const [tourShare, setTourShare] = useState(null);
-
-    useEffect(() => {
-        if (tour.shareId) {
-            setTourShare(tour.shareId);
-        }
-    }, [tour, setTourShare])
+    const [tourShare, setTourShare] = useState(tour.shareId);
 
     const classes = postStyles();
     return (
@@ -56,7 +50,7 @@ function ShareContent({ tour }) {
                     <Typography className={classes.hashtag} key={index}>{item}</Typography>
                 )}
             </div>
-            {tourShare && <BaseContent tour={tourShare} setTour={setTourShare} />}
+            {tourShare ? <BaseContent tour={tourShare} setTour={setTourShare} /> : <Typography>Nội dung không còn tồn tại</Typography>}
         </>
     )
 }

@@ -25,7 +25,9 @@ export default function LocationCard(props) {
                 <Typography variant="h5" component={Link} to={"/location/" + location.name}>
                     {location.fullname}
                 </Typography>
-                <Rating name="read-only" value={getStar(location.star)} readOnly size="small" />
+                <div style={{ marginTop: 10 }}>
+                    <Rating name="read-only" value={getStar(location.star)} readOnly size="small" />
+                </div>
             </CardContent>
             <CardActions>
                 <Button className={classes.seeMoreBtn} component={Link} to={"/location/" + location.name}>

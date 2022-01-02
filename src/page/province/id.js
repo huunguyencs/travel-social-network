@@ -85,9 +85,9 @@ export default function Province(props) {
                                     <div
                                         className={classes.img}
                                     >
-                                        <img src={province?.image} alt="Province" style={{ width: "100%", height: "700px" }} />
+                                        <img src={province.image} alt="Province" className={classes.image} />
                                         <Typography className={classes.provinceName} variant="h1">
-                                            {province?.fullname}
+                                            {province.fullname}
                                         </Typography>
                                     </div>
                                 </Grid>
@@ -145,7 +145,7 @@ export default function Province(props) {
                                         </div>
                                     </Card>
                                     <div className={classes.map}>
-                                        <MapCard position={province?.position} zoom={9} />
+                                        <MapCard position={province.position} zoom={10} locations={locations} />
                                     </div>
                                     <div className={classes.locationList}>
                                         <div className={classes.title}>
