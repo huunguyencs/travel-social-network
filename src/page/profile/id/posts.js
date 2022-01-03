@@ -11,7 +11,6 @@ import SpeedDialButton from "../../../components/speedDialBtn";
 import Menu from "../../../components/leftbar/menu";
 import { useDispatch, useSelector } from "react-redux";
 import { useParams } from "react-router-dom";
-import { getUserPost } from "../../../redux/callApi/postCall";
 // import Post from "../../../components/post/Post";
 import Calendar from "../../../components/calendar";
 import FriendRecommendCard from "../../../components/card/FriendRecommend";
@@ -27,7 +26,6 @@ function ProfilePosts() {
   const { auth, user } = useSelector(state => state);
   const [notFound, setNotFound] = useState(false);
 
-  // const classes = useStyles();
   const dispatch = useDispatch();
 
   useEffect(() => {
@@ -38,11 +36,6 @@ function ProfilePosts() {
       }));
     }
   }, [user.user, id, dispatch, auth, setNotFound])
-
-  useEffect(() => {
-    dispatch(getUserPost(id, auth.token));
-  }, [dispatch, id, auth.token])
-
 
 
   return (
@@ -60,7 +53,7 @@ function ProfilePosts() {
                 </LeftBar>
               </Grid>
               <Grid item sm={6}>
-                <FeedPost />
+                <FeedPost id={id} />
               </Grid>
               <Grid item sm={3}>
                 <RightBar>

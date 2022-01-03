@@ -1,22 +1,68 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { Container, InputBase, Modal, Backdrop, Fade, CircularProgress } from "@material-ui/core";
-import { useSelector } from "react-redux";
 
 
 import Post from '../post/Post';
 import { feedStyles } from "../../style";
 import CreatePostForm from "../forms/createPost";
+import customAxios from "../../utils/fetchData";
 
 
 
 export default function FeedPost(props) {
 
+    const { id } = props;
+
     const [show, setShow] = useState(false);
 
-    const { post } = useSelector(state => state);
+    // const { post } = useSelector(state => state);
     // const dispatch = useDispatch();
+    const [posts, setPosts] = useState([]);
+    const [state, setState] = useState({
+        loading: false,
+        error: false,
+    });
 
     const classes = feedStyles();
+
+
+    const getMorePosts = async (id) => {
+        setState({
+            loading: true,
+            error: false
+        });
+        try {
+            var url = id ? `/post/user_posts/${id}` : `/post/posts`;
+            console.log(url);
+            await customAxios().get(url).then(res => {
+                setPosts((state) => ([
+                    ...state,
+                    ...res.data.posts
+                ]))
+                setState({
+                    loading: false,
+                    error: false,
+                })
+            }).catch(err => {
+                setState({
+                    loading: false,
+                    error: true
+                })
+            })
+        }
+        catch (err) {
+            setState({
+                loading: false,
+                error: true
+            })
+        }
+    }
+
+
+    useEffect(() => {
+        getMorePosts(id);
+        console.log(id);
+    }, [id])
 
     const handleShow = () => {
         setShow(true);
@@ -24,6 +70,16 @@ export default function FeedPost(props) {
 
     const handleClose = () => {
         setShow(false);
+    }
+
+    const addPost = (post) => {
+        if (post) {
+            setPosts((state) => ([
+                post,
+                ...state
+            ]))
+        }
+
     }
 
 
@@ -53,7 +109,7 @@ export default function FeedPost(props) {
                         }}
                     >
                         <Fade in={show}>
-                            <CreatePostForm handleClose={handleClose} />
+                            <CreatePostForm handleClose={handleClose} addPost={addPost} />
                         </Fade>
                     </Modal>
 
@@ -62,11 +118,11 @@ export default function FeedPost(props) {
 
                 <div>
                     {
-                        post.loading ?
+                        state.loading ?
                             <CircularProgress color={"black"} />
-                            : post.error ?
+                            : state.error ?
                                 <div>Có lỗi xảy ra</div> :
-                                post.posts.map((post) => (
+                                posts.map((post) => (
                                     <Post
                                         post={post}
                                         key={post._id}

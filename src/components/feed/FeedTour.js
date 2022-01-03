@@ -1,18 +1,58 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { Backdrop, Button, CircularProgress, Container, Fade, Modal } from "@material-ui/core";
 
 import Tour from "../tour/Tour";
 import { feedStyles } from "../../style";
-import { useSelector } from "react-redux";
 import CreateTourForm from "../forms/createTour";
+import customAxios from "../../utils/fetchData";
 
 
 
 export default function FeedTour(props) {
 
+
+
     const classes = feedStyles();
 
-    const { tour } = useSelector(state => state);
+    const [tours, setTours] = useState([]);
+    const [state, setState] = useState({
+        loading: false,
+        error: false,
+    })
+
+    const getMoreTour = async () => {
+        setState({
+            loading: true,
+            error: false,
+        })
+        try {
+            await customAxios().get(`tour/tours`).then(res => {
+                setTours((state) => [
+                    ...state,
+                    ...res.data.tours
+                ])
+                setState({
+                    loading: false,
+                    error: false,
+                })
+            }).catch(err => {
+                setState({
+                    loading: false,
+                    error: true,
+                })
+            })
+        }
+        catch (err) {
+            setState({
+                loading: false,
+                error: true,
+            })
+        }
+    }
+
+    useEffect(() => {
+        getMoreTour();
+    }, [])
 
     const [show, setShow] = useState(false);
 
@@ -43,11 +83,11 @@ export default function FeedTour(props) {
 
                 <div>
                     {
-                        tour.loading ?
-                            tour.error ?
+                        state.loading ?
+                            state.error ?
                                 <div>Có lỗi xảy ra</div> :
                                 <CircularProgress color={"black"} /> :
-                            tour.tours.map((tour) => (
+                            tours.map((tour) => (
                                 <Tour
                                     tour={tour}
                                     key={tour._id}

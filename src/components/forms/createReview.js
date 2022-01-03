@@ -3,33 +3,39 @@ import { Create, Image } from "@material-ui/icons";
 import { Rating } from "@material-ui/lab";
 import React, { useState } from "react";
 import { ScrollMenu } from "react-horizontal-scrolling-menu";
-import { useSelector, useDispatch } from "react-redux";
+import { useSelector } from "react-redux";
 import { useHistory } from "react-router-dom";
 
-import { createReview } from "../../redux/callApi/postCall";
 import { formStyles } from '../../style';
 import LoginModal from "../modal/login";
 import EmojiPicker from "../input/emojiPicker";
+import * as imageUtils from '../../utils/uploadImage';
+import customAxios from "../../utils/fetchData";
 
 
 export default function CreateReviewForm(props) {
 
-    const dispatch = useDispatch();
     const history = useHistory();
-    const { auth, notify } = useSelector(state => state);
+    const { auth } = useSelector(state => state);
     const { locationName, location, handleClose, cost, tourDateId, indexLocation } = props;
 
 
     const [imageUpload, setImageUpload] = useState([]);
-    const [state, setState] = useState({
+    const [context, setContext] = useState({
         hashtags: "",
         rate: 0,
     })
+
+    const [state, setState] = useState({
+        loading: false,
+        error: false,
+    })
+
     const [text, setText] = useState("");
 
     const handleInput = (e) => {
-        setState({
-            ...state,
+        setContext({
+            ...context,
             [e.target.name]: e.target.value,
         })
     }
@@ -54,25 +60,53 @@ export default function CreateReviewForm(props) {
         ])
     }
 
-    const handleSubmit = (e) => {
+    const handleSubmit = async (e) => {
         e.preventDefault();
-        var ht = hashtagSplit(state.hashtags);
-        dispatch(createReview({
-            content: text,
-            image: imageUpload,
-            hashtags: ht,
-            rate: state.rate,
-            locationId: location,
-            cost: cost,
-            tourDateId: tourDateId,
-            indexLocation: indexLocation
-        },
-            auth.token,
-            () => {
-                handleClose();
-                history.push(`/location/${locationName}`);
+        var ht = hashtagSplit(context.hashtags);
+
+        if (context.rate) {
+            setState({
+                loading: true,
+                error: false,
+            })
+            var data = {
+                content: text,
+                image: imageUpload,
+                hashtags: ht,
+                rate: context.rate,
+                locationId: location,
+                cost: cost,
+                tourDateId: tourDateId,
+                indexLocation: indexLocation
             }
-        ))
+            let image = [];
+            if (imageUpload.length > 0) image = await imageUtils.uploadImages(imageUpload);
+            const review = {
+                ...data,
+                images: image
+            }
+            try {
+                await customAxios(auth.token).post("/post/create_review", review).then(res => {
+                    handleClose();
+                    history.push(`/location/${locationName}`);
+                    setState({
+                        loading: false,
+                        error: false
+                    })
+                }).catch(err => {
+                    setState({
+                        loading: false,
+                        error: true
+                    })
+                })
+            }
+            catch (err) {
+                setState({
+                    loading: false,
+                    error: true
+                })
+            }
+        }
 
     }
 
@@ -95,7 +129,7 @@ export default function CreateReviewForm(props) {
                             <div className={classes.formCreateReview}>
                                 <Rating
                                     name="rate"
-                                    value={state.rate}
+                                    value={context.rate}
                                     onChange={handleInput}
                                 />
                             </div>
@@ -117,7 +151,7 @@ export default function CreateReviewForm(props) {
                                     name="hashtags"
                                     id="hashtag"
                                     className={classes.hashtag}
-                                    value={state.hashtags}
+                                    value={context.hashtags}
                                     onChange={handleInput}
                                 />
                             </div>
@@ -143,7 +177,7 @@ export default function CreateReviewForm(props) {
                                 <div>
                                     <Button className={classes.button} onClick={handleSubmit}>
                                         {
-                                            notify.loading ?
+                                            state.loading ?
                                                 <CircularProgress size="25px" color="white" /> :
                                                 <>
                                                     <Create style={{ marginRight: 10 }} />

@@ -13,25 +13,25 @@ import {
     QuestionAnswer,
     Share
 } from "@material-ui/icons";
-import { useDispatch, useSelector } from "react-redux";
+import { useSelector } from "react-redux";
 
 import Comment from "../comment/Comment";
 import InputComment from "../input/comment";
 import { postStyles } from "../../style";
 import UserList from "../modal/userList";
-import { likePost, unlikePost } from '../../redux/callApi/postCall';
 import SharePost from "../forms/share";
 import PostContent from "./content";
+import customAxios from "../../utils/fetchData";
 
 
 export default function Post(props) {
 
+    const [post, setPost] = useState(props.post);
+
     const { auth } = useSelector(state => state);
-    const dispatch = useDispatch();
 
     const [showCmt, setShowCmt] = useState(false);
     const [like, setLike] = useState(false);
-    const [post, setPost] = useState(null);
     const [share, setShare] = useState(false);
 
     const classes = postStyles({ showCmt });
@@ -44,10 +44,10 @@ export default function Post(props) {
     }
 
     const addComment = (comment) => {
-        setPost({
-            ...post,
-            comments: [...post.comments, comment]
-        })
+        setPost((state) => ({
+            ...state,
+            comments: [...state.comments, comment]
+        }))
     }
 
     const likePress = () => {
@@ -58,30 +58,51 @@ export default function Post(props) {
         else handleLike();
     }
 
-    const handleLike = () => {
+    const handleLike = async () => {
         setLike(true);
-        updateLike([...post.likes, auth.user]);
-        // call api
-        dispatch(likePost(post._id, auth.token, () => {
+        let prevLike = post.likes;
+        updateLike([...prevLike, auth.user]);
+        try {
+            await customAxios(auth.token).patch(`/post/${post._id}/like`).then(res => {
+                updateLike(res.data.likes);
+            }).catch(err => {
+                if (like) {
+                    setLike(false);
+                    updateLike(prevLike)
+                }
+            })
+        }
+        catch (err) {
             if (like) {
                 setLike(false);
-                let newLikes = post.likes.filter(user => user._id !== auth.user._id);
-                updateLike(newLikes);
+                updateLike(prevLike)
             }
-        }));
+        }
     }
 
-    const handleUnlike = () => {
+    const handleUnlike = async () => {
         setLike(false);
-        let newLikes = post.likes.filter(user => user._id !== auth.user._id);
+        let prevLike = post.likes;
+        let newLikes = prevLike.filter(user => user._id !== auth.user._id);
         updateLike(newLikes);
         // call api
-        dispatch(unlikePost(post._id, auth.token, () => {
+        try {
+            await customAxios(auth.token).patch(`/post/${post._id}/unlike`).then(res => {
+                updateLike(res.data.likes);
+            }).catch(err => {
+                if (!like) {
+                    setLike(true);
+                    updateLike(prevLike)
+                }
+
+            })
+        }
+        catch (err) {
             if (!like) {
                 setLike(true);
-                updateLike([...post.likes, auth.user]);
+                updateLike(prevLike)
             }
-        }));
+        }
     }
 
     const [showLike, setShowLike] = useState(false);
@@ -98,10 +119,6 @@ export default function Post(props) {
     const handleShowCmt = () => {
         setShowCmt(!showCmt)
     }
-
-    useEffect(() => {
-        setPost(props.post);
-    }, [props.post]);
 
     useEffect(() => {
         if (post) {
@@ -122,7 +139,7 @@ export default function Post(props) {
                     }
 
                     <Typography className={classes.numLike} onClick={handleOpen}>
-                        {post.likes?.length}
+                        {post.likes.length || 0}
                     </Typography>
                     <Modal
                         aria-labelledby="like"
@@ -140,7 +157,7 @@ export default function Post(props) {
                     </Modal>
                     <QuestionAnswer onClick={handleShowCmt} className={classes.iconButton} />
                     <Typography className={classes.numCmt}>
-                        {post.comments.length}
+                        {post.comments.length || 0}
                     </Typography>
                     <Share onClick={() => setShare(true)} className={classes.iconButton} />
                     <Modal
