@@ -145,11 +145,12 @@ export const deletePost = (data) => async (dispatch) => {
     }
 }
 
-export const likePost = (id, token, next) => async (dispatch) => {
+export const likePost = (id, token,socket, next) => async (dispatch) => {
 
     try {
         const res = await customAxios(token).patch(`/post/${id}/like`);
         dispatch(postAction.updateLike({ id: id, likes: res.data.likes }));
+        socket.emit('likePost', {id, likes: res.data.likes});
     }
     catch (err) {
         next();
@@ -157,11 +158,12 @@ export const likePost = (id, token, next) => async (dispatch) => {
     }
 }
 
-export const unlikePost = (id, token, next) => async (dispatch) => {
+export const unlikePost = (id, token, socket, next) => async (dispatch) => {
 
     try {
         const res = await customAxios(token).patch(`/post/${id}/unlike`);
         dispatch(postAction.updateLike({ id: id, likes: res.data.likes }));
+        socket.emit('unlikePost',{id, likes: res.data.likes });
     }
     catch (err) {
         next();

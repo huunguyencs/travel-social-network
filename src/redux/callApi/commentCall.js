@@ -10,7 +10,7 @@ export const getCommentTour = (data) => async (dispatch) => {
 
 }
 
-export const createCommentPost = (id, comment, auth, next) => async (dispatch) => {
+export const createCommentPost = (id, comment, auth,socket, next) => async (dispatch) => {
 
     try {
         // call api to update comment
@@ -27,6 +27,8 @@ export const createCommentPost = (id, comment, auth, next) => async (dispatch) =
 
         next(newComment);
         dispatch(commentAction.addCommentPost({ id: id, comment: newComment }))
+
+        socket.emit('createCommentPost',{ id: id, comment: newComment} );
 
     }
     catch (err) {

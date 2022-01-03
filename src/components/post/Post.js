@@ -27,7 +27,7 @@ import PostContent from "./content";
 
 export default function Post(props) {
 
-    const { auth } = useSelector(state => state);
+    const { auth, socket } = useSelector(state => state);
     const dispatch = useDispatch();
 
     const [showCmt, setShowCmt] = useState(false);
@@ -63,7 +63,7 @@ export default function Post(props) {
         setLike(true);
         updateLike([...post.likes, auth.user]);
         // call api
-        dispatch(likePost(post._id, auth.token, () => {
+        dispatch(likePost(post._id, auth.token,socket, () => {
             if (like) {
                 setLike(false);
                 let newLikes = post.likes.filter(user => user._id !== auth.user._id);
@@ -77,7 +77,7 @@ export default function Post(props) {
         let newLikes = post.likes.filter(user => user._id !== auth.user._id);
         updateLike(newLikes);
         // call api
-        dispatch(unlikePost(post._id, auth.token, () => {
+        dispatch(unlikePost(post._id, auth.token, socket, () => {
             if (!like) {
                 setLike(true);
                 updateLike([...post.likes, auth.user]);
