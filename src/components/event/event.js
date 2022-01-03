@@ -1,4 +1,4 @@
-import { IconButton } from "@material-ui/core";
+import { IconButton, Typography } from "@material-ui/core";
 import { ChevronLeft, ChevronRight } from "@material-ui/icons";
 import React, { useContext } from "react";
 import { ScrollMenu, VisibilityContext } from 'react-horizontal-scrolling-menu';
@@ -38,7 +38,7 @@ export default function Event(props) {
 
     return (
         <div>
-            <ScrollMenu
+            {events.length > 0 ? <ScrollMenu
                 LeftArrow={LeftArrow}
                 RightArrow={RightArrow}
             >
@@ -50,6 +50,12 @@ export default function Event(props) {
                     />
                 )}
             </ScrollMenu>
+                :
+                <div style={{ display: 'flex', justifyContent: 'center' }}>
+                    <Typography>Không tìm thấy sự kiện</Typography>
+                </div>
+            }
+
         </div>
     )
 }

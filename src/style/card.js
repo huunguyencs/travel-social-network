@@ -7,7 +7,7 @@ const cardStyles = makeStyles((theme) => ({
         margin: 20,
         borderRadius: attr.borderRadius.md,
         [theme.breakpoints.down("sm")]: {
-            margin: 5,
+            margin: 0,
         },
     },
     image: {
@@ -65,6 +65,18 @@ const cardStyles = makeStyles((theme) => ({
         justifyContent: "space-between",
         marginLeft: 50,
         marginRight: 80,
+        [theme.breakpoints.down("md")]: {
+            marginLeft: 10,
+            marginRight: 10,
+        },
+        [theme.breakpoints.down("sm")]: {
+            marginLeft: 0,
+            marginRight: 0,
+        },
+        [theme.breakpoints.down("xs")]: {
+            marginLeft: 20,
+            marginRight: 30,
+        },
     },
     detailInfo: {
         marginTop: 30,
@@ -94,8 +106,8 @@ const cardStyles = makeStyles((theme) => ({
     },
     chart: {
         margin: 30,
-        [theme.breakpoints.down("sm")]: {
-            margin: 5,
+        [theme.breakpoints.down("md")]: {
+            margin: 0,
         },
     },
     line: {
@@ -107,11 +119,14 @@ const cardStyles = makeStyles((theme) => ({
         color: color.yellow,
         fontSize: "50px",
         marginRight: 15,
-        [theme.breakpoints.down("sm")]: {
+        [theme.breakpoints.down("md")]: {
             fontSize: 36,
         },
-        [theme.breakpoints.down("xs")]: {
+        [theme.breakpoints.down("sm")]: {
             fontSize: 30,
+        },
+        [theme.breakpoints.down("xs")]: {
+            fontSize: 24,
         },
     },
     starContent: {
@@ -123,14 +138,29 @@ const cardStyles = makeStyles((theme) => ({
     center: {
         display: "flex",
         justifyContent: "center",
-    },
-    textStar: {
+        [theme.breakpoints.down("md")]: {
+            fontSize: 16,
+        },
         [theme.breakpoints.down("sm")]: {
-            fontSize: 36,
+            fontSize: 12,
         },
         [theme.breakpoints.down("xs")]: {
+            fontSize: 8,
+        },
+    },
+    textStar: {
+        [theme.breakpoints.down("md")]: {
+            fontSize: 36,
+        },
+        [theme.breakpoints.down("sm")]: {
             fontSize: 30,
         },
+        [theme.breakpoints.down("xs")]: {
+            fontSize: 24,
+        },
+    },
+    rateLabel: {
+        marginRight: 10
     }
 }))
 
