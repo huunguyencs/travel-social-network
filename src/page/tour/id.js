@@ -1,15 +1,20 @@
 import React, { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
-import { useDispatch } from 'react-redux'
+import { CircularProgress, Typography } from '@material-ui/core';
 
 import Tour from "../../components/tour/TourDetail";
-import { getTourDetail } from '../../redux/callApi/tourCall';
+import customAxios from "../../utils/fetchData";
+import { NotFound } from "../404";
 
 export default function TourDetail(props) {
 
     const { id } = useParams();
-    const dispatch = useDispatch();
     const [tour, setTour] = useState();
+    const [state, setState] = useState({
+        loading: false,
+        notFound: false,
+        error: false
+    })
 
     useEffect(() => {
         if (tour && tour.name) {
@@ -17,14 +22,52 @@ export default function TourDetail(props) {
         }
     }, [tour])
 
+
+    const getTourDetail = async (id) => {
+        setState({
+            loading: true,
+            error: false,
+            notFound: false,
+        })
+        await customAxios().get(`tour/${id}`).then(res => {
+            setTour(res.data.tour);
+            setState({
+                loading: false,
+                error: false,
+                notFound: false,
+            })
+        }).catch(err => {
+            if (err.response.status === 404)
+                setState({
+                    loading: false,
+                    error: true,
+                    notFound: true,
+                })
+            else setState({
+                loading: false,
+                error: true,
+                notFound: false,
+            })
+
+        })
+    }
+
     useEffect(() => {
-        dispatch(getTourDetail(id, (tour) => {
-            setTour(tour);
-        }));
-    }, [dispatch, id, setTour])
+        getTourDetail(id);
+    }, [id])
 
 
     return (
-        <Tour tour={tour} />
+        <>
+            {
+                state.loading ?
+                    <CircularProgress />
+                    : state.error ?
+                        state.notFound ?
+                            <NotFound /> :
+                            <Typography onClick={() => getTourDetail(id)}>Có lỗi vui lòng thử lại</Typography>
+                        : <Tour tour={tour} />
+            }
+        </>
     )
 }

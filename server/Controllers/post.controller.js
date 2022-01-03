@@ -206,9 +206,15 @@ class PostController {
                         select: "username fullname avatar"
                     }
                 })
-            res.json({
-                success: true, message: "get info 1 post success", post
-            });
+            if (post) {
+                res.json({
+                    success: true, message: "get info 1 post success", post
+                });
+            }
+            else {
+                res.status(404).json({ success: false, message: "Not found" })
+            }
+
         } catch (err) {
             console.log(err)
             res.status(500).json({ success: false, message: err.message })

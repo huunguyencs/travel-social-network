@@ -234,9 +234,14 @@ class TourController {
                         select: "-password"
                     },
                 })
-            res.json({
-                success: true, message: "get info 1 tour success", tour
-            });
+            if (tour) {
+                res.json({
+                    success: true, message: "get info 1 tour success", tour
+                });
+            } else {
+                res.status(404).json({ success: false, message: "not found" });
+            }
+
         } catch (err) {
             console.log(err)
             res.status(500).json({ success: false, message: err.message })

@@ -10,17 +10,22 @@ import * as tourAction from '../../redux/actions/createTourAction';
 import { useHistory } from "react-router-dom";
 import UpdateDateForm from "../forms/updateDate";
 import UpdateTourInfo from "../forms/updateInfoCreateTour";
-import { createTourCall } from "../../redux/callApi/tourCall";
 import { convertDateToStr } from "../../utils/date";
+import customAxios from "../../utils/fetchData";
+import * as imageUtils from '../../utils/uploadImage'
 
 
 
 export default function AddTour(props) {
 
     const history = useHistory();
+    const [state, setState] = useState({
+        loading: false,
+        error: false
+    })
 
     const dispatch = useDispatch();
-    const { createTour, auth, notify } = useSelector(state => state);
+    const { createTour, auth } = useSelector(state => state);
 
 
     const [idx, setIdx] = useState(0);
@@ -48,18 +53,43 @@ export default function AddTour(props) {
         return ht.filter(item => item !== "");
     }
 
-    const handleSave = () => {
-        // console.log(createTour);
-        let ht = hashtagSplit(createTour.hashtags)
+    const handleSave = async () => {
+        setState({
+            loading: true,
+            error: false
+        })
+        let ht = hashtagSplit(createTour.hashtags);
 
-        dispatch(createTourCall({
+        let imageUpload = [];
+        if (createTour.image) imageUpload = await imageUtils.uploadImages([createTour.image]);
+        // location id
+        const data = {
             name: createTour.name,
             content: createTour.content,
             hashtags: ht,
-            tour: createTour.tour,
-        }, createTour.image, auth.token, () => {
+            tour: createTour.tour.map(item => ({
+                ...item,
+                locations: item.locations.map(location => ({
+                    location: location.location._id,
+                    cost: location.cost,
+                }))
+            })),
+            image: imageUpload.length > 0 ? imageUpload[0] : ""
+        }
+
+
+        await customAxios(auth.token).post('/tour/create_tour', data).then(res => {
+            setState({
+                loading: false,
+                error: false,
+            })
             history.push("/tour")
-        }))
+        }).catch(err => {
+            setState({
+                loading: false,
+                error: true,
+            })
+        });
     }
 
     const handleDeleteDate = () => {
@@ -156,7 +186,7 @@ export default function AddTour(props) {
                         </div>
                         <div>
                             <Button className={classes.addDay} onClick={handleSave}>
-                                {notify.loading ?
+                                {state.loading ?
                                     <CircularProgress size="25px" color="white" />
                                     : "Lưu lại"
                                 }

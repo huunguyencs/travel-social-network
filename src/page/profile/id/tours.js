@@ -14,7 +14,6 @@ import SpeedDialButton from "../../../components/speedDialBtn";
 import Menu from "../../../components/leftbar/menu";
 import Calendar from "../../../components/calendar";
 import FriendRecommendCard from "../../../components/card/FriendRecommend";
-import { getUserTour } from "../../../redux/callApi/tourCall";
 import { NotFound } from "../../404";
 import { getUser } from "../../../redux/callApi/userCall";
 
@@ -38,9 +37,6 @@ function ProfileTours() {
     }
   }, [user.user, id, dispatch, auth, setNotFound])
 
-  useEffect(() => {
-    dispatch(getUserTour(id, auth.token));
-  }, [dispatch, id, auth.token])
 
   return (
     <div>
@@ -57,7 +53,7 @@ function ProfileTours() {
                 </LeftBar>
               </Grid>
               <Grid item md={6} sm={12} xs={12}>
-                <FeedTour />
+                <FeedTour id={id} />
               </Grid>
               <Grid item md={3} className={classes.rightbar}>
                 <RightBar>

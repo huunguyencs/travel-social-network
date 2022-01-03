@@ -10,7 +10,7 @@ import customAxios from "../../utils/fetchData";
 
 export default function FeedTour(props) {
 
-
+    const { id } = props;
 
     const classes = feedStyles();
 
@@ -20,13 +20,14 @@ export default function FeedTour(props) {
         error: false,
     })
 
-    const getMoreTour = async () => {
+    const getMoreTour = async (id) => {
         setState({
             loading: true,
             error: false,
         })
         try {
-            await customAxios().get(`tour/tours`).then(res => {
+            var url = id ? `/tour/user_tours/${id}` : `tour/tours`
+            await customAxios().get(url).then(res => {
                 setTours((state) => [
                     ...state,
                     ...res.data.tours
@@ -51,8 +52,8 @@ export default function FeedTour(props) {
     }
 
     useEffect(() => {
-        getMoreTour();
-    }, [])
+        getMoreTour(id);
+    }, [id])
 
     const [show, setShow] = useState(false);
 
