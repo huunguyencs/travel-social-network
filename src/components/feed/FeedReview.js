@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { CircularProgress, Container, Typography } from "@material-ui/core";
+import { Button, CircularProgress, Container, Typography } from "@material-ui/core";
 
 import Post from '../post/Post';
 import { feedStyles } from "../../style";
@@ -26,7 +26,7 @@ export default function FeedReview(props) {
             await customAxios().get(`/location/${id}/posts`).then(res => {
                 setReviews((state) => ([
                     ...state,
-                    res.data.posts
+                    ...res.data.posts
                 ]))
                 setState({
                     loading: false,
@@ -53,19 +53,22 @@ export default function FeedReview(props) {
                     {
 
                         state.loading ?
-                            <CircularProgress color={"black"} />
-
-                            : reviews.length === 0 ?
-                                <div style={{ display: 'flex', justifyContent: 'center', marginTop: 100 }}>
-                                    <Typography>Chưa có review cho địa điểm này</Typography>
+                            <CircularProgress color={"inherit"} /> :
+                            state.error ?
+                                <div style={{ margin: 'auto' }}>
+                                    <Typography>Có lỗi xảy ra</Typography>
+                                    <Button onClick={getMoreReviews}>Thử lại</Button>
                                 </div>
-                                :
-                                reviews.map((post) => (
-                                    <Post
-                                        post={post}
-                                        key={post._id}
-                                    />
-                                ))
+                                : reviews.length === 0 ?
+                                    <div style={{ display: 'flex', justifyContent: 'center', marginTop: 100 }}>
+                                        <Typography>Chưa có review cho địa điểm này</Typography>
+                                    </div> :
+                                    reviews.map((post) => (
+                                        <Post
+                                            post={post}
+                                            key={post._id}
+                                        />
+                                    ))
                     }
                 </div>
             </div>

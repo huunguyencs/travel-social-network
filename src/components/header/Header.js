@@ -74,7 +74,7 @@ export default function Header(props) {
     }
 
     return (
-        <AppBar positionSticky style={{ zIndex: 1 }}>
+        <AppBar style={{ zIndex: 1 }}>
             <Toolbar className={classes.toolbar}>
                 <Link to="/">
                     <Typography variant="h6" style={{ color: "#fff" }}>
@@ -98,7 +98,7 @@ export default function Header(props) {
                     {
                         auth.token ? (
                             <>
-                                <div class={classes.user}>
+                                <div className={classes.user}>
                                     <Button className={classes.button} onClick={handleToggleUser} controls={toggleMenuUser ? "user-menu" : undefined}>
                                         <Avatar className={classes.avatar} alt="avatar" src={user.avatar} />
                                         <Typography noWrap={false} className={classes.userName}>{user.fullname}</Typography>
@@ -133,8 +133,8 @@ export default function Header(props) {
                                         </Grow>
                                     </Popper>
                                 </div>
-                                <IconButton className={classes.badge} aria-label="notifications">
-                                    <Badge badgeContent={2} color="secondary" onClick={handleToggleNoti}>
+                                <IconButton className={classes.badge} aria-label="notifications" onClick={handleToggleNoti}>
+                                    <Badge badgeContent={2} color="secondary">
                                         <Notifications />
                                     </Badge>
                                     <Popper

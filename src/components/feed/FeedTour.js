@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { Backdrop, Button, CircularProgress, Container, Fade, Modal } from "@material-ui/core";
+import { Backdrop, Button, CircularProgress, Container, Fade, Modal, Typography } from "@material-ui/core";
 
 import Tour from "../tour/Tour";
 import { feedStyles } from "../../style";
@@ -86,8 +86,13 @@ export default function FeedTour(props) {
                     {
                         state.loading ?
                             state.error ?
-                                <div>Có lỗi xảy ra</div> :
-                                <CircularProgress color={"black"} /> :
+                                <div style={{ margin: 'auto' }}>
+                                    <Typography>Có lỗi xảy ra</Typography>
+                                    <Button onClick={getMoreTour}>Thử lại</Button>
+                                </div> :
+                                <div style={{ display: 'flex', justifyContent: 'center', marginTop: 50 }}>
+                                    <CircularProgress color={"inherit"} />
+                                </div> :
                             tours.map((tour) => (
                                 <Tour
                                     tour={tour}

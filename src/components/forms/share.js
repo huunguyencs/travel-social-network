@@ -35,7 +35,7 @@ export default function SharePost(props) {
                 handleClose();
             }
         }).catch((err) => {
-            console.log(err);
+
         })
     }
 
@@ -84,7 +84,7 @@ export default function SharePost(props) {
                                     <Button className={classes.button} onClick={handleShare}>
                                         {
                                             notify.loading ?
-                                                <CircularProgress size="25px" color="white" /> :
+                                                <CircularProgress size="25px" color="inherit" /> :
                                                 <>
                                                     <Share style={{ marginRight: 10 }} />
                                                     Chia sẻ

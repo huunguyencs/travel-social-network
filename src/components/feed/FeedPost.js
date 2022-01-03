@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { Container, InputBase, Modal, Backdrop, Fade, CircularProgress } from "@material-ui/core";
+import { Container, InputBase, Modal, Backdrop, Fade, CircularProgress, Typography, Button } from "@material-ui/core";
 
 
 import Post from '../post/Post';
@@ -33,7 +33,6 @@ export default function FeedPost(props) {
         });
         try {
             var url = id ? `/post/user_posts/${id}` : `/post/posts`;
-            console.log(url);
             await customAxios().get(url).then(res => {
                 setPosts((state) => ([
                     ...state,
@@ -61,7 +60,6 @@ export default function FeedPost(props) {
 
     useEffect(() => {
         getMorePosts(id);
-        console.log(id);
     }, [id])
 
     const handleShow = () => {
@@ -119,9 +117,14 @@ export default function FeedPost(props) {
                 <div>
                     {
                         state.loading ?
-                            <CircularProgress color={"black"} />
+                            <div style={{ display: 'flex', justifyContent: 'center', marginTop: 50 }}>
+                                <CircularProgress color={"inherit"} />
+                            </div>
                             : state.error ?
-                                <div>Có lỗi xảy ra</div> :
+                                <div style={{ margin: 'auto' }}>
+                                    <Typography>Có lỗi xảy ra</Typography>
+                                    <Button onClick={getMorePosts}>Thử lại</Button>
+                                </div> :
                                 posts.map((post) => (
                                     <Post
                                         post={post}

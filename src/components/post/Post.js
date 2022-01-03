@@ -126,6 +126,7 @@ export default function Post(props) {
                 setLike(true);
             }
         }
+
     }, [post, auth.user]);
 
     return (
@@ -139,7 +140,7 @@ export default function Post(props) {
                     }
 
                     <Typography className={classes.numLike} onClick={handleOpen}>
-                        {post.likes.length || 0}
+                        {post.likes.length}
                     </Typography>
                     <Modal
                         aria-labelledby="like"
@@ -157,7 +158,7 @@ export default function Post(props) {
                     </Modal>
                     <QuestionAnswer onClick={handleShowCmt} className={classes.iconButton} />
                     <Typography className={classes.numCmt}>
-                        {post.comments.length || 0}
+                        {post.comments.length}
                     </Typography>
                     <Share onClick={() => setShare(true)} className={classes.iconButton} />
                     <Modal

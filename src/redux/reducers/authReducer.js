@@ -18,9 +18,8 @@ const authReducer = (state = INIT_STATE, action) => {
             return INIT_STATE
         }
         case AUTH_TYPES.FOLLOW: {
-            if (action.payload.user._id === state.user._id) {
-                return state;
-            }
+            console.log(action.payload.user);
+            if (action.payload.user._id === state.user._id) return state;
             return {
                 ...state,
                 user: {

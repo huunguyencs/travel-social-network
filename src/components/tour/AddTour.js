@@ -187,7 +187,7 @@ export default function AddTour(props) {
                         <div>
                             <Button className={classes.addDay} onClick={handleSave}>
                                 {state.loading ?
-                                    <CircularProgress size="25px" color="white" />
+                                    <CircularProgress size="25px" color="inherit" />
                                     : "Lưu lại"
                                 }
                             </Button>

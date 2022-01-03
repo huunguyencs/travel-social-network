@@ -98,7 +98,7 @@ export default function Location(props) {
                                         <ImageList imgList={location.images} show2Image={false} height={395} />
                                     </Card>
                                 </Grid>
-                                <Grid md={3} sm={12}>
+                                <Grid item md={3} sm={12}>
                                     <div style={{ margin: 30 }}>
                                         <RatingChart star={location.star} />
                                     </div>

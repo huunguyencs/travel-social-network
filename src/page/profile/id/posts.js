@@ -43,7 +43,8 @@ function ProfilePosts() {
       {
         notFound ?
           <NotFound /> :
-          <><Scroll showBelow={500} />
+          <>
+            <Scroll showBelow={500} />
             <SpeedDialButton />
             <ProfileAvatar user={user.user} />
             <Grid container style={{ margin: 0, padding: 0 }}>
@@ -61,7 +62,9 @@ function ProfilePosts() {
                   <FriendRecommendCard />
                 </RightBar>
               </Grid>
-            </Grid></>}
+            </Grid>
+          </>
+      }
     </div>
   );
 }

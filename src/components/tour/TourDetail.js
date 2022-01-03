@@ -97,7 +97,7 @@ export default function TourDetail(props) {
                         </Grid>
                     </div >
                     :
-                    <CircularProgress color={"black"} />
+                    <CircularProgress color={"inherit"} />
             }
         </>
     )

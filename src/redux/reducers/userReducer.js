@@ -13,6 +13,7 @@ const userReducer = (state = INIT_STATE, action) => {
             }
         }
         case USER_TYPES.FOLLOW: {
+            console.log(action.payload.user);
             if (action.payload.user._id === state.user?._id) return state;
             return {
                 ...state,
