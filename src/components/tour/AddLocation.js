@@ -20,10 +20,7 @@ export default function AddLocation(props) {
 
     const defaultState = {
         zoom: 9,
-        center: {
-            lat: 1,
-            lng: 1
-        }
+        center: { lat: 14.489055527436275, lng: 107.96608963227854 }
     }
     const [state, setState] = useState(defaultState);
 

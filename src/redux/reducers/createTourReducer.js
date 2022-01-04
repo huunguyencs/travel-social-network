@@ -111,6 +111,7 @@ const createTourReducer = (state = INIT_STATE, action) => {
                 image: action.payload.image,
                 hashtags: action.payload.hashtags,
                 content: action.payload.content,
+                cost: action.payload.cost
             }
         }
         default: {

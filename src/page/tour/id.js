@@ -29,7 +29,7 @@ export default function TourDetail(props) {
             error: false,
             notFound: false,
         })
-        await customAxios().get(`tour/${id}`).then(res => {
+        await customAxios().get(`/tour/${id}`).then(res => {
             setTour(res.data.tour);
             setState({
                 loading: false,
@@ -37,7 +37,7 @@ export default function TourDetail(props) {
                 notFound: false,
             })
         }).catch(err => {
-            if (err.response.status === 404)
+            if (err?.response.status === 404)
                 setState({
                     loading: false,
                     error: true,
@@ -66,7 +66,7 @@ export default function TourDetail(props) {
                         state.notFound ?
                             <NotFound /> :
                             <Typography onClick={() => getTourDetail(id)}>Có lỗi vui lòng thử lại</Typography>
-                        : <Tour tour={tour} />
+                        : tour && <Tour tour={tour} />
             }
         </>
     )

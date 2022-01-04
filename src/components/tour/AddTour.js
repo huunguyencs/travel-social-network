@@ -4,7 +4,7 @@ import { Timeline, TimelineItem, TimelineSeparator, TimelineConnector, TimelineC
 import { useDispatch, useSelector } from "react-redux";
 
 import { tourdetailStyles } from "../../style";
-import AddLocationForm from "../forms/addLocation";
+// import AddLocationForm from "../forms/addLocation";
 import Location from './Location';
 import * as tourAction from '../../redux/actions/createTourAction';
 import { useHistory } from "react-router-dom";
@@ -30,19 +30,19 @@ export default function AddTour(props) {
 
 
     const [idx, setIdx] = useState(0);
-    const [addLoc, setAddLoc] = useState(false);
+    // const [addLoc, setAddLoc] = useState(false);
     const [showUpdateDate, setShowUpdateDate] = useState(false);
     const [showDeleteDate, setShowDeteleDate] = useState(false);
     const [showChangeInfo, setShowChangeInfo] = useState(false);
-    const [provinceCache, setProvinceCache] = useState(null);
+    // const [provinceCache, setProvinceCache] = useState(null);
 
-    const handleShow = () => {
-        setAddLoc(true);
-    }
+    // const handleShow = () => {
+    //     setAddLoc(true);
+    // }
 
-    const handleClose = () => {
-        setAddLoc(false);
-    }
+    // const handleClose = () => {
+    //     setAddLoc(false);
+    // }
 
 
     const handleAddDay = () => {
@@ -55,6 +55,7 @@ export default function AddTour(props) {
     }
 
     const handleSave = async () => {
+        if (createTour.tour.length === 0) return;
         setState({
             loading: true,
             error: false
@@ -123,9 +124,6 @@ export default function AddTour(props) {
 
     const classes = tourdetailStyles();
 
-
-
-
     return (
         <div>
             <div className={classes.coverTitle}>
@@ -142,8 +140,10 @@ export default function AddTour(props) {
                         <Typography className={classes.hashtag} key={index}>{hashtag}</Typography>
                     ))}
                 </div>
-                <div>
-                    <Typography>{createTour.cost}</Typography>
+                <div className={classes.itemInfo}>
+                    <Typography variant="body1" className={classes.content}>
+                        Chi phí: {createTour.cost ? new Intl.NumberFormat().format(createTour.cost * 1000) : 0} VND
+                    </Typography>
                 </div>
                 <div className={classes.itemInfo}>
                     <Button onClick={() => setShowChangeInfo(true)}>Chỉnh sửa thông tin</Button>
@@ -256,7 +256,7 @@ export default function AddTour(props) {
                             />
                         ))
                     }
-                    <div className={classes.addContainer}>
+                    {/* <div className={classes.addContainer}>
                         <Button className={classes.addTour} onClick={handleShow}>
                             Thêm địa điểm
                         </Button>
@@ -276,7 +276,7 @@ export default function AddTour(props) {
                                 <AddLocationForm handleClose={handleClose} indexDate={idx} provinceCache={provinceCache} setProvinceCache={setProvinceCache} />
                             </Fade>
                         </Modal>
-                    </div>
+                    </div> */}
 
                 </Grid>
                 <Grid item md={4}>

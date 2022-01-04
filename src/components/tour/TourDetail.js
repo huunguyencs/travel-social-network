@@ -6,6 +6,7 @@ import { tourdetailStyles } from "../../style";
 import Location from './Location';
 import { convertDateToStr } from "../../utils/date";
 import { useSelector } from "react-redux";
+import MapCard from "../card/MapCard";
 
 
 
@@ -14,6 +15,9 @@ export default function TourDetail(props) {
 
     const classes = tourdetailStyles();
     const [isOwn, setIsOwn] = useState(false);
+    const [idx, setIdx] = useState(0);
+    const [position, setPosition] = useState(null);
+    const [locations, setLocations] = useState([]);
 
     const { auth } = useSelector(state => state);
 
@@ -24,10 +28,20 @@ export default function TourDetail(props) {
         if (auth && auth.user && tour) {
             setIsOwn(tour.userId._id === auth.user._id);
         }
+    }, [setIsOwn, tour, auth]);
 
-    }, [setIsOwn, tour, auth])
+    useEffect(() => {
+        if (tour && tour.tour[idx].locations.length > 0) {
+            setPosition(tour.tour[idx].locations[0].location.position)
+        }
+    }, [tour, idx])
 
-    const [idx, setIdx] = useState(0);
+    useEffect(() => {
+        var locs = tour.tour[idx].locations.map(item => item.location);
+        setLocations(locs);
+    }, [tour, idx])
+
+
 
     return (
         <>
@@ -41,6 +55,11 @@ export default function TourDetail(props) {
                             <div className={classes.itemInfo}>
                                 <Typography variant="body1" className={classes.content}>
                                     {tour.content}
+                                </Typography>
+                            </div>
+                            <div className={classes.itemInfo}>
+                                <Typography variant="body1" className={classes.content}>
+                                    Chi phí: {tour.cost ? new Intl.NumberFormat().format(tour.cost * 1000) : 0} VND
                                 </Typography>
                             </div>
                             <div className={classes.hashtagWrap}>
@@ -90,9 +109,9 @@ export default function TourDetail(props) {
 
                             </Grid>
                             <Grid item md={4}>
-                                <Container>
-
-                                </Container>
+                                <div style={{ height: 500 }}>
+                                    {position ? <MapCard position={position} zoom={12} locations={locations} /> : "Cham hoi"}
+                                </div>
                             </Grid>
                         </Grid>
                     </div >

@@ -3,7 +3,6 @@ import GoogleMapReact from 'google-map-react';
 import FiberManualRecordTwoToneIcon from '@material-ui/icons/FiberManualRecordTwoTone';
 import { Card, ClickAwayListener, Paper, Popper, Typography } from "@material-ui/core";
 
-import { mapCardStyles } from "../../style";
 import KEY from "../../key/googlemap";
 import { Link } from "react-router-dom";
 
@@ -57,7 +56,7 @@ function MapLocation(props) {
 
 export default function MapCard(props) {
 
-    const { position, zoom, locations } = props;
+    const { position, zoom, locations, height } = props;
     const [center, setCenter] = useState({
         lat: position.lat,
         lng: position.lon
@@ -70,9 +69,8 @@ export default function MapCard(props) {
         })
     }
 
-    const classes = mapCardStyles();
     return (
-        <Card className={classes.container}>
+        <Card style={{ height: height ? height : 500 }}>
             {
                 position &&
                 <GoogleMapReact

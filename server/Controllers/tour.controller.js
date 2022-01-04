@@ -7,7 +7,10 @@ class TourController {
         try {
             const { content, name, taggedIds, image, hashtags, tour, cost } = req.body
 
-            var tourDate = []
+            const newTour = new Tours({
+                userId: req.user._id, content, image, name, taggedIds, hashtags, cost
+            })
+            await newTour.save()
             if (tour.length > 0) {
                 tour.forEach(async function (element) {
                     // console.log(element);
@@ -16,13 +19,13 @@ class TourController {
                     })
                     await newTourDate.save();
 
-                    tourDate.push(newTourDate._id);
+                    await Tours.findOneAndUpdate({ _id: newTour._id }, {
+                        $push: {
+                            tour: newTourDate._id
+                        }
+                    });
                 });
             }
-            const newTour = new Tours({
-                userId: req.user._id, content, image, name, taggedIds, hashtags, cost, tour: tourDate
-            })
-            await newTour.save()
 
             res.json({
                 success: true,
@@ -198,7 +201,7 @@ class TourController {
     // lấy thông tin 1 tour theo params.id
     async getTour(req, res) {
         try {
-
+            // console.log(req.params.id)
             let tour = await Tours.findById(req.params.id);
             let requestId;
             if (tour.shareId) {
@@ -215,7 +218,7 @@ class TourController {
                         path: "locations",
                         populate: {
                             path: "location",
-                            select: "name images fullname",
+                            select: "name images fullname position",
                             populate: {
                                 path: "province",
                                 select: "name fullname"
