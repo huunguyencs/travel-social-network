@@ -13,6 +13,7 @@ import UpdateTourInfo from "../forms/updateInfoCreateTour";
 import { convertDateToStr } from "../../utils/date";
 import customAxios from "../../utils/fetchData";
 import * as imageUtils from '../../utils/uploadImage'
+import AddLocation from "./AddLocation";
 
 
 
@@ -74,7 +75,8 @@ export default function AddTour(props) {
                     cost: location.cost,
                 }))
             })),
-            image: imageUpload.length > 0 ? imageUpload[0] : ""
+            image: imageUpload.length > 0 ? imageUpload[0] : "",
+            cost: createTour.cost
         }
 
 
@@ -140,9 +142,13 @@ export default function AddTour(props) {
                         <Typography className={classes.hashtag} key={index}>{hashtag}</Typography>
                     ))}
                 </div>
+                <div>
+                    <Typography>{createTour.cost}</Typography>
+                </div>
                 <div className={classes.itemInfo}>
                     <Button onClick={() => setShowChangeInfo(true)}>Chỉnh sửa thông tin</Button>
                 </div>
+
                 <Modal
                     aria-labelledby="transition-modal-title"
                     aria-describedby="transition-modal-description"
@@ -156,7 +162,7 @@ export default function AddTour(props) {
                     }}
                 >
                     <Fade in={showChangeInfo}>
-                        <UpdateTourInfo name={createTour.name} content={createTour.content} hashtags={createTour.hashtags} image={createTour.image} handleClose={handleCloseUpdateInfo} />
+                        <UpdateTourInfo name={createTour.name} content={createTour.content} hashtags={createTour.hashtags} image={createTour.image} handleClose={handleCloseUpdateInfo} cost={createTour.cost} />
                     </Fade>
                 </Modal>
             </div>
@@ -275,7 +281,7 @@ export default function AddTour(props) {
                 </Grid>
                 <Grid item md={4}>
                     <Container>
-
+                        <AddLocation indexDate={idx} />
                     </Container>
                 </Grid>
             </Grid>

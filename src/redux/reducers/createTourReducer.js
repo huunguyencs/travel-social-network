@@ -5,6 +5,7 @@ const INIT_STATE = {
     name: "",
     content: "",
     hashtags: "",
+    cost: 0,
     image: null,
     tour: [],
     isFetching: false,

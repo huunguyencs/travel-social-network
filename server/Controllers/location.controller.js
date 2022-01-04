@@ -95,7 +95,7 @@ class LocationController {
     //Get Location at a province
     async getLocations(req, res) {
         try {
-            const locations = await Locations.find({ province: req.params.province }, "images fullname name")
+            const locations = await Locations.find({ province: req.params.province }, "images fullname name position")
                 .populate("province", "fullname name")
             res.json({ success: true, message: "get locations success", locations });
         } catch (err) {

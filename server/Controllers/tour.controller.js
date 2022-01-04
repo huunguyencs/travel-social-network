@@ -5,14 +5,9 @@ const Comments = require('../Models/comment.model')
 class TourController {
     async createTour(req, res) {
         try {
-            const { content, name, taggedIds, image, hashtags, tour } = req.body
+            const { content, name, taggedIds, image, hashtags, tour, cost } = req.body
 
-            // console.log(tourDate[0].locations);
-
-            const newTour = new Tours({
-                userId: req.user._id, content, image, name, taggedIds, hashtags
-            })
-            await newTour.save()
+            var tourDate = []
             if (tour.length > 0) {
                 tour.forEach(async function (element) {
                     // console.log(element);
@@ -21,13 +16,14 @@ class TourController {
                     })
                     await newTourDate.save();
 
-                    await Tours.findOneAndUpdate({ _id: newTour._id }, {
-                        $push: {
-                            tour: newTourDate._id
-                        }
-                    });
+                    tourDate.push(newTourDate._id);
                 });
             }
+            const newTour = new Tours({
+                userId: req.user._id, content, image, name, taggedIds, hashtags, cost, tour: tourDate
+            })
+            await newTour.save()
+
             res.json({
                 success: true,
                 message: "Create Tour successful",
@@ -67,13 +63,13 @@ class TourController {
     ///
     async updateTour(req, res) {
         try {
-            const { content, tourName, isPublic, taggedIds, image, hashtags, tourDate } = req.body
+            const { content, tourName, isPublic, taggedIds, image, hashtags, tour, cost } = req.body
 
-            const tour = await Tours.findOneAndUpdate({ _id: req.params.id }, {
-                content, image, tourName, taggedIds, hashtags, isPublic, tourDate
+            const newTour = await Tours.findOneAndUpdate({ _id: req.params.id }, {
+                content, image, tourName, taggedIds, hashtags, isPublic, tour, cost
             }, { new: true })
 
-            res.json({ success: true, message: "update tour successful", tour })
+            res.json({ success: true, message: "update tour successful", newTour })
         } catch (err) {
             console.log(err)
             res.status(500).json({ success: false, message: err.message })
@@ -126,6 +122,7 @@ class TourController {
         try {
             const tour = await Tours.findOneAndDelete({ _id: req.params.id, userId: req.user._id });
             if (tour.comments != null) await Comments.deleteMany({ _id: { $in: tour.comments } });
+            if (tour.tour != null) await TourDates.deleteMany({ _id: { $in: tour.tour } });
 
             res.json({
                 success: true, message: "Delete tour success"

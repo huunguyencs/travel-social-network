@@ -1,6 +1,6 @@
 import { Button, Paper, TextField, Typography } from "@material-ui/core";
 import { Autocomplete } from "@material-ui/lab";
-import React, { useEffect, useRef, useState } from "react";
+import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 
 import { formStyles } from '../../style';
@@ -14,7 +14,6 @@ export default function EditLocationForm(props) {
     // const idRef = useRef(props.locationId);
     const [currentProvince, setCurrentProvince] = useState(props.location.location.province);
     const [loc, setLoc] = useState(props.location.location);
-    const costRef = useRef('');
 
     const dispatch = useDispatch();
     const { location } = useSelector(state => state);
@@ -34,7 +33,7 @@ export default function EditLocationForm(props) {
 
     const handleSubmit = (e) => {
         e.preventDefault();
-        dispatch(tourAction.updateLocation({ indexDate: props.indexDate, indexLocation: props.indexLocation, location: loc, cost: costRef.current.value }))
+        dispatch(tourAction.updateLocation({ indexDate: props.indexDate, indexLocation: props.indexLocation, location: loc }))
         props.handleClose();
         props.handleCloseParent();
     }
@@ -98,16 +97,6 @@ export default function EditLocationForm(props) {
                         renderInput={(params) => <TextField {...params} name="location" label="Chọn địa điểm" variant="outlined" required defaultValue={loc?.locationName} />}
                     />
                 </div>
-                <TextField
-                    label="Chi phí dự kiến (nghìn VND)"
-                    variant="outlined"
-                    name="cost"
-                    className="form-input"
-                    style={{ width: 400, marginTop: 30 }}
-                    type="number"
-                    inputRef={costRef}
-                    defaultValue={props.location.cost}
-                />
                 <div>
                     <Button
                         className={classes.addLocationSubmit}

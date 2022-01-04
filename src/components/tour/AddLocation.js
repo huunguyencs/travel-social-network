@@ -1,22 +1,42 @@
-import { Button, Paper, TextField, Typography } from "@material-ui/core";
-import { Autocomplete } from "@material-ui/lab";
-import React, { useEffect, useState } from "react";
-import { useDispatch, useSelector } from "react-redux";
-
+import { Button, TextField, Typography } from '@material-ui/core';
+import { Autocomplete } from '@material-ui/lab';
+import React, { useEffect, useState } from 'react'
+import { useDispatch, useSelector } from 'react-redux';
+import { getProvinces } from '../../redux/callApi/locationCall';
 import { formStyles } from '../../style';
+import customAxios from '../../utils/fetchData';
+import AddLocMap from './AddLocMap';
 import * as tourAction from '../../redux/actions/createTourAction';
-import { getProvinces } from "../../redux/callApi/locationCall";
-import customAxios from "../../utils/fetchData";
 
+export default function AddLocation(props) {
 
-export default function AddLocationForm(props) {
-
+    const classes = formStyles();
     const [loc, setLoc] = useState(null);
-    const [currentProvince, setCurrentProvince] = useState('');
-
-
+    const dispatch = useDispatch();
     const { location } = useSelector(state => state);
+
+    const [currentProvince, setCurrentProvince] = useState(null);
     const [locations, setLocations] = useState([]);
+
+    const defaultState = {
+        zoom: 9,
+        center: {
+            lat: 1,
+            lng: 1
+        }
+    }
+    const [state, setState] = useState(defaultState);
+
+    const changeLoc = (loc) => {
+        setLoc(loc);
+        setState({
+            zoom: 12,
+            center: {
+                lat: loc.position.lat,
+                lng: loc.position.lon
+            }
+        })
+    }
 
     const getLoc = async (province) => {
         if (province && province._id !== currentProvince) {
@@ -26,40 +46,16 @@ export default function AddLocationForm(props) {
                 }).catch(err => {
                     setLocations([]);
                 })
-            setCurrentProvince(province._id);
-            props.setProvinceCache(province)
+            setCurrentProvince(province);
+            setState({
+                zoom: 11,
+                center: {
+                    lat: province.position.lat,
+                    lng: province.position.lon
+                }
+            })
         }
     }
-
-    const getLocInit = React.useCallback(async () => {
-        const cache = props.provinceCache;
-        if (cache && cache._id !== currentProvince) {
-            await customAxios().get(`location/locations/${cache._id}`)
-                .then((req) => {
-                    setLocations(req.data.locations);
-                }).catch(err => {
-                    setLocations([]);
-                })
-            setCurrentProvince(cache._id);
-        }
-    }, [props.provinceCache, currentProvince])
-
-    useEffect(() => {
-        if (props.provinceCache) {
-            getLocInit()
-        }
-    }, [props.provinceCache, getLocInit])
-
-    const dispatch = useDispatch();
-
-    const handleSubmit = (e) => {
-        e.preventDefault();
-        if (loc)
-            dispatch(tourAction.addLocation({ location: loc, indexDate: props.indexDate }))
-        props.handleClose();
-    }
-
-
 
     useEffect(() => {
         if (location.provinces?.length === 0) {
@@ -67,14 +63,14 @@ export default function AddLocationForm(props) {
         }
     }, [dispatch, location.provinces])
 
-
-
-
-
-    const classes = formStyles();
+    const handleSubmit = (e) => {
+        e.preventDefault();
+        if (loc)
+            dispatch(tourAction.addLocation({ location: loc, indexDate: props.indexDate }))
+    }
 
     return (
-        <Paper className={`${classes.paperContainer} ${classes.addFormContainer}`}>
+        <div>
             <div className={classes.textTitle}>
                 <Typography variant="h5">
                     Thêm địa điểm
@@ -90,7 +86,7 @@ export default function AddLocationForm(props) {
                         getOptionLabel={(option) => option?.fullname}
                         style={{ width: 400, marginTop: 30 }}
                         onChange={(e, value) => getLoc(value)}
-                        defaultValue={props.provinceCache}
+                        value={currentProvince}
                         renderInput={(params) => <TextField {...params} name="provinces" label="Chọn tỉnh thành" variant="outlined" />}
                     />
                 </div>
@@ -100,7 +96,8 @@ export default function AddLocationForm(props) {
                         options={locations}
                         getOptionLabel={(option) => option?.fullname}
                         style={{ width: 400, marginTop: 30 }}
-                        onChange={(e, value) => setLoc(value)}
+                        onChange={(e, value) => changeLoc(value)}
+                        value={loc}
                         renderInput={(params) => <TextField {...params} name="location" label="Chọn địa điểm" variant="outlined" />}
                     />
                 </div>
@@ -110,10 +107,21 @@ export default function AddLocationForm(props) {
                         type="submit"
                         onClick={handleSubmit}
                     >
-                        Xong
+                        Thêm
                     </Button>
                 </div>
+                <AddLocMap
+                    setLoc={setLoc}
+                    currentProvince={currentProvince}
+                    setCurrentProvince={setCurrentProvince}
+                    locations={locations}
+                    provinces={locations.provinces}
+                    state={state}
+                    setState={setState}
+                    defaultState={defaultState}
+                    indexDate={props.indexDate}
+                />
             </form>
-        </ Paper >
+        </div>
     )
 }

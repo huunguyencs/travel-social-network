@@ -219,9 +219,6 @@ export default function Location(props) {
                                 />
                             </Fade>
                         </Modal>
-                        <div className={classes.costContainer}>
-                            <Typography variant="body1">Chi phí: {new Intl.NumberFormat().format(location.cost * 1000)} VND</Typography>
-                        </div>
                     </CardContent>
                 </Grid>
                 <Collapse in={showRv}>

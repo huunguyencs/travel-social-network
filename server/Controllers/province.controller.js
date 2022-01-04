@@ -83,7 +83,7 @@ class ProvinceController {
     //Get all province
     async getProvinces(req, res) {
         try {
-            const provinces = await Provinces.find({}, "fullname name");
+            const provinces = await Provinces.find({}, "fullname name position");
             res.json({ success: true, message: "get all provinces success", provinces });
         } catch (err) {
             console.log(err)
