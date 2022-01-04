@@ -24,8 +24,11 @@ const serviceSchema = new mongoose.Schema({
     ],
     images: [
         { type: String }
-    ]
-
+    ],
+    position: {
+        lat: Number,
+        lon: Number
+    }
 }, {
     timestamps: true
 })

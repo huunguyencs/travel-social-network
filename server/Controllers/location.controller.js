@@ -83,7 +83,7 @@ class LocationController {
                         select: "username fullname avatar"
                     }
                 })
-                .populate("locationId", "name");
+                .populate("locationId", "name fullname");
             res.json({ success: true, message: "successful", posts })
         }
         catch (err) {
@@ -95,11 +95,25 @@ class LocationController {
     //Get Location at a province
     async getLocations(req, res) {
         try {
-            const locations = await Locations.find({ province: req.params.province }, "images fullname name")
-                .populate("province", "fullname")
+            const locations = await Locations.find({ province: req.params.province }, "images fullname name position")
+                .populate("province", "fullname name")
             res.json({ success: true, message: "get locations success", locations });
         } catch (err) {
             console.log(err)
+            res.status(500).json({ success: false, message: err.message })
+        }
+    }
+
+    async getHotLocations(req, res) {
+        try {
+            const locations = await Locations.find({}).limit(5);
+            res.json({
+                success: true,
+                message: 'success',
+                locations
+            })
+        }
+        catch (err) {
             res.status(500).json({ success: false, message: err.message })
         }
     }

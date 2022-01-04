@@ -1,18 +1,59 @@
-import React, { useState } from "react";
-import { Backdrop, Button, CircularProgress, Container, Fade, Modal } from "@material-ui/core";
+import React, { useEffect, useState } from "react";
+import { Backdrop, Button, CircularProgress, Container, Fade, Modal, Typography } from "@material-ui/core";
 
 import Tour from "../tour/Tour";
 import { feedStyles } from "../../style";
-import { useSelector } from "react-redux";
 import CreateTourForm from "../forms/createTour";
+import customAxios from "../../utils/fetchData";
 
 
 
 export default function FeedTour(props) {
 
+    const { id } = props;
+
     const classes = feedStyles();
 
-    const { tour } = useSelector(state => state);
+    const [tours, setTours] = useState([]);
+    const [state, setState] = useState({
+        loading: false,
+        error: false,
+    })
+
+    const getMoreTour = async (id) => {
+        setState({
+            loading: true,
+            error: false,
+        })
+        try {
+            var url = id ? `/tour/user_tours/${id}` : `tour/tours`
+            await customAxios().get(url).then(res => {
+                setTours((state) => [
+                    ...state,
+                    ...res.data.tours
+                ])
+                setState({
+                    loading: false,
+                    error: false,
+                })
+            }).catch(err => {
+                setState({
+                    loading: false,
+                    error: true,
+                })
+            })
+        }
+        catch (err) {
+            setState({
+                loading: false,
+                error: true,
+            })
+        }
+    }
+
+    useEffect(() => {
+        getMoreTour(id);
+    }, [id])
 
     const [show, setShow] = useState(false);
 
@@ -43,11 +84,16 @@ export default function FeedTour(props) {
 
                 <div>
                     {
-                        tour.loading ?
-                            tour.error ?
-                                <div>Có lỗi xảy ra</div> :
-                                <CircularProgress color={"black"} /> :
-                            tour.tours.map((tour) => (
+                        state.loading ?
+                            state.error ?
+                                <div style={{ margin: 'auto' }}>
+                                    <Typography>Có lỗi xảy ra</Typography>
+                                    <Button onClick={getMoreTour}>Thử lại</Button>
+                                </div> :
+                                <div style={{ display: 'flex', justifyContent: 'center', marginTop: 50 }}>
+                                    <CircularProgress color={"inherit"} />
+                                </div> :
+                            tours.map((tour) => (
                                 <Tour
                                     tour={tour}
                                     key={tour._id}

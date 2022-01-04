@@ -9,8 +9,15 @@ const postStyles = makeStyles((theme) => ({
         borderRadius: attr.borderRadius.md,
         backgroundColor: color.white,
     },
-    likeIcon: {
+    likedIcon: {
         color: color.like,
+        cursor: 'pointer',
+        margin: 10,
+        fontSize: 28,
+        transition: "0.5s",
+        "&:active": {
+            fontSize: 20,
+        }
     },
     userName: {
         fontSize: 16,
@@ -71,6 +78,18 @@ const postStyles = makeStyles((theme) => ({
         transition: "0.8s",
         "&:hover": {
             filter: "brightness(90%)",
+        }
+    },
+    iconButton: {
+        cursor: 'pointer',
+        fontSize: 28,
+        margin: 10,
+        transition: "0.5s",
+        '&:hover': {
+            color: color.darkgray,
+        },
+        "&:active": {
+            fontSize: 20,
         }
     }
 }))

@@ -8,6 +8,18 @@ const provinceStyles = makeStyles((theme) => ({
         textAlign: "center",
         color: "white",
     },
+    image: {
+        width: "100%",
+        height: 700,
+        // [theme.breakpoints.down("md")]: {
+        //     width: "100%",
+        //     height: 600,
+        // },
+        [theme.breakpoints.down("xs")]: {
+            width: "100%",
+            height: 300,
+        },
+    },
     provinceName: {
         position: 'absolute',
         color: color.white,
@@ -17,6 +29,12 @@ const provinceStyles = makeStyles((theme) => ({
         left: "50%",
         transform: "translate(-50%, -50%)",
         backgroundColor: color.black,
+        [theme.breakpoints.down("md")]: {
+            fontSize: 64
+        },
+        [theme.breakpoints.down("sm")]: {
+            fontSize: 48
+        },
     },
     desContainer: {
         margin: 50,
@@ -42,6 +60,7 @@ const provinceStyles = makeStyles((theme) => ({
     },
     map: {
         margin: 30,
+        height: 600
     },
     patination: {
         display: "flex",

@@ -22,8 +22,7 @@ const eventStyles = makeStyles((theme) => ({
         backgroundRepeat: "no-repeat",
     },
     coverText: {
-        paddingLeft: "300px",
-        paddingTop: "200px",
+        paddingTop: 120,
         color: color.white,
         textAlign: "left",
     },

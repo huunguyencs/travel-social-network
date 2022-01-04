@@ -34,7 +34,7 @@ export default function CovidCard(props) {
     }, [name])
 
     return (
-        <Card className={classes.weatherCardContainer}>
+        <Card className={classes.covidCardContainer}>
             <div className={classes.title}>
                 <Typography variant="h6">Tình hình Covid-19</Typography>
 

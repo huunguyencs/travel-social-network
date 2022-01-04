@@ -2,29 +2,30 @@ import { InputBase, Typography, Button, Paper, IconButton, CircularProgress } fr
 import { Create, Image } from "@material-ui/icons";
 import React, { useState } from "react";
 import { ScrollMenu } from 'react-horizontal-scrolling-menu';
-import { useDispatch, useSelector } from "react-redux";
+import { useSelector } from "react-redux";
 import { useHistory } from "react-router-dom";
-import { createPost } from "../../redux/callApi/postCall";
 
 import { formStyles } from '../../style';
-import { checkImage } from "../../utils/uploadImage";
 import EmojiPicker from "../input/emojiPicker";
 import LoginModal from "../modal/login";
-
+import * as imageUtils from '../../utils/uploadImage';
+import customAxios from "../../utils/fetchData";
 
 export default function CreatePostForm(props) {
 
-    const dispatch = useDispatch();
-
     const history = useHistory();
 
-    const { auth, notify } = useSelector(state => state);
+    const { auth } = useSelector(state => state);
 
     const [imageUpload, setImageUpload] = useState([]);
     const [showWarning, setShowWarning] = useState("");
 
     const [text, setText] = useState("");
     const [hashtag, setHashtag] = useState("");
+    const [state, setState] = useState({
+        loading: false,
+        error: false
+    })
 
     const handleChange = e => {
         setText(e.target.value);
@@ -34,7 +35,7 @@ export default function CreatePostForm(props) {
         setShowWarning("");
         let valid = true;
         for (const file of e.target.files) {
-            const check = checkImage(file);
+            const check = imageUtils.checkImage(file);
             if (check !== "") {
                 setShowWarning(check);
                 valid = false;
@@ -57,14 +58,44 @@ export default function CreatePostForm(props) {
         return ht.filter(item => item !== "");
     }
 
-    const handleSubmit = (e) => {
+    const handleSubmit = async (e) => {
         e.preventDefault();
         var ht = hashtagSplit(hashtag);
         if (text !== '' || imageUpload.length > 0 || ht.length > 0) {
-            dispatch(createPost({ content: text, image: imageUpload, hashtags: ht }, auth.token, () => {
-                props.handleClose();
-                history.push("/");
-            }));
+            setState({
+                loading: true,
+                error: false
+            })
+            var data = { content: text, image: imageUpload, hashtags: ht };
+            let image = [];
+            if (imageUpload.length > 0) image = await imageUtils.uploadImages(imageUpload);
+            const post = {
+                ...data,
+                images: image
+            }
+            try {
+                await customAxios(auth.token).post("/post/create_post", post).then(res => {
+                    if (props.addPost !== undefined) props.addPost(res.data.newPost);
+                    props.handleClose();
+                    history.push("/");
+                    setState({
+                        loading: false,
+                        error: false
+                    })
+                }).catch(err => {
+                    setState({
+                        loading: false,
+                        error: true
+                    })
+                })
+            }
+            catch (err) {
+                setState({
+                    loading: false,
+                    error: true
+                })
+            }
+
         }
     }
 
@@ -126,7 +157,7 @@ export default function CreatePostForm(props) {
                                 <div>
                                     <Button className={classes.button} onClick={handleSubmit}>
                                         {
-                                            notify.loading ?
+                                            state.loading ?
                                                 <CircularProgress size="25px" color="white" /> :
                                                 <>
                                                     <Create style={{ marginRight: 10 }} />

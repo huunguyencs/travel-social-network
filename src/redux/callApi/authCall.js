@@ -71,5 +71,27 @@ export const logout = (data) => async (dispatch) => {
     catch (err) {
         dispatch(notifyAction.callFail({ error: err.response.data.message }));
     }
+}
 
+export const follow = (token, userId, next) => async (dispatch) => {
+    try {
+        await customAxios(token).put(`/user/${userId}/follow`).then(res => {
+            console.log(res.data);
+            dispatch(authAction.updateFollowing({ followings: res.data.followings }))
+        })
+    }
+    catch (err) {
+        next();
+    }
+}
+
+export const unfollow = (token, userId, next) => async (dispatch) => {
+    try {
+        await customAxios(token).put(`/user/${userId}/unfollow`).then(res => {
+            dispatch(authAction.updateFollowing({ followings: res.data.followings }))
+        })
+    }
+    catch (err) {
+        next();
+    }
 }

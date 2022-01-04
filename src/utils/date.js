@@ -1,3 +1,4 @@
+const options = { year: 'numeric', month: 'long', day: 'numeric' }
 
 export function convertDateToStr(date) {
     // date is Date object
@@ -11,6 +12,7 @@ export function getTime(date) {
 }
 
 export function convertStrToDate(dateStr) {
+
     // dateStr is str at format dd/mm/yyyy
     var date = dateStr.split("/");
     var viFormatDate = date[1] + "/" + date[0] + "/" + date[2];
@@ -18,7 +20,7 @@ export function convertStrToDate(dateStr) {
 }
 
 export function convertDateToStrTime(datetime) {
-    return `${convertDateToStr(datetime)} - ${('0' + datetime.getHours()).slice(-2)}:${('0' + datetime.getMinutes()).slice(-2)}`;
+    return `${datetime.toLocaleDateString('vi-VN', options)} lúc ${('0' + datetime.getHours()).slice(-2)}:${('0' + datetime.getMinutes()).slice(-2)}`;
 }
 
 export function timeAgo(datetime) {
@@ -37,11 +39,12 @@ export function timeAgo(datetime) {
             return `${ago} giờ trước`
         }
         else {
-            return `Hôm qua - ${('0' + datetime.getHours()).slice(-2)}:${('0' + datetime.getMinutes()).slice(-2)}`
+            return `Hôm qua lúc ${('0' + datetime.getHours()).slice(-2)}:${('0' + datetime.getMinutes()).slice(-2)}`
         }
     }
+
     if ((now - datetime < 48 * 60 * 60 * 1000) && (datetime.getDate() === now.getDate() - 1)) {
-        return `Hôm qua - ${('0' + datetime.getHours()).slice(-2)}:${('0' + datetime.getMinutes()).slice(-2)}`
+        return `Hôm qua lúc ${('0' + datetime.getHours()).slice(-2)}:${('0' + datetime.getMinutes()).slice(-2)}`
     }
     return convertDateToStrTime(datetime);
 }

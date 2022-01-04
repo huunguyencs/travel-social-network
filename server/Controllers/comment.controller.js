@@ -6,7 +6,7 @@ const Tours = require('../Models/tour.model')
 class CommentController {
     async createComment(req, res) {
         try {
-            const { commentType, content, postId, tourId, activityId } = req.body;
+            const { commentType, content, postId, tourId } = req.body;
 
             const newComment = new Comments({
                 userId: req.user._id, content, commentType

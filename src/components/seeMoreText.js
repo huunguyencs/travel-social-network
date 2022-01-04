@@ -26,7 +26,7 @@ export function SeeMoreText(props) {
                     <>
                         <span>{text?.slice(0, maxText)}</span>
                         {more ? <span>{text?.slice(maxText)}</span> : <span>...</span>}
-                        {!more && <span onClick={() => setMore(true)} className={classes.moreButton}>Xem thêm</span>}
+                        {<span onClick={() => setMore(!more)} className={classes.moreButton}>{more ? "Thu gọn" : "Xem thêm"}</span>}
                     </>
                 )
             }

@@ -9,7 +9,7 @@ export function NotFound() {
     const classes = useStyles();
 
     useEffect(() => {
-        document.title = "404 not found!";
+        document.title = "Trang không tồn tại!";
     }, [])
 
     return (

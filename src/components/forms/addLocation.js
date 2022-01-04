@@ -1,6 +1,6 @@
 import { Button, Paper, TextField, Typography } from "@material-ui/core";
 import { Autocomplete } from "@material-ui/lab";
-import React, { useEffect, useRef, useState } from "react";
+import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 
 import { formStyles } from '../../style';
@@ -13,7 +13,6 @@ export default function AddLocationForm(props) {
 
     const [loc, setLoc] = useState(null);
     const [currentProvince, setCurrentProvince] = useState('');
-    const costRef = useRef('');
 
 
     const { location } = useSelector(state => state);
@@ -56,7 +55,7 @@ export default function AddLocationForm(props) {
     const handleSubmit = (e) => {
         e.preventDefault();
         if (loc)
-            dispatch(tourAction.addLocation({ location: loc, cost: costRef.current.value, indexDate: props.indexDate }))
+            dispatch(tourAction.addLocation({ location: loc, indexDate: props.indexDate }))
         props.handleClose();
     }
 
@@ -105,15 +104,6 @@ export default function AddLocationForm(props) {
                         renderInput={(params) => <TextField {...params} name="location" label="Chọn địa điểm" variant="outlined" />}
                     />
                 </div>
-                <TextField
-                    label="Chi phí dự kiến (nghìn VND)"
-                    variant="outlined"
-                    name="cost"
-                    className="form-input"
-                    style={{ width: 400, marginTop: 30 }}
-                    type="number"
-                    inputRef={costRef}
-                />
                 <div>
                     <Button
                         className={classes.button}

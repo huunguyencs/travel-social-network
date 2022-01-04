@@ -1,16 +1,13 @@
 import React, { useEffect } from "react";
-import { Typography, Grid, Box, Tab, Tabs, IconButton, TextField, Button, Radio } from "@material-ui/core";
+import { Typography, Box, Tab, Tabs, TextField, Button, Radio, Container } from "@material-ui/core";
 import { PhotoCamera } from "@material-ui/icons";
 import PropTypes from 'prop-types';
 import { RadioGroup, FormControlLabel } from "@material-ui/core";
 import DateFnsUtils from '@date-io/date-fns';
 
-import { profileMenu } from "../../../constant/menu";
-import Header from "../../../components/header/Header";
-import LeftBar from "../../../components/leftbar/LeftBar";
-import { profileStyles } from "../../../style";
-import Menu from "../../../components/leftbar/menu";
+import { profileStyles } from "../style";
 import { KeyboardDatePicker, MuiPickersUtilsProvider } from "@material-ui/pickers";
+import { useSelector } from "react-redux";
 
 
 function TabPanel(props) {
@@ -50,6 +47,8 @@ function ChangeInfo(props) {
 
     const classes = profileStyles();
 
+    const { user } = useSelector(state => state.auth);
+
     useEffect(() => {
         document.title = "Thay đổi thông tin";
     }, []);
@@ -59,25 +58,21 @@ function ChangeInfo(props) {
             <div className={classes.change_background}>
                 <div className={classes.change_background_upload}>
                     <input accept="image/*" style={{ display: "none" }} id="icon-button-file" type="file" />
-                    <label htmlFor="icon-button-file">
-                        <IconButton color="primary" aria-label="upload picture" component="span">
-                            <PhotoCamera />
-                        </IconButton>
+                    <label htmlFor="icon-button-file" style={{ cursor: 'pointer' }}>
+                        <PhotoCamera />
                     </label>
                 </div>
-                <img className={classes.change_bg} src="https://res.cloudinary.com/dxnfxl89q/image/upload/v1625327484/Toho/close-up-opened-umbrella-mockup_53876-98796_nj3un5.jpg" alt="cover"></img>
+                <img className={classes.change_bg} src={user?.background} alt="cover"></img>
             </div>
             <div className={classes.change_wrapper}>
                 <div className={classes.change_avatar}>
                     <div className={classes.change_avatar_upload}>
                         <input accept="image/*" style={{ display: "none" }} id="icon-button-file" type="file" />
-                        <label htmlFor="icon-button-file">
-                            <IconButton color="primary" aria-label="upload picture" component="span">
-                                <PhotoCamera />
-                            </IconButton>
+                        <label htmlFor="icon-button-file" style={{ cursor: 'pointer' }}>
+                            <PhotoCamera />
                         </label>
                     </div>
-                    <img className={classes.change_avatar_img} src="https://res.cloudinary.com/dxnfxl89q/image/upload/v1625327484/Toho/close-up-opened-umbrella-mockup_53876-98796_nj3un5.jpg" alt="avatar"></img>
+                    <img className={classes.change_avatar_img} src={user?.avatar} alt="avatar"></img>
                 </div>
                 <div className={classes.change_form}>
                     <form
@@ -86,7 +81,17 @@ function ChangeInfo(props) {
                         autoComplete="off"
                     >
                         <TextField
-                            autoComplete=""
+                            value={user?.username}
+
+                            label="Tên tài khoản"
+                            variant="outlined"
+                            name="username"
+                            className="form-input"
+                            required
+                        />
+                        <TextField
+                            value={user?.fullname}
+
                             label="Họ và Tên"
                             variant="outlined"
                             name="name"
@@ -94,7 +99,8 @@ function ChangeInfo(props) {
                             required
                         />
                         <TextField
-                            autoComplete=""
+                            value={user?.email}
+
                             label="Email"
                             variant="outlined"
                             name="email"
@@ -102,14 +108,16 @@ function ChangeInfo(props) {
                             required
                         />
                         <TextField
-                            autoComplete=""
+                            value={user?.phone}
+
                             label="Số điện thoại"
                             variant="outlined"
                             name="phone"
                             className="form-input"
                         />
                         <TextField
-                            autoComplete=""
+
+
                             label="Sở thích du lịch"
                             variant="outlined"
                             name="hobby"
@@ -124,15 +132,16 @@ function ChangeInfo(props) {
                                 format="dd/MM/yyyy"
                                 margin="normal"
                                 id="date-picker-inline"
-                                label="Chọn ngày khởi hành"
+                                label="Ngày sinh"
                                 KeyboardButtonProps={{
                                     'aria-label': 'change date',
                                 }}
+                                onChange={(e) => e}
                             />
                         </MuiPickersUtilsProvider>
-                        <RadioGroup row aria-label="position" name="position" defaultValue="man" style={{ marginBottom: "10px" }}>
-                            <FormControlLabel value="man" control={<Radio color="primary" />} label="Nam" />
-                            <FormControlLabel value="male" control={<Radio color="primary" />} label="Nữ" />
+                        <RadioGroup row aria-label="position" name="position" defaultValue="male" style={{ marginBottom: "10px" }}>
+                            <FormControlLabel value="male" control={<Radio color="primary" />} label="Nam" />
+                            <FormControlLabel value="female" control={<Radio color="primary" />} label="Nữ" />
                             <FormControlLabel value="other" control={<Radio color="primary" />} label="Khác" />
                         </RadioGroup>
                         <div className="login-group">
@@ -217,39 +226,30 @@ export default function Change_info(props) {
     };
     return (
         <div>
-            <Header />
-            <Grid container style={{ margin: 0, padding: 0 }}>
-                <Grid item sm={3}>
-                    <LeftBar >
-                        <Menu menuList={profileMenu} />
-                    </LeftBar>
-                </Grid>
-                <Grid item sm={9}>
-                    <div className={classes.root}>
-                        <Tabs
-                            orientation="vertical"
-                            variant="scrollable"
-                            value={value}
-                            onChange={handleChange}
-                            aria-label="Vertical tabs example"
-                            className={classes.tabs}
-                        >
-                            <Tab className={classes.tab} label="Thay đổi thông tin" {...a11yProps(0)} />
-                            <Tab className={classes.tab} label="Thay đổi mật khẩu" {...a11yProps(1)} />
-                            <Tab className={classes.tab} label="Bảo mật và riêng tư" {...a11yProps(2)} />
-                        </Tabs>
-                        <TabPanel value={value} index={0} className={classes.tabPanel}>
-                            <ChangeInfo />
-                        </TabPanel>
-                        <TabPanel value={value} index={1} className={classes.tabPanel}>
-                            <ChangePassword />
-                        </TabPanel>
-                        <TabPanel value={value} index={2} className={classes.tabPanel}>
-                            404
-                        </TabPanel>
-                    </div>
-                </Grid>
-            </Grid>
+            <Container className={classes.root}>
+
+                <Tabs
+                    orientation="vertical"
+                    variant="scrollable"
+                    value={value}
+                    onChange={handleChange}
+                    aria-label="Vertical tabs example"
+                    className={classes.tabs}
+                >
+                    <Tab className={classes.tab} label="Thay đổi thông tin" {...a11yProps(0)} />
+                    <Tab className={classes.tab} label="Thay đổi mật khẩu" {...a11yProps(1)} />
+                    <Tab className={classes.tab} label="Bảo mật và riêng tư" {...a11yProps(2)} />
+                </Tabs>
+                <TabPanel value={value} index={0} className={classes.tabPanel}>
+                    <ChangeInfo />
+                </TabPanel>
+                <TabPanel value={value} index={1} className={classes.tabPanel}>
+                    <ChangePassword />
+                </TabPanel>
+                <TabPanel value={value} index={2} className={classes.tabPanel}>
+                    404
+                </TabPanel>
+            </Container>
         </div>
     )
 }
