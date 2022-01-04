@@ -1,4 +1,4 @@
-import { IconButton } from "@material-ui/core";
+import { IconButton, Typography } from "@material-ui/core";
 import { ChevronLeft, ChevronRight } from "@material-ui/icons";
 import React, { useContext } from "react";
 import { ScrollMenu, VisibilityContext } from 'react-horizontal-scrolling-menu';
@@ -31,67 +31,31 @@ function RightArrow(props) {
     )
 }
 
-const listEvent = [
-    {
-        _id: "1",
-        image: "https://toplist.vn/images/800px/le-hoi-truyen-thong-o-nuoc-ta-9886.jpg",
-        name: "Tết Nguyên Đán",
-        description: "Tết cổ truyền Việt Nam",
-        time: "30/1/2022",
-    },
-    {
-        _id: "2",
-        image: "https://toplist.vn/images/800px/le-hoi-truyen-thong-o-nuoc-ta-9886.jpg",
-        name: "Tết Nguyên Đán",
-        description: "Tết cổ truyền Việt Nam",
-        time: "30/1/2022",
-    },
-    {
-        _id: "3",
-        image: "https://toplist.vn/images/800px/le-hoi-truyen-thong-o-nuoc-ta-9886.jpg",
-        name: "Tết Nguyên Đán",
-        description: "Tết cổ truyền Việt Nam",
-        time: "30/1/2022",
-    },
-    {
-        _id: "4",
-        image: "https://toplist.vn/images/800px/le-hoi-truyen-thong-o-nuoc-ta-9886.jpg",
-        name: "Tết Nguyên Đán",
-        description: "Tết cổ truyền Việt Nam",
-        time: "30/1/2022",
-    },
-    {
-        _id: "5",
-        image: "https://toplist.vn/images/800px/le-hoi-truyen-thong-o-nuoc-ta-9886.jpg",
-        name: "Tết Nguyên Đán",
-        description: "Tết cổ truyền Việt Nam",
-        time: "30/1/2022",
-    },
-    {
-        _id: "6",
-        image: "https://toplist.vn/images/800px/le-hoi-truyen-thong-o-nuoc-ta-9886.jpg",
-        name: "Tết Nguyên Đán",
-        description: "Tết cổ truyền Việt Nam",
-        time: "30/1/2022",
-    }
-]
 
 export default function Event(props) {
 
+    const { events } = props;
+
     return (
         <div>
-            <ScrollMenu
+            {events.length > 0 ? <ScrollMenu
                 LeftArrow={LeftArrow}
                 RightArrow={RightArrow}
             >
-                {listEvent.map((item) =>
+                {events.map((item) =>
                     <EventItem
-                        itemId={item.id}
+                        itemId={item._id}
                         key={item._id}
                         event={item}
                     />
                 )}
             </ScrollMenu>
+                :
+                <div style={{ display: 'flex', justifyContent: 'center' }}>
+                    <Typography>Không tìm thấy sự kiện</Typography>
+                </div>
+            }
+
         </div>
     )
 }

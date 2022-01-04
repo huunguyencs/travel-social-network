@@ -18,23 +18,21 @@ export default function EventItem(props) {
             <CardActionArea>
                 <CardMedia
                     className={classes.media}
-                    image={event.image}
-                    title={event.name}
+                    image={event.images[0]}
+                    title={event.fullname}
                 />
             </CardActionArea>
             <CardContent>
-                <Typography gutterBottom variant="h5">
-                    {event.name}
+                <Typography variant="h5" component={Link} to={'/event/' + event.name}>
+                    {event.fullname}
                 </Typography>
-                <Typography>
-                    {event.time}
-                </Typography>
-                <Typography variant="body2" color="textSecondary">
-                    {event.description}
+                <Typography style={{ marginBottom: 10 }} variant="h6">{event.provinceId ? event.provinceId.fullname : "Cả nước"}</Typography>
+                <Typography style={{ marginBottom: 10 }}>
+                    {event.timedes}
                 </Typography>
             </CardContent>
             <CardActions>
-                <Button size="small" color="primary" component={Link} to={'/event/' + event._id}>
+                <Button size="small" color="primary" component={Link} to={'/event/' + event.name}>
                     Xem chi tiết
                 </Button>
             </CardActions>

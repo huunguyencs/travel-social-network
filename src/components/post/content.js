@@ -100,7 +100,7 @@ function BaseContent({ post }) {
             {
                 post.images.length > 0 &&
                 <CardMedia>
-                    <ImageList imgList={post.images} />
+                    <ImageList imgList={post.images} show2Image={true} />
                 </CardMedia>
             }
         </>

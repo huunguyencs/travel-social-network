@@ -8,7 +8,7 @@ import { updateInfo } from '../../redux/actions/createTourAction';
 import EmojiPicker from "../input/emojiPicker";
 
 
-export default function UpdateTourInfo({ name, content, hashtags, image, handleClose }) {
+export default function UpdateTourInfo({ name, content, hashtags, image, handleClose, cost }) {
 
     const dispatch = useDispatch();
 
@@ -16,6 +16,7 @@ export default function UpdateTourInfo({ name, content, hashtags, image, handleC
         name: name,
         hashtags: hashtags,
         image: image,
+        cost: cost
     })
 
     const [text, setText] = useState(content);
@@ -46,7 +47,7 @@ export default function UpdateTourInfo({ name, content, hashtags, image, handleC
 
     const handleSubmit = () => {
         // console.log(state);
-        dispatch(updateInfo({ name: state.name, content: text, hashtags: state.hashtags, image: state.image }));
+        dispatch(updateInfo({ name: state.name, content: text, hashtags: state.hashtags, image: state.image, cost: state.cost }));
         handleClose();
     }
 
@@ -67,6 +68,16 @@ export default function UpdateTourInfo({ name, content, hashtags, image, handleC
                         label="Tên tour"
                         variant="outlined"
                         value={state.name}
+                        className={classes.tourNameInput}
+                        onChange={handleInput}
+                    />
+                    <TextField
+                        type={"number"}
+                        name="cost"
+                        id="cost"
+                        label="Chi phí (nghìn VND)"
+                        variant="outlined"
+                        value={state.cost}
                         className={classes.tourNameInput}
                         onChange={handleInput}
                     />

@@ -4,7 +4,6 @@ import {
     Card,
     CardActions,
     Collapse,
-    IconButton,
     Modal,
     Typography
 } from "@material-ui/core";
@@ -14,27 +13,29 @@ import {
     QuestionAnswer,
     Share
 } from "@material-ui/icons";
-import { useDispatch, useSelector } from "react-redux";
+import { useSelector } from "react-redux";
 
 
 import Comment from "../comment/Comment";
 import { postStyles } from "../../style";
 import InputComment from "../input/comment";
 import UserList from "../modal/userList";
-import { likeTour, unlikeTour } from "../../redux/callApi/tourCall";
+
 import SharePost from "../forms/share";
 import TourContent from "./content";
+import customAxios from "../../utils/fetchData";
 
 
 export default function Tour(props) {
 
+
+    const [tour, setTour] = useState(props.tour);
     const { auth } = useSelector(state => state);
-    const dispatch = useDispatch();
 
     const [showCmt, setShowCmt] = useState(false);
     const [like, setLike] = useState(false);
 
-    const [tour, setTour] = useState(null);
+
     const [share, setShare] = useState(false);
 
     const updateLike = (likes) => {
@@ -61,32 +62,52 @@ export default function Tour(props) {
         else handleLike();
     }
 
-    const handleLike = () => {
+    const handleLike = async () => {
         setLike(true);
         let prevLike = tour.likes;
-        let newLike = [...prevLike, auth.user]
-        updateLike(newLike);
+        updateLike([...prevLike, auth.user]);
 
-        dispatch(likeTour(tour._id, auth.token, () => {
+        try {
+            await customAxios(auth.token).patch(`/tour/${tour._id}/like`).then(res => {
+                updateLike(res.data.likes);
+            }).catch(err => {
+                if (like) {
+                    setLike(false);
+                    updateLike(prevLike)
+                }
+            })
+        }
+        catch (err) {
             if (like) {
                 setLike(false);
-                updateLike(prevLike);
+                updateLike(prevLike)
             }
-        }))
+        }
     }
 
-    const handleUnlike = () => {
+    const handleUnlike = async () => {
         setLike(false);
         let prevLike = tour.likes;
         let newLikes = prevLike.filter(user => user._id !== auth.user._id);
         updateLike(newLikes);
 
-        dispatch(unlikeTour(tour._id, auth.token, () => {
+        try {
+            await customAxios(auth.token).patch(`/tour/${tour._id}/unlike`).then(res => {
+                updateLike(res.data.likes);
+            }).catch(err => {
+                if (!like) {
+                    setLike(true);
+                    updateLike(prevLike);
+                }
+            })
+        }
+        catch (err) {
             if (!like) {
                 setLike(true);
                 updateLike(prevLike);
             }
-        }))
+        }
+
     }
 
     const [showLike, setShowLike] = useState(false);
@@ -99,10 +120,6 @@ export default function Tour(props) {
         setShowLike(false);
     };
 
-    useEffect(() => {
-        setTour(props.tour);
-    }, [props.tour]);
-
 
     useEffect(() => {
         if (tour?.likes.find(like => like._id === auth?.user._id)) {
@@ -112,20 +129,17 @@ export default function Tour(props) {
     }, [tour, auth.user])
 
 
-
-
     return (
         <Card className={classes.cardContainer}>
             {tour && auth.user && <>
                 <TourContent tour={tour} setTour={setTour} />
 
                 <CardActions>
-                    <IconButton onClick={likePress}>
-                        {
-                            like ? <Favorite className={classes.likeIcon} /> : <FavoriteBorderOutlined />
-                        }
+                    {
+                        like ? <Favorite className={classes.likedIcon} onClick={likePress} /> : <FavoriteBorderOutlined className={classes.iconButton} onClick={likePress} />
+                    }
 
-                    </IconButton>
+
                     <Typography className={classes.numLike} onClick={handleOpen}>
                         {tour?.likes.length}
                     </Typography>
@@ -143,15 +157,11 @@ export default function Tour(props) {
                     >
                         <UserList listUser={tour.likes} title={"Đã thích"} handleClose={handleClose} />
                     </Modal>
-                    <IconButton onClick={() => (setShowCmt(value => !value))}>
-                        <QuestionAnswer />
-                    </IconButton>
+                    <QuestionAnswer onClick={() => (setShowCmt(value => !value))} className={classes.iconButton} />
                     <Typography className={classes.numCmt}>
                         {tour.comments.length}
                     </Typography>
-                    <IconButton>
-                        <Share onClick={() => setShare(true)} />
-                    </IconButton>
+                    <Share onClick={() => setShare(true)} className={classes.iconButton} />
                     <Modal
                         aria-labelledby="share"
                         aria-describedby="share-this-tour"

@@ -5,6 +5,7 @@ const INIT_STATE = {
     name: "",
     content: "",
     hashtags: "",
+    cost: 0,
     image: null,
     tour: [],
     isFetching: false,
@@ -110,6 +111,7 @@ const createTourReducer = (state = INIT_STATE, action) => {
                 image: action.payload.image,
                 hashtags: action.payload.hashtags,
                 content: action.payload.content,
+                cost: action.payload.cost
             }
         }
         default: {

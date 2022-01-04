@@ -5,12 +5,10 @@ const Comments = require('../Models/comment.model')
 class TourController {
     async createTour(req, res) {
         try {
-            const { content, name, taggedIds, image, hashtags, tour } = req.body
-
-            // console.log(tourDate[0].locations);
+            const { content, name, taggedIds, image, hashtags, tour, cost } = req.body
 
             const newTour = new Tours({
-                userId: req.user._id, content, image, name, taggedIds, hashtags
+                userId: req.user._id, content, image, name, taggedIds, hashtags, cost
             })
             await newTour.save()
             if (tour.length > 0) {
@@ -28,6 +26,7 @@ class TourController {
                     });
                 });
             }
+
             res.json({
                 success: true,
                 message: "Create Tour successful",
@@ -67,13 +66,13 @@ class TourController {
     ///
     async updateTour(req, res) {
         try {
-            const { content, tourName, isPublic, taggedIds, image, hashtags, tourDate } = req.body
+            const { content, tourName, isPublic, taggedIds, image, hashtags, tour, cost } = req.body
 
-            const tour = await Tours.findOneAndUpdate({ _id: req.params.id }, {
-                content, image, tourName, taggedIds, hashtags, isPublic, tourDate
+            const newTour = await Tours.findOneAndUpdate({ _id: req.params.id }, {
+                content, image, tourName, taggedIds, hashtags, isPublic, tour, cost
             }, { new: true })
 
-            res.json({ success: true, message: "update tour successful", tour })
+            res.json({ success: true, message: "update tour successful", newTour })
         } catch (err) {
             console.log(err)
             res.status(500).json({ success: false, message: err.message })
@@ -126,6 +125,7 @@ class TourController {
         try {
             const tour = await Tours.findOneAndDelete({ _id: req.params.id, userId: req.user._id });
             if (tour.comments != null) await Comments.deleteMany({ _id: { $in: tour.comments } });
+            if (tour.tour != null) await TourDates.deleteMany({ _id: { $in: tour.tour } });
 
             res.json({
                 success: true, message: "Delete tour success"
@@ -201,7 +201,7 @@ class TourController {
     // lấy thông tin 1 tour theo params.id
     async getTour(req, res) {
         try {
-
+            // console.log(req.params.id)
             let tour = await Tours.findById(req.params.id);
             let requestId;
             if (tour.shareId) {
@@ -210,7 +210,7 @@ class TourController {
             else
                 requestId = tour._id;
 
-            tour = await Tour.findById(requestId)
+            tour = await Tours.findById(requestId)
                 .populate("tour")
                 .populate({
                     path: "tour",
@@ -218,10 +218,10 @@ class TourController {
                         path: "locations",
                         populate: {
                             path: "location",
-                            select: "name images",
+                            select: "name images fullname position",
                             populate: {
                                 path: "province",
-                                select: "name"
+                                select: "name fullname"
                             }
                         }
                     }
@@ -234,9 +234,14 @@ class TourController {
                         select: "-password"
                     },
                 })
-            res.json({
-                success: true, message: "get info 1 tour success", tour
-            });
+            if (tour) {
+                res.json({
+                    success: true, message: "get info 1 tour success", tour
+                });
+            } else {
+                res.status(404).json({ success: false, message: "not found" });
+            }
+
         } catch (err) {
             console.log(err)
             res.status(500).json({ success: false, message: err.message })

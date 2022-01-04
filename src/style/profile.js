@@ -6,7 +6,7 @@ const profileStyles = makeStyles((theme) => ({
   root: {
     backgroundColor: theme.palette.background.paper,
     display: "flex",
-    height: "90vh",
+    height: "100vh",
     paddingTop: "75px"
   },
   tabs: {
@@ -23,13 +23,17 @@ const profileStyles = makeStyles((theme) => ({
   change_background: {
     width: "100%",
     height: "180px",
-    position: "relative"
+    position: "relative",
+    "&:hover": {
+
+    }
   },
   change_background_upload: {
     position: "absolute",
     top: "50%",
     left: "50%",
-    transform: "translate(-50%,-50%)"
+    transform: "translate(-50%,-50%)",
+    cursor: "pointer",
   },
   change_bg: {
     width: "100%",

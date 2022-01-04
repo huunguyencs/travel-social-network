@@ -68,7 +68,7 @@ export default function Slider() {
                 enableMouseEvents
             >
                 {data.map((step, index) => (
-                    <div key={step.label}>
+                    <div key={index}>
                         {Math.abs(activeStep - index) <= 1 ? (
                             <div
                                 style={{
@@ -92,11 +92,13 @@ export default function Slider() {
                                 <div className={classes.textCover}>
                                     <Typography
                                         variant="h1"
+                                        className={classes.title}
                                     >
                                         {step.title}
                                     </Typography>
                                     <Typography
                                         variant="h3"
+                                        className={classes.subtitle}
                                     >
                                         {step.subtitle}
                                     </Typography>

@@ -182,7 +182,7 @@ export default function Login(props) {
                             className="login-button"
                         >
                             {notify.loading ?
-                                <CircularProgress size="25px" color="white" />
+                                <CircularProgress size="25px" color="inherit" />
                                 : "Đăng nhập"
                             }
                         </Button>

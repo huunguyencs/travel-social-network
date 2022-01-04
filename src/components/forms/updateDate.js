@@ -1,11 +1,11 @@
-import { Button, Paper } from "@material-ui/core";
+import { Button, Paper, Typography } from "@material-ui/core";
 import { KeyboardDatePicker, MuiPickersUtilsProvider } from "@material-ui/pickers";
 import React, { useState } from "react";
 import DateFnsUtils from '@date-io/date-fns';
 
 import * as tourAction from '../../redux/actions/createTourAction';
 import { useDispatch } from "react-redux";
-import * as dateUtils from '../../utils/date';
+// import * as dateUtils from '../../utils/date';
 
 export default function UpdateDateForm(props) {
 
@@ -13,7 +13,7 @@ export default function UpdateDateForm(props) {
 
     const dispatch = useDispatch();
 
-    const [selectedDate, setSelectedDate] = useState(dateUtils.convertStrToDate(currentDate));
+    const [selectedDate, setSelectedDate] = useState(currentDate);
     const handleDateChange = (date) => {
         setSelectedDate(date);
     };
@@ -25,11 +25,14 @@ export default function UpdateDateForm(props) {
     }
 
     return (
-        <Paper>
-            <div></div>
+        <Paper style={{ padding: 20 }}>
+            <div style={{ display: 'flex', justifyContent: 'center' }}>
+                <Typography variant="h5">Thay đổi ngày</Typography>
+            </div>
             <form>
                 <MuiPickersUtilsProvider utils={DateFnsUtils}>
                     <KeyboardDatePicker
+                        style={{ display: 'flex', justifyContent: 'center' }}
                         name="date"
                         disableToolbar
                         variant="inline"
@@ -44,9 +47,11 @@ export default function UpdateDateForm(props) {
                         }}
                     />
                 </MuiPickersUtilsProvider>
-                <Button onClick={handleSubmit} type="submit">
-                    Xong
-                </Button>
+                <div style={{ display: 'flex', justifyContent: 'center', marginTop: 20 }}>
+                    <Button onClick={handleSubmit} type="submit">
+                        Xong
+                    </Button>
+                </div>
             </form>
         </Paper>
     )

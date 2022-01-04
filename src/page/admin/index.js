@@ -89,7 +89,7 @@ export default function AdminHome(props) {
                     </Grid>
                 </Grid>
 
-                <Grid>
+                <Grid container>
                     <div
                         style={{
                             display: "flex",

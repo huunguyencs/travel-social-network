@@ -28,8 +28,8 @@ export default function WeatherFocast({ weather, handleClose, nameShow, alert })
                 </div>
             }
             <ScrollMenu>
-                {weather && weather.map(item =>
-                    <WeatherFocastItem weather={item} />
+                {weather && weather.map((item, index) =>
+                    <WeatherFocastItem weather={item} key={index} />
                 )}
             </ScrollMenu>
             <div style={{ display: "flex", justifyContent: "right", margin: 10 }}>
