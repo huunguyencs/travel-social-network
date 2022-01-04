@@ -19,20 +19,23 @@ export default function AddLocation(props) {
     const [locations, setLocations] = useState([]);
 
     const defaultState = {
-        zoom: 9,
+        zoom: 8,
         center: { lat: 14.489055527436275, lng: 107.96608963227854 }
     }
     const [state, setState] = useState(defaultState);
 
     const changeLoc = (loc) => {
-        setLoc(loc);
-        setState({
-            zoom: 12,
-            center: {
-                lat: loc.position.lat,
-                lng: loc.position.lon
-            }
-        })
+        if (loc) {
+            setLoc(loc);
+            setState({
+                zoom: 12,
+                center: {
+                    lat: loc.position.lat,
+                    lng: loc.position.lon
+                }
+            })
+        }
+
     }
 
     const getLoc = async (province) => {

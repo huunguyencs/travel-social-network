@@ -41,9 +41,14 @@ export default function Location(props) {
     useEffect(() => {
         if (id) {
             getLocation(id);
-            dispatch(getPostsLocation(id));
         }
-    }, [id, dispatch])
+    }, [id])
+
+    useEffect(() => {
+        if (location) {
+            dispatch(getPostsLocation(location._id));
+        }
+    }, [location, dispatch])
 
 
     useEffect(() => {
@@ -68,7 +73,7 @@ export default function Location(props) {
                                             {location.fullname}
                                         </Typography>
                                     </div>
-                                    <div style={{ display: 'flex', justifyContent: 'center', marginTop: 30 }}>
+                                    <div style={{ display: 'flex', justifyContent: 'center', marginTop: 20 }}>
                                         <>
                                             <LocationOn className={classes.iconProvince} />
                                             <Typography className={classes.provinceName} variant="h4" component={Link} to={`/province/${location.province.name}`}>
@@ -95,7 +100,7 @@ export default function Location(props) {
 
                                 <Grid item md={6} sm={12}>
                                     <div className={classes.map}>
-                                        <MapCard position={location.position} zoom={12} name={location.fullname} />
+                                        <MapCard position={location.position} zoom={12} name={location.fullname} height={400} />
                                     </div>
                                 </Grid>
                                 <Grid item md={3} sm={12}>
