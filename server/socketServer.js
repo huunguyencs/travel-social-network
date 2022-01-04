@@ -44,12 +44,39 @@ const SocketServer = (socket) =>{
 
     //comment Post
     socket.on('createCommentPost',newPost=>{
-        console.log(newPost);
+        // console.log(newPost);
         if(users.length >0){
             users.forEach(user =>{ 
                 socket.to(user.socketId).emit('createCommentPostToClient',newPost);
-                
             })
+        }
+    })
+
+    //Delete comment Post
+    socket.on('deleteCommentPost', newPost=>{
+        // console.log(newPost);
+        if(users.length >0){ 
+            users.forEach(user =>{
+                socket.to(user.socketId).emit('deleteCommentPostToClient', newPost)
+            })
+        }
+    })
+
+    //Follow
+    socket.on('follow',newUser =>{
+        const user = users.filter(user => user.id === newUser._id);
+        if(user) {
+            // console.log(user[0].socketId);
+            socket.to(user[0].socketId).emit('followToClient',newUser);
+        }
+        
+    })
+
+    //unfollow
+    socket.on('unfollow', newUser=>{
+        const user = users.filter(user => user.id === newUser.user);
+        if(user){
+            socket.to(user[0].socketId).emit('unfollowToClient',newUser.user)
         }
     })
 }

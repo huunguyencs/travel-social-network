@@ -2,6 +2,7 @@ import React, { useEffect, useRef } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import * as postAction from './redux/actions/postAction';
 import * as commentAction from './redux/actions/commentAction';
+import * as authAction from './redux/actions/authAction';
 
 const SocketClient = () => {
     const {auth, socket} = useSelector(state => state);
@@ -20,7 +21,7 @@ const SocketClient = () => {
         })
 
         return ()=> socket.off('likeToClient');
-    },[socket])
+    },[socket,dispatch])
     
     //unlike
     useEffect(() =>{ 
@@ -29,7 +30,7 @@ const SocketClient = () => {
             dispatch(postAction.updateLike(newPost));
         })
         return () => socket.off('unlikeToClient');
-    },[socket])
+    },[socket,dispatch])
 
     //comment Post
     useEffect(() =>{
@@ -37,8 +38,31 @@ const SocketClient = () => {
             dispatch(commentAction.addCommentPost(newPost));
         })
         return () => socket.off('createCommentPostToClient');
-    },[socket])
+    },[socket,dispatch])
 
+    //follow
+    useEffect(()=>{
+        socket.on('followToClient', newUser=>{
+            dispatch(authAction.follow({
+                user: {
+                    _id: newUser._id,
+                    username: newUser.username,
+                    avatar: newUser.avatar,
+                    fullname: newUser.fullname,
+                }
+            }))
+            console.log(newUser);
+        })
+        return () => socket.off('followToClient');
+    },[socket,dispatch])
+
+    //unfollow
+    useEffect(()=>{
+        socket.on('unfollowToClient', newUser=>{
+            dispatch(authAction.unfollow({ user: newUser }))
+        })
+        return () => socket.off('unfollowToClient');
+    },[socket,dispatch])
     
     return <></>
 }

@@ -17,7 +17,7 @@ export default function Profile_Avatar(props) {
   const { id } = useParams();
   const history = useHistory();
 
-  const { auth } = useSelector(state => state);
+  const { auth, socket } = useSelector(state => state);
 
   const dispatch = useDispatch();
 
@@ -66,11 +66,11 @@ export default function Profile_Avatar(props) {
   const handleFollow = () => {
     // console.log(user);
     if (followed) {
-      dispatch(unfollow(user, auth.token));
+      dispatch(unfollow(user, auth.token,socket));
       setFollowed(false);
     }
     else {
-      dispatch(follow(user, auth.token));
+      dispatch(follow(user, auth.token,socket));
       setFollowed(true);
     }
   }

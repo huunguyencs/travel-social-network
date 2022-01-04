@@ -14,7 +14,7 @@ import * as authAction from '../actions/authAction';
 // }
 
 
-export const follow = (user, token) => async (dispatch) => {
+export const follow = (user, token, socket) => async (dispatch) => {
     try {
         dispatch(authAction.follow({
             user: {
@@ -26,6 +26,7 @@ export const follow = (user, token) => async (dispatch) => {
         }))
 
         await customAxios(token).put(`/user/${user._id}/follow`);
+        socket.emit('follow',user);
     }
     catch (err) {
         dispatch(authAction.unfollow({ user: user._id }));
@@ -33,11 +34,11 @@ export const follow = (user, token) => async (dispatch) => {
     }
 }
 
-export const unfollow = (user, token) => async (dispatch) => {
+export const unfollow = (user, token, socket) => async (dispatch) => {
     try {
         dispatch(authAction.unfollow({ user: user._id }));
         await customAxios(token).put(`/user/${user._id}/unfollow`);
-
+        socket.emit('unfollow', { user: user._id });
 
     }
     catch (err) {
