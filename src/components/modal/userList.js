@@ -1,10 +1,10 @@
-import { Avatar, Button, IconButton } from "@material-ui/core";
+import { Avatar, Button, CircularProgress, IconButton } from "@material-ui/core";
 import { Close } from "@material-ui/icons";
 import React, { useEffect, useState } from "react";
 import { useSelector, useDispatch } from 'react-redux';
 import { Link } from 'react-router-dom';
 
-import { follow, unfollow } from "../../redux/callApi/userCall";
+import { follow, unfollow } from "../../redux/callApi/authCall";
 import { modalListStyles } from "../../style";
 
 
@@ -14,16 +14,52 @@ export default function UserList(props) {
     const { auth } = useSelector(state => state);
     const dispatch = useDispatch();
     const [followings, setFollowings] = useState([]);
+    const [stateFollow, setStateFollow] = useState({
+        id: null,
+        loading: false,
+        error: false,
+    })
 
     const classes = modalListStyles();
 
-    const handleFollow = (user) => {
-        // console.log(user);
-        if (isFollowed(user._id)) {
-            dispatch(unfollow(user, auth.token, auth.user));
+    const handleFollow = (userId) => {
+        if (isFollowed(userId)) {
+            setStateFollow({
+                id: userId,
+                loading: true,
+                error: false
+            })
+            dispatch(unfollow(auth.token, userId, () => {
+                setStateFollow({
+                    id: userId,
+                    loading: false,
+                    error: true
+                })
+            }));
+            setStateFollow({
+                id: userId,
+                loading: false,
+                error: false
+            })
         }
         else {
-            dispatch(follow(user, auth.token, auth.user));
+            setStateFollow({
+                id: userId,
+                loading: true,
+                error: false
+            })
+            dispatch(follow(auth.token, userId, () => {
+                setStateFollow({
+                    id: userId,
+                    loading: false,
+                    error: true
+                })
+            }));
+            setStateFollow({
+                id: userId,
+                loading: false,
+                error: false
+            })
         }
     }
 
@@ -64,8 +100,8 @@ export default function UserList(props) {
                         <div>
                             {
                                 user._id !== auth.user._id &&
-                                <Button variant="outlined" className={classes.modal_body_user_button} onClick={() => handleFollow(user)}>
-                                    {isFollowed(user._id) ? "Hủy theo dõi" : "Theo dõi"}
+                                <Button variant="outlined" className={classes.modal_body_user_button} onClick={() => handleFollow(user._id)}>
+                                    {stateFollow.loading && stateFollow.id === user._id ? <CircularProgress /> : isFollowed(user._id) ? "Hủy theo dõi" : "Theo dõi"}
                                 </Button>
                             }
                         </div>

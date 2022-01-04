@@ -179,16 +179,21 @@ class UserController {
                 return res.status(400).json({ success: false, message: "Bạn đã theo dõi người dùng này!" });
             }
             //cập nhập ds follower ở B
-            await Users.findOneAndUpdate({ _id: req.params.id }, {
+            const followers = await Users.findOneAndUpdate({ _id: req.params.id }, {
                 $push: { followers: req.user._id }
-            }, { new: true })
+            }, { new: true }).populate("followers", "username fullname avatar followings followers")
 
             //cập nhập ds following ở A
-            await Users.findOneAndUpdate({ _id: req.user._id }, {
+            const followings = await Users.findOneAndUpdate({ _id: req.user._id }, {
                 $push: { followings: req.params.id }
-            }, { new: true })
+            }, { new: true }).populate("followings", "username fullname avatar followings followers")
 
-            res.json({ success: true, message: "Theo dõi thành công!" })
+            res.json({
+                success: true,
+                message: "Theo dõi thành công!",
+                followers: followers.followers,
+                followings: followings.followings
+            })
         } catch (err) {
             console.log(err)
             res.status(500).json({ success: false, message: err.message })
@@ -199,16 +204,21 @@ class UserController {
     async unfollow(req, res) {
         try {
             // cập nhập ds ở B
-            await Users.findOneAndUpdate({ _id: req.params.id }, {
+            const followers = await Users.findOneAndUpdate({ _id: req.params.id }, {
                 $pull: { followers: req.user._id }
-            }, { new: true })
+            }, { new: true }).populate("followers", "username fullname avatar followings followers")
 
             //cập nhập ds ở A
-            await Users.findOneAndUpdate({ _id: req.user._id }, {
+            const followings = await Users.findOneAndUpdate({ _id: req.user._id }, {
                 $pull: { followings: req.params.id }
-            }, { new: true })
+            }, { new: true }).populate("followings", "username fullname avatar followings followers")
 
-            res.json({ success: true, message: "Hủy theo dõi thành công!" })
+            res.json({
+                success: true,
+                message: "Hủy theo dõi thành công!",
+                followers: followers.followers,
+                followings: followings.followings
+            })
         } catch (err) {
             console.log(err)
             res.status(500).json({ success: false, message: err.message })

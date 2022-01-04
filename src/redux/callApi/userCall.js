@@ -25,59 +25,26 @@ export const getUser = (id, user, callback) => async (dispatch) => {
 }
 
 
-export const follow = (follow, token, user) => async (dispatch) => {
+export const follow = (follow, token, next) => async (dispatch) => {
     try {
-        dispatch(authAction.follow({
-            user: {
-                _id: follow._id,
-                username: follow.username,
-                avatar: follow.avatar,
-                fullname: follow.fullname,
-            }
-        }))
-
-        dispatch(userAction.follow({
-            user: {
-                _id: user._id,
-                username: user.username,
-                avatar: user.avatar,
-                fullname: user.fullname,
-            }
-        }))
-
-        await customAxios(token).put(`/user/${follow._id}/follow`);
+        await customAxios(token).put(`/user/${follow._id}/follow`).then(res => {
+            dispatch(userAction.updateFollower({ followers: res.data.followers }))
+            dispatch(authAction.updateFollowing({ followings: res.data.followings }))
+        });
     }
     catch (err) {
-        dispatch(authAction.unfollow({ user: follow._id }));
-        dispatch(userAction.unfollow({ user: user._id }));
-        // console.log(err.response.data.message);
+        next();
     }
 }
 
-export const unfollow = (follow, token, user) => async (dispatch) => {
+export const unfollow = (follow, token, next) => async (dispatch) => {
     try {
-        dispatch(authAction.unfollow({ user: follow._id }));
-        dispatch(userAction.unfollow({ user: user._id }));
-        await customAxios(token).put(`/user/${follow._id}/unfollow`);
+        await customAxios(token).put(`/user/${follow._id}/unfollow`).then(res => {
+            dispatch(userAction.updateFollower({ followers: res.data.followers }))
+            dispatch(authAction.updateFollowing({ followings: res.data.followings }))
+        });
     }
     catch (err) {
-        dispatch(authAction.follow({
-            user: {
-                _id: follow._id,
-                username: follow.username,
-                avatar: follow.avatar,
-                fullname: follow.fullname,
-            }
-        }))
-
-        dispatch(userAction.follow({
-            user: {
-                _id: user._id,
-                username: user.username,
-                avatar: user.avatar,
-                fullname: user.fullname,
-            }
-        }))
-        // console.log(err.response.data.message);
+        next();
     }
 }

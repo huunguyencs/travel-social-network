@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { WhatsApp, RssFeed } from "@material-ui/icons";
-import { Avatar, Button, Container, Typography, Modal, Backdrop } from "@material-ui/core";
+import { Avatar, Button, Container, Typography, Modal, Backdrop, CircularProgress } from "@material-ui/core";
 
 import { profileStyles } from "../../style";
 import UserList from "../modal/userList";
@@ -29,6 +29,10 @@ export default function Profile_Avatar(props) {
   const [openAvatar, setOpenAvatar] = useState(false);
   const [openCover, setOpenCover] = useState(false);
   const [followed, setFollowed] = useState(false);
+  const [stateFollow, setStateFollow] = useState({
+    loading: false,
+    error: false,
+  })
 
 
   const handleOpenFollowing = () => {
@@ -66,11 +70,38 @@ export default function Profile_Avatar(props) {
   const handleFollow = () => {
     // console.log(user);
     if (followed) {
-      dispatch(unfollow(user, auth.token, auth.user));
+      setStateFollow({
+        loading: true,
+        error: false
+      })
+      dispatch(unfollow(user, auth.token, () => {
+        setStateFollow({
+          loading: false,
+          error: true
+        })
+      }));
+      setStateFollow({
+        loading: false,
+        error: false
+      })
       setFollowed(false);
+
     }
     else {
-      dispatch(follow(user, auth.token, auth.user));
+      setStateFollow({
+        loading: true,
+        error: false
+      })
+      dispatch(follow(user, auth.token, () => {
+        setStateFollow({
+          loading: false,
+          error: true
+        })
+      }));
+      setStateFollow({
+        loading: false,
+        error: false
+      })
       setFollowed(true);
     }
   }
@@ -164,7 +195,7 @@ export default function Profile_Avatar(props) {
               user._id !== auth.user?._id &&
               <div className={classes.profile_button}>
                 <Button startIcon={< RssFeed />} className={classes.button} onClick={handleFollow}>
-                  {followed ? "Hủy Theo dõi" : "Theo dõi"}
+                  {stateFollow.loading ? <CircularProgress /> : followed ? "Hủy Theo dõi" : "Theo dõi"}
                 </Button>
                 <Button startIcon={<WhatsApp />} className={classes.button}>
                   Nhắn tin

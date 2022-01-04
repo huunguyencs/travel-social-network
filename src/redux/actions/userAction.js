@@ -7,16 +7,9 @@ export const getUserInfo = (props) => {
     }
 }
 
-export const follow = (props) => {
+export const updateFollower = (props) => {
     return {
-        type: USER_TYPES.FOLLOW,
-        payload: props
-    }
-}
-
-export const unfollow = (props) => {
-    return {
-        type: USER_TYPES.UNFOLLOW,
+        type: USER_TYPES.UPDATE_FOLLOW,
         payload: props
     }
 }

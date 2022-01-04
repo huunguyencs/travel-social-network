@@ -12,23 +12,12 @@ const userReducer = (state = INIT_STATE, action) => {
                 user: action.payload.user
             }
         }
-        case USER_TYPES.FOLLOW: {
-            console.log(action.payload.user);
-            if (action.payload.user._id === state.user?._id) return state;
+        case USER_TYPES.UPDATE_FOLLOW: {
             return {
                 ...state,
                 user: {
                     ...state.user,
-                    followers: [...state.user.followers, action.payload.user]
-                }
-            }
-        }
-        case USER_TYPES.UNFOLLOW: {
-            return {
-                ...state,
-                user: {
-                    ...state.user,
-                    followers: state.user.followers.filter(item => item._id !== action.payload.user)
+                    followers: action.payload.followers
                 }
             }
         }
