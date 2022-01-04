@@ -2,75 +2,55 @@ import React, { useEffect, useState } from 'react'
 import { useParams } from 'react-router-dom'
 import { CircularProgress, Container, Typography } from '@material-ui/core';
 
-import customAxios from '../../utils/fetchData';
 import Post from '../../components/post/Post';
 import { NotFound } from '../404';
+import { useDispatch, useSelector } from 'react-redux';
+import { getPostById } from '../../redux/callApi/postCall';
 
 
 export default function PostDetail() {
     const { id } = useParams();
-    const [post, setPost] = useState(null);
-    const [state, setState] = useState({
-        loading: false,
-        error: false,
-        notFound: false
-    });
-
-    const getPost = async (id) => {
-        setState({
-            loading: true,
-            error: false,
-            notFound: false,
-        })
-        await customAxios().get(`/post/${id}`).then(res => {
-            setPost(res.data.post);
-            setState({
-                loading: false,
-                error: false,
-                notFound: false,
-            })
-        }).catch(err => {
-            if (err.response.status === 404)
-                setState({
-                    loading: false,
-                    error: true,
-                    notFound: true,
-                })
-            else setState({
-                loading: false,
-                error: true,
-                notFound: false,
-            })
-        })
-
-    }
-
+    const { post } = useSelector(state => state);
+    const dispatch = useDispatch();
+    const [notFound, setNotFound] = useState(false);
 
     useEffect(() => {
-        getPost(id);
-    }, [id])
-
-    useEffect(() => {
-        if (post?.userId.fullname) {
-            document.title = "Bài viết của " + post.userId.fullname;
+        if (id) {
+            dispatch(getPostById(id, () => {
+                setNotFound(true);
+            }))
         }
-    }, [post])
+    }, [id, dispatch])
+
+    useEffect(() => {
+        if (post.posts?.length > 0 && post.posts[0]?.userId) {
+            document.title = "Bài viết của " + post.posts[0].userId.fullname;
+        }
+    }, [post.posts])
+
+    const tryAgain = () => {
+        if (id) {
+            dispatch(getPostById(id, () => {
+                setNotFound(true);
+            }))
+        }
+    }
 
     return (
         <>
 
             {
-                state.notFound ? <NotFound /> :
+                notFound ? <NotFound /> :
                     <div>
                         <Container style={{ height: "100vh" }}>
                             <div style={{ display: 'flex', justifyContent: 'center' }}>
                                 <div style={{ paddingTop: 100, width: "70%" }}>
                                     {
-                                        state.loading ?
+                                        post.loading ?
                                             <CircularProgress /> :
-                                            state.error ?
-                                                <Typography onClick={() => getPost(id)}>Có lỗi vui lòng thử lại</Typography>
-                                                : <Post post={post} />
+                                            post.error ?
+                                                <Typography onClick={tryAgain}>Có lỗi vui lòng thử lại</Typography>
+                                                : <Post post={post.posts[0]} />
 
                                     }
                                 </div>

@@ -13,7 +13,7 @@ import {
     QuestionAnswer,
     Share
 } from "@material-ui/icons";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 
 import Comment from "../comment/Comment";
 import InputComment from "../input/comment";
@@ -21,17 +21,17 @@ import { postStyles } from "../../style";
 import UserList from "../modal/userList";
 import SharePost from "../forms/share";
 import PostContent from "./content";
-import customAxios from "../../utils/fetchData";
+import { likePost, unlikePost } from '../../redux/callApi/postCall';
 
 
 export default function Post(props) {
 
-    const [post, setPost] = useState(props.post);
-
     const { auth } = useSelector(state => state);
+    const dispatch = useDispatch();
 
     const [showCmt, setShowCmt] = useState(false);
     const [like, setLike] = useState(false);
+    const [post, setPost] = useState(null);
     const [share, setShare] = useState(false);
 
     const classes = postStyles({ showCmt });
@@ -44,10 +44,10 @@ export default function Post(props) {
     }
 
     const addComment = (comment) => {
-        setPost((state) => ({
-            ...state,
-            comments: [...state.comments, comment]
-        }))
+        setPost({
+            ...post,
+            comments: [...post.comments, comment]
+        })
     }
 
     const likePress = () => {
@@ -58,51 +58,30 @@ export default function Post(props) {
         else handleLike();
     }
 
-    const handleLike = async () => {
+    const handleLike = () => {
         setLike(true);
-        let prevLike = post.likes;
-        updateLike([...prevLike, auth.user]);
-        try {
-            await customAxios(auth.token).patch(`/post/${post._id}/like`).then(res => {
-                updateLike(res.data.likes);
-            }).catch(err => {
-                if (like) {
-                    setLike(false);
-                    updateLike(prevLike)
-                }
-            })
-        }
-        catch (err) {
+        updateLike([...post.likes, auth.user]);
+        // call api
+        dispatch(likePost(post._id, auth.token, () => {
             if (like) {
                 setLike(false);
-                updateLike(prevLike)
+                let newLikes = post.likes.filter(user => user._id !== auth.user._id);
+                updateLike(newLikes);
             }
-        }
+        }));
     }
 
-    const handleUnlike = async () => {
+    const handleUnlike = () => {
         setLike(false);
-        let prevLike = post.likes;
-        let newLikes = prevLike.filter(user => user._id !== auth.user._id);
+        let newLikes = post.likes.filter(user => user._id !== auth.user._id);
         updateLike(newLikes);
         // call api
-        try {
-            await customAxios(auth.token).patch(`/post/${post._id}/unlike`).then(res => {
-                updateLike(res.data.likes);
-            }).catch(err => {
-                if (!like) {
-                    setLike(true);
-                    updateLike(prevLike)
-                }
-
-            })
-        }
-        catch (err) {
+        dispatch(unlikePost(post._id, auth.token, () => {
             if (!like) {
                 setLike(true);
-                updateLike(prevLike)
+                updateLike([...post.likes, auth.user]);
             }
-        }
+        }));
     }
 
     const [showLike, setShowLike] = useState(false);
@@ -121,12 +100,15 @@ export default function Post(props) {
     }
 
     useEffect(() => {
+        setPost(props.post);
+    }, [props.post]);
+
+    useEffect(() => {
         if (post) {
             if (auth.user && post.likes.find(like => like._id === auth.user._id)) {
                 setLike(true);
             }
         }
-
     }, [post, auth.user]);
 
     return (

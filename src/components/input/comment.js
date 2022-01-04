@@ -1,11 +1,13 @@
 import React, { useState } from "react";
 import { IconButton, InputBase } from "@material-ui/core";
 import { Send } from "@material-ui/icons";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 
 import EmojiPicker from "./emojiPicker";
 import { inputStyles } from "../../style";
-import customAxios from "../../utils/fetchData";
+import { createCommentPost } from "../../redux/callApi/commentCall";
+import { createCommentTour } from "../../redux/callApi/commentCall";
+
 
 export default function InputComment(props) {
 
@@ -14,35 +16,20 @@ export default function InputComment(props) {
     const classes = inputStyles();
     const [text, setText] = useState("");
 
+    const dispatch = useDispatch();
     const { auth } = useSelector(state => state);
-
-    const createComment = async (type) => {
-        try {
-            var body = {
-                commentType: type,
-                content: text
-            }
-            body = type === "post" ? { ...body, postId: id } : { ...body, tourId: id }
-            await customAxios(auth.token).post(`comment/create_comment`, body).then(res => {
-                addComment({
-                    ...res.data.newComment,
-                    userId: auth.user,
-                })
-            }).catch(err => {
-
-            })
-        }
-        catch (err) {
-
-        }
-    }
 
     const handleComment = (e) => {
         e.preventDefault();
-        setText(text.trim());
-        if (text !== "") {
+        if (text.trim() !== "") {
             setText("");
-            createComment(type);
+            if (type === "post") {
+                dispatch(createCommentPost(id, text, auth, (newComment) => addComment(newComment)));
+            }
+            else if (type === "tour") {
+                dispatch(createCommentTour(id, text, auth, (newComment) => addComment(newComment)));
+            }
+
         }
     }
 

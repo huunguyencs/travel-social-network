@@ -1,13 +1,13 @@
 import { Avatar, Backdrop, Button, CardContent, CardHeader, CardMedia, IconButton, Modal, Typography } from '@material-ui/core'
 import { MoreVert } from '@material-ui/icons'
 import React, { useEffect, useState } from 'react'
-import { useSelector } from 'react-redux'
+import { useDispatch, useSelector } from 'react-redux'
 import { Link } from 'react-router-dom'
+import { joinTour, unJoinTour } from '../../redux/callApi/tourCall'
 
 
 import { postStyles } from '../../style'
 import { convertDateToStr, timeAgo } from '../../utils/date'
-import customAxios from '../../utils/fetchData'
 import ImageModal from '../modal/image'
 import ManageUserJoin from '../modal/manageUserJoin'
 import UserList from '../modal/userList'
@@ -61,6 +61,7 @@ function BaseContent(props) {
     const { tour, setTour } = props;
 
     const { auth } = useSelector(state => state);
+    const dispatch = useDispatch();
 
     const [join, setJoin] = useState(false);
     const [openJoin, setOpenJoin] = useState(false);
@@ -84,30 +85,26 @@ function BaseContent(props) {
         setJoin(true);
         var prevJoin = tour.joinIds;
         updateJoin([...prevJoin, auth.user]);
-
-        await customAxios(auth.token).patch(`/tour/${tour._id}/unlike`).then(res => {
-            updateJoin(res.data.joinIds)
-        }).catch(err => {
+        dispatch(joinTour(tour._id, auth.token, () => {
             if (join) {
                 setJoin(false);
                 updateJoin(prevJoin);
             }
-        })
+        }))
     }
 
-    const handleUnJoin = async () => {
+    const handleUnJoin = () => {
         setJoin(false);
         var prevJoin = tour.joinIds;
         var newJoin = prevJoin.filter(user => user._id !== auth.user._id);
         updateJoin(newJoin);
-        await customAxios(auth.token).patch(`/tour/${tour._id}/unjoin`).then(res => {
-            updateJoin(res.data.joinIds);
-        }).catch(err => {
+
+        dispatch(unJoinTour(tour._id, auth.token, () => {
             if (!join) {
                 setJoin(true);
                 updateJoin(prevJoin);
             }
-        })
+        }))
     }
 
     const joinClick = () => {

@@ -17,6 +17,7 @@ import FriendRecommendCard from "../../../components/card/FriendRecommend";
 import FeedPost from "../../../components/feed/FeedPost";
 import { NotFound } from "../../404";
 import { getUser } from "../../../redux/callApi/userCall";
+import { getUserPost } from "../../../redux/callApi/postCall";
 
 
 
@@ -34,6 +35,7 @@ function ProfilePosts() {
       dispatch(getUser(id, auth.user, () => {
         setNotFound(true);
       }));
+      dispatch(getUserPost(user.user._id, auth.token));
     }
   }, [user.user, id, dispatch, auth, setNotFound])
 
