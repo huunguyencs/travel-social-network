@@ -13,6 +13,8 @@ import { locationStyles } from "../../style";
 import customAxios from "../../utils/fetchData";
 import { NotFound } from "../404";
 import ImageList from "../../components/modal/ImageList";
+import { getPostsLocation } from "../../redux/callApi/postCall";
+import { useDispatch } from "react-redux";
 
 export default function Location(props) {
 
@@ -20,6 +22,7 @@ export default function Location(props) {
     const classes = locationStyles();
     const { id } = useParams();
     const [notFound, setNotFound] = useState(false);
+    const dispatch = useDispatch();
 
     const getLocation = async (id) => {
         if (id) {
@@ -34,11 +37,13 @@ export default function Location(props) {
         }
     }
 
+
     useEffect(() => {
         if (id) {
             getLocation(id);
+            dispatch(getPostsLocation(id));
         }
-    }, [id])
+    }, [id, dispatch])
 
 
     useEffect(() => {

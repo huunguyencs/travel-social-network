@@ -1,49 +1,26 @@
-import React, { useEffect, useState } from "react";
+import React from "react";
 import { Button, CircularProgress, Container, Typography } from "@material-ui/core";
 
 import Post from '../post/Post';
 import { feedStyles } from "../../style";
-import customAxios from "../../utils/fetchData";
+import { useDispatch, useSelector } from "react-redux";
+import { getPostsLocation } from "../../redux/callApi/postCall";
 
 
 export default function FeedReview(props) {
 
     const { id } = props;
 
-    const classes = feedStyles();
-    const [reviews, setReviews] = useState([]);
-    const [state, setState] = useState({
-        loading: false,
-        error: false,
-    })
+    const { post } = useSelector(state => state);
+    const dispatch = useDispatch();
 
-    const getMoreReviews = async (id) => {
-        setState({
-            loading: true,
-            error: false
-        })
+    const classes = feedStyles();
+
+    const tryAgain = () => {
         if (id) {
-            await customAxios().get(`/location/${id}/posts`).then(res => {
-                setReviews((state) => ([
-                    ...state,
-                    ...res.data.posts
-                ]))
-                setState({
-                    loading: false,
-                    error: false
-                })
-            }).catch(err => {
-                setState({
-                    loading: false,
-                    error: true
-                })
-            })
+            dispatch(getPostsLocation(id))
         }
     }
-
-    useEffect(() => {
-        getMoreReviews(id);
-    }, [id])
 
     return (
         <Container>
@@ -52,18 +29,18 @@ export default function FeedReview(props) {
                 <div>
                     {
 
-                        state.loading ?
+                        post.loading ?
                             <CircularProgress color={"inherit"} /> :
-                            state.error ?
+                            post.error ?
                                 <div style={{ margin: 'auto' }}>
                                     <Typography>Có lỗi xảy ra</Typography>
-                                    <Button onClick={getMoreReviews}>Thử lại</Button>
+                                    <Button onClick={tryAgain}>Thử lại</Button>
                                 </div>
-                                : reviews.length === 0 ?
+                                : post.posts.length === 0 ?
                                     <div style={{ display: 'flex', justifyContent: 'center', marginTop: 100 }}>
                                         <Typography>Chưa có review cho địa điểm này</Typography>
                                     </div> :
-                                    reviews.map((post) => (
+                                    post.posts.map((post) => (
                                         <Post
                                             post={post}
                                             key={post._id}

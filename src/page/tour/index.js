@@ -11,12 +11,18 @@ import SpeedDialButton from "../../components/speedDialBtn";
 import Menu from "../../components/leftbar/menu";
 import Calendar from '../../components/calendar';
 import FriendRecommendCard from '../../components/card/FriendRecommend';
+import { useDispatch } from "react-redux";
+import { getTours } from "../../redux/callApi/tourCall";
 
 
 export default function TourPage(props) {
 
     const classes = useStyles();
+    const dispatch = useDispatch();
 
+    useEffect(() => {
+        dispatch(getTours());
+    }, [dispatch])
 
     useEffect(() => {
         document.title = "Hành trình | GOGO";
