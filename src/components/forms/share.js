@@ -26,7 +26,7 @@ export default function SharePost(props) {
 
     const share = async () => {
         var ht = hashtagSplit(hashtag);
-        await customAxios(auth.token).post(`${type}/share`, {
+        await customAxios(auth.token).post(`/${type}/share`, {
             shareId: object._id,
             content: text,
             hashtags: ht

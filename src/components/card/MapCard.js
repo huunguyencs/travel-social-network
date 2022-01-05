@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import GoogleMapReact from 'google-map-react';
-import FiberManualRecordTwoToneIcon from '@material-ui/icons/FiberManualRecordTwoTone';
 import { Card, ClickAwayListener, Paper, Popper, Typography } from "@material-ui/core";
+import { GpsFixed, LocationOn } from '@material-ui/icons'
 
 import KEY from "../../key/googlemap";
 import { Link } from "react-router-dom";
@@ -23,7 +23,7 @@ function MapLocation(props) {
     };
     return (
         <>
-            <FiberManualRecordTwoToneIcon
+            <GpsFixed
 
                 onClick={handlePopoverOpen}
                 style={{
@@ -53,10 +53,22 @@ function MapLocation(props) {
     )
 }
 
+function Position(props) {
+    const { name } = props;
+    return (
+        <>
+            <div style={{ display: "flex", width: 300 }}>
+                <LocationOn style={{ fontSize: 36, color: 'red' }} />
+                <Typography style={{ color: 'inherit' }}>{name}</Typography>
+            </div>
+        </>
+    )
+}
+
 
 export default function MapCard(props) {
 
-    const { position, zoom, locations, height } = props;
+    const { position, zoom, locations, height, name } = props;
     const [center, setCenter] = useState({
         lat: position.lat,
         lng: position.lon
@@ -86,6 +98,7 @@ export default function MapCard(props) {
                     {locations && locations.map((item) => (
                         <MapLocation location={item} key={item._id} lat={item.position.lat} lng={item.position.lon} onClick={() => changeCenter(item.position)} />
                     ))}
+                    {name && <Position name={name} lat={position.lat} lng={position.lon} />}
                 </GoogleMapReact>
             }
 
