@@ -44,16 +44,16 @@ export default function EmojiPicker(props) {
                 open={open}
                 anchorEl={anchorEl}
                 onClose={handleClose}
-                anchorOrigin={{
-                    vertical: "bottom",
-                    horizontal: "center",
-                }}
-                transformOrigin={{
-                    vertical: "top",
-                    horizontal: "center"
-                }}
+            // anchorOrigin={{
+            //     vertical: "bottom",
+            //     horizontal: "center",
+            // }}
+            // transformOrigin={{
+            //     vertical: "top",
+            //     horizontal: "center"
+            // }}
             >
-                <Paper className={classes.iconWrap}>
+                <Paper className={classes.iconWrap} style={{ transformOrigin: "top center" }}>
                     {emojiList.map((item, index) => (
                         <div key={index} className={classes.iconItem} onClick={() => addIcon(item)}>
                             {item}

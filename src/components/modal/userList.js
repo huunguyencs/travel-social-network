@@ -82,8 +82,8 @@ export default function UserList(props) {
             <div className={classes.modal_header}>
                 <h2 className={classes.modal_header_left}>{title}: {listUser.length}</h2>
                 <div className={classes.modal_header_right}>
-                    <IconButton>
-                        <Close className={classes.modal_header_closeIcon} onClick={handleClose} />
+                    <IconButton onClick={handleClose}>
+                        <Close className={classes.modal_header_closeIcon} />
                     </IconButton>
                 </div>
             </div>

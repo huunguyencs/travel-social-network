@@ -133,8 +133,8 @@ export default function Location(props) {
                                     onClose={handleCloseMenu}
                                     disablePortal={true}
                                     MenuListProps={MenuListProps}
-                                    transformOrigin={{ horizontal: 'right', vertical: 'bottom' }}
-                                    anchorOrigin={{ horizontal: 'right', vertical: 'bottom' }}
+                                // transformOrigin={{ horizontal: 'right', vertical: 'bottom' }}
+                                // anchorOrigin={{ horizontal: 'right', vertical: 'bottom' }}
                                 >
                                     <MenuItem onClick={handleShowEdit}>
                                         Chỉnh sửa

@@ -109,21 +109,21 @@ export default function Header(props) {
                                         anchorEl={toggleMenuUser}
                                         onClose={handleCloseUser}
                                         disablePortal={true}
-                                        transformOrigin={{
-                                            vertical: "top",
-                                            horizontal: "left"
-                                        }}
-                                        anchorOrigin={{
-                                            vertical: "bottom",
-                                            horizontal: "center",
-                                        }}
+                                    // transformOrigin={{
+                                    //     vertical: "top",
+                                    //     horizontal: "left"
+                                    // }}
+                                    // anchorOrigin={{
+                                    //     vertical: "bottom",
+                                    //     horizontal: "center",
+                                    // }}
                                     >
                                         <Grow
                                             style={{ transformOrigin: 'center bottom' }}
                                         >
                                             <ClickAwayListener onClickAway={handleCloseUser}>
                                                 <Paper>
-                                                    <MenuList autoFocusItem={toggleMenuUser} id="user-menu">
+                                                    <MenuList autoFocusItem={Boolean(toggleMenuUser)} id="user-menu">
                                                         <MenuItem aria-label="profile" component={Link} to={`/profile/${user._id}/`} onClick={handleCloseUser}>Trang cá nhân</MenuItem>
                                                         <MenuItem aria-label="change-info" onClick={handleCloseUser} component={Link} to={'/change_info'}>Thay đổi thông tin</MenuItem>
                                                         <MenuItem aria-label="log-out" onClick={handleLogout}>Đăng xuất</MenuItem>
@@ -142,14 +142,14 @@ export default function Header(props) {
                                         anchorEl={toggleNoti}
                                         onClose={handleCloseNoti}
                                         disablePortal={true}
-                                        transformOrigin={{
-                                            vertical: "top",
-                                            horizontal: "left"
-                                        }}
-                                        anchorOrigin={{
-                                            vertical: "bottom",
-                                            horizontal: "center",
-                                        }}
+                                    // transformOrigin={{
+                                    //     vertical: "top",
+                                    //     horizontal: "left"
+                                    // }}
+                                    // anchorOrigin={{
+                                    //     vertical: "bottom",
+                                    //     horizontal: "center",
+                                    // }}
                                     >
                                         <Grow
                                             style={{ transformOrigin: 'center bottom' }}
