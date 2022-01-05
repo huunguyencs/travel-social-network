@@ -6,12 +6,22 @@ const cardStyles = makeStyles((theme) => ({
     cardContainer: {
         margin: 20,
         borderRadius: attr.borderRadius.md,
+        [theme.breakpoints.down("sm")]: {
+            margin: 0,
+        },
     },
     image: {
         height: 180,
     },
     locationName: {
         marginInline: 20,
+        cursor: 'pointer',
+        "&:hover": {
+            textDecorationLine: 'underline',
+        },
+        [theme.breakpoints.down("sm")]: {
+            fontSize: 30,
+        },
     },
     footer: {
         display: "flex",
@@ -33,9 +43,10 @@ const cardStyles = makeStyles((theme) => ({
         paddingInline: 20,
     },
     weatherCardContainer: {
-        marginRight: 40,
-        top: 0,
-        marginBottom: 30,
+        borderRadius: attr.borderRadius.md,
+    },
+    covidCardContainer: {
+        marginTop: 40,
         borderRadius: attr.borderRadius.md,
     },
     content: {
@@ -54,6 +65,18 @@ const cardStyles = makeStyles((theme) => ({
         justifyContent: "space-between",
         marginLeft: 50,
         marginRight: 80,
+        [theme.breakpoints.down("md")]: {
+            marginLeft: 10,
+            marginRight: 10,
+        },
+        [theme.breakpoints.down("sm")]: {
+            marginLeft: 0,
+            marginRight: 0,
+        },
+        [theme.breakpoints.down("xs")]: {
+            marginLeft: 20,
+            marginRight: 30,
+        },
     },
     detailInfo: {
         marginTop: 30,
@@ -83,6 +106,9 @@ const cardStyles = makeStyles((theme) => ({
     },
     chart: {
         margin: 30,
+        [theme.breakpoints.down("md")]: {
+            margin: 0,
+        },
     },
     line: {
         maxWidth: "100%",
@@ -93,19 +119,48 @@ const cardStyles = makeStyles((theme) => ({
         color: color.yellow,
         fontSize: "50px",
         marginRight: 15,
+        [theme.breakpoints.down("md")]: {
+            fontSize: 36,
+        },
+        [theme.breakpoints.down("sm")]: {
+            fontSize: 30,
+        },
+        [theme.breakpoints.down("xs")]: {
+            fontSize: 24,
+        },
     },
     starContent: {
         marginInline: 30,
     },
     starContainer: {
-        margin: 40,
-        marginTop: 50,
-        marginLeft: 0,
         borderRadius: attr.borderRadius.md,
     },
     center: {
         display: "flex",
         justifyContent: "center",
+        [theme.breakpoints.down("md")]: {
+            fontSize: 16,
+        },
+        [theme.breakpoints.down("sm")]: {
+            fontSize: 12,
+        },
+        [theme.breakpoints.down("xs")]: {
+            fontSize: 8,
+        },
+    },
+    textStar: {
+        [theme.breakpoints.down("md")]: {
+            fontSize: 36,
+        },
+        [theme.breakpoints.down("sm")]: {
+            fontSize: 30,
+        },
+        [theme.breakpoints.down("xs")]: {
+            fontSize: 24,
+        },
+    },
+    rateLabel: {
+        marginRight: 10
     }
 }))
 

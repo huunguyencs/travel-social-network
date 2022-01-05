@@ -13,16 +13,9 @@ export const logout = (prop) => {
     }
 }
 
-export const follow = (props) => {
+export const updateFollowing = (props) => {
     return {
-        type: AUTH_TYPES.FOLLOW,
-        payload: props,
-    }
-}
-
-export const unfollow = (props) => {
-    return {
-        type: AUTH_TYPES.UNFOLLOW,
-        payload: props,
+        type: AUTH_TYPES.UPDATE_FOLLOWING,
+        payload: props
     }
 }

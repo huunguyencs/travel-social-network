@@ -10,23 +10,24 @@ import { homeMenu } from "../constant/menu";
 import useStyles from "../style";
 import Calendar from '../components/calendar';
 import FriendRecommendCard from '../components/card/FriendRecommend';
-import Slider from "../components/slider/slider";
+
 
 
 export default function HotPage(props) {
 
     const classes = useStyles();
 
+
     useEffect(() => {
-        document.title = "Hot";
+        document.title = "Hot | GOGO";
     }, [])
 
     return (
         <Grid container style={{ margin: 0, padding: 0 }}>
             <SpeedDialButton />
-            <Grid item md={12} >
+            {/* <Grid item md={12} >
                 <Slider />
-            </Grid>
+            </Grid> */}
             <Grid item md={3} sm={12}>
                 <LeftBar >
                     <Menu menuList={homeMenu} />
@@ -35,7 +36,7 @@ export default function HotPage(props) {
             <Grid item md={6}>
                 <FeedHot />
             </Grid>
-            <Grid item md={3} sm={0} className={classes.rightbar}>
+            <Grid item md={3} className={classes.rightbar}>
                 <RightBar>
                     <Calendar />
                     <FriendRecommendCard />

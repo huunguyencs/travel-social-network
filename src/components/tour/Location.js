@@ -131,9 +131,10 @@ export default function Location(props) {
                                     anchorEl={anchorEl}
                                     open={Boolean(anchorEl)}
                                     onClose={handleCloseMenu}
+                                    disablePortal={true}
                                     MenuListProps={MenuListProps}
-                                    transformOrigin={{ horizontal: 'right', vertical: 'top' }}
-                                    anchorOrigin={{ horizontal: 'right', vertical: 'bottom' }}
+                                // transformOrigin={{ horizontal: 'right', vertical: 'bottom' }}
+                                // anchorOrigin={{ horizontal: 'right', vertical: 'bottom' }}
                                 >
                                     <MenuItem onClick={handleShowEdit}>
                                         Chỉnh sửa
@@ -214,12 +215,10 @@ export default function Location(props) {
                                     handleClose={handleClose}
                                     tourDateId={tourDateId}
                                     indexLocation={location._id}
+                                    locationName={location.location.name}
                                 />
                             </Fade>
                         </Modal>
-                        <div className={classes.costContainer}>
-                            <Typography variant="body1">Chi phí: {new Intl.NumberFormat().format(location.cost * 1000)} VND</Typography>
-                        </div>
                     </CardContent>
                 </Grid>
                 <Collapse in={showRv}>
@@ -230,6 +229,7 @@ export default function Location(props) {
                                 <Rating
                                     name={"rating" + review._id}
                                     value={review.rate}
+                                    readOnly
                                 />
                                 <Typography>{review.content}</Typography>
                             </CardContent>

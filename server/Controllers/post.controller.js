@@ -1,6 +1,7 @@
 const Posts = require('../Models/post.model')
 const Comments = require('../Models/comment.model')
 const TourDates = require('../Models/tourDate.model');
+const Locations = require('../Models/location.model')
 
 class PostController {
     //co hai loai post
@@ -64,6 +65,35 @@ class PostController {
                     'locations.$.postId': newPost._doc._id
                 }
             }, { new: true, safe: true, upsert: true })
+
+            switch (parseInt(rate)) {
+                case 1:
+                    await Locations.findByIdAndUpdate(locationId, {
+                        $inc: { "star.0": 1 }
+                    }, { new: true })
+                    break;
+                case 2:
+                    await Locations.findByIdAndUpdate(locationId, {
+                        $inc: { "star.1": 1 }
+                    }, { new: true })
+                    break;
+                case 3:
+                    await Locations.findByIdAndUpdate(locationId, {
+                        $inc: { "star.2": 1 }
+                    }, { new: true })
+                    break;
+                case 4:
+                    await Locations.findByIdAndUpdate(locationId, {
+                        $inc: { "star.3": 1 }
+                    }, { new: true })
+                    break;
+                case 5:
+                    await Locations.findByIdAndUpdate(locationId, {
+                        $inc: { "star.4": 1 }
+                    }, { new: true })
+                    break;
+            }
+
 
             res.json({
                 success: true,
@@ -138,7 +168,7 @@ class PostController {
                         select: "username fullname avatar"
                     }
                 })
-                .populate("locationId", "name")
+                .populate("locationId", "name fullname")
                 .populate({
                     path: "shareId",
                     populate: {
@@ -168,7 +198,7 @@ class PostController {
                         select: "username fullname avatar"
                     },
                 })
-                .populate("locationId", "name")
+                .populate("locationId", "name fullname")
                 .populate({
                     path: "shareId",
                     populate: {
@@ -176,9 +206,15 @@ class PostController {
                         select: "username fullname avatar"
                     }
                 })
-            res.json({
-                success: true, message: "get info 1 post success", post
-            });
+            if (post) {
+                res.json({
+                    success: true, message: "get info 1 post success", post
+                });
+            }
+            else {
+                res.status(404).json({ success: false, message: "Not found" })
+            }
+
         } catch (err) {
             console.log(err)
             res.status(500).json({ success: false, message: err.message })

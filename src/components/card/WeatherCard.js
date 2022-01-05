@@ -31,7 +31,10 @@ function WeatherCard(props) {
     const classes = cardStyles();
 
     const firstUpperCase = (string) => {
-        return string.charAt(0).toUpperCase() + string.slice(1);
+        if (string) {
+            return string.charAt(0).toUpperCase() + string.slice(1);
+        }
+        return ''
     }
 
     const { weather, nameShow } = props;
@@ -87,7 +90,10 @@ export function WeatherFocastItem(props) {
     const classes = cardStyles();
 
     const firstUpperCase = (string) => {
-        return string.charAt(0).toUpperCase() + string.slice(1);
+        if (string) {
+            return string.charAt(0).toUpperCase() + string.slice(1);
+        }
+        return ''
     }
 
     const { weather } = props;

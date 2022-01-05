@@ -1,5 +1,5 @@
-import React, {useEffect} from "react";
-import { useSelector} from "react-redux";
+import React, { useEffect } from "react";
+import { useSelector } from "react-redux";
 import { Redirect } from "react-router";
 
 import AddTour from '../components/tour/AddTour';

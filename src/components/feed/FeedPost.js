@@ -1,20 +1,23 @@
 import React, { useState } from "react";
-import { Container, InputBase, Modal, Backdrop, Fade, CircularProgress } from "@material-ui/core";
-import { useSelector } from "react-redux";
+import { Container, InputBase, Modal, Backdrop, Fade, CircularProgress, Typography, Button } from "@material-ui/core";
 
 
 import Post from '../post/Post';
 import { feedStyles } from "../../style";
 import CreatePostForm from "../forms/createPost";
+import { useDispatch, useSelector } from "react-redux";
+import { getPosts, getUserPost } from "../../redux/callApi/postCall";
 
 
 
 export default function FeedPost(props) {
 
-    const [show, setShow] = useState(false);
+    const { id } = props;
+    const dispatch = useDispatch();
 
-    const { post } = useSelector(state => state);
-    // const dispatch = useDispatch();
+    const { auth, post } = useSelector(state => state);
+
+    const [show, setShow] = useState(false);
 
     const classes = feedStyles();
 
@@ -24,6 +27,15 @@ export default function FeedPost(props) {
 
     const handleClose = () => {
         setShow(false);
+    }
+
+    const tryAgain = () => {
+        if (id) {
+            dispatch(getUserPost(id, auth.token))
+        }
+        else {
+            dispatch(getPosts(auth.token));
+        }
     }
 
 
@@ -63,9 +75,14 @@ export default function FeedPost(props) {
                 <div>
                     {
                         post.loading ?
-                            <CircularProgress color={"black"} />
+                            <div style={{ display: 'flex', justifyContent: 'center', marginTop: 50 }}>
+                                <CircularProgress color={"inherit"} />
+                            </div>
                             : post.error ?
-                                <div>Có lỗi xảy ra</div> :
+                                <div style={{ margin: 'auto' }}>
+                                    <Typography>Có lỗi xảy ra</Typography>
+                                    <Button onClick={tryAgain}>Thử lại</Button>
+                                </div> :
                                 post.posts.map((post) => (
                                     <Post
                                         post={post}

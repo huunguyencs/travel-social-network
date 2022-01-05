@@ -28,7 +28,7 @@ export const createCommentPost = (id, comment, auth,socket, next) => async (disp
         next(newComment);
         dispatch(commentAction.addCommentPost({ id: id, comment: newComment }))
 
-        socket.emit('createCommentPost',{ id: id, comment: newComment} );
+        socket.emit('createComment',{type:'post', id: id, comment: newComment} );
 
     }
     catch (err) {
@@ -37,7 +37,7 @@ export const createCommentPost = (id, comment, auth,socket, next) => async (disp
     }
 }
 
-export const createCommentTour = (id, comment, auth, next) => async (dispatch) => {
+export const createCommentTour = (id, comment, auth,socket, next) => async (dispatch) => {
 
     try {
         // call api to update comment
@@ -53,6 +53,8 @@ export const createCommentTour = (id, comment, auth, next) => async (dispatch) =
         }
         next(newComment);
         dispatch(commentAction.addCommentTour({ id: id, comment: newComment }))
+
+        socket.emit('createComment',{type:'tour', id: id, comment: newComment} );
     }
     catch (err) {
         console.log(err);
@@ -115,7 +117,7 @@ export const deleteCommentTour = (data) => async (dispatch) => {
     }
 }
 
-export const likeComment = (id, auth, type, postId) => async (dispatch) => {
+export const likeComment = (id, auth, type, postId, socket) => async (dispatch) => {
 
     try {
         // call api to update comment like
@@ -123,9 +125,13 @@ export const likeComment = (id, auth, type, postId) => async (dispatch) => {
 
         if (type === "post") {
             dispatch(commentAction.updateCommentPost({ comment: res.data.newComment, id: id, postId: postId }))
+
+            socket.emit('like',{type:'commentPost',comment: res.data.newComment, id: id, postId: postId})
         }
         else if (type === "tour") {
             dispatch(commentAction.updateCommentTour({ comment: res.data.newComment, id: id, tourId: postId }))
+
+            socket.emit('like',{type:'commentTour',comment: res.data.newComment, id: id, tourId: postId})
         }
     }
     catch (err) {
@@ -134,21 +140,21 @@ export const likeComment = (id, auth, type, postId) => async (dispatch) => {
 }
 
 
-export const unlikeComment = (id, auth, type, postId) => async (dispatch) => {
+export const unlikeComment = (id, auth, type, postId, socket) => async (dispatch) => {
 
     try {
         const res = await customAxios(auth.token).patch(`/comment/${id}/unlike`);
 
-        // const newComment = {
-        //     ...res.data.newComment,
-        //     userId: auth.user,
-        // }
-
         if (type === "post") {
             dispatch(commentAction.updateCommentPost({ comment: res.data.newComment, id: id, postId: postId }))
+
+            socket.emit('unlike',{type:'commentPost',comment: res.data.newComment, id: id, postId: postId})
+
         }
         else if (type === "tour") {
             dispatch(commentAction.updateCommentPost({ comment: res.data.newComment, id: id, tourId: postId }))
+ 
+            socket.emit('unlike',{type:'commentTour',comment: res.data.newComment, id: id, tourId: postId})
         }
     }
     catch (err) {

@@ -6,8 +6,8 @@ import { SeeMoreText } from "../seeMoreText";
 import { timeAgo } from "../../utils/date";
 // import { auth } from "../../redux/actions/authAction";
 import { useDispatch, useSelector } from "react-redux";
-import { likeComment, unlikeComment } from "../../redux/callApi/commentCall";
 import { Link } from "react-router-dom";
+import { likeComment, unlikeComment } from "../../redux/callApi/commentCall";
 
 export default function Comment(props) {
 
@@ -18,7 +18,7 @@ export default function Comment(props) {
 
     const classes = commentStyles({ like });
 
-    const { auth } = useSelector(state => state);
+    const { auth, socket } = useSelector(state => state);
     const dispatch = useDispatch();
 
     const likePress = () => {
@@ -33,14 +33,14 @@ export default function Comment(props) {
         setLike(true);
         setNumLike(state => state + 1);
         // call api
-        dispatch(likeComment(comment._id, auth, type, id));
+        dispatch(likeComment(comment._id, auth, type, id, socket));
     }
 
     const handleUnlike = () => {
         setLike(false);
         setNumLike(state => state - 1);
         // call api
-        dispatch(unlikeComment(comment._id, auth, type, id));
+        dispatch(unlikeComment(comment._id, auth, type, id, socket));
     }
 
     useEffect(() => {

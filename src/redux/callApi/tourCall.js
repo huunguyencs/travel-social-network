@@ -4,6 +4,7 @@ import * as notifyAction from '../actions/notifyAction';
 import * as imageUtils from '../../utils/uploadImage'
 
 export const getTours = (data) => async (dispatch) => {
+    dispatch(tourAction.getTours({ tour: [] }));
     dispatch(tourAction.loading());
     try {
 
@@ -13,7 +14,7 @@ export const getTours = (data) => async (dispatch) => {
     }
     catch (err) {
         // console.log(err);
-        // dispatch(tourAction.error({ error: err.response.data.message }))
+        dispatch(tourAction.error({ error: err.response.data.message }))
 
     }
 }
@@ -35,6 +36,7 @@ export const getTourDetail = (id, next) => async (dispatch) => {
 }
 
 export const getUserTour = (id, token) => async (dispatch) => {
+    dispatch(tourAction.getTours({ tour: [] }));
     dispatch(tourAction.loading())
     try {
         const res = await customAxios(token).get(`/tour/user_tours/${id}`);
@@ -46,6 +48,7 @@ export const getUserTour = (id, token) => async (dispatch) => {
         // console.log(err);
     }
 }
+
 
 export const updateTour = (data) => async (dispatch) => {
 
@@ -110,21 +113,21 @@ export const deleteTour = (data) => async (dispatch) => {
     }
 }
 
-export const likeTour = (id, token, next) => async (dispatch) => {
+export const likeTour = (id, token,socket, next) => async (dispatch) => {
 
     try {
 
         const res = await customAxios(token).patch(`/tour/${id}/like`)
         dispatch(tourAction.updateLike({ id: id, likes: res.data.likes }));
         // console.log(res.data.likes);
-
+        socket.emit('like',{type:'tour',id: id, likes: res.data.likes});
     }
     catch (err) {
         next();
     }
 }
 
-export const unlikeTour = (id, token, next) => async (dispatch) => {
+export const unlikeTour = (id, token,socket, next) => async (dispatch) => {
 
 
     try {
@@ -132,7 +135,7 @@ export const unlikeTour = (id, token, next) => async (dispatch) => {
         const res = await customAxios(token).patch(`/tour/${id}/unlike`);
         dispatch(tourAction.updateLike({ id: id, likes: res.data.likes }));
         // console.log(res.data.likes);
-
+        socket.emit('unlike',{type:'tour',id: id, likes: res.data.likes});
     }
     catch (err) {
         next();

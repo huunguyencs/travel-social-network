@@ -24,8 +24,8 @@ const serviceSchema = new mongoose.Schema({
     ],
     images: [
         { type: String }
-    ]
-
+    ],
+    serviceItem: [{ type: mongoose.Types.ObjectId, ref: 'serviceItem' }]
 }, {
     timestamps: true
 })

@@ -39,6 +39,7 @@ app.use('/tour', require('./Routers/tour.router'));
 app.use('/location', require('./Routers/location.router'));
 app.use('/province', require('./Routers/province.router'));
 app.use('/service', require('./Routers/service.router'));
+app.use('/event', require('./Routers/event.router'));
 
 
 

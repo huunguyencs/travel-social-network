@@ -1,42 +1,75 @@
-import { Button, Container, Grid, Modal, Typography, Backdrop, Fade, Dialog, DialogActions, DialogTitle, CircularProgress } from "@material-ui/core";
+import { Button, Container, Grid, Modal, Typography, Backdrop, Fade, Dialog, DialogActions, DialogTitle, CircularProgress, Tab, Tabs } from "@material-ui/core";
 import React, { useState } from "react";
 import { Timeline, TimelineItem, TimelineSeparator, TimelineConnector, TimelineContent, TimelineDot } from '@material-ui/lab'
 import { useDispatch, useSelector } from "react-redux";
 
 import { tourdetailStyles } from "../../style";
-import AddLocationForm from "../forms/addLocation";
+// import AddLocationForm from "../forms/addLocation";
 import Location from './Location';
 import * as tourAction from '../../redux/actions/createTourAction';
 import { useHistory } from "react-router-dom";
 import UpdateDateForm from "../forms/updateDate";
 import UpdateTourInfo from "../forms/updateInfoCreateTour";
-import { createTourCall } from "../../redux/callApi/tourCall";
 import { convertDateToStr } from "../../utils/date";
+import customAxios from "../../utils/fetchData";
+import * as imageUtils from '../../utils/uploadImage'
+import AddLocation from "./AddLocation";
 
+
+function a11yProps(index) {
+    return {
+        id: `tab-${index}`,
+        'aria-controls': `tabpanel-${index}`,
+    }
+}
+
+function TabPanel(props) {
+    const { children, value, index, ...other } = props;
+
+    return (
+        <div
+            role="tabpanel"
+            hidden={value !== index}
+            id={`tabpanel-${index}`}
+            aria-labelledby={`tab-${index}`}
+            {...other}
+        >
+            {value === index && children}
+        </div>
+    )
+}
 
 
 export default function AddTour(props) {
 
     const history = useHistory();
+    const [state, setState] = useState({
+        loading: false,
+        error: false
+    })
 
     const dispatch = useDispatch();
-    const { createTour, auth, notify } = useSelector(state => state);
+    const { createTour, auth } = useSelector(state => state);
+    const [tab, setTab] = useState(0)
+    const [currentProvince, setCurrentProvince] = useState(null);
+    const [loc, setLoc] = useState(null);
+    const [locations, setLocations] = useState([]);
 
 
     const [idx, setIdx] = useState(0);
-    const [addLoc, setAddLoc] = useState(false);
+    // const [addLoc, setAddLoc] = useState(false);
     const [showUpdateDate, setShowUpdateDate] = useState(false);
     const [showDeleteDate, setShowDeteleDate] = useState(false);
     const [showChangeInfo, setShowChangeInfo] = useState(false);
-    const [provinceCache, setProvinceCache] = useState(null);
+    // const [provinceCache, setProvinceCache] = useState(null);
 
-    const handleShow = () => {
-        setAddLoc(true);
-    }
+    // const handleShow = () => {
+    //     setAddLoc(true);
+    // }
 
-    const handleClose = () => {
-        setAddLoc(false);
-    }
+    // const handleClose = () => {
+    //     setAddLoc(false);
+    // }
 
 
     const handleAddDay = () => {
@@ -48,18 +81,45 @@ export default function AddTour(props) {
         return ht.filter(item => item !== "");
     }
 
-    const handleSave = () => {
-        // console.log(createTour);
-        let ht = hashtagSplit(createTour.hashtags)
+    const handleSave = async () => {
+        if (createTour.tour.length === 0) return;
+        setState({
+            loading: true,
+            error: false
+        })
+        let ht = hashtagSplit(createTour.hashtags);
 
-        dispatch(createTourCall({
+        let imageUpload = [];
+        if (createTour.image) imageUpload = await imageUtils.uploadImages([createTour.image]);
+        // location id
+        const data = {
             name: createTour.name,
             content: createTour.content,
             hashtags: ht,
-            tour: createTour.tour,
-        }, createTour.image, auth.token, () => {
+            tour: createTour.tour.map(item => ({
+                ...item,
+                locations: item.locations.map(location => ({
+                    location: location.location._id,
+                    cost: location.cost,
+                }))
+            })),
+            image: imageUpload.length > 0 ? imageUpload[0] : "",
+            cost: createTour.cost
+        }
+
+
+        await customAxios(auth.token).post('/tour/create_tour', data).then(res => {
+            setState({
+                loading: false,
+                error: false,
+            })
             history.push("/tour")
-        }))
+        }).catch(err => {
+            setState({
+                loading: false,
+                error: true,
+            })
+        });
     }
 
     const handleDeleteDate = () => {
@@ -88,11 +148,13 @@ export default function AddTour(props) {
         setShowChangeInfo(false)
     }
 
+    const handleChangeTab = (e, value) => {
+        setTab(value);
+    }
+
+
 
     const classes = tourdetailStyles();
-
-
-
 
     return (
         <div>
@@ -111,8 +173,14 @@ export default function AddTour(props) {
                     ))}
                 </div>
                 <div className={classes.itemInfo}>
+                    <Typography variant="body1" className={classes.content}>
+                        Chi phí: {createTour.cost ? new Intl.NumberFormat().format(createTour.cost * 1000) : 0} VND
+                    </Typography>
+                </div>
+                <div className={classes.itemInfo}>
                     <Button onClick={() => setShowChangeInfo(true)}>Chỉnh sửa thông tin</Button>
                 </div>
+
                 <Modal
                     aria-labelledby="transition-modal-title"
                     aria-describedby="transition-modal-description"
@@ -126,7 +194,7 @@ export default function AddTour(props) {
                     }}
                 >
                     <Fade in={showChangeInfo}>
-                        <UpdateTourInfo name={createTour.name} content={createTour.content} hashtags={createTour.hashtags} image={createTour.image} handleClose={handleCloseUpdateInfo} />
+                        <UpdateTourInfo name={createTour.name} content={createTour.content} hashtags={createTour.hashtags} image={createTour.image} handleClose={handleCloseUpdateInfo} cost={createTour.cost} />
                     </Fade>
                 </Modal>
             </div>
@@ -156,8 +224,8 @@ export default function AddTour(props) {
                         </div>
                         <div>
                             <Button className={classes.addDay} onClick={handleSave}>
-                                {notify.loading ?
-                                    <CircularProgress size="25px" color="white" />
+                                {state.loading ?
+                                    <CircularProgress size="25px" color="inherit" />
                                     : "Lưu lại"
                                 }
                             </Button>
@@ -203,7 +271,7 @@ export default function AddTour(props) {
                             }}
                         >
                             <Fade in={showUpdateDate}>
-                                <UpdateDateForm handleClose={handleCloseUpdate} indexDate={idx} currentDate={createTour.tour[idx].time} />
+                                <UpdateDateForm handleClose={handleCloseUpdate} indexDate={idx} currentDate={createTour.tour[idx].date} />
                             </Fade>
                         </Modal>
                     </div>
@@ -220,7 +288,7 @@ export default function AddTour(props) {
                             />
                         ))
                     }
-                    <div className={classes.addContainer}>
+                    {/* <div className={classes.addContainer}>
                         <Button className={classes.addTour} onClick={handleShow}>
                             Thêm địa điểm
                         </Button>
@@ -240,11 +308,32 @@ export default function AddTour(props) {
                                 <AddLocationForm handleClose={handleClose} indexDate={idx} provinceCache={provinceCache} setProvinceCache={setProvinceCache} />
                             </Fade>
                         </Modal>
-                    </div>
+                    </div> */}
 
                 </Grid>
                 <Grid item md={4}>
-                    <Container>
+                    <Container style={{ marginLeft: 30 }}>
+                        <div style={{ display: 'flex', justifyContent: 'center', marginBottom: 10 }}>
+                            <Tabs value={tab} onChange={handleChangeTab} aria-label="tabs tour">
+                                <Tab label="Chọn địa điểm" {...a11yProps(0)} style={{ textTransform: "none" }} />
+                                <Tab label="Chọn dịch vụ" {...a11yProps(1)} style={{ textTransform: "none" }} />
+                            </Tabs>
+                        </div>
+                        <TabPanel value={tab} index={0}>
+                            <AddLocation
+                                indexDate={idx}
+                                currentProvince={currentProvince}
+                                setCurrentProvince={setCurrentProvince}
+                                loc={loc}
+                                setLoc={setLoc}
+                                locations={locations}
+                                setLocations={setLocations}
+                            />
+                        </TabPanel>
+                        <TabPanel value={tab} index={1}>
+                            Service
+                        </TabPanel>
+
 
                     </Container>
                 </Grid>

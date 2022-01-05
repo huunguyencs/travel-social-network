@@ -25,6 +25,6 @@ yarn-error.log*
 
 .vscode
 
-src/key/*
+# src/key/*
 
 server/node_modules

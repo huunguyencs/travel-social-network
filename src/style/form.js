@@ -24,6 +24,7 @@ const formStyles = makeStyles((theme) => ({
         backgroundColor: color.turquoise,
         padding: 10,
         paddingInline: 30,
+        marginBlock: 20
     },
     hashtag: {
         width: "100%",

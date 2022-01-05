@@ -4,81 +4,69 @@ const SocketServer = (socket) =>{
     //connect
     socket.on('joinUser', id =>{
         users.push({id,socketId: socket.id});
-        // console.log("connect socketId " + socket.id);
-        // console.log({users});
     })
 
     //disconnect
     socket.on('disconnect',() =>{
         users = users.filter(user => user.socketId !== socket.id);
-        // console.log("disconnect socketid: "+ socket.id);
-        // console.log({users})
     })
 
     //like
-    socket.on('likePost',newPost =>{
-        // console.log(newPost);
-        // let clients = [];
-        
-        // newPost.likes.forEach(element => {
-        //     users.forEach(user =>{
-        //         if(user.id == element._id) clients.push(user);
-        //     })
-        // });
+    socket.on('like',data =>{
         //all user online be update
         if(users.length > 0){
             users.forEach(user =>{
-                socket.to(user.socketId).emit('likeToClient',newPost);
+                socket.to(user.socketId).emit('likeToClient',data);
             })
         }
     })
 
     // unlike
-    socket.on('unlikePost',newPost =>{
+    socket.on('unlike',data =>{
         if(users.length >0){
             users.forEach(user =>{ 
-                socket.to(user.socketId).emit('unlikeToClient',newPost);
+                socket.to(user.socketId).emit('unlikeToClient',data);
             })
         }
     })
 
     //comment Post
-    socket.on('createCommentPost',newPost=>{
+    socket.on('createComment',data=>{
         // console.log(newPost);
         if(users.length >0){
             users.forEach(user =>{ 
-                socket.to(user.socketId).emit('createCommentPostToClient',newPost);
+                socket.to(user.socketId).emit('createCommentToClient',data);
             })
         }
     })
 
     //Delete comment Post
-    socket.on('deleteCommentPost', newPost=>{
+    socket.on('deleteComment', data=>{
         // console.log(newPost);
         if(users.length >0){ 
             users.forEach(user =>{
-                socket.to(user.socketId).emit('deleteCommentPostToClient', newPost)
+                socket.to(user.socketId).emit('deleteCommentToClient', data)
             })
         }
     })
 
     //Follow
-    socket.on('follow',newUser =>{
-        const user = users.filter(user => user.id === newUser._id);
-        if(user) {
-            // console.log(user[0].socketId);
-            socket.to(user[0].socketId).emit('followToClient',newUser);
+    socket.on('follow',data =>{
+        const user = users.filter(user => user.id === data.id);
+        if(user.length > 0) {
+            socket.to(user[0].socketId).emit('followToClient',data);
         }
-        
     })
 
     //unfollow
-    socket.on('unfollow', newUser=>{
-        const user = users.filter(user => user.id === newUser.user);
-        if(user){
-            socket.to(user[0].socketId).emit('unfollowToClient',newUser.user)
+    socket.on('unfollow', data=>{
+        const user = users.filter(user => user.id === data.id);
+        if(user.length >0){
+            socket.to(user[0].socketId).emit('unfollowToClient',data);
         }
     })
+
+    //likeComment
 }
 
 module.exports = SocketServer;

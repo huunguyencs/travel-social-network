@@ -4,7 +4,6 @@ import {
     Card,
     CardActions,
     Collapse,
-    IconButton,
     Modal,
     Typography
 } from "@material-ui/core";
@@ -21,19 +20,19 @@ import Comment from "../comment/Comment";
 import { postStyles } from "../../style";
 import InputComment from "../input/comment";
 import UserList from "../modal/userList";
-import { likeTour, unlikeTour } from "../../redux/callApi/tourCall";
+
 import SharePost from "../forms/share";
 import TourContent from "./content";
+import { likeTour, unlikeTour } from "../../redux/callApi/tourCall";
 
 
 export default function Tour(props) {
 
-    const { auth } = useSelector(state => state);
+    const { auth, socket } = useSelector(state => state);
     const dispatch = useDispatch();
 
     const [showCmt, setShowCmt] = useState(false);
     const [like, setLike] = useState(false);
-
     const [tour, setTour] = useState(null);
     const [share, setShare] = useState(false);
 
@@ -44,12 +43,14 @@ export default function Tour(props) {
         })
     }
 
+
     const addComment = (comment) => {
         setTour({
             ...tour,
             comments: [...tour.comments, comment]
         })
     }
+
 
     const classes = postStyles({ showCmt });
 
@@ -67,7 +68,7 @@ export default function Tour(props) {
         let newLike = [...prevLike, auth.user]
         updateLike(newLike);
 
-        dispatch(likeTour(tour._id, auth.token, () => {
+        dispatch(likeTour(tour._id, auth.token,socket, () => {
             if (like) {
                 setLike(false);
                 updateLike(prevLike);
@@ -81,7 +82,7 @@ export default function Tour(props) {
         let newLikes = prevLike.filter(user => user._id !== auth.user._id);
         updateLike(newLikes);
 
-        dispatch(unlikeTour(tour._id, auth.token, () => {
+        dispatch(unlikeTour(tour._id, auth.token,socket, () => {
             if (!like) {
                 setLike(true);
                 updateLike(prevLike);
@@ -120,12 +121,11 @@ export default function Tour(props) {
                 <TourContent tour={tour} setTour={setTour} />
 
                 <CardActions>
-                    <IconButton onClick={likePress}>
-                        {
-                            like ? <Favorite className={classes.likeIcon} /> : <FavoriteBorderOutlined />
-                        }
+                    {
+                        like ? <Favorite className={classes.likedIcon} onClick={likePress} /> : <FavoriteBorderOutlined className={classes.iconButton} onClick={likePress} />
+                    }
 
-                    </IconButton>
+
                     <Typography className={classes.numLike} onClick={handleOpen}>
                         {tour?.likes.length}
                     </Typography>
@@ -143,15 +143,11 @@ export default function Tour(props) {
                     >
                         <UserList listUser={tour.likes} title={"Đã thích"} handleClose={handleClose} />
                     </Modal>
-                    <IconButton onClick={() => (setShowCmt(value => !value))}>
-                        <QuestionAnswer />
-                    </IconButton>
+                    <QuestionAnswer onClick={() => (setShowCmt(value => !value))} className={classes.iconButton} />
                     <Typography className={classes.numCmt}>
                         {tour.comments.length}
                     </Typography>
-                    <IconButton>
-                        <Share onClick={() => setShare(true)} />
-                    </IconButton>
+                    <Share onClick={() => setShare(true)} className={classes.iconButton} />
                     <Modal
                         aria-labelledby="share"
                         aria-describedby="share-this-tour"

@@ -4,7 +4,6 @@ import {
     Card,
     CardActions,
     Collapse,
-    IconButton,
     Modal,
     Typography
 } from "@material-ui/core";
@@ -20,9 +19,9 @@ import Comment from "../comment/Comment";
 import InputComment from "../input/comment";
 import { postStyles } from "../../style";
 import UserList from "../modal/userList";
-import { likePost, unlikePost } from '../../redux/callApi/postCall';
 import SharePost from "../forms/share";
 import PostContent from "./content";
+import { likePost, unlikePost } from '../../redux/callApi/postCall';
 
 
 export default function Post(props) {
@@ -117,15 +116,13 @@ export default function Post(props) {
             {post && <>
                 <PostContent post={post} />
 
-                <CardActions>
-                    <IconButton onClick={likePress}>
-                        {
-                            like ? <Favorite className={classes.likeIcon} /> : <FavoriteBorderOutlined />
-                        }
+                <CardActions style={{ marginLeft: 10 }}>
+                    {
+                        like ? <Favorite className={classes.likedIcon} onClick={likePress} /> : <FavoriteBorderOutlined className={classes.iconButton} onClick={likePress} />
+                    }
 
-                    </IconButton>
                     <Typography className={classes.numLike} onClick={handleOpen}>
-                        {post.likes?.length}
+                        {post.likes.length}
                     </Typography>
                     <Modal
                         aria-labelledby="like"
@@ -141,15 +138,11 @@ export default function Post(props) {
                     >
                         <UserList listUser={post.likes} title={"Đã thích"} handleClose={handleClose} />
                     </Modal>
-                    <IconButton onClick={handleShowCmt}>
-                        <QuestionAnswer />
-                    </IconButton>
+                    <QuestionAnswer onClick={handleShowCmt} className={classes.iconButton} />
                     <Typography className={classes.numCmt}>
                         {post.comments.length}
                     </Typography>
-                    <IconButton>
-                        <Share onClick={() => setShare(true)} />
-                    </IconButton>
+                    <Share onClick={() => setShare(true)} className={classes.iconButton} />
                     <Modal
                         aria-labelledby="share"
                         aria-describedby="share-this-post"

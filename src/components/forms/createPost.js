@@ -11,14 +11,17 @@ import { checkImage } from "../../utils/uploadImage";
 import EmojiPicker from "../input/emojiPicker";
 import LoginModal from "../modal/login";
 
-
 export default function CreatePostForm(props) {
 
     const dispatch = useDispatch();
 
     const history = useHistory();
+    const [state, setState] = useState({
+        loading: false,
+        error: false
+    })
 
-    const { auth, notify } = useSelector(state => state);
+    const { auth } = useSelector(state => state);
 
     const [imageUpload, setImageUpload] = useState([]);
     const [showWarning, setShowWarning] = useState("");
@@ -61,10 +64,24 @@ export default function CreatePostForm(props) {
         e.preventDefault();
         var ht = hashtagSplit(hashtag);
         if (text !== '' || imageUpload.length > 0 || ht.length > 0) {
+            setState({
+                loading: true,
+                error: false
+            })
             dispatch(createPost({ content: text, image: imageUpload, hashtags: ht }, auth.token, () => {
+                setState({
+                    loading: false,
+                    error: false,
+                })
                 props.handleClose();
                 history.push("/");
+            }, () => {
+                setState({
+                    loading: false,
+                    error: true
+                })
             }));
+
         }
     }
 
@@ -126,7 +143,7 @@ export default function CreatePostForm(props) {
                                 <div>
                                     <Button className={classes.button} onClick={handleSubmit}>
                                         {
-                                            notify.loading ?
+                                            state.loading ?
                                                 <CircularProgress size="25px" color="white" /> :
                                                 <>
                                                     <Create style={{ marginRight: 10 }} />

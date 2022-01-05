@@ -4,6 +4,7 @@ import React from "react";
 import { Link } from "react-router-dom";
 
 import { locationCardStyles } from "../../style";
+import { getStar } from "../../utils/utils";
 
 export default function LocationCard(props) {
 
@@ -16,21 +17,20 @@ export default function LocationCard(props) {
             <CardActionArea>
                 <CardMedia
                     className={classes.media}
-                    image={location.image}
-                    title={location.name}
+                    image={location.images[0]}
+                    title={location.fullname}
                 />
             </CardActionArea>
             <CardContent className={classes.content}>
-                <Typography variant="h5">
-                    {location.locationName}
+                <Typography variant="h5" component={Link} to={"/location/" + location.name}>
+                    {location.fullname}
                 </Typography>
-                <Rating name="read-only" value={location.rate} readOnly size="small" />
-                {/* <Typography variant="body1">
-                    {props.location.description}
-                </Typography> */}
+                <div style={{ marginTop: 10 }}>
+                    <Rating name="read-only" value={getStar(location.star)} readOnly size="small" />
+                </div>
             </CardContent>
             <CardActions>
-                <Button className={classes.seeMoreBtn} component={Link} to={"/location/" + location._id}>
+                <Button className={classes.seeMoreBtn} component={Link} to={"/location/" + location.name}>
                     Xem chi tiết
                 </Button>
             </CardActions>

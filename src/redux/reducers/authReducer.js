@@ -17,21 +17,13 @@ const authReducer = (state = INIT_STATE, action) => {
         case AUTH_TYPES.LOGOUT: {
             return INIT_STATE
         }
-        case AUTH_TYPES.FOLLOW: {
+        case AUTH_TYPES.UPDATE_FOLLOWING: {
+            console.log(action.payload.followings)
             return {
                 ...state,
                 user: {
                     ...state.user,
-                    followings: [...state.user.followings, action.payload.user]
-                }
-            }
-        }
-        case AUTH_TYPES.UNFOLLOW: {
-            return {
-                ...state,
-                user: {
-                    ...state.user,
-                    followings: state.user.followings.filter(item => item._id !== action.payload.user)
+                    followings: action.payload.followings
                 }
             }
         }

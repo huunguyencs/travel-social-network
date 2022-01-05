@@ -1,0 +1,140 @@
+user: {
+    _id: "1313"
+    firstName: "Nguyen"
+    lastName: "Huu"
+    userName: "huunguyen"
+    email: "huu@gmail.com"
+    password: "asdgjaksdh"
+    avatarImage: "https://avatar.com"
+    backgroundImage: "https://avatar.com"
+    phone: "123456789"
+    role: 1,
+    gender: "Male",
+    birthday: Date(11/11/2000)
+    confirmCooperator: 0,
+    province: "Quang Ngai",
+    age: 20,
+    hobbies: ["doc sach", "nghe nhac"]
+    followings: [465465, 5646, 65465]
+    followers: [4554, 4564, 4654]
+}
+
+post: {
+    _id: 4465456,
+    userId: 45646,
+    content: "Đây là lần đầu tôi post bài",
+    time: Datetime(11/11/2021)
+    comments: [4564, 4564, 6546, 1313],
+    isPublic: 1,
+    likes: [13133, 1313, 132132, 13],
+    postImages: [
+        {
+            imageId: 1313,
+            url: "https://avatar.com"
+        },
+        {
+            imageId: 4654,
+            url: "https://avatar.com"
+        }
+    ],
+    isPostReview: false,
+    star: 0,
+    timeStart: 
+    cost: null,
+    locationId: null,
+    hashtags: ["an uong", "du lich"]
+    taggedIds: [4656, 466, 1313]
+    isPostService: false,
+    provinceId: 3123
+},
+
+commentId: {
+    _id: 46546,
+    postId: 4564,
+    likes: [46, 461, 134]
+    content: "Đây là nội dung của comment",
+    time: Date(13/11/2021),
+    userId: 1346,
+}
+
+
+tour: {
+    _id: 1321313,
+    postIds: [321321, 132456, 1613],
+    schedule: 4,
+    tourName: "Tên tour",
+    isPublic: true,
+    taggedIds: [1313, 13456, 46541],
+    likeIds: [1321, 1321, 32132],
+    commentIds: [
+        {
+            _id: 46546,
+            postId: 4564,
+            likes: [46, 461, 134]
+            content: "Đây là nội dung của comment",
+            time: Date(13/11/2021),
+            user: {
+                userName: 13132,
+                avatarImage: "",
+            }
+        }
+    ]
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+tour: {
+    _id: 32123,
+    tourName: "Tên tour",
+    isPublic: true,
+    taggedIds: [],
+    likeIds: [],
+    commentIds: [],
+    tours: [
+        {
+            date: "1/11/2021",
+            locations: [
+                {
+                    locationId: 12313,
+                    cost: 100,
+                    postId: 13212,
+                },
+                {
+                    locationId: 1231,
+                    cost: 200,
+                    postId: 13212,
+                }
+            ]
+        },
+        {
+            date: "2/11/2021",
+            locations: [
+                {
+                    locationId: 12313,
+                    cost: 100,
+                    postId: 13212,
+                },
+                {
+                    locationId: 1231,
+                    cost: 200,
+                    postId: 13212,
+                }
+            ]
+        },
+    ]
+}
+
+
+
+password regex: ^(?=.*[A-Z])(?=.*[!@#$&*])(?=.*[0-9])(?=.*[a-z]).{8}$

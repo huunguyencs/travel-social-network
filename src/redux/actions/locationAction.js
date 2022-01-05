@@ -7,13 +7,6 @@ export const getProvinces = (props) => {
     }
 }
 
-export const getLocationHot = (props) => {
-    return {
-        type: LOC_TYPES.GET_LOCATION_HOT,
-        payload: props,
-    }
-}
-
 export const loading = (props) => {
     return {
         type: LOC_TYPES.LOADING,

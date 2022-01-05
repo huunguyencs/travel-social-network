@@ -3,8 +3,9 @@ import { MoreVert } from '@material-ui/icons'
 import React, { useEffect, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { Link } from 'react-router-dom'
-
 import { joinTour, unJoinTour } from '../../redux/callApi/tourCall'
+
+
 import { postStyles } from '../../style'
 import { convertDateToStr, timeAgo } from '../../utils/date'
 import ImageModal from '../modal/image'
@@ -14,13 +15,7 @@ import { SeeMoreText } from '../seeMoreText'
 
 function ShareContent({ tour }) {
 
-    const [tourShare, setTourShare] = useState(null);
-
-    useEffect(() => {
-        if (tour.shareId) {
-            setTourShare(tour.shareId);
-        }
-    }, [tour, setTourShare])
+    const [tourShare, setTourShare] = useState(tour.shareId);
 
     const classes = postStyles();
     return (
@@ -43,7 +38,20 @@ function ShareContent({ tour }) {
                     </Link>
                 }
             />
-            {tourShare && <BaseContent tour={tourShare} setTour={setTourShare} />}
+            <CardContent>
+                <SeeMoreText
+                    variant="body1"
+                    maxText={100}
+                    text={tour.content}
+                />
+
+            </CardContent>
+            <div className={classes.hashtagWrap}>
+                {tour.hashtags.map((item, index) =>
+                    <Typography className={classes.hashtag} key={index}>{item}</Typography>
+                )}
+            </div>
+            {tourShare ? <BaseContent tour={tourShare} setTour={setTourShare} /> : <Typography>Nội dung không còn tồn tại</Typography>}
         </>
     )
 }
@@ -184,8 +192,8 @@ function BaseContent(props) {
                 </div>
 
                 <div className={classes.hashtagWrap}>
-                    {tour.hashtags.map((item) =>
-                        <Typography className={classes.hashtag}>{item}</Typography>
+                    {tour.hashtags.map((item, index) =>
+                        <Typography className={classes.hashtag} key={index}>{item}</Typography>
                     )}
                 </div>
 

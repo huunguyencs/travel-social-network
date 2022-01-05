@@ -15,7 +15,7 @@ router.patch("/change_profile", auth, UserController.editProfile);
 
 router.get('/search', UserController.searchUsers);
 // lấy thông tin một user
-router.get("/:id", auth, UserController.getUser);
+router.get("/:id", UserController.getUser);
 
 router.put('/:id/follow', auth, UserController.follow); //id là id của người mà mình follow
 router.put('/:id/unfollow', auth, UserController.unfollow); // id là id của người mình unfollow

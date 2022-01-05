@@ -1,29 +1,32 @@
 import { Avatar, Button, IconButton } from "@material-ui/core";
 import { Close } from "@material-ui/icons";
 import React, { useState } from "react";
-import { useSelector, useDispatch } from 'react-redux';
+import { useSelector } from 'react-redux';
 import { Link } from 'react-router-dom';
 
-import { removeJoin } from "../../redux/callApi/tourCall";
 import { modalListStyles } from "../../style";
+import customAxios from "../../utils/fetchData";
 
 
 export default function ManageUserJoin(props) {
 
     const { tourId, title, handleClose, updateJoin } = props;
     const { auth } = useSelector(state => state);
-    const dispatch = useDispatch();
     const [listUser, setListUser] = useState(props.listUser);
 
     const classes = modalListStyles();
 
-    const handleRemove = (user) => {
+    const handleRemove = async (user) => {
         // console.log(user);
         let prevJoin = listUser;
         let newJoin = listUser.filter(u => u._id !== user);
         updateJoin(newJoin);
         setListUser(newJoin);
-        dispatch(removeJoin(tourId, user, auth.token, () => updateJoin(prevJoin)));
+        await customAxios(auth.token).patch(`/tour/${tourId}/remove_join`).then(res => {
+            updateJoin(res.data.joinIds);
+        }).catch(err => {
+            updateJoin(prevJoin);
+        })
     }
 
     return (

@@ -3,6 +3,8 @@ import { useDispatch, useSelector } from 'react-redux';
 import * as postAction from './redux/actions/postAction';
 import * as commentAction from './redux/actions/commentAction';
 import * as authAction from './redux/actions/authAction';
+import * as userAction from './redux/actions/userAction';
+import * as tourAction from './redux/actions/tourAction';
 
 const SocketClient = () => {
     const {auth, socket} = useSelector(state => state);
@@ -15,9 +17,24 @@ const SocketClient = () => {
     
     //like
     useEffect(()=>{
-        socket.on('likeToClient', newPost =>{
+        socket.on('likeToClient', data =>{
             // console.log(newPost);
-            dispatch(postAction.updateLike(newPost));
+            switch (data.type) {
+                case 'post':
+                    dispatch(postAction.updateLike({ id: data.id, likes: data.likes }));
+                    break;
+                case 'tour':
+                    dispatch(tourAction.updateLike({ id: data.id, likes: data.likes }));
+                    break;
+                case 'commentPost':
+                    dispatch(commentAction.updateCommentPost({ comment: data.newComment, id: data.id, postId: data.postId }))
+                    break;
+                case 'commentTour':
+                    dispatch(commentAction.updateCommentTour({ comment: data.newComment, id: data.id, tourId: data.tourId }))
+                    break;
+                default:
+                    break;
+            }
         })
 
         return ()=> socket.off('likeToClient');
@@ -25,41 +42,58 @@ const SocketClient = () => {
     
     //unlike
     useEffect(() =>{ 
-        socket.on('unlikeToClient',newPost =>{
-            // console.log(newPost);
-            dispatch(postAction.updateLike(newPost));
+        socket.on('unlikeToClient',data =>{
+            switch (data.type) {
+                case 'post':
+                    dispatch(postAction.updateLike({ id: data.id, likes: data.likes }));
+                    break;
+                case 'tour':
+                    dispatch(tourAction.updateLike({ id: data.id, likes: data.likes }));
+                    break;
+                case 'commentPost':
+                    dispatch(commentAction.updateCommentPost({ comment: data.newComment, id: data.id, postId: data.postId }))
+                    break;
+                case 'commentTour':
+                    dispatch(commentAction.updateCommentTour({ comment: data.newComment, id: data.id, tourId: data.tourId }))
+                    break;
+                default:
+                    break;
+            }
         })
         return () => socket.off('unlikeToClient');
     },[socket,dispatch])
 
-    //comment Post
+    //create Comment
     useEffect(() =>{
-        socket.on('createCommentPostToClient', newPost =>{ 
-            dispatch(commentAction.addCommentPost(newPost));
+        socket.on('createCommentToClient', data =>{ 
+            switch (data.type) {
+                case 'post':
+                    dispatch(commentAction.addCommentPost({ id: data.id, comment: data.comment }));
+                    break;
+                case 'tour':
+                    dispatch(commentAction.addCommentTour({ id: data.id, comment: data.comment }));
+                    break;
+                default:
+                    break;
+            }
         })
-        return () => socket.off('createCommentPostToClient');
+        return () => socket.off('createCommentToClient');
     },[socket,dispatch])
 
     //follow
     useEffect(()=>{
-        socket.on('followToClient', newUser=>{
-            dispatch(authAction.follow({
-                user: {
-                    _id: newUser._id,
-                    username: newUser.username,
-                    avatar: newUser.avatar,
-                    fullname: newUser.fullname,
-                }
-            }))
-            console.log(newUser);
+        socket.on('followToClient', data=>{
+            dispatch(userAction.updateFollower({ followers: data.followers }));
+            dispatch(authAction.updateFollowing({ followings: data.followings }));
         })
         return () => socket.off('followToClient');
     },[socket,dispatch])
 
     //unfollow
     useEffect(()=>{
-        socket.on('unfollowToClient', newUser=>{
-            dispatch(authAction.unfollow({ user: newUser }))
+        socket.on('unfollowToClient', data=>{
+            dispatch(userAction.updateFollower({ followers: data.followers }));
+            dispatch(authAction.updateFollowing({ followings: data.followings }));
         })
         return () => socket.off('unfollowToClient');
     },[socket,dispatch])

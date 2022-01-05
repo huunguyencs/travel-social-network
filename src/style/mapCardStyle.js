@@ -3,7 +3,7 @@ import { makeStyles } from "@material-ui/core";
 
 const mapCardStyles = makeStyles((theme) => ({
     container: {
-        height: "450px",
+        height: "100%",
         marginInline: 20,
         marginTop: 50,
     }

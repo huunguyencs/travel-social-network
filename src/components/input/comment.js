@@ -1,13 +1,13 @@
 import React, { useState } from "react";
 import { IconButton, InputBase } from "@material-ui/core";
 import { Send } from "@material-ui/icons";
-// import EmojiPicker from "emoji-picker-react";
-import EmojiPicker from "./emojiPicker";
+import { useDispatch, useSelector } from "react-redux";
 
+import EmojiPicker from "./emojiPicker";
 import { inputStyles } from "../../style";
 import { createCommentPost } from "../../redux/callApi/commentCall";
 import { createCommentTour } from "../../redux/callApi/commentCall";
-import { useDispatch, useSelector } from "react-redux";
+
 
 export default function InputComment(props) {
 
@@ -27,7 +27,7 @@ export default function InputComment(props) {
                 dispatch(createCommentPost(id, text, auth,socket, (newComment) => addComment(newComment)));
             }
             else if (type === "tour") {
-                dispatch(createCommentTour(id, text, auth, (newComment) => addComment(newComment)));
+                dispatch(createCommentTour(id, text, auth,socket, (newComment) => addComment(newComment)));
             }
 
         }
