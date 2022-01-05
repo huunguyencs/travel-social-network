@@ -5,13 +5,13 @@ import { commentStyles } from "../../style";
 import { SeeMoreText } from "../seeMoreText";
 import { timeAgo } from "../../utils/date";
 // import { auth } from "../../redux/actions/authAction";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { Link } from "react-router-dom";
-import customAxios from "../../utils/fetchData";
+import { likeComment, unlikeComment } from "../../redux/callApi/commentCall";
 
 export default function Comment(props) {
 
-    const { comment, id } = props;
+    const { comment, type, id } = props;
 
     const [like, setLike] = useState(false);
     const [numLike, setNumLike] = useState(0);
@@ -19,6 +19,7 @@ export default function Comment(props) {
     const classes = commentStyles({ like });
 
     const { auth } = useSelector(state => state);
+    const dispatch = useDispatch();
 
     const likePress = () => {
         if (!auth.user) return;
@@ -28,29 +29,18 @@ export default function Comment(props) {
         else handleLike();
     }
 
-    const handleLike = async () => {
+    const handleLike = () => {
         setLike(true);
         setNumLike(state => state + 1);
         // call api
-        await customAxios(auth.token).patch(`/comment/${id}/like`).catch(err => {
-            if (like) {
-                setLike(false);
-                setNumLike(state => state - 1);
-            }
-
-        })
+        dispatch(likeComment(comment._id, auth, type, id));
     }
 
-    const handleUnlike = async () => {
+    const handleUnlike = () => {
         setLike(false);
         setNumLike(state => state - 1);
         // call api
-        await customAxios(auth.token).patch(`comment/${id}/unlike`).catch(err => {
-            if (!like) {
-                setLike(true);
-                setNumLike(state => state + 1)
-            }
-        })
+        dispatch(unlikeComment(comment._id, auth, type, id));
     }
 
     useEffect(() => {
