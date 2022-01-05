@@ -10,4 +10,4 @@ const serviceItemSchema = new mongoose.Schema({
     }
 })
 
-module.exports = mongoose.model('serviceItem', serviceItemSchema)
+module.exports = mongoose.model('serviceItems', serviceItemSchema)

@@ -1,5 +1,5 @@
 import { Button, Container, Grid, Modal, Typography, Backdrop, Fade, Dialog, DialogActions, DialogTitle, CircularProgress, Tab, Tabs } from "@material-ui/core";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { Timeline, TimelineItem, TimelineSeparator, TimelineConnector, TimelineContent, TimelineDot } from '@material-ui/lab'
 import { useDispatch, useSelector } from "react-redux";
 
@@ -11,9 +11,10 @@ import { useHistory } from "react-router-dom";
 import UpdateDateForm from "../forms/updateDate";
 import UpdateTourInfo from "../forms/updateInfoCreateTour";
 import { convertDateToStr } from "../../utils/date";
-import customAxios from "../../utils/fetchData";
-import * as imageUtils from '../../utils/uploadImage'
+import { createTourCall } from "../../redux/callApi/tourCall";
 import AddLocation from "./AddLocation";
+import { getProvinces } from '../../redux/callApi/locationCall';
+import AddService from "./AddService";
 
 
 function a11yProps(index) {
@@ -49,7 +50,7 @@ export default function AddTour(props) {
     })
 
     const dispatch = useDispatch();
-    const { createTour, auth } = useSelector(state => state);
+    const { createTour, location, auth } = useSelector(state => state);
     const [tab, setTab] = useState(0)
     const [currentProvince, setCurrentProvince] = useState(null);
     const [loc, setLoc] = useState(null);
@@ -61,15 +62,6 @@ export default function AddTour(props) {
     const [showUpdateDate, setShowUpdateDate] = useState(false);
     const [showDeleteDate, setShowDeteleDate] = useState(false);
     const [showChangeInfo, setShowChangeInfo] = useState(false);
-    // const [provinceCache, setProvinceCache] = useState(null);
-
-    // const handleShow = () => {
-    //     setAddLoc(true);
-    // }
-
-    // const handleClose = () => {
-    //     setAddLoc(false);
-    // }
 
 
     const handleAddDay = () => {
@@ -87,39 +79,25 @@ export default function AddTour(props) {
             loading: true,
             error: false
         })
-        let ht = hashtagSplit(createTour.hashtags);
+        let ht = hashtagSplit(createTour.hashtags)
 
-        let imageUpload = [];
-        if (createTour.image) imageUpload = await imageUtils.uploadImages([createTour.image]);
-        // location id
-        const data = {
+        dispatch(createTourCall({
             name: createTour.name,
             content: createTour.content,
             hashtags: ht,
-            tour: createTour.tour.map(item => ({
-                ...item,
-                locations: item.locations.map(location => ({
-                    location: location.location._id,
-                    cost: location.cost,
-                }))
-            })),
-            image: imageUpload.length > 0 ? imageUpload[0] : "",
-            cost: createTour.cost
-        }
-
-
-        await customAxios(auth.token).post('/tour/create_tour', data).then(res => {
+            tour: createTour.tour,
+        }, createTour.image, auth.token, () => {
             setState({
                 loading: false,
-                error: false,
+                error: false
             })
             history.push("/tour")
-        }).catch(err => {
+        }, () => {
             setState({
                 loading: false,
-                error: true,
+                error: true
             })
-        });
+        }))
     }
 
     const handleDeleteDate = () => {
@@ -152,7 +130,11 @@ export default function AddTour(props) {
         setTab(value);
     }
 
-
+    useEffect(() => {
+        if (location.provinces?.length === 0) {
+            dispatch(getProvinces());
+        }
+    }, [dispatch, location.provinces])
 
     const classes = tourdetailStyles();
 
@@ -331,7 +313,7 @@ export default function AddTour(props) {
                             />
                         </TabPanel>
                         <TabPanel value={tab} index={1}>
-                            Service
+                            <AddService />
                         </TabPanel>
 
 

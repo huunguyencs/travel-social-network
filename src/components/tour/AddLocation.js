@@ -1,8 +1,8 @@
 import { Button, TextField, Typography } from '@material-ui/core';
 import { Autocomplete } from '@material-ui/lab';
-import React, { useEffect, useState } from 'react'
+import React, { useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux';
-import { getProvinces } from '../../redux/callApi/locationCall';
+
 import { formStyles } from '../../style';
 import customAxios from '../../utils/fetchData';
 import AddLocMap from './AddLocMap';
@@ -55,35 +55,8 @@ export default function AddLocation(props) {
         }
     }
 
-    useEffect(() => {
-        if (location.provinces?.length === 0) {
-            dispatch(getProvinces());
-        }
-    }, [dispatch, location.provinces])
 
 
-
-    // useEffect(() => {
-    //     const getLocations = async () => {
-    //         await customAxios().get(`location/locations/${currentProvince._id}`)
-    //             .then((req) => {
-    //                 setLocations(req.data.locations);
-    //             }).catch(err => {
-    //                 setLocations([]);
-    //             })
-    //         setState({
-    //             zoom: 11,
-    //             center: {
-    //                 lat: currentProvince.position.lat,
-    //                 lng: currentProvince.position.lon
-    //             }
-    //         })
-    //     }
-
-    //     if (currentProvince && locations.length === 0) {
-    //         getLocations();
-    //     }
-    // }, [currentProvince, locations, setLocations])
 
     const handleSubmit = (e) => {
         e.preventDefault();
@@ -92,7 +65,7 @@ export default function AddLocation(props) {
     }
 
     return (
-        <div>
+        <>
             <div className={classes.textTitle}>
                 <Typography variant="h5">
                     Thêm địa điểm
@@ -144,6 +117,6 @@ export default function AddLocation(props) {
                     indexDate={props.indexDate}
                 />
             </form>
-        </div>
+        </>
     )
 }
