@@ -1,6 +1,6 @@
 import { InputBase, Typography, Button, Paper, IconButton, CircularProgress } from "@material-ui/core";
 import { Create, Image } from "@material-ui/icons";
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import { ScrollMenu } from 'react-horizontal-scrolling-menu';
 import { useDispatch, useSelector } from "react-redux";
 import { updatePost } from "../../redux/callApi/postCall";
@@ -22,7 +22,6 @@ export default function UpdatePostForm(props) {
     const { auth } = useSelector(state => state);
 
     const [imageUpload, setImageUpload] = useState(post.images);
-    const [showWarning, setShowWarning] = useState("");
 
     const [text, setText] = useState(post.content);
     const [hashtag, setHashtag] = useState(post.hashtags.join(" "));
@@ -32,12 +31,10 @@ export default function UpdatePostForm(props) {
     }
 
     const handleChangeImageUpload = (e) => {
-        setShowWarning("");
         let valid = true;
         for (const file of e.target.files) {
             const check = checkImage(file);
             if (check !== "") {
-                setShowWarning(check);
                 valid = false;
                 break;
             }
@@ -81,11 +78,6 @@ export default function UpdatePostForm(props) {
 
         }
     }
-
-    useEffect(() => {
-        console.log("post")
-        console.log(post);
-    }, [post])
 
     const classes = formStyles();
 
@@ -159,7 +151,6 @@ export default function UpdatePostForm(props) {
 
                         </div>
                     </form>
-                    <div style={{ fontSize: "20px", color: "red", marginInline: "25px" }}>{showWarning}</div>
                     <div
                         style={{
                             marginInline: "20px",

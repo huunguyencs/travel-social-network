@@ -7,9 +7,9 @@ export const getTours = (props) => {
     }
 }
 
-export const createTour = (props) => {
+export const addTour = (props) => {
     return {
-        type: TOUR_TYPES.CREATE_TOUR,
+        type: TOUR_TYPES.ADD_TOUR,
         payload: props,
     }
 }

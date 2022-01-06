@@ -1,23 +1,19 @@
-import * as notifyAction from '../actions/notifyAction';
+
 import * as commentAction from '../actions/commentAction';
 import customAxios from '../../utils/fetchData';
 
-export const getCommentPost = (data) => async (dispatch) => {
 
-}
 
-export const getCommentTour = (data) => async (dispatch) => {
-
-}
-
-export const createCommentPost = (id, comment, auth, next) => async (dispatch) => {
+export const createComment = (id, comment, auth, type, next) => async (dispatch) => {
 
     try {
         // call api to update comment
+
         const res = await customAxios(auth.token).post("/comment/create_comment", {
-            commentType: "post",
+            commentType: type,
             content: comment,
             postId: id,
+            tourId: id,
         })
 
         const newComment = {
@@ -26,7 +22,13 @@ export const createCommentPost = (id, comment, auth, next) => async (dispatch) =
         }
 
         next(newComment);
-        dispatch(commentAction.addCommentPost({ id: id, comment: newComment }))
+        if (type === "post") {
+            dispatch(commentAction.addCommentPost({ id: id, comment: newComment }))
+        }
+        else if (type === "tour") {
+            dispatch(commentAction.addCommentTour({ id: id, comment: newComment }));
+        }
+
 
     }
     catch (err) {
@@ -35,83 +37,6 @@ export const createCommentPost = (id, comment, auth, next) => async (dispatch) =
     }
 }
 
-export const createCommentTour = (id, comment, auth, next) => async (dispatch) => {
-
-    try {
-        // call api to update comment
-        const res = await customAxios(auth.token).post("/comment/create_comment", {
-            commentType: "tour",
-            content: comment,
-            tourId: id,
-        })
-
-        const newComment = {
-            ...res.data.newComment,
-            userId: auth.user,
-        }
-        next(newComment);
-        dispatch(commentAction.addCommentTour({ id: id, comment: newComment }))
-    }
-    catch (err) {
-        console.log(err);
-    }
-}
-
-export const updateCommentPost = (data) => async (dispatch) => {
-    dispatch(notifyAction.callStart());
-    // const newComments;
-
-    // dispatch(commentAction.updateCommentPost({ comments: newComments }))
-    try {
-        // call api to update comment
-        dispatch(notifyAction.callSuccess({ message: "" }));
-    }
-    catch (err) {
-        dispatch(notifyAction.callFail({ error: err.response.data.message }));
-    }
-}
-
-export const updateCommentTour = (data) => async (dispatch) => {
-    dispatch(notifyAction.callStart());
-    // const newComments;
-
-    // dispatch(commentAction.updateCommentTour({ comments: newComments }))
-    try {
-        // call api to update comment
-        dispatch(notifyAction.callSuccess({ message: "" }));
-    }
-    catch (err) {
-        dispatch(notifyAction.callFail({ error: err.response.data.message }));
-    }
-}
-
-export const deleteCommentPost = (data) => async (dispatch) => {
-    dispatch(notifyAction.callStart());
-    // const newComments;
-
-    // dispatch(commentAction.updateCommentPost({ comments: newComments }))
-    try {
-        // call api to update comment
-        dispatch(notifyAction.callSuccess({ message: "" }));
-    }
-    catch (err) {
-        dispatch(notifyAction.callFail({ error: err.response.data.message }));
-    }
-}
-
-export const deleteCommentTour = (data) => async (dispatch) => {
-    dispatch(notifyAction.callStart());
-    // const newComments;
-
-    // dispatch(commentAction.updateCommentTour({ comments: newComments }))
-    try {
-        // call api to update comment
-        dispatch(notifyAction.callSuccess({ message: "" }));
-    }
-    catch (err) {
-        dispatch(notifyAction.callFail({ error: err.response.data.message }));
-    }
-}
 
 export const likeComment = (id, auth, type, postId) => async (dispatch) => {
 
@@ -146,5 +71,20 @@ export const unlikeComment = (id, auth, type, postId) => async (dispatch) => {
     }
     catch (err) {
         console.log(err.response.data.message);
+    }
+}
+
+export const deleteComment = (id, auth, type, postId) => async (dispatch) => {
+    try {
+        await customAxios(auth.token).delete(`/comment/${id}`);
+        if (type === "post") {
+            dispatch(commentAction.deleteCommentPost({ id: id, postId: postId }))
+        }
+        else if (type === "tour") {
+            dispatch(commentAction.deleteCommentTour({ id: id, tourId: postId }))
+        }
+    }
+    catch (err) {
+
     }
 }

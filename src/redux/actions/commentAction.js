@@ -29,3 +29,17 @@ export const addCommentTour = (props) => {
         payload: props,
     }
 }
+
+export const deleteCommentPost = (props) => {
+    return {
+        type: POST_TYPES.DELETE_COMMENT,
+        payload: props
+    }
+}
+
+export const deleteCommentTour = (props) => {
+    return {
+        type: TOUR_TYPES.DELETE_COMMENT,
+        payload: props
+    }
+}

@@ -48,8 +48,6 @@ export const getUserTour = (id, token) => async (dispatch) => {
     }
 }
 
-
-
 export const saveTour = (tour, image, token, next, error) => async (dispatch) => {
 
     try {
@@ -69,8 +67,8 @@ export const saveTour = (tour, image, token, next, error) => async (dispatch) =>
         }
 
 
-        await customAxios(token).post('/tour/create_tour', data);
-
+        const res = await customAxios(token).post('/tour/create_tour', data);
+        dispatch(tourAction.addTour({ tour: res.data.newTour }))
         next();
     }
     catch (err) {

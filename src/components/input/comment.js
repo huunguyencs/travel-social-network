@@ -5,8 +5,7 @@ import { useDispatch, useSelector } from "react-redux";
 
 import EmojiPicker from "./emojiPicker";
 import { inputStyles } from "../../style";
-import { createCommentPost } from "../../redux/callApi/commentCall";
-import { createCommentTour } from "../../redux/callApi/commentCall";
+import { createComment } from "../../redux/callApi/commentCall";
 
 
 export default function InputComment(props) {
@@ -23,12 +22,7 @@ export default function InputComment(props) {
         e.preventDefault();
         if (text.trim() !== "") {
             setText("");
-            if (type === "post") {
-                dispatch(createCommentPost(id, text, auth, (newComment) => addComment(newComment)));
-            }
-            else if (type === "tour") {
-                dispatch(createCommentTour(id, text, auth, (newComment) => addComment(newComment)));
-            }
+            dispatch(createComment(id, text, auth, type, (newComment) => addComment(newComment)));
 
         }
     }

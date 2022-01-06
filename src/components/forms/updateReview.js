@@ -1,7 +1,7 @@
 import { InputBase, Typography, Button, Paper, IconButton, CircularProgress } from "@material-ui/core";
 import { Create, Image } from "@material-ui/icons";
 import { Rating } from "@material-ui/lab";
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import { ScrollMenu } from "react-horizontal-scrolling-menu";
 import { useDispatch, useSelector } from "react-redux";
 
@@ -92,10 +92,6 @@ export default function UpdateReviewForm(props) {
 
     const classes = formStyles();
 
-    useEffect(() => {
-        console.log("review");
-        console.log(review);
-    }, [review])
 
 
     return (
