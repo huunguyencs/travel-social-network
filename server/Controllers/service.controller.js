@@ -1,33 +1,42 @@
 const Services = require('../Models/service.model')
-const Locations = require('../Models/location.model')
+// const Locations = require('../Models/location.model')
+const ServiceItems = require('../Models/serviceItem.model')
 
 class ServiceController {
     async createService(req, res) {
         try {
-            const { name, description, price, type, locationId, rate, images } = req.body
+            const { name, fullname, description, type, province, images, serviceItem } = req.body
 
             const newService = new Services({
-                name, description, price, type, locationId, rate, images
+                name, fullname, description, type, province, images
             })
-            await newService.save()
 
-            const location = await Locations.findById(locationId);
-            if (!location) {
-                return res.status(400).json({ success: false, message: "This location is not exist." })
+            await newService.save()
+            if (serviceItem.length > 0) {
+                serviceItem.forEach(async function (element) {
+                    const newServiceItem = new ServiceItems({
+                        name: element.name,
+                        description: element.description,
+                        cost: element.cost
+                    })
+
+                    await newServiceItem.save();
+
+                    await Services.findOneAndUpdate({ _id: newService._id }, {
+                        $push: {
+                            serviceItem: newService._id
+                        }
+                    })
+                })
             }
 
-            await Locations.findOneAndUpdate({ _id: locationId }, {
-                $push: {
-                    services: newService._id
-                }
-            })
-            console.log(location)
+            // console.log(location)
             res.json({
                 success: true,
                 message: "Create Service successful",
-                //  newService: {
-                //     ...newService._doc,
-                // }
+                newService: {
+                    ...newService._doc,
+                }
             })
         } catch (err) {
             console.log(err)
@@ -37,15 +46,33 @@ class ServiceController {
 
     async updateService(req, res) {
         try {
-            const { name, description, price, type, locationId, rate, images } = req.body
+            const { name, fullname, description, type, province, images } = req.body
 
             const service = await Services.findOneAndUpdate({ _id: req.params.id }, {
-                name, description, price, type, locationId, rate, images
+                name, fullname, description, type, province, images
             }, { new: true })
 
             res.json({ success: true, message: "update Service successful", service })
         } catch (err) {
             console.log(err)
+            res.status(500).json({ success: false, message: err.message })
+        }
+    }
+
+    async updateServiceItem(req, res) {
+        try {
+            const { name, description, cost, discount } = req.body;
+            const serviceItem = await ServiceItems.findOneAndUpdate({ _id: req.params.id }, {
+                name, description, cost, discount
+            }, { new: true })
+
+            res.json({
+                success: true,
+                message: "",
+                serviceItem
+            })
+        }
+        catch (err) {
             res.status(500).json({ success: false, message: err.message })
         }
     }
@@ -89,6 +116,16 @@ class ServiceController {
         }
     }
 
+    async getServinceByProvince(req, res) {
+        try {
+            const services = Services.find({ province: req.params.id })
+                .populate("serviceItem");
+            res.json({ success: true, message: "", services })
+        }
+        catch (err) {
+            res.status(500).json({ success: false, message: err.message })
+        }
+    }
 }
 
 module.exports = new ServiceController;

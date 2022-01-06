@@ -9,7 +9,7 @@ const locationSchema = new mongoose.Schema({
     images: [{ type: String }],
     fullname: String,
     star: {
-        type: Array,
+        type: [Number],
         default: [0, 0, 0, 0, 0]
     },
     province: { type: mongoose.Types.ObjectId, ref: 'provinces' },

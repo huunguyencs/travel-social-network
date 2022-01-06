@@ -36,7 +36,7 @@ export default function HotPage(props) {
             <Grid item md={6}>
                 <FeedHot />
             </Grid>
-            <Grid item md={3} sm={0} className={classes.rightbar}>
+            <Grid item md={3} className={classes.rightbar}>
                 <RightBar>
                     <Calendar />
                     <FriendRecommendCard />

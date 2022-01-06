@@ -8,11 +8,10 @@ const serviceSchema = new mongoose.Schema({
     },
     fullname: String,
     description: String,
-    price: Number,
     type: String,
-    province: { type: mongoose.Types.ObjectId, ref: 'provinces' },
+    province: [{ type: mongoose.Types.ObjectId, ref: 'provinces' }],
     star: {
-        type: Array,
+        type: [Number],
         default: [0, 0, 0, 0, 0]
     },
     rate: [
@@ -25,10 +24,7 @@ const serviceSchema = new mongoose.Schema({
     images: [
         { type: String }
     ],
-    position: {
-        lat: Number,
-        lon: Number
-    }
+    serviceItem: [{ type: mongoose.Types.ObjectId, ref: 'serviceItem' }]
 }, {
     timestamps: true
 })

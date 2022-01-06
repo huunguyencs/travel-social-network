@@ -10,7 +10,7 @@ export default function LeftBar(props) {
 
     return (
         <Container className={classes.container} elevation={15}>
-            {props.children}
+            {props?.children}
         </Container>
 
     )
