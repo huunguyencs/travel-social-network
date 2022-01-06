@@ -4,7 +4,7 @@ const serviceSchema = new mongoose.Schema({
     name: String,
     cooperator: { type: mongoose.Types.ObjectId, ref: 'users' },
     description: String,
-    type: String,
+    type: String, // di chuyen, nha hang, khach san, 
     province: { type: mongoose.Types.ObjectId, ref: 'provinces' },
     star: {
         type: [Number],

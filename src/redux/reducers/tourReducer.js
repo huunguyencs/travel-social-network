@@ -17,6 +17,7 @@ const tourReducer = (state = INIT_STATE, action) => {
                 error: null,
             }
         }
+
         case TOUR_TYPES.ADD_TOUR: {
             return {
                 ...state,

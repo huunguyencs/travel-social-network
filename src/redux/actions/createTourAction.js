@@ -3,10 +3,11 @@ import * as TOUR_TYPES from '../constants/createTourConstant'
 
 export const createTour = (props) => {
     return {
-        type: TOUR_TYPES.ADD_TOUR,
+        type: TOUR_TYPES.CREATE_TOUR,
         payload: props,
     }
 }
+
 
 export const addDate = (props) => {
     return {

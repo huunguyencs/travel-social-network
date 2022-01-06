@@ -64,10 +64,10 @@ function Header(props) {
     }
 
     const handleDeletePost = () => {
-        dispatch(deletePost(post._id, auth.token), () => {
+        dispatch(deletePost(post._id, auth.token, () => {
             setShowDelete(false);
             handleCloseMenu();
-        });
+        }));
 
     }
 

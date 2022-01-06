@@ -15,7 +15,7 @@ const INIT_STATE = {
 
 const createTourReducer = (state = INIT_STATE, action) => {
     switch (action.type) {
-        case TOUR_TYPES.ADD_TOUR: {   // them tour (chua cap nhat len database)
+        case TOUR_TYPES.CREATE_TOUR: {   // them tour (chua cap nhat len database)
             // var dateStr = dateUtils.convertDateToStr(action.payload.date);
             return {
                 ...state,
