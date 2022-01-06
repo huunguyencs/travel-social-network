@@ -12,6 +12,7 @@ import LoginModal from "../modal/login";
 
 export default function UpdatePostForm(props) {
 
+    const [change, setChange] = useState(false);
     const { post, handleClose } = props;
     const dispatch = useDispatch();
     const [state, setState] = useState({
@@ -27,10 +28,12 @@ export default function UpdatePostForm(props) {
     const [hashtag, setHashtag] = useState(post.hashtags.join(" "));
 
     const handleChange = e => {
+        if (!change) setChange(true);
         setText(e.target.value);
     }
 
     const handleChangeImageUpload = (e) => {
+        if (!change) setChange(true);
         let valid = true;
         for (const file of e.target.files) {
             const check = checkImage(file);
@@ -44,6 +47,7 @@ export default function UpdatePostForm(props) {
     }
 
     const removeImage = (index) => {
+        if (!change) setChange(true);
         setImageUpload(oldImage => [
             ...oldImage.slice(0, index),
             ...oldImage.slice(index + 1)
@@ -58,6 +62,10 @@ export default function UpdatePostForm(props) {
     const handleSubmit = (e) => {
         e.preventDefault();
         var ht = hashtagSplit(hashtag);
+        if (!change) {
+            handleClose();
+            return;
+        }
         if (text !== '' || imageUpload.length > 0 || ht.length > 0) {
             setState({
                 loading: true,

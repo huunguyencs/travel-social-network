@@ -24,7 +24,6 @@ export default function CreatePostForm(props) {
     const { auth } = useSelector(state => state);
 
     const [imageUpload, setImageUpload] = useState([]);
-    const [showWarning, setShowWarning] = useState("");
 
     const [text, setText] = useState("");
     const [hashtag, setHashtag] = useState("");
@@ -34,12 +33,10 @@ export default function CreatePostForm(props) {
     }
 
     const handleChangeImageUpload = (e) => {
-        setShowWarning("");
         let valid = true;
         for (const file of e.target.files) {
             const check = checkImage(file);
             if (check !== "") {
-                setShowWarning(check);
                 valid = false;
                 break;
             }
@@ -157,7 +154,6 @@ export default function CreatePostForm(props) {
 
                         </div>
                     </form>
-                    <div style={{ fontSize: "20px", color: "red", marginInline: "25px" }}>{showWarning}</div>
                     <div
                         style={{
                             marginInline: "20px",

@@ -14,6 +14,7 @@ import { updatePost } from "../../redux/callApi/postCall";
 
 export default function UpdateReviewForm(props) {
 
+    const [change, setChange] = useState(false);
     const dispatch = useDispatch();
     const { auth } = useSelector(state => state);
     const { review, handleClose } = props;
@@ -31,6 +32,7 @@ export default function UpdateReviewForm(props) {
     const [text, setText] = useState(review.content);
 
     const handleInput = (e) => {
+        if (!change) setChange(true);
         setContext({
             ...state,
             [e.target.name]: e.target.value,
@@ -38,6 +40,7 @@ export default function UpdateReviewForm(props) {
     }
 
     const handleChange = e => {
+        if (!change) setChange(true);
         setText(e.target.value);
     }
 
@@ -47,10 +50,12 @@ export default function UpdateReviewForm(props) {
     }
 
     const handleChangeImageUpload = (e) => {
+        if (!change) setChange(true);
         setImageUpload(oldImage => [...oldImage, ...e.target.files])
     }
 
     const removeImage = (index) => {
+        if (!change) setChange(true);
         setImageUpload(oldImage => [
             ...oldImage.slice(0, index),
             ...oldImage.slice(index + 1)
@@ -59,6 +64,13 @@ export default function UpdateReviewForm(props) {
 
     const handleSubmit = (e) => {
         e.preventDefault();
+        if (!context.rate) {
+            return;
+        }
+        if (!change) {
+            handleClose();
+            return;
+        }
         setState({
             loading: true,
             error: false

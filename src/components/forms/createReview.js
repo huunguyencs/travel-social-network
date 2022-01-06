@@ -60,16 +60,19 @@ export default function CreateReviewForm(props) {
 
     const handleSubmit = (e) => {
         e.preventDefault();
+        if (!context.rate) {
+            return;
+        }
         setState({
             loading: true,
             error: false
         })
-        var ht = hashtagSplit(state.hashtags);
+        var ht = hashtagSplit(context.hashtags);
         dispatch(createPost({
             content: text,
             image: imageUpload,
             hashtags: ht,
-            rate: state.rate,
+            rate: context.rate,
             locationId: location,
             tourDateId: tourDateId,
             indexLocation: indexLocation
