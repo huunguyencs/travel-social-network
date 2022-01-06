@@ -65,7 +65,7 @@ export const updateTour = (data) => async (dispatch) => {
 
 
 
-export const createTourCall = (tour, image, token, next, error) => async (dispatch) => {
+export const saveTour = (tour, image, token, next, error) => async (dispatch) => {
 
     try {
         // call api to save tour
@@ -78,7 +78,6 @@ export const createTourCall = (tour, image, token, next, error) => async (dispat
                 ...item,
                 locations: item.locations.map(location => ({
                     location: location.location._id,
-                    cost: location.cost,
                 }))
             })),
             image: image ? imageUpload[0] : ""

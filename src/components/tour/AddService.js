@@ -1,5 +1,5 @@
-import { Backdrop, Button, Fade, Modal, Paper, TextField, Typography } from '@material-ui/core';
-import React, { useState } from 'react'
+import { Backdrop, Button, Card, Fade, Modal, Paper, TextField, Typography } from '@material-ui/core';
+import React, { useEffect, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux';
 import customAxios from '../../utils/fetchData';
 import * as tourAction from '../../redux/actions/createTourAction';
@@ -9,6 +9,7 @@ import { formStyles } from '../../style';
 function ServiceItemAddForm(props) {
 
     const dispatch = useDispatch();
+    const [isFetch, setIsFetch] = useState(false);
 
     const { location } = useSelector(state => state);
 
@@ -17,6 +18,20 @@ function ServiceItemAddForm(props) {
     const [province, setProvince] = useState(provinceCache);
     const [service, setService] = useState(null);
     const [services, setServices] = useState(serviceCache);
+
+    const getServicesInit = async (province, setServices, setServiceCache) => {
+        await customAxios().get(`/service/get_by_province/${province._id}`).then(res => {
+            setServices(res.data.services);
+            setServiceCache(res.data.services);
+        })
+    }
+
+    useEffect(() => {
+        if (provinceCache && services.length === 0 && !isFetch) {
+            getServicesInit(provinceCache, setServices, setServiceCache);
+            setIsFetch(true);
+        }
+    }, [provinceCache, setServices, setServiceCache, isFetch, setIsFetch, services])
 
     const getServices = async (value) => {
         setProvince(value);
@@ -43,9 +58,8 @@ function ServiceItemAddForm(props) {
         if (service) {
             dispatch(tourAction.addService({
                 service: {
-                    cooperator: service.cooperator._id,
-                    service: service._id,
-                    cost: service.cost
+                    cooperator: service.cooperator,
+                    service: service
                 }
             }))
             handleClose();
@@ -93,7 +107,26 @@ function ServiceItemAddForm(props) {
     )
 }
 
+function ServiceCard(props) {
+    const { service } = props;
+
+    const handleBooking = () => {
+
+    }
+
+    return (
+        <Card>
+            <Typography>{service.cooperator.fullname}</Typography>
+            <Typography>{service.service.name}</Typography>
+            <Typography>{new Intl.NumberFormat().format(service.service.cost) * 1000} VND</Typography>
+            <Button onClick={handleBooking}>Đặt trước</Button>
+        </Card>
+    )
+}
+
 export default function AddService(props) {
+
+    const { services } = useSelector(state => state.createTour);
 
     const classes = formStyles();
 
@@ -110,7 +143,11 @@ export default function AddService(props) {
                 </Typography>
             </div>
             <div>
-
+                {
+                    services && services.map((item) => (
+                        <ServiceCard service={item} />
+                    ))
+                }
             </div>
             <div style={{ display: 'flex', justifyContent: 'center', marginTop: 20 }}>
                 <Button onClick={() => setShowForm(true)}>Thêm dịch vụ</Button>

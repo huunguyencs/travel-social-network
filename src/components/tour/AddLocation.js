@@ -1,6 +1,6 @@
 import { Button, TextField, Typography } from '@material-ui/core';
 import { Autocomplete } from '@material-ui/lab';
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux';
 
 import { formStyles } from '../../style';
@@ -36,8 +36,31 @@ export default function AddLocation(props) {
 
     }
 
+    const getLocInit = async (province, setLocations, setState) => {
+        await customAxios().get(`location/locations/${province._id}`)
+            .then((req) => {
+                setLocations(req.data.locations);
+            }).catch(err => {
+                setLocations([]);
+            })
+        setState({
+            zoom: 11,
+            center: {
+                lat: province.position.lat,
+                lng: province.position.lon
+            }
+        })
+    }
+
+    useEffect(() => {
+        if (currentProvince && locations.length === 0) {
+            getLocInit(currentProvince, setLocations, setState)
+        }
+    }, [currentProvince, locations, setState, setLocations])
+
     const getLoc = async (province) => {
         if (province && province._id !== currentProvince) {
+            setLoc(null);
             await customAxios().get(`location/locations/${province._id}`)
                 .then((req) => {
                     setLocations(req.data.locations);

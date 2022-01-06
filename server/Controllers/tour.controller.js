@@ -5,10 +5,10 @@ const Comments = require('../Models/comment.model')
 class TourController {
     async createTour(req, res) {
         try {
-            const { content, name, taggedIds, image, hashtags, tour, cost } = req.body
+            const { content, name, taggedIds, image, hashtags, tour, services, cost } = req.body
 
             const newTour = new Tours({
-                userId: req.user._id, content, image, name, taggedIds, hashtags, cost
+                userId: req.user._id, content, image, name, taggedIds, hashtags, services, cost
             })
             await newTour.save()
             if (tour.length > 0) {

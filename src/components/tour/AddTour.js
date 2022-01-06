@@ -11,7 +11,7 @@ import { useHistory } from "react-router-dom";
 import UpdateDateForm from "../forms/updateDate";
 import UpdateTourInfo from "../forms/updateInfoCreateTour";
 import { convertDateToStr } from "../../utils/date";
-import { createTourCall } from "../../redux/callApi/tourCall";
+import { saveTour } from "../../redux/callApi/tourCall";
 import AddLocation from "./AddLocation";
 import { getProvinces } from '../../redux/callApi/locationCall';
 import AddService from "./AddService";
@@ -40,6 +40,20 @@ function TabPanel(props) {
     )
 }
 
+function calculateCost(services) {
+    if (services) {
+        return services.reduce((accum, item) => accum + item.service.cost, 0) * 1000;
+    }
+    return 0;
+}
+
+function extractService(services) {
+    return services.map((item) => ({
+        cooperator: item.cooperator._id,
+        service: item.service._id,
+        cost: item.service.cost
+    }))
+}
 
 export default function AddTour(props) {
 
@@ -81,11 +95,13 @@ export default function AddTour(props) {
         })
         let ht = hashtagSplit(createTour.hashtags)
 
-        dispatch(createTourCall({
+        dispatch(saveTour({
             name: createTour.name,
             content: createTour.content,
             hashtags: ht,
             tour: createTour.tour,
+            cost: calculateCost(createTour.services),
+            services: extractService(createTour.services)
         }, createTour.image, auth.token, () => {
             setState({
                 loading: false,
@@ -136,6 +152,8 @@ export default function AddTour(props) {
         }
     }, [dispatch, location.provinces])
 
+
+
     const classes = tourdetailStyles();
 
     return (
@@ -156,7 +174,7 @@ export default function AddTour(props) {
                 </div>
                 <div className={classes.itemInfo}>
                     <Typography variant="body1" className={classes.content}>
-                        Chi phí: {createTour.cost ? new Intl.NumberFormat().format(createTour.cost * 1000) : 0} VND
+                        Chi phí: {new Intl.NumberFormat().format(calculateCost(createTour.services))} VND
                     </Typography>
                 </div>
                 <div className={classes.itemInfo}>
