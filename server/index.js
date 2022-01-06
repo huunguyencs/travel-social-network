@@ -1,8 +1,25 @@
+require('dotenv').config();
 const express = require('express');
-const cors = require('cors');
-const app = express();
 const mongoose = require('mongoose');
+const cors = require('cors');
+
 const cookieParser = require('cookie-parser');
+const SocketServer = require('./socketServer');
+
+
+const app = express();
+app.use(express.json());
+app.use(cors());
+app.use(cookieParser());
+
+//Socket
+const http = require('http').createServer(app);
+const io = require('socket.io')(http);
+
+
+io.on('connection', (socket)=>{
+    SocketServer(socket);
+});
 
 // Port
 const PORT = process.env.port || 5000;
@@ -10,10 +27,9 @@ const PORT = process.env.port || 5000;
 // Mongo
 const MONGO_URL = process.env.MONGO_URL || "mongodb+srv://admin:RvZetzfl04aNUtRf@travel-social-network.sweoh.mongodb.net/travel-social-network?retryWrites=true&w=majority";
 
-// Middleware 
-app.use(cors());
-app.use(express.json());
-app.use(cookieParser());
+
+
+
 
 // Router
 app.use('/post', require('./Routers/post.router'));
@@ -40,6 +56,6 @@ mongoose.connect(MONGO_URL, {
         console.log(err);
     })
 
-app.listen(PORT, () => {
+http.listen(PORT, () => {
     console.log('Server is running on port ', PORT);
 })

@@ -25,11 +25,13 @@ export const getUser = (id, user, callback) => async (dispatch) => {
 }
 
 
-export const follow = (follow, token, next) => async (dispatch) => {
+export const follow = (follow, token,socket, next) => async (dispatch) => {
     try {
+        // A follow B(follow.id)
         await customAxios(token).put(`/user/${follow._id}/follow`).then(res => {
             dispatch(userAction.updateFollower({ followers: res.data.followers }))
             dispatch(authAction.updateFollowing({ followings: res.data.followings }))
+            socket.emit('follow',{id: follow._id, followers: res.data.followers, followings: res.data.followings})
         });
     }
     catch (err) {
@@ -37,11 +39,14 @@ export const follow = (follow, token, next) => async (dispatch) => {
     }
 }
 
-export const unfollow = (follow, token, next) => async (dispatch) => {
+export const unfollow = (follow, token,socket, next) => async (dispatch) => {
     try {
+        // A unfollow B(follow.id)
         await customAxios(token).put(`/user/${follow._id}/unfollow`).then(res => {
             dispatch(userAction.updateFollower({ followers: res.data.followers }))
             dispatch(authAction.updateFollowing({ followings: res.data.followings }))
+            socket.emit('unfollow',{id: follow._id, followers: res.data.followers, followings: res.data.followings})
+
         });
     }
     catch (err) {

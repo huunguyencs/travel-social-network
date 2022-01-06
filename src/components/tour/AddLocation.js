@@ -11,12 +11,10 @@ import * as tourAction from '../../redux/actions/createTourAction';
 export default function AddLocation(props) {
 
     const classes = formStyles();
-    const [loc, setLoc] = useState(null);
+
     const dispatch = useDispatch();
     const { location } = useSelector(state => state);
-
-    const [currentProvince, setCurrentProvince] = useState(null);
-    const [locations, setLocations] = useState([]);
+    const { currentProvince, setCurrentProvince, loc, setLoc, locations, setLocations } = props;
 
     const defaultState = {
         zoom: 8,
@@ -62,6 +60,30 @@ export default function AddLocation(props) {
             dispatch(getProvinces());
         }
     }, [dispatch, location.provinces])
+
+
+
+    // useEffect(() => {
+    //     const getLocations = async () => {
+    //         await customAxios().get(`location/locations/${currentProvince._id}`)
+    //             .then((req) => {
+    //                 setLocations(req.data.locations);
+    //             }).catch(err => {
+    //                 setLocations([]);
+    //             })
+    //         setState({
+    //             zoom: 11,
+    //             center: {
+    //                 lat: currentProvince.position.lat,
+    //                 lng: currentProvince.position.lon
+    //             }
+    //         })
+    //     }
+
+    //     if (currentProvince && locations.length === 0) {
+    //         getLocations();
+    //     }
+    // }, [currentProvince, locations, setLocations])
 
     const handleSubmit = (e) => {
         e.preventDefault();

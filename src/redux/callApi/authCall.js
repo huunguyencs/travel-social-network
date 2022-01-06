@@ -1,5 +1,6 @@
 import * as notifyAction from '../actions/notifyAction';
 import * as authAction from '../actions/authAction';
+import * as userAction from '../actions/userAction';
 import customAxios from '../../utils/fetchData';
 
 
@@ -73,11 +74,13 @@ export const logout = (data) => async (dispatch) => {
     }
 }
 
-export const follow = (token, userId, next) => async (dispatch) => {
+export const follow = (token, userId,socket, next) => async (dispatch) => {
     try {
         await customAxios(token).put(`/user/${userId}/follow`).then(res => {
             console.log(res.data);
             dispatch(authAction.updateFollowing({ followings: res.data.followings }))
+            dispatch(userAction.updateFollower({ followers: res.data.followers }))
+            socket.emit('follow',{id: userId, followers: res.data.followers, followings: res.data.followings})
         })
     }
     catch (err) {
@@ -85,10 +88,12 @@ export const follow = (token, userId, next) => async (dispatch) => {
     }
 }
 
-export const unfollow = (token, userId, next) => async (dispatch) => {
+export const unfollow = (token, userId,socket, next) => async (dispatch) => {
     try {
         await customAxios(token).put(`/user/${userId}/unfollow`).then(res => {
             dispatch(authAction.updateFollowing({ followings: res.data.followings }))
+            dispatch(userAction.updateFollower({ followers: res.data.followers }))
+            socket.emit('unfollow',{id: userId, followers: res.data.followers, followings: res.data.followings})
         })
     }
     catch (err) {

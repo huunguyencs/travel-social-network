@@ -11,7 +11,7 @@ import { modalListStyles } from "../../style";
 export default function UserList(props) {
 
     const { title, listUser, handleClose } = props;
-    const { auth } = useSelector(state => state);
+    const { auth, socket } = useSelector(state => state);
     const dispatch = useDispatch();
     const [followings, setFollowings] = useState([]);
     const [stateFollow, setStateFollow] = useState({
@@ -29,7 +29,7 @@ export default function UserList(props) {
                 loading: true,
                 error: false
             })
-            dispatch(unfollow(auth.token, userId, () => {
+            dispatch(unfollow(auth.token, userId, socket, () => {
                 setStateFollow({
                     id: userId,
                     loading: false,
@@ -48,7 +48,7 @@ export default function UserList(props) {
                 loading: true,
                 error: false
             })
-            dispatch(follow(auth.token, userId, () => {
+            dispatch(follow(auth.token, userId,socket, () => {
                 setStateFollow({
                     id: userId,
                     loading: false,
@@ -82,8 +82,8 @@ export default function UserList(props) {
             <div className={classes.modal_header}>
                 <h2 className={classes.modal_header_left}>{title}: {listUser.length}</h2>
                 <div className={classes.modal_header_right}>
-                    <IconButton>
-                        <Close className={classes.modal_header_closeIcon} onClick={handleClose} />
+                    <IconButton onClick={handleClose}>
+                        <Close className={classes.modal_header_closeIcon} />
                     </IconButton>
                 </div>
             </div>

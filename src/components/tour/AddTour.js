@@ -1,4 +1,4 @@
-import { Button, Container, Grid, Modal, Typography, Backdrop, Fade, Dialog, DialogActions, DialogTitle, CircularProgress } from "@material-ui/core";
+import { Button, Container, Grid, Modal, Typography, Backdrop, Fade, Dialog, DialogActions, DialogTitle, CircularProgress, Tab, Tabs } from "@material-ui/core";
 import React, { useState } from "react";
 import { Timeline, TimelineItem, TimelineSeparator, TimelineConnector, TimelineContent, TimelineDot } from '@material-ui/lab'
 import { useDispatch, useSelector } from "react-redux";
@@ -16,6 +16,29 @@ import * as imageUtils from '../../utils/uploadImage'
 import AddLocation from "./AddLocation";
 
 
+function a11yProps(index) {
+    return {
+        id: `tab-${index}`,
+        'aria-controls': `tabpanel-${index}`,
+    }
+}
+
+function TabPanel(props) {
+    const { children, value, index, ...other } = props;
+
+    return (
+        <div
+            role="tabpanel"
+            hidden={value !== index}
+            id={`tabpanel-${index}`}
+            aria-labelledby={`tab-${index}`}
+            {...other}
+        >
+            {value === index && children}
+        </div>
+    )
+}
+
 
 export default function AddTour(props) {
 
@@ -27,6 +50,10 @@ export default function AddTour(props) {
 
     const dispatch = useDispatch();
     const { createTour, auth } = useSelector(state => state);
+    const [tab, setTab] = useState(0)
+    const [currentProvince, setCurrentProvince] = useState(null);
+    const [loc, setLoc] = useState(null);
+    const [locations, setLocations] = useState([]);
 
 
     const [idx, setIdx] = useState(0);
@@ -120,6 +147,11 @@ export default function AddTour(props) {
     const handleCloseUpdateInfo = () => {
         setShowChangeInfo(false)
     }
+
+    const handleChangeTab = (e, value) => {
+        setTab(value);
+    }
+
 
 
     const classes = tourdetailStyles();
@@ -280,8 +312,29 @@ export default function AddTour(props) {
 
                 </Grid>
                 <Grid item md={4}>
-                    <Container>
-                        <AddLocation indexDate={idx} />
+                    <Container style={{ marginLeft: 30 }}>
+                        <div style={{ display: 'flex', justifyContent: 'center', marginBottom: 10 }}>
+                            <Tabs value={tab} onChange={handleChangeTab} aria-label="tabs tour">
+                                <Tab label="Chọn địa điểm" {...a11yProps(0)} style={{ textTransform: "none" }} />
+                                <Tab label="Chọn dịch vụ" {...a11yProps(1)} style={{ textTransform: "none" }} />
+                            </Tabs>
+                        </div>
+                        <TabPanel value={tab} index={0}>
+                            <AddLocation
+                                indexDate={idx}
+                                currentProvince={currentProvince}
+                                setCurrentProvince={setCurrentProvince}
+                                loc={loc}
+                                setLoc={setLoc}
+                                locations={locations}
+                                setLocations={setLocations}
+                            />
+                        </TabPanel>
+                        <TabPanel value={tab} index={1}>
+                            Service
+                        </TabPanel>
+
+
                     </Container>
                 </Grid>
             </Grid>

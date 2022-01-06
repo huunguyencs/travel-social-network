@@ -113,21 +113,21 @@ export const deleteTour = (data) => async (dispatch) => {
     }
 }
 
-export const likeTour = (id, token, next) => async (dispatch) => {
+export const likeTour = (id, token,socket, next) => async (dispatch) => {
 
     try {
 
         const res = await customAxios(token).patch(`/tour/${id}/like`)
         dispatch(tourAction.updateLike({ id: id, likes: res.data.likes }));
         // console.log(res.data.likes);
-
+        socket.emit('like',{type:'tour',id: id, likes: res.data.likes});
     }
     catch (err) {
         next();
     }
 }
 
-export const unlikeTour = (id, token, next) => async (dispatch) => {
+export const unlikeTour = (id, token,socket, next) => async (dispatch) => {
 
 
     try {
@@ -135,7 +135,7 @@ export const unlikeTour = (id, token, next) => async (dispatch) => {
         const res = await customAxios(token).patch(`/tour/${id}/unlike`);
         dispatch(tourAction.updateLike({ id: id, likes: res.data.likes }));
         // console.log(res.data.likes);
-
+        socket.emit('unlike',{type:'tour',id: id, likes: res.data.likes});
     }
     catch (err) {
         next();

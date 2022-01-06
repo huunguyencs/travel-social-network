@@ -11,6 +11,7 @@ import { Link } from "react-router-dom";
 import { useLocation } from "react-router-dom";
 
 import { leftbarStyles } from "../../style";
+import color from "../../style/color";
 
 export default function Menu(props) {
 
@@ -52,7 +53,13 @@ export default function Menu(props) {
         <List className={classes.panel}>
             {menuList.menu.map((item, index) => (
                 <Link style={{ textDecoration: "none", }} to={renderLink(item.link)} key={index}>
-                    <ListItem button className={isActive(item.link) ? [classes.item, classes.itemActive] : classes.item}>
+                    <ListItem
+                        button
+                        className={classes.item}
+                        style={{
+                            backgroundColor: isActive(item.link) ? color.turquoise : 'inherit',
+                        }}
+                    >
                         <ListItemIcon>
                             {<item.icon className={classes.icon} />}
                         </ListItemIcon>

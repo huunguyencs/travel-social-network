@@ -25,10 +25,7 @@ const serviceSchema = new mongoose.Schema({
     images: [
         { type: String }
     ],
-    position: {
-        lat: Number,
-        lon: Number
-    }
+    serviceItem: [{ type: mongoose.Types.ObjectId, ref: 'serviceItem' }]
 }, {
     timestamps: true
 })

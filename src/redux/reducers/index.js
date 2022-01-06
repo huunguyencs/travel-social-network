@@ -7,13 +7,14 @@ import auth from './authReducer';
 import user from './userReducer';
 import post from './postReducer';
 import tour from './tourReducer';
-
+import socket from './socketReducer';
 const rootReducer = combineReducers({
     post,
     createTour,
     notify,
     location,
     auth,
+    socket,
     user,
     tour
 });

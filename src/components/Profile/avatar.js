@@ -18,7 +18,7 @@ export default function Profile_Avatar(props) {
   const { id } = useParams();
   const history = useHistory();
 
-  const { auth } = useSelector(state => state);
+  const { auth, socket } = useSelector(state => state);
 
   const dispatch = useDispatch();
 
@@ -74,7 +74,7 @@ export default function Profile_Avatar(props) {
         loading: true,
         error: false
       })
-      dispatch(unfollow(user, auth.token, () => {
+      dispatch(unfollow(user, auth.token,socket, () => {
         setStateFollow({
           loading: false,
           error: true
@@ -92,7 +92,7 @@ export default function Profile_Avatar(props) {
         loading: true,
         error: false
       })
-      dispatch(follow(user, auth.token, () => {
+      dispatch(follow(user, auth.token,socket, () => {
         setStateFollow({
           loading: false,
           error: true
@@ -153,42 +153,40 @@ export default function Profile_Avatar(props) {
               />
             </div>
             <div className={classes.infoUser}>
-              <Typography variant="body1" color="black" component="p" style={{ fontSize: "35px", }}>
+              <Typography variant="body1" component="p" style={{ fontSize: "35px", color: 'inherit' }}>
                 {user.fullname}
               </Typography>
-              <div >
-                <Typography variant="body1" color="#9b9696" component="p" style={{ display: "flex", fontSize: "20px", }}>
-                  <Typography style={{ marginRight: "20px", cursor: "pointer", }} onClick={handleOpenFollowing} >{user.followings.length} đang theo dõi</Typography>
-                  <Modal
-                    aria-labelledby="transition-modal-title"
-                    aria-describedby="transition-modal-description"
-                    className={classes.modal}
-                    open={openFollowing}
-                    onClose={handleCloseFollowing}
-                    closeAfterTransition
-                    BackdropComponent={Backdrop}
-                    BackdropProps={{
-                      timeout: 500,
-                    }}
-                  >
-                    <UserList listUser={user?.followings} title={"Đang theo dõi"} handleClose={handleCloseFollowing} />
-                  </Modal>
-                  <Typography style={{ cursor: "pointer", }} onClick={handleOpenFollower} >{user.followers.length} người theo dõi</Typography>
-                  <Modal
-                    aria-labelledby="transition-modal-title"
-                    aria-describedby="transition-modal-description"
-                    className={classes.modal}
-                    open={openFollower}
-                    onClose={handleCloseFollower}
-                    closeAfterTransition
-                    BackdropComponent={Backdrop}
-                    BackdropProps={{
-                      timeout: 500,
-                    }}
-                  >
-                    <UserList listUser={user?.followers} title={"Người theo dõi"} handleClose={handleCloseFollower} />
-                  </Modal>
-                </Typography>
+              <div variant="body1" component="p" style={{ display: "flex", fontSize: "20px", color: "inherit" }}>
+                <Typography style={{ marginRight: "20px", cursor: "pointer", }} onClick={handleOpenFollowing} >{user.followings.length} đang theo dõi</Typography>
+                <Modal
+                  aria-labelledby="transition-modal-title"
+                  aria-describedby="transition-modal-description"
+                  className={classes.modal}
+                  open={openFollowing}
+                  onClose={handleCloseFollowing}
+                  closeAfterTransition
+                  BackdropComponent={Backdrop}
+                  BackdropProps={{
+                    timeout: 500,
+                  }}
+                >
+                  <UserList listUser={user?.followings} title={"Đang theo dõi"} handleClose={handleCloseFollowing} />
+                </Modal>
+                <Typography style={{ cursor: "pointer", }} onClick={handleOpenFollower} >{user.followers.length} người theo dõi</Typography>
+                <Modal
+                  aria-labelledby="transition-modal-title"
+                  aria-describedby="transition-modal-description"
+                  className={classes.modal}
+                  open={openFollower}
+                  onClose={handleCloseFollower}
+                  closeAfterTransition
+                  BackdropComponent={Backdrop}
+                  BackdropProps={{
+                    timeout: 500,
+                  }}
+                >
+                  <UserList listUser={user?.followers} title={"Người theo dõi"} handleClose={handleCloseFollower} />
+                </Modal>
               </div>
             </div>
             {

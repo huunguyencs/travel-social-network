@@ -17,17 +17,17 @@ export default function InputComment(props) {
     const [text, setText] = useState("");
 
     const dispatch = useDispatch();
-    const { auth } = useSelector(state => state);
+    const { auth, socket } = useSelector(state => state);
 
     const handleComment = (e) => {
         e.preventDefault();
         if (text.trim() !== "") {
             setText("");
             if (type === "post") {
-                dispatch(createCommentPost(id, text, auth, (newComment) => addComment(newComment)));
+                dispatch(createCommentPost(id, text, auth,socket, (newComment) => addComment(newComment)));
             }
             else if (type === "tour") {
-                dispatch(createCommentTour(id, text, auth, (newComment) => addComment(newComment)));
+                dispatch(createCommentTour(id, text, auth,socket, (newComment) => addComment(newComment)));
             }
 
         }

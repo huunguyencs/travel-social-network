@@ -12,7 +12,7 @@ export default function RightBar(props) {
 
     return (
         <Container className={classes.container}>
-            {props.children}
+            {props?.children}
         </Container>
 
     )

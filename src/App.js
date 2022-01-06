@@ -12,7 +12,9 @@ import { WithRouterScroll } from './components/scroll';
 import { useLocation, useHistory } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { refreshToken } from "./redux/callApi/authCall";
-
+import { io } from 'socket.io-client';
+import SocketClient from "./SocketClient";
+import * as SOCKET_TYPES from './redux/constants/index';
 
 function App() {
   const location = useLocation();
@@ -27,6 +29,15 @@ function App() {
       return false;
     return true;
   }
+  useEffect(()=>{
+    dispatch(refreshToken(() => {
+      if (location.pathname !== "/login" && location.pathname !== "/register")
+        history.push("/login");
+    }));
+    const socket = io();
+    dispatch({type: SOCKET_TYPES.SOCKET, payload: socket});
+    return () => socket.close();
+  },[dispatch])
 
   useEffect(() => {
     if (!auth.token) {
@@ -34,6 +45,10 @@ function App() {
         if (location.pathname !== "/login" && location.pathname !== "/register")
           history.push("/login");
       }));
+
+      // const socket = io();
+      // dispatch({type: GLOBLE_TYPES.SOCKET, payload: socket});
+      // return () => socket.close();
     }
   }, [dispatch, auth.token, history, location])
 
@@ -42,6 +57,7 @@ function App() {
       <WithRouterScroll />
       <Scroll showBelow={500} />
       {displayHeader() && <Header />}
+      {auth.token && <SocketClient/>}
       <Route path="/" component={HomePage} exact />
       <CustomRouter path='/:page' component={PageRender} exact />
       <CustomRouter path='/:page/:id' component={PageRender} exact />

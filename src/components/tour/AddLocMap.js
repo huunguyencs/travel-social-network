@@ -1,11 +1,11 @@
 import React, { useState } from 'react'
 import GoogleMapReact from 'google-map-react';
 import KEY from "../../key/googlemap";
-import FiberManualRecordTwoToneIcon from '@material-ui/icons/FiberManualRecordTwoTone';
 import { Button, ClickAwayListener, Paper, Popper, Typography } from "@material-ui/core";
 import { Link } from 'react-router-dom';
 import { useDispatch } from 'react-redux';
 import * as tourAction from '../../redux/actions/createTourAction';
+import { GpsFixed } from '@material-ui/icons';
 
 function Province(props) {
     const [anchorEl, setAnchorEl] = useState(null);
@@ -24,7 +24,7 @@ function Province(props) {
 
     return (
         <>
-            <FiberManualRecordTwoToneIcon
+            <GpsFixed
 
                 onClick={handlePopoverOpen}
                 style={{
@@ -80,7 +80,7 @@ function Location(props) {
 
     return (
         <>
-            <FiberManualRecordTwoToneIcon
+            <GpsFixed
 
                 onClick={handlePopoverOpen}
                 style={{
