@@ -89,7 +89,7 @@ export default function AdminHome(props) {
                     </Grid>
                 </Grid>
 
-                <Grid container>
+                <Grid>
                     <div
                         style={{
                             display: "flex",
@@ -125,7 +125,6 @@ export default function AdminHome(props) {
                                 </LineChart>
                             </ResponsiveContainer>
                         </div>
-
                     </div>
                 </Grid>
             </Grid>
