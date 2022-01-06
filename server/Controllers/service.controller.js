@@ -1,34 +1,21 @@
 const Services = require('../Models/service.model')
-// const Locations = require('../Models/location.model')
-const ServiceItems = require('../Models/serviceItem.model')
+
 
 class ServiceController {
     async createService(req, res) {
         try {
-            const { name, fullname, description, type, province, images, serviceItem } = req.body
+            if (req.user.role !== 1) {
+                res.status(500).json({ success: false, message: "You are not cooperator" })
+                return;
+            }
+
+            const { name, description, type, province, images, cost, discount } = req.body
 
             const newService = new Services({
-                name, fullname, description, type, province, images
+                cooperator: req.user._id, name, description, type, province, images, cost, discount
             })
 
             await newService.save()
-            if (serviceItem.length > 0) {
-                serviceItem.forEach(async function (element) {
-                    const newServiceItem = new ServiceItems({
-                        name: element.name,
-                        description: element.description,
-                        cost: element.cost
-                    })
-
-                    await newServiceItem.save();
-
-                    await Services.findOneAndUpdate({ _id: newService._id }, {
-                        $push: {
-                            serviceItem: newService._id
-                        }
-                    })
-                })
-            }
 
             // console.log(location)
             res.json({
@@ -46,10 +33,11 @@ class ServiceController {
 
     async updateService(req, res) {
         try {
-            const { name, fullname, description, type, province, images } = req.body
 
-            const service = await Services.findOneAndUpdate({ _id: req.params.id }, {
-                name, fullname, description, type, province, images
+            const { name, description, type, province, images, cost, discount } = req.body;
+
+            const service = await Services.findOneAndUpdate({ _id: req.params.id, cooperator: req.user.id }, {
+                name, description, type, province, images, cost, discount
             }, { new: true })
 
             res.json({ success: true, message: "update Service successful", service })
@@ -59,27 +47,10 @@ class ServiceController {
         }
     }
 
-    async updateServiceItem(req, res) {
-        try {
-            const { name, description, cost, discount } = req.body;
-            const serviceItem = await ServiceItems.findOneAndUpdate({ _id: req.params.id }, {
-                name, description, cost, discount
-            }, { new: true })
-
-            res.json({
-                success: true,
-                message: "",
-                serviceItem
-            })
-        }
-        catch (err) {
-            res.status(500).json({ success: false, message: err.message })
-        }
-    }
-
     async deleteService(req, res) {
         try {
-            await Services.findOneAndDelete({ _id: req.params.id });
+            await Services.findOneAndDelete({ _id: req.params.id, cooperator: req.user.id });
+
 
             res.json({
                 success: true, message: "Delete Service success"
@@ -94,7 +65,7 @@ class ServiceController {
     async getService(req, res) {
         try {
             const service = await Services.findById(req.params.id)
-                .populate("locationId")
+                .populate("cooperator")
             res.json({
                 success: true, message: "get info 1 Service success", service
             });
@@ -108,7 +79,7 @@ class ServiceController {
     async getServices(req, res) {
         try {
             const service = await Services.find()
-                .populate("locationId")
+                .populate("cooperator")
             res.json({ success: true, message: "get info all Service success", service });
         } catch (err) {
             console.log(err)
@@ -116,10 +87,10 @@ class ServiceController {
         }
     }
 
-    async getServinceByProvince(req, res) {
+    async getServiceByProvince(req, res) {
         try {
             const services = Services.find({ province: req.params.id })
-                .populate("serviceItem");
+                .populate("cooperator");
             res.json({ success: true, message: "", services })
         }
         catch (err) {

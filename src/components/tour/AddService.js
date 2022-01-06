@@ -16,16 +16,14 @@ function ServiceItemAddForm(props) {
 
     const [province, setProvince] = useState(provinceCache);
     const [service, setService] = useState(null);
-    const [serviceItem, setServiceItem] = useState(null);
     const [services, setServices] = useState(serviceCache);
-    const [serviceItems, setServiceItems] = useState([]);
 
     const getServices = async (value) => {
         setProvince(value);
         if (value) {
             if (!provinceCache || value._id !== provinceCache._id) {
                 setProvinceCache(value);
-                await customAxios().get().then(res => {
+                await customAxios().get(`/service/get_by_province/${value._id}`).then(res => {
                     setServices(res.data.services);
                     setServiceCache(res.data.services);
                 })
@@ -37,29 +35,17 @@ function ServiceItemAddForm(props) {
         else {
             setService(null);
             setServices([]);
-            setServiceItem(null);
-            setServiceItems([]);
         }
     }
 
-    const getServiceItem = async (value) => {
-        if (value) {
-            setService(value);
-            setServiceItems(value.serviceItem);
-        }
-        else {
-            setServiceItem(null);
-            setServiceItems([]);
-        }
-    }
 
     const handleSubmit = () => {
-        if (service && serviceItem) {
+        if (service) {
             dispatch(tourAction.addService({
                 service: {
+                    cooperator: service.cooperator._id,
                     service: service._id,
-                    serviceItem: serviceItem._id,
-                    cost: serviceItem.cost
+                    cost: service.cost
                 }
             }))
             handleClose();
@@ -86,24 +72,20 @@ function ServiceItemAddForm(props) {
                 <Autocomplete
                     id="choose-province"
                     options={services}
-                    getOptionLabel={(option) => option?.fullname}
-                    style={{ width: 400, marginTop: 30 }}
-                    onChange={(e, value) => getServiceItem(value)}
-                    value={service}
-                    renderInput={(params) => <TextField {...params} name="provinces" label="Chọn dịch vụ" variant="outlined" />}
-                />
-            </div>
-            <div style={{ display: 'flex', justifyContent: 'center' }}>
-                <Autocomplete
-                    id="choose-province"
-                    options={serviceItems}
                     getOptionLabel={(option) => `${option?.name} - ${option?.cost}`}
                     style={{ width: 400, marginTop: 30 }}
-                    onChange={(e, value) => setServiceItem(value)}
-                    value={serviceItem}
+                    onChange={(e, value) => setService(value)}
+                    value={service}
                     renderInput={(params) => <TextField {...params} name="provinces" label="Chọn loại dịch vụ" variant="outlined" />}
                 />
             </div>
+            {
+                service &&
+                <div>
+                    <Typography>{service.cooperator.fullname}</Typography>
+                    <Typography>{service.description}</Typography>
+                </div>
+            }
             <div style={{ display: 'flex', justifyContent: 'center', marginTop: 10 }}>
                 <Button onClick={handleSubmit}>Xong</Button>
             </div>

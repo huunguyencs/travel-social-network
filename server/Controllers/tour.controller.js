@@ -66,13 +66,23 @@ class TourController {
     ///
     async updateTour(req, res) {
         try {
-            const { content, tourName, isPublic, taggedIds, image, hashtags, tour, cost } = req.body
+            const { content, tourName, isPublic, taggedIds, image, hashtags, service, tour } = req.body
 
-            const newTour = await Tours.findOneAndUpdate({ _id: req.params.id }, {
-                content, image, tourName, taggedIds, hashtags, isPublic, tour, cost
+            const newTour = await Tours.findOneAndUpdate({ _id: req.params.id, userId: req.user.id }, {
+                content, image, tourName, taggedIds, hashtags, isPublic, service
             }, { new: true })
 
-            res.json({ success: true, message: "update tour successful", newTour })
+            if (newTour) {
+                tour.forEach(async function (element) {
+                    await TourDates.findOneAndUpdate({ _id: element._id }, ...element, { new: true })
+                })
+
+                res.json({ success: true, message: "update tour successful", newTour })
+            }
+            else {
+                res.status(404).json({ success: false, message: "Không tìm thấy" })
+            }
+
         } catch (err) {
             console.log(err)
             res.status(500).json({ success: false, message: err.message })
@@ -124,8 +134,14 @@ class TourController {
     async deleteTour(req, res) {
         try {
             const tour = await Tours.findOneAndDelete({ _id: req.params.id, userId: req.user._id });
-            if (tour.comments != null) await Comments.deleteMany({ _id: { $in: tour.comments } });
-            if (tour.tour != null) await TourDates.deleteMany({ _id: { $in: tour.tour } });
+            if (tour) {
+                if (tour.comments != null) await Comments.deleteMany({ _id: { $in: tour.comments } });
+                if (tour.tour != null) await TourDates.deleteMany({ _id: { $in: tour.tour } });
+            }
+            else {
+                res.status(404).json({ success: false, message: "Không tìm thấy tour" })
+            }
+
 
             res.json({
                 success: true, message: "Delete tour success"

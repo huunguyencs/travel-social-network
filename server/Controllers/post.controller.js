@@ -116,8 +116,8 @@ class PostController {
 
     async updatePost(req, res) {
         try {
-            const { content, images, start, cost, isPublic, locationId } = req.body
-            const post = await Posts.findOneAndUpdate({ _id: req.params.id }, {
+            const { content, images, start, cost, isPublic, locationId } = req.body;
+            const post = await Posts.findOneAndUpdate({ _id: req.params.id, userId: req.user.id }, {
                 content, images, start, cost, isPublic, locationId
             }, { new: true })
             res.json({ success: true, message: "update post successful", post })
