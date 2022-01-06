@@ -42,7 +42,7 @@ function TabPanel(props) {
 
 function calculateCost(services) {
     if (services) {
-        return services.reduce((accum, item) => accum + item.service.cost, 0) * 1000;
+        return services.reduce((accum, item) => accum + item.cost, 0) * 1000;
     }
     return 0;
 }
@@ -51,11 +51,13 @@ function extractService(services) {
     return services.map((item) => ({
         cooperator: item.cooperator._id,
         service: item.service._id,
-        cost: item.service.cost
+        cost: item.cost
     }))
 }
 
 export default function AddTour(props) {
+
+    const { isUpdate } = props;
 
     const history = useHistory();
     const [state, setState] = useState({
@@ -96,6 +98,36 @@ export default function AddTour(props) {
         let ht = hashtagSplit(createTour.hashtags)
 
         dispatch(saveTour({
+            name: createTour.name,
+            content: createTour.content,
+            hashtags: ht,
+            tour: createTour.tour,
+            cost: calculateCost(createTour.services),
+            services: extractService(createTour.services)
+        }, createTour.image, auth.token, () => {
+            setState({
+                loading: false,
+                error: false
+            })
+            history.push("/tour")
+        }, () => {
+            setState({
+                loading: false,
+                error: true
+            })
+        }))
+    }
+
+    const handleUpdate = async () => {
+        if (createTour.tour.length === 0) return;
+        setState({
+            loading: true,
+            error: false
+        })
+        let ht = hashtagSplit(createTour.hashtags)
+
+        dispatch(saveTour({
+            id: createTour._id,
             name: createTour.name,
             content: createTour.content,
             hashtags: ht,
@@ -168,7 +200,7 @@ export default function AddTour(props) {
                     </Typography>
                 </div>
                 <div className={classes.hashtagWrap}>
-                    {hashtagSplit(createTour.hashtags).map((hashtag, index) => (
+                    {createTour.hashtags.map((hashtag, index) => (
                         <Typography className={classes.hashtag} key={index}>{hashtag}</Typography>
                     ))}
                 </div>
@@ -194,7 +226,7 @@ export default function AddTour(props) {
                     }}
                 >
                     <Fade in={showChangeInfo}>
-                        <UpdateTourInfo name={createTour.name} content={createTour.content} hashtags={createTour.hashtags} image={createTour.image} handleClose={handleCloseUpdateInfo} cost={createTour.cost} />
+                        <UpdateTourInfo name={createTour.name} content={createTour.content} hashtags={createTour.hashtags} image={createTour.image} handleClose={handleCloseUpdateInfo} cost={calculateCost(createTour.services)} />
                     </Fade>
                 </Modal>
             </div>
@@ -223,7 +255,7 @@ export default function AddTour(props) {
                             </Button>
                         </div>
                         <div>
-                            <Button className={classes.addDay} onClick={handleSave}>
+                            <Button className={classes.addDay} onClick={isUpdate ? handleSave : handleUpdate}>
                                 {state.loading ?
                                     <CircularProgress size="25px" color="inherit" />
                                     : "Lưu lại"
@@ -285,6 +317,7 @@ export default function AddTour(props) {
                                 key={index}
                                 isOwn={true}
                                 isSave={false}
+                                isEdit={true}
                             />
                         ))
                     }

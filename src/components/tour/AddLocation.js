@@ -12,6 +12,8 @@ export default function AddLocation(props) {
 
     const classes = formStyles();
 
+    const [isFetch, setIsFetch] = useState(false);
+
     const dispatch = useDispatch();
     const { location } = useSelector(state => state);
     const { currentProvince, setCurrentProvince, loc, setLoc, locations, setLocations } = props;
@@ -37,7 +39,7 @@ export default function AddLocation(props) {
     }
 
     const getLocInit = async (province, setLocations, setState) => {
-        await customAxios().get(`location/locations/${province._id}`)
+        await customAxios().get(`/location/locations/${province._id}`)
             .then((req) => {
                 setLocations(req.data.locations);
             }).catch(err => {
@@ -53,15 +55,16 @@ export default function AddLocation(props) {
     }
 
     useEffect(() => {
-        if (currentProvince && locations.length === 0) {
+        if (currentProvince && locations.length === 0 && isFetch) {
             getLocInit(currentProvince, setLocations, setState)
+            setIsFetch(true)
         }
-    }, [currentProvince, locations, setState, setLocations])
+    }, [currentProvince, locations, setState, setLocations, isFetch, setIsFetch])
 
     const getLoc = async (province) => {
         if (province && province._id !== currentProvince) {
             setLoc(null);
-            await customAxios().get(`location/locations/${province._id}`)
+            await customAxios().get(`/location/locations/${province._id}`)
                 .then((req) => {
                     setLocations(req.data.locations);
                 }).catch(err => {

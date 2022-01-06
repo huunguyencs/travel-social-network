@@ -49,21 +49,6 @@ export const getUserTour = (id, token) => async (dispatch) => {
 }
 
 
-export const updateTour = (data) => async (dispatch) => {
-
-    try {
-        // 
-        const res = 0;
-
-        dispatch(tourAction.updateTour({ tour: res }));
-
-    }
-    catch (err) {
-
-    }
-}
-
-
 
 export const saveTour = (tour, image, token, next, error) => async (dispatch) => {
 
@@ -91,6 +76,33 @@ export const saveTour = (tour, image, token, next, error) => async (dispatch) =>
     catch (err) {
         error();
 
+    }
+}
+
+export const updateTour = (id, tour, image, token, next, error) => async (dispatch) => {
+    try {
+        let imageUpload = [image]
+        if (image && typeof image !== "string") {
+            imageUpload = await imageUtils.uploadImages([image]);
+        }
+        const data = {
+            ...tour,
+            tour: tour.tour.map(item => ({
+                ...item,
+                locations: item.locations.map(location => ({
+                    location: location.location._id,
+                }))
+            })),
+            image: image ? imageUpload[0] : ""
+        }
+
+        await customAxios(token).post(`/tour/${id}`, data);
+
+
+        next();
+    }
+    catch (err) {
+        error();
     }
 }
 

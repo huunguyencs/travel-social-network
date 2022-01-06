@@ -34,7 +34,7 @@ export default function AddLocationForm(props) {
     const getLocInit = React.useCallback(async () => {
         const cache = props.provinceCache;
         if (cache && cache._id !== currentProvince) {
-            await customAxios().get(`location/locations/${cache._id}`)
+            await customAxios().get(`/location/locations/${cache._id}`)
                 .then((req) => {
                     setLocations(req.data.locations);
                 }).catch(err => {

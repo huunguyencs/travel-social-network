@@ -15,7 +15,6 @@ const postSchema = new mongoose.Schema({
         default: false
     },
     rate: Number,
-    cost: Number,
     locationId: { type: mongoose.Types.ObjectId, ref: 'locations' },
     hashtags: [{ type: String }],
     taggedIds: [{ type: mongoose.Types.ObjectId, ref: 'users' }],

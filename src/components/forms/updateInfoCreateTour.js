@@ -14,7 +14,7 @@ export default function UpdateTourInfo({ name, content, hashtags, image, handleC
 
     const [state, setState] = useState({
         name: name,
-        hashtags: hashtags,
+        hashtags: hashtags.join(" "),
         image: image,
         cost: cost
     })
@@ -47,7 +47,7 @@ export default function UpdateTourInfo({ name, content, hashtags, image, handleC
 
     const handleSubmit = () => {
         // console.log(state);
-        dispatch(updateInfo({ name: state.name, content: text, hashtags: state.hashtags, image: state.image, cost: state.cost }));
+        dispatch(updateInfo({ name: state.name, content: text, hashtags: state.hashtags.join(" "), image: state.image, cost: state.cost }));
         handleClose();
     }
 

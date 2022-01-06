@@ -84,3 +84,10 @@ export const deleteService = (props) => {
         payload: props
     }
 }
+
+export const loadTour = (props) => {
+    return {
+        type: TOUR_TYPES.LOAD_TOUR,
+        payload: props
+    }
+}

@@ -68,7 +68,7 @@ export default function CreatePostForm(props) {
                 loading: true,
                 error: false
             })
-            dispatch(createPost({ content: text, image: imageUpload, hashtags: ht }, auth.token, () => {
+            dispatch(createPost({ content: text, images: imageUpload, hashtags: ht }, auth.token, "post", () => {
                 setState({
                     loading: false,
                     error: false,

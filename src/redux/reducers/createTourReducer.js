@@ -4,7 +4,7 @@ import * as TOUR_TYPES from '../constants/createTourConstant';
 const INIT_STATE = {
     name: "",
     content: "",
-    hashtags: "",
+    hashtags: [],
     services: [],
     image: null,
     tour: [],
@@ -133,6 +133,12 @@ const createTourReducer = (state = INIT_STATE, action) => {
                     ...state.services.slice(0, action.payload.index),
                     ...state.services.slice(action.payload.index + 1)
                 ]
+            }
+        }
+        case TOUR_TYPES.LOAD_TOUR: {
+            return {
+                ...state,
+                ...action.payload.tour
             }
         }
         default: {

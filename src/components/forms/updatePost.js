@@ -1,54 +1,49 @@
 import { InputBase, Typography, Button, Paper, IconButton, CircularProgress } from "@material-ui/core";
 import { Create, Image } from "@material-ui/icons";
-import { Rating } from "@material-ui/lab";
-import React, { useState } from "react";
-import { ScrollMenu } from "react-horizontal-scrolling-menu";
+import React, { useEffect, useState } from "react";
+import { ScrollMenu } from 'react-horizontal-scrolling-menu';
 import { useDispatch, useSelector } from "react-redux";
-import { useHistory } from "react-router-dom";
+import { updatePost } from "../../redux/callApi/postCall";
 
 import { formStyles } from '../../style';
-import LoginModal from "../modal/login";
+import { checkImage } from "../../utils/uploadImage";
 import EmojiPicker from "../input/emojiPicker";
-import { createPost } from "../../redux/callApi/postCall";
+import LoginModal from "../modal/login";
 
+export default function UpdatePostForm(props) {
 
-export default function CreateReviewForm(props) {
-
+    const { post, handleClose } = props;
     const dispatch = useDispatch();
-    const history = useHistory();
-    const { auth } = useSelector(state => state);
-    const { location, handleClose, tourDateId, indexLocation } = props;
     const [state, setState] = useState({
         loading: false,
-        error: false,
+        error: false
     })
 
+    const { auth } = useSelector(state => state);
 
-    const [imageUpload, setImageUpload] = useState([]);
-    const [context, setContext] = useState({
-        hashtags: "",
-        rate: 0,
-    })
-    const [text, setText] = useState("");
+    const [imageUpload, setImageUpload] = useState(post.images);
+    const [showWarning, setShowWarning] = useState("");
 
-    const handleInput = (e) => {
-        setContext({
-            ...state,
-            [e.target.name]: e.target.value,
-        })
-    }
+    const [text, setText] = useState(post.content);
+    const [hashtag, setHashtag] = useState(post.hashtags.join(" "));
 
     const handleChange = e => {
         setText(e.target.value);
     }
 
-    const hashtagSplit = (text) => {
-        var ht = text.split(" ");
-        return ht.filter(item => item !== "");
-    }
-
     const handleChangeImageUpload = (e) => {
-        setImageUpload(oldImage => [...oldImage, ...e.target.files])
+        setShowWarning("");
+        let valid = true;
+        for (const file of e.target.files) {
+            const check = checkImage(file);
+            if (check !== "") {
+                setShowWarning(check);
+                valid = false;
+                break;
+            }
+        }
+        if (valid)
+            setImageUpload(oldImage => [...oldImage, ...e.target.files])
     }
 
     const removeImage = (index) => {
@@ -58,89 +53,78 @@ export default function CreateReviewForm(props) {
         ])
     }
 
-    const handleSubmit = (e) => {
-        e.preventDefault();
-        setState({
-            loading: true,
-            error: false
-        })
-        var ht = hashtagSplit(state.hashtags);
-        dispatch(createPost({
-            content: text,
-            image: imageUpload,
-            hashtags: ht,
-            rate: state.rate,
-            locationId: location,
-            tourDateId: tourDateId,
-            indexLocation: indexLocation
-        },
-            auth.token,
-            "review",
-            () => {
-                setState({
-                    loading: false,
-                    error: false
-                })
-                handleClose();
-                history.push(`/location/${location}`);
-            },
-            () => {
-                setState({
-                    loading: false,
-                    error: true,
-                })
-            }
-        ))
-
+    const hashtagSplit = (text) => {
+        var ht = text.split(" ");
+        return ht.filter(item => item !== "");
     }
 
+    const handleSubmit = (e) => {
+        e.preventDefault();
+        var ht = hashtagSplit(hashtag);
+        if (text !== '' || imageUpload.length > 0 || ht.length > 0) {
+            setState({
+                loading: true,
+                error: false
+            })
+            dispatch(updatePost({ id: post._id, content: text, images: imageUpload, hashtags: ht }, auth.token, () => {
+                setState({
+                    loading: false,
+                    error: false,
+                })
+                handleClose();
+            }, () => {
+                setState({
+                    loading: false,
+                    error: true
+                })
+            }));
+
+        }
+    }
+
+    useEffect(() => {
+        console.log("post")
+        console.log(post);
+    }, [post])
 
     const classes = formStyles();
-
 
     return (
         <>
             {auth.token ?
-
                 <Paper className={classes.paperContainer}>
                     <div className={classes.textTitle}>
                         <Typography variant="h5">
-                            Tạo review {location.fullname}
+                            Chỉnh sửa bài viết
                         </Typography>
                     </div>
                     <form>
                         <div className={classes.formContainer}>
-                            <div className={classes.formCreateReview}>
-                                <Rating
-                                    name="rate"
-                                    value={context.rate}
-                                    onChange={handleInput}
-                                />
-                            </div>
                             <div className={classes.postContentInput}>
                                 <InputBase
-                                    placeholder="Bạn cảm thấy địa điểm này như thế nào?..."
+                                    placeholder="Bạn đang nghĩ gì?..."
                                     rows={10}
-                                    multiline
                                     name="content"
+                                    id="content"
+                                    multiline
                                     className={classes.input}
                                     value={text}
-                                    onChange={handleChange}
+                                    onChange={(e) => handleChange(e)}
                                 />
                             </div>
                             <div >
                                 <InputBase
                                     placeholder="Hashtag (cách nhau bằng dấu cách). Vd: #bien #lehoi ..."
                                     variant="outlined"
-                                    name="hashtags"
+                                    name="hashtag"
                                     id="hashtag"
                                     className={classes.hashtag}
-                                    value={context.hashtags}
-                                    onChange={handleInput}
+                                    value={hashtag}
+                                    onChange={e => setHashtag(e.target.value)}
                                 />
                             </div>
                             <div className={classes.formAction}>
-                                <div >
+                                <div>
                                     <input
                                         accept="image/*"
                                         className={classes.input}
@@ -162,23 +146,27 @@ export default function CreateReviewForm(props) {
                                     <Button className={classes.button} onClick={handleSubmit}>
                                         {
                                             state.loading ?
-                                                <CircularProgress size="25px" color="inherit" /> :
+                                                <CircularProgress size="25px" color="white" /> :
                                                 <>
                                                     <Create style={{ marginRight: 10 }} />
-                                                    Đăng
+                                                    Xong
                                                 </>
                                         }
                                     </Button>
                                 </div>
                             </div>
+
+
                         </div>
                     </form>
+                    <div style={{ fontSize: "20px", color: "red", marginInline: "25px" }}>{showWarning}</div>
                     <div
                         style={{
                             marginInline: "20px",
-                            maxWidth: "600px"
+                            maxWidth: "500px"
                         }}
                     >
+
                         {imageUpload.length > 0 &&
                             <ScrollMenu
                                 height="300px"
@@ -202,7 +190,7 @@ export default function CreateReviewForm(props) {
 
                         }
                     </div>
-                </Paper >
+                </Paper>
                 : <LoginModal />
             }
         </>

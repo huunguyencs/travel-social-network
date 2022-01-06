@@ -53,10 +53,10 @@ class PostController {
 
     async createReview(req, res) {
         try {
-            const { content, images, hashtags, locationId, rate, cost, tourDateId, indexLocation } = req.body;
+            const { content, images, hashtags, locationId, rate, tourDateId, indexLocation } = req.body;
             let isPostReview = true;
             const newPost = new Posts({
-                userId: req.user._id, content, images, hashtags, isPostReview, locationId, rate, cost
+                userId: req.user._id, content, images, hashtags, isPostReview, locationId, rate
             });
             await newPost.save();
 
@@ -116,9 +116,9 @@ class PostController {
 
     async updatePost(req, res) {
         try {
-            const { content, images, start, cost, isPublic, locationId } = req.body;
+            const { content, images, rate, hashtags } = req.body;
             const post = await Posts.findOneAndUpdate({ _id: req.params.id, userId: req.user.id }, {
-                content, images, start, cost, isPublic, locationId
+                content, images, rate, hashtags
             }, { new: true })
             res.json({ success: true, message: "update post successful", post })
 

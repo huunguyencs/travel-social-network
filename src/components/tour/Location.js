@@ -44,7 +44,7 @@ export default function Location(props) {
 
     const dispatch = useDispatch();
 
-    const { location, isOwn, isSave, tourDateId, indexDate, indexLocation } = props;
+    const { location, isOwn, isEdit, isSave, tourDateId, indexDate, indexLocation } = props;
 
     const [showRv, setShowRv] = useState(false);
     const [showCreateRv, setShowCreateRv] = useState(false);
@@ -120,7 +120,7 @@ export default function Location(props) {
                 </Grid>
                 <Grid item md={7}>
                     <CardContent className={classes.contentContainer}>
-                        {props.isOwn &&
+                        {isEdit &&
                             <div className={classes.tourHeader}>
                                 <div>
                                 </div>

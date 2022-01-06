@@ -1,35 +1,34 @@
 import { InputBase, Typography, Button, Paper, IconButton, CircularProgress } from "@material-ui/core";
 import { Create, Image } from "@material-ui/icons";
 import { Rating } from "@material-ui/lab";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { ScrollMenu } from "react-horizontal-scrolling-menu";
 import { useDispatch, useSelector } from "react-redux";
-import { useHistory } from "react-router-dom";
 
 import { formStyles } from '../../style';
 import LoginModal from "../modal/login";
 import EmojiPicker from "../input/emojiPicker";
-import { createPost } from "../../redux/callApi/postCall";
+import { updatePost } from "../../redux/callApi/postCall";
 
 
-export default function CreateReviewForm(props) {
+
+export default function UpdateReviewForm(props) {
 
     const dispatch = useDispatch();
-    const history = useHistory();
     const { auth } = useSelector(state => state);
-    const { location, handleClose, tourDateId, indexLocation } = props;
+    const { review, handleClose } = props;
     const [state, setState] = useState({
         loading: false,
         error: false,
     })
 
 
-    const [imageUpload, setImageUpload] = useState([]);
+    const [imageUpload, setImageUpload] = useState(review.images);
     const [context, setContext] = useState({
-        hashtags: "",
-        rate: 0,
+        hashtags: review.hashtags.join(" "),
+        rate: review.rate,
     })
-    const [text, setText] = useState("");
+    const [text, setText] = useState(review.content);
 
     const handleInput = (e) => {
         setContext({
@@ -65,24 +64,20 @@ export default function CreateReviewForm(props) {
             error: false
         })
         var ht = hashtagSplit(state.hashtags);
-        dispatch(createPost({
+        dispatch(updatePost({
+            id: review._id,
             content: text,
-            image: imageUpload,
+            images: imageUpload,
             hashtags: ht,
-            rate: state.rate,
-            locationId: location,
-            tourDateId: tourDateId,
-            indexLocation: indexLocation
+            rate: state.rate
         },
             auth.token,
-            "review",
             () => {
                 setState({
                     loading: false,
                     error: false
                 })
                 handleClose();
-                history.push(`/location/${location}`);
             },
             () => {
                 setState({
@@ -97,6 +92,11 @@ export default function CreateReviewForm(props) {
 
     const classes = formStyles();
 
+    useEffect(() => {
+        console.log("review");
+        console.log(review);
+    }, [review])
+
 
     return (
         <>
@@ -105,7 +105,7 @@ export default function CreateReviewForm(props) {
                 <Paper className={classes.paperContainer}>
                     <div className={classes.textTitle}>
                         <Typography variant="h5">
-                            Tạo review {location.fullname}
+                            Chỉnh sửa review {review.locationId.fullname}
                         </Typography>
                     </div>
                     <form>
@@ -165,7 +165,7 @@ export default function CreateReviewForm(props) {
                                                 <CircularProgress size="25px" color="inherit" /> :
                                                 <>
                                                     <Create style={{ marginRight: 10 }} />
-                                                    Đăng
+                                                    Xong
                                                 </>
                                         }
                                     </Button>

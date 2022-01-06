@@ -10,3 +10,4 @@ export const UPDATE_INFO = "UPDATE_INFO";
 export const ADD_SERVICE = "ADD_SERVICE";
 export const UPDATE_SERVICE = "UPDATE_SERVICE";
 export const DELETE_SERVICE = "DELETE_SERVICE";
+export const LOAD_TOUR = "LOAD_TOUR"

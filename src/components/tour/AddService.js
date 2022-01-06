@@ -59,7 +59,8 @@ function ServiceItemAddForm(props) {
             dispatch(tourAction.addService({
                 service: {
                     cooperator: service.cooperator,
-                    service: service
+                    service: service,
+                    cost: service.cost
                 }
             }))
             handleClose();
@@ -118,7 +119,7 @@ function ServiceCard(props) {
         <Card>
             <Typography>{service.cooperator.fullname}</Typography>
             <Typography>{service.service.name}</Typography>
-            <Typography>{new Intl.NumberFormat().format(service.service.cost) * 1000} VND</Typography>
+            <Typography>{new Intl.NumberFormat().format(service.cost) * 1000} VND</Typography>
             <Button onClick={handleBooking}>Đặt trước</Button>
         </Card>
     )
