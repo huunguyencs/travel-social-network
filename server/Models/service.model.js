@@ -1,18 +1,13 @@
 const mongoose = require('mongoose');
 
 const serviceSchema = new mongoose.Schema({
-    name: {
-        type: String,
-        required: true,
-        unique: true
-    },
-    fullname: String,
+    name: String,
+    cooperator: { type: mongoose.Types.ObjectId, ref: 'users' },
     description: String,
-    price: Number,
     type: String,
     province: { type: mongoose.Types.ObjectId, ref: 'provinces' },
     star: {
-        type: Array,
+        type: [Number],
         default: [0, 0, 0, 0, 0]
     },
     rate: [
@@ -22,10 +17,12 @@ const serviceSchema = new mongoose.Schema({
             content: String
         }
     ],
-    images: [
-        { type: String }
-    ],
-    serviceItem: [{ type: mongoose.Types.ObjectId, ref: 'serviceItem' }]
+    images: [{ type: String }],
+    cost: Number,
+    discount: {
+        description: String,
+        cost: Number
+    }
 }, {
     timestamps: true
 })

@@ -17,7 +17,7 @@ const tourReducer = (state = INIT_STATE, action) => {
                 error: null,
             }
         }
-        case TOUR_TYPES.CREATE_TOUR: {
+        case TOUR_TYPES.ADD_TOUR: {
             return {
                 ...state,
                 tour: [
@@ -83,6 +83,15 @@ const tourReducer = (state = INIT_STATE, action) => {
                 tours: state.tours.map(item => item._id === action.payload.tourId ? {
                     ...item,
                     comments: item.comments.map(comment => comment._id === action.payload.id ? action.payload.comment : comment)
+                } : item)
+            }
+        }
+        case TOUR_TYPES.DELETE_COMMENT: {
+            return {
+                ...state,
+                tours: state.tours.map(item => item._id === action.payload.tourId ? {
+                    ...item,
+                    comments: item.comments.filter(comment => comment._id === action.payload.id)
                 } : item)
             }
         }

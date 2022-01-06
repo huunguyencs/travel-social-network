@@ -1,4 +1,4 @@
-import * as notifyAction from '../actions/notifyAction'
+// import * as notifyAction from '../actions/notifyAction'
 import * as postAction from '../actions/postAction';
 import * as imageUtils from '../../utils/uploadImage';
 import customAxios from '../../utils/fetchData';
@@ -90,80 +90,73 @@ export const getPostById = (id, next) => async (dispatch) => {
 
 }
 
-export const createPost = (data, token, next, error) => async (dispatch) => {
-    dispatch(notifyAction.callStart());
+export const createPost = (data, token, type, next, error) => async (dispatch) => {
     // post api
     try {
-        // call api to save post
+
         let image = [];
-        if (data.image.length > 0) image = await imageUtils.uploadImages(data.image);
+        if (data.images.length > 0) image = await imageUtils.uploadImages(data.images);
         const post = {
             ...data,
             images: image
         }
+        var url = ""
+        if (type === "review") {
+            url = "/post/create_review"
+        }
+        else {
+            url = "/post/create_post"
+        }
+        // call api to save post
 
-
-        const res = await customAxios(token).post("/post/create_post", post);
+        const res = await customAxios(token).post(url, post);
 
         // console.log(res.data);
         dispatch(postAction.addPost({ post: res.data.newPost }))
-        dispatch(notifyAction.callSuccess({ message: "" }));
         next();
     }
     catch (err) {
         error();
-        dispatch(notifyAction.callFail({ error: err.response.data.message }))
     }
 }
 
-export const createReview = (data, token, next) => async (dispatch) => {
-    dispatch(notifyAction.callStart());
-    // post api
-    try {
-        // call api to save post
-        let image = [];
-        if (data.image.length > 0) image = await imageUtils.uploadImages(data.image);
-        const review = {
-            ...data,
-            images: image
-        }
+export const updatePost = (data, token, next, error) => async (dispatch) => {
 
-
-        const res = await customAxios(token).post("/post/create_review", review);
-
-        // console.log(res.data);
-        dispatch(postAction.addPost({ post: res.data.newPost }))
-        dispatch(notifyAction.callSuccess({ message: "" }))
-        next();
-    }
-    catch (err) {
-        console.log(err);
-        dispatch(notifyAction.callFail({ err: err.response.data.message }));
-    }
-}
-
-export const updatePost = (data) => async (dispatch) => {
-    dispatch(notifyAction.callStart());
     try {
         // call api to update post
 
-        dispatch(notifyAction.callSuccess());
+        let oldImages = data.images.filter(item => typeof item === 'string')
+        let newImages = data.images.filter(item => typeof item !== 'string')
+        let images = [];
+        if (newImages.length > 0) {
+            images = await imageUtils.uploadImages(newImages);
+        }
+        images = [...oldImages, ...images]
+        const post = {
+            ...data,
+            images: images
+        }
 
+        const res = await customAxios(token).patch(`/post/${data.id}`, post);
+
+        dispatch(postAction.updatePost({ post: res.data.post }))
+        next();
     }
     catch (err) {
-        dispatch(notifyAction.callFail({ error: err.response.data.message }))
+        error();
     }
 }
 
-export const deletePost = (data) => async (dispatch) => {
-    dispatch(notifyAction.callStart());
+
+export const deletePost = (id, token, next) => async (dispatch) => {
+
     try {
-
-
-        dispatch(notifyAction.callSuccess());
+        await customAxios(token).delete(`/post/${id}`);
+        dispatch(postAction.deletePost({ id: id }));
+        next();
     }
     catch (err) {
-        dispatch(notifyAction.callFail({ error: err.response.data.message }))
+
     }
 }
 

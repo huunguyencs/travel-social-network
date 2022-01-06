@@ -1,6 +1,5 @@
 import * as tourAction from '../actions/tourAction';
 import customAxios from '../../utils/fetchData';
-import * as notifyAction from '../actions/notifyAction';
 import * as imageUtils from '../../utils/uploadImage'
 
 export const getTours = (data) => async (dispatch) => {
@@ -49,26 +48,7 @@ export const getUserTour = (id, token) => async (dispatch) => {
     }
 }
 
-
-export const updateTour = (data) => async (dispatch) => {
-
-    try {
-        // 
-        const res = 0;
-
-        dispatch(tourAction.updateTour({ tour: res }));
-
-    }
-    catch (err) {
-
-    }
-}
-
-
-
-export const createTourCall = (tour, image, token, next) => async (dispatch) => {
-
-    dispatch(notifyAction.callStart());
+export const saveTour = (tour, image, token, next, error) => async (dispatch) => {
 
     try {
         // call api to save tour
@@ -81,25 +61,46 @@ export const createTourCall = (tour, image, token, next) => async (dispatch) => 
                 ...item,
                 locations: item.locations.map(location => ({
                     location: location.location._id,
-                    cost: location.cost,
                 }))
             })),
             image: image ? imageUpload[0] : ""
         }
 
 
-        await customAxios(token).post('/tour/create_tour', data);
-
-
-        // const res = 0;
-
-        // dispatch(tourAction.createTour({ tour: res }));
-        dispatch(notifyAction.callSuccess({ message: "" }));
+        const res = await customAxios(token).post('/tour/create_tour', data);
+        dispatch(tourAction.addTour({ tour: res.data.newTour }))
         next();
     }
     catch (err) {
-        console.log(err);
-        dispatch(notifyAction.callFail({ error: err.response.data.message }))
+        error();
+
+    }
+}
+
+export const updateTour = (id, tour, image, token, next, error) => async (dispatch) => {
+    try {
+        let imageUpload = [image]
+        if (image && typeof image !== "string") {
+            imageUpload = await imageUtils.uploadImages([image]);
+        }
+        const data = {
+            ...tour,
+            tour: tour.tour.map(item => ({
+                ...item,
+                locations: item.locations.map(location => ({
+                    location: location.location._id,
+                }))
+            })),
+            image: image ? imageUpload[0] : ""
+        }
+
+        await customAxios(token).post(`/tour/${id}`, data);
+
+
+        next();
+    }
+    catch (err) {
+        error();
     }
 }
 

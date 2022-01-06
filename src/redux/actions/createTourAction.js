@@ -63,3 +63,31 @@ export const updateInfo = (props) => {
         payload: props,
     }
 }
+
+export const addService = (props) => {
+    return {
+        type: TOUR_TYPES.ADD_SERVICE,
+        payload: props
+    }
+}
+
+export const updateService = (props) => {
+    return {
+        type: TOUR_TYPES.UPDATE_SERVICE,
+        payload: props
+    }
+}
+
+export const deleteService = (props) => {
+    return {
+        type: TOUR_TYPES.DELETE_SERVICE,
+        payload: props
+    }
+}
+
+export const loadTour = (props) => {
+    return {
+        type: TOUR_TYPES.LOAD_TOUR,
+        payload: props
+    }
+}

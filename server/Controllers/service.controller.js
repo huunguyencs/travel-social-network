@@ -1,33 +1,29 @@
 const Services = require('../Models/service.model')
-const Locations = require('../Models/location.model')
+
 
 class ServiceController {
     async createService(req, res) {
         try {
-            const { name, description, price, type, locationId, rate, images } = req.body
-
-            const newService = new Services({
-                name, description, price, type, locationId, rate, images
-            })
-            await newService.save()
-
-            const location = await Locations.findById(locationId);
-            if (!location) {
-                return res.status(400).json({ success: false, message: "This location is not exist." })
+            if (req.user.role !== 1) {
+                res.status(500).json({ success: false, message: "You are not cooperator" })
+                return;
             }
 
-            await Locations.findOneAndUpdate({ _id: locationId }, {
-                $push: {
-                    services: newService._id
-                }
+            const { name, description, type, province, images, cost, discount } = req.body
+
+            const newService = new Services({
+                cooperator: req.user._id, name, description, type, province, images, cost, discount
             })
-            console.log(location)
+
+            await newService.save()
+
+            // console.log(location)
             res.json({
                 success: true,
                 message: "Create Service successful",
-                //  newService: {
-                //     ...newService._doc,
-                // }
+                newService: {
+                    ...newService._doc,
+                }
             })
         } catch (err) {
             console.log(err)
@@ -37,10 +33,11 @@ class ServiceController {
 
     async updateService(req, res) {
         try {
-            const { name, description, price, type, locationId, rate, images } = req.body
 
-            const service = await Services.findOneAndUpdate({ _id: req.params.id }, {
-                name, description, price, type, locationId, rate, images
+            const { name, description, type, province, images, cost, discount } = req.body;
+
+            const service = await Services.findOneAndUpdate({ _id: req.params.id, cooperator: req.user.id }, {
+                name, description, type, province, images, cost, discount
             }, { new: true })
 
             res.json({ success: true, message: "update Service successful", service })
@@ -52,7 +49,8 @@ class ServiceController {
 
     async deleteService(req, res) {
         try {
-            await Services.findOneAndDelete({ _id: req.params.id });
+            await Services.findOneAndDelete({ _id: req.params.id, cooperator: req.user.id });
+
 
             res.json({
                 success: true, message: "Delete Service success"
@@ -67,7 +65,7 @@ class ServiceController {
     async getService(req, res) {
         try {
             const service = await Services.findById(req.params.id)
-                .populate("locationId")
+                .populate("cooperator")
             res.json({
                 success: true, message: "get info 1 Service success", service
             });
@@ -81,7 +79,7 @@ class ServiceController {
     async getServices(req, res) {
         try {
             const service = await Services.find()
-                .populate("locationId")
+                .populate("cooperator")
             res.json({ success: true, message: "get info all Service success", service });
         } catch (err) {
             console.log(err)
@@ -89,6 +87,16 @@ class ServiceController {
         }
     }
 
+    async getServiceByProvince(req, res) {
+        try {
+            const services = Services.find({ province: req.params.id })
+                .populate("cooperator");
+            res.json({ success: true, message: "", services })
+        }
+        catch (err) {
+            res.status(500).json({ success: false, message: err.message })
+        }
+    }
 }
 
 module.exports = new ServiceController;

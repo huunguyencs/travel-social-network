@@ -1,11 +1,5 @@
 import * as POST_TYPES from '../constants/postConstant';
 
-export const createPost = (props) => {
-    return {
-        type: POST_TYPES.CREATE_POST,
-        payload: props,
-    }
-}
 
 export const getPosts = (props) => {
     return {

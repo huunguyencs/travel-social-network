@@ -17,7 +17,12 @@ const tourSchema = new mongoose.Schema({
     hashtags: Array,
     image: String,
     shareId: { type: mongoose.Types.ObjectId, ref: 'tours' },
-    cost: Number
+    cost: Number,
+    services: [{
+        cooperator: { type: mongoose.Types.ObjectId, ref: 'users' },
+        service: { type: mongoose.Types.ObjectId, ref: 'services' },
+        cost: Number
+    }]
 }, {
     timestamps: true
 })

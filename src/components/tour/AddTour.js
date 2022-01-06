@@ -1,5 +1,5 @@
 import { Button, Container, Grid, Modal, Typography, Backdrop, Fade, Dialog, DialogActions, DialogTitle, CircularProgress, Tab, Tabs } from "@material-ui/core";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { Timeline, TimelineItem, TimelineSeparator, TimelineConnector, TimelineContent, TimelineDot } from '@material-ui/lab'
 import { useDispatch, useSelector } from "react-redux";
 
@@ -11,9 +11,10 @@ import { useHistory } from "react-router-dom";
 import UpdateDateForm from "../forms/updateDate";
 import UpdateTourInfo from "../forms/updateInfoCreateTour";
 import { convertDateToStr } from "../../utils/date";
-import customAxios from "../../utils/fetchData";
-import * as imageUtils from '../../utils/uploadImage'
+import { saveTour } from "../../redux/callApi/tourCall";
 import AddLocation from "./AddLocation";
+import { getProvinces } from '../../redux/callApi/locationCall';
+import AddService from "./AddService";
 
 
 function a11yProps(index) {
@@ -39,8 +40,24 @@ function TabPanel(props) {
     )
 }
 
+function calculateCost(services) {
+    if (services) {
+        return services.reduce((accum, item) => accum + item.cost, 0) * 1000;
+    }
+    return 0;
+}
+
+function extractService(services) {
+    return services.map((item) => ({
+        cooperator: item.cooperator._id,
+        service: item.service._id,
+        cost: item.cost
+    }))
+}
 
 export default function AddTour(props) {
+
+    const { isUpdate } = props;
 
     const history = useHistory();
     const [state, setState] = useState({
@@ -49,7 +66,7 @@ export default function AddTour(props) {
     })
 
     const dispatch = useDispatch();
-    const { createTour, auth } = useSelector(state => state);
+    const { createTour, location, auth } = useSelector(state => state);
     const [tab, setTab] = useState(0)
     const [currentProvince, setCurrentProvince] = useState(null);
     const [loc, setLoc] = useState(null);
@@ -61,15 +78,6 @@ export default function AddTour(props) {
     const [showUpdateDate, setShowUpdateDate] = useState(false);
     const [showDeleteDate, setShowDeteleDate] = useState(false);
     const [showChangeInfo, setShowChangeInfo] = useState(false);
-    // const [provinceCache, setProvinceCache] = useState(null);
-
-    // const handleShow = () => {
-    //     setAddLoc(true);
-    // }
-
-    // const handleClose = () => {
-    //     setAddLoc(false);
-    // }
 
 
     const handleAddDay = () => {
@@ -87,39 +95,57 @@ export default function AddTour(props) {
             loading: true,
             error: false
         })
-        let ht = hashtagSplit(createTour.hashtags);
+        let ht = hashtagSplit(createTour.hashtags)
 
-        let imageUpload = [];
-        if (createTour.image) imageUpload = await imageUtils.uploadImages([createTour.image]);
-        // location id
-        const data = {
+        dispatch(saveTour({
             name: createTour.name,
             content: createTour.content,
             hashtags: ht,
-            tour: createTour.tour.map(item => ({
-                ...item,
-                locations: item.locations.map(location => ({
-                    location: location.location._id,
-                    cost: location.cost,
-                }))
-            })),
-            image: imageUpload.length > 0 ? imageUpload[0] : "",
-            cost: createTour.cost
-        }
-
-
-        await customAxios(auth.token).post('/tour/create_tour', data).then(res => {
+            tour: createTour.tour,
+            cost: calculateCost(createTour.services),
+            services: extractService(createTour.services)
+        }, createTour.image, auth.token, () => {
             setState({
                 loading: false,
-                error: false,
+                error: false
             })
             history.push("/tour")
-        }).catch(err => {
+        }, () => {
             setState({
                 loading: false,
-                error: true,
+                error: true
             })
-        });
+        }))
+    }
+
+    const handleUpdate = async () => {
+        if (createTour.tour.length === 0) return;
+        setState({
+            loading: true,
+            error: false
+        })
+        let ht = hashtagSplit(createTour.hashtags)
+
+        dispatch(saveTour({
+            id: createTour._id,
+            name: createTour.name,
+            content: createTour.content,
+            hashtags: ht,
+            tour: createTour.tour,
+            cost: calculateCost(createTour.services),
+            services: extractService(createTour.services)
+        }, createTour.image, auth.token, () => {
+            setState({
+                loading: false,
+                error: false
+            })
+            history.push("/tour")
+        }, () => {
+            setState({
+                loading: false,
+                error: true
+            })
+        }))
     }
 
     const handleDeleteDate = () => {
@@ -152,6 +178,12 @@ export default function AddTour(props) {
         setTab(value);
     }
 
+    useEffect(() => {
+        if (location.provinces?.length === 0) {
+            dispatch(getProvinces());
+        }
+    }, [dispatch, location.provinces])
+
 
 
     const classes = tourdetailStyles();
@@ -168,13 +200,13 @@ export default function AddTour(props) {
                     </Typography>
                 </div>
                 <div className={classes.hashtagWrap}>
-                    {hashtagSplit(createTour.hashtags).map((hashtag, index) => (
+                    {createTour.hashtags.map((hashtag, index) => (
                         <Typography className={classes.hashtag} key={index}>{hashtag}</Typography>
                     ))}
                 </div>
                 <div className={classes.itemInfo}>
                     <Typography variant="body1" className={classes.content}>
-                        Chi phí: {createTour.cost ? new Intl.NumberFormat().format(createTour.cost * 1000) : 0} VND
+                        Chi phí: {new Intl.NumberFormat().format(calculateCost(createTour.services))} VND
                     </Typography>
                 </div>
                 <div className={classes.itemInfo}>
@@ -194,7 +226,7 @@ export default function AddTour(props) {
                     }}
                 >
                     <Fade in={showChangeInfo}>
-                        <UpdateTourInfo name={createTour.name} content={createTour.content} hashtags={createTour.hashtags} image={createTour.image} handleClose={handleCloseUpdateInfo} cost={createTour.cost} />
+                        <UpdateTourInfo name={createTour.name} content={createTour.content} hashtags={createTour.hashtags} image={createTour.image} handleClose={handleCloseUpdateInfo} cost={calculateCost(createTour.services)} />
                     </Fade>
                 </Modal>
             </div>
@@ -223,7 +255,7 @@ export default function AddTour(props) {
                             </Button>
                         </div>
                         <div>
-                            <Button className={classes.addDay} onClick={handleSave}>
+                            <Button className={classes.addDay} onClick={isUpdate ? handleSave : handleUpdate}>
                                 {state.loading ?
                                     <CircularProgress size="25px" color="inherit" />
                                     : "Lưu lại"
@@ -285,6 +317,7 @@ export default function AddTour(props) {
                                 key={index}
                                 isOwn={true}
                                 isSave={false}
+                                isEdit={true}
                             />
                         ))
                     }
@@ -331,7 +364,7 @@ export default function AddTour(props) {
                             />
                         </TabPanel>
                         <TabPanel value={tab} index={1}>
-                            Service
+                            <AddService />
                         </TabPanel>
 
 

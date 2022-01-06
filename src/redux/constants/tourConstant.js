@@ -1,11 +1,12 @@
 export const GET_TOURS = "GET_TOURS";
 export const GET_TOUR_DETAIL = "GET_TOUR_DETAIL";
-export const CREATE_TOUR = "CREATE_TOUR";
+export const ADD_TOUR = "ADD_TOUR";
 export const UPDATE_TOUR = "UPDATE_TOUR";
 export const DELETE_TOUR = "DELETE_TOUR";
 export const LOADING = "LOADING";
 export const ERROR = "ERROR";
 export const UPDATE_COMMENT = "UPDATE_COMMENT";
+export const ADD_COMMENT = "ADD_COMMENT";
+export const DELETE_COMMENT = "DELETE_COMMENT"
 export const UPDATE_LIKE = "UPDATE_LIKE";
 export const UPDATE_JOIN = "UPDATE_JOIN";
-export const ADD_COMMENT = "ADD_COMMENT";

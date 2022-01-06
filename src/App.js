@@ -29,15 +29,15 @@ function App() {
       return false;
     return true;
   }
-  useEffect(()=>{
+  useEffect(() => {
     dispatch(refreshToken(() => {
       if (location.pathname !== "/login" && location.pathname !== "/register")
         history.push("/login");
     }));
     const socket = io();
-    dispatch({type: SOCKET_TYPES.SOCKET, payload: socket});
+    dispatch({ type: SOCKET_TYPES.SOCKET, payload: socket });
     return () => socket.close();
-  },[dispatch])
+  }, [dispatch, history, location.pathname])
 
   useEffect(() => {
     if (!auth.token) {
@@ -57,7 +57,7 @@ function App() {
       <WithRouterScroll />
       <Scroll showBelow={500} />
       {displayHeader() && <Header />}
-      {auth.token && <SocketClient/>}
+      {auth.token && <SocketClient />}
       <Route path="/" component={HomePage} exact />
       <CustomRouter path='/:page' component={PageRender} exact />
       <CustomRouter path='/:page/:id' component={PageRender} exact />

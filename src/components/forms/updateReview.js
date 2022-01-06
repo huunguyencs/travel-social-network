@@ -4,34 +4,35 @@ import { Rating } from "@material-ui/lab";
 import React, { useState } from "react";
 import { ScrollMenu } from "react-horizontal-scrolling-menu";
 import { useDispatch, useSelector } from "react-redux";
-import { useHistory } from "react-router-dom";
 
 import { formStyles } from '../../style';
 import LoginModal from "../modal/login";
 import EmojiPicker from "../input/emojiPicker";
-import { createPost } from "../../redux/callApi/postCall";
+import { updatePost } from "../../redux/callApi/postCall";
 
 
-export default function CreateReviewForm(props) {
 
+export default function UpdateReviewForm(props) {
+
+    const [change, setChange] = useState(false);
     const dispatch = useDispatch();
-    const history = useHistory();
     const { auth } = useSelector(state => state);
-    const { location, handleClose, tourDateId, indexLocation } = props;
+    const { review, handleClose } = props;
     const [state, setState] = useState({
         loading: false,
         error: false,
     })
 
 
-    const [imageUpload, setImageUpload] = useState([]);
+    const [imageUpload, setImageUpload] = useState(review.images);
     const [context, setContext] = useState({
-        hashtags: "",
-        rate: 0,
+        hashtags: review.hashtags.join(" "),
+        rate: review.rate,
     })
-    const [text, setText] = useState("");
+    const [text, setText] = useState(review.content);
 
     const handleInput = (e) => {
+        if (!change) setChange(true);
         setContext({
             ...state,
             [e.target.name]: e.target.value,
@@ -39,6 +40,7 @@ export default function CreateReviewForm(props) {
     }
 
     const handleChange = e => {
+        if (!change) setChange(true);
         setText(e.target.value);
     }
 
@@ -48,10 +50,12 @@ export default function CreateReviewForm(props) {
     }
 
     const handleChangeImageUpload = (e) => {
+        if (!change) setChange(true);
         setImageUpload(oldImage => [...oldImage, ...e.target.files])
     }
 
     const removeImage = (index) => {
+        if (!change) setChange(true);
         setImageUpload(oldImage => [
             ...oldImage.slice(0, index),
             ...oldImage.slice(index + 1)
@@ -63,29 +67,29 @@ export default function CreateReviewForm(props) {
         if (!context.rate) {
             return;
         }
+        if (!change) {
+            handleClose();
+            return;
+        }
         setState({
             loading: true,
             error: false
         })
-        var ht = hashtagSplit(context.hashtags);
-        dispatch(createPost({
+        var ht = hashtagSplit(state.hashtags);
+        dispatch(updatePost({
+            id: review._id,
             content: text,
-            image: imageUpload,
+            images: imageUpload,
             hashtags: ht,
-            rate: context.rate,
-            locationId: location,
-            tourDateId: tourDateId,
-            indexLocation: indexLocation
+            rate: state.rate
         },
             auth.token,
-            "review",
             () => {
                 setState({
                     loading: false,
                     error: false
                 })
                 handleClose();
-                history.push(`/location/${location}`);
             },
             () => {
                 setState({
@@ -101,6 +105,7 @@ export default function CreateReviewForm(props) {
     const classes = formStyles();
 
 
+
     return (
         <>
             {auth.token ?
@@ -108,7 +113,7 @@ export default function CreateReviewForm(props) {
                 <Paper className={classes.paperContainer}>
                     <div className={classes.textTitle}>
                         <Typography variant="h5">
-                            Tạo review {location.fullname}
+                            Chỉnh sửa review {review.locationId.fullname}
                         </Typography>
                     </div>
                     <form>
@@ -168,7 +173,7 @@ export default function CreateReviewForm(props) {
                                                 <CircularProgress size="25px" color="inherit" /> :
                                                 <>
                                                     <Create style={{ marginRight: 10 }} />
-                                                    Đăng
+                                                    Xong
                                                 </>
                                         }
                                     </Button>

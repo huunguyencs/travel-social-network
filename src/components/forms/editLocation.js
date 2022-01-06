@@ -21,7 +21,7 @@ export default function EditLocationForm(props) {
 
     const getLoc = async (province) => {
         if (province && province._id !== currentProvince) {
-            await customAxios().get(`location/locations/${province._id}`)
+            await customAxios().get(`/location/locations/${province._id}`)
                 .then((req) => {
                     setLocations(req.data.locations)
                 }).catch(err => {
@@ -47,7 +47,7 @@ export default function EditLocationForm(props) {
 
     const getLocInit = React.useCallback(async () => {
 
-        await customAxios().get(`location/locations/${currentProvince._id}`)
+        await customAxios().get(`/location/locations/${currentProvince._id}`)
             .then((req) => {
                 setLocations(req.data.locations);
             }).catch(err => {

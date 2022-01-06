@@ -165,6 +165,9 @@ function BaseContent(props) {
                 <Typography style={{ marginTop: 20 }}>
                     Thời gian: {tour.tour?.length} ngày - Bắt đầu {convertDateToStr(tour.tour[0]?.date)}
                 </Typography>
+                <Typography style={{ marginTop: 20 }}>
+                    Chi phí: {new Intl.NumberFormat().format(tour.cost)} VND
+                </Typography>
                 <div>
                     <Typography>Thành viên tham gia:
                         <span className={classes.numLike} onClick={() => setOpenJoin(true)} style={{ marginInline: 10 }}>

@@ -5,8 +5,9 @@ import { Timeline, TimelineItem, TimelineSeparator, TimelineConnector, TimelineC
 import { tourdetailStyles } from "../../style";
 import Location from './Location';
 import { convertDateToStr } from "../../utils/date";
-import { useSelector } from "react-redux";
+// import { useSelector } from "react-redux";
 import MapCard from "../card/MapCard";
+import { Link } from "react-router-dom";
 
 
 
@@ -14,21 +15,15 @@ import MapCard from "../card/MapCard";
 export default function TourDetail(props) {
 
     const classes = tourdetailStyles();
-    const [isOwn, setIsOwn] = useState(false);
+
     const [idx, setIdx] = useState(0);
     const [position, setPosition] = useState(null);
     const [locations, setLocations] = useState([]);
 
-    const { auth } = useSelector(state => state);
-
-    const { tour } = props;
+    const { tour, isOwn } = props;
 
 
-    useEffect(() => {
-        if (auth && auth.user && tour) {
-            setIsOwn(tour.userId._id === auth.user._id);
-        }
-    }, [setIsOwn, tour, auth]);
+
 
     useEffect(() => {
         if (tour && tour.tour[idx].locations.length > 0) {
@@ -68,6 +63,7 @@ export default function TourDetail(props) {
                                 ))}
                             </div>
                         </div>
+                        <Button component={Link} to={`?edit=true`}>Chỉnh sửa hành trình</Button>
                         <Grid container className={classes.container}>
                             <Grid item md={2} >
                                 <Container className={classes.timeline}>
@@ -103,6 +99,7 @@ export default function TourDetail(props) {
                                             tourDateId={tour.tour[idx]._id}
                                             indexDate={idx}
                                             indexLocation={index}
+                                            isEdit={false}
                                         />
                                     ))
                                 }
