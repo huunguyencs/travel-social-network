@@ -98,12 +98,15 @@ function Location(props) {
                 onClose={handlePopoverClose}
             >
                 <ClickAwayListener onClickAway={handlePopoverClose}>
-                    <Paper style={{ width: 300, height: 300, borderRadius: 10 }}>
+                    <Paper style={{ width: 300, height: 280, borderRadius: 10 }}>
                         <img src={location.images[0]} alt={"Loading..."} height={200} width="100%" title={location.fullname} />
                         <div style={{ display: 'flex', justifyContent: 'center' }}>
                             <Typography component={Link} to={`/location/${location.name}`}>{location.fullname.length > 28 ? location.fullname.slice(0, 28) + "..." : location.fullname}</Typography>
                         </div>
-                        <Button onClick={addLoc}>Thêm</Button>
+                        <div style={{ display: 'flex', justifyContent: 'center', marginTop: 10 }}>
+                            <Button onClick={addLoc}>Thêm địa điểm</Button>
+                        </div>
+
                     </Paper>
                 </ClickAwayListener>
             </Popper>
@@ -129,7 +132,7 @@ export default function AddLocMap(props) {
     }
 
     return (
-        <div style={{ height: 500 }}>
+        <div style={{ height: 500, marginBlock: 20 }}>
             <GoogleMapReact
                 bootstrapURLKeys={{ key: KEY }}
                 defaultCenter={defaultState.center}

@@ -11,12 +11,20 @@ import SpeedDialButton from "../components/speedDialBtn";
 import Menu from "../components/leftbar/menu";
 import Calendar from '../components/calendar';
 import FriendRecommendCard from '../components/card/FriendRecommend';
+import { useDispatch } from "react-redux";
+import { getPosts } from "../redux/callApi/postCall";
 
 
 
 function HomePage() {
 
   const classes = useStyles();
+
+  const dispatch = useDispatch();
+
+  useEffect(() => {
+    dispatch(getPosts());
+  }, [dispatch])
 
   useEffect(() => {
     document.title = "GOGO";

@@ -13,7 +13,7 @@ import {
     QuestionAnswer,
     Share
 } from "@material-ui/icons";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 
 
 import Comment from "../comment/Comment";
@@ -23,19 +23,17 @@ import UserList from "../modal/userList";
 
 import SharePost from "../forms/share";
 import TourContent from "./content";
-import customAxios from "../../utils/fetchData";
+import { likeTour, unlikeTour } from "../../redux/callApi/tourCall";
 
 
 export default function Tour(props) {
 
-
-    const [tour, setTour] = useState(props.tour);
     const { auth } = useSelector(state => state);
+    const dispatch = useDispatch();
 
     const [showCmt, setShowCmt] = useState(false);
     const [like, setLike] = useState(false);
-
-
+    const [tour, setTour] = useState(null);
     const [share, setShare] = useState(false);
 
     const updateLike = (likes) => {
@@ -45,12 +43,14 @@ export default function Tour(props) {
         })
     }
 
+
     const addComment = (comment) => {
         setTour({
             ...tour,
             comments: [...tour.comments, comment]
         })
     }
+
 
     const classes = postStyles({ showCmt });
 
@@ -62,52 +62,32 @@ export default function Tour(props) {
         else handleLike();
     }
 
-    const handleLike = async () => {
+    const handleLike = () => {
         setLike(true);
         let prevLike = tour.likes;
-        updateLike([...prevLike, auth.user]);
+        let newLike = [...prevLike, auth.user]
+        updateLike(newLike);
 
-        try {
-            await customAxios(auth.token).patch(`/tour/${tour._id}/like`).then(res => {
-                updateLike(res.data.likes);
-            }).catch(err => {
-                if (like) {
-                    setLike(false);
-                    updateLike(prevLike)
-                }
-            })
-        }
-        catch (err) {
+        dispatch(likeTour(tour._id, auth.token, () => {
             if (like) {
                 setLike(false);
-                updateLike(prevLike)
+                updateLike(prevLike);
             }
-        }
+        }))
     }
 
-    const handleUnlike = async () => {
+    const handleUnlike = () => {
         setLike(false);
         let prevLike = tour.likes;
         let newLikes = prevLike.filter(user => user._id !== auth.user._id);
         updateLike(newLikes);
 
-        try {
-            await customAxios(auth.token).patch(`/tour/${tour._id}/unlike`).then(res => {
-                updateLike(res.data.likes);
-            }).catch(err => {
-                if (!like) {
-                    setLike(true);
-                    updateLike(prevLike);
-                }
-            })
-        }
-        catch (err) {
+        dispatch(unlikeTour(tour._id, auth.token, () => {
             if (!like) {
                 setLike(true);
                 updateLike(prevLike);
             }
-        }
-
+        }))
     }
 
     const [showLike, setShowLike] = useState(false);
@@ -120,6 +100,10 @@ export default function Tour(props) {
         setShowLike(false);
     };
 
+    useEffect(() => {
+        setTour(props.tour);
+    }, [props.tour]);
+
 
     useEffect(() => {
         if (tour?.likes.find(like => like._id === auth?.user._id)) {
@@ -127,6 +111,8 @@ export default function Tour(props) {
         }
 
     }, [tour, auth.user])
+
+
 
 
     return (

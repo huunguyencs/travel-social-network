@@ -27,7 +27,7 @@ const locationStyles = makeStyles((theme) => ({
     iconProvince: {
         fontSize: "40px",
         marginRight: "10px",
-        color: "black"
+        color: "black",
     },
     infoPanel: {
         marginInline: 20,
@@ -49,6 +49,7 @@ const locationStyles = makeStyles((theme) => ({
     map: {
         height: 400,
         marginInline: 10,
+        marginTop: 50,
     },
     review: {
         marginTop: 30
