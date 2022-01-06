@@ -75,13 +75,13 @@ export default function UpdateReviewForm(props) {
             loading: true,
             error: false
         })
-        var ht = hashtagSplit(state.hashtags);
+        var ht = hashtagSplit(context.hashtags);
         dispatch(updatePost({
             id: review._id,
             content: text,
             images: imageUpload,
             hashtags: ht,
-            rate: state.rate
+            rate: context.rate
         },
             auth.token,
             () => {

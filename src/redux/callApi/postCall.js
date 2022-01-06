@@ -85,7 +85,7 @@ export const getPostById = (id, next) => async (dispatch) => {
     }
     catch (err) {
         // console.log(err);
-        dispatch(postAction.error({ error: err.response.data.message }))
+        // dispatch(postAction.error({ error: err.response.data.message }))
     }
 
 }
@@ -160,12 +160,12 @@ export const deletePost = (id, token, next) => async (dispatch) => {
     }
 }
 
-export const likePost = (id, token,socket, next) => async (dispatch) => {
+export const likePost = (id, token, socket, next) => async (dispatch) => {
 
     try {
         const res = await customAxios(token).patch(`/post/${id}/like`);
         dispatch(postAction.updateLike({ id: id, likes: res.data.likes }));
-        socket.emit('like', {type:'post',id, likes: res.data.likes});
+        socket.emit('like', { type: 'post', id, likes: res.data.likes });
     }
     catch (err) {
         next();
@@ -178,7 +178,7 @@ export const unlikePost = (id, token, socket, next) => async (dispatch) => {
     try {
         const res = await customAxios(token).patch(`/post/${id}/unlike`);
         dispatch(postAction.updateLike({ id: id, likes: res.data.likes }));
-        socket.emit('unlike',{type:'post',id, likes: res.data.likes });
+        socket.emit('unlike', { type: 'post', id, likes: res.data.likes });
     }
     catch (err) {
         next();

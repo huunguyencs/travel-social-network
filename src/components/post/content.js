@@ -1,4 +1,4 @@
-import { Avatar, Backdrop, Button, CardContent, CardHeader, CardMedia, Dialog, DialogActions, DialogTitle, IconButton, Menu, MenuItem, Modal, Typography } from '@material-ui/core';
+import { Avatar, Backdrop, Box, Button, CardContent, CardHeader, CardMedia, Dialog, DialogActions, DialogTitle, IconButton, Menu, MenuItem, Modal, Typography } from '@material-ui/core';
 import { MoreVert } from '@material-ui/icons';
 import { Rating } from '@material-ui/lab';
 import React, { useState } from 'react'
@@ -18,29 +18,11 @@ const MenuListProps = {
     overflow: 'visible',
     filter: 'drop-shadow(0px 2px 8px rgba(0,0,0,0.32))',
     mt: 1.5,
-    // '& .MuiAvatar-root': {
-    //     width: 32,
-    //     height: 32,
-    //     ml: -0.5,
-    //     mr: 1,
-    // },
-    // '&:before': {
-    //     content: '""',
-    //     display: 'block',
-    //     position: 'absolute',
-    //     top: 0,
-    //     right: 14,
-    //     width: 10,
-    //     height: 10,
-    //     bgcolor: 'background.paper',
-    //     transform: 'translateY(-50%) rotate(45deg)',
-    //     zIndex: 0,
-    // },
 }
 
 function Header(props) {
 
-    const { post } = props;
+    const { post, share } = props;
 
     const dispatch = useDispatch();
 
@@ -81,7 +63,7 @@ function Header(props) {
             action={
                 <>
                     {
-                        auth.user._id === post.userId._id && <>
+                        auth.user._id === post.userId._id && !share && <>
                             <IconButton aria-label="settings" onClick={handleShowMenu}>
                                 <MoreVert />
                             </IconButton>
@@ -161,19 +143,22 @@ function ShareContent({ post }) {
                         <Typography className={classes.hashtag} key={index}>{item}</Typography>
                     )}
                 </div>
+                <Box>
+                    <BaseContent post={post.shareId} share={true} />
+                </Box>
 
-                <BaseContent post={post.shareId} />
             </CardContent>
         </>
     )
 }
 
-function BaseContent({ post }) {
+function BaseContent(props) {
+    const { post, share } = props;
     const classes = postStyles();
 
     return (
         <>
-            <Header post={post} />
+            <Header post={post} share={share} />
             <CardContent>
                 {post.isPostReview &&
                     <>
@@ -209,7 +194,7 @@ export default function PostContent({ post }) {
 
     return (
         <>
-            {post && post.shareId ? <ShareContent post={post} /> : <BaseContent post={post} />}
+            {post && post.shareId ? <ShareContent post={post} /> : <BaseContent post={post} share={false} />}
         </>
     )
 

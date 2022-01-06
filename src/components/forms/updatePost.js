@@ -61,11 +61,11 @@ export default function UpdatePostForm(props) {
 
     const handleSubmit = (e) => {
         e.preventDefault();
-        var ht = hashtagSplit(hashtag);
         if (!change) {
             handleClose();
             return;
         }
+        var ht = hashtagSplit(hashtag);
         if (text !== '' || imageUpload.length > 0 || ht.length > 0) {
             setState({
                 loading: true,

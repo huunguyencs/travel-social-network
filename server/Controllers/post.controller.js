@@ -120,6 +120,21 @@ class PostController {
             const post = await Posts.findOneAndUpdate({ _id: req.params.id, userId: req.user.id }, {
                 content, images, rate, hashtags
             }, { new: true })
+                .populate("userId likes", "username fullname avatar")
+                .populate({
+                    path: "comments",
+                    populate: {
+                        path: "userId likes",
+                        select: "username fullname avatar"
+                    }
+                })
+                .populate({
+                    path: "shareId",
+                    populate: {
+                        path: "userId",
+                        select: "username fullname avatar"
+                    }
+                })
             res.json({ success: true, message: "update post successful", post })
 
         } catch (err) {

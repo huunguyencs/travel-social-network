@@ -23,8 +23,8 @@ export const login = (data, callback) => async (dispatch) => {
     }
     catch (err) {
         // console.log(err);
-        callback(err.response.data.message);
-        dispatch(notifyAction.callFail({ error: err.response.data.message }));
+        // callback(err.response.data.message);
+        // dispatch(notifyAction.callFail({ error: err.response.data.message }));
     }
 }
 
@@ -74,13 +74,13 @@ export const logout = (data) => async (dispatch) => {
     }
 }
 
-export const follow = (token, userId,socket, next) => async (dispatch) => {
+export const follow = (token, userId, socket, next) => async (dispatch) => {
     try {
         await customAxios(token).put(`/user/${userId}/follow`).then(res => {
             console.log(res.data);
             dispatch(authAction.updateFollowing({ followings: res.data.followings }))
             dispatch(userAction.updateFollower({ followers: res.data.followers }))
-            socket.emit('follow',{id: userId, followers: res.data.followers, followings: res.data.followings})
+            socket.emit('follow', { id: userId, followers: res.data.followers, followings: res.data.followings })
         })
     }
     catch (err) {
@@ -88,12 +88,12 @@ export const follow = (token, userId,socket, next) => async (dispatch) => {
     }
 }
 
-export const unfollow = (token, userId,socket, next) => async (dispatch) => {
+export const unfollow = (token, userId, socket, next) => async (dispatch) => {
     try {
         await customAxios(token).put(`/user/${userId}/unfollow`).then(res => {
             dispatch(authAction.updateFollowing({ followings: res.data.followings }))
             dispatch(userAction.updateFollower({ followers: res.data.followers }))
-            socket.emit('unfollow',{id: userId, followers: res.data.followers, followings: res.data.followings})
+            socket.emit('unfollow', { id: userId, followers: res.data.followers, followings: res.data.followings })
         })
     }
     catch (err) {
