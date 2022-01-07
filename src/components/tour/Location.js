@@ -52,6 +52,7 @@ export default function Location(props) {
     const [editLoc, setEditLoc] = useState(false);
     const [showDeleteLocation, setShowDeleteLocation] = useState(false);
     const [review, setReview] = useState(null);
+    const [notFoundRv, setNotFoundRv] = useState(false);
 
     const handleShowMenu = (e) => {
         setAnchorEl(e.currentTarget);
@@ -92,8 +93,13 @@ export default function Location(props) {
     }
 
     const getReviewPost = async () => {
-        const res = await customAxios().get(`/post/${location.postId}`);
-        setReview(res.data.post);
+        await customAxios().get(`/post/${location.postId}`).then(res => {
+            setReview(res.data.post);
+        }).catch(err => {
+            if (err.response.status === 404)
+                setNotFoundRv(true);
+        });
+
     }
 
     const handleShowReview = () => {
@@ -222,25 +228,27 @@ export default function Location(props) {
                     </CardContent>
                 </Grid>
                 <Collapse in={showRv}>
-                    {review ?
-                        <Grid item md={12}>
-                            <CardContent className={classes.review}>
-                                <Typography component="legend">Đánh giá: </Typography>
-                                <Rating
-                                    name={"rating" + review._id}
-                                    value={review.rate}
-                                    readOnly
-                                />
-                                <Typography>{review.content}</Typography>
-                            </CardContent>
-                            <CardMedia>
+                    {!notFoundRv ?
+                        review ?
+                            <Grid item md={12}>
+                                <CardContent className={classes.review}>
+                                    <Typography component="legend">Đánh giá: </Typography>
+                                    <Rating
+                                        name={"rating" + review._id}
+                                        value={review.rate}
+                                        readOnly
+                                    />
+                                    <Typography>{review.content}</Typography>
+                                </CardContent>
+                                <CardMedia>
 
-                            </CardMedia>
-                            <CardActions>
-                                <Button component={Link} to={`/post/${review._id}`} className={classes.seeDetail}>Xem chi tiết</Button>
-                            </CardActions>
-                        </Grid>
-                        : <CircularProgress />}
+                                </CardMedia>
+                                <CardActions>
+                                    <Button component={Link} to={`/post/${review._id}`} className={classes.seeDetail}>Xem chi tiết</Button>
+                                </CardActions>
+                            </Grid>
+                            : <CircularProgress />
+                        : <Typography>Nội dung không tồn tại</Typography>}
                 </Collapse>
 
             </Grid>

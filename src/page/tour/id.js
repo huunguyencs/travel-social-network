@@ -75,8 +75,6 @@ export default function TourDetail(props) {
     }, [id])
 
     useEffect(() => {
-        console.log(edit);
-        console.log(tour);
         if (edit === 'true' && tour) {
             dispatch(loadTour({ tour: tour }));
         }
@@ -92,7 +90,7 @@ export default function TourDetail(props) {
                         state.notFound ?
                             <NotFound /> :
                             <Typography onClick={() => getTourDetail(id)}>Có lỗi vui lòng thử lại</Typography>
-                        : tour && (edit === 'true' && isOwn ? < AddTour isUpdate={true} /> : <Tour tour={tour} isOwn={isOwn} />)
+                        : tour && (edit === 'true' && isOwn ? <AddTour isUpdate={true} /> : <Tour tour={tour} isOwn={isOwn} />)
             }
         </>
     )

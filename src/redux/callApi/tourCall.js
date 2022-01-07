@@ -68,8 +68,9 @@ export const saveTour = (tour, image, token, next, error) => async (dispatch) =>
 
 
         const res = await customAxios(token).post('/tour/create_tour', data);
-        dispatch(tourAction.addTour({ tour: res.data.newTour }))
         next();
+        dispatch(tourAction.addTour({ tour: res.data.newTour }))
+
     }
     catch (err) {
         error();
@@ -94,41 +95,49 @@ export const updateTour = (id, tour, image, token, next, error) => async (dispat
             image: image ? imageUpload[0] : ""
         }
 
-        await customAxios(token).post(`/tour/${id}`, data);
+        console.log(data);
 
 
+        const res = await customAxios(token).patch(`/tour/${id}`, data);
         next();
+        // console.log(res.data.newTour)
+        dispatch(tourAction.updateTour({ id: id, tour: res.data.newTour }))
+
     }
     catch (err) {
+        console.log(err);
         error();
+
     }
 }
 
-export const deleteTour = (data) => async (dispatch) => {
+export const deleteTour = (id, token, next) => async (dispatch) => {
     try {
         // call api to delete tour
-        dispatch(tourAction.deleteTour());
+        await customAxios(token).delete(`/tour/${id}`)
+        next();
+        dispatch(tourAction.deleteTour({ id: id }));
     }
     catch (err) {
-        dispatch(tourAction.error({ error: err.response.data.message }));
+        // dispatch(tourAction.error({ error: err.response.data.message }));
     }
 }
 
-export const likeTour = (id, token,socket, next) => async (dispatch) => {
+export const likeTour = (id, token, socket, next) => async (dispatch) => {
 
     try {
 
         const res = await customAxios(token).patch(`/tour/${id}/like`)
         dispatch(tourAction.updateLike({ id: id, likes: res.data.likes }));
         // console.log(res.data.likes);
-        socket.emit('like',{type:'tour',id: id, likes: res.data.likes});
+        socket.emit('like', { type: 'tour', id: id, likes: res.data.likes });
     }
     catch (err) {
         next();
     }
 }
 
-export const unlikeTour = (id, token,socket, next) => async (dispatch) => {
+export const unlikeTour = (id, token, socket, next) => async (dispatch) => {
 
 
     try {
@@ -136,7 +145,7 @@ export const unlikeTour = (id, token,socket, next) => async (dispatch) => {
         const res = await customAxios(token).patch(`/tour/${id}/unlike`);
         dispatch(tourAction.updateLike({ id: id, likes: res.data.likes }));
         // console.log(res.data.likes);
-        socket.emit('unlike',{type:'tour',id: id, likes: res.data.likes});
+        socket.emit('unlike', { type: 'tour', id: id, likes: res.data.likes });
     }
     catch (err) {
         next();

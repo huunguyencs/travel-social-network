@@ -10,6 +10,7 @@ const INIT_STATE = {
     tour: [],
     isFetching: false,
     error: null,
+    cost: 0
 }
 
 
@@ -100,9 +101,10 @@ const createTourReducer = (state = INIT_STATE, action) => {
                 name: "",
                 tour: [],
                 image: null,
-                hashtags: "",
+                hashtags: [],
                 content: "",
-                services: []
+                services: [],
+                cost: 0
             }
         }
         case TOUR_TYPES.UPDATE_INFO: {
@@ -112,23 +114,41 @@ const createTourReducer = (state = INIT_STATE, action) => {
                 image: action.payload.image,
                 hashtags: action.payload.hashtags,
                 content: action.payload.content,
+                cost: action.payload.cost
             }
         }
         case TOUR_TYPES.ADD_SERVICE: {
             return {
                 ...state,
+                cost: state.cost + action.payload.service.cost,
                 services: [...state.services, action.payload.service]
             }
         }
         case TOUR_TYPES.UPDATE_SERVICE: {
+
+            let newCost = state.cost;
+            let newService = state.services.map((item, index) => {
+                if (index === action.payload.index) {
+                    newCost = newCost - item.cost + action.payload.service.cost;
+                    return action.payload.service;
+                }
+                else return item
+            })
+
             return {
                 ...state,
-                services: state.services.map((item, index) => index === action.payload.index ? action.payload.service : item)
+                cost: newCost,
+                services: newService
             }
         }
         case TOUR_TYPES.DELETE_SERVICE: {
+
+            let newCost = state.cost - state.services[action.payload.index].cost;
+
+
             return {
                 ...state,
+                cost: newCost,
                 services: [
                     ...state.services.slice(0, action.payload.index),
                     ...state.services.slice(action.payload.index + 1)

@@ -1,5 +1,6 @@
 // import * as notifyAction from '../actions/notifyAction'
 import * as postAction from '../actions/postAction';
+import * as tourAction from '../actions/tourAction';
 import * as imageUtils from '../../utils/uploadImage';
 import customAxios from '../../utils/fetchData';
 
@@ -33,7 +34,7 @@ export const getPostsLocation = (id) => async (dispatch) => {
         dispatch(postAction.getPosts({ posts: res.data.posts }));
     }
     catch (err) {
-        dispatch(postAction.error({ error: err.response.data.message }))
+        // dispatch(postAction.error({ error: err.response.data.message }))
     }
 }
 
@@ -50,7 +51,7 @@ export const getUserPost = (id, token) => async (dispatch) => {
 
         // console.log(err.response.data.message);
         // console.log(err);
-        dispatch(postAction.error({ error: err.response.data.message }))
+        // dispatch(postAction.error({ error: err.response.data.message }))
     }
 }
 
@@ -67,7 +68,7 @@ export const getMorePost = (data) => async (dispatch) => {
         dispatch(postAction.getMorePost({ posts: res }));
     }
     catch (err) {
-        dispatch(postAction.error({ error: err }));
+        // dispatch(postAction.error({ error: err }));
     }
 }
 
@@ -183,5 +184,26 @@ export const unlikePost = (id, token, socket, next) => async (dispatch) => {
     catch (err) {
         next();
         // console.log(err);
+    }
+}
+
+export const share = (type, token, shareId, content, hashtags, next, error) => async (dispatch) => {
+    try {
+        const res = await customAxios(token).post(`/${type}/share`, {
+            shareId: shareId,
+            content: content,
+            hashtags: hashtags
+        })
+        next();
+
+        if (type === "post") {
+            dispatch(postAction.addPost({ post: res.data.newPost }))
+        }
+        else if (type === "tour") {
+            dispatch(tourAction.addTour({ tour: res.data.newTour }))
+        }
+    }
+    catch (err) {
+        error();
     }
 }

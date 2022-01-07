@@ -50,12 +50,27 @@ class TourController {
             const { content, hashtags, shareId } = req.body
             const newTour = new Tours({
                 userId: req.user._id, content, hashtags, shareId
-            })
+            }).populate("userId", "username fullname avatar")
+                .populate({
+                    path: "shareId",
+                    populate: {
+                        path: "userId",
+                        select: "username fullname avatar"
+                    }
+                })
+                .populate({
+                    path: "shareId",
+                    populate: {
+                        path: "tour",
+                        select: "date"
+                    }
+                })
             await newTour.save();
 
             res.json({
                 success: true,
-                message: 'Chia sẻ thành công!'
+                message: 'Chia sẻ thành công!',
+                newTour
             })
         }
         catch (err) {
@@ -66,15 +81,37 @@ class TourController {
     ///
     async updateTour(req, res) {
         try {
-            const { content, tourName, isPublic, taggedIds, image, hashtags, service, tour } = req.body
+            const { content, name, isPublic, image, hashtags, service, tour } = req.body
 
             const newTour = await Tours.findOneAndUpdate({ _id: req.params.id, userId: req.user.id }, {
-                content, image, tourName, taggedIds, hashtags, isPublic, service
-            }, { new: true })
+                content, image, name, hashtags, isPublic, service
+            }, { new: true }).populate("userId joinIds likes", "username fullname avatar")
+                .populate("tour", "date")
+                .populate({
+                    path: "comments",
+                    populate: {
+                        path: "userId likes",
+                        select: "username fullname avatar"
+                    }
+                })
+                .populate({
+                    path: "shareId",
+                    populate: {
+                        path: "userId",
+                        select: "username fullname avatar"
+                    }
+                })
+                .populate({
+                    path: "shareId",
+                    populate: {
+                        path: "tour",
+                        select: "date"
+                    }
+                })
 
             if (newTour) {
                 tour.forEach(async function (element) {
-                    await TourDates.findOneAndUpdate({ _id: element._id }, ...element, { new: true })
+                    await TourDates.findOneAndUpdate({ _id: element._id }, { date: element.date, locations: element.locations }, { new: true })
                 })
 
                 res.json({ success: true, message: "update tour successful", newTour })
@@ -135,13 +172,12 @@ class TourController {
         try {
             const tour = await Tours.findOneAndDelete({ _id: req.params.id, userId: req.user._id });
             if (tour) {
-                if (tour.comments != null) await Comments.deleteMany({ _id: { $in: tour.comments } });
-                if (tour.tour != null) await TourDates.deleteMany({ _id: { $in: tour.tour } });
+                if (tour.comments) await Comments.deleteMany({ _id: { $in: tour.comments } });
+                if (tour.tour) await TourDates.deleteMany({ _id: { $in: tour.tour } });
             }
             else {
                 res.status(404).json({ success: false, message: "Không tìm thấy tour" })
             }
-
 
             res.json({
                 success: true, message: "Delete tour success"

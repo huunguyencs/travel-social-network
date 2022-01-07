@@ -45,9 +45,15 @@ export default function UpdateTourInfo({ name, content, hashtags, image, handleC
         })
     }
 
+    const hashtagSplit = (text) => {
+        var ht = text.split(" ");
+        return ht.filter(item => item !== "");
+    }
+
     const handleSubmit = () => {
         // console.log(state);
-        dispatch(updateInfo({ name: state.name, content: text, hashtags: state.hashtags.join(" "), image: state.image, cost: state.cost }));
+        let ht = hashtagSplit(state.hashtags)
+        dispatch(updateInfo({ name: state.name, content: text, hashtags: ht, image: state.image, cost: state.cost }));
         handleClose();
     }
 

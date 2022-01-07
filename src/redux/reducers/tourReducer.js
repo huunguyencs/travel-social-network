@@ -21,17 +21,25 @@ const tourReducer = (state = INIT_STATE, action) => {
         case TOUR_TYPES.ADD_TOUR: {
             return {
                 ...state,
-                tour: [
+                tours: [
                     action.payload.tour,
                     ...state.tour,
                 ],
                 error: null
             }
         }
+
+        case TOUR_TYPES.UPDATE_TOUR: {
+            return {
+                ...state,
+                tours: state.tours.map(tour => tour._id === action.payload.id ? action.payload.tour : tour)
+            }
+        }
+
         case TOUR_TYPES.DELETE_TOUR: {
             return {
                 ...state,
-                tour: state.tour.filter(tour => tour.id !== action.payload.id),
+                tours: state.tours.filter(tour => tour._id !== action.payload.id),
                 error: null,
             }
         }

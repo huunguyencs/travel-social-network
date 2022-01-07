@@ -6,13 +6,15 @@ import { useDispatch, useSelector } from 'react-redux';
 import { formStyles } from "../../style";
 import EmojiPicker from '../input/emojiPicker';
 import LoginModal from "../modal/login";
-import { share } from '../../redux/callApi/postCall'
+import { updatePost } from '../../redux/callApi/postCall';
+import { updateTour } from '../../redux/callApi/tourCall';
 
-export default function SharePost(props) {
+export default function ShareUpdateForm(props) {
 
     const { object, type, handleClose } = props;
 
     const dispatch = useDispatch();
+
 
     const { auth } = useSelector(state => state);
     const [state, setState] = useState({
@@ -20,8 +22,8 @@ export default function SharePost(props) {
         error: false,
     })
 
-    const [text, setText] = useState("");
-    const [hashtag, setHashtag] = useState("");
+    const [text, setText] = useState(object.content);
+    const [hashtag, setHashtag] = useState(object.hashtags.join(" "));
 
     const classes = formStyles();
 
@@ -30,35 +32,57 @@ export default function SharePost(props) {
         return ht.filter(item => item !== "");
     }
 
-    const handleShare = async (e) => {
-        e.preventDefault();
+    const updateShare = async () => {
         var ht = hashtagSplit(hashtag);
         setState({
             loading: true,
             error: false
         })
-        dispatch(share(type, auth.token, object._id, text, ht, () => {
-            setState({
-                loading: false,
-                error: false
-            })
-            handleClose();
-        }, () => {
-            setState({
-                loading: false,
-                error: true
-            })
-        }))
+
+        if (type === "post") {
+            dispatch(updatePost(object._id, { content: text, images: [], hashtags: ht }, auth.token, () => {
+                setState({
+                    loading: false,
+                    error: false
+                })
+                handleClose();
+            }, () => {
+                setState({
+                    loading: false,
+                    error: true
+                })
+            }))
+        }
+        else if (type === "tour") {
+            dispatch(updateTour(object._id, { tour: [], content: text, hashtags: ht }, null, auth.token, () => {
+                setState({
+                    loading: false,
+                    error: false
+                })
+                handleClose();
+            }, () => {
+                setState({
+                    loading: false,
+                    error: true
+                })
+            }))
+        }
+
+
     }
 
+    const handleShare = (e) => {
+        e.preventDefault();
+        updateShare();
+    }
 
     return (
         <>
-            {auth.token ?
+            {auth.token && object ?
                 <Paper className={classes.paperContainer}>
                     <div className={classes.textTitle}>
                         <Typography variant="h5">
-                            Chia sẻ {type === "post" ? "bài viết" : "lịch trình"} của {object.userId.fullname}
+                            Chỉnh sửa nội dung chia sẻ
                         </Typography>
                     </div>
                     <form>
@@ -95,7 +119,7 @@ export default function SharePost(props) {
                                                 <CircularProgress size="25px" color="inherit" /> :
                                                 <>
                                                     <Share style={{ marginRight: 10 }} />
-                                                    Chia sẻ
+                                                    Cập nhật
                                                 </>
                                         }
                                     </Button>

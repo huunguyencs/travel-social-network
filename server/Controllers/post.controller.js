@@ -37,13 +37,21 @@ class PostController {
 
             const newPost = new Posts({
                 userId: req.user._id, content, hashtags, shareId
-            })
+            }).populate("userId", "username fullname avatar")
+                .populate({
+                    path: "shareId",
+                    populate: {
+                        path: "userId",
+                        select: "username fullname avatar"
+                    }
+                })
 
             await newPost.save()
 
             res.json({
                 success: true,
                 message: 'Chia sẻ thành công!',
+                newPost
             })
         }
         catch (err) {

@@ -47,7 +47,7 @@ const postRecuder = (state = INIT_STATE, action) => {
             return {
                 ...state,
                 error: null,
-                posts: state.posts.filter(post => post._id !== action.payload._id)
+                posts: state.posts.filter(post => post._id !== action.payload.id)
             }
         }
         case POST_TYPES.UPDATE_POST: {

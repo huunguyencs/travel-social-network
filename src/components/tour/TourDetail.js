@@ -63,7 +63,7 @@ export default function TourDetail(props) {
                                 ))}
                             </div>
                         </div>
-                        <Button component={Link} to={`?edit=true`}>Chỉnh sửa hành trình</Button>
+
                         <Grid container className={classes.container}>
                             <Grid item md={2} >
                                 <Container className={classes.timeline}>
@@ -87,6 +87,7 @@ export default function TourDetail(props) {
 
                             </Grid>
                             <Grid item md={6} className={classes.feedTour}>
+                                <Button component={Link} to={`?edit=true`}>Chỉnh sửa hành trình</Button>
                                 {
                                     tour.tour[idx].locations.map((item, index) => (
                                         <Location
@@ -106,9 +107,9 @@ export default function TourDetail(props) {
 
                             </Grid>
                             <Grid item md={4}>
-                                <div style={{ height: 500 }}>
+                                <Container style={{ height: 500, margin: 30 }}>
                                     {position ? <MapCard position={position} zoom={12} locations={locations} /> : "Cham hoi"}
-                                </div>
+                                </Container>
                             </Grid>
                         </Grid>
                     </div >

@@ -10,6 +10,6 @@ export const getProvinces = (data) => async (dispatch) => {
         dispatch(notifyActions.callSuccess({ message: "" }))
     }
     catch (err) {
-        dispatch(notifyActions.callFail({ error: err }))
+        // dispatch(notifyActions.callFail({ error: err }))
     }
 }

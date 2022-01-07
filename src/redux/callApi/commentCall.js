@@ -53,7 +53,7 @@ export const createCommentTour = (id, comment, auth, socket, next) => async (dis
         socket.emit('createComment', { type: 'tour', id: id, comment: newComment });
     }
     catch (err) {
-        console.log(err);
+        // console.log(err);
     }
 }
 

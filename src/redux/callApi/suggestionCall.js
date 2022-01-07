@@ -10,7 +10,7 @@ export const getSuggestion = (data) => async (dispatch) => {
         dispatch(suggestionAction.getSuggestion({ suggestion: res }))
     }
     catch (err) {
-        dispatch(suggestionAction.error({ error: err.response.data.message }));
+        // dispatch(suggestionAction.error({ error: err.response.data.message }));
     }
 
 }

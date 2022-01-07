@@ -4,10 +4,10 @@ import * as userAction from '../actions/userAction';
 import customAxios from '../../utils/fetchData';
 
 
-export const login = (data, callback) => async (dispatch) => {
+export const login = (data, next, callback) => async (dispatch) => {
 
     // begin loading
-    dispatch(notifyAction.callStart());
+    // dispatch(notifyAction.callStart());
     try {
         // call api to login
         const res = await customAxios().post("user/login", data, {
@@ -16,14 +16,16 @@ export const login = (data, callback) => async (dispatch) => {
 
 
         // stop loading
-        dispatch(notifyAction.callSuccess({ message: "" }));
+        // dispatch(notifyAction.callSuccess({ message: "" }));
         // console.log(res);
         dispatch(authAction.auth({ user: res.data.user, token: res.data.accessToken }));
-
+        next();
     }
     catch (err) {
         // console.log(err);
-        // callback(err.response.data.message);
+        if (err.response && err.response.data && err.response.data.message)
+            callback(err.response.data.message);
+        else callback("Lỗi")
         // dispatch(notifyAction.callFail({ error: err.response.data.message }));
     }
 }
@@ -42,8 +44,11 @@ export const register = (data, callback) => async (dispatch) => {
     }
     catch (err) {
         // console.log(err);
-        callback(err.response.data.message);
-        dispatch(notifyAction.callFail({ error: err.response.data.message }));
+        if (err.response && err.response.data && err.response.data.message) {
+            callback(err.response.data.message);
+        }
+        else callback("Lỗi")
+        // dispatch(notifyAction.callFail({ error: err.response.data.message }));
     }
 }
 
@@ -70,7 +75,7 @@ export const logout = (data) => async (dispatch) => {
         dispatch(authAction.logout());
     }
     catch (err) {
-        dispatch(notifyAction.callFail({ error: err.response.data.message }));
+        // dispatch(notifyAction.callFail({ error: err.response.data.message }));
     }
 }
 

@@ -19,8 +19,9 @@ export default function Login(props) {
     const history = useHistory();
 
     const dispatch = useDispatch();
-    const { auth, notify } = useSelector(state => state);
-    const [state, setState] = useState({
+    const { auth } = useSelector(state => state);
+    const [loading, setLoading] = useState(false);
+    const [context, setContext] = useState({
         email: '',
         password: '',
         errors: {},
@@ -30,7 +31,7 @@ export default function Login(props) {
     const [showPassword, setShowPassword] = useState(false);
     const [errorServer, setErrorServer] = useState(null);
 
-    const { errors } = state;
+    const { errors } = context;
 
     const rules = [
         {
@@ -55,8 +56,8 @@ export default function Login(props) {
     const validator = new Validator(rules);
 
     const handleInput = (e) => {
-        setState({
-            ...state,
+        setContext({
+            ...context,
             errors: {},
             [e.target.name]: e.target.value,
         })
@@ -64,10 +65,10 @@ export default function Login(props) {
 
     const handleSubmit = (e) => {
         e.preventDefault();
-        setState({
-            ...state,
+        setContext({
+            ...context,
             submit: true,
-            errors: validator.validate(state)
+            errors: validator.validate(context)
         })
     }
 
@@ -83,22 +84,26 @@ export default function Login(props) {
     }, [])
 
     useEffect(() => {
-        if (state.submit) {
+        if (context.submit) {
+            setLoading(true);
             setErrorServer(null);
             if (Object.keys(errors).length === 0) {
                 dispatch(login({
-                    email: state.email,
-                    password: state.password.trim()
+                    email: context.email,
+                    password: context.password.trim()
+                }, () => {
+                    setLoading(false);
                 }, (err) => {
+                    setLoading(false);
                     setErrorServer(err);
                 }));
             }
-            setState({
-                ...state,
+            setContext({
+                ...context,
                 submit: false,
             })
         }
-    }, [errors, dispatch, state])
+    }, [errors, dispatch, context])
 
 
 
@@ -135,7 +140,7 @@ export default function Login(props) {
                         required
                         error={errors?.email}
                         helperText={errors?.email}
-                        value={state.email}
+                        value={context.email}
                         onChange={handleInput}
                     >
                     </TextField>
@@ -150,7 +155,7 @@ export default function Login(props) {
                         error={errors?.password}
                         helperText={errors?.password}
                         className="form-input"
-                        value={state.password}
+                        value={context.password}
                         onChange={handleInput}
                         InputProps={{
                             endAdornment: (
@@ -181,7 +186,7 @@ export default function Login(props) {
                             type="submit"
                             className="login-button"
                         >
-                            {notify.loading ?
+                            {loading ?
                                 <CircularProgress size="25px" color="inherit" />
                                 : "Đăng nhập"
                             }

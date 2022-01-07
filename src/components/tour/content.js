@@ -1,21 +1,63 @@
-import { Avatar, Backdrop, Button, CardContent, CardHeader, CardMedia, IconButton, Modal, Typography } from '@material-ui/core'
+import { Avatar, Backdrop, Button, CardContent, CardHeader, CardMedia, Dialog, DialogActions, DialogTitle, IconButton, Menu, MenuItem, Modal, Typography } from '@material-ui/core'
 import { MoreVert } from '@material-ui/icons'
 import React, { useEffect, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { Link } from 'react-router-dom'
-import { joinTour, unJoinTour } from '../../redux/callApi/tourCall'
+import { deleteTour, joinTour, unJoinTour } from '../../redux/callApi/tourCall'
 
 
 import { postStyles } from '../../style'
 import { convertDateToStr, timeAgo } from '../../utils/date'
+import ShareUpdateForm from '../forms/updateShare'
 import ImageModal from '../modal/image'
 import ManageUserJoin from '../modal/manageUserJoin'
 import UserList from '../modal/userList'
 import { SeeMoreText } from '../seeMoreText'
 
+const MenuListProps = {
+    elevation: 0,
+    overflow: 'visible',
+    filter: 'drop-shadow(0px 2px 8px rgba(0,0,0,0.32))',
+    mt: 1.5,
+}
+
 function ShareContent({ tour }) {
 
+    const { auth } = useSelector(state => state);
+
+    const [anchorEl, setAnchorEl] = useState(null);
+    const [showEdit, setShowEdit] = useState(false);
+    const [showDelete, setShowDelete] = useState(false);
+
+    const dispatch = useDispatch();
+
+    const handleShowMenu = (e) => {
+        setAnchorEl(e.currentTarget);
+    }
+
+    const handleCloseMenu = () => {
+        setAnchorEl(null);
+    }
+
+    const handleCloseEdit = () => {
+        setShowEdit(false);
+        handleCloseMenu();
+    }
+
+    const handleCloseDelete = () => {
+        setShowDelete(false);
+        handleCloseMenu();
+    }
+
     const [tourShare, setTourShare] = useState(tour.shareId);
+
+    const handleDeleteTour = () => {
+        dispatch(deleteTour(tour._id, auth.token, () => {
+            setShowDelete(false);
+            handleCloseMenu();
+        }));
+
+    }
 
     const classes = postStyles();
     return (
@@ -25,9 +67,56 @@ function ShareContent({ tour }) {
                     <Avatar alt="avatar" src={tour.userId.avatar} />
                 }
                 action={
-                    <IconButton aria-label="settings">
-                        <MoreVert />
-                    </IconButton>
+                    <>
+                        {auth.user._id === tour.userId._id &&
+                            <>
+                                <IconButton aria-label="settings" onClick={handleShowMenu}>
+                                    <MoreVert />
+                                </IconButton>
+                                <Menu
+                                    anchorEl={anchorEl}
+                                    open={Boolean(anchorEl)}
+                                    onClose={handleCloseMenu}
+                                    disablePortal={true}
+                                    MenuListProps={MenuListProps}
+                                >
+                                    <MenuItem onClick={() => setShowEdit(true)}>Chỉnh sửa bài viết</MenuItem>
+                                    <Modal
+                                        aria-labelledby="transition-modal-edit"
+                                        aria-describedby="transition-modal-edit-description"
+                                        open={showEdit}
+                                        className={classes.modal}
+                                        onClose={handleCloseEdit}
+                                        BackdropComponent={Backdrop}
+                                        BackdropProps={{
+                                            timeout: 500,
+                                        }}
+                                    >
+                                        <ShareUpdateForm object={tour} type={"tour"} handleClose={handleCloseEdit} />
+                                    </Modal>
+                                    <MenuItem onClick={() => setShowDelete(true)}>Xóa bài viết</MenuItem>
+                                    <Dialog
+                                        open={showDelete}
+                                        onClose={handleCloseDelete}
+                                        aria-labelledby="show-delete-dialog"
+                                        aria-describedby="show-delete-dialog-description"
+                                    >
+                                        <DialogTitle id="alert-dialog-title">{"Bạn có chắc chắn muốn xóa?"}</DialogTitle>
+                                        <DialogActions>
+                                            <Button onClick={handleCloseDelete}>
+                                                Hủy
+                                            </Button>
+                                            <Button onClick={handleDeleteTour}>
+                                                Xóa
+                                            </Button>
+                                        </DialogActions>
+                                    </Dialog>
+
+                                </Menu>
+                            </>
+                        }
+
+                    </>
                 }
                 title={
                     <Typography noWrap={false} className={classes.userName} component={Link} to={`/profile/${tour.userId._id}`}>{tour.userId.fullname}</Typography>
@@ -51,17 +140,35 @@ function ShareContent({ tour }) {
                     <Typography className={classes.hashtag} key={index}>{item}</Typography>
                 )}
             </div>
-            {tourShare ? <BaseContent tour={tourShare} setTour={setTourShare} /> : <Typography>Nội dung không còn tồn tại</Typography>}
+            {tourShare ? <BaseContent tour={tourShare} setTour={setTourShare} share={true} /> : <Typography>Nội dung không còn tồn tại</Typography>}
         </>
     )
 }
 
 function BaseContent(props) {
 
-    const { tour, setTour } = props;
+    const { tour, setTour, share } = props;
 
     const { auth } = useSelector(state => state);
+
+    const [anchorEl, setAnchorEl] = useState(null);
+    const [showDelete, setShowDelete] = useState(false);
+
     const dispatch = useDispatch();
+
+    const handleShowMenu = (e) => {
+        setAnchorEl(e.currentTarget);
+    }
+
+    const handleCloseMenu = () => {
+        setAnchorEl(null);
+    }
+
+    const handleCloseDelete = () => {
+        setShowDelete(false);
+        handleCloseMenu();
+    }
+
 
     const [join, setJoin] = useState(false);
     const [openJoin, setOpenJoin] = useState(false);
@@ -114,6 +221,13 @@ function BaseContent(props) {
         else handleJoin();
     }
 
+    const handleDeleteTour = () => {
+        dispatch(deleteTour(tour._id, auth.token, () => {
+            setShowDelete(false);
+            handleCloseMenu();
+        }))
+    }
+
     const [open, setOpen] = useState(false);
     return (
         <>
@@ -122,9 +236,43 @@ function BaseContent(props) {
                     <Avatar alt="avatar" src={tour.userId.avatar} />
                 }
                 action={
-                    <IconButton aria-label="settings">
-                        <MoreVert />
-                    </IconButton>
+                    <>
+                        {auth.user._id === tour.userId._id && !share &&
+                            <>
+                                <IconButton aria-label="settings" onClick={handleShowMenu}>
+                                    <MoreVert />
+                                </IconButton>
+                                <Menu
+                                    anchorEl={anchorEl}
+                                    open={Boolean(anchorEl)}
+                                    onClose={handleCloseMenu}
+                                    disablePortal={true}
+                                    MenuListProps={MenuListProps}
+                                >
+                                    <MenuItem component={Link} to={`/tour/${tour._id}?edit=true`}>Chỉnh sửa hành trình</MenuItem>
+                                    <MenuItem onClick={() => setShowDelete(true)}>Xóa hành trình</MenuItem>
+                                    <Dialog
+                                        open={showDelete}
+                                        onClose={handleCloseDelete}
+                                        aria-labelledby="show-delete-dialog"
+                                        aria-describedby="show-delete-dialog-description"
+                                    >
+                                        <DialogTitle id="alert-dialog-title">{"Bạn có chắc chắn muốn xóa?"}</DialogTitle>
+                                        <DialogActions>
+                                            <Button onClick={handleCloseDelete}>
+                                                Hủy
+                                            </Button>
+                                            <Button onClick={handleDeleteTour}>
+                                                Xóa
+                                            </Button>
+                                        </DialogActions>
+                                    </Dialog>
+
+                                </Menu>
+                            </>
+                        }
+
+                    </>
                 }
                 title={
                     <Typography noWrap={false} className={classes.userName} component={Link} to={`/profile/${tour.userId._id}`}>{tour.userId.fullname}</Typography>
@@ -166,7 +314,7 @@ function BaseContent(props) {
                     Thời gian: {tour.tour?.length} ngày - Bắt đầu {convertDateToStr(tour.tour[0]?.date)}
                 </Typography>
                 <Typography style={{ marginTop: 20 }}>
-                    Chi phí: {new Intl.NumberFormat().format(tour.cost)} VND
+                    Chi phí: {new Intl.NumberFormat().format(tour.cost * 1000)} VND
                 </Typography>
                 <div>
                     <Typography>Thành viên tham gia:
@@ -208,7 +356,7 @@ function BaseContent(props) {
 export default function TourContent({ tour, setTour }) {
     return (
         <>
-            {tour && tour.shareId ? <ShareContent tour={tour} /> : <BaseContent tour={tour} setTour={setTour} />}
+            {tour && tour.shareId ? <ShareContent tour={tour} /> : <BaseContent tour={tour} setTour={setTour} share={false} />}
         </>
     )
 }
