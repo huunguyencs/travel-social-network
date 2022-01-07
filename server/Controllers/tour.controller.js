@@ -11,23 +11,24 @@ class TourController {
                 userId: req.user._id, content, image, name, taggedIds, hashtags, services, cost, tour: []
             })
 
+            await newTour.save()
+
             if (tour.length > 0) {
-                tour.forEach(async function (element) {
+                tour.forEach(async function (element, index) {
                     const newTourDate = new TourDates({
                         date: element.date, locations: element.locations
                     })
                     await newTourDate.save();
-                    await newTour.tour.push(newTourDate._id);
-
-                    // await Tours.findOneAndUpdate({ _id: newTour._id }, {
-                    //     $push: {
-                    //         tour: newTourDate._id
-                    //     }
-                    // });
+                    await Tours.findOneAndUpdate({ _id: newTour._id }, {
+                        $push: {
+                            tour: newTourDate._id,
+                            $position: index
+                        }
+                    });
                 });
             }
 
-            await newTour.save()
+
 
             res.json({
                 success: true,

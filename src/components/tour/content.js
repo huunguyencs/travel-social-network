@@ -124,7 +124,9 @@ function ShareContent({ tour }) {
                                                 Hủy
                                             </Button>
                                             <Button onClick={handleDeleteTour}>
-                                                Xóa
+                                                {
+                                                    state.loading ? <CircularProgress style={{ fontSize: 15 }} /> : "Xóa"
+                                                }
                                             </Button>
                                         </DialogActions>
                                     </Dialog>
@@ -325,7 +327,7 @@ function BaseContent(props) {
                                             </Button>
                                             <Button onClick={handleDeleteTour}>
                                                 {
-                                                    state.loadingDelete ? <CircularProgress /> : "Xóa"
+                                                    state.loadingDelete ? <CircularProgress style={{ fontSize: 15 }} /> : "Xóa"
                                                 }
                                             </Button>
                                         </DialogActions>

@@ -123,7 +123,7 @@ function Header(props) {
                                         <Button onClick={handleDeletePost}>
                                             {
                                                 state.loading ?
-                                                    <CircularProgress /> : "Xóa"
+                                                    <CircularProgress style={{ fontSize: 15 }} /> : "Xóa"
                                             }
                                         </Button>
                                     </DialogActions>
