@@ -8,24 +8,26 @@ class TourController {
             const { content, name, taggedIds, image, hashtags, tour, services, cost } = req.body
 
             const newTour = new Tours({
-                userId: req.user._id, content, image, name, taggedIds, hashtags, services, cost
+                userId: req.user._id, content, image, name, taggedIds, hashtags, services, cost, tour: []
             })
-            await newTour.save()
+
             if (tour.length > 0) {
                 tour.forEach(async function (element) {
-                    // console.log(element);
                     const newTourDate = new TourDates({
                         date: element.date, locations: element.locations
                     })
                     await newTourDate.save();
+                    await newTour.tour.push(newTourDate._id);
 
-                    await Tours.findOneAndUpdate({ _id: newTour._id }, {
-                        $push: {
-                            tour: newTourDate._id
-                        }
-                    });
+                    // await Tours.findOneAndUpdate({ _id: newTour._id }, {
+                    //     $push: {
+                    //         tour: newTourDate._id
+                    //     }
+                    // });
                 });
             }
+
+            await newTour.save()
 
             res.json({
                 success: true,
@@ -170,8 +172,9 @@ class TourController {
 
     async deleteTour(req, res) {
         try {
-            const tour = await Tours.findOneAndDelete({ _id: req.params.id, userId: req.user._id });
+            const tour = await Tours.findById(req.params.id);
             if (tour) {
+                await Tours.findOneAndDelete({ _id: req.params.id, userId: req.user._id });
                 if (tour.comments) await Comments.deleteMany({ _id: { $in: tour.comments } });
                 if (tour.tour) await TourDates.deleteMany({ _id: { $in: tour.tour } });
             }

@@ -6,7 +6,7 @@ const customAxios = (token = "") => {
             "Content-Type": "application/json",
             Authorization: "Bearer " + token,
         },
-        timeout: 8 * 1000,
+        timeout: 10 * 1000,
     })
     return instance;
 }

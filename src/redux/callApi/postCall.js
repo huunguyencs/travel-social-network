@@ -18,8 +18,8 @@ export const getPosts = (token) => async (dispatch) => {
         dispatch(postAction.getPosts({ posts: res.data.posts }));
     }
     catch (err) {
-        console.log(err);
-        // dispatch(postAction.error({ error: err.response.data.message }))
+        // console.log(err);
+        dispatch(postAction.error({ error: "Lỗi" }))
     }
 
 }
@@ -34,7 +34,7 @@ export const getPostsLocation = (id) => async (dispatch) => {
         dispatch(postAction.getPosts({ posts: res.data.posts }));
     }
     catch (err) {
-        // dispatch(postAction.error({ error: err.response.data.message }))
+        dispatch(postAction.error({ error: "Lỗi" }))
     }
 }
 
@@ -51,7 +51,7 @@ export const getUserPost = (id, token) => async (dispatch) => {
 
         // console.log(err.response.data.message);
         // console.log(err);
-        // dispatch(postAction.error({ error: err.response.data.message }))
+        dispatch(postAction.error({ error: "Lỗi" }))
     }
 }
 
@@ -68,7 +68,7 @@ export const getMorePost = (data) => async (dispatch) => {
         dispatch(postAction.getMorePost({ posts: res }));
     }
     catch (err) {
-        // dispatch(postAction.error({ error: err }));
+        dispatch(postAction.error({ error: "Lỗi" }));
     }
 }
 
@@ -86,7 +86,7 @@ export const getPostById = (id, next) => async (dispatch) => {
     }
     catch (err) {
         // console.log(err);
-        // dispatch(postAction.error({ error: err.response.data.message }))
+        dispatch(postAction.error({ error: "Lỗi" }))
     }
 
 }

@@ -13,7 +13,7 @@ export const getTours = (data) => async (dispatch) => {
     }
     catch (err) {
         // console.log(err);
-        dispatch(tourAction.error({ error: err.response.data.message }))
+        dispatch(tourAction.error({ error: "Lỗi" }))
 
     }
 }
@@ -30,7 +30,7 @@ export const getTourDetail = (id, next) => async (dispatch) => {
     }
     catch (err) {
         // console.log(err);
-        dispatch(tourAction.error({ error: err.response.data.message }));
+        // dispatch(tourAction.error({ error: err.response.data.message }));
     }
 }
 
@@ -43,7 +43,7 @@ export const getUserTour = (id, token) => async (dispatch) => {
         dispatch(tourAction.getTours({ tour: res.data.tours }))
     }
     catch (err) {
-        dispatch(tourAction.error({ error: err.response.data.message }))
+        dispatch(tourAction.error({ error: "Lỗi" }))
         // console.log(err);
     }
 }

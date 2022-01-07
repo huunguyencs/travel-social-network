@@ -100,7 +100,7 @@ const tourReducer = (state = INIT_STATE, action) => {
                 ...state,
                 tours: state.tours.map(item => item._id === action.payload.tourId ? {
                     ...item,
-                    comments: item.comments.filter(comment => comment._id === action.payload.id)
+                    comments: item.comments.filter(comment => comment._id !== action.payload.id)
                 } : item)
             }
         }

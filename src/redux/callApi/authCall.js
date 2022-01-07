@@ -12,12 +12,10 @@ export const login = (data, next, callback) => async (dispatch) => {
         // call api to login
         const res = await customAxios().post("user/login", data, {
             credentials: "include",
+
         });
 
 
-        // stop loading
-        // dispatch(notifyAction.callSuccess({ message: "" }));
-        // console.log(res);
         dispatch(authAction.auth({ user: res.data.user, token: res.data.accessToken }));
         next();
     }
@@ -56,7 +54,8 @@ export const refreshToken = (callback) => async (dispatch) => {
     try {
         const res = await customAxios().post("/user/refresh_token", {}, {
             // withCredentials: true,
-            credentials: 'include'
+            credentials: 'include',
+            timeout: 30 * 1000
         });
         // console.log(res);
         dispatch(authAction.auth({ user: res.data.user, token: res.data.accessToken }));

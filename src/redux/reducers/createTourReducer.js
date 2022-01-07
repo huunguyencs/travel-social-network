@@ -21,7 +21,7 @@ const createTourReducer = (state = INIT_STATE, action) => {
             return {
                 ...state,
                 name: action.payload.name,
-                tour: [...state.tour, { date: action.payload.date, locations: [] }]
+                tour: [{ date: action.payload.date, locations: [] }]
             }
         }
         case TOUR_TYPES.ADD_NEW_DATE: {

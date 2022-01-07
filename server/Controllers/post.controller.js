@@ -262,7 +262,7 @@ class PostController {
             res.json({
                 success: true, message: "like post success",
                 likes: post.likes,
-                newPost: post
+                // newPost: post
             });
 
 
@@ -292,8 +292,9 @@ class PostController {
 
     async deletePost(req, res) {
         try {
-            const post = await Posts.findOneAndDelete({ _id: req.params.id, userId: req.user._id });
-            if (post.comments != null) await Comments.deleteMany({ _id: { $in: post.comments } });
+            const post = await Posts.findById(req.params.id)
+            await Posts.findOneAndDelete({ _id: req.params.id, userId: req.user._id });
+            if (post.comments) await Comments.deleteMany({ _id: { $in: post.comments } });
 
             res.json({
                 success: true, message: "Delete post success"
