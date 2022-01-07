@@ -74,6 +74,7 @@ export const getMorePost = (data) => async (dispatch) => {
 
 export const getPostById = (id, next) => async (dispatch) => {
     dispatch(postAction.getPosts({ posts: [] }));
+    dispatch(postAction.loading());
     try {
         await customAxios().get(`/post/${id}`).then(res => {
             dispatch(postAction.getPosts({ posts: [res.data.post] }));
@@ -82,7 +83,6 @@ export const getPostById = (id, next) => async (dispatch) => {
                 next();
             }
         })
-
     }
     catch (err) {
         // console.log(err);
@@ -149,7 +149,7 @@ export const updatePost = (data, token, next, error) => async (dispatch) => {
 }
 
 
-export const deletePost = (id, token, next) => async (dispatch) => {
+export const deletePost = (id, token, next, error) => async (dispatch) => {
 
     try {
         await customAxios(token).delete(`/post/${id}`);
@@ -157,7 +157,7 @@ export const deletePost = (id, token, next) => async (dispatch) => {
         next();
     }
     catch (err) {
-
+        error();
     }
 }
 

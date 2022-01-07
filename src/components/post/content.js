@@ -1,4 +1,4 @@
-import { Avatar, Backdrop, Box, Button, CardContent, CardHeader, CardMedia, Dialog, DialogActions, DialogTitle, IconButton, Menu, MenuItem, Modal, Typography } from '@material-ui/core';
+import { Avatar, Backdrop, Box, Button, CardContent, CardHeader, CardMedia, CircularProgress, Dialog, DialogActions, DialogTitle, IconButton, Menu, MenuItem, Modal, Typography } from '@material-ui/core';
 import { MoreVert } from '@material-ui/icons';
 import { Rating } from '@material-ui/lab';
 import React, { useState } from 'react'
@@ -31,6 +31,10 @@ function Header(props) {
     const [anchorEl, setAnchorEl] = useState(null);
     const [showEdit, setShowEdit] = useState(false);
     const [showDelete, setShowDelete] = useState(false);
+    const [state, setState] = useState({
+        loading: false,
+        error: false
+    })
 
     const handleShowMenu = (e) => {
         setAnchorEl(e.currentTarget);
@@ -46,9 +50,22 @@ function Header(props) {
     }
 
     const handleDeletePost = () => {
+        setState({
+            loading: true,
+            error: false,
+        })
         dispatch(deletePost(post._id, auth.token, () => {
+            setState({
+                loading: false,
+                error: false
+            })
             setShowDelete(false);
             handleCloseMenu();
+        }, () => {
+            setState({
+                loading: false,
+                error: true
+            })
         }));
 
     }
@@ -104,7 +121,10 @@ function Header(props) {
                                             Hủy
                                         </Button>
                                         <Button onClick={handleDeletePost}>
-                                            Xóa
+                                            {
+                                                state.loading ?
+                                                    <CircularProgress /> : "Xóa"
+                                            }
                                         </Button>
                                     </DialogActions>
                                 </Dialog>

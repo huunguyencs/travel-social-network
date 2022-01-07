@@ -1,4 +1,4 @@
-import { Avatar, Backdrop, Button, CardContent, CardHeader, CardMedia, Dialog, DialogActions, DialogTitle, IconButton, Menu, MenuItem, Modal, Typography } from '@material-ui/core'
+import { Avatar, Backdrop, Button, CardContent, CardHeader, CardMedia, CircularProgress, Dialog, DialogActions, DialogTitle, IconButton, Menu, MenuItem, Modal, Typography } from '@material-ui/core'
 import { MoreVert } from '@material-ui/icons'
 import React, { useEffect, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
@@ -24,6 +24,10 @@ const MenuListProps = {
 function ShareContent({ tour }) {
 
     const { auth } = useSelector(state => state);
+    const [state, setState] = useState({
+        loading: false,
+        error: false
+    })
 
     const [anchorEl, setAnchorEl] = useState(null);
     const [showEdit, setShowEdit] = useState(false);
@@ -52,9 +56,22 @@ function ShareContent({ tour }) {
     const [tourShare, setTourShare] = useState(tour.shareId);
 
     const handleDeleteTour = () => {
+        setState({
+            loading: true,
+            error: false
+        })
         dispatch(deleteTour(tour._id, auth.token, () => {
+            setState({
+                loading: false,
+                error: false
+            })
             setShowDelete(false);
             handleCloseMenu();
+        }, () => {
+            setState({
+                loading: false,
+                error: true
+            })
         }));
 
     }
@@ -153,6 +170,11 @@ function BaseContent(props) {
 
     const [anchorEl, setAnchorEl] = useState(null);
     const [showDelete, setShowDelete] = useState(false);
+    const [state, setState] = useState({
+        loadingDelete: false,
+        loadingJoin: false,
+        error: false
+    })
 
     const dispatch = useDispatch();
 
@@ -189,10 +211,23 @@ function BaseContent(props) {
     }, [tour, auth.user]);
 
     const handleJoin = async () => {
+        setState({
+            loadingJoin: true,
+            error: false
+        })
         setJoin(true);
         var prevJoin = tour.joinIds;
         updateJoin([...prevJoin, auth.user]);
         dispatch(joinTour(tour._id, auth.token, () => {
+            setState({
+                loadingJoin: false,
+                error: false,
+            })
+        }, () => {
+            setState({
+                loadingJoin: false,
+                error: true,
+            })
             if (join) {
                 setJoin(false);
                 updateJoin(prevJoin);
@@ -201,12 +236,25 @@ function BaseContent(props) {
     }
 
     const handleUnJoin = () => {
+        setState({
+            loadingJoin: true,
+            error: false,
+        })
         setJoin(false);
         var prevJoin = tour.joinIds;
         var newJoin = prevJoin.filter(user => user._id !== auth.user._id);
         updateJoin(newJoin);
 
         dispatch(unJoinTour(tour._id, auth.token, () => {
+            setState({
+                loadingJoin: false,
+                error: false,
+            })
+        }, () => {
+            setState({
+                loadingJoin: false,
+                error: true,
+            })
             if (!join) {
                 setJoin(true);
                 updateJoin(prevJoin);
@@ -222,9 +270,22 @@ function BaseContent(props) {
     }
 
     const handleDeleteTour = () => {
+        setState({
+            loadingDelete: true,
+            error: false
+        })
         dispatch(deleteTour(tour._id, auth.token, () => {
+            setState({
+                loadingDelete: false,
+                error: false
+            })
             setShowDelete(false);
             handleCloseMenu();
+        }, () => {
+            setState({
+                loadingDelete: false,
+                error: true
+            })
         }))
     }
 
@@ -263,7 +324,9 @@ function BaseContent(props) {
                                                 Hủy
                                             </Button>
                                             <Button onClick={handleDeleteTour}>
-                                                Xóa
+                                                {
+                                                    state.loadingDelete ? <CircularProgress /> : "Xóa"
+                                                }
                                             </Button>
                                         </DialogActions>
                                     </Dialog>
@@ -298,7 +361,7 @@ function BaseContent(props) {
             <CardContent>
                 <div>
                     {new Date(tour.tour[0]?.date) > new Date() && tour.userId._id !== auth.user?._id &&
-                        <Button onClick={joinClick}>{join ? "Rời khỏi tour" : "Tham gia tour"}</Button>
+                        <Button onClick={joinClick}>{state.loadingJoin ? <CircularProgress /> : join ? "Rời khỏi tour" : "Tham gia tour"}</Button>
 
                     }
                 </div>

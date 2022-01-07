@@ -111,7 +111,7 @@ export const updateTour = (id, tour, image, token, next, error) => async (dispat
     }
 }
 
-export const deleteTour = (id, token, next) => async (dispatch) => {
+export const deleteTour = (id, token, next, error) => async (dispatch) => {
     try {
         // call api to delete tour
         await customAxios(token).delete(`/tour/${id}`)
@@ -120,6 +120,7 @@ export const deleteTour = (id, token, next) => async (dispatch) => {
     }
     catch (err) {
         // dispatch(tourAction.error({ error: err.response.data.message }));
+        error();
     }
 }
 
@@ -152,23 +153,25 @@ export const unlikeTour = (id, token, socket, next) => async (dispatch) => {
     }
 }
 
-export const joinTour = (id, token, next) => async (dispatch) => {
+export const joinTour = (id, token, next, error) => async (dispatch) => {
     try {
         const res = await customAxios(token).patch(`/tour/${id}/join`);
         dispatch(tourAction.updateJoin({ id: id, joinIds: res.data.joinIds }));
+        next();
     }
     catch (err) {
-        next();
+        error();
     }
 }
 
-export const unJoinTour = (id, token, next) => async (dispatch) => {
+export const unJoinTour = (id, token, next, error) => async (dispatch) => {
     try {
         const res = await customAxios(token).patch(`/tour/${id}/unjoin`);
         dispatch(tourAction.updateJoin({ id: id, joinIds: res.data.joinIds }));
+        next();
     }
     catch (err) {
-        next();
+        error();
     }
 }
 
