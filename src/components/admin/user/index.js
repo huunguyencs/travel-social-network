@@ -126,7 +126,7 @@ const headCells = [
     { id: 'name', numeric: false, disablePadding: true, label: 'Họ và tên' },
     { id: 'email', numeric: false, disablePadding: true, label: 'Email' },
     { id: 'phone', numeric: false, disablePadding: true, label: 'Số điện thoại' },
-    { id: 'birthday', numeric: false, disablePadding: true, label: '' },
+    { id: 'action', numeric: false, disablePadding: true, label: '  ' },
 ];
 
 function EnhancedTableHead(props) {
@@ -422,10 +422,10 @@ function AdminUsers(props) {
                                                         <TableCell component="th" id={labelId} scope="row" padding="none">
                                                             {row.id}
                                                         </TableCell>
-                                                        <TableCell align="right">{row.name}</TableCell>
-                                                        <TableCell align="right">{row.email}</TableCell>
-                                                        <TableCell align="right">{row.phone}</TableCell>
-                                                        <TableCell align="right"><Button component={Link} to="/"><Edit></Edit></Button></TableCell>
+                                                        <TableCell align="left">{row.name}</TableCell>
+                                                        <TableCell align="left">{row.email}</TableCell>
+                                                        <TableCell align="left">{row.phone}</TableCell>
+                                                        <TableCell align="left"><Button component={Link} to="/"><Edit></Edit></Button></TableCell>
                                                     </TableRow>
                                                 );
                                             })}

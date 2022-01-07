@@ -53,9 +53,6 @@ export default function AdminHome(props) {
 
             <Grid item md={9} style={{ height: "100vh" }}>
                 <div className={classes.appBarSpacer} />
-                <Box sx={{ pb: 5 }}>
-                    <Typography variant="h4">Hi, Welcome back</Typography>
-                </Box>
                 <Grid container>
                     <Grid item md={4} >
                         <Card className={classes.cardInfo}>
