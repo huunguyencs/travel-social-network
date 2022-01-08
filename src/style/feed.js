@@ -6,7 +6,8 @@ const feedStyles = makeStyles((theme) => ({
     container: {
         marginTop: theme.spacing(10),
         color: 'black',
-        alignContent: "center",
+        display: 'flex',
+        justifyContent: 'center'
     },
     title: {
         display: "flex",
@@ -23,10 +24,11 @@ const feedStyles = makeStyles((theme) => ({
         backgroundColor: color.turquoise,
         borderRadius: attr.borderRadius.md,
         padding: 10,
-        paddingInline: 30,
+        // paddingInline: 30,
     },
     containerText: {
-        width: "90%",
+        // width: "90%",
+        width: "100%",
         backgroundColor: color.white,
         paddingInline: theme.spacing(5),
         paddingTop: theme.spacing(1),
@@ -55,6 +57,9 @@ const feedStyles = makeStyles((theme) => ({
         display: 'flex',
         justifyContent: 'center',
         marginTop: 50
+    },
+    feedContent: {
+        marginInline: 30
     }
 }));
 

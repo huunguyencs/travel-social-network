@@ -72,7 +72,7 @@ export default function FeedPost(props) {
                 </div>
 
 
-                <div>
+                <div className={classes.feedContent}>
                     {
                         post.loading ?
                             <div className={classes.centerMarginTop}>

@@ -83,12 +83,15 @@ const profileStyles = makeStyles((theme) => ({
     width: "100%",
     top: 0,
     left: 0,
-    height: "90%",
+    height: "80%",
     cursor: "pointer",
     transition: "0.8s",
     "&:hover": {
       filter: "brightness(90%)",
-    }
+    },
+    [theme.breakpoints.down("sm")]: {
+      height: "65%"
+    },
   },
   profile_avatar__img: {
     height: "200px",
@@ -98,16 +101,28 @@ const profileStyles = makeStyles((theme) => ({
     transition: "0.8s",
     "&:hover": {
       filter: "brightness(90%)",
-    }
+    },
+    [theme.breakpoints.down("sm")]: {
+      height: "170px",
+      width: "170px",
+    },
   },
   profile_avatar: {
-
+    [theme.breakpoints.down("sm")]: {
+      display: 'flex',
+      justifyContent: 'center'
+    },
   },
   profile_info: {
     position: "absolute",
     display: "flex",
-    marginTop: "45vh",
+    marginTop: "42vh",
     marginLeft: "7vw",
+    [theme.breakpoints.down("sm")]: {
+      display: 'block',
+      marginTop: '30vh'
+      // position: 'relative'
+    },
   },
   modal: {
     display: 'flex',
@@ -115,8 +130,15 @@ const profileStyles = makeStyles((theme) => ({
     justifyContent: 'center',
   },
   profile_button: {
-    marginTop: "140px",
-    marginLeft: "15vw",
+    marginTop: "120px",
+    marginLeft: "8vw",
+    [theme.breakpoints.down("md")]: {
+      marginLeft: '4vw',
+    },
+    [theme.breakpoints.down("sm")]: {
+      marginTop: 10,
+      marginLeft: 10
+    },
   },
   button: {
     backgroundColor: color.turquoise,
@@ -124,17 +146,32 @@ const profileStyles = makeStyles((theme) => ({
     padding: "8px",
     paddingInline: "16px",
     borderRadius: attr.borderRadius.md,
+    [theme.breakpoints.down("md")]: {
+      marginBottom: 5
+    },
+    [theme.breakpoints.down("sm")]: {
+      marginRight: 10,
+      paddingInline: 10,
+      fontSize: 12,
+    },
   },
   infoUser: {
     display: "flex",
     flexDirection: "column",
     justifyContent: "center",
-    marginTop: "120px",
+    marginTop: "90px",
     marginLeft: "2vw",
+    [theme.breakpoints.down("sm")]: {
+      marginTop: 5
+    },
   },
   fullname: {
     fontSize: "35px",
-    color: 'inherit'
+    color: 'inherit',
+    [theme.breakpoints.down("sm")]: {
+      display: 'flex',
+      alignSelf: 'center'
+    },
   },
   follow: {
     display: "flex",
@@ -143,7 +180,10 @@ const profileStyles = makeStyles((theme) => ({
   },
   followInfo: {
     marginRight: "20px",
-    cursor: "pointer"
+    cursor: "pointer",
+    [theme.breakpoints.down("sm")]: {
+      fontSize: 14
+    },
   }
 }));
 
