@@ -30,7 +30,8 @@ export default function FeedReview(props) {
                     {
 
                         post.loading ?
-                            <CircularProgress color={"inherit"} /> :
+                            <div className={classes.centerMarginTop}>
+                                <CircularProgress color={"inherit"} /> </div> :
                             post.error ?
                                 <div className={classes.centerMarginTop}>
                                     <div>

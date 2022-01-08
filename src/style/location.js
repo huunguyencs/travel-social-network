@@ -63,6 +63,11 @@ const locationStyles = makeStyles((theme) => ({
         display: 'flex',
         justifyContent: 'center',
         marginTop: 20
+    },
+    centerMarginTop: {
+        display: 'flex',
+        justifyContent: 'center',
+        marginTop: 150
     }
 }))
 

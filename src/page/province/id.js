@@ -105,7 +105,7 @@ export default function Province(props) {
             {
                 state.loading ?
                     <div className={classes.centerMarginTop}>
-                        <CircularProgress />
+                        <CircularProgress color={"inherit"} />
                     </div> :
                     state.error ?
                         <div className={classes.centerMarginTop}>
