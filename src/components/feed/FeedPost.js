@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { Container, InputBase, Modal, Backdrop, Fade, CircularProgress, Typography, Button } from "@material-ui/core";
+import { InputBase, Modal, Backdrop, Fade, CircularProgress, Typography, Button } from "@material-ui/core";
 
 
 import Post from '../post/Post';
@@ -40,7 +40,7 @@ export default function FeedPost(props) {
 
 
     return (
-        <Container className={classes.container}>
+        <div className={classes.container}>
             <div className={classes.content}>
                 <div className={classes.create}>
                     <div className={classes.containerText}>
@@ -94,6 +94,6 @@ export default function FeedPost(props) {
                     }
                 </div>
             </div>
-        </Container>
+        </div>
     )
 }

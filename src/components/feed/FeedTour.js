@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { Backdrop, Button, CircularProgress, Container, Fade, Modal, Typography } from "@material-ui/core";
+import { Backdrop, Button, CircularProgress, Fade, Modal, Typography } from "@material-ui/core";
 
 import Tour from "../tour/Tour";
 import { feedStyles } from "../../style";
@@ -29,9 +29,9 @@ export default function FeedTour(props) {
     }
 
     return (
-        <Container className={classes.container}>
+        <div className={classes.container}>
             <div className={classes.content}>
-                <div className={classes.create}>
+                <div className={classes.createTourContainer}>
                     <Button className={classes.createTour} onClick={() => setShow(true)}>
                         Lên lịch trình ngay!
                     </Button>
@@ -53,7 +53,7 @@ export default function FeedTour(props) {
                     </Modal>
                 </div>
 
-                <div>
+                <div className={classes.feedContent}>
                     {
                         tour.loading ?
                             tour.error ?
@@ -77,6 +77,6 @@ export default function FeedTour(props) {
 
             </div>
 
-        </Container>
+        </div>
     )
 }

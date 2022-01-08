@@ -26,7 +26,7 @@ export default function FeedReview(props) {
         <Container>
             <div className={classes.content}>
 
-                <div>
+                <div className={classes.feedContent}>
                     {
 
                         post.loading ?

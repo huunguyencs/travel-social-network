@@ -102,7 +102,7 @@ const postStyles = makeStyles((theme) => ({
     },
     subheader: {
         cursor: "pointer",
-        fontSize: '12px',
+        fontSize: '13px',
         [theme.breakpoints.down("sm")]: {
             fontSize: "10px",
         }

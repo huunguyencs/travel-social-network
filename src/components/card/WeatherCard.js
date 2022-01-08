@@ -21,6 +21,8 @@ const convertToVN = (main) => {
             return "Trong lành";
         case "Clouds":
             return "Có mây";
+        case "Mist":
+            return "Sương mù"
         default:
             return main;
     }
