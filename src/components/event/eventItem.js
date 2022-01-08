@@ -23,11 +23,11 @@ export default function EventItem(props) {
                 />
             </CardActionArea>
             <CardContent>
-                <Typography variant="h5" component={Link} to={'/event/' + event.name}>
+                <Typography variant="h5" component={Link} to={'/event/' + event.name} className={classes.name}>
                     {event.fullname}
                 </Typography>
-                <Typography style={{ marginBottom: 10 }} variant="h6">{event.provinceId ? event.provinceId.fullname : "Cả nước"}</Typography>
-                <Typography style={{ marginBottom: 10 }}>
+                <Typography className={classes.province} variant="h6">{event.provinceId ? event.provinceId.fullname : "Cả nước"}</Typography>
+                <Typography className={classes.timedes}>
                     {event.timedes}
                 </Typography>
             </CardContent>

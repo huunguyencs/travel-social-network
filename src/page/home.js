@@ -34,15 +34,15 @@ function HomePage() {
   return (
     <Grid container style={{ margin: 0, padding: 0 }}>
       <SpeedDialButton />
-      <Grid item md={12} >
+      <Grid item md={12} sm={12} xs={12}>
         <Slider />
       </Grid>
-      <Grid item md={3} sm={12} xs={12} className={classes.leftbar}>
+      <Grid item md={3} sm={2} xs={2} className={classes.leftbar}>
         <LeftBar >
           <Menu menuList={homeMenu} />
         </LeftBar>
       </Grid>
-      <Grid item md={6} sm={12} xs={12} className={classes.content}>
+      <Grid item md={6} sm={10} xs={10} className={classes.content}>
         <FeedPost />
       </Grid>
       <Grid item md={3} className={classes.rightbar}>

@@ -5,9 +5,15 @@ const eventStyles = makeStyles((theme) => ({
     eventCardContainer: {
         width: 400,
         margin: 20,
+        [theme.breakpoints.down("sm")]: {
+            width: 300
+        }
     },
     media: {
         height: 300,
+        [theme.breakpoints.down("sm")]: {
+            height: 200
+        }
     },
     imgBg: {
         backgroundImage: `url(https://toquoc.mediacdn.vn/2018/12/25/cau-vang-ba-na-3-15457134861131150541874.jpg)`,
@@ -42,6 +48,25 @@ const eventStyles = makeStyles((theme) => ({
         marginTop: 10,
         display: "flex",
         color: "black",
+    },
+    name: {
+        [theme.breakpoints.down("sm")]: {
+            fontSize: 18
+        }
+    },
+    province: {
+        marginBottom: 10,
+        [theme.breakpoints.down("sm")]: {
+            marginBottom: 5,
+            fontSize: 16
+        }
+    },
+    timedes: {
+        marginBottom: 10,
+        [theme.breakpoints.down("sm")]: {
+            marginBottom: 5,
+            fontSize: 14
+        }
     }
 }))
 

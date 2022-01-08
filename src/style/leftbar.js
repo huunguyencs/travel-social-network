@@ -11,7 +11,9 @@ const leftbarStyles = makeStyles((theme) => ({
         // marginTop: theme.spacing(10),
         paddingBottom: theme.spacing(4),
         marginLeft: 15,
-
+        [theme.breakpoints.down("md")]: {
+            marginLeft: theme.spacing(0),
+        },
         top: 0,
     },
     panel: {
@@ -23,6 +25,9 @@ const leftbarStyles = makeStyles((theme) => ({
         paddingBottom: theme.spacing(4),
         paddingInline: theme.spacing(0),
         marginRight: 10,
+        [theme.breakpoints.down("sm")]: {
+            marginRight: 1,
+        }
     },
     item: {
         paddingInline: theme.spacing(4),
@@ -31,21 +36,33 @@ const leftbarStyles = makeStyles((theme) => ({
         marginTop: theme.spacing(1),
         marginBottom: theme.spacing(2),
         "&:hover": {
-            backgroundColor: color.turquoise,
+            backgroundColor: color.lightgray,
         },
+        [theme.breakpoints.down("md")]: {
+            marginInline: theme.spacing(0),
+            paddingInline: theme.spacing(1)
+        }
     },
     itemActive: {
         backgroundColor: color.turquoise,
-
     },
     icon: {
         color: color.text,
         marginInline: theme.spacing(3),
+        [theme.breakpoints.down("md")]: {
+            marginInline: theme.spacing(1),
+        },
+        [theme.breakpoints.down("sm")]: {
+            marginInline: 0,
+        }
     },
     text: {
         fontSize: '1.2em',
         fontWeight: 500,
         color: color.text,
+        [theme.breakpoints.down("sm")]: {
+            display: 'none'
+        }
     },
 }));
 
