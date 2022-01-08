@@ -343,7 +343,7 @@ function BaseContent(props) {
                     <Typography noWrap={false} className={classes.userName} component={Link} to={`/profile/${tour.userId._id}`}>{tour.userId.fullname}</Typography>
                 }
                 subheader={
-                    <Link to={`/tour/${tour._id}`} style={{ cursor: "pointer" }}>
+                    <Link to={`/tour/${tour._id}`} className={classes.subheader}>
                         {timeAgo(new Date(tour.createdAt))}
                     </Link>
                 }

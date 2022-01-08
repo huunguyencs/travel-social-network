@@ -59,6 +59,7 @@ export default function Menu(props) {
                         style={{
                             backgroundColor: isActive(item.link) ? color.turquoise : 'inherit',
                         }}
+                        title={item.name}
                     >
                         <ListItemIcon>
                             {<item.icon className={classes.icon} />}

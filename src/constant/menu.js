@@ -1,4 +1,4 @@
-import { Accessibility, Explore, Home, SupervisorAccount, Tune, Whatshot, Public } from "@material-ui/icons";
+import { Accessibility, Explore, Home, SupervisorAccount, Tune, Whatshot, Public, Toc } from "@material-ui/icons";
 
 const homeMenu = {
     prefix: "",
@@ -46,12 +46,12 @@ const profileMenu = {
         },
         {
             name: "Bài Viết",
-            icon: Explore,
+            icon: Toc,
             link: "/posts",
         },
         {
             name: "Hành Trình",
-            icon: Accessibility,
+            icon: Explore,
             link: "/tours",
         },
         {
@@ -83,5 +83,26 @@ const groupMenu = {
     ]
 };
 
-export { homeMenu, profileMenu, groupMenu };
+const serviceMenu = {
+    prefix: "service",
+    menu: [
+        {
+            name: "Giới thiệu",
+            icon: Home,
+            link: "/"
+        },
+        {
+            name: "Dịch vụ",
+            icon: Accessibility,
+            link: "/services"
+        },
+        {
+            name: "Bài viết",
+            icon: Toc,
+            link: "/posts"
+        }
+    ]
+}
+
+export { homeMenu, profileMenu, groupMenu, serviceMenu };
 

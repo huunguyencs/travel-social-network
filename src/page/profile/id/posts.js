@@ -18,6 +18,7 @@ import FeedPost from "../../../components/feed/FeedPost";
 import { NotFound } from "../../404";
 import { getUser } from "../../../redux/callApi/userCall";
 import { getUserPost } from "../../../redux/callApi/postCall";
+import useStyles from "../../../style";
 
 
 
@@ -35,10 +36,18 @@ function ProfilePosts() {
       dispatch(getUser(id, auth.user, () => {
         setNotFound(true);
       }));
-      dispatch(getUserPost(user.user._id, auth.token));
+
     }
   }, [user.user, id, dispatch, auth, setNotFound])
 
+  useEffect(() => {
+    if (user.user) {
+      dispatch(getUserPost(user.user._id, auth.token));
+    }
+
+  }, [user.user, auth.token, dispatch])
+
+  const classes = useStyles();
 
   return (
     <div>
@@ -50,15 +59,15 @@ function ProfilePosts() {
             <SpeedDialButton />
             <ProfileAvatar user={user.user} />
             <Grid container style={{ margin: 0, padding: 0 }}>
-              <Grid item sm={3}>
+              <Grid item md={3} sm={2} xs={2}>
                 <LeftBar >
                   <Menu menuList={profileMenu} />
                 </LeftBar>
               </Grid>
-              <Grid item sm={6}>
+              <Grid item md={6} sm={10} xs={10}>
                 <FeedPost id={id} />
               </Grid>
-              <Grid item sm={3}>
+              <Grid item sm={3} className={classes.rightbar}>
                 <RightBar>
                   <Calendar />
                   <FriendRecommendCard />

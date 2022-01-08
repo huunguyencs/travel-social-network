@@ -25,7 +25,23 @@ const commentStyles = makeStyles((theme) => ({
         marginTop: 5,
     },
     smallText: {
-        fontSize: "14px",
+        fontSize: "12px",
+        [theme.breakpoints.down("sm")]: {
+            fontSize: "10px",
+        }
+    },
+    dateComment: {
+        fontSize: "12px",
+        [theme.breakpoints.down("sm")]: {
+            display: 'none',
+        }
+    },
+    dateCommentShort: {
+        display: 'none',
+        [theme.breakpoints.down("sm")]: {
+            display: 'inline-block',
+            fontSize: "10px",
+        }
     },
     like: {
         marginInline: 10,

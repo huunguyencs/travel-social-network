@@ -47,12 +47,12 @@ function ProfileTours() {
             <SpeedDialButton />
             <ProfileAvatar user={user.user} />
             <Grid container style={{ margin: 0, padding: 0 }}>
-              <Grid item md={3} sm={12} xs={12}>
+              <Grid item md={3} sm={2} xs={2}>
                 <LeftBar >
                   <Menu menuList={profileMenu} />
                 </LeftBar>
               </Grid>
-              <Grid item md={6} sm={12} xs={12}>
+              <Grid item md={6} sm={10} xs={10}>
                 <FeedTour id={id} />
               </Grid>
               <Grid item md={3} className={classes.rightbar}>

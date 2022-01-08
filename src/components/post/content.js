@@ -81,7 +81,7 @@ function Header(props) {
                 <>
                     {
                         auth.user._id === post.userId._id && !share && <>
-                            <IconButton aria-label="settings" onClick={handleShowMenu}>
+                            <IconButton aria-label="settings" onClick={handleShowMenu} className={classes.action}>
                                 <MoreVert />
                             </IconButton>
                             <Menu
@@ -139,7 +139,7 @@ function Header(props) {
                 <Typography component={Link} to={`/profile/${post.userId._id}`} noWrap={false} className={classes.userName}>{post.userId.fullname}</Typography>
             }
             subheader={
-                <Link to={`/post/${post._id}`} style={{ cursor: "pointer" }}>
+                <Link to={`/post/${post._id}`} className={classes.subheader}>
                     {timeAgo(new Date(post.createdAt))}
                 </Link>
             }

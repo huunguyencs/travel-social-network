@@ -48,3 +48,11 @@ export function timeAgo(datetime) {
     }
     return convertDateToStrTime(datetime);
 }
+
+export function timeAgoShort(datetime) {
+    const now = new Date();
+    if (now - datetime < 24 * 60 * 60 * 1000) {
+        return timeAgo(datetime);
+    }
+    return convertDateToStr(datetime);
+}

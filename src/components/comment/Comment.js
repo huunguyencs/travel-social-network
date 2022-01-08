@@ -3,7 +3,7 @@ import { Avatar, Typography } from "@material-ui/core";
 
 import { commentStyles } from "../../style";
 import { SeeMoreText } from "../seeMoreText";
-import { timeAgo } from "../../utils/date";
+import { timeAgo, timeAgoShort } from "../../utils/date";
 // import { auth } from "../../redux/actions/authAction";
 import { useDispatch, useSelector } from "react-redux";
 import { Link } from "react-router-dom";
@@ -81,10 +81,12 @@ export default function Comment(props) {
                         <Typography className={`${classes.smallText} ${classes.likeBtn}`} onClick={likePress}>Like</Typography>
                     </div>
                     <div className={classes.time}>
-                        <Typography className={classes.smallText}>
+                        <Typography className={classes.dateComment}>
                             {timeAgo(new Date(comment.createdAt))}
                         </Typography>
-
+                        <Typography className={classes.dateCommentShort}>
+                            {timeAgoShort(new Date(comment.createdAt))}
+                        </Typography>
                     </div>
                 </div>
             </div>

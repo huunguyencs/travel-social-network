@@ -1,26 +1,22 @@
-import { Grid } from "@material-ui/core";
 import React, { useEffect, useState } from "react";
-
-import LeftBar from "../../../components/leftbar/LeftBar";
-import RightBar from "../../../components/rightbar/RightBar";
 import Scroll from "../../../components/scroll";
-import ProfileAvatar from "../../../components/Profile/avatar";
-import { profileMenu } from "../../../constant/menu";
 import SpeedDialButton from "../../../components/speedDialBtn";
+import ProfileAvatar from "../../../components/Profile/avatar";
+import { serviceMenu } from "../../../constant/menu";
+import { Grid } from "@material-ui/core";
+import LeftBar from "../../../components/leftbar/LeftBar";
 import Menu from "../../../components/leftbar/menu";
-import { useParams } from "react-router-dom";
-import Calendar from "../../../components/calendar";
-import FriendRecommendCard from "../../../components/card/FriendRecommend";
-import { useDispatch, useSelector } from "react-redux";
-import { getUser } from "../../../redux/callApi/userCall";
 import { NotFound } from "../../404";
-import useStyles from "../../../style";
+import { useDispatch, useSelector } from "react-redux";
+import { useParams } from "react-router-dom";
+import { getUser } from "../../../redux/callApi/userCall";
 
+export default function ServicesServicePage(props) {
 
+    // useEffect(() => {
+    //     document.title = "GOGO";
+    // })
 
-function InfoProfile() {
-
-    // const classes = useStyles();
     const { auth, user } = useSelector(state => state);
     const dispatch = useDispatch();
     const [notFound, setNotFound] = useState(false);
@@ -36,8 +32,6 @@ function InfoProfile() {
         }
     }, [user.user, id, dispatch, auth, setNotFound])
 
-    const classes = useStyles();
-
     return (
         <>
             {
@@ -50,23 +44,15 @@ function InfoProfile() {
                         <Grid container style={{ margin: 0, padding: 0 }}>
                             <Grid item md={3} sm={2} xs={2}>
                                 <LeftBar >
-                                    <Menu menuList={profileMenu} />
+                                    <Menu menuList={serviceMenu} />
                                 </LeftBar>
                             </Grid>
-                            <Grid item md={6} sm={10} xs={10}>
+                            <Grid item md={9} sm={10} xs={2}>
 
-                            </Grid>
-                            <Grid item md={3} className={classes.rightbar}>
-                                <RightBar>
-                                    <Calendar />
-                                    <FriendRecommendCard />
-                                </RightBar>
                             </Grid>
                         </Grid>
                     </>
             }
         </>
-    );
+    )
 }
-
-export default InfoProfile;

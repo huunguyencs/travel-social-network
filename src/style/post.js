@@ -99,6 +99,13 @@ const postStyles = makeStyles((theme) => ({
     contentWrap: {
         paddingTop: 100,
         width: "70%"
+    },
+    subheader: {
+        cursor: "pointer",
+        fontSize: '12px',
+        [theme.breakpoints.down("sm")]: {
+            fontSize: "10px",
+        }
     }
 }))
 
