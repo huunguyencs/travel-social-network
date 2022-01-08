@@ -169,6 +169,11 @@ const messageStyles = makeStyles((theme) => ({
         backgroundColor: "rgb(238, 246, 243)",
         border: "none",
         outline: "none",
+    },
+    startChat: {
+        display: "flex",
+        justifyContent: "center",
+        marginTop: 300
     }
 }));
 

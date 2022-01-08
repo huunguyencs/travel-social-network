@@ -11,6 +11,7 @@ const emoijPickerStyles = makeStyles((theme) => ({
         width: "266px",
         height: "270px",
         borderRadius: attr.borderRadius.sm,
+        transformOrigin: "bottom center",
     },
     iconItem: {
         fontSize: "1.5em",

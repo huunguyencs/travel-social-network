@@ -131,6 +131,19 @@ const profileStyles = makeStyles((theme) => ({
     justifyContent: "center",
     marginTop: "120px",
     marginLeft: "2vw",
+  },
+  fullname: {
+    fontSize: "35px",
+    color: 'inherit'
+  },
+  follow: {
+    display: "flex",
+    fontSize: "20px",
+    color: "inherit"
+  },
+  followInfo: {
+    marginRight: "20px",
+    cursor: "pointer"
   }
 }));
 

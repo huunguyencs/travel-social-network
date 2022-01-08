@@ -32,12 +32,14 @@ export default function FeedReview(props) {
                         post.loading ?
                             <CircularProgress color={"inherit"} /> :
                             post.error ?
-                                <div style={{ margin: 'auto' }}>
-                                    <Typography>Có lỗi xảy ra</Typography>
-                                    <Button onClick={tryAgain}>Thử lại</Button>
+                                <div className={classes.centerMarginTop}>
+                                    <div>
+                                        <Typography>Có lỗi xảy ra</Typography>
+                                        <Button onClick={tryAgain}>Thử lại</Button>
+                                    </div>
                                 </div>
                                 : post.posts.length === 0 ?
-                                    <div style={{ display: 'flex', justifyContent: 'center', marginTop: 100 }}>
+                                    <div className={classes.centerMarginTop} style={{ marginTop: 100 }}>
                                         <Typography>Chưa có review cho địa điểm này</Typography>
                                     </div> :
                                     post.posts.map((post) => (

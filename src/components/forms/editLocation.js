@@ -75,23 +75,23 @@ export default function EditLocationForm(props) {
             <form
                 className={classes.addLocationForm}
             >
-                <div style={{ display: "flex", justifyContent: "center" }}>
+                <div className={classes.center}>
                     <Autocomplete
                         id="choose-province"
                         options={location.provinces}
                         getOptionLabel={(option) => option?.fullname}
-                        style={{ width: 400, marginTop: 30 }}
+                        className={classes.autocomplete}
                         onChange={(e, value) => getLoc(value)}
                         defaultValue={currentProvince}
                         renderInput={(params) => <TextField {...params} name="province" label="Chọn tỉnh thành" variant="outlined" required />}
                     />
                 </div>
-                <div style={{ display: "flex", justifyContent: "center" }}>
+                <div className={classes.center}>
                     <Autocomplete
                         id="choose-location"
                         options={locations}
                         getOptionLabel={(option) => option?.fullname}
-                        style={{ width: 400, marginTop: 30 }}
+                        className={classes.autocomplete}
                         defaultValue={loc}
                         onChange={(e, value) => setLoc(value)}
                         renderInput={(params) => <TextField {...params} name="location" label="Chọn địa điểm" variant="outlined" required defaultValue={loc?.locationName} />}

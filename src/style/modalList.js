@@ -70,6 +70,33 @@ const modalListStyles = makeStyles((theme) => ({
         "&:hover": {
             textDecorationLine: 'underline',
         }
+    },
+    imageList: {
+        margin: 20,
+        height: "100%",
+        [theme.breakpoints.down("md")]: {
+            height: 400,
+        },
+        // [theme.breakpoints.down("sm")]: {
+        //     height: 200,
+        // },
+    },
+    imageItem: {
+        cursor: "pointer",
+        transition: "0.5s",
+        "&:hover": {
+            filter: "brightness(85%)",
+        }
+    },
+    more: {
+        filter: "brightness(90%)",
+    },
+    textCenter: {
+        position: "absolute",
+        top: "50%",
+        left: "50%",
+        transform: "translate(-50%, -50%)",
+        color: "white",
     }
 }))
 

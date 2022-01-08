@@ -52,7 +52,7 @@ function WeatherCard(props) {
                 <Typography variant="h6">{convertToVN(weather.weather[0].main)}</Typography>
             </div>
 
-            <div style={{ display: "flex", justifyContent: "center", marginTop: 10 }}>
+            <div style={{ marginTop: 10 }} className={classes.center}>
                 <Typography variant="h6">{firstUpperCase(weather.weather[0].description)}</Typography>
             </div>
 
@@ -99,7 +99,7 @@ export function WeatherFocastItem(props) {
     const { weather } = props;
 
     return (
-        <Card style={{ width: 500, margin: 10, borderRadius: 5 }}>
+        <Card className={classes.weatherFocastCard}>
             <CardContent className={classes.content}>
                 <div className={classes.weatherTitle}>
                     <Typography variant="h6">{convertDateToStr(weather.dt * 1000)}</Typography>
@@ -115,7 +115,7 @@ export function WeatherFocastItem(props) {
                     <Typography variant="h5">{convertToVN(weather.weather[0].main)}</Typography>
                 </div>
 
-                <div style={{ display: "flex", justifyContent: "center", marginTop: 10 }}>
+                <div style={{ marginTop: 10 }} className={classes.center}>
                     <Typography variant="h6">{firstUpperCase(weather.weather[0].description)}</Typography>
                 </div>
 
@@ -173,12 +173,12 @@ export default function WeatherCardGeneral(props) {
             {weather ?
                 <>
                     <WeatherCard weather={weather.current} nameShow={nameShow} />
-                    <div style={{ display: "flex", justifyContent: "center", margin: 20 }}>
-                        <Button onClick={() => setShow(true)} style={{ paddingInline: 20, backgroundColor: "#A5DEC8" }}>
+                    <div style={{ margin: 20 }} className={classes.center}>
+                        <Button onClick={() => setShow(true)} className={classes.button}>
                             Xem dự báo
                         </Button>
                     </div>
-                    <div style={{ display: "flex", justifyContent: "right", margin: 10 }}>
+                    <div style={{ margin: 10 }} className={classes.center}>
                         <Typography variant="subtitle2">Dữ liệu được lấy từ <Link href="https://openweathermap.org/" target='_blank'>OpenWeatherMap</Link></Typography>
                     </div>
                     <Modal

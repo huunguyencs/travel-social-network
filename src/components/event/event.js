@@ -2,16 +2,19 @@ import { IconButton, Typography } from "@material-ui/core";
 import { ChevronLeft, ChevronRight } from "@material-ui/icons";
 import React, { useContext } from "react";
 import { ScrollMenu, VisibilityContext } from 'react-horizontal-scrolling-menu';
+import { eventStyles } from "../../style";
 
 import EventItem from "./eventItem";
 
 function LeftArrow(props) {
 
+    const classes = eventStyles();
+
     const { isFirstItemVisible, scrollPrev } = useContext(VisibilityContext);
 
     return (
         <div disabled={isFirstItemVisible} >
-            <IconButton style={{ marginTop: 200 }} onClick={() => scrollPrev()}>
+            <IconButton className={classes.arrow} onClick={() => scrollPrev()}>
                 <ChevronLeft />
             </IconButton>
         </div>
@@ -20,11 +23,14 @@ function LeftArrow(props) {
 
 function RightArrow(props) {
 
+    const classes = eventStyles();
+
+
     const { isLastItemVisible, scrollNext } = useContext(VisibilityContext);
 
     return (
         <div disabled={isLastItemVisible} >
-            <IconButton style={{ marginTop: 200 }} onClick={() => scrollNext()}>
+            <IconButton className={classes.arrow} onClick={() => scrollNext()}>
                 <ChevronRight />
             </IconButton>
         </div>
@@ -35,6 +41,8 @@ function RightArrow(props) {
 export default function Event(props) {
 
     const { events } = props;
+
+    const classes = eventStyles();
 
     return (
         <div>
@@ -51,7 +59,7 @@ export default function Event(props) {
                 )}
             </ScrollMenu>
                 :
-                <div style={{ display: 'flex', justifyContent: 'center' }}>
+                <div className={classes.center}>
                     <Typography>Không tìm thấy sự kiện</Typography>
                 </div>
             }

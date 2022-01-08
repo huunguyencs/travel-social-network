@@ -75,8 +75,8 @@ export default function Message(props) {
                     </div>
                 </Grid>
                 <Grid item sm={8}>
-                    <div style={{ display: "flex", justifyContent: "center" }}>
-                        <Typography style={{ marginTop: 300 }} variant="h5">
+                    <div className={classes.startChat}>
+                        <Typography variant="h5">
                             Bắt đầu trò chuyện
                         </Typography>
                     </div>

@@ -66,6 +66,22 @@ const provinceStyles = makeStyles((theme) => ({
         display: "flex",
         justifyContent: "center",
         marginTop: 10
+    },
+    subtitleDes: {
+        marginLeft: 10
+    },
+    ul: {
+        marginLeft: 10,
+        listStyleType: 'disc'
+    },
+    subsubtitleDes: {
+        marginLeft: 30
+    },
+    source: {
+        display: 'flex',
+        justifyContent: "right",
+        marginRight: 30,
+        marginBottom: 30
     }
 }))
 

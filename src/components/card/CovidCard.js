@@ -44,10 +44,10 @@ export default function CovidCard(props) {
                 {
                     data ?
                         <div className={classes.detailInfo}>
-                            <div style={{ display: "flex", justifyContent: "center" }}>
+                            <div className={classes.center}>
                                 <Typography variant="h6">{data.name}</Typography>
                             </div>
-                            <div style={{ display: "flex", justifyContent: "center", marginBottom: 10, }}>
+                            <div style={{ marginBottom: 10 }} className={classes.center}>
                                 <Typography>Cập nhật ngày {updateDate}</Typography>
                             </div>
                             <div className={classes.itemInfo}>
@@ -62,12 +62,12 @@ export default function CovidCard(props) {
                                 <Typography>Tử vong:</Typography>
                                 <Typography className={classes.value}>{data.death}</Typography>
                             </div>
-                            <div style={{ display: 'flex', justifyContent: 'center' }}>
-                                <Button onClick={() => setShow(true)} style={{ paddingInline: 20, backgroundColor: "#A5DEC8", marginTop: 20 }}>
+                            <div className={classes.center}>
+                                <Button onClick={() => setShow(true)} className={classes.button}>
                                     Xem tổng quát
                                 </Button>
                             </div>
-                            <div style={{ display: 'flex', justifyContent: 'right', marginTop: 10 }}>
+                            <div style={{ marginTop: 10 }} className={classes.center}>
                                 <Typography variant="subtitle2">Dữ liệu được lấy từ <Link href="https://covid19.gov.vn/" target='_blank'>Bộ y tế</Link></Typography>
                             </div>
                             <Modal

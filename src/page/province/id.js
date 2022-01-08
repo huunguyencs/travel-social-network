@@ -104,43 +104,43 @@ export default function Province(props) {
                                                 <div>
                                                     <Typography variant="h5">I. Tổng quan</Typography>
                                                     <div>
-                                                        <div style={{ marginLeft: 10 }}>
+                                                        <div className={classes.subtitleDes}>
                                                             <Typography variant="h6"> 1. Văn hóa</Typography>
-                                                            <Typography style={{ marginLeft: 30 }} component="p">{province.detail.overview.cultural}</Typography>
+                                                            <Typography className={classes.subsubtitleDes} component="p">{province.detail.overview.cultural}</Typography>
                                                         </div>
-                                                        <div style={{ marginLeft: 10 }}>
+                                                        <div className={classes.subtitleDes}>
                                                             <Typography variant="h6"> 2. Địa lý</Typography>
-                                                            <Typography style={{ marginLeft: 30 }} component="p">{province.detail.overview.geography}</Typography>
+                                                            <Typography className={classes.subsubtitleDes} component="p">{province.detail.overview.geography}</Typography>
                                                         </div>
-                                                        <div style={{ marginLeft: 10 }}>
+                                                        <div className={classes.subtitleDes}>
                                                             <Typography variant="h6"> 3. Thời tiết</Typography>
-                                                            <Typography style={{ marginLeft: 30 }} component="p">{province.detail.overview.weather}</Typography>
+                                                            <Typography className={classes.subsubtitleDes} component="p">{province.detail.overview.weather}</Typography>
                                                         </div>
                                                     </div>
                                                 </div>
                                                 <div>
                                                     <Typography variant="h5">II. Phương tiện</Typography>
-                                                    <ul tyle={{ marginLeft: 10, listStyleType: 'disc' }}>
-                                                        <li style={{ marginLeft: 30 }}>
+                                                    <ul className={classes.ul}>
+                                                        <li className={classes.subsubtitleDes}>
                                                             Sân bay: {province.detail.vehicle.airport}
                                                         </li>
-                                                        <li style={{ marginLeft: 30 }}>
+                                                        <li className={classes.subsubtitleDes}>
                                                             Phương tiện di chuyển: {province.detail.vehicle.traffic}
                                                         </li>
                                                     </ul>
                                                 </div>
                                                 <div>
                                                     <Typography variant="h5">III. Ẩm thực</Typography>
-                                                    <ul style={{ marginLeft: 10, listStyleType: 'disc' }}>
+                                                    <ul className={classes.ul}>
                                                         {province.detail.food.map((item, index) => (
-                                                            <li style={{ marginLeft: 30 }} key={index}>{item}</li>
+                                                            <li className={classes.subsubtitleDes} key={index}>{item}</li>
                                                         ))}
                                                     </ul>
                                                 </div>
                                             </div>
                                         </div>
 
-                                        <div style={{ display: 'flex', justifyContent: "right", marginRight: 30, marginBottom: 30 }}>
+                                        <div className={classes.source}>
                                             <i>Nguồn: Internet</i>
                                         </div>
                                     </Card>

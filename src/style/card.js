@@ -161,6 +161,32 @@ const cardStyles = makeStyles((theme) => ({
     },
     rateLabel: {
         marginRight: 10
+    },
+    // center: {
+    //     display: "flex",
+    //     justifyContent: "center"
+    // },
+    button: {
+        paddingInline: 20,
+        backgroundColor: color.turquoise,
+        marginTop: 20
+    },
+    locationPopper: {
+        width: 300,
+        height: 240,
+    },
+    positionContainer: {
+        display: "flex",
+        width: 300
+    },
+    locationIcon: {
+        fontSize: 24,
+        color: 'red'
+    },
+    weatherFocastCard: {
+        width: 500,
+        margin: 10,
+        borderRadius: 5
     }
 }))
 

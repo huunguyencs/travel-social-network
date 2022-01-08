@@ -53,6 +53,16 @@ const locationStyles = makeStyles((theme) => ({
     },
     review: {
         marginTop: 30
+    },
+    fullname: {
+        marginTop: 120,
+        display: 'flex',
+        justifyContent: 'center'
+    },
+    provinceWrap: {
+        display: 'flex',
+        justifyContent: 'center',
+        marginTop: 20
     }
 }))
 

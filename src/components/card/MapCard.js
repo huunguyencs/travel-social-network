@@ -5,6 +5,7 @@ import { GpsFixed, LocationOn } from '@material-ui/icons'
 
 import KEY from "../../key/googlemap";
 import { Link } from "react-router-dom";
+import { cardStyles } from "../../style";
 
 function MapLocation(props) {
 
@@ -17,6 +18,8 @@ function MapLocation(props) {
         props.onClick();
         setAnchorEl(event.currentTarget);
     };
+
+    const classes = cardStyles();
 
     const handlePopoverClose = () => {
         setAnchorEl(null);
@@ -41,9 +44,9 @@ function MapLocation(props) {
                 onClose={handlePopoverClose}
             >
                 <ClickAwayListener onClickAway={handlePopoverClose}>
-                    <Paper style={{ width: 300, height: 240, borderRadius: 10 }}>
+                    <Paper className={classes.locationPopper}>
                         <img src={location.images[0]} alt={"Loading..."} height={200} width="100%" title={location.fullname} />
-                        <div style={{ display: 'flex', justifyContent: 'center' }}>
+                        <div className={classes.center}>
                             <Typography component={Link} to={`/location/${location.name}`}>{location.fullname.length > 28 ? location.fullname.slice(0, 28) + "..." : location.fullname}</Typography>
                         </div>
                     </Paper>
@@ -55,11 +58,14 @@ function MapLocation(props) {
 
 function Position(props) {
     const { name } = props;
+
+    const classes = cardStyles();
+
     return (
         <>
-            <div style={{ display: "flex", width: 300 }}>
-                <LocationOn style={{ fontSize: 36, color: 'red' }} />
-                <Typography style={{ color: 'inherit' }}>{name}</Typography>
+            <div className={classes.positionContainer}>
+                <LocationOn className={classes.locationIcon} />
+                <Typography>{name}</Typography>
             </div>
         </>
     )
@@ -80,6 +86,7 @@ export default function MapCard(props) {
             lng: position.lon
         })
     }
+
 
     return (
         <Card style={{ height: height ? height : 500 }}>

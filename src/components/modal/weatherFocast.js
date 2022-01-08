@@ -3,28 +3,34 @@ import { Close } from '@material-ui/icons'
 import React from 'react'
 import { ScrollMenu } from 'react-horizontal-scrolling-menu'
 
-import { WeatherFocastItem } from '../card/WeatherCard'
+import { WeatherFocastItem } from '../card/WeatherCard';
+import { modalStyles } from '../../style';
 
 export default function WeatherFocast({ weather, handleClose, nameShow, alert }) {
+
+    const classes = modalStyles();
+
     return (
-        <Paper style={{ margin: 30, marginTop: 50, borderRadius: 10, padding: 15 }}>
-            <div style={{ display: "flex", justifyContent: "space-between", }}>
+        <Paper className={classes.weatherContainer}>
+            <div className={classes.header}>
                 <div />
                 <IconButton>
                     <Close onClick={handleClose} />
                 </IconButton>
             </div>
-            <div style={{ display: "flex", justifyContent: "center", marginBottom: 30 }}>
+            <div style={{ marginBottom: 30 }} className={classes.center}>
                 <Typography variant={"h4"}>Dự báo thời tiết {nameShow}</Typography>
             </div>
             {alert &&
-                <div style={{ margin: "auto" }}>
-                    <Typography>
-                        ⚠️⚠️⚠️ Cảnh báo ⚠️⚠️⚠️
-                    </Typography>
-                    <Typography>{alert.event}</Typography>
-                    <Typography>Từ {alert.start} đến {alert.end}</Typography>
-                    <Typography>{alert.description}</Typography>
+                <div className={classes.center}>
+                    <div>
+                        <Typography>
+                            ⚠️⚠️⚠️ Cảnh báo ⚠️⚠️⚠️
+                        </Typography>
+                        <Typography>{alert.event}</Typography>
+                        <Typography>Từ {alert.start} đến {alert.end}</Typography>
+                        <Typography>{alert.description}</Typography>
+                    </div>
                 </div>
             }
             <ScrollMenu>

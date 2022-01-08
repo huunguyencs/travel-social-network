@@ -53,7 +53,7 @@ export default function EmojiPicker(props) {
             //     horizontal: "center"
             // }}
             >
-                <Paper className={classes.iconWrap} style={{ transformOrigin: "top center" }}>
+                <Paper className={classes.iconWrap}>
                     {emojiList.map((item, index) => (
                         <div key={index} className={classes.iconItem} onClick={() => addIcon(item)}>
                             {item}

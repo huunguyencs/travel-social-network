@@ -3,6 +3,7 @@ import { Box, IconButton, Link, Paper, Table, TableBody, TableCell, TableContain
 import { Close } from '@material-ui/icons';
 import React, { useState } from 'react'
 import { CartesianGrid, Legend, Line, LineChart, ResponsiveContainer, XAxis, YAxis } from 'recharts';
+import { modalStyles } from '../../style';
 
 export default function CovidModal(props) {
 
@@ -20,9 +21,11 @@ export default function CovidModal(props) {
         setPage(0);
     };
 
+    const classes = modalStyles();
+
     return (
-        <Paper style={{ height: "80%", width: "80%", margin: 'auto', marginTop: 50, padding: 20 }}>
-            <div style={{ display: 'flex', justifyContent: 'space-between' }}>
+        <Paper className={classes.container}>
+            <div className={classes.header}>
                 <div />
                 <IconButton>
                     <Close onClick={handleClose} />
@@ -33,25 +36,22 @@ export default function CovidModal(props) {
                 flexDirection="column"
                 // justifyContent="flex-end" # DO NOT USE THIS WITH 'scroll'
                 height="750px" // fixed the height
-                style={{
-                    overflow: "hidden",
-                    overflowY: "scroll" // added scroll
-                }}
+                className={classes.boxScroll}
 
             >
-                <div style={{ display: "flex", justifyContent: "center" }}>
+                <div className={classes.center}>
                     <Typography variant="h4">
                         Tình hình Covid-19
                     </Typography>
 
                 </div>
-                <div style={{ display: "flex", justifyContent: "center" }}>
+                <div className={classes.center}>
                     <Typography variant="subtitle2">Dữ liệu được lấy từ <Link href="https://covid19.gov.vn/" target='_blank'>Bộ y tế</Link></Typography>
                 </div>
-                <div style={{ display: "flex", justifyContent: "center" }}>
+                <div className={classes.center}>
                     <Typography variant="h6">Tất cả</Typography>
                 </div>
-                <div style={{ width: "70%", margin: "auto", marginBottom: 40 }}>
+                <div className={classes.contentCovid}>
                     <Table>
                         <TableHead>
                             <TableRow>
@@ -77,10 +77,10 @@ export default function CovidModal(props) {
                         </TableBody>
                     </Table>
                 </div>
-                <div style={{ display: "flex", justifyContent: "center" }}>
+                <div className={classes.center}>
                     <Typography variant="h6">Hôm nay (ngày cập nhật {updateDate})</Typography>
                 </div>
-                <div style={{ width: "70%", margin: "auto", marginBottom: 40 }}>
+                <div className={classes.tableContainer}>
                     <Table>
                         <TableHead>
                             <TableRow>
@@ -106,10 +106,10 @@ export default function CovidModal(props) {
                         </TableBody>
                     </Table>
                 </div>
-                <div style={{ display: "flex", justifyContent: "center" }}>
+                <div className={classes.center}>
                     <Typography variant="h6">Gần đây:</Typography>
                 </div>
-                <div style={{ width: "70%", margin: "auto", marginBottom: 40 }}>
+                <div className={classes.tableContainer}>
                     <ResponsiveContainer height={500}>
                         <LineChart
                             width={700}
@@ -133,7 +133,7 @@ export default function CovidModal(props) {
                         </LineChart>
                     </ResponsiveContainer>
                 </div>
-                <div style={{ width: "70%", margin: "auto", marginBottom: 40 }}>
+                <div className={classes.tableContainer}>
                     <Table>
                         <TableHead>
                             <TableRow>
@@ -155,10 +155,10 @@ export default function CovidModal(props) {
                         </TableBody>
                     </Table>
                 </div>
-                <div style={{ display: "flex", justifyContent: "center" }}>
+                <div className={classes.center}>
                     <Typography variant="h6">Chi tiết</Typography>
                 </div>
-                <div style={{ width: "70%", margin: "auto", marginBottom: 40 }}>
+                <div className={classes.tableContainer}>
                     <TableContainer>
                         <Table>
                             <TableHead>

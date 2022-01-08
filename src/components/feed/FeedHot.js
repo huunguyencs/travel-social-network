@@ -47,7 +47,7 @@ export default function FeedHot(props) {
                 </div>
                 <div className={classes.hot}>
                     <div className={classes.title}>
-                        <Typography variant="h4" style={{ paddingBottom: 20 }}>Địa điểm hot</Typography>
+                        <Typography variant="h4">Địa điểm hot</Typography>
                     </div>
                     <div className={classes.hotFeed}>
                         {locations.map((item) =>

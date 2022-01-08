@@ -1,5 +1,5 @@
 import { InputBase, Typography, Button, Paper, IconButton, CircularProgress } from "@material-ui/core";
-import { Create, Image } from "@material-ui/icons";
+import { Image, Update } from "@material-ui/icons";
 import { Rating } from "@material-ui/lab";
 import React, { useState } from "react";
 import { ScrollMenu } from "react-horizontal-scrolling-menu";
@@ -172,7 +172,7 @@ export default function UpdateReviewForm(props) {
                                             state.loading ?
                                                 <CircularProgress size="25px" color="inherit" /> :
                                                 <>
-                                                    <Create style={{ marginRight: 10 }} />
+                                                    <Update style={{ marginRight: 10 }} />
                                                     Xong
                                                 </>
                                         }
@@ -182,10 +182,7 @@ export default function UpdateReviewForm(props) {
                         </div>
                     </form>
                     <div
-                        style={{
-                            marginInline: "20px",
-                            maxWidth: "600px"
-                        }}
+                        className={classes.imageInputContainer}
                     >
                         {imageUpload.length > 0 &&
                             <ScrollMenu
@@ -195,13 +192,7 @@ export default function UpdateReviewForm(props) {
                                     <img
                                         key={index}
                                         alt="not found"
-                                        style={{
-                                            width: "150px",
-                                            height: "150px",
-                                            margin: "5px",
-                                            position: "relative",
-                                            cursor: "pointer"
-                                        }}
+                                        className={classes.imageInput}
                                         onClick={() => removeImage(index)}
                                         src={URL.createObjectURL(item)}
                                     />

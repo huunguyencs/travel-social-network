@@ -1,5 +1,5 @@
 import { Button, CircularProgress, InputBase, Paper, Typography } from '@material-ui/core';
-import { Share } from '@material-ui/icons';
+import { Update } from '@material-ui/icons';
 import React, { useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 
@@ -118,7 +118,7 @@ export default function ShareUpdateForm(props) {
                                             state.loading ?
                                                 <CircularProgress size="25px" color="inherit" /> :
                                                 <>
-                                                    <Share style={{ marginRight: 10 }} />
+                                                    <Update style={{ marginRight: 10 }} />
                                                     Cập nhật
                                                 </>
                                         }

@@ -68,12 +68,12 @@ export default function Location(props) {
                             <>
                                 <SpeedDialButton />
                                 <Grid item md={12}>
-                                    <div style={{ margin: 'auto', marginTop: 120, display: 'flex', justifyContent: 'center' }}>
+                                    <div className={classes.fullname}>
                                         <Typography variant="h2" noWrap={false}>
                                             {location.fullname}
                                         </Typography>
                                     </div>
-                                    <div style={{ display: 'flex', justifyContent: 'center', marginTop: 20 }}>
+                                    <div className={classes.provinceWrap}>
                                         <>
                                             <LocationOn className={classes.iconProvince} />
                                             <Typography className={classes.provinceName} variant="h4" component={Link} to={`/province/${location.province.name}`}>

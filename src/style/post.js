@@ -91,6 +91,14 @@ const postStyles = makeStyles((theme) => ({
         "&:active": {
             fontSize: 20,
         }
+    },
+    center: {
+        display: 'flex',
+        justifyContent: 'center'
+    },
+    contentWrap: {
+        paddingTop: 100,
+        width: "70%"
     }
 }))
 

@@ -5,6 +5,7 @@ import DateFnsUtils from '@date-io/date-fns';
 
 import * as tourAction from '../../redux/actions/createTourAction';
 import { useDispatch } from "react-redux";
+import { formStyles } from "../../style";
 // import * as dateUtils from '../../utils/date';
 
 export default function UpdateDateForm(props) {
@@ -24,15 +25,17 @@ export default function UpdateDateForm(props) {
         handleClose();
     }
 
+    const classes = formStyles();
+
     return (
         <Paper style={{ padding: 20 }}>
-            <div style={{ display: 'flex', justifyContent: 'center' }}>
+            <div className={classes.center}>
                 <Typography variant="h5">Thay đổi ngày</Typography>
             </div>
             <form>
                 <MuiPickersUtilsProvider utils={DateFnsUtils}>
                     <KeyboardDatePicker
-                        style={{ display: 'flex', justifyContent: 'center' }}
+                        className={classes.center}
                         name="date"
                         disableToolbar
                         variant="inline"
@@ -47,7 +50,7 @@ export default function UpdateDateForm(props) {
                         }}
                     />
                 </MuiPickersUtilsProvider>
-                <div style={{ display: 'flex', justifyContent: 'center', marginTop: 20 }}>
+                <div style={{ marginTop: 20 }} className={classes.center}>
                     <Button onClick={handleSubmit} type="submit">
                         Xong
                     </Button>

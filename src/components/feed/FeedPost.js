@@ -75,13 +75,15 @@ export default function FeedPost(props) {
                 <div>
                     {
                         post.loading ?
-                            <div style={{ display: 'flex', justifyContent: 'center', marginTop: 50 }}>
+                            <div className={classes.centerMarginTop}>
                                 <CircularProgress color={"inherit"} />
                             </div>
                             : post.error ?
-                                <div style={{ margin: 'auto' }}>
-                                    <Typography>Có lỗi xảy ra</Typography>
-                                    <Button onClick={tryAgain}>Thử lại</Button>
+                                <div className={classes.centerMarginTop}>
+                                    <div>
+                                        <Typography>Có lỗi xảy ra</Typography>
+                                        <Button onClick={tryAgain}>Thử lại</Button>
+                                    </div>
                                 </div> :
                                 post.posts.map((post) => (
                                     <Post

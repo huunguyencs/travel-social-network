@@ -74,7 +74,7 @@ export default function Profile_Avatar(props) {
         loading: true,
         error: false
       })
-      dispatch(unfollow(user, auth.token,socket, () => {
+      dispatch(unfollow(user, auth.token, socket, () => {
         setStateFollow({
           loading: false,
           error: true
@@ -92,7 +92,7 @@ export default function Profile_Avatar(props) {
         loading: true,
         error: false
       })
-      dispatch(follow(user, auth.token,socket, () => {
+      dispatch(follow(user, auth.token, socket, () => {
         setStateFollow({
           loading: false,
           error: true
@@ -153,11 +153,11 @@ export default function Profile_Avatar(props) {
               />
             </div>
             <div className={classes.infoUser}>
-              <Typography variant="body1" component="p" style={{ fontSize: "35px", color: 'inherit' }}>
+              <Typography variant="body1" component="p" className={classes.fullname}>
                 {user.fullname}
               </Typography>
-              <div variant="body1" component="p" style={{ display: "flex", fontSize: "20px", color: "inherit" }}>
-                <Typography style={{ marginRight: "20px", cursor: "pointer", }} onClick={handleOpenFollowing} >{user.followings.length} đang theo dõi</Typography>
+              <div variant="body1" component="p" className={classes.follow}>
+                <Typography className={classes.followInfo} onClick={handleOpenFollowing} >{user.followings.length} đang theo dõi</Typography>
                 <Modal
                   aria-labelledby="transition-modal-title"
                   aria-describedby="transition-modal-description"
@@ -172,7 +172,7 @@ export default function Profile_Avatar(props) {
                 >
                   <UserList listUser={user?.followings} title={"Đang theo dõi"} handleClose={handleCloseFollowing} />
                 </Modal>
-                <Typography style={{ cursor: "pointer", }} onClick={handleOpenFollower} >{user.followers.length} người theo dõi</Typography>
+                <Typography className={classes.followInfo} onClick={handleOpenFollower} >{user.followers.length} người theo dõi</Typography>
                 <Modal
                   aria-labelledby="transition-modal-title"
                   aria-describedby="transition-modal-description"

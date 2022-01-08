@@ -50,7 +50,7 @@ export default function CreateTourForm(props) {
                         </Typography>
                     </div>
                     <form>
-                        <div style={{ display: "flex", justifyContent: "center", marginTop: 20 }}>
+                        <div className={classes.nameTourInput}>
                             <TextField
                                 label="Tên tour"
                                 variant="outlined"
@@ -79,7 +79,7 @@ export default function CreateTourForm(props) {
                                 />
                             </MuiPickersUtilsProvider>
                         </div>
-                        <div style={{ display: "flex", justifyContent: "center" }}>
+                        <div className={classes.center}>
                             <Button className={classes.button} onClick={handleClick} type="submit">
                                 Tạo
                             </Button>

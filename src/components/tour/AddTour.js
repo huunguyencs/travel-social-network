@@ -342,7 +342,7 @@ export default function AddTour(props) {
                         </Grid>
                         <Grid item md={4}>
                             <Container style={{ marginLeft: 30 }}>
-                                <div style={{ display: 'flex', justifyContent: 'center', marginBottom: 10 }}>
+                                <div className={classes.addHeader}>
                                     <Tabs value={tab} onChange={handleChangeTab} aria-label="tabs tour">
                                         <Tab label="Chọn địa điểm" {...a11yProps(0)} style={{ textTransform: "none" }} />
                                         <Tab label="Chọn dịch vụ" {...a11yProps(1)} style={{ textTransform: "none" }} />

@@ -67,6 +67,26 @@ const eventStyles = makeStyles((theme) => ({
             marginBottom: 5,
             fontSize: 14
         }
+    },
+    arrow: {
+        marginTop: 200
+    },
+    center: {
+        display: 'flex',
+        justifyContent: 'center'
+    },
+    fullname: {
+        color: color.black
+    },
+    provinceName: {
+        display: 'flex',
+        justifyContent: 'center',
+        marginTop: 10
+    },
+    locationIcon: {
+        fontSize: "40px",
+        marginRight: "10px",
+        color: color.black
     }
 }))
 

@@ -139,21 +139,12 @@ export default function UpdateTourInfo({ name, content, hashtags, image, handleC
                 </div>
             </form>
             <div
-                style={{
-                    marginInline: "20px",
-                    maxWidth: "500px"
-                }}
+                className={classes.imageInputContainer}
             >
                 {state.image &&
                     <img
                         alt="not found"
-                        style={{
-                            width: "150px",
-                            height: "150px",
-                            margin: "5px",
-                            position: "relative",
-                            cursor: "pointer"
-                        }}
+                        className={classes.imageInput}
                         onClick={() => removeImage()}
                         src={URL.createObjectURL(state.image)}
                     />

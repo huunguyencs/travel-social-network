@@ -137,6 +137,15 @@ const tourdetailStyles = makeStyles((theme) => ({
         [theme.breakpoints.down("md")]: {
             display: "none",
         }
+    },
+    addHeader: {
+        display: 'flex',
+        justifyContent: 'center',
+        marginBottom: 10
+    },
+    mapRight: {
+        height: 500,
+        margin: 30
     }
 }))
 

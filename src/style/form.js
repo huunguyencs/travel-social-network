@@ -63,6 +63,35 @@ const formStyles = makeStyles((theme) => ({
     tourNameInput: {
         width: "100%",
         marginBottom: 20,
+    },
+    center: {
+        display: "flex",
+        justifyContent: "center"
+    },
+    autocomplete: {
+        width: 400,
+        marginTop: 30
+    },
+    imageInputContainer: {
+        marginInline: "20px",
+        maxWidth: "500px"
+    },
+    imageInput: {
+        width: "150px",
+        height: "150px",
+        margin: "5px",
+        position: "relative",
+        cursor: "pointer"
+    },
+    nameTourInput: {
+        display: "flex",
+        justifyContent: "center",
+        marginTop: 20
+    },
+    modal: {
+        display: 'flex',
+        alignItems: 'center',
+        justifyContent: 'center'
     }
 }))
 

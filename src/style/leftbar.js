@@ -29,6 +29,12 @@ const leftbarStyles = makeStyles((theme) => ({
             marginRight: 1,
         }
     },
+    itemLink: {
+        textDecoration: "none",
+        "&:hover": {
+            backgroundColor: color.lightgray,
+        },
+    },
     item: {
         paddingInline: theme.spacing(4),
         borderRadius: attr.borderRadius.md,

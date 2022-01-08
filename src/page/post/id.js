@@ -6,6 +6,7 @@ import Post from '../../components/post/Post';
 import { NotFound } from '../404';
 import { useDispatch, useSelector } from 'react-redux';
 import { getPostById } from '../../redux/callApi/postCall';
+import { postStyles } from '../../style';
 
 
 export default function PostDetail() {
@@ -36,6 +37,8 @@ export default function PostDetail() {
         }
     }
 
+    const classes = postStyles();
+
     return (
         <>
 
@@ -43,8 +46,8 @@ export default function PostDetail() {
                 notFound ? <NotFound /> :
                     <div>
                         <Container style={{ height: "100vh" }}>
-                            <div style={{ display: 'flex', justifyContent: 'center' }}>
-                                <div style={{ paddingTop: 100, width: "70%" }}>
+                            <div className={classes.center}>
+                                <div className={classes.contentWrap}>
                                     {
                                         post.loading ?
                                             <CircularProgress /> :

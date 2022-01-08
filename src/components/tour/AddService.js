@@ -67,17 +67,19 @@ function ServiceItemAddForm(props) {
         }
     }
 
+    const classes = formStyles();
+
     return (
-        <Paper style={{ padding: 30, borderRadius: 10 }}>
-            <div style={{ display: 'flex', justifyContent: 'center' }}>
+        <Paper className={classes.paperContainer}>
+            <div className={classes.center}>
                 <Typography variant='h6'>Thêm dịch vụ</Typography>
             </div>
-            <div style={{ display: 'flex', justifyContent: 'center' }}>
+            <div className={classes.center}>
                 <Autocomplete
                     id="choose-province"
                     options={location.provinces}
                     getOptionLabel={(option) => option?.fullname}
-                    style={{ width: 400, marginTop: 30 }}
+                    className={classes.autocomplete}
                     onChange={(e, value) => getServices(value)}
                     value={province}
                     renderInput={(params) => <TextField {...params} name="provinces" label="Chọn tỉnh thành" variant="outlined" />}
@@ -88,7 +90,7 @@ function ServiceItemAddForm(props) {
                     id="choose-province"
                     options={services}
                     getOptionLabel={(option) => `${option?.name} - ${option?.cost}`}
-                    style={{ width: 400, marginTop: 30 }}
+                    className={classes.autocomplete}
                     onChange={(e, value) => setService(value)}
                     value={service}
                     renderInput={(params) => <TextField {...params} name="provinces" label="Chọn loại dịch vụ" variant="outlined" />}
@@ -101,7 +103,7 @@ function ServiceItemAddForm(props) {
                     <Typography>{service.description}</Typography>
                 </div>
             }
-            <div style={{ display: 'flex', justifyContent: 'center', marginTop: 10 }}>
+            <div style={{ marginTop: 10 }} className={classes.center}>
                 <Button onClick={handleSubmit}>Xong</Button>
             </div>
         </Paper>
@@ -150,7 +152,7 @@ export default function AddService(props) {
                     ))
                 }
             </div>
-            <div style={{ display: 'flex', justifyContent: 'center', marginTop: 20 }}>
+            <div style={{ marginTop: 20 }} className={classes.center}>
                 <Button onClick={() => setShowForm(true)}>Thêm dịch vụ</Button>
                 <Modal
                     aria-labelledby="transition-modal-title"
@@ -162,11 +164,6 @@ export default function AddService(props) {
                     BackdropComponent={Backdrop}
                     BackdropProps={{
                         timeout: 500,
-                    }}
-                    style={{
-                        display: 'flex',
-                        alignItems: 'center',
-                        justifyContent: 'center'
                     }}
                 >
                     <Fade in={showForm}>

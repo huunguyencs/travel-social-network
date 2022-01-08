@@ -50,14 +50,14 @@ export default function EventPage(props) {
                             event && <>
                                 <SpeedDialButton />
                                 <Grid item md={12}>
-                                    <div style={{ display: 'flex', justifyContent: 'center' }}>
+                                    <div className={classes.center}>
                                         <div className={classes.coverText}>
-                                            <Typography variant="h2" style={{ color: "black" }}>
+                                            <Typography variant="h2" className={classes.fullname}>
                                                 {event.fullname}
                                             </Typography>
-                                            {event.provinceId && <div style={{ display: 'flex', justifyContent: 'center', marginTop: 10 }}>
+                                            {event.provinceId && <div className={classes.provinceName}>
                                                 <>
-                                                    <LocationOn style={{ fontSize: "40px", marginRight: "10px", color: "black" }} />
+                                                    <LocationOn className={classes.locationIcon} />
                                                     <Typography variant="h4" component={Link} to={`/province/${event.provinceId.name}`}>
                                                         {event.provinceId.fullname}
                                                     </Typography>

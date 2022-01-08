@@ -155,10 +155,7 @@ export default function CreatePostForm(props) {
                         </div>
                     </form>
                     <div
-                        style={{
-                            marginInline: "20px",
-                            maxWidth: "500px"
-                        }}
+                        className={classes.imageInputContainer}
                     >
 
                         {imageUpload.length > 0 &&
@@ -169,13 +166,7 @@ export default function CreatePostForm(props) {
                                     <img
                                         key={index}
                                         alt="not found"
-                                        style={{
-                                            width: "150px",
-                                            height: "150px",
-                                            margin: "5px",
-                                            position: "relative",
-                                            cursor: "pointer"
-                                        }}
+                                        className={classes.imageInput}
                                         onClick={() => removeImage(index)}
                                         src={URL.createObjectURL(item)}
                                     />

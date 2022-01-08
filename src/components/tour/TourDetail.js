@@ -107,8 +107,8 @@ export default function TourDetail(props) {
 
                             </Grid>
                             <Grid item md={4}>
-                                <Container style={{ height: 500, margin: 30 }}>
-                                    {position ? <MapCard position={position} zoom={12} locations={locations} /> : "Cham hoi"}
+                                <Container className={classes.mapRight}>
+                                    {position && <MapCard position={position} zoom={12} locations={locations} />}
                                 </Container>
                             </Grid>
                         </Grid>

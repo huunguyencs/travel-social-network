@@ -1,43 +1,12 @@
 import React, { useState } from "react";
 import { ImageList as ImgList, ImageListItem, Typography } from "@material-ui/core";
 import Lightbox from "react-image-lightbox";
-import { makeStyles } from "@material-ui/core";
 import 'react-image-lightbox/style.css';
-
-
-const useStyles = makeStyles((theme) => ({
-    imageList: {
-        margin: 20,
-        height: "100%",
-        [theme.breakpoints.down("md")]: {
-            height: 400,
-        },
-        // [theme.breakpoints.down("sm")]: {
-        //     height: 200,
-        // },
-    },
-    imageItem: {
-        cursor: "pointer",
-        transition: "0.5s",
-        "&:hover": {
-            filter: "brightness(85%)",
-        }
-    },
-    more: {
-        filter: "brightness(90%)",
-    },
-    textCenter: {
-        position: "absolute",
-        top: "50%",
-        left: "50%",
-        transform: "translate(-50%, -50%)",
-        color: "white",
-    }
-}))
+import { modalListStyles } from "../../style";
 
 
 export default function ImageList(props) {
-    const classes = useStyles();
+    const classes = modalListStyles();
 
     const [open, setOpen] = useState(false);
     const [pictureIndex, setPictureIndex] = useState(0);

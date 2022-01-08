@@ -6,6 +6,7 @@ import { Link } from 'react-router-dom';
 import { useDispatch } from 'react-redux';
 import * as tourAction from '../../redux/actions/createTourAction';
 import { GpsFixed } from '@material-ui/icons';
+import { cardStyles } from '../../style';
 
 function Province(props) {
     const [anchorEl, setAnchorEl] = useState(null);
@@ -21,6 +22,8 @@ function Province(props) {
     const handlePopoverClose = () => {
         setAnchorEl(null);
     };
+
+    const classes = cardStyles();
 
     return (
         <>
@@ -42,9 +45,9 @@ function Province(props) {
                 onClose={handlePopoverClose}
             >
                 <ClickAwayListener onClickAway={handlePopoverClose}>
-                    <Paper style={{ width: 300, height: 240, borderRadius: 10 }}>
+                    <Paper className={classes.locationPopper}>
                         <img src={province.image} alt={"Loading..."} height={200} width="100%" title={province.fullname} />
-                        <div style={{ display: 'flex', justifyContent: 'center' }}>
+                        <div className={classes.center}>
                             <Typography component={Link} to={`/province/${province.name}`}>{province.fullname.length > 28 ? province.fullname.slice(0, 28) + "..." : province.fullname}</Typography>
                         </div>
                         <Button onClick={onClick}>Chọn</Button>
@@ -59,6 +62,7 @@ function Location(props) {
     const [anchorEl, setAnchorEl] = useState(null);
     const dispatch = useDispatch();
     const open = Boolean(anchorEl);
+    const classes = cardStyles();
 
     const { location, onClick, indexDate } = props;
 
@@ -98,12 +102,12 @@ function Location(props) {
                 onClose={handlePopoverClose}
             >
                 <ClickAwayListener onClickAway={handlePopoverClose}>
-                    <Paper style={{ width: 300, height: 280, borderRadius: 10 }}>
+                    <Paper className={classes.locationPopper}>
                         <img src={location.images[0]} alt={"Loading..."} height={200} width="100%" title={location.fullname} />
-                        <div style={{ display: 'flex', justifyContent: 'center' }}>
+                        <div className={classes.center}>
                             <Typography component={Link} to={`/location/${location.name}`}>{location.fullname.length > 28 ? location.fullname.slice(0, 28) + "..." : location.fullname}</Typography>
                         </div>
-                        <div style={{ display: 'flex', justifyContent: 'center', marginTop: 10 }}>
+                        <div style={{ marginTop: 10 }} className={classes.center}>
                             <Button onClick={addLoc}>Thêm địa điểm</Button>
                         </div>
 

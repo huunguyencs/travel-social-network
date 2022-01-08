@@ -99,6 +99,18 @@ const headerStyles = makeStyles((theme) => ({
             borderStyle: 'solid',
         },
     },
+    logo: {
+        color: "#fff"
+    },
+    grow: {
+        transformOrigin: 'center bottom'
+    },
+    paperNoti: {
+        width: 300
+    },
+    // button: {
+    //     color: "white"
+    // }
 }));
 
 export default headerStyles;

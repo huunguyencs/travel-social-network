@@ -3,6 +3,7 @@ import { Backdrop, Button, Card, Modal, Paper, Typography } from '@material-ui/c
 
 import * as utils from './utils';
 import './style.css';
+import calendarStyles from '../../style/calendar';
 
 
 function Cell({ lunarDate, solarDate, solarMonth, solarYear, setContent, setDetail }) {
@@ -130,6 +131,8 @@ function Head({ month, year, setMonth, setYear }) {
 
 function ShowDetail({ content, setDetail, setContent }) {
 
+    const classes = calendarStyles();
+
     const [state, setState] = useState(null);
     useEffect(() => {
         let res = utils.cellClick(content);
@@ -138,13 +141,7 @@ function ShowDetail({ content, setDetail, setContent }) {
 
     return (
         <Paper
-            style={{
-                width: 500,
-                backgroundColor: "#fff",
-                borderRadius: "15px",
-                padding: 30,
-                margin: "auto",
-            }}
+            className={classes.paperModal}
         >
             {state &&
                 <div style={{ margin: 'auto' }}>
@@ -167,17 +164,13 @@ function ShowDetail({ content, setDetail, setContent }) {
                         {state.holiday}
                     </Typography>
                 </div>}
-            <div style={{ display: 'flex', justifyContent: 'center', marginTop: 30 }}>
+            <div className={classes.buttonContainer}>
                 <Button
                     onClick={() => {
                         setDetail(false);
                         setContent('');
                     }}
-                    style={{
-                        padding: 10,
-                        paddingInline: 30,
-                        backgroundColor: "#A5DEC8"
-                    }}
+                    className={classes.button}
                 >
                     Đóng
                 </Button>
@@ -259,16 +252,11 @@ export default function Calendar() {
     const [detail, setDetail] = useState(false);
     const [content, setContent] = useState('');
 
+    const classes = calendarStyles();
+
     return (
         <div>
-            <Card style={{
-                backgroundColor: 'white',
-                borderRadius: 10,
-                display: "flex",
-                justifyContent: "center",
-                paddingTop: 20,
-                paddingBottom: 20,
-            }}>
+            <Card className={classes.container}>
                 <Table setContent={setContent} setDetail={setDetail} />
             </Card>
             <Modal
@@ -276,12 +264,7 @@ export default function Calendar() {
                 onClose={() => setDetail(false)}
                 aria-labelledby="calendar-detail"
                 aria-describedby="calendar-detail-description"
-                style={{
-                    display: 'flex',
-                    padding: 10,
-                    alignItems: 'center',
-                    justifyContent: 'center',
-                }}
+                className={classes.modal}
                 closeAfterTransition
                 BackdropComponent={Backdrop}
                 BackdropProps={{

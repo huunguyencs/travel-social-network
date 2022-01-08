@@ -77,7 +77,7 @@ export default function Header(props) {
         <AppBar style={{ zIndex: 1 }}>
             <Toolbar className={classes.toolbar}>
                 <Link to="/">
-                    <Typography variant="h6" style={{ color: "#fff" }}>
+                    <Typography variant="h6" className={classes.logo}>
                         GOGO
                     </Typography>
                 </Link>
@@ -119,7 +119,7 @@ export default function Header(props) {
                                     // }}
                                     >
                                         <Grow
-                                            style={{ transformOrigin: 'center bottom' }}
+                                            className={classes.grow}
                                         >
                                             <ClickAwayListener onClickAway={handleCloseUser}>
                                                 <Paper>
@@ -152,11 +152,11 @@ export default function Header(props) {
                                     // }}
                                     >
                                         <Grow
-                                            style={{ transformOrigin: 'center bottom' }}
+                                            className={classes.grow}
                                         >
 
                                             <ClickAwayListener onClickAway={handleCloseNoti}>
-                                                <Paper style={{ width: 300 }}>
+                                                <Paper className={classes.paperNoti}>
                                                     <MenuList>
                                                         <MenuItem>Thông báo 1</MenuItem>
                                                         <MenuItem>Thông báo 2</MenuItem>
@@ -178,10 +178,10 @@ export default function Header(props) {
                         ) : (
                             <>
                                 <Button className={classes.button}>
-                                    <Link to='/login' style={{ color: "white" }}>Đăng nhập</Link>
+                                    <Link to='/login' className={classes.button}>Đăng nhập</Link>
                                 </Button>
                                 <Button className={classes.button}>
-                                    <Link to='/register' style={{ color: "white" }}>Đăng ký</Link>
+                                    <Link to='/register' className={classes.button}>Đăng ký</Link>
                                 </Button>
                             </>
                         )

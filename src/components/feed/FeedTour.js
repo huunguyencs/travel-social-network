@@ -57,11 +57,13 @@ export default function FeedTour(props) {
                     {
                         tour.loading ?
                             tour.error ?
-                                <div style={{ margin: 'auto' }}>
-                                    <Typography>Có lỗi xảy ra</Typography>
-                                    <Button onClick={tryAgain}>Thử lại</Button>
+                                <div className={classes.centerMarginTop}>
+                                    <div>
+                                        <Typography>Có lỗi xảy ra</Typography>
+                                        <Button onClick={tryAgain}>Thử lại</Button>
+                                    </div>
                                 </div> :
-                                <div style={{ display: 'flex', justifyContent: 'center', marginTop: 50 }}>
+                                <div className={classes.centerMarginTop}>
                                     <CircularProgress color={"inherit"} />
                                 </div> :
                             tour.tours.map((tour) => (

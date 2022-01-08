@@ -52,7 +52,7 @@ export default function Menu(props) {
 
         <List className={classes.panel}>
             {menuList.menu.map((item, index) => (
-                <Link style={{ textDecoration: "none", }} to={renderLink(item.link)} key={index}>
+                <Link className={classes.itemLink} to={renderLink(item.link)} key={index}>
                     <ListItem
                         button
                         className={classes.item}
