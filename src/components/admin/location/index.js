@@ -30,7 +30,7 @@ import FilterListIcon from '@material-ui/icons/FilterList';
 
 
 import { Link } from "react-router-dom";
-import { Edit, MoreVert } from "@material-ui/icons";
+import { AddCircle, Edit, MoreVert } from "@material-ui/icons";
 
 import TextField from '@material-ui/core/TextField';
 import Autocomplete, { createFilterOptions } from '@material-ui/lab/Autocomplete';
@@ -75,7 +75,7 @@ const useStyles = makeStyles((theme) => ({
   },
 }))
 
-function createData( name, provice, numReview, star, action) {
+function createData(name, provice, numReview, star, action) {
   return { name, provice, numReview, star, action };
 }
 
@@ -361,15 +361,31 @@ function AdminLocations(props) {
     <Container className={classes.container} style={{ marginTop: "160px" }}>
       <div className={classes.appBarSpacer} />
 
-      <div className={classes.admin_location_header}
+      <div
+        className={classes.admin_location_header}
         style={{
           display: "flex",
-          paddingLeft: "50px",
+          flexDirection: "row",
+          justifyContent: "space-between",
+          paddingLeft: "20px",
+          paddingRight: "20px",
         }}
       >
-        <Typography variant="h4" gutterBottom>
-          100 Người dùng
-        </Typography>
+        <div className={classes.admin_location_header_left}>
+          <Typography variant="h4">200 Địa điểm du lịch</Typography>
+        </div>
+        <div className={classes.admin_location_header_right}>
+          <Button
+            variant="contained"
+            style={{
+              backgroundColor: "#179250",
+              borderRadius: "10px",
+            }}
+          >
+            <AddCircle></AddCircle>
+            <Typography>Thêm địa điểm</Typography>
+          </Button>
+        </div>
       </div>
 
       <div className={classes.admin_location_body}>
