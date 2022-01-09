@@ -1,7 +1,7 @@
 import { InputBase, Typography, Button, Paper, IconButton, CircularProgress } from "@material-ui/core";
 import { Image, Update } from "@material-ui/icons";
 import { Rating } from "@material-ui/lab";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { ScrollMenu } from "react-horizontal-scrolling-menu";
 import { useDispatch, useSelector } from "react-redux";
 
@@ -26,15 +26,25 @@ export default function UpdateReviewForm(props) {
 
     const [imageUpload, setImageUpload] = useState(review.images);
     const [context, setContext] = useState({
-        hashtags: review.hashtags.join(" "),
-        rate: review.rate,
+        hashtags: "",
+        rate: 0,
     })
+
+    useEffect(() => {
+        if (review) {
+            setContext({
+                hashtags: review.hashtags.join(" "),
+                rate: review.rate
+            })
+        }
+    }, [setContext, review])
+
     const [text, setText] = useState(review.content);
 
     const handleInput = (e) => {
         if (!change) setChange(true);
         setContext({
-            ...state,
+            ...context,
             [e.target.name]: e.target.value,
         })
     }
@@ -81,7 +91,9 @@ export default function UpdateReviewForm(props) {
             content: text,
             images: imageUpload,
             hashtags: ht,
-            rate: context.rate
+            rate: context.rate,
+            oldRate: review.rate,
+            locationId: review.locationId._id
         },
             auth.token,
             () => {
@@ -141,7 +153,7 @@ export default function UpdateReviewForm(props) {
                                     placeholder="Hashtag (cách nhau bằng dấu cách). Vd: #bien #lehoi ..."
                                     variant="outlined"
                                     name="hashtags"
-                                    id="hashtag"
+                                    id="hashtags"
                                     className={classes.hashtag}
                                     value={context.hashtags}
                                     onChange={handleInput}

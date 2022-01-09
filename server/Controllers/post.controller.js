@@ -4,6 +4,37 @@ const TourDates = require('../Models/tourDate.model');
 const Locations = require('../Models/location.model')
 
 class PostController {
+
+    async updateRate(inc, rate, locationId) {
+        switch (parseInt(rate)) {
+            case 1:
+                await Locations.findByIdAndUpdate(locationId, {
+                    $inc: { "star.0": inc }
+                }, { new: true })
+                break;
+            case 2:
+                await Locations.findByIdAndUpdate(locationId, {
+                    $inc: { "star.1": inc }
+                }, { new: true })
+                break;
+            case 3:
+                await Locations.findByIdAndUpdate(locationId, {
+                    $inc: { "star.2": inc }
+                }, { new: true })
+                break;
+            case 4:
+                await Locations.findByIdAndUpdate(locationId, {
+                    $inc: { "star.3": inc }
+                }, { new: true })
+                break;
+            case 5:
+                await Locations.findByIdAndUpdate(locationId, {
+                    $inc: { "star.4": inc }
+                }, { new: true })
+                break;
+        }
+    }
+
     //co hai loai post
     async createPost(req, res) {
         try {
@@ -74,33 +105,36 @@ class PostController {
                 }
             }, { new: true, safe: true, upsert: true })
 
-            switch (parseInt(rate)) {
-                case 1:
-                    await Locations.findByIdAndUpdate(locationId, {
-                        $inc: { "star.0": 1 }
-                    }, { new: true })
-                    break;
-                case 2:
-                    await Locations.findByIdAndUpdate(locationId, {
-                        $inc: { "star.1": 1 }
-                    }, { new: true })
-                    break;
-                case 3:
-                    await Locations.findByIdAndUpdate(locationId, {
-                        $inc: { "star.2": 1 }
-                    }, { new: true })
-                    break;
-                case 4:
-                    await Locations.findByIdAndUpdate(locationId, {
-                        $inc: { "star.3": 1 }
-                    }, { new: true })
-                    break;
-                case 5:
-                    await Locations.findByIdAndUpdate(locationId, {
-                        $inc: { "star.4": 1 }
-                    }, { new: true })
-                    break;
-            }
+
+
+
+            // switch (parseInt(rate)) {
+            //     case 1:
+            //         await Locations.findByIdAndUpdate(locationId, {
+            //             $inc: { "star.0": 1 }
+            //         }, { new: true })
+            //         break;
+            //     case 2:
+            //         await Locations.findByIdAndUpdate(locationId, {
+            //             $inc: { "star.1": 1 }
+            //         }, { new: true })
+            //         break;
+            //     case 3:
+            //         await Locations.findByIdAndUpdate(locationId, {
+            //             $inc: { "star.2": 1 }
+            //         }, { new: true })
+            //         break;
+            //     case 4:
+            //         await Locations.findByIdAndUpdate(locationId, {
+            //             $inc: { "star.3": 1 }
+            //         }, { new: true })
+            //         break;
+            //     case 5:
+            //         await Locations.findByIdAndUpdate(locationId, {
+            //             $inc: { "star.4": 1 }
+            //         }, { new: true })
+            //         break;
+            // }
 
 
             res.json({
@@ -115,6 +149,36 @@ class PostController {
                     }
                 }
             })
+
+            if (rate) {
+                switch (parseInt(rate)) {
+                    case 1:
+                        await Locations.findByIdAndUpdate(locationId, {
+                            $inc: { "star.0": 1 }
+                        }, { new: true })
+                        break;
+                    case 2:
+                        await Locations.findByIdAndUpdate(locationId, {
+                            $inc: { "star.1": 1 }
+                        }, { new: true })
+                        break;
+                    case 3:
+                        await Locations.findByIdAndUpdate(locationId, {
+                            $inc: { "star.2": 1 }
+                        }, { new: true })
+                        break;
+                    case 4:
+                        await Locations.findByIdAndUpdate(locationId, {
+                            $inc: { "star.3": 1 }
+                        }, { new: true })
+                        break;
+                    case 5:
+                        await Locations.findByIdAndUpdate(locationId, {
+                            $inc: { "star.4": 1 }
+                        }, { new: true })
+                        break;
+                }
+            }
         }
         catch (err) {
             console.log(err)
@@ -124,11 +188,12 @@ class PostController {
 
     async updatePost(req, res) {
         try {
-            const { content, images, rate, hashtags } = req.body;
+            const { content, images, rate, hashtags, oldRate, locationId } = req.body;
             const post = await Posts.findOneAndUpdate({ _id: req.params.id, userId: req.user.id }, {
                 content, images, rate, hashtags
             }, { new: true })
                 .populate("userId likes", "username fullname avatar")
+                .populate("locationId", "name fullname")
                 .populate({
                     path: "comments",
                     populate: {
@@ -152,6 +217,64 @@ class PostController {
                 })
             res.json({ success: true, message: "update post successful", post })
 
+            if (rate && parseInt(rate) !== parseInt(oldRate)) {
+                switch (parseInt(oldRate)) {
+                    case 1:
+                        await Locations.findByIdAndUpdate(locationId, {
+                            $inc: { "star.0": -1 }
+                        }, { new: true })
+                        break;
+                    case 2:
+                        await Locations.findByIdAndUpdate(locationId, {
+                            $inc: { "star.1": -1 }
+                        }, { new: true })
+                        break;
+                    case 3:
+                        await Locations.findByIdAndUpdate(locationId, {
+                            $inc: { "star.2": -1 }
+                        }, { new: true })
+                        break;
+                    case 4:
+                        await Locations.findByIdAndUpdate(locationId, {
+                            $inc: { "star.3": -1 }
+                        }, { new: true })
+                        break;
+                    case 5:
+                        await Locations.findByIdAndUpdate(locationId, {
+                            $inc: { "star.4": -1 }
+                        }, { new: true })
+                        break;
+                }
+
+                switch (parseInt(rate)) {
+                    case 1:
+                        await Locations.findByIdAndUpdate(locationId, {
+                            $inc: { "star.0": 1 }
+                        }, { new: true })
+                        break;
+                    case 2:
+                        await Locations.findByIdAndUpdate(locationId, {
+                            $inc: { "star.1": 1 }
+                        }, { new: true })
+                        break;
+                    case 3:
+                        await Locations.findByIdAndUpdate(locationId, {
+                            $inc: { "star.2": 1 }
+                        }, { new: true })
+                        break;
+                    case 4:
+                        await Locations.findByIdAndUpdate(locationId, {
+                            $inc: { "star.3": 1 }
+                        }, { new: true })
+                        break;
+                    case 5:
+                        await Locations.findByIdAndUpdate(locationId, {
+                            $inc: { "star.4": 1 }
+                        }, { new: true })
+                        break;
+                }
+            }
+
         } catch (err) {
             console.log(err)
             res.status(500).json({ success: false, message: err.message })
@@ -163,6 +286,7 @@ class PostController {
             const { offset } = req.body;
             const posts = await Posts.find({ userId: req.params.id }).skip(offset).limit(5).sort("-createdAt")
                 .populate("userId likes", "username fullname avatar")
+                .populate("locationId", "name fullname")
                 .populate({
                     path: "comments",
                     populate: {

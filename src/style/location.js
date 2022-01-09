@@ -71,6 +71,7 @@ const locationStyles = makeStyles((theme) => ({
     },
     image: {
         cursor: "pointer",
+        height: "100%",
         transition: "0.5s",
         "&:hover": {
             filter: "brightness(85%)",

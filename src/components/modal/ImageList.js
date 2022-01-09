@@ -45,7 +45,7 @@ export default function ImageList(props) {
                 {imageList.length > 1 && show2Image && (
                     <ImageListItem
                         key={imageList[1]}
-                        className={imageList.length > 2 ? [classes.imageItem, classes.more] : classes.imageItem}
+                        className={imageList.length > 2 ? classes.more : classes.imageItem}
                         onClick={() => {
                             setOpen(true);
                             setPictureIndex(1);

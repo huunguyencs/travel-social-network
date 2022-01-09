@@ -31,7 +31,6 @@ function App() {
   }
   useEffect(() => {
     if (!auth.token) {
-
       dispatch(refreshToken(() => {
         // if (location.pathname !== "/login" && location.pathname !== "/register")
         //   history.push("/login");

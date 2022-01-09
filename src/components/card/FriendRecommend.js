@@ -9,7 +9,7 @@ export default function FriendRecommendCard(props) {
 
     return (
         <Card className={classes.friend}>
-            <Typography variant="h5">Gợi ý kết bạn</Typography>
+            <Typography variant="h5">Gợi ý theo dõi</Typography>
             <div>
                 <List className={classes.list}>
                     <ListItem button className={classes.item}>

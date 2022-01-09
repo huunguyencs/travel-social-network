@@ -89,6 +89,11 @@ const modalListStyles = makeStyles((theme) => ({
         }
     },
     more: {
+        cursor: "pointer",
+        transition: "0.5s",
+        "&:hover": {
+            filter: "brightness(85%)",
+        },
         filter: "brightness(90%)",
     },
     textCenter: {
