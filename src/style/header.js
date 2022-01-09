@@ -82,7 +82,7 @@ const headerStyles = makeStyles((theme) => ({
         color: color.white,
         marginInline: 5,
         padding: 10,
-        borderRadius: attr.borderRadius.sm,
+        // borderRadius: attr.borderRadius.sm,
         textTransform: "none",
     },
     arrow: {

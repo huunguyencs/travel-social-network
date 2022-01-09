@@ -12,9 +12,10 @@ import SpeedDialButton from "../../components/speedDialBtn";
 import { locationStyles } from "../../style";
 import customAxios from "../../utils/fetchData";
 import { NotFound } from "../404";
-import ImageList from "../../components/modal/ImageList";
+// import ImageList from "../../components/modal/ImageList";
 import { getPostsLocation } from "../../redux/callApi/postCall";
 import { useDispatch } from "react-redux";
+import Lightbox from "react-image-lightbox";
 
 export default function Location(props) {
 
@@ -22,6 +23,8 @@ export default function Location(props) {
     const classes = locationStyles();
     const { id } = useParams();
     const [notFound, setNotFound] = useState(false);
+    const [showImg, setShowImg] = useState(false);
+    const [imgIdx, setImgIdx] = useState(0);
     const [state, setState] = useState({
         loading: false,
         error: false
@@ -52,6 +55,22 @@ export default function Location(props) {
             });
 
         }
+    }
+
+    const handleShowImage = () => {
+        setShowImg(true);
+    }
+
+    const handleCloseImage = () => {
+        setShowImg(false);
+    }
+
+    const nextImage = () => {
+        setImgIdx((imgIdx + 1) % location.images.length)
+    }
+
+    const prevImage = () => {
+        setImgIdx((imgIdx + location.images.length - 1) % location.images.length)
     }
 
 
@@ -133,7 +152,21 @@ export default function Location(props) {
                                         </Grid>
                                         <Grid item md={3} sm={12}>
                                             <Card className={classes.imageList}>
-                                                <ImageList imageList={location.images} show2Image={false} />
+                                                <img src={location.images[0]} alt="Loading..." className={classes.image} onClick={handleShowImage} />
+                                                {showImg && (
+                                                    <Lightbox
+                                                        mainSrc={location.images[imgIdx]}
+                                                        nextSrc={location.images[(imgIdx + 1) % location.images.length]}
+                                                        prevSrc={location.images[(imgIdx + location.images.length - 1) % location.images.length]}
+                                                        mainSrcThumbnail={location.images[imgIdx]}
+                                                        imageCaption={location.images[imgIdx]}
+                                                        nextSrcThumbnail={location.images[(imgIdx + 1) % location.images.length]}
+                                                        prevSrcThumbnail={location.images[(imgIdx + location.images.length - 1) % location.images.length]}
+                                                        onCloseRequest={handleCloseImage}
+                                                        onMoveNextRequest={nextImage}
+                                                        onMovePrevRequest={prevImage}
+                                                    />
+                                                )}
                                             </Card>
                                         </Grid>
                                         <Grid item md={3} sm={12}>

@@ -16,6 +16,7 @@ import Calendar from "../../../components/calendar";
 import FriendRecommendCard from "../../../components/card/FriendRecommend";
 import { NotFound } from "../../404";
 import { getUser } from "../../../redux/callApi/userCall";
+import { getUserTour } from "../../../redux/callApi/tourCall";
 
 
 
@@ -36,6 +37,12 @@ function ProfileTours() {
       }));
     }
   }, [user.user, id, dispatch, auth, setNotFound])
+
+  useEffect(() => {
+    if (user.user) {
+      dispatch(getUserTour(user.user._id, auth.token))
+    }
+  }, [dispatch, user.user, auth.token])
 
 
   return (

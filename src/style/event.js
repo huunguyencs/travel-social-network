@@ -34,6 +34,7 @@ const eventStyles = makeStyles((theme) => ({
     },
     content: {
         width: "60%",
+        marginBottom: 30
     },
     paperContent: {
         margin: 20,

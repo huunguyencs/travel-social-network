@@ -49,6 +49,7 @@ const useStyles = makeStyles((theme) => ({
         // }
     },
     rightbar: {
+        marginTop: 20,
         [theme.breakpoints.down('md')]: {
             display: "none",
         }

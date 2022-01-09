@@ -68,6 +68,13 @@ const locationStyles = makeStyles((theme) => ({
         display: 'flex',
         justifyContent: 'center',
         marginTop: 150
+    },
+    image: {
+        cursor: "pointer",
+        transition: "0.5s",
+        "&:hover": {
+            filter: "brightness(85%)",
+        }
     }
 }))
 

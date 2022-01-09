@@ -31,27 +31,31 @@ export default function FeedTour(props) {
     return (
         <div className={classes.container}>
             <div className={classes.content}>
-                <div className={classes.createTourContainer}>
-                    <Button className={classes.createTour} onClick={() => setShow(true)} disabled={!auth.token}>
-                        Lên lịch trình ngay!
-                    </Button>
-                    <Modal
-                        aria-labelledby="transition-modal-title"
-                        aria-describedby="transition-modal-description"
-                        className={classes.modal}
-                        open={show}
-                        onClose={() => setShow(false)}
-                        closeAfterTransition
-                        BackdropComponent={Backdrop}
-                        BackdropProps={{
-                            timeout: 500,
-                        }}
-                    >
-                        <Fade in={show}>
-                            <CreateTourForm handleClose={() => setShow(false)} />
-                        </Fade>
-                    </Modal>
-                </div>
+                {
+                    !id &&
+                    <div className={classes.createTourContainer}>
+                        <Button className={classes.createTour} onClick={() => setShow(true)} disabled={!auth.token}>
+                            Lên lịch trình ngay!
+                        </Button>
+                        <Modal
+                            aria-labelledby="transition-modal-title"
+                            aria-describedby="transition-modal-description"
+                            className={classes.modal}
+                            open={show}
+                            onClose={() => setShow(false)}
+                            closeAfterTransition
+                            BackdropComponent={Backdrop}
+                            BackdropProps={{
+                                timeout: 500,
+                            }}
+                        >
+                            <Fade in={show}>
+                                <CreateTourForm handleClose={() => setShow(false)} />
+                            </Fade>
+                        </Modal>
+                    </div>
+                }
+
 
                 <div className={classes.feedContent}>
                     {
