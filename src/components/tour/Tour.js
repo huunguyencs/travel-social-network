@@ -24,6 +24,7 @@ import UserList from "../modal/userList";
 import SharePost from "../forms/share";
 import TourContent from "./content";
 import { likeTour, unlikeTour } from "../../redux/callApi/tourCall";
+import LoginModal from "../modal/login";
 
 
 export default function Tour(props) {
@@ -35,6 +36,7 @@ export default function Tour(props) {
     const [like, setLike] = useState(false);
     const [tour, setTour] = useState(null);
     const [share, setShare] = useState(false);
+    const [login, setLogin] = useState(false);
 
     const updateLike = (likes) => {
         setTour({
@@ -55,7 +57,10 @@ export default function Tour(props) {
     const classes = postStyles({ showCmt });
 
     const likePress = () => {
-        if (!auth.user) return;
+        if (!auth.user) {
+            setLogin(true);
+            return;
+        };
         if (like) {
             handleUnlike();
         }
@@ -68,7 +73,7 @@ export default function Tour(props) {
         let newLike = [...prevLike, auth.user]
         updateLike(newLike);
 
-        dispatch(likeTour(tour._id, auth.token,socket, () => {
+        dispatch(likeTour(tour._id, auth.token, socket, () => {
             if (like) {
                 setLike(false);
                 updateLike(prevLike);
@@ -82,7 +87,7 @@ export default function Tour(props) {
         let newLikes = prevLike.filter(user => user._id !== auth.user._id);
         updateLike(newLikes);
 
-        dispatch(unlikeTour(tour._id, auth.token,socket, () => {
+        dispatch(unlikeTour(tour._id, auth.token, socket, () => {
             if (!like) {
                 setLike(true);
                 updateLike(prevLike);
@@ -106,9 +111,12 @@ export default function Tour(props) {
 
 
     useEffect(() => {
-        if (tour?.likes.find(like => like._id === auth?.user._id)) {
-            setLike(true);
+        if (tour) {
+            if (auth.user && tour.likes.find(like => like._id === auth.user._id)) {
+                setLike(true);
+            }
         }
+
 
     }, [tour, auth.user])
 
@@ -117,14 +125,27 @@ export default function Tour(props) {
 
     return (
         <Card className={classes.cardContainer}>
-            {tour && auth.user && <>
+            {tour && <>
                 <TourContent tour={tour} setTour={setTour} />
 
                 <CardActions>
                     {
                         like ? <Favorite className={classes.likedIcon} onClick={likePress} /> : <FavoriteBorderOutlined className={classes.iconButton} onClick={likePress} />
                     }
-
+                    <Modal
+                        aria-labelledby="login"
+                        aria-describedby="must-login"
+                        className={classes.modal}
+                        open={login}
+                        onClose={() => setLogin(false)}
+                        closeAfterTransition
+                        BackdropComponent={Backdrop}
+                        BackdropProps={{
+                            timeout: 500,
+                        }}
+                    >
+                        <LoginModal />
+                    </Modal>
 
                     <Typography className={classes.numLike} onClick={handleOpen}>
                         {tour?.likes.length}

@@ -35,6 +35,21 @@ const modalStyles = makeStyles((theme) => ({
         marginTop: 50,
         borderRadius: 10,
         padding: 15
+    },
+    loginContainer: {
+        padding: "30px",
+    },
+    loginTitle: {
+        display: 'flex',
+        alignSelf: 'center'
+    },
+    centerMarginTop: {
+        display: "flex",
+        justifyContent: "center",
+        marginTop: 30
+    },
+    link: {
+        textDecorationLine: 'underline',
     }
 }))
 

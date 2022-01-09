@@ -4,10 +4,11 @@ import * as userAction from '../actions/userAction';
 
 export const getUser = (id, user, callback) => async (dispatch) => {
     try {
-        if (id === user._id) {
+        if (user && id === user._id) {
             dispatch(userAction.getUserInfo({ user: user }))
         }
         else {
+
             await customAxios().get(`/user/${id}`).then(res => {
                 dispatch(userAction.getUserInfo({ user: res.data.user })
                 )
@@ -19,19 +20,20 @@ export const getUser = (id, user, callback) => async (dispatch) => {
         }
     }
     catch (err) {
+        console.log(err);
         // console.log(err.response.data.message);
 
     }
 }
 
 
-export const follow = (follow, token,socket, next) => async (dispatch) => {
+export const follow = (follow, token, socket, next) => async (dispatch) => {
     try {
         // A follow B(follow.id)
         await customAxios(token).put(`/user/${follow._id}/follow`).then(res => {
             dispatch(userAction.updateFollower({ followers: res.data.followers }))
             dispatch(authAction.updateFollowing({ followings: res.data.followings }))
-            socket.emit('follow',{id: follow._id, followers: res.data.followers, followings: res.data.followings})
+            socket.emit('follow', { id: follow._id, followers: res.data.followers, followings: res.data.followings })
         });
     }
     catch (err) {
@@ -39,13 +41,13 @@ export const follow = (follow, token,socket, next) => async (dispatch) => {
     }
 }
 
-export const unfollow = (follow, token,socket, next) => async (dispatch) => {
+export const unfollow = (follow, token, socket, next) => async (dispatch) => {
     try {
         // A unfollow B(follow.id)
         await customAxios(token).put(`/user/${follow._id}/unfollow`).then(res => {
             dispatch(userAction.updateFollower({ followers: res.data.followers }))
             dispatch(authAction.updateFollowing({ followings: res.data.followings }))
-            socket.emit('unfollow',{id: follow._id, followers: res.data.followers, followings: res.data.followings})
+            socket.emit('unfollow', { id: follow._id, followers: res.data.followers, followings: res.data.followings })
 
         });
     }

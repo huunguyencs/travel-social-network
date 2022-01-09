@@ -2,7 +2,7 @@ import * as POST_TYPES from '../constants/postConstant';
 
 const INIT_STATE = {
     posts: [],
-    page: 2,
+    page: 1,
     scrollTop: false,
     loading: false,
     error: null,
@@ -11,10 +11,11 @@ const INIT_STATE = {
 const postRecuder = (state = INIT_STATE, action) => {
     switch (action.type) {
         case POST_TYPES.GET_POSTS: {  // tai danh sach cac post (thanh cong)
+            // console.log(action.payload.posts);
             return {
                 ...state,
                 posts: action.payload.posts,
-                page: 2,
+                page: 1,
                 loading: false,
                 error: null,
             }
@@ -30,7 +31,7 @@ const postRecuder = (state = INIT_STATE, action) => {
         case POST_TYPES.GET_MORE_POSTS: {
             return {
                 ...state,
-                posts: [...state.posts, action.payload.posts],
+                posts: [...state.posts, ...action.payload.posts],
                 page: state.page + 1,
                 loading: false,
                 error: null,
@@ -100,7 +101,7 @@ const postRecuder = (state = INIT_STATE, action) => {
                 ...state,
                 loading: false,
                 posts: [],
-                page: 2,
+                page: 0,
                 error: action.payload.error,
             }
         }

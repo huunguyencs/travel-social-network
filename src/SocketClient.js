@@ -12,8 +12,11 @@ const SocketClient = () => {
 
     //connect
     useEffect(() => {
-        socket.emit('joinUser', auth.user._id)
-    }, [socket, auth.user._id])
+        if (auth.user) {
+            socket.emit('joinUser', auth.user._id)
+        }
+
+    }, [socket, auth.user])
 
     //like
     useEffect(() => {

@@ -143,6 +143,13 @@ class PostController {
                         select: "username fullname avatar"
                     }
                 })
+                .populate({
+                    path: "shareId",
+                    populate: {
+                        path: "locationId",
+                        select: "name fullname"
+                    }
+                })
             res.json({ success: true, message: "update post successful", post })
 
         } catch (err) {
@@ -153,7 +160,8 @@ class PostController {
     //lấy pots của 1 user cụ thể (params.id)
     async getUserPost(req, res) {
         try {
-            const posts = await Posts.find({ userId: req.params.id }).sort("-createdAt")
+            const { offset } = req.body;
+            const posts = await Posts.find({ userId: req.params.id }).skip(offset).limit(5).sort("-createdAt")
                 .populate("userId likes", "username fullname avatar")
                 .populate({
                     path: "comments",
@@ -167,6 +175,13 @@ class PostController {
                     populate: {
                         path: "userId",
                         select: "username fullname avatar"
+                    }
+                })
+                .populate({
+                    path: "shareId",
+                    populate: {
+                        path: "locationId",
+                        select: "name fullname"
                     }
                 })
 
@@ -199,6 +214,13 @@ class PostController {
                         select: "username fullname avatar"
                     }
                 })
+                .populate({
+                    path: "shareId",
+                    populate: {
+                        path: "locationId",
+                        select: "name fullname"
+                    }
+                })
                 .sort({ "createdAt": -1 });
             res.json({
                 posts,
@@ -227,6 +249,13 @@ class PostController {
                     populate: {
                         path: "userId",
                         select: "username fullname avatar"
+                    }
+                })
+                .populate({
+                    path: "shareId",
+                    populate: {
+                        path: "locationId",
+                        select: "name fullname"
                     }
                 })
             if (post) {

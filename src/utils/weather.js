@@ -12,6 +12,6 @@ export const weatherFocast = async (position, callback) => {
         }
     }
     catch (err) {
-        console.log(err);
+        // console.log(err);
     }
 }

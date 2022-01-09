@@ -6,7 +6,7 @@ import customAxios from '../../utils/fetchData';
 
 
 export const getPosts = (token) => async (dispatch) => {
-    dispatch(postAction.getPosts({ posts: [] }));
+    // dispatch(postAction.getPosts({ posts: [] }));
     dispatch(postAction.loading());
 
     try {
@@ -38,14 +38,24 @@ export const getPostsLocation = (id) => async (dispatch) => {
     }
 }
 
-export const getUserPost = (id, token) => async (dispatch) => {
-    dispatch(postAction.getPosts({ posts: [] }));
+export const getUserPost = (id, token, offset) => async (dispatch) => {
+    // dispatch(postAction.getPosts({ posts: [] }));
     dispatch(postAction.loading());
 
     try {
-        const res = await customAxios(token).get(`/post/user_posts/${id}`);
+        const res = await customAxios(token).get(`/post/user_posts/${id}`, {
+            offset: offset
+        });
 
-        dispatch(postAction.getPosts({ posts: res.data.posts }));
+        // console.log(res.data.posts);
+        if (offset > 0) {
+
+            dispatch(postAction.getMorePost({ posts: res.data.posts }));
+        }
+        else {
+            dispatch(postAction.getPosts({ posts: res.data.posts }));
+        }
+
     }
     catch (err) {
 
@@ -59,9 +69,9 @@ export const getMorePost = (data) => async (dispatch) => {
     dispatch(postAction.loading());
 
     try {
-        const { type } = data;
+        // const { type } = data;
 
-        console.log(type);
+        // console.log(type);
         // call api to get more post
         const res = [];
 

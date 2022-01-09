@@ -48,7 +48,7 @@ export default function UserList(props) {
                 loading: true,
                 error: false
             })
-            dispatch(follow(auth.token, userId,socket, () => {
+            dispatch(follow(auth.token, userId, socket, () => {
                 setStateFollow({
                     id: userId,
                     loading: false,
@@ -74,8 +74,11 @@ export default function UserList(props) {
     }
 
     useEffect(() => {
-        setFollowings(auth.user.followings);
-    }, [auth.user.followings])
+        if (auth.user) {
+            setFollowings(auth.user.followings);
+        }
+
+    }, [auth.user])
 
     return (
         <div className={classes.paper}>
@@ -99,7 +102,7 @@ export default function UserList(props) {
                         </div>
                         <div>
                             {
-                                user._id !== auth.user._id &&
+                                auth.user && user._id !== auth.user._id &&
                                 <Button variant="outlined" className={classes.modal_body_user_button} onClick={() => handleFollow(user._id)}>
                                     {stateFollow.loading && stateFollow.id === user._id ? <CircularProgress /> : isFollowed(user._id) ? "Hủy theo dõi" : "Theo dõi"}
                                 </Button>

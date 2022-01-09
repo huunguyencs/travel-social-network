@@ -6,13 +6,12 @@ import Post from '../post/Post';
 import { feedStyles } from "../../style";
 import CreatePostForm from "../forms/createPost";
 import { useDispatch, useSelector } from "react-redux";
-import { getPosts, getUserPost } from "../../redux/callApi/postCall";
+import { getPosts } from "../../redux/callApi/postCall";
 
 
 
 export default function FeedPost(props) {
 
-    const { id } = props;
     const dispatch = useDispatch();
 
     const { auth, post } = useSelector(state => state);
@@ -30,13 +29,10 @@ export default function FeedPost(props) {
     }
 
     const tryAgain = () => {
-        if (id) {
-            dispatch(getUserPost(id, auth.token))
-        }
-        else {
-            dispatch(getPosts(auth.token));
-        }
+        dispatch(getPosts(auth.token));
     }
+
+
 
 
     return (
@@ -50,6 +46,7 @@ export default function FeedPost(props) {
                             onClick={handleShow}
                             readOnly
                             rows={1}
+                            disabled={!auth.user}
                         />
                     </div>
                     <Modal

@@ -39,6 +39,7 @@ export default function InputComment(props) {
                 className={classes.writeCmtText}
                 value={text}
                 onChange={e => setText(e.target.value)}
+                disabled={!auth.user}
             />
             <IconButton disabled={text.trim() === ""} type="submit">
                 <Send />

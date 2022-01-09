@@ -80,7 +80,7 @@ function Header(props) {
             action={
                 <>
                     {
-                        auth.user._id === post.userId._id && !share && <>
+                        auth.user && auth.user._id === post.userId._id && !share && <>
                             <IconButton aria-label="settings" onClick={handleShowMenu} className={classes.action}>
                                 <MoreVert />
                             </IconButton>

@@ -22,6 +22,7 @@ import UserList from "../modal/userList";
 import SharePost from "../forms/share";
 import PostContent from "./content";
 import { likePost, unlikePost } from '../../redux/callApi/postCall';
+import LoginModal from "../modal/login";
 
 
 export default function Post(props) {
@@ -33,6 +34,7 @@ export default function Post(props) {
     const [like, setLike] = useState(false);
     const [post, setPost] = useState(null);
     const [share, setShare] = useState(false);
+    const [login, setLogin] = useState(false);
 
     const classes = postStyles({ showCmt });
 
@@ -51,7 +53,10 @@ export default function Post(props) {
     }
 
     const likePress = () => {
-        if (!auth.user || !post) return;
+        if (!auth.user) {
+            setLogin(true);
+            return;
+        };
         if (like) {
             handleUnlike();
         }
@@ -62,7 +67,7 @@ export default function Post(props) {
         setLike(true);
         updateLike([...post.likes, auth.user]);
         // call api
-        dispatch(likePost(post._id, auth.token,socket, () => {
+        dispatch(likePost(post._id, auth.token, socket, () => {
             if (like) {
                 setLike(false);
                 let newLikes = post.likes.filter(user => user._id !== auth.user._id);
@@ -120,7 +125,20 @@ export default function Post(props) {
                     {
                         like ? <Favorite className={classes.likedIcon} onClick={likePress} /> : <FavoriteBorderOutlined className={classes.iconButton} onClick={likePress} />
                     }
-
+                    <Modal
+                        aria-labelledby="login"
+                        aria-describedby="must-login"
+                        className={classes.modal}
+                        open={login}
+                        onClose={() => setLogin(false)}
+                        closeAfterTransition
+                        BackdropComponent={Backdrop}
+                        BackdropProps={{
+                            timeout: 500,
+                        }}
+                    >
+                        <LoginModal />
+                    </Modal>
                     <Typography className={classes.numLike} onClick={handleOpen}>
                         {post.likes.length}
                     </Typography>
@@ -136,7 +154,7 @@ export default function Post(props) {
                             timeout: 500,
                         }}
                     >
-                        <UserList listUser={post.likes} title={"Đã thích"} handleClose={handleClose} />
+                        <UserList listUser={post?.likes} title={"Đã thích"} handleClose={handleClose} />
                     </Modal>
                     <QuestionAnswer onClick={handleShowCmt} className={classes.iconButton} />
                     <Typography className={classes.numCmt}>

@@ -50,7 +50,7 @@ export default function ManageUserJoin(props) {
                         </div>
                         <div>
                             {
-                                auth.user._id !== user._id &&
+                                auth.user && auth.user._id !== user._id &&
                                 <Button variant="outlined" className={classes.modal_body_user_button} onClick={() => handleRemove(user._id)}>
                                     Xóa
                                 </Button>

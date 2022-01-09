@@ -92,7 +92,7 @@ export const likeComment = (id, auth, type, postId, socket) => async (dispatch) 
         }
     }
     catch (err) {
-        console.log(err.response.data.message);
+        // console.log(err.response.data.message);
     }
 }
 
@@ -115,7 +115,7 @@ export const unlikeComment = (id, auth, type, postId, socket) => async (dispatch
         }
     }
     catch (err) {
-        console.log(err.response.data.message);
+        // console.log(err.response.data.message);
     }
 }
 

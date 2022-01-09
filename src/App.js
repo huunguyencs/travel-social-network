@@ -30,27 +30,18 @@ function App() {
     return true;
   }
   useEffect(() => {
-    dispatch(refreshToken(() => {
-      if (location.pathname !== "/login" && location.pathname !== "/register")
-        history.push("/login");
-    }));
-    const socket = io();
-    dispatch({ type: SOCKET_TYPES.SOCKET, payload: socket });
-    return () => socket.close();
-  }, [dispatch, history, location.pathname])
-
-  useEffect(() => {
     if (!auth.token) {
-      dispatch(refreshToken(() => {
-        if (location.pathname !== "/login" && location.pathname !== "/register")
-          history.push("/login");
-      }));
 
-      // const socket = io();
-      // dispatch({type: GLOBLE_TYPES.SOCKET, payload: socket});
-      // return () => socket.close();
+      dispatch(refreshToken(() => {
+        // if (location.pathname !== "/login" && location.pathname !== "/register")
+        //   history.push("/login");
+      }));
+      const socket = io();
+      dispatch({ type: SOCKET_TYPES.SOCKET, payload: socket });
+      return () => socket.close();
+
     }
-  }, [dispatch, auth.token, history, location])
+  }, [dispatch, history, location.pathname, auth.token])
 
   return (
     <div>

@@ -18,7 +18,7 @@ const authReducer = (state = INIT_STATE, action) => {
             return INIT_STATE
         }
         case AUTH_TYPES.UPDATE_FOLLOWING: {
-            console.log(action.payload.followings)
+            // console.log(action.payload.followings)
             return {
                 ...state,
                 user: {

@@ -32,7 +32,7 @@ export default function FeedTour(props) {
         <div className={classes.container}>
             <div className={classes.content}>
                 <div className={classes.createTourContainer}>
-                    <Button className={classes.createTour} onClick={() => setShow(true)}>
+                    <Button className={classes.createTour} onClick={() => setShow(true)} disabled={!auth.token}>
                         Lên lịch trình ngay!
                     </Button>
                     <Modal

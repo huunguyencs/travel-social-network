@@ -3,6 +3,7 @@ import { ImageList as ImgList, ImageListItem, Typography } from "@material-ui/co
 import Lightbox from "react-image-lightbox";
 import 'react-image-lightbox/style.css';
 import { modalListStyles } from "../../style";
+import useMediaQuery from '@material-ui/core/useMediaQuery';
 
 
 export default function ImageList(props) {
@@ -12,24 +13,21 @@ export default function ImageList(props) {
 
     const [open, setOpen] = useState(false);
     const [pictureIndex, setPictureIndex] = useState(0);
-    const [height, setHeight] = useState(395);
+    const [height, setHeight] = useState(500);
+    const media920 = useMediaQuery('(max-width:920px)');
+    const media1280 = useMediaQuery('(max-width:1280px)');
 
     useEffect(() => {
-
-        function changeHeight() {
-            if (window.innerWidth < 920) {
-                setHeight(400)
-            }
-            if (window.innerWidth < 1440) {
-                setHeight(300);
-            }
-            else {
-                setHeight(550)
-            }
+        if (media1280) {
+            setHeight(395)
         }
+        else if (media920) {
+            setHeight(495)
+        }
+        else setHeight(495)
 
-        window.addEventListener("resize", changeHeight);
-    }, [setHeight])
+        // window.addEventListener("resize", changeHeight);
+    }, [setHeight, media1280, media920])
 
     return (
         <>

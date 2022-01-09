@@ -85,7 +85,7 @@ function ShareContent({ tour }) {
                 }
                 action={
                     <>
-                        {auth.user._id === tour.userId._id &&
+                        {auth.user && auth.user._id === tour.userId._id &&
                             <>
                                 <IconButton aria-label="settings" onClick={handleShowMenu}>
                                     <MoreVert />
@@ -207,7 +207,7 @@ function BaseContent(props) {
     }
 
     useEffect(() => {
-        if (tour?.joinIds.find(join => join._id === auth?.user._id)) {
+        if (auth.user && tour.joinIds.find(join => join._id === auth.user._id)) {
             setJoin(true);
         }
     }, [tour, auth.user]);
@@ -265,10 +265,12 @@ function BaseContent(props) {
     }
 
     const joinClick = () => {
-        if (join) {
-            handleUnJoin();
+        if (auth.user) {
+            if (join) {
+                handleUnJoin();
+            }
+            else handleJoin();
         }
-        else handleJoin();
     }
 
     const handleDeleteTour = () => {
@@ -300,7 +302,7 @@ function BaseContent(props) {
                 }
                 action={
                     <>
-                        {auth.user._id === tour.userId._id && !share &&
+                        {auth.user && auth.user._id === tour.userId._id && !share &&
                             <>
                                 <IconButton aria-label="settings" onClick={handleShowMenu}>
                                     <MoreVert />
@@ -399,7 +401,7 @@ function BaseContent(props) {
                             timeout: 500,
                         }}
                     >
-                        {auth.user._id === tour.userId._id ?
+                        {auth.user && auth.user._id === tour.userId._id ?
                             <ManageUserJoin listUser={[tour.userId, ...tour.joinIds]} updateJoin={updateJoin} tourId={tour._id} title={"Thành viên tham gia"} handleClose={() => setOpenJoin(false)} /> :
                             <UserList listUser={[tour.userId, ...tour.joinIds]} title={"Thành viên tham gia"} handleClose={() => setOpenJoin(false)} />
                         }

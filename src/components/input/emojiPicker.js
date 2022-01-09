@@ -1,12 +1,15 @@
 import { IconButton, Paper, Popover } from "@material-ui/core";
 import { InsertEmoticon } from "@material-ui/icons";
 import React, { useState } from "react";
+import { useSelector } from "react-redux";
 import { emojiPickerStyles } from "../../style";
 
 
 export default function EmojiPicker(props) {
 
     const classes = emojiPickerStyles();
+
+    const { auth } = useSelector(state => state);
 
     const { content, setContent } = props;
     const [anchorEl, setAnchorEl] = useState(null);
@@ -36,7 +39,7 @@ export default function EmojiPicker(props) {
 
     return (
         <>
-            <IconButton aria-describedby={id} variant="contained" onClick={handleClick}>
+            <IconButton aria-describedby={id} variant="contained" onClick={handleClick} disabled={!auth.user}>
                 <InsertEmoticon titleAccess="Chèn cảm xúc" />
             </IconButton>
             <Popover

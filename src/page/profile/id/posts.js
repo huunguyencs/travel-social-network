@@ -14,11 +14,11 @@ import { useParams } from "react-router-dom";
 // import Post from "../../../components/post/Post";
 import Calendar from "../../../components/calendar";
 import FriendRecommendCard from "../../../components/card/FriendRecommend";
-import FeedPost from "../../../components/feed/FeedPost";
 import { NotFound } from "../../404";
 import { getUser } from "../../../redux/callApi/userCall";
 import { getUserPost } from "../../../redux/callApi/postCall";
 import useStyles from "../../../style";
+import FeedPostUser from "../../../components/feed/FeedPostUser";
 
 
 
@@ -42,7 +42,7 @@ function ProfilePosts() {
 
   useEffect(() => {
     if (user.user) {
-      dispatch(getUserPost(user.user._id, auth.token));
+      dispatch(getUserPost(user.user._id, auth.token, 0));
     }
 
   }, [user.user, auth.token, dispatch])
@@ -65,7 +65,7 @@ function ProfilePosts() {
                 </LeftBar>
               </Grid>
               <Grid item md={6} sm={10} xs={10}>
-                <FeedPost id={id} />
+                <FeedPostUser id={id} />
               </Grid>
               <Grid item sm={3} className={classes.rightbar}>
                 <RightBar>

@@ -35,7 +35,7 @@ export const getTourDetail = (id, next) => async (dispatch) => {
 }
 
 export const getUserTour = (id, token) => async (dispatch) => {
-    dispatch(tourAction.getTours({ tour: [] }));
+    // dispatch(tourAction.getTours({ tour: [] }));
     dispatch(tourAction.loading())
     try {
         const res = await customAxios(token).get(`/tour/user_tours/${id}`);
@@ -95,7 +95,7 @@ export const updateTour = (id, tour, image, token, next, error) => async (dispat
             image: image ? imageUpload[0] : ""
         }
 
-        console.log(data);
+        // console.log(data);
 
 
         const res = await customAxios(token).patch(`/tour/${id}`, data);
@@ -105,7 +105,7 @@ export const updateTour = (id, tour, image, token, next, error) => async (dispat
 
     }
     catch (err) {
-        console.log(err);
+        // console.log(err);
         error();
 
     }

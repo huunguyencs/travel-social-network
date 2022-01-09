@@ -35,7 +35,7 @@ export default function TourDetail(props) {
     }, [tour])
 
     useEffect(() => {
-        if (auth && auth.user && tour) {
+        if (auth.user && tour) {
             setIsOwn(tour.userId._id === auth.user._id);
         }
     }, [setIsOwn, tour, auth]);
