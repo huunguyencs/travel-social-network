@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { ImageList as ImgList, ImageListItem, Typography } from "@material-ui/core";
 import Lightbox from "react-image-lightbox";
 import 'react-image-lightbox/style.css';
@@ -8,16 +8,32 @@ import { modalListStyles } from "../../style";
 export default function ImageList(props) {
     const classes = modalListStyles();
 
+    const { imageList, show2Image } = props;
+
     const [open, setOpen] = useState(false);
     const [pictureIndex, setPictureIndex] = useState(0);
+    const [height, setHeight] = useState(395);
 
-    const imageList = props.imgList;
-    const show2Image = props.show2Image;
-    const height = props.height;
+    useEffect(() => {
+
+        function changeHeight() {
+            if (window.innerWidth < 920) {
+                setHeight(400)
+            }
+            if (window.innerWidth < 1440) {
+                setHeight(300);
+            }
+            else {
+                setHeight(550)
+            }
+        }
+
+        window.addEventListener("resize", changeHeight);
+    }, [setHeight])
 
     return (
         <>
-            <ImgList rowHeight={height ? height : 600} className={classes.imageList} cols={imageList.length > 1 && show2Image ? 2 : 1}>
+            <ImgList rowHeight={height} className={classes.imageList} cols={imageList.length > 1 && show2Image ? 2 : 1}>
                 <ImageListItem
                     key={imageList[0]}
                     className={classes.imageItem}

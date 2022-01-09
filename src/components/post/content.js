@@ -203,7 +203,7 @@ function BaseContent(props) {
             {
                 post.images.length > 0 &&
                 <CardMedia>
-                    <ImageList imgList={post.images} show2Image={true} />
+                    <ImageList imageList={post.images} show2Image={true} />
                 </CardMedia>
             }
         </>
