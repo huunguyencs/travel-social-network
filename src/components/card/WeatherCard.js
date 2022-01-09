@@ -199,7 +199,10 @@ export default function WeatherCardGeneral(props) {
                             <WeatherFocast weather={weather.daily} handleClose={() => setShow(false)} nameShow={nameShow} alert={weather.alert} />
                         </Fade>
                     </Modal>
-                </> : <CircularProgress />
+                </> :
+                <div className={classes.centerMarginTop}>
+                    <CircularProgress color="inherit" />
+                </div>
             }
         </Card>
     )

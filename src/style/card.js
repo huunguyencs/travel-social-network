@@ -187,6 +187,11 @@ const cardStyles = makeStyles((theme) => ({
         width: 500,
         margin: 10,
         borderRadius: 5
+    },
+    centerMarginTop: {
+        display: 'flex',
+        justifyContent: 'center',
+        margin: 50
     }
 }))
 

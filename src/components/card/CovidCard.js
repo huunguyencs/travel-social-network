@@ -87,7 +87,9 @@ export default function CovidCard(props) {
                                 </Fade>
                             </Modal>
                         </div> :
-                        <CircularProgress />
+                        <div className={classes.centerMarginTop}>
+                            <CircularProgress color="inherit" />
+                        </div>
                 }
             </CardContent>
         </Card>

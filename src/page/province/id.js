@@ -32,6 +32,19 @@ export default function Province(props) {
         error: false,
     })
 
+    const [stateLocation, setStateLocation] = useState({
+        loading: false,
+        error: false
+    })
+    const [stateEvent, setStateEvent] = useState({
+        loading: false,
+        error: false
+    })
+    const [stateService, setStateService] = useState({
+        loading: false,
+        error: false
+    })
+
     const [pageLoc, setPageLoc] = useState(1);
     const [pageSer, setPageSer] = useState(1);
 
@@ -68,31 +81,103 @@ export default function Province(props) {
                     })
             });
         }
+    }
 
+    const getLocation = async (id, next) => {
+        if (id) {
+            setStateLocation({
+                loading: true,
+                error: false,
+            })
+            await customAxios().get(`/province/location/${id}`).then(res => {
+                next(res.data.locations)
+                setStateLocation({
+                    loading: false,
+                    error: false,
+                })
+            }).catch(err => {
+                setStateLocation({
+                    loading: false,
+                    error: true
+                })
+            })
+        }
+    }
+
+    const getEvent = async (id, next) => {
+        if (id) {
+            setStateEvent({
+                loading: true,
+                error: false,
+            })
+            await customAxios().get(`/province/event/${id}`).then(res => {
+                next(res.data.events)
+                setStateEvent({
+                    loading: false,
+                    error: false,
+                })
+            }).catch(err => {
+                setStateEvent({
+                    loading: false,
+                    error: true
+                })
+            })
+        }
+    }
+
+    const getService = async (id, next) => {
+        if (id) {
+            setStateService({
+                loading: true,
+                error: false,
+            })
+            await customAxios().get(`/province/service/${id}`).then(res => {
+                next(res.data.services)
+                setStateService({
+                    loading: false,
+                    error: false,
+                })
+            }).catch(err => {
+                setStateService({
+                    loading: false,
+                    error: true
+                })
+            })
+        }
     }
 
     const tryAgain = () => {
         if (id) {
-            getProvince(id, (province, locations, services, events) => {
+            getProvince(id, (province) => {
                 setProvince(province);
-                setLocations(locations);
-                setServices(services);
-                setEvents(events);
             });
         }
     }
 
     useEffect(() => {
         if (id) {
-            getProvince(id, (province, locations, services, events) => {
+            getProvince(id, (province) => {
                 setProvince(province);
-                setLocations(locations);
-                setServices(services);
-                setEvents(events);
             });
         }
 
-    }, [id, setProvince, setLocations, setServices]);
+    }, [id, setProvince]);
+
+    useEffect(() => {
+        if (province) {
+            getLocation(province._id, (locations) => {
+                setLocations(locations);
+            });
+
+            getEvent(province._id, (events) => {
+                setEvents(events)
+            })
+
+            getService(province._id, (services) => {
+                setServices(services)
+            })
+        }
+    }, [province, setLocations, setEvents, setServices])
 
     useEffect(() => {
         if (province && province.fullname) {
@@ -191,20 +276,28 @@ export default function Province(props) {
                                                     <Typography variant="h6">Danh sách địa điểm</Typography>
                                                 </div>
                                                 {
-                                                    locations &&
-                                                    <>
-                                                        <Grid className={classes.listContainer} container>
-                                                            {locations.slice((pageLoc - 1) * ITEM_PER_PAGE, pageLoc * ITEM_PER_PAGE).map((item) => (
-                                                                <Grid item md={4} sm={6} xs={12} key={item._id}>
-                                                                    <LocationCard location={item} />
-                                                                </Grid>
-                                                            ))}
+                                                    stateLocation.loading ?
+                                                        <div className={classes.centerMarginTop}>
+                                                            <CircularProgress color="inherit" />
+                                                        </div> :
+                                                        stateLocation.error ?
+                                                            <div className={classes.centerMarginTop}>
+                                                                <Button onClick={() => getLocation(province._id, (locations) => setLocations(locations))}>Thử lại</Button>
+                                                            </div> :
+                                                            locations &&
+                                                            <>
+                                                                <Grid className={classes.listContainer} container>
+                                                                    {locations.slice((pageLoc - 1) * ITEM_PER_PAGE, pageLoc * ITEM_PER_PAGE).map((item) => (
+                                                                        <Grid item md={4} sm={6} xs={12} key={item._id}>
+                                                                            <LocationCard location={item} />
+                                                                        </Grid>
+                                                                    ))}
 
-                                                        </Grid>
-                                                        <div className={classes.patination}>
-                                                            <Pagination count={Math.ceil(locations.length / ITEM_PER_PAGE)} page={pageLoc} onChange={handleChangeLoc} color="primary" />
-                                                        </div>
-                                                    </>
+                                                                </Grid>
+                                                                <div className={classes.patination}>
+                                                                    <Pagination count={Math.ceil(locations.length / ITEM_PER_PAGE)} page={pageLoc} onChange={handleChangeLoc} color="primary" />
+                                                                </div>
+                                                            </>
                                                 }
                                             </div>
                                             <div className={classes.locationList}>
@@ -212,20 +305,28 @@ export default function Province(props) {
                                                     <Typography variant="h6">Danh sách lễ hội</Typography>
                                                 </div>
                                                 {
-                                                    events &&
-                                                    <>
-                                                        <Grid className={classes.listContainer} container>
-                                                            {events?.slice((pageSer - 1) * ITEM_PER_PAGE, pageSer * ITEM_PER_PAGE).map((item) => (
-                                                                <Grid item md={4} sm={6} xs={12} key={item._id}>
-                                                                    <EventCard event={item} />
-                                                                </Grid>
-                                                            ))}
+                                                    stateEvent.loading ?
+                                                        <div className={classes.centerMarginTop}>
+                                                            <CircularProgress color="inherit" />
+                                                        </div> :
+                                                        stateEvent.error ?
+                                                            <div className={classes.centerMarginTop}>
+                                                                <Button onClick={() => getEvent(province._id, (events) => setEvents(events))}>Thử lại</Button>
+                                                            </div> :
+                                                            events &&
+                                                            <>
+                                                                <Grid className={classes.listContainer} container>
+                                                                    {events?.slice((pageSer - 1) * ITEM_PER_PAGE, pageSer * ITEM_PER_PAGE).map((item) => (
+                                                                        <Grid item md={4} sm={6} xs={12} key={item._id}>
+                                                                            <EventCard event={item} />
+                                                                        </Grid>
+                                                                    ))}
 
-                                                        </Grid>
-                                                        <div className={classes.patination}>
-                                                            <Pagination count={Math.ceil(events.length / ITEM_PER_PAGE)} page={pageSer} onChange={handleChangeSer} color="primary" />
-                                                        </div>
-                                                    </>
+                                                                </Grid>
+                                                                <div className={classes.patination}>
+                                                                    <Pagination count={Math.ceil(events.length / ITEM_PER_PAGE)} page={pageSer} onChange={handleChangeSer} color="primary" />
+                                                                </div>
+                                                            </>
                                                 }
 
                                             </div>
@@ -234,20 +335,28 @@ export default function Province(props) {
                                                     <Typography variant="h6">Danh sách dịch vụ</Typography>
                                                 </div>
                                                 {
-                                                    services &&
-                                                    <>
-                                                        <Grid className={classes.listContainer} container>
-                                                            {services?.slice((pageSer - 1) * ITEM_PER_PAGE, pageSer * ITEM_PER_PAGE).map((item) => (
-                                                                <Grid item md={4} sm={6} xs={12} key={item._id}>
-                                                                    <ServiceCard service={item} />
-                                                                </Grid>
-                                                            ))}
+                                                    stateService.loading ?
+                                                        <div className={classes.centerMarginTop}>
+                                                            <CircularProgress color="inherit" />
+                                                        </div> :
+                                                        stateService.error ?
+                                                            <div className={classes.centerMarginTop}>
+                                                                <Button onClick={() => getService(province._id, (services) => setServices(services))}>Thử lại</Button>
+                                                            </div> :
+                                                            services &&
+                                                            <>
+                                                                <Grid className={classes.listContainer} container>
+                                                                    {services?.slice((pageSer - 1) * ITEM_PER_PAGE, pageSer * ITEM_PER_PAGE).map((item) => (
+                                                                        <Grid item md={4} sm={6} xs={12} key={item._id}>
+                                                                            <ServiceCard service={item} />
+                                                                        </Grid>
+                                                                    ))}
 
-                                                        </Grid>
-                                                        <div className={classes.patination}>
-                                                            <Pagination count={Math.ceil(services.length / ITEM_PER_PAGE)} page={pageSer} onChange={handleChangeSer} color="primary" />
-                                                        </div>
-                                                    </>
+                                                                </Grid>
+                                                                <div className={classes.patination}>
+                                                                    <Pagination count={Math.ceil(services.length / ITEM_PER_PAGE)} page={pageSer} onChange={handleChangeSer} color="primary" />
+                                                                </div>
+                                                            </>
                                                 }
 
                                             </div>

@@ -58,15 +58,10 @@ class ProvinceController {
     async getProvince(req, res) {
         try {
             const id = req.params.id;
-            // var province = await Provinces.findById(id);
             var province = await Provinces.findOne({ name: id });
-            // .populate("locations services")
             if (province) {
-                const locations = await Locations.find({ "province": province._id })
-                const services = await Services.find({ "province": province._id })
-                const events = await Events.find({ "provinceId": province._id })
                 res.json({
-                    success: true, message: "get info 1 province success", province, locations, services, events
+                    success: true, message: "get info 1 province success", province
                 });
             }
             else {
@@ -76,6 +71,48 @@ class ProvinceController {
 
         } catch (err) {
             console.log(err)
+            res.status(500).json({ success: false, message: err.message })
+        }
+    }
+
+    async getLocationsProvince(req, res) {
+        try {
+            const locations = await Locations.find({ province: req.params.id });
+            res.json({
+                success: true,
+                message: "Success",
+                locations
+            })
+        }
+        catch (err) {
+            res.status(500).json({ success: false, message: err.message })
+        }
+    }
+
+    async getEventsProvince(req, res) {
+        try {
+            const events = await Events.find({ provinceId: req.params.id });
+            res.json({
+                success: true,
+                message: "Success",
+                events
+            })
+        }
+        catch (err) {
+            res.status(500).json({ success: false, message: err.message })
+        }
+    }
+
+    async getServicesProvince(req, res) {
+        try {
+            const services = await Services.find({ province: req.params.id });
+            res.json({
+                success: true,
+                message: "Success",
+                services
+            })
+        }
+        catch (err) {
             res.status(500).json({ success: false, message: err.message })
         }
     }
