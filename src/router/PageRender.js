@@ -14,23 +14,27 @@ const generatePage = (pageName) => {
     }
 }
 
-const PageRender = () => {
+const PageRender = (role) => {
     const { page, id, subpage } = useParams();
 
     var pageName = "";
 
     if (page === "admin") {
-        if (id) {
-            if (subpage) {
-                pageName = `admin/${id}/${subpage}`;
+        if (role === 2) {
+            if (id) {
+                if (subpage) {
+                    pageName = `admin/${id}/${subpage}`;
+                }
+                else {
+                    pageName = `admin/${id}`;
+                }
             }
             else {
-                pageName = `admin/${id}`;
+                pageName = `admin`
             }
         }
-        else {
-            pageName = `admin`
-        }
+        else
+            pageName = "blank"
     }
     else {
         if (id) {

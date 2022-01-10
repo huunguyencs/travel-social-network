@@ -62,9 +62,10 @@ const modalListStyles = makeStyles((theme) => ({
         marginTop: "25px",
         marginLeft: "25px",
     },
-    fullname: {
+    fullnameWrap: {
         marginTop: "30px",
-        width: "60%",
+    },
+    fullname: {
         fontSize: "20px",
         cursor: "pointer",
         "&:hover": {

@@ -93,12 +93,11 @@ export default function UserList(props) {
             <ul>
                 {listUser.map((user) => (
                     <li button className={classes.modal_body_user} key={user._id}>
-
                         <div className={classes.avatar}>
                             <Avatar alt="avatar" src={user.avatar} />
                         </div>
-                        <div className={classes.fullname}>
-                            <Link to={`/profile/${user._id}`} onClick={handleClose}>{user.fullname}</Link>
+                        <div className={classes.fullnameWrap}>
+                            <Link to={`/profile/${user._id}`} onClick={handleClose} className={classes.fullname}>{user.fullname}</Link>
                         </div>
                         <div>
                             {

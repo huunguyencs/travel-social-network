@@ -33,8 +33,8 @@ import { logout } from "../../redux/callApi/authCall";
 
 export default function Header(props) {
 
-    const { auth } = useSelector(state => state);
-    const user = auth.user;
+    const { user } = useSelector(state => state.auth);
+    // const user = auth.user;
     const dispatch = useDispatch();
     const history = useHistory();
 
@@ -96,7 +96,7 @@ export default function Header(props) {
                 </div>
                 <div className={classes.icons}>
                     {
-                        auth.token ? (
+                        user ? (
                             <>
                                 <div className={classes.user}>
                                     <Button className={classes.button} onClick={handleToggleUser} controls={toggleMenuUser ? "user-menu" : undefined}>
@@ -124,6 +124,7 @@ export default function Header(props) {
                                             <ClickAwayListener onClickAway={handleCloseUser}>
                                                 <Paper>
                                                     <MenuList autoFocusItem={Boolean(toggleMenuUser)} id="user-menu">
+                                                        {user.role === 2 && <MenuItem aria-label="admin" onClick={handleCloseUser} component={Link} to={'/admin'}>Trang quản trị</MenuItem>}
                                                         <MenuItem aria-label="profile" component={Link} to={`/profile/${user._id}/`} onClick={handleCloseUser}>Trang cá nhân</MenuItem>
                                                         <MenuItem aria-label="change-info" onClick={handleCloseUser} component={Link} to={'/change_info'}>Thay đổi thông tin</MenuItem>
                                                         <MenuItem aria-label="log-out" onClick={handleLogout}>Đăng xuất</MenuItem>
