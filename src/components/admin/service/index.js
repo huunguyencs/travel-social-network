@@ -30,7 +30,7 @@ import FilterListIcon from '@material-ui/icons/FilterList';
 
 
 import { Link } from "react-router-dom";
-import { Edit, MoreVert } from "@material-ui/icons";
+import { AddBusiness, AddIcCall, Edit, MoreVert } from "@material-ui/icons";
 
 import TextField from '@material-ui/core/TextField';
 import Autocomplete, { createFilterOptions } from '@material-ui/lab/Autocomplete';
@@ -75,24 +75,24 @@ const useStyles = makeStyles((theme) => ({
     },
 }))
 
-function createData(id, name, email, phone, action) {
-    return { id, name, email, phone, action };
+function createData(name, provided, piece, type, action) {
+    return { name, provided, piece, type, action };
 }
 
 const rows = [
-    createData('Cupcake', 'Triệu Tấn Hùng', 'test@gmail.com', '0376608773'),
-    createData('Donut', 'Triệu Tấn Hùng', 'test@gmail.com', '0376608773'),
-    createData('Eclair', 'Triệu Tấn Hùng', 'test@gmail.com', '0376608773'),
-    createData('Frozen yoghurt', 'Triệu Tấn Hùng', 'test@gmail.com', '0376608773'),
-    createData('Gingerbread', 'Triệu Tấn Hùng', 'test@gmail.com', '0376608773'),
-    createData('Honeycomb', 'Triệu Tấn Hùng', 'test@gmail.com', '0376608773'),
-    createData('Ice cream sandwich', 'Triệu Tấn Hùng', 'test@gmail.com', '0376608773'),
-    createData('Jelly Bean', 'Triệu Tấn Hùng', 'test@gmail.com', '0376608773'),
-    createData('KitKat', 'Triệu Tấn Hùng', 'test@gmail.com', '0376608773'),
-    createData('Lollipop', 'Triệu Tấn Hùng', 'test@gmail.com', '0376608773'),
-    createData('Marshmallow', 'Triệu Tấn Hùng', 'test@gmail.com', '0376608773'),
-    createData('Nougat', 'Triệu Tấn Hùng', 'test@gmail.com', '0376608773'),
-    createData('Oreo', 'Triệu Tấn Hùng', 'test@gmail.com', '0376608773'),
+    createData('Cupcake', 'Triệu Tấn Hùng', '100.000', 'Ăn uống'),
+    createData('Donut', 'Triệu Tấn Hùng', '1.400.000', 'Di chuyển'),
+    createData('Eclair', 'Triệu Tấn Hùng', '1.000.000', 'Ăn uống'),
+    createData('Frozen yoghurt', 'Triệu Tấn Hùng', '40.000.000', 'Di chuyển'),
+    createData('Gingerbread', 'Triệu Tấn Hùng', '5.000.000', 'Khách sạn'),
+    createData('Honeycomb', 'Triệu Tấn Hùng', '1.000.000', 'Ăn uống'),
+    createData('Ice cream sandwich', 'Triệu Tấn Hùng', '30.000.000', 'Khách sạn'),
+    createData('Jelly Bean', 'Triệu Tấn Hùng', '80.000.000', 'Di chuyển'),
+    createData('KitKat', 'Triệu Tấn Hùng', '700.000', 'Ăn uống'),
+    createData('Lollipop', 'Triệu Tấn Hùng', '10.000.000', 'Khách sạn'),
+    createData('Marshmallow', 'Triệu Tấn Hùng', '2.000.000', 'Khách sạn'),
+    createData('Nougat', 'Triệu Tấn Hùng', '8.000.000', 'Di chuyển'),
+    createData('Oreo', 'Triệu Tấn Hùng', '3.000.000', 'Khách sạn'),
 ];
 
 function descendingComparator(a, b, orderBy) {
@@ -122,11 +122,11 @@ function stableSort(array, comparator) {
 }
 
 const headCells = [
-    { id: 'id', numeric: false, disablePadding: true, label: 'Tên Tài khoản' },
-    { id: 'name', numeric: false, disablePadding: true, label: 'Họ và tên' },
-    { id: 'email', numeric: false, disablePadding: true, label: 'Email' },
-    { id: 'phone', numeric: false, disablePadding: true, label: 'Số điện thoại' },
-    { id: 'birthday', numeric: false, disablePadding: true, label: '' },
+    { id: 'name', numeric: false, disablePadding: true, label: 'Tên dịch vụ' },
+    { id: 'provided', numeric: false, disablePadding: true, label: 'Nhà cung cấp' },
+    { id: 'piece', numeric: false, disablePadding: true, label: 'Giá dịch vụ (VNĐ)' },
+    { id: 'type', numeric: false, disablePadding: true, label: 'Loại hình dịch vụ' },
+    { id: 'action', numeric: false, disablePadding: true, label: 'Xem chi tiết' },
 ];
 
 function EnhancedTableHead(props) {
@@ -364,16 +364,32 @@ function AdminServices(props) {
         <Container className={classes.container} style={{ marginTop: "160px" }}>
             <div className={classes.appBarSpacer} />
 
-            <div className={classes.admin_location_header}
-                style={{
-                    display: "flex",
-                    paddingLeft: "50px",
-                }}
-            >
-                <Typography variant="h4" gutterBottom>
-                    100 Người dùng
-                </Typography>
-            </div>
+            <div
+        className={classes.admin_location_header}
+        style={{
+          display: "flex",
+          flexDirection: "row",
+          justifyContent: "space-between",
+          paddingLeft: "20px",
+          paddingRight: "20px",
+        }}
+      >
+        <div className={classes.admin_location_header_left}>
+          <Typography variant="h4">100 Dịch vụ</Typography>
+        </div>
+        <div className={classes.admin_location_header_right}>
+          <Button
+            variant="contained"
+            style={{
+              backgroundColor: "#179250",
+              borderRadius: "10px",
+            }}
+          >
+            <AddIcCall></AddIcCall>
+            <Typography>Hợp tác</Typography>
+          </Button>
+        </div>
+      </div>
 
             <div className={classes.admin_location_body}>
                 <div className={classes.tableContainer}>
@@ -420,11 +436,11 @@ function AdminServices(props) {
                                                             />
                                                         </TableCell>
                                                         <TableCell component="th" id={labelId} scope="row" padding="none">
-                                                            {row.id}
+                                                            {row.name}
                                                         </TableCell>
-                                                        <TableCell align="left">{row.name}</TableCell>
-                                                        <TableCell align="left">{row.email}</TableCell>
-                                                        <TableCell align="left">{row.phone}</TableCell>
+                                                        <TableCell align="left">{row.provided}</TableCell>
+                                                        <TableCell align="left">{row.piece}</TableCell>
+                                                        <TableCell align="left">{row.type}</TableCell>
                                                         <TableCell align="left"><Button component={Link} to="/"><Edit></Edit></Button></TableCell>
                                                     </TableRow>
                                                 );
