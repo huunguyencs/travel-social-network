@@ -5,6 +5,7 @@ const cors = require('cors');
 
 const cookieParser = require('cookie-parser');
 const SocketServer = require('./socketServer');
+const { request } = require('http');
 
 
 const app = express();
@@ -40,7 +41,7 @@ app.use('/location', require('./Routers/location.router'));
 app.use('/province', require('./Routers/province.router'));
 app.use('/service', require('./Routers/service.router'));
 app.use('/event', require('./Routers/event.router'));
-
+app.use('/notify',require('./Routers/notify.router'));
 
 
 //connect MongoDB

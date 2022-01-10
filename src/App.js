@@ -16,6 +16,8 @@ import { io } from 'socket.io-client';
 import SocketClient from "./SocketClient";
 import * as SOCKET_TYPES from './redux/constants/index';
 
+import {getNotifies} from './redux/callApi/notifyCall';
+
 function App() {
   const location = useLocation();
   const history = useHistory();
@@ -29,18 +31,30 @@ function App() {
       return false;
     return true;
   }
-  useEffect(() => {
-    if (!auth.token) {
-      dispatch(refreshToken(() => {
-        // if (location.pathname !== "/login" && location.pathname !== "/register")
-        //   history.push("/login");
-      }));
-      const socket = io();
-      dispatch({ type: SOCKET_TYPES.SOCKET, payload: socket });
-      return () => socket.close();
+  useEffect(()=>{
+    dispatch(refreshToken(()=>{}));
+    const socket = io()
+    dispatch({type: SOCKET_TYPES.SOCKET, payload: socket})
+    return () => socket.close()
+  },[dispatch])
 
+  useEffect(() => {
+    if(auth.token) {
+      dispatch(getNotifies(auth.token))
     }
-  }, [dispatch, history, location.pathname, auth.token])
+  }, [dispatch, auth.token])
+  // useEffect(() => {
+  //   if (!auth.token) {
+  //     dispatch(refreshToken(() => {
+  //       // if (location.pathname !== "/login" && location.pathname !== "/register")
+  //       //   history.push("/login");
+  //     }));
+  //     const socket = io();
+  //     dispatch({ type: SOCKET_TYPES.SOCKET, payload: socket });
+  //     return () => socket.close();
+
+  //   }
+  // }, [dispatch, history, location.pathname, auth.token])
 
   return (
     <div>

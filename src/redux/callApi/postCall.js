@@ -3,7 +3,7 @@ import * as postAction from '../actions/postAction';
 import * as tourAction from '../actions/tourAction';
 import * as imageUtils from '../../utils/uploadImage';
 import customAxios from '../../utils/fetchData';
-
+import {createNotify, deleteNotify} from './notifyCall';
 
 export const getPosts = (token) => async (dispatch) => {
     // dispatch(postAction.getPosts({ posts: [] }));
@@ -101,7 +101,7 @@ export const getPostById = (id, next) => async (dispatch) => {
 
 }
 
-export const createPost = (data, token, type, next, error) => async (dispatch) => {
+export const createPost = (data, token, type,socket, next, error) => async (dispatch) => {
     // post api
     try {
 
@@ -124,6 +124,18 @@ export const createPost = (data, token, type, next, error) => async (dispatch) =
 
         // console.log(res.data);
         dispatch(postAction.addPost({ post: res.data.newPost }))
+        
+        //notify
+        const dataNotify = {
+            id: res.data.newPost._id,
+            text: "add a new post",
+            recipients: res.data.newPost.userId.followers,
+            content: res.data.newPost.content,
+            image: image.length >0? image[0]: "empty",
+            url: `/post/${res.data.newPost._id}`,
+        }
+        dispatch(createNotify(dataNotify,token,socket));
+       
         next();
     }
     catch (err) {
@@ -131,7 +143,7 @@ export const createPost = (data, token, type, next, error) => async (dispatch) =
     }
 }
 
-export const updatePost = (data, token, next, error) => async (dispatch) => {
+export const updatePost = (data, token,socket, next, error) => async (dispatch) => {
 
     try {
         // call api to update post
@@ -159,11 +171,13 @@ export const updatePost = (data, token, next, error) => async (dispatch) => {
 }
 
 
-export const deletePost = (id, token, next, error) => async (dispatch) => {
+export const deletePost = (id, token,socket, next, error) => async (dispatch) => {
 
     try {
         await customAxios(token).delete(`/post/${id}`);
         dispatch(postAction.deletePost({ id: id }));
+
+        dispatch(deleteNotify(id, token,socket));
         next();
     }
     catch (err) {

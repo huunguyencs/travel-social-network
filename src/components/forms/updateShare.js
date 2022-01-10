@@ -16,7 +16,7 @@ export default function ShareUpdateForm(props) {
     const dispatch = useDispatch();
 
 
-    const { auth } = useSelector(state => state);
+    const { auth,socket } = useSelector(state => state);
     const [state, setState] = useState({
         loading: false,
         error: false,
@@ -40,7 +40,7 @@ export default function ShareUpdateForm(props) {
         })
 
         if (type === "post") {
-            dispatch(updatePost(object._id, { content: text, images: [], hashtags: ht }, auth.token, () => {
+            dispatch(updatePost(object._id, { content: text, images: [], hashtags: ht }, auth.token,socket, () => {
                 setState({
                     loading: false,
                     error: false

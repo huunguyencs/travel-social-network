@@ -19,3 +19,10 @@ export const callFail = (props) => {
         payload: props,
     }
 }
+
+export const getNotifies = (props) =>{
+    return{
+        type: NOTIFY_TYPES.GET_NOTIFIES,
+        payload: props,
+    }
+}

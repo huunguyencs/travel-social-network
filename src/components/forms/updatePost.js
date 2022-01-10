@@ -20,7 +20,7 @@ export default function UpdatePostForm(props) {
         error: false
     })
 
-    const { auth } = useSelector(state => state);
+    const { auth,socket } = useSelector(state => state);
 
     const [imageUpload, setImageUpload] = useState(post.images);
 
@@ -71,7 +71,7 @@ export default function UpdatePostForm(props) {
                 loading: true,
                 error: false
             })
-            dispatch(updatePost({ id: post._id, content: text, images: imageUpload, hashtags: ht }, auth.token, () => {
+            dispatch(updatePost({ id: post._id, content: text, images: imageUpload, hashtags: ht }, auth.token,socket, () => {
                 setState({
                     loading: false,
                     error: false,

@@ -19,21 +19,22 @@ import {
     Search,
     Notifications,
     WhatsApp,
-    Cancel
+    Cancel,
+    FiberManualRecord
 } from "@material-ui/icons";
 import { Link, useHistory } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 
 import { headerStyles } from "../../style";
 import { logout } from "../../redux/callApi/authCall";
-
+import { timeAgo } from '../../utils/date';
 
 
 
 
 export default function Header(props) {
 
-    const { auth } = useSelector(state => state);
+    const { auth, notify1 } = useSelector(state => state);
     const user = auth.user;
     const dispatch = useDispatch();
     const history = useHistory();
@@ -134,7 +135,7 @@ export default function Header(props) {
                                     </Popper>
                                 </div>
                                 <IconButton className={classes.badge} aria-label="notifications" onClick={handleToggleNoti}>
-                                    <Badge badgeContent={2} color="secondary">
+                                    <Badge badgeContent={notify1.data.length} color="secondary">
                                         <Notifications />
                                     </Badge>
                                     <Popper
@@ -151,17 +152,30 @@ export default function Header(props) {
                                     //     horizontal: "center",
                                     // }}
                                     >
-                                        <Grow
-                                            className={classes.grow}
-                                        >
+                                        <Grow className={classes.grow} >
 
                                             <ClickAwayListener onClickAway={handleCloseNoti}>
                                                 <Paper className={classes.paperNoti}>
                                                     <MenuList>
-                                                        <MenuItem>Thông báo 1</MenuItem>
-                                                        <MenuItem>Thông báo 2</MenuItem>
-                                                        <MenuItem>Thông báo 3</MenuItem>
-                                                        <MenuItem>Thông báo 4</MenuItem>
+                                                    {notify1.data.map((item)=>(
+                                                        
+                                                        <MenuItem component={Link} to={`${item.url}`}  >
+                                                            <Avatar className={classes.avatar} alt="avatar" src={item.user.avatar} />
+                                                            
+                                                            <div style={{}}>
+                                                                <div style={{display:"flex", alignItems:"center"}}>
+                                                                    <strong style={{marginRight:"5px"}}>Huy</strong>
+                                                                    <p>{item.text} : {item.content} </p>
+                                                                </div>
+                                                                <div style={{}}>
+                                                                    <strong style={{color:"#a5dec8"}}>{timeAgo(new Date(item.createdAt))}</strong>
+                                                                </div>
+                                                            </div>
+                                                            {
+                                                                !item.seen &&  <FiberManualRecord style={{color:"#a5dec8"}}/>
+                                                            }
+                                                        </MenuItem>
+                                                    ))}
                                                     </MenuList>
                                                 </Paper>
                                             </ClickAwayListener>

@@ -52,7 +52,8 @@ class PostController {
                     userId: {
                         fullname: req.user.fullname,
                         _id: req.user._id,
-                        avatar: req.user.avatar
+                        avatar: req.user.avatar,
+                        followers: req.user.followers
                     }
                 }
             })

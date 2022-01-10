@@ -8,6 +8,7 @@ import user from './userReducer';
 import post from './postReducer';
 import tour from './tourReducer';
 import socket from './socketReducer';
+import notify1 from './notify1Reducer';
 const rootReducer = combineReducers({
     post,
     createTour,
@@ -16,7 +17,8 @@ const rootReducer = combineReducers({
     auth,
     socket,
     user,
-    tour
+    tour,
+    notify1
 });
 
 export default rootReducer;

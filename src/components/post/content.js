@@ -26,7 +26,7 @@ function Header(props) {
 
     const dispatch = useDispatch();
 
-    const { auth } = useSelector(state => state);
+    const { auth,socket } = useSelector(state => state);
 
     const [anchorEl, setAnchorEl] = useState(null);
     const [showEdit, setShowEdit] = useState(false);
@@ -54,7 +54,7 @@ function Header(props) {
             loading: true,
             error: false,
         })
-        dispatch(deletePost(post._id, auth.token, () => {
+        dispatch(deletePost(post._id, auth.token,socket, () => {
             setState({
                 loading: false,
                 error: false

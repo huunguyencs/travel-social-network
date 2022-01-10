@@ -16,7 +16,7 @@ export default function CreateReviewForm(props) {
 
     const dispatch = useDispatch();
     const history = useHistory();
-    const { auth } = useSelector(state => state);
+    const { auth,socket } = useSelector(state => state);
     const { location, handleClose, tourDateId, indexLocation } = props;
     const [state, setState] = useState({
         loading: false,
@@ -79,6 +79,7 @@ export default function CreateReviewForm(props) {
         },
             auth.token,
             "review",
+            socket,
             () => {
                 setState({
                     loading: false,

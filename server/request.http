@@ -148,39 +148,18 @@
 #     "image": "url"
 # }
 
-
-POST http://localhost:5000/service/create_service
-Content-Type: application/json
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjYxOTRiNmViMTQxNDk5YzUyZmJiMzg1NCIsImlhdCI6MTYzNzEzODc5NH0.jape8JJwSftn6hdlwHDNyVIymh5NXTcuRTRpF8bZjpg
- 
-{
-    "name":"KS",
-    "description":"kh test",
-    "price": 2000,
-    "type": "KS",
-    "locationId": "619602ef550c059fe6afff2e",
-    "rate": [
-        {
-            "userId":"6194b6eb141499c52fbb3854",
-            "rate":4,
-            "content": "good"
-        }
-    ],
-    "images": ["url","url1"]
-}
-
-# POST http://localhost:5000/location/create_location
+# POST http://localhost:5000/user/login
 # Content-Type: application/json
-# Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjYxOTRiNmViMTQxNDk5YzUyZmJiMzg1NCIsImlhdCI6MTYzNzEzODc5NH0.jape8JJwSftn6hdlwHDNyVIymh5NXTcuRTRpF8bZjpg
- 
+
 # {
-#     "name":"Lys sonw",
-#     "information":"lys son test",
-#     "position": {
-#         "longitude":"123",
-#         "latitude": "1234"
-#     },
-#     "province": "619600972be868ebb7179ea9",
-#     "images": ["url","url1"]
+#     "email": "huy@gmail.com",
+#     "password": "Huytran0207"
 # }
+
+
+Get http://localhost:5000/notify/get_notifies
+Content-Type: application/json
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjYxY2U3NzM0YmI5ZmIxNTIwZjQxNTcyYyIsImlhdCI6MTY0MTc4NzA4M30.YfU96tQ_6UDCH5kclxexDvQPShf6N0Gvgvn11mlvrnM
+ 
+
 

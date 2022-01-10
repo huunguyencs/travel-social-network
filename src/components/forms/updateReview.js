@@ -16,7 +16,7 @@ export default function UpdateReviewForm(props) {
 
     const [change, setChange] = useState(false);
     const dispatch = useDispatch();
-    const { auth } = useSelector(state => state);
+    const { auth,socket } = useSelector(state => state);
     const { review, handleClose } = props;
     const [state, setState] = useState({
         loading: false,
@@ -96,6 +96,7 @@ export default function UpdateReviewForm(props) {
             locationId: review.locationId._id
         },
             auth.token,
+            socket,
             () => {
                 setState({
                     loading: false,
