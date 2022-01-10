@@ -28,7 +28,7 @@ class  NotifyController{
             await Notifies.findOneAndDelete({ id: req.params.id });
             
             res.json({
-                success: true, message: "Delete Notify success"
+                success: true, message: "Delete Notify success", id: req.params.id
             });
         } catch (err) {
             console.log(err)
@@ -44,6 +44,23 @@ class  NotifyController{
                 message: "Get notifies success",
                 notifies
             });
+        } catch (err) {
+            console.log(err)
+            res.status(500).json({ success: false, message: err.message })
+        }
+    }
+
+    async isSeenNotify (req, res){
+        try {
+            const notify = await Notifies.findOneAndUpdate({_id: req.params.id}, {
+                seen: true
+            }, { new: true })
+
+            return res.json({
+                success: true, 
+                message: "Is Seen notify success",
+                notify
+            })
         } catch (err) {
             console.log(err)
             res.status(500).json({ success: false, message: err.message })

@@ -66,7 +66,25 @@ const SocketServer = (socket) => {
         }
     })
 
-    //likeComment
+    //create notify
+    socket.on('createNotify', data=>{
+        const clients = users.filter(user => data.recipients.includes(user.id))
+        if( clients.length >0){
+            clients.forEach(user => {
+                socket.to(user.socketId).emit('createNotifyToClient', data)
+            })
+        }
+    })
+
+    //delete notify 
+    socket.on('deleteNotify',data=>{
+        const clients = users.filter(user => data.recipients.includes(user.id))
+        if( clients.length >0){
+            clients.forEach(user => {
+                socket.to(user.socketId).emit('deleteNotifyToClient', data)
+            })
+        }
+    })
 }
 
 module.exports = SocketServer;

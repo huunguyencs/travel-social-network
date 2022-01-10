@@ -13,7 +13,7 @@ router.post('/create_notify', auth, NotifyController.createNotify);
 router.get('/get_notifies', auth, NotifyController.getNotifies);
 router.delete('/:id', auth, NotifyController.deleteNotify);
 
-// router.patch('/:id/like', auth, PostController.likePost);
+router.patch('/isSeenNotify/:id', auth, NotifyController.isSeenNotify)
 // router.patch('/:id/unlike', auth, PostController.unlikePost);
 
 

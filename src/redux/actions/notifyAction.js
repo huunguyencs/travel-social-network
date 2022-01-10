@@ -26,3 +26,24 @@ export const getNotifies = (props) =>{
         payload: props,
     }
 }
+
+export const updateNotify = (props) =>{
+    return{
+        type: NOTIFY_TYPES.UPDATE_NOTIFY,
+        payload: props,
+    }
+}
+
+export const createNotify = (props)=>{
+    return{
+        type: NOTIFY_TYPES.CREATE_NOTIFY,
+        payload: props
+    }
+}
+
+export const deleteNotify = (props)=>{
+    return{
+        type: NOTIFY_TYPES.DELETE_NOTIFY,
+        payload: props
+    }
+}

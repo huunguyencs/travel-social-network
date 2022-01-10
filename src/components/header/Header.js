@@ -28,8 +28,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { headerStyles } from "../../style";
 import { logout } from "../../redux/callApi/authCall";
 import { timeAgo } from '../../utils/date';
-
-
+import {isSeenNotify} from '../../redux/callApi/notifyCall';
 
 
 export default function Header(props) {
@@ -73,7 +72,9 @@ export default function Header(props) {
         // setSearch("");
         // console.log(search);
     }
-
+    const handleIsRead = (msg) => {
+        dispatch(isSeenNotify(msg, auth.token))
+    }
     return (
         <AppBar style={{ zIndex: 1 }}>
             <Toolbar className={classes.toolbar}>
@@ -159,13 +160,13 @@ export default function Header(props) {
                                                     <MenuList>
                                                     {notify1.data.map((item)=>(
                                                         
-                                                        <MenuItem component={Link} to={`${item.url}`}  >
+                                                        <MenuItem component={Link} to={`${item.url}`}  onClick={() => handleIsRead(item)}  >
                                                             <Avatar className={classes.avatar} alt="avatar" src={item.user.avatar} />
                                                             
                                                             <div style={{}}>
                                                                 <div style={{display:"flex", alignItems:"center"}}>
                                                                     <strong style={{marginRight:"5px"}}>Huy</strong>
-                                                                    <p>{item.text} : {item.content} </p>
+                                                                    <p>{item.text} : {item.content.length > 20 ? item.content.slice(0,20) : item.content} </p>
                                                                 </div>
                                                                 <div style={{}}>
                                                                     <strong style={{color:"#a5dec8"}}>{timeAgo(new Date(item.createdAt))}</strong>

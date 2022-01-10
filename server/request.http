@@ -157,9 +157,11 @@
 # }
 
 
-Get http://localhost:5000/notify/get_notifies
+PATCH http://localhost:5000/notify/isSeenNotify/61dbb08dbeadaee625163460
 Content-Type: application/json
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjYxY2U3NzM0YmI5ZmIxNTIwZjQxNTcyYyIsImlhdCI6MTY0MTc4NzA4M30.YfU96tQ_6UDCH5kclxexDvQPShf6N0Gvgvn11mlvrnM
- 
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjYxY2U3NzM0YmI5ZmIxNTIwZjQxNTcyYyIsImlhdCI6MTY0MTgyMzM4OX0.26o9oGX_dJXJkpPYZbMdhEaAxG8DcNC-Dxhdx0tVuB4
+
+
+
 
 

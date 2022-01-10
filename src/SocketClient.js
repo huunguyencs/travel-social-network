@@ -5,7 +5,7 @@ import * as commentAction from './redux/actions/commentAction';
 import * as authAction from './redux/actions/authAction';
 import * as userAction from './redux/actions/userAction';
 import * as tourAction from './redux/actions/tourAction';
-
+import * as notifyAction from './redux/actions/notifyAction';
 const SocketClient = () => {
     const { auth, socket } = useSelector(state => state);
     const dispatch = useDispatch();
@@ -101,6 +101,19 @@ const SocketClient = () => {
         return () => socket.off('unfollowToClient');
     }, [socket, dispatch])
 
+    //create notify
+    useEffect(()=>{
+        socket.on('createNotifyToClient', data=>{
+            dispatch(notifyAction.createNotify(data));
+        })
+    },[socket,dispatch])
+
+    //delete notify 
+    useEffect(()=>{
+        socket.on('deleteNotifyToClient', data=>{
+            dispatch(notifyAction.deleteNotify(data));
+        })
+    },[socket,dispatch])
     return <></>
 }
 
