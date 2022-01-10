@@ -4,37 +4,6 @@ const TourDates = require('../Models/tourDate.model');
 const Locations = require('../Models/location.model')
 
 class PostController {
-
-    async updateRate(inc, rate, locationId) {
-        switch (parseInt(rate)) {
-            case 1:
-                await Locations.findByIdAndUpdate(locationId, {
-                    $inc: { "star.0": inc }
-                }, { new: true })
-                break;
-            case 2:
-                await Locations.findByIdAndUpdate(locationId, {
-                    $inc: { "star.1": inc }
-                }, { new: true })
-                break;
-            case 3:
-                await Locations.findByIdAndUpdate(locationId, {
-                    $inc: { "star.2": inc }
-                }, { new: true })
-                break;
-            case 4:
-                await Locations.findByIdAndUpdate(locationId, {
-                    $inc: { "star.3": inc }
-                }, { new: true })
-                break;
-            case 5:
-                await Locations.findByIdAndUpdate(locationId, {
-                    $inc: { "star.4": inc }
-                }, { new: true })
-                break;
-        }
-    }
-
     //co hai loai post
     async createPost(req, res) {
         try {
@@ -430,8 +399,6 @@ class PostController {
             res.status(500).json({ success: false, message: err.message })
         }
     }
-
-
 
 }
 

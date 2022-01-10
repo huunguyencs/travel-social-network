@@ -14,14 +14,14 @@ export const getUser = (id, user, callback) => async (dispatch) => {
                 dispatch(userAction.getUserInfo({ user: res.data.user })
                 )
             }).catch(err => {
-                console.log(err.response.status);
+                // console.log(err.response.status);
                 if (err.response.status === 404)
                     callback();
             });
         }
     }
     catch (err) {
-        console.log(err);
+        // console.log(err);
         // console.log(err.response.data.message);
         if (err.response && err.response.data && err.response.data.message)
             dispatch(alertAction.error({ message: err.response.data.message }))

@@ -79,7 +79,7 @@ export const logout = (data) => async (dispatch) => {
 export const follow = (token, userId, socket, next) => async (dispatch) => {
     try {
         await customAxios(token).put(`/user/${userId}/follow`).then(res => {
-            console.log(res.data);
+            // console.log(res.data);
             dispatch(authAction.updateFollowing({ followings: res.data.followings }))
             dispatch(userAction.updateFollower({ followers: res.data.followers }))
             socket.emit('follow', { id: userId, followers: res.data.followers, followings: res.data.followings })
