@@ -5,12 +5,13 @@ import Tour from "../tour/Tour";
 import { feedStyles } from "../../style";
 import CreateTourForm from "../forms/createTour";
 import { useSelector, useDispatch } from "react-redux";
-import { getTours } from "../../redux/callApi/tourCall"
+import { getTours, getUserTour } from "../../redux/callApi/tourCall"
 
 
 
 export default function FeedTour(props) {
 
+    const { id } = props;
     const dispatch = useDispatch();
     const { auth, tour } = useSelector(state => state);
 
@@ -18,44 +19,14 @@ export default function FeedTour(props) {
 
     const [show, setShow] = useState(false);
 
-    const handleShow = () => {
-        setShow(true)
-    }
-
-    const handleClose = () => {
-        setShow(false);
-    }
-
     const tryAgain = () => {
+
         dispatch(getTours());
     }
 
     return (
         <div className={classes.container}>
             <div className={classes.content}>
-                <div className={classes.createTourContainer}>
-                    <Button className={classes.createTour} onClick={handleShow} disabled={!auth.token}>
-                        Lên lịch trình ngay!
-                    </Button>
-                    <Modal
-                        aria-labelledby="transition-modal-title"
-                        aria-describedby="transition-modal-description"
-                        className={classes.modal}
-                        open={show}
-                        onClose={handleClose}
-                        closeAfterTransition
-                        BackdropComponent={Backdrop}
-                        BackdropProps={{
-                            timeout: 500,
-                        }}
-                    >
-                        <Fade in={show}>
-                            <CreateTourForm handleClose={handleClose} />
-                        </Fade>
-                    </Modal>
-                </div>
-
-
                 <div className={classes.feedContent}>
                     {
                         tour.loading ?

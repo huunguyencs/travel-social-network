@@ -38,21 +38,21 @@ export const deletePost = (props) => {
 
 export const loading = (props) => {
     return {
-        type: POST_TYPES.LOADING,
+        type: POST_TYPES.LOADING_POST,
         payload: props,
     }
 }
 
 export const error = (props) => {
     return {
-        type: POST_TYPES.ERROR,
+        type: POST_TYPES.ERROR_POST,
         payload: props,
     }
 }
 
 export const updateLike = (props) => {
     return {
-        type: POST_TYPES.UPDATE_LIKE,
+        type: POST_TYPES.UPDATE_LIKE_POST,
         payload: props,
     }
 }

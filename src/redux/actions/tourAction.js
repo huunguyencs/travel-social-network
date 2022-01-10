@@ -30,21 +30,21 @@ export const deleteTour = (props) => {
 
 export const loading = (props) => {
     return {
-        type: TOUR_TYPES.LOADING,
+        type: TOUR_TYPES.LOADING_TOUR,
         payload: props,
     }
 }
 
 export const error = (props) => {
     return {
-        type: TOUR_TYPES.ERROR,
+        type: TOUR_TYPES.ERROR_TOUR,
         payload: props,
     }
 }
 
 export const updateLike = (props) => {
     return {
-        type: TOUR_TYPES.UPDATE_LIKE,
+        type: TOUR_TYPES.UPDATE_LIKE_TOUR,
         payload: props,
     }
 }

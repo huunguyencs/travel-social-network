@@ -51,9 +51,12 @@ function App() {
       {displayHeader() && <Header />}
       {auth.token && <SocketClient />}
       <Route path="/" component={HomePage} exact />
-      <CustomRouter path='/:page' component={() => PageRender(auth.user?.role)} exact />
+      <CustomRouter path='/:page' component={PageRender} exact />
+      <CustomRouter path='/:page/:id' component={PageRender} exact />
+      <CustomRouter path='/:page/:id/:subpage' component={PageRender} exact />
+      {/* <CustomRouter path='/:page' component={() => PageRender(auth.user?.role)} exact />
       <CustomRouter path='/:page/:id' component={() => PageRender(auth.user?.role)} exact />
-      <CustomRouter path='/:page/:id/:subpage' component={() => PageRender(auth.user?.role)} exact />
+      <CustomRouter path='/:page/:id/:subpage' component={() => PageRender(auth.user?.role)} exact /> */}
     </div>
 
   );

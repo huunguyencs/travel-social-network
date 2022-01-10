@@ -18,6 +18,7 @@ import { getTours } from "../../redux/callApi/tourCall";
 export default function TourPage(props) {
 
     const classes = useStyles();
+
     const dispatch = useDispatch();
 
     useEffect(() => {
@@ -26,12 +27,11 @@ export default function TourPage(props) {
 
     useEffect(() => {
         document.title = "Hành trình | GOGO";
-    }, [])
+    })
 
 
     return (
         <>
-
             <Grid container style={{ margin: 0, padding: 0 }}>
                 <SpeedDialButton />
                 {/* <Grid item md={12} xs={12}>

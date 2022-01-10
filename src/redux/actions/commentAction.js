@@ -4,42 +4,42 @@ import * as TOUR_TYPES from '../constants/tourConstant';
 
 export const updateCommentPost = (props) => {
     return {
-        type: POST_TYPES.UPDATE_COMMENT,
+        type: POST_TYPES.UPDATE_COMMENT_POST,
         payload: props
     }
 }
 
 export const updateCommentTour = (props) => {
     return {
-        type: TOUR_TYPES.UPDATE_COMMENT,
+        type: TOUR_TYPES.UPDATE_COMMENT_TOUR,
         payload: props,
     }
 }
 
 export const addCommentPost = (props) => {
     return {
-        type: POST_TYPES.ADD_COMMENT,
+        type: POST_TYPES.ADD_COMMENT_POST,
         payload: props,
     }
 }
 
 export const addCommentTour = (props) => {
     return {
-        type: TOUR_TYPES.ADD_COMMENT,
+        type: TOUR_TYPES.ADD_COMMENT_TOUR,
         payload: props,
     }
 }
 
 export const deleteCommentPost = (props) => {
     return {
-        type: POST_TYPES.DELETE_COMMENT,
+        type: POST_TYPES.DELETE_COMMENT_POST,
         payload: props
     }
 }
 
 export const deleteCommentTour = (props) => {
     return {
-        type: TOUR_TYPES.DELETE_COMMENT,
+        type: TOUR_TYPES.DELETE_COMMENT_TOUR,
         payload: props
     }
 }

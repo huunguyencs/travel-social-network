@@ -4,18 +4,17 @@ import * as imageUtils from '../../utils/uploadImage';
 import * as alertAction from '../actions/alertAction'
 
 export const getTours = (data) => async (dispatch) => {
-    dispatch(tourAction.getTours({ tour: [] }));
     dispatch(tourAction.loading());
+    // console.log(dispatch)
     try {
 
         const res = await customAxios().get("/tour/tours");
-
-        dispatch(tourAction.getTours({ tour: res.data.tours }));
+        console.log(res.data.tours)
+        dispatch(tourAction.getTours({ tours: res.data.tours }));
     }
     catch (err) {
         // console.log(err);
-        dispatch(tourAction.error({ error: "Lỗi" }))
-
+        dispatch(tourAction.error({ error: "Có lỗi xảy ra" }))
     }
 }
 
@@ -25,7 +24,7 @@ export const getUserTour = (id, token) => async (dispatch) => {
     try {
         const res = await customAxios(token).get(`/tour/user_tours/${id}`);
         // console.log(res.data.tours);
-        dispatch(tourAction.getTours({ tour: res.data.tours }))
+        dispatch(tourAction.getTours({ tours: res.data.tours }))
     }
     catch (err) {
         dispatch(tourAction.error({ error: "Có lỗi xảy ra" }))

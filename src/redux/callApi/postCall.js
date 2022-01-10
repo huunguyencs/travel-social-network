@@ -11,9 +11,11 @@ export const getPosts = (token) => async (dispatch) => {
 
     try {
         // call api to get post list
-        const res = await customAxios().get("post/posts");
+        const res = await customAxios().get("/post/posts");
 
         // console.log(res);
+
+        // console.log(res.data.posts)
 
         dispatch(postAction.getPosts({ posts: res.data.posts }));
     }

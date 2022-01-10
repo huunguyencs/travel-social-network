@@ -18,7 +18,7 @@ export default function CreatePostForm(props) {
     const history = useHistory();
     const [state, setState] = useState({
         loading: false,
-        error: false
+        error: null
     })
 
     const { auth } = useSelector(state => state);
@@ -63,19 +63,19 @@ export default function CreatePostForm(props) {
         if (text !== '' || imageUpload.length > 0 || ht.length > 0) {
             setState({
                 loading: true,
-                error: false
+                error: null
             })
             dispatch(createPost({ content: text, images: imageUpload, hashtags: ht }, auth.token, "post", () => {
                 setState({
                     loading: false,
-                    error: false,
+                    error: null,
                 })
                 props.handleClose();
                 history.push("/");
-            }, () => {
+            }, (err) => {
                 setState({
                     loading: false,
-                    error: true
+                    error: err
                 })
             }));
 
@@ -154,6 +154,12 @@ export default function CreatePostForm(props) {
 
                         </div>
                     </form>
+                    {state.error &&
+                        <div className={classes.error}>
+                            <Typography color="inherit">{state.error}</Typography>
+                        </div>
+                    }
+
                     <div
                         className={classes.imageInputContainer}
                     >

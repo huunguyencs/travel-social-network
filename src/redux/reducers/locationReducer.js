@@ -17,14 +17,14 @@ const locationReducer = (state = INIT_STATE, action) => {
                 provinces: action.payload.provinces
             }
         }
-        case LOC_TYPES.LOADING: { // loading danh sach dia diem hot
+        case LOC_TYPES.LOADING_LOCATION: { // loading danh sach dia diem hot
             return {
                 ...state,
                 loading: true,
                 error: null,
             }
         }
-        case LOC_TYPES.ERROR: { // loi trong load danh sach dia diem hot
+        case LOC_TYPES.ERROR_LOCATION: { // loi trong load danh sach dia diem hot
             return {
                 ...state,
                 loading: false,

@@ -13,13 +13,18 @@ import {
     MenuItem,
     ClickAwayListener,
     Badge,
-    Paper
+    Paper,
+    ListItemIcon
 } from "@material-ui/core";
 import {
     Search,
     Notifications,
     WhatsApp,
-    Cancel
+    Cancel,
+    AccountCircle,
+    Update,
+    ExitToApp,
+    SupervisorAccount
 } from "@material-ui/icons";
 import { Link, useHistory } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
@@ -124,10 +129,31 @@ export default function Header(props) {
                                             <ClickAwayListener onClickAway={handleCloseUser}>
                                                 <Paper>
                                                     <MenuList autoFocusItem={Boolean(toggleMenuUser)} id="user-menu">
-                                                        {user.role === 2 && <MenuItem aria-label="admin" onClick={handleCloseUser} component={Link} to={'/admin'}>Trang quản trị</MenuItem>}
-                                                        <MenuItem aria-label="profile" component={Link} to={`/profile/${user._id}/`} onClick={handleCloseUser}>Trang cá nhân</MenuItem>
-                                                        <MenuItem aria-label="change-info" onClick={handleCloseUser} component={Link} to={'/change_info'}>Thay đổi thông tin</MenuItem>
-                                                        <MenuItem aria-label="log-out" onClick={handleLogout}>Đăng xuất</MenuItem>
+                                                        {user.role === 2 &&
+                                                            <MenuItem aria-label="admin" onClick={handleCloseUser} component={Link} to={'/admin'}>
+                                                                <ListItemIcon>
+                                                                    <SupervisorAccount fontSize="small" />
+                                                                </ListItemIcon>
+                                                                <Typography variant="inherit">Trang quản trị</Typography>
+                                                            </MenuItem>}
+                                                        <MenuItem aria-label="profile" component={Link} to={`/profile/${user._id}/`} onClick={handleCloseUser}>
+                                                            <ListItemIcon>
+                                                                <AccountCircle fontSize="small" />
+                                                            </ListItemIcon>
+                                                            <Typography variant="inherit">Trang cá nhân</Typography>
+                                                        </MenuItem>
+                                                        <MenuItem aria-label="change-info" onClick={handleCloseUser} component={Link} to={'/change_info'}>
+                                                            <ListItemIcon>
+                                                                <Update fontSize="small" />
+                                                            </ListItemIcon>
+                                                            <Typography variant="inherit">Thay đổi thông tin</Typography>
+                                                        </MenuItem>
+                                                        <MenuItem aria-label="log-out" onClick={handleLogout}>
+                                                            <ListItemIcon>
+                                                                <ExitToApp fontSize="small" />
+                                                            </ListItemIcon>
+                                                            <Typography variant="inherit">Đăng xuất</Typography>
+                                                        </MenuItem>
                                                     </MenuList>
                                                 </Paper>
                                             </ClickAwayListener>

@@ -20,21 +20,21 @@ const PageRender = (role) => {
     var pageName = "";
 
     if (page === "admin") {
-        if (role === 2) {
-            if (id) {
-                if (subpage) {
-                    pageName = `admin/${id}/${subpage}`;
-                }
-                else {
-                    pageName = `admin/${id}`;
-                }
-            }
-            else {
-                pageName = `admin`
-            }
-        }
-        else
-            pageName = "blank"
+        // if (role === 2) {
+        //     if (id) {
+        //         if (subpage) {
+        //             pageName = `admin/${id}/${subpage}`;
+        //         }
+        //         else {
+        //             pageName = `admin/${id}`;
+        //         }
+        //     }
+        //     else {
+        //         pageName = `admin`
+        //     }
+        // }
+        // else
+        pageName = "blank"
     }
     else {
         if (id) {

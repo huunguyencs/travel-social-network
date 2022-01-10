@@ -9,7 +9,7 @@ const INIT_STATE = {
 
 const alertReducer = (state = INIT_STATE, action) => {
     switch (action.type) {
-        case ALERT_TYPES.LOADING: { // bat dau goi api
+        case ALERT_TYPES.LOADING_NOTIFY: { // bat dau goi api
             return {
                 ...state,
                 loading: true,
@@ -18,7 +18,7 @@ const alertReducer = (state = INIT_STATE, action) => {
                 message: "",
             }
         }
-        case ALERT_TYPES.SUCCESS: {
+        case ALERT_TYPES.SUCCESS_NOTIFY: {
             return {
                 ...state,
                 loading: false,
@@ -27,7 +27,7 @@ const alertReducer = (state = INIT_STATE, action) => {
                 message: action.payload.message,
             }
         }
-        case ALERT_TYPES.ERROR: {
+        case ALERT_TYPES.ERROR_NOTIFY: {
             return {
                 ...state,
                 loading: false,
@@ -36,7 +36,7 @@ const alertReducer = (state = INIT_STATE, action) => {
                 message: action.payload.message,
             }
         }
-        case ALERT_TYPES.RESET: {
+        case ALERT_TYPES.RESET_NOTIFY: {
             return INIT_STATE
         }
         default: {

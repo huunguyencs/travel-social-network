@@ -92,6 +92,12 @@ const formStyles = makeStyles((theme) => ({
         display: 'flex',
         alignItems: 'center',
         justifyContent: 'center'
+    },
+    error: {
+        display: 'flex',
+        justifyContent: 'center',
+        color: 'red',
+        marginTop: 10
     }
 }))
 

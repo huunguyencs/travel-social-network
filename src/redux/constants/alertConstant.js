@@ -1,4 +1,4 @@
-export const LOADING = "LOADING";
-export const SUCCESS = "SUCCESS";
-export const ERROR = "ERROR";
-export const RESET = "RESET"
+export const LOADING_NOTIFY = "LOADING_NOTIFY";
+export const SUCCESS_NOTIFY = "SUCCESS_NOTIFY";
+export const ERROR_NOTIFY = "ERROR_NOTIFY";
+export const RESET_NOTIFY = "RESET_NOTIFY"
