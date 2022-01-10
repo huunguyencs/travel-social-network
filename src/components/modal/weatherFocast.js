@@ -14,8 +14,8 @@ export default function WeatherFocast({ weather, handleClose, nameShow, alert })
         <Paper className={classes.weatherContainer}>
             <div className={classes.header}>
                 <div />
-                <IconButton>
-                    <Close onClick={handleClose} />
+                <IconButton onClick={handleClose} size='small'>
+                    <Close />
                 </IconButton>
             </div>
             <div style={{ marginBottom: 30 }} className={classes.center}>

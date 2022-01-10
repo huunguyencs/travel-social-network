@@ -76,6 +76,7 @@ const headerStyles = makeStyles((theme) => ({
         display: "none",
         [theme.breakpoints.down("sm")]: {
             display: (props) => (props.open ? "flex" : "none"),
+            cursor: 'pointer'
         }
     },
     button: {

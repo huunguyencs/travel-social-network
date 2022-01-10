@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { useLocation, useParams } from "react-router-dom";
-import { CircularProgress, Typography } from '@material-ui/core';
+import { Button, CircularProgress, Typography } from '@material-ui/core';
 
 import Tour from "../../components/tour/TourDetail";
 import customAxios from "../../utils/fetchData";
@@ -85,12 +85,19 @@ export default function TourDetail(props) {
         <>
             {
                 state.loading ?
-                    <CircularProgress />
+                    <div style={{ display: 'flex', justifyContent: 'center', marginTop: 150 }}>
+                        <CircularProgress />
+                    </div>
                     : state.error ?
+                        <div style={{ display: 'flex', justifyContent: 'center', marginTop: 150 }}>
+                            <>
+                                <Typography>Có lỗi xảy ra</Typography>
+                                <Button onClick={() => getTourDetail(id)}>Thử lại</Button>
+                            </>
+                        </div> :
                         state.notFound ?
                             <NotFound /> :
-                            <Typography onClick={() => getTourDetail(id)}>Có lỗi vui lòng thử lại</Typography>
-                        : tour && (edit === 'true' && isOwn ? <AddTour isUpdate={true} /> : <Tour tour={tour} isOwn={isOwn} />)
+                            tour && (edit === 'true' && isOwn ? <AddTour isUpdate={true} /> : <Tour tour={tour} isOwn={isOwn} />)
             }
         </>
     )

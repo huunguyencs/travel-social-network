@@ -81,7 +81,7 @@ function Header(props) {
                 <>
                     {
                         auth.user && auth.user._id === post.userId._id && !share && <>
-                            <IconButton aria-label="settings" onClick={handleShowMenu} className={classes.action}>
+                            <IconButton aria-label="settings" onClick={handleShowMenu} className={classes.action} size='small'>
                                 <MoreVert />
                             </IconButton>
                             <Menu

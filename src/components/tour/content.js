@@ -87,7 +87,7 @@ function ShareContent({ tour }) {
                     <>
                         {auth.user && auth.user._id === tour.userId._id &&
                             <>
-                                <IconButton aria-label="settings" onClick={handleShowMenu}>
+                                <IconButton aria-label="settings" onClick={handleShowMenu} size='small'>
                                     <MoreVert />
                                 </IconButton>
                                 <Menu
@@ -304,7 +304,7 @@ function BaseContent(props) {
                     <>
                         {auth.user && auth.user._id === tour.userId._id && !share &&
                             <>
-                                <IconButton aria-label="settings" onClick={handleShowMenu}>
+                                <IconButton aria-label="settings" onClick={handleShowMenu} size='small'>
                                     <MoreVert />
                                 </IconButton>
                                 <Menu

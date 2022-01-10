@@ -130,8 +130,8 @@ export default function Location(props) {
                             <div className={classes.tourHeader}>
                                 <div>
                                 </div>
-                                <IconButton aria-label="settings" onClick={handleShowMenu}>
-                                    <MoreVert style={{ fontSize: "20px" }} />
+                                <IconButton aria-label="settings" onClick={handleShowMenu} size="small">
+                                    <MoreVert />
                                 </IconButton>
                                 <Menu
                                     anchorEl={anchorEl}

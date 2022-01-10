@@ -90,7 +90,7 @@ export default function Header(props) {
                     <Cancel className={classes.cancel} onClick={(e) => setOpen(false)} />
                 </div>
                 <div>
-                    <IconButton onClick={(e) => setOpen(true)}>
+                    <IconButton onClick={(e) => setOpen(true)} size="small">
                         <Search className={classes.searchButton} />
                     </IconButton>
                 </div>

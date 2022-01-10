@@ -19,26 +19,6 @@ export const getTours = (data) => async (dispatch) => {
     }
 }
 
-export const getTourDetail = (id, next) => async (dispatch) => {
-    // dispatch(tourAction.loading());
-    try {
-
-        const res = await customAxios().get(`/tour/${id}`);
-
-        next(res.data.tour);
-
-        // dispatch(tourAction.getTourDetail({ tourdetail: res }));
-    }
-    catch (err) {
-        // console.log(err);
-        // dispatch(tourAction.error({ error: err.response.data.message }));
-        if (err.response && err.response.data && err.response.data.message)
-            dispatch(alertAction.error({ message: err.response.data.message }))
-        else
-            dispatch(alertAction.error({ message: "Có lỗi xảy ra" }));
-    }
-}
-
 export const getUserTour = (id, token) => async (dispatch) => {
     // dispatch(tourAction.getTours({ tour: [] }));
     dispatch(tourAction.loading())
