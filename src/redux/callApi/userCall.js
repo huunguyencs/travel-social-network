@@ -1,6 +1,7 @@
 import customAxios from '../../utils/fetchData';
 import * as authAction from '../actions/authAction';
 import * as userAction from '../actions/userAction';
+import * as alertAction from '../actions/alertAction';
 
 export const getUser = (id, user, callback) => async (dispatch) => {
     try {
@@ -22,6 +23,10 @@ export const getUser = (id, user, callback) => async (dispatch) => {
     catch (err) {
         console.log(err);
         // console.log(err.response.data.message);
+        if (err.response && err.response.data && err.response.data.message)
+            dispatch(alertAction.error({ message: err.response.data.message }))
+        else
+            dispatch(alertAction.error({ message: "Có lỗi xảy ra" }));
 
     }
 }
@@ -38,6 +43,10 @@ export const follow = (follow, token, socket, next) => async (dispatch) => {
     }
     catch (err) {
         next();
+        if (err.response && err.response.data && err.response.data.message)
+            dispatch(alertAction.error({ message: err.response.data.message }))
+        else
+            dispatch(alertAction.error({ message: "Có lỗi xảy ra" }));
     }
 }
 
@@ -53,5 +62,9 @@ export const unfollow = (follow, token, socket, next) => async (dispatch) => {
     }
     catch (err) {
         next();
+        if (err.response && err.response.data && err.response.data.message)
+            dispatch(alertAction.error({ message: err.response.data.message }))
+        else
+            dispatch(alertAction.error({ message: "Có lỗi xảy ra" }));
     }
 }

@@ -1,4 +1,3 @@
-import * as notifyAction from '../actions/notifyAction';
 import * as authAction from '../actions/authAction';
 import * as userAction from '../actions/userAction';
 import customAxios from '../../utils/fetchData';
@@ -23,22 +22,21 @@ export const login = (data, next, callback) => async (dispatch) => {
         // console.log(err);
         if (err.response && err.response.data && err.response.data.message)
             callback(err.response.data.message);
-        else callback("Lỗi")
+        else callback("Lỗi không rõ")
         // dispatch(notifyAction.callFail({ error: err.response.data.message }));
     }
 }
 
-export const register = (data, callback) => async (dispatch) => {
+export const register = (data, next, callback) => async (dispatch) => {
 
-    dispatch(notifyAction.callStart());
     try {
         // call api to register
-        const res = await customAxios().post("user/register", data);
+        await customAxios().post("user/register", data);
 
         // console.log(res);
-
+        next();
         // stop loading
-        dispatch(notifyAction.callSuccess({ message: res.data.message }));
+        // dispatch(alertAction.callSuccess({ message: res.data.message }));
     }
     catch (err) {
         // console.log(err);

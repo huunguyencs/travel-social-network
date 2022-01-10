@@ -1,39 +1,43 @@
-import * as NOTIFY_TYPES from '../constants/notifyConstant';
+import * as ALERT_TYPES from '../constants/alertConstant';
 
 const INIT_STATE = {
     loading: false,
     success: false,
-    error: null,
+    error: false,
     message: "",
 }
 
-const notifyReducer = (state = INIT_STATE, action) => {
+const alertReducer = (state = INIT_STATE, action) => {
     switch (action.type) {
-        case NOTIFY_TYPES.CALL_START: { // bat dau goi api
+        case ALERT_TYPES.LOADING: { // bat dau goi api
             return {
                 ...state,
                 loading: true,
                 success: false,
+                error: false,
                 message: "",
             }
         }
-        case NOTIFY_TYPES.CALL_SUCCESS: {
+        case ALERT_TYPES.SUCCESS: {
             return {
                 ...state,
                 loading: false,
                 success: true,
-                error: null,
+                error: false,
                 message: action.payload.message,
             }
         }
-        case NOTIFY_TYPES.CALL_FAIL: {
+        case ALERT_TYPES.ERROR: {
             return {
                 ...state,
                 loading: false,
                 success: false,
-                error: action.payload.error,
-                message: "",
+                error: true,
+                message: action.payload.message,
             }
+        }
+        case ALERT_TYPES.RESET: {
+            return INIT_STATE
         }
         default: {
             return state
@@ -41,4 +45,4 @@ const notifyReducer = (state = INIT_STATE, action) => {
     }
 }
 
-export default notifyReducer;
+export default alertReducer;

@@ -5,7 +5,7 @@ import Button from '@material-ui/core/Button/Button';
 import { Link, useHistory } from "react-router-dom";
 
 import Validator, { nonSpace, username, validatePassword, validatePhoneNumber } from "../utils/validator";
-import { useDispatch, useSelector } from "react-redux";
+import { useDispatch } from "react-redux";
 import { CircularProgress } from "@material-ui/core";
 import { register } from "../redux/callApi/authCall";
 
@@ -19,8 +19,8 @@ export default function Register(props) {
     const history = useHistory();
 
     const dispatch = useDispatch();
-
-    const { notify } = useSelector(state => state);
+    const [loading, setLoading] = useState(false);
+    const [errorServer, setErrorServer] = useState(null);
 
     const [state, setState] = useState({
         username: "",
@@ -35,7 +35,6 @@ export default function Register(props) {
 
     const [showPassword, setShowPassword] = useState(false);
     const [showConfirm, setShowConfirm] = useState(false);
-    const [errorServer, setErrorServer] = useState(null);
 
     const { errors } = state;
 
@@ -120,6 +119,7 @@ export default function Register(props) {
 
     useEffect(() => {
         if (state.submit) {
+            setLoading(true);
             setErrorServer(null);
             if (Object.keys(errors).length === 0) {
                 // call api to register
@@ -129,7 +129,11 @@ export default function Register(props) {
                     password: state.password.trim(),
                     email: state.email,
                     phone: state.phone,
+                }, () => {
+                    setLoading(false);
+                    history.push('/login');
                 }, (err) => {
+                    setLoading(false);
                     setErrorServer(err);
                 }))
             }
@@ -138,7 +142,7 @@ export default function Register(props) {
                 submit: false,
             })
         }
-    }, [errors, state, dispatch])
+    }, [errors, state, dispatch, history])
 
     useEffect(() => {
         document.title = "Đăng kí";
@@ -153,13 +157,6 @@ export default function Register(props) {
     const handleClickShowConfirm = () => {
         setShowConfirm(state => !state);
     }
-
-
-    useEffect(() => {
-        if (notify.success) {
-            history.push("/login");
-        }
-    })
 
     return (
         <div className="login">
@@ -304,7 +301,7 @@ export default function Register(props) {
                             type="submit"
                             className="login-button"
                         >
-                            {notify.loading ?
+                            {loading ?
                                 <CircularProgress size="25px" color="white" />
                                 : "Đăng ký"
                             }

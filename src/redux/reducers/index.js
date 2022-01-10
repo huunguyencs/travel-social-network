@@ -1,7 +1,7 @@
 import { combineReducers } from 'redux';
 
 import createTour from './createTourReducer';
-import notify from './notifyReducer';
+import alert from './alertReducer';
 import location from './locationReducer';
 import auth from './authReducer';
 import user from './userReducer';
@@ -11,7 +11,7 @@ import socket from './socketReducer';
 const rootReducer = combineReducers({
     post,
     createTour,
-    notify,
+    alert,
     location,
     auth,
     socket,

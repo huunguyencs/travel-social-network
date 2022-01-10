@@ -1,7 +1,7 @@
 
 import * as commentAction from '../actions/commentAction';
 import customAxios from '../../utils/fetchData';
-
+import * as alertAction from '../actions/alertAction';
 
 
 export const createComment = (id, comment, auth, type, socket, next) => async (dispatch) => {
@@ -29,33 +29,41 @@ export const createComment = (id, comment, auth, type, socket, next) => async (d
     }
     catch (err) {
         // console.log(err.response.data.message);
+        if (err.response && err.response.data && err.response.data.message)
+            dispatch(alertAction.error({ message: err.response.data.message }))
+        else
+            dispatch(alertAction.error({ message: "Có lỗi xảy ra" }));
 
     }
 }
 
-export const createCommentTour = (id, comment, auth, socket, next) => async (dispatch) => {
+// export const createCommentTour = (id, comment, auth, socket, next) => async (dispatch) => {
 
-    try {
-        // call api to update comment
-        const res = await customAxios(auth.token).post("/comment/create_comment", {
-            commentType: "tour",
-            content: comment,
-            tourId: id,
-        })
+//     try {
+//         // call api to update comment
+//         const res = await customAxios(auth.token).post("/comment/create_comment", {
+//             commentType: "tour",
+//             content: comment,
+//             tourId: id,
+//         })
 
-        const newComment = {
-            ...res.data.newComment,
-            userId: auth.user,
-        }
-        next(newComment);
-        dispatch(commentAction.addCommentTour({ id: id, comment: newComment }))
+//         const newComment = {
+//             ...res.data.newComment,
+//             userId: auth.user,
+//         }
+//         next(newComment);
+//         dispatch(commentAction.addCommentTour({ id: id, comment: newComment }))
 
-        socket.emit('createComment', { type: 'tour', id: id, comment: newComment });
-    }
-    catch (err) {
-        // console.log(err);
-    }
-}
+//         socket.emit('createComment', { type: 'tour', id: id, comment: newComment });
+//     }
+//     catch (err) {
+//         // console.log(err);
+//         if (err.response && err.response.data && err.response.data.message)
+//             dispatch(alertAction.error({ message: err.response.data.message }))
+//         else
+//             dispatch(alertAction.error({ message: "Có lỗi xảy ra" }));
+//     }
+// }
 
 export const updateCommentPost = (data) => async (dispatch) => {
 
@@ -93,6 +101,11 @@ export const likeComment = (id, auth, type, postId, socket) => async (dispatch) 
     }
     catch (err) {
         // console.log(err.response.data.message);
+        if (err.response && err.response.data && err.response.data.message)
+            dispatch(alertAction.error({ message: err.response.data.message }))
+        else
+            dispatch(alertAction.error({ message: "Có lỗi xảy ra" }));
+
     }
 }
 
@@ -116,6 +129,10 @@ export const unlikeComment = (id, auth, type, postId, socket) => async (dispatch
     }
     catch (err) {
         // console.log(err.response.data.message);
+        if (err.response && err.response.data && err.response.data.message)
+            dispatch(alertAction.error({ message: err.response.data.message }))
+        else
+            dispatch(alertAction.error({ message: "Có lỗi xảy ra" }));
     }
 }
 

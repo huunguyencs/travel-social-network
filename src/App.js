@@ -15,6 +15,7 @@ import { refreshToken } from "./redux/callApi/authCall";
 import { io } from 'socket.io-client';
 import SocketClient from "./SocketClient";
 import * as SOCKET_TYPES from './redux/constants/index';
+import NotificationBar from "./components/alert/Alert";
 
 function App() {
   const location = useLocation();
@@ -46,6 +47,7 @@ function App() {
     <div>
       <WithRouterScroll />
       <Scroll showBelow={500} />
+      <NotificationBar />
       {displayHeader() && <Header />}
       {auth.token && <SocketClient />}
       <Route path="/" component={HomePage} exact />
