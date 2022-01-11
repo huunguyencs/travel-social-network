@@ -5,6 +5,9 @@ class  NotifyController{
     async createNotify(req,res){
         try{
             const { id, recipients, url, content, text, image } = req.body;
+            
+            if(recipients.includes(req.user._id.toString())) return;
+            
             const newNotify = new Notifies({
                id, user: req.user._id, recipients, url, content, text, image
             })
@@ -25,10 +28,10 @@ class  NotifyController{
 
     async deleteNotify(req,res){
         try {
-            await Notifies.findOneAndDelete({ id: req.params.id });
+            const notify = await Notifies.findOneAndDelete({ id: req.params.id, url: req.query.url });
             
             res.json({
-                success: true, message: "Delete Notify success", id: req.params.id
+                success: true, message: "Delete Notify success", notify
             });
         } catch (err) {
             console.log(err)
@@ -38,7 +41,7 @@ class  NotifyController{
     // lấy thông báo của 1 user(user._id)
     async getNotifies(req, res){
         try {
-            const notifies = await Notifies.find({recipients: req.user._id}).sort('createAt')
+            const notifies = await Notifies.find({recipients: req.user._id}).sort('-createdAt')
             res.json({
                 success: true, 
                 message: "Get notifies success",

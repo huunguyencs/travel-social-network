@@ -10,10 +10,11 @@ export const createNotify = (data,token,socket) => async (dispatch) => {
     }
 }
 
-export const deleteNotify = (id, token,socket) => async (dispatch) => {
+export const deleteNotify = (dataNotify, token,socket) => async (dispatch) => {
     try {
-        const res = await customAxios(token).delete(`/notify/${id}`);
-        // socket.emit('deleteNotify',res.data.id);
+        const res = await customAxios(token).delete(`/notify/${dataNotify.id}?url=${dataNotify.url}`);
+        if(res.data.notify !== null) socket.emit('deleteNotify',res.data.notify);
+
     } catch (error) {
         console.log(error);
     }

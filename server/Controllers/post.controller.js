@@ -416,7 +416,7 @@ class PostController {
             res.json({
                 success: true, message: "like post success",
                 likes: post.likes,
-                // newPost: post
+                post
             });
 
 

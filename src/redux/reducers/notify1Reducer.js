@@ -33,8 +33,9 @@ const notify1Reducer = (state = INIT_STATE, action) => {
         case NOTIFY_TYPES.DELETE_NOTIFY:
             return{
                 ...state,
-                data: state.data.filter(item => item._id !== action.payload)
+                data: state.data.filter(item => item._id !== action.payload._id)
             }
+            break;
         default:
             return state;
             break;

@@ -1,7 +1,7 @@
 
 import * as commentAction from '../actions/commentAction';
 import customAxios from '../../utils/fetchData';
-
+import {createNotify, deleteNotify} from './notifyCall';
 
 
 export const createComment = (id, comment, auth, type, socket, next) => async (dispatch) => {
@@ -20,12 +20,25 @@ export const createComment = (id, comment, auth, type, socket, next) => async (d
             ...res.data.newComment,
             userId: auth.user,
         }
-
+        
         next(newComment);
         dispatch(commentAction.addCommentPost({ id: id, comment: newComment }))
 
         socket.emit('createComment', { type: type, id: id, comment: newComment });
 
+        //lấy thông tin  post
+        const resPost = await customAxios(auth.token).get(`/post/${id}`)
+        // Notify
+        const dataNotify = {
+            id: res.data.newComment._id,
+            text: ' đã bình luận vào bài viết của bạn',
+            recipients: [resPost.data.post.userId._id],
+            url: `/post/${id}`,
+            content: resPost.data.post.content, 
+            image: resPost.data.post.images.length >0 ? resPost.data.post.images[0] : "empty"
+        }
+
+        dispatch(createNotify(dataNotify, auth.token, socket))
     }
     catch (err) {
         // console.log(err.response.data.message);
@@ -51,6 +64,8 @@ export const createCommentTour = (id, comment, auth, socket, next) => async (dis
         dispatch(commentAction.addCommentTour({ id: id, comment: newComment }))
 
         socket.emit('createComment', { type: 'tour', id: id, comment: newComment });
+
+        
     }
     catch (err) {
         // console.log(err);
@@ -119,11 +134,20 @@ export const unlikeComment = (id, auth, type, postId, socket) => async (dispatch
     }
 }
 
-export const deleteComment = (id, auth, type, postId) => async (dispatch) => {
+export const deleteComment = (id, auth, type, postId, socket) => async (dispatch) => {
     try {
         await customAxios(auth.token).delete(`/comment/${id}`);
         if (type === "post") {
             dispatch(commentAction.deleteCommentPost({ id: id, postId: postId }))
+            
+            //lấy thông tin  post
+            const resPost = await customAxios(auth.token).get(`/post/${id}`);
+            // Notify
+            const dataNotify = {
+                id: id,
+                url: `/post/${resPost.data.post._id}`,
+            }
+            dispatch(deleteNotify(dataNotify, auth.token,socket));
         }
         else if (type === "tour") {
             dispatch(commentAction.deleteCommentTour({ id: id, tourId: postId }))

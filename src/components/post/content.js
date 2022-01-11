@@ -54,7 +54,7 @@ function Header(props) {
             loading: true,
             error: false,
         })
-        dispatch(deletePost(post._id, auth.token,socket, () => {
+        dispatch(deletePost(post, auth.token,socket, () => {
             setState({
                 loading: false,
                 error: false

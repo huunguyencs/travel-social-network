@@ -67,7 +67,7 @@ export default function Post(props) {
         setLike(true);
         updateLike([...post.likes, auth.user]);
         // call api
-        dispatch(likePost(post._id, auth.token, socket, () => {
+        dispatch(likePost(post._id, auth, socket, () => {
             if (like) {
                 setLike(false);
                 let newLikes = post.likes.filter(user => user._id !== auth.user._id);
@@ -81,7 +81,7 @@ export default function Post(props) {
         let newLikes = post.likes.filter(user => user._id !== auth.user._id);
         updateLike(newLikes);
         // call api
-        dispatch(unlikePost(post._id, auth.token, socket, () => {
+        dispatch(unlikePost(post._id, auth, socket, () => {
             if (!like) {
                 setLike(true);
                 updateLike([...post.likes, auth.user]);

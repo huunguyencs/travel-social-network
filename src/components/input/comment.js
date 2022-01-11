@@ -11,7 +11,7 @@ import { createComment } from "../../redux/callApi/commentCall";
 export default function InputComment(props) {
 
     const { type, id, addComment } = props;
-
+    
     const classes = inputStyles();
     const [text, setText] = useState("");
 

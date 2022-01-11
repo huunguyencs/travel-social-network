@@ -128,7 +128,7 @@ export const createPost = (data, token, type,socket, next, error) => async (disp
         //notify
         const dataNotify = {
             id: res.data.newPost._id,
-            text: "add a new post",
+            text: " thêm bài viết mới",
             recipients: res.data.newPost.userId.followers,
             content: res.data.newPost.content,
             image: image.length >0? image[0]: "empty",
@@ -171,13 +171,18 @@ export const updatePost = (data, token,socket, next, error) => async (dispatch) 
 }
 
 
-export const deletePost = (id, token,socket, next, error) => async (dispatch) => {
+export const deletePost = (post, token,socket, next, error) => async (dispatch) => {
 
     try {
-        await customAxios(token).delete(`/post/${id}`);
-        dispatch(postAction.deletePost({ id: id }));
+        await customAxios(token).delete(`/post/${post._id}`);
+        dispatch(postAction.deletePost({ id: post._id}));
 
-        dispatch(deleteNotify(id, token,socket));
+        // Notify
+        const dataNotify = {
+            id: post._id,
+            url: `/post/${post._id}`,
+        }
+        dispatch(deleteNotify(dataNotify, token,socket));
         next();
     }
     catch (err) {
@@ -185,12 +190,24 @@ export const deletePost = (id, token,socket, next, error) => async (dispatch) =>
     }
 }
 
-export const likePost = (id, token, socket, next) => async (dispatch) => {
+export const likePost = (id, auth, socket, next) => async (dispatch) => {
 
     try {
-        const res = await customAxios(token).patch(`/post/${id}/like`);
+        const res = await customAxios(auth.token).patch(`/post/${id}/like`);
         dispatch(postAction.updateLike({ id: id, likes: res.data.likes }));
         socket.emit('like', { type: 'post', id, likes: res.data.likes });
+
+        //notify
+        const dataNotify = {
+            id: auth.user._id,
+            text: " thích bài viết của bạn",
+            recipients: [res.data.post.userId],
+            content: res.data.post.content,
+            image: res.data.post.images.length >0 ? res.data.post.images[0] : "empty",
+            url: `/post/${id}`,
+        }
+        dispatch(createNotify(dataNotify,auth.token,socket));
+
     }
     catch (err) {
         next();
@@ -198,12 +215,19 @@ export const likePost = (id, token, socket, next) => async (dispatch) => {
     }
 }
 
-export const unlikePost = (id, token, socket, next) => async (dispatch) => {
+export const unlikePost = (id, auth, socket, next) => async (dispatch) => {
 
     try {
-        const res = await customAxios(token).patch(`/post/${id}/unlike`);
+        const res = await customAxios(auth.token).patch(`/post/${id}/unlike`);
         dispatch(postAction.updateLike({ id: id, likes: res.data.likes }));
         socket.emit('unlike', { type: 'post', id, likes: res.data.likes });
+
+        // Notify
+        const dataNotify = {
+            id: auth.user._id,
+            url: `/post/${id}`
+        }
+        dispatch(deleteNotify(dataNotify, auth.token,socket));
     }
     catch (err) {
         next();

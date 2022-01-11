@@ -106,6 +106,7 @@ const SocketClient = () => {
         socket.on('createNotifyToClient', data=>{
             dispatch(notifyAction.createNotify(data));
         })
+        return () => socket.off('createNotifyToClient');
     },[socket,dispatch])
 
     //delete notify 
@@ -113,6 +114,7 @@ const SocketClient = () => {
         socket.on('deleteNotifyToClient', data=>{
             dispatch(notifyAction.deleteNotify(data));
         })
+        return () => socket.off('deleteNotifyToClient');
     },[socket,dispatch])
     return <></>
 }
