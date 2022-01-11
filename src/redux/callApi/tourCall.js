@@ -53,8 +53,8 @@ export const saveTour = (tour, image, token, next, error) => async (dispatch) =>
 
         const res = await customAxios(token).post('/tour/create_tour', data);
         next();
+        dispatch(alertAction.success({ message: "Lưu lịch trình thành công!" }))
         dispatch(tourAction.addTour({ tour: res.data.newTour }))
-
     }
     catch (err) {
         error();

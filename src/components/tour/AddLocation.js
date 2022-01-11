@@ -16,7 +16,7 @@ export default function AddLocation(props) {
 
     const dispatch = useDispatch();
     const { location } = useSelector(state => state);
-    const { currentProvince, setCurrentProvince, loc, setLoc, locations, setLocations } = props;
+    const { currentProvince, setCurrentProvince, loc, setLoc, locations, setLocations, indexDate } = props;
 
     const [state, setState] = useState({
         zoom: 8,
@@ -86,7 +86,7 @@ export default function AddLocation(props) {
     const handleSubmit = (e) => {
         e.preventDefault();
         if (loc)
-            dispatch(tourAction.addLocation({ location: loc, indexDate: props.indexDate }))
+            dispatch(tourAction.addLocation({ location: loc, indexDate: indexDate }))
     }
 
     return (

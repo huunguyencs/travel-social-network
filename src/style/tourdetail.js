@@ -21,13 +21,20 @@ const tourdetailStyles = makeStyles((theme) => ({
         marginInline: 80,
         marginTop: 20,
         marginBottom: 0,
+        [theme.breakpoints.down("md")]: {
+            marginInline: 20
+        }
     },
     timeline: {
         paddingTop: 80,
         marginTop: 80,
         position: "sticky",
         top: 0,
-        paddingBottom: 300,
+        [theme.breakpoints.down("sm")]: {
+            display: 'flex',
+            paddingTop: 0,
+            marginTop: 10,
+        }
     },
     cardContainer: {
         margin: 30,
@@ -40,7 +47,10 @@ const tourdetailStyles = makeStyles((theme) => ({
     },
     img: {
         height: "250px",
-        width: "250px",
+        width: "100%",
+        [theme.breakpoints.down("md")]: {
+            height: "100px",
+        }
     },
     contentContainer: {
         marginTop: 10,
@@ -77,20 +87,30 @@ const tourdetailStyles = makeStyles((theme) => ({
     unactiveDot: {
         color: "gray"
     },
-    addContainer: {
-        display: "flex",
-        justifyContent: "center",
-        marginBottom: 20,
+    addContainerSmall: {
+        display: "none",
+        [theme.breakpoints.down("sm")]: {
+            display: "flex",
+            justifyContent: "center",
+            margin: 20,
+        }
+    },
+    addContainerLarge: {
+        [theme.breakpoints.down("sm")]: {
+            display: "none",
+        }
     },
     tourHeader: {
         display: "flex",
-        justifyContent: "space-between",
+        justifyContent: "right",
     },
     addTour: {
-        padding: 10,
-        paddingInline: 50,
+        fontSize: 16,
+        textTransform: 'none',
+        padding: 5,
+        paddingInline: 10,
         backgroundColor: color.turquoise,
-        marginBottom: 50,
+        margin: 10,
     },
     likeIcon: {
         color: color.like,
@@ -110,9 +130,13 @@ const tourdetailStyles = makeStyles((theme) => ({
         justifyContent: 'center',
     },
     addDay: {
-        marginTop: 40,
+        marginTop: 20,
         backgroundColor: color.turquoise,
         marginLeft: 20,
+        textTransform: 'none',
+        [theme.breakpoints.down("md")]: {
+            marginLeft: 10,
+        }
     },
     itemInfo: {
         marginTop: 10,
@@ -134,7 +158,7 @@ const tourdetailStyles = makeStyles((theme) => ({
         }
     },
     imageLocation: {
-        [theme.breakpoints.down("md")]: {
+        [theme.breakpoints.down("sm")]: {
             display: "none",
         }
     },
@@ -145,13 +169,26 @@ const tourdetailStyles = makeStyles((theme) => ({
     },
     mapRight: {
         height: 500,
-        margin: 30
+        margin: 30,
+        [theme.breakpoints.down("sm")]: {
+            display: "none",
+        }
     },
     delete: {
         backgroundColor: color.red,
         "&:hover": {
             backgroundColor: color.darkred,
         }
+    },
+    paperAddService: {
+        padding: 5
+    },
+    headerService: {
+        display: 'flex',
+        justifyContent: 'right'
+    },
+    addServiceContent: {
+        padding: 20,
     }
 }))
 

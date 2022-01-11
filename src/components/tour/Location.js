@@ -124,15 +124,15 @@ export default function Location(props) {
                     </CardMedia>
 
                 </Grid>
-                <Grid item md={7}>
+                <Grid item md={7} sm={12} xs={12}>
                     <CardContent className={classes.contentContainer}>
                         {isEdit &&
-                            <div className={classes.tourHeader}>
-                                <div>
+                            <div>
+                                <div className={classes.tourHeader}>
+                                    <IconButton aria-label="settings" onClick={handleShowMenu} size="small">
+                                        <MoreVert />
+                                    </IconButton>
                                 </div>
-                                <IconButton aria-label="settings" onClick={handleShowMenu} size="small">
-                                    <MoreVert />
-                                </IconButton>
                                 <Menu
                                     anchorEl={anchorEl}
                                     open={Boolean(anchorEl)}
