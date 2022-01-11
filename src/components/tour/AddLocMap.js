@@ -105,7 +105,7 @@ function Location(props) {
                     <Paper className={classes.locationPopper}>
                         <img src={location.images[0]} alt={"Loading..."} height={200} width="100%" title={location.fullname} />
                         <div className={classes.fullnameWrap}>
-                            <Typography component={Link} to={`/location/${location.name}`}>{location.fullname.length > 28 ? location.fullname.slice(0, 28) + "..." : location.fullname}</Typography>
+                            <Typography title={location.fullname} component={Link} to={`/location/${location.name}`}>{location.fullname.length > 28 ? location.fullname.slice(0, 28) + "..." : location.fullname}</Typography>
                         </div>
                         <div style={{ marginTop: 10 }} className={classes.buttonWrap}>
                             <Button onClick={addLoc} className={classes.addButton}>Thêm địa điểm</Button>
@@ -119,11 +119,6 @@ function Location(props) {
 }
 
 export default function AddLocMap(props) {
-
-    const defaultState = {
-        zoom: 8,
-        center: { lat: 14.489055527436275, lng: 107.96608963227854 }
-    }
 
     const { locations, currentProvince, setLoc, setCurrentProvince, provinces, state, setState, indexDate } = props;
 
@@ -144,8 +139,8 @@ export default function AddLocMap(props) {
         <div style={{ height: 500, marginBlock: 20 }}>
             <GoogleMapReact
                 bootstrapURLKeys={{ key: KEY }}
-                defaultCenter={defaultState.center}
-                defaultZoom={defaultState.zoom}
+                defaultCenter={{ lat: 14.489055527436275, lng: 107.96608963227854 }}
+                defaultZoom={8}
                 center={state.center}
                 zoom={state.zoom}
             >

@@ -8,6 +8,7 @@ import DateFnsUtils from '@date-io/date-fns';
 import { profileStyles } from "../style";
 import { KeyboardDatePicker, MuiPickersUtilsProvider } from "@material-ui/pickers";
 import { useSelector } from "react-redux";
+import ChangePassword from "../components/forms/changePassword";
 
 
 function TabPanel(props) {
@@ -125,7 +126,7 @@ function ChangeInfo(props) {
                                     type="text"
                                     className="form-input"
                                 />
-                                <MuiPickersUtilsProvider utils={DateFnsUtils}>
+                                <MuiPickersUtilsProvider utils={DateFnsUtils} >
                                     <KeyboardDatePicker
                                         name="date"
                                         disableToolbar
@@ -138,9 +139,10 @@ function ChangeInfo(props) {
                                             'aria-label': 'change date',
                                         }}
                                         onChange={(e) => e}
+                                        className={classes.inputfield}
                                     />
                                 </MuiPickersUtilsProvider>
-                                <RadioGroup row aria-label="position" name="position" defaultValue="male" style={{ marginBottom: "10px" }}>
+                                <RadioGroup className={classes.inputfield} row aria-label="position" name="position" defaultValue="male">
                                     <FormControlLabel value="male" control={<Radio color="primary" />} label="Nam" />
                                     <FormControlLabel value="female" control={<Radio color="primary" />} label="Nữ" />
                                     <FormControlLabel value="other" control={<Radio color="primary" />} label="Khác" />
@@ -163,60 +165,6 @@ function ChangeInfo(props) {
     )
 }
 
-function ChangePassword(props) {
-    const classes = profileStyles();
-    return (
-        <div className={classes.change_password}>
-            <div className={classes.change_password_form}>
-                <form
-
-                    noValidate
-                    autoComplete="off"
-                >
-                    <TextField
-                        autoComplete=""
-                        label="Mật khẩu cũ"
-                        variant="outlined"
-                        name="oldPassword"
-                        className="form-input"
-                        required={true}
-                    >
-                    </TextField>
-                    <TextField
-                        autoComplete=""
-                        label="Mật khẩu mới"
-                        variant="outlined"
-                        name="newPassword"
-                        className="form-input"
-                        required={true}
-                    >
-                    </TextField>
-                    <TextField
-                        autoComplete=""
-                        label="Xác nhận mật khẩu"
-                        variant="outlined"
-                        name="confirmPassword"
-                        className="form-input"
-                        required={true}
-                    >
-                    </TextField>
-
-                    <div className="login-group">
-                        <Button
-                            variant="contained"
-                            // color="primary"
-                            type="submit"
-                            className="login-button"
-
-                        >
-                            Cập nhập
-                        </Button>
-                    </div>
-                </form>
-            </div>
-        </div>
-    )
-}
 
 export default function Change_info(props) {
     const classes = profileStyles();

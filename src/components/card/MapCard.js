@@ -47,7 +47,7 @@ function MapLocation(props) {
                     <Paper className={classes.locationPopper}>
                         <img src={location.images[0]} alt={"Loading..."} height={200} width="100%" title={location.fullname} />
                         <div className={classes.center}>
-                            <Typography component={Link} to={`/location/${location.name}`}>{location.fullname.length > 28 ? location.fullname.slice(0, 28) + "..." : location.fullname}</Typography>
+                            <Typography title={location.fullname} component={Link} to={`/location/${location.name}`}>{location.fullname.length > 28 ? location.fullname.slice(0, 28) + "..." : location.fullname}</Typography>
                         </div>
                     </Paper>
                 </ClickAwayListener>
@@ -94,12 +94,10 @@ export default function MapCard(props) {
                 position &&
                 <GoogleMapReact
                     bootstrapURLKeys={{ key: KEY }}
-                    defaultCenter={{
-                        lat: position.lat,
-                        lng: position.lon
-                    }}
-                    defaultZoom={zoom}
+                    defaultCenter={{ lat: 14.489055527436275, lng: 107.96608963227854 }}
+                    defaultZoom={8}
                     center={center}
+                    zoom={zoom}
                 // onGoogleApiLoaded={({ map, maps }) => renderMarkers(map, maps)}
                 >
                     {locations && locations.map((item) => (

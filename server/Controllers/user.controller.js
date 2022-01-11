@@ -114,6 +114,30 @@ class UserController {
         }
     }
 
+    async changePassword(req, res) {
+        try {
+            const { oldPassword, newPassword } = req.body;
+            const user = await Users.findById(req.user._id);
+            if (!user) {
+                res.status(404).json({ success: false, message: "Không tìm thấy user!" })
+            }
+            const passwordValid = await bcrypt.compare(oldPassword, user.password)
+            if (passwordValid) {
+                const passwordHash = await bcrypt.hash(newPassword, 12);
+                await Users.findOneAndUpdate({ _id: user._id }, {
+                    password: passwordHash
+                })
+                res.json({ success: true, message: "Cập nhật mật khẩu thành công!" })
+            }
+            else {
+                res.status(400).json({ success: false, message: "Sai mật khẩu cũ!" })
+            }
+        }
+        catch (err) {
+            res.status(500).json({ success: false, message: err.message })
+        }
+    }
+
     async changeAvatar(req, res) {
         try {
             const { avatar } = req.body

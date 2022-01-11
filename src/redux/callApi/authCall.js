@@ -1,6 +1,7 @@
 import * as authAction from '../actions/authAction';
 import * as userAction from '../actions/userAction';
 import customAxios from '../../utils/fetchData';
+import * as alertAction from '../actions/alertAction';
 
 
 export const login = (data, next, callback) => async (dispatch) => {
@@ -108,5 +109,19 @@ export const unfollow = (token, userId, socket, next) => async (dispatch) => {
     }
     catch (err) {
         next();
+    }
+}
+
+export const changePassword = (token, data, next, error) => async (dispatch) => {
+    try {
+        await customAxios(token).patch('/user/change_password', data);
+        dispatch(alertAction.success({ message: "Cập nhật mật khẩu thành công" }))
+        next();
+    }
+    catch (err) {
+        if (err.response && err.response.data && err.response.data.message) {
+            error(err.response.data.message);
+        }
+        else error("Có lỗi xảy ra")
     }
 }

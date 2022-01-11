@@ -21,6 +21,8 @@ export default function Register(props) {
     const dispatch = useDispatch();
     const [loading, setLoading] = useState(false);
     const [errorServer, setErrorServer] = useState(null);
+    const [submit, setSubmit] = useState(false);
+    const [errors, setErrors] = useState({});
 
     const [state, setState] = useState({
         username: "",
@@ -29,14 +31,11 @@ export default function Register(props) {
         phone: "",
         password: "",
         confirmPassword: "",
-        errors: {},
-        submit: false,
     });
 
     const [showPassword, setShowPassword] = useState(false);
     const [showConfirm, setShowConfirm] = useState(false);
 
-    const { errors } = state;
 
     const confirmPass = (value, field, sta) => value === sta[field];
 
@@ -103,22 +102,22 @@ export default function Register(props) {
     const handleInput = e => {
         setState({
             ...state,
-            errors: {},
             [e.target.name]: e.target.value,
+        })
+        setErrors({
+            ...errors,
+            [e.target.name]: null
         })
     }
 
     const handleSubmit = e => {
         e.preventDefault();
-        setState({
-            ...state,
-            submit: true,
-            errors: validator.validate(state)
-        })
+        setSubmit(true);
+        setErrors(validator.validate(state));
     }
 
     useEffect(() => {
-        if (state.submit) {
+        if (submit) {
             setLoading(true);
             setErrorServer(null);
             if (Object.keys(errors).length === 0) {
@@ -137,12 +136,12 @@ export default function Register(props) {
                     setErrorServer(err);
                 }))
             }
-            setState({
-                ...state,
-                submit: false,
-            })
+            else {
+                setLoading(false);
+            }
+            setSubmit(false);
         }
-    }, [errors, state, dispatch, history])
+    }, [errors, state, submit, dispatch, history])
 
     useEffect(() => {
         document.title = "Đăng kí";
@@ -236,6 +235,7 @@ export default function Register(props) {
                                         aria-label="toggle password visibility"
                                         onClick={handleClickShowPassword}
                                         edge="end"
+                                        size="small"
                                     >
                                         {showPassword ? <Visibility /> : <VisibilityOff />}
                                     </IconButton>
@@ -261,6 +261,7 @@ export default function Register(props) {
                                         aria-label="toggle password visibility"
                                         onClick={handleClickShowConfirm}
                                         edge="end"
+                                        size="small"
                                     >
                                         {showConfirm ? <Visibility /> : <VisibilityOff />}
                                     </IconButton>
@@ -302,7 +303,7 @@ export default function Register(props) {
                             className="login-button"
                         >
                             {loading ?
-                                <CircularProgress size="25px" color="white" />
+                                <CircularProgress size="25px" style={{ color: "white" }} />
                                 : "Đăng ký"
                             }
 
