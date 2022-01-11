@@ -177,6 +177,9 @@ export default function AddTour(props) {
         }
     }, [dispatch, location.provinces])
 
+    const handleShowUpdateInfo = () => {
+        setShowChangeInfo(true);
+    }
 
 
     const classes = tourdetailStyles();
@@ -206,7 +209,7 @@ export default function AddTour(props) {
                             </Typography>
                         </div>
                         <div className={classes.itemInfo}>
-                            <Button onClick={() => setShowChangeInfo(true)}>Chỉnh sửa thông tin</Button>
+                            <Button onClick={handleShowUpdateInfo}>Chỉnh sửa thông tin</Button>
                         </div>
 
                         <Modal

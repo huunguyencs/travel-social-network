@@ -49,6 +49,14 @@ function Header(props) {
         handleCloseMenu();
     }
 
+    const handleShowDelete = () => {
+        setShowDelete(true);
+    }
+
+    const handleCloseDelete = () => {
+        setShowDelete(false);
+    }
+
     const handleDeletePost = () => {
         setState({
             loading: true,
@@ -59,7 +67,7 @@ function Header(props) {
                 loading: false,
                 error: false
             })
-            setShowDelete(false);
+            handleCloseDelete();
             handleCloseMenu();
         }, () => {
             setState({
@@ -69,6 +77,11 @@ function Header(props) {
         }));
 
     }
+
+    const handleShowEdit = () => {
+        setShowEdit(true)
+    }
+
 
     const classes = postStyles();
 
@@ -91,7 +104,7 @@ function Header(props) {
                                 disablePortal={true}
                                 MenuListProps={MenuListProps}
                             >
-                                <MenuItem onClick={() => setShowEdit(true)}>Chỉnh sửa bài viết</MenuItem>
+                                <MenuItem onClick={handleShowEdit}>Chỉnh sửa bài viết</MenuItem>
                                 <Modal
                                     aria-labelledby="transition-modal-edit"
                                     aria-describedby="transition-modal-edit-description"
@@ -108,16 +121,16 @@ function Header(props) {
                                         <UpdatePostForm post={post} handleClose={handleCloseEdit} />
                                     }
                                 </Modal>
-                                <MenuItem onClick={() => setShowDelete(true)}>Xóa bài viết</MenuItem>
+                                <MenuItem onClick={handleShowDelete}>Xóa bài viết</MenuItem>
                                 <Dialog
                                     open={showDelete}
-                                    onClose={() => setShowDelete(false)}
+                                    onClose={handleCloseDelete}
                                     aria-labelledby="show-delete-dialog"
                                     aria-describedby="show-delete-dialog-description"
                                 >
                                     <DialogTitle id="alert-dialog-title">{"Bạn có chắc chắn muốn xóa?"}</DialogTitle>
                                     <DialogActions>
-                                        <Button onClick={() => setShowDelete(false)}>
+                                        <Button onClick={handleCloseDelete}>
                                             Hủy
                                         </Button>
                                         <Button onClick={handleDeletePost}>

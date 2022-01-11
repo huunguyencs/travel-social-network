@@ -27,7 +27,24 @@ export default function ImageList(props) {
         else setHeight(495)
 
         // window.addEventListener("resize", changeHeight);
-    }, [setHeight, media1280, media920])
+    }, [setHeight, media1280, media920]);
+
+    const handleClick = (i) => {
+        setOpen(true);
+        setPictureIndex(i);
+    }
+
+    const closePress = () => {
+        setOpen(false);
+    }
+
+    const next = () => {
+        setPictureIndex((pictureIndex + 1) % imageList.length)
+    }
+
+    const prev = () => {
+        setPictureIndex((pictureIndex + imageList.length - 1) % imageList.length)
+    }
 
     return (
         <>
@@ -35,23 +52,17 @@ export default function ImageList(props) {
                 <ImageListItem
                     key={imageList[0]}
                     className={classes.imageItem}
-                    onClick={() => {
-                        setOpen(true);
-                        setPictureIndex(0);
-                    }}
+                    onClick={() => handleClick(0)}
                 >
-                    <img src={imageList[0]} alt={imageList[0]} />
+                    <img src={imageList[0]} alt={"Loading..."} />
                 </ImageListItem>
                 {imageList.length > 1 && show2Image && (
                     <ImageListItem
                         key={imageList[1]}
                         className={imageList.length > 2 ? classes.more : classes.imageItem}
-                        onClick={() => {
-                            setOpen(true);
-                            setPictureIndex(1);
-                        }}
+                        onClick={() => handleClick(1)}
                     >
-                        <img src={imageList[1]} alt={imageList[1]} />
+                        <img src={imageList[1]} alt={"Loading..."} />
                         {(imageList.length > 2) && <Typography variant="h2" className={classes.textCenter}>{imageList.length - 1}+</Typography>}
                     </ImageListItem>
                 )}
@@ -66,9 +77,9 @@ export default function ImageList(props) {
                     imageCaption={imageList[pictureIndex]}
                     nextSrcThumbnail={imageList[(pictureIndex + 1) % imageList.length]}
                     prevSrcThumbnail={imageList[(pictureIndex + imageList.length - 1) % imageList.length]}
-                    onCloseRequest={() => setOpen(false)}
-                    onMoveNextRequest={() => setPictureIndex((pictureIndex + 1) % imageList.length)}
-                    onMovePrevRequest={() => setPictureIndex((pictureIndex + imageList.length - 1) % imageList.length)}
+                    onCloseRequest={closePress}
+                    onMoveNextRequest={next}
+                    onMovePrevRequest={prev}
                 />
             )}
 

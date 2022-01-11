@@ -40,14 +40,18 @@ const modalListStyles = makeStyles((theme) => ({
         cursor: "initial",
         minHeight: "90px",
         display: "flex",
+        justifyContent: 'space-between',
         borderBottom: "1px solid #f1f1f1",
-        position: "relative",
         zIndex: 8,
-        transition: "all .15s linear"
+        transition: "all .15s linear",
+        [theme.breakpoints.down("sm")]: {
+            minHeight: "60px"
+        },
     },
     modal_body_user_button: {
         color: color.gray,
         marginTop: "27px",
+        marginRight: "25px",
         // width: "30%",
         paddingInline: "20px",
         transition: "0.2s",
@@ -55,22 +59,40 @@ const modalListStyles = makeStyles((theme) => ({
             backgroundColor: color.gray,
             color: "white",
             // border: "none",
-        }
+        },
+        [theme.breakpoints.down("sm")]: {
+            fontSize: "10px",
+            paddingInline: "5px",
+            marginTop: "17px"
+        },
     },
     avatar: {
-        width: "10%",
+        // width: "10%"
         marginTop: "25px",
         marginLeft: "25px",
+        marginRight: "25px",
+        [theme.breakpoints.down("sm")]: {
+            height: "30px",
+            width: "30px",
+            marginRight: "15px",
+            marginTop: "15px"
+        },
     },
     fullnameWrap: {
         marginTop: "30px",
+        [theme.breakpoints.down("sm")]: {
+            marginTop: "20px"
+        },
     },
     fullname: {
         fontSize: "20px",
         cursor: "pointer",
         "&:hover": {
             textDecorationLine: 'underline',
-        }
+        },
+        [theme.breakpoints.down("sm")]: {
+            fontSize: "12px",
+        },
     },
     imageList: {
         margin: 20,
@@ -103,6 +125,9 @@ const modalListStyles = makeStyles((theme) => ({
         left: "50%",
         transform: "translate(-50%, -50%)",
         color: "white",
+    },
+    userWrap: {
+        display: 'flex'
     }
 }))
 

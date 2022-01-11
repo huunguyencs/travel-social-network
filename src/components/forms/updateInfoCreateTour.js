@@ -57,6 +57,7 @@ export default function UpdateTourInfo({ name, content, hashtags, image, handleC
         handleClose();
     }
 
+
     const classes = formStyles();
 
     return (
@@ -143,9 +144,9 @@ export default function UpdateTourInfo({ name, content, hashtags, image, handleC
             >
                 {state.image &&
                     <img
-                        alt="not found"
+                        alt="Error"
                         className={classes.imageInput}
-                        onClick={() => removeImage()}
+                        onClick={removeImage}
                         src={URL.createObjectURL(state.image)}
                     />
                 }

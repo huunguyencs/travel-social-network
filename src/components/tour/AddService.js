@@ -135,6 +135,14 @@ export default function AddService(props) {
 
     const [showForm, setShowForm] = useState(false);
 
+    const handleShowForm = () => {
+        setShowForm(true);
+    }
+
+    const handleCloseForm = () => {
+        setShowForm(false);
+    }
+
     const [serviceCache, setServiceCache] = useState([]);
     const [provinceCache, setProvinceCache] = useState(null);
 
@@ -153,13 +161,13 @@ export default function AddService(props) {
                 }
             </div>
             <div style={{ marginTop: 20 }} className={classes.center}>
-                <Button onClick={() => setShowForm(true)}>Thêm dịch vụ</Button>
+                <Button onClick={handleShowForm}>Thêm dịch vụ</Button>
                 <Modal
                     aria-labelledby="transition-modal-title"
                     aria-describedby="transition-modal-description"
                     className={classes.modal}
                     open={showForm}
-                    onClose={() => setShowForm(false)}
+                    onClose={handleCloseForm}
                     closeAfterTransition
                     BackdropComponent={Backdrop}
                     BackdropProps={{
@@ -172,7 +180,7 @@ export default function AddService(props) {
                             setProvinceCache={setProvinceCache}
                             serviceCache={serviceCache}
                             setServiceCache={setServiceCache}
-                            handleClose={() => setShowForm(false)}
+                            handleClose={handleCloseForm}
                         />
                     </Fade>
                 </Modal>

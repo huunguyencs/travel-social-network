@@ -16,6 +16,7 @@ export const login = (data, next, callback) => async (dispatch) => {
 
 
         dispatch(authAction.auth({ user: res.data.user, token: res.data.accessToken }));
+        localStorage.setItem("login", true);
         next();
     }
     catch (err) {
@@ -43,31 +44,38 @@ export const register = (data, next, callback) => async (dispatch) => {
         if (err.response && err.response.data && err.response.data.message) {
             callback(err.response.data.message);
         }
-        else callback("Lỗi")
+        else callback("Lỗi không rõ")
         // dispatch(notifyAction.callFail({ error: err.response.data.message }));
     }
 }
 
-export const refreshToken = (callback) => async (dispatch) => {
-    try {
-        const res = await customAxios().post("/user/refresh_token", {}, {
-            // withCredentials: true,
-            credentials: 'include',
-            timeout: 30 * 1000
-        });
-        // console.log(res);
-        dispatch(authAction.auth({ user: res.data.user, token: res.data.accessToken }));
+export const refreshToken = (token) => async (dispatch) => {
+    const login = localStorage.getItem("login");
+    if (login && !token) {
+        try {
+            console.log("refresh");
+            const res = await customAxios().post("/user/refresh_token", {}, {
+                // withCredentials: true,
+                credentials: 'include',
+                timeout: 30 * 1000
+            });
+            // console.log(res);
+            dispatch(authAction.auth({ user: res.data.user, token: res.data.accessToken }));
+        }
+        catch (err) {
+            // console.log(err.response.data.message);
+            // callback();
+            // dispatch(notifyAction.callFail({ error: err.response.data.message }));
+        }
     }
-    catch (err) {
-        // console.log(err.response.data.message);
-        callback();
-        // dispatch(notifyAction.callFail({ error: err.response.data.message }));
-    }
+    else return;
+
 }
 
 export const logout = (data) => async (dispatch) => {
     try {
         await customAxios().post("/user/logout", data)
+        localStorage.removeItem("login")
         // console.log(res);
         dispatch(authAction.logout());
     }

@@ -31,16 +31,10 @@ function App() {
     return true;
   }
   useEffect(() => {
-    if (!auth.token) {
-      dispatch(refreshToken(() => {
-        // if (location.pathname !== "/login" && location.pathname !== "/register")
-        //   history.push("/login");
-      }));
-      const socket = io();
-      dispatch({ type: SOCKET_TYPES.SOCKET, payload: socket });
-      return () => socket.close();
-
-    }
+    dispatch(refreshToken(auth?.token));
+    const socket = io();
+    dispatch({ type: SOCKET_TYPES.SOCKET, payload: socket });
+    return () => socket.close();
   }, [dispatch, history, location.pathname, auth.token])
 
   return (
@@ -54,9 +48,6 @@ function App() {
       <CustomRouter path='/:page' component={PageRender} exact />
       <CustomRouter path='/:page/:id' component={PageRender} exact />
       <CustomRouter path='/:page/:id/:subpage' component={PageRender} exact />
-      {/* <CustomRouter path='/:page' component={() => PageRender(auth.user?.role)} exact />
-      <CustomRouter path='/:page/:id' component={() => PageRender(auth.user?.role)} exact />
-      <CustomRouter path='/:page/:id/:subpage' component={() => PageRender(auth.user?.role)} exact /> */}
     </div>
 
   );

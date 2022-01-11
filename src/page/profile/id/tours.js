@@ -8,7 +8,7 @@ import RightBar from "../../../components/rightbar/RightBar";
 import Scroll from "../../../components/scroll";
 import useStyles from "../../../style";
 import { profileMenu } from "../../../constant/menu";
-import FeedTour from "../../../components/feed/FeedTour";
+import FeedTourUser from "../../../components/feed/FeedTourUser";
 import ProfileAvatar from "../../../components/Profile/avatar";
 import SpeedDialButton from "../../../components/speedDialBtn";
 import Menu from "../../../components/leftbar/menu";
@@ -16,7 +16,7 @@ import Calendar from "../../../components/calendar";
 import FriendRecommendCard from "../../../components/card/FriendRecommend";
 import { NotFound } from "../../404";
 import { getUser } from "../../../redux/callApi/userCall";
-// import { getUserTour } from "../../../redux/callApi/tourCall";
+import { getUserTour } from "../../../redux/callApi/tourCall";
 
 
 
@@ -39,10 +39,10 @@ function ProfileTours() {
   }, [user.user, id, dispatch, auth, setNotFound])
 
   useEffect(() => {
-    // if (user.user) {
-    //   // dispatch(getUserTour(user.user._id, auth.token))
-    //   console.log(user.user)
-    // }
+    if (user.user) {
+      dispatch(getUserTour(user.user._id, auth.token))
+      // console.log(user.user)
+    }
   }, [dispatch, user.user, auth.token])
 
 
@@ -61,7 +61,7 @@ function ProfileTours() {
                 </LeftBar>
               </Grid>
               <Grid item md={6} sm={10} xs={10}>
-                <FeedTour id={id} />
+                <FeedTourUser id={id} />
               </Grid>
               <Grid item md={3} className={classes.rightbar}>
                 <RightBar>

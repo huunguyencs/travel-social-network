@@ -14,6 +14,14 @@ export default function CovidCard(props) {
 
     const classes = cardStyles();
 
+    const handleShow = () => {
+        setShow(true);
+    }
+
+    const handleClose = () => {
+        setShow(false);
+    }
+
     useEffect(() => {
         const getData = async () => {
             await fetch('https://static.pipezero.com/covid/data.json').then(res => res.json()).then(data => {
@@ -63,7 +71,7 @@ export default function CovidCard(props) {
                                 <Typography className={classes.value}>{data.death}</Typography>
                             </div>
                             <div className={classes.center}>
-                                <Button onClick={() => setShow(true)} className={classes.button}>
+                                <Button onClick={handleShow} className={classes.button}>
                                     Xem tổng quát
                                 </Button>
                             </div>
@@ -75,7 +83,7 @@ export default function CovidCard(props) {
                                 aria-describedby="transition-modal-description"
                                 className={classes.modal}
                                 open={show}
-                                onClose={() => setShow(false)}
+                                onClose={handleShow}
                                 closeAfterTransition
                                 BackdropComponent={Backdrop}
                                 BackdropProps={{
@@ -83,7 +91,7 @@ export default function CovidCard(props) {
                                 }}
                             >
                                 <Fade in={show}>
-                                    <CovidModal covid={covid} handleClose={() => setShow(false)} updateDate={updateDate} />
+                                    <CovidModal covid={covid} handleClose={handleClose} updateDate={updateDate} />
                                 </Fade>
                             </Modal>
                         </div> :

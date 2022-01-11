@@ -203,7 +203,7 @@ export default function UpdateReviewForm(props) {
                                 {imageUpload.map((item, index) =>
                                     <img
                                         key={index}
-                                        alt="not found"
+                                        alt="Error"
                                         className={classes.imageInput}
                                         onClick={() => removeImage(index)}
                                         src={URL.createObjectURL(item)}

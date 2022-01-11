@@ -120,7 +120,7 @@ export default function Location(props) {
             <Grid container>
                 <Grid item md={5} className={classes.imageLocation}>
                     <CardMedia className={classes.imgContainer}>
-                        <img src={location.location.images[0]} alt="location" className={classes.img} />
+                        <img src={location.location.images[0]} alt="Loading..." className={classes.img} />
                     </CardMedia>
 
                 </Grid>

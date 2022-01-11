@@ -76,6 +76,14 @@ function ShareContent({ tour }) {
 
     }
 
+    const handleShowEdit = () => {
+        setShowEdit(true);
+    }
+
+    const handleShowDelete = () => {
+        setShowDelete(true);
+    }
+
     const classes = postStyles();
     return (
         <>
@@ -97,7 +105,7 @@ function ShareContent({ tour }) {
                                     disablePortal={true}
                                     MenuListProps={MenuListProps}
                                 >
-                                    <MenuItem onClick={() => setShowEdit(true)}>Chỉnh sửa bài viết</MenuItem>
+                                    <MenuItem onClick={handleShowEdit}>Chỉnh sửa bài viết</MenuItem>
                                     <Modal
                                         aria-labelledby="transition-modal-edit"
                                         aria-describedby="transition-modal-edit-description"
@@ -111,7 +119,7 @@ function ShareContent({ tour }) {
                                     >
                                         <ShareUpdateForm object={tour} type={"tour"} handleClose={handleCloseEdit} />
                                     </Modal>
-                                    <MenuItem onClick={() => setShowDelete(true)}>Xóa bài viết</MenuItem>
+                                    <MenuItem onClick={handleShowDelete}>Xóa bài viết</MenuItem>
                                     <Dialog
                                         open={showDelete}
                                         onClose={handleCloseDelete}
@@ -264,6 +272,14 @@ function BaseContent(props) {
         }))
     }
 
+    const handleShowJoin = () => {
+        setOpenJoin(true);
+    }
+
+    const handleCloseJoin = () => {
+        setOpenJoin(false);
+    }
+
     const joinClick = () => {
         if (auth.user) {
             if (join) {
@@ -293,6 +309,18 @@ function BaseContent(props) {
         }))
     }
 
+    const handleShowDelete = () => {
+        setShowDelete(true);
+    }
+
+    const handleOpenImage = () => {
+        setOpen(true)
+    }
+
+    const handleCloseImage = () => {
+        setOpen(false);
+    }
+
     const [open, setOpen] = useState(false);
     return (
         <>
@@ -315,7 +343,7 @@ function BaseContent(props) {
                                     MenuListProps={MenuListProps}
                                 >
                                     <MenuItem component={Link} to={`/tour/${tour._id}?edit=true`}>Chỉnh sửa hành trình</MenuItem>
-                                    <MenuItem onClick={() => setShowDelete(true)}>Xóa hành trình</MenuItem>
+                                    <MenuItem onClick={handleShowDelete}>Xóa hành trình</MenuItem>
                                     <Dialog
                                         open={showDelete}
                                         onClose={handleCloseDelete}
@@ -352,10 +380,10 @@ function BaseContent(props) {
             />
             {tour.image !== "" &&
                 <CardMedia>
-                    <img src={tour.image} className={classes.image} width="100%" alt="Can not load" onClick={() => setOpen(true)} />
+                    <img src={tour.image} className={classes.image} width="100%" alt="Can not load" onClick={handleOpenImage} />
                     <ImageModal
                         open={open}
-                        handleClose={() => setOpen(false)}
+                        handleClose={handleCloseImage}
                         img={tour.image}
                     />
                 </CardMedia>
@@ -385,7 +413,7 @@ function BaseContent(props) {
                 </Typography>
                 <div>
                     <Typography>Thành viên tham gia:
-                        <span className={classes.numLike} onClick={() => setOpenJoin(true)} style={{ marginInline: 10 }}>
+                        <span className={classes.numLike} onClick={handleShowJoin} style={{ marginInline: 10 }}>
                             {tour.joinIds.length + 1}
                         </span>
                     </Typography>
@@ -394,7 +422,7 @@ function BaseContent(props) {
                         aria-describedby="transition-modal-description"
                         className={classes.modal}
                         open={openJoin}
-                        onClose={() => setOpenJoin(false)}
+                        onClose={handleCloseJoin}
                         closeAfterTransition
                         BackdropComponent={Backdrop}
                         BackdropProps={{
@@ -402,8 +430,8 @@ function BaseContent(props) {
                         }}
                     >
                         {auth.user && auth.user._id === tour.userId._id ?
-                            <ManageUserJoin listUser={[tour.userId, ...tour.joinIds]} updateJoin={updateJoin} tourId={tour._id} title={"Thành viên tham gia"} handleClose={() => setOpenJoin(false)} /> :
-                            <UserList listUser={[tour.userId, ...tour.joinIds]} title={"Thành viên tham gia"} handleClose={() => setOpenJoin(false)} />
+                            <ManageUserJoin listUser={[tour.userId, ...tour.joinIds]} updateJoin={updateJoin} tourId={tour._id} title={"Thành viên tham gia"} handleClose={handleCloseJoin} /> :
+                            <UserList listUser={[tour.userId, ...tour.joinIds]} title={"Thành viên tham gia"} handleClose={handleCloseJoin} />
                         }
 
                     </Modal>

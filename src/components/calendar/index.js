@@ -46,14 +46,16 @@ function Cell({ lunarDate, solarDate, solarMonth, solarYear, setContent, setDeta
     var args = lunarDate.day + "," + lunarDate.month + "," + lunarDate.year + "," + lunarDate.leap;
     args += "," + lunarDate.jd + "," + solarDate + "," + solarMonth + "," + solarYear;
 
+    const handleClick = () => {
+        setDetail(true);
+        setContent(args);
+    }
+
     return (
         <td
             className={cellClass}
             title={lunarDate && title}
-            onClick={() => {
-                setDetail(true);
-                setContent(args);
-            }}
+            onClick={handleClick}
         >
             <div className={solarClass}>
                 {solarDate}
@@ -72,33 +74,44 @@ function PrevMonthLink({ month, year, setMonth, setYear }) {
     var mm = month > 1 ? month - 1 : 12;
     var yy = month > 1 ? year : year - 1;
 
+    const handleClick = () => {
+        setMonth(mm);
+        setYear(yy);
+    }
+
     return (
-        <span className="prev-month" onClick={() => {
-            setMonth(mm);
-            setYear(yy);
-        }}>&nbsp;&lsaquo;&nbsp;</span>
+        <span className="prev-month" onClick={handleClick}>&nbsp;&lsaquo;&nbsp;</span>
     )
 }
 
 function PrevYearLink({ year, setYear }) {
-    return <span className="prev-year" onClick={() => {
+
+    const handleClick = () => {
         setYear(year - 1);
-    }}>&lsaquo;&lsaquo;</span>;
+    }
+
+    return <span className="prev-year" onClick={handleClick}>&lsaquo;&lsaquo;</span>;
 }
 
 function NextMonthLink({ month, year, setMonth, setYear }) {
     var mm = month < 12 ? month + 1 : 1;
     var yy = month < 12 ? year : year + 1;
-    return <span className="next-month" onClick={() => {
+
+    const handleClick = () => {
         setMonth(mm);
         setYear(yy);
-    }}>&nbsp;&rsaquo;&nbsp;</span>
+    }
+
+    return <span className="next-month" onClick={handleClick}>&nbsp;&rsaquo;&nbsp;</span>
 }
 
-function NextYearLink({ month, year, setYear }) {
-    return <span className="next-year" onClick={() => {
+function NextYearLink({ year, setYear }) {
+
+    const handleClick = () => {
         setYear(year + 1);
-    }}>&rsaquo;&rsaquo;</span>
+    }
+
+    return <span className="next-year" onClick={handleClick}>&rsaquo;&rsaquo;</span>
 }
 
 function Head({ month, year, setMonth, setYear }) {
@@ -139,6 +152,12 @@ function ShowDetail({ content, setDetail, setContent }) {
         setState(res);
     }, [setState, content])
 
+
+    const handleClick = () => {
+        setDetail(false);
+        setContent('');
+    }
+
     return (
         <Paper
             className={classes.paperModal}
@@ -166,10 +185,7 @@ function ShowDetail({ content, setDetail, setContent }) {
                 </div>}
             <div className={classes.buttonContainer}>
                 <Button
-                    onClick={() => {
-                        setDetail(false);
-                        setContent('');
-                    }}
+                    onClick={handleClick}
                     className={classes.button}
                 >
                     Đóng
@@ -252,6 +268,10 @@ export default function Calendar() {
     const [detail, setDetail] = useState(false);
     const [content, setContent] = useState('');
 
+    const handleClose = () => {
+        setDetail(false);
+    }
+
     const classes = calendarStyles();
 
     return (
@@ -261,7 +281,7 @@ export default function Calendar() {
             </Card>
             <Modal
                 open={detail}
-                onClose={() => setDetail(false)}
+                onClose={handleClose}
                 aria-labelledby="calendar-detail"
                 aria-describedby="calendar-detail-description"
                 className={classes.modal}

@@ -1,15 +1,14 @@
-import React, { useState } from "react";
-import { Backdrop, Button, CircularProgress, Fade, Modal, Typography } from "@material-ui/core";
+import React from "react";
+import { Button, CircularProgress, Typography } from "@material-ui/core";
 
 import Tour from "../tour/Tour";
 import { feedStyles } from "../../style";
-import CreateTourForm from "../forms/createTour";
 import { useSelector, useDispatch } from "react-redux";
-import { getTours, getUserTour } from "../../redux/callApi/tourCall"
+import { getUserTour } from "../../redux/callApi/tourCall"
 
 
 
-export default function FeedTour(props) {
+export default function FeedUserTour(props) {
 
     const { id } = props;
     const dispatch = useDispatch();
@@ -17,11 +16,12 @@ export default function FeedTour(props) {
 
     const classes = feedStyles();
 
-    const [show, setShow] = useState(false);
 
     const tryAgain = () => {
+        if (id) {
+            dispatch(getUserTour(id, auth.token))
+        }
 
-        dispatch(getTours());
     }
 
     return (
