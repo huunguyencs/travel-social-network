@@ -25,9 +25,6 @@ export default function HotPage(props) {
     return (
         <Grid container style={{ margin: 0, padding: 0 }}>
             <SpeedDialButton />
-            {/* <Grid item md={12} >
-                <Slider />
-            </Grid> */}
             <Grid item md={3} sm={2} xs={2}>
                 <LeftBar >
                     <Menu menuList={homeMenu} />

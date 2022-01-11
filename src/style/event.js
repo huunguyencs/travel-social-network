@@ -53,6 +53,9 @@ const eventStyles = makeStyles((theme) => ({
     name: {
         [theme.breakpoints.down("sm")]: {
             fontSize: 18
+        },
+        "&:hover": {
+            textDecorationLine: 'underline',
         }
     },
     province: {
@@ -70,14 +73,14 @@ const eventStyles = makeStyles((theme) => ({
         }
     },
     arrow: {
-        marginTop: 200
+        marginTop: 180
     },
     center: {
         display: 'flex',
         justifyContent: 'center'
     },
     fullname: {
-        color: color.black
+        color: color.black,
     },
     provinceName: {
         display: 'flex',

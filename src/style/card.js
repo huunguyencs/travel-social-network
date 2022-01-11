@@ -173,7 +173,7 @@ const cardStyles = makeStyles((theme) => ({
     },
     locationPopper: {
         width: 300,
-        height: 240,
+        // height: 280,
     },
     positionContainer: {
         display: "flex",
@@ -192,6 +192,19 @@ const cardStyles = makeStyles((theme) => ({
         display: 'flex',
         justifyContent: 'center',
         margin: 50
+    },
+    buttonWrap: {
+        display: 'flex',
+        justifyContent: 'center',
+        paddingBottom: 10
+    },
+    fullnameWrap: {
+        display: 'flex',
+        justifyContent: 'center',
+        paddingBottom: 10
+    },
+    addButton: {
+        backgroundColor: color.turquoise
     }
 }))
 

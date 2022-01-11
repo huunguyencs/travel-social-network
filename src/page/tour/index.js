@@ -27,16 +27,13 @@ export default function TourPage(props) {
 
     useEffect(() => {
         document.title = "Hành trình | GOGO";
-    })
+    }, [])
 
 
     return (
         <>
             <Grid container style={{ margin: 0, padding: 0 }}>
                 <SpeedDialButton />
-                {/* <Grid item md={12} xs={12}>
-                    <Slider />
-                </Grid> */}
                 <Grid item md={3} sm={2} xs={2} className={classes.leftbar}>
                     <LeftBar >
                         <Menu menuList={homeMenu} />

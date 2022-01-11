@@ -9,7 +9,7 @@ export const getTours = (data) => async (dispatch) => {
     try {
 
         const res = await customAxios().get("/tour/tours");
-        console.log(res.data.tours)
+        // console.log(res.data.tours)
         dispatch(tourAction.getTours({ tours: res.data.tours }));
     }
     catch (err) {

@@ -146,6 +146,12 @@ const tourdetailStyles = makeStyles((theme) => ({
     mapRight: {
         height: 500,
         margin: 30
+    },
+    delete: {
+        backgroundColor: color.red,
+        "&:hover": {
+            backgroundColor: color.darkred,
+        }
     }
 }))
 

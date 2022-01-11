@@ -45,7 +45,7 @@ export default function PostDetail() {
             {
                 notFound ? <NotFound /> :
                     <div>
-                        <Container style={{ height: "100vh" }}>
+                        <Container>
                             <div className={classes.center}>
                                 <div className={classes.contentWrap}>
                                     {

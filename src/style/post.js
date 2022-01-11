@@ -98,13 +98,22 @@ const postStyles = makeStyles((theme) => ({
     },
     contentWrap: {
         paddingTop: 100,
-        width: "70%"
+        width: "70%",
+        [theme.breakpoints.down("sm")]: {
+            width: "100%"
+        }
     },
     subheader: {
         cursor: "pointer",
         fontSize: '13px',
         [theme.breakpoints.down("sm")]: {
             fontSize: "10px",
+        }
+    },
+    delete: {
+        backgroundColor: color.red,
+        "&:hover": {
+            backgroundColor: color.darkred,
         }
     }
 }))

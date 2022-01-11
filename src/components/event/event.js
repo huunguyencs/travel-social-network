@@ -14,7 +14,7 @@ function LeftArrow(props) {
 
     return (
         <div disabled={isFirstItemVisible} >
-            <IconButton className={classes.arrow} onClick={scrollPrev} size="small">
+            <IconButton className={classes.arrow} onClick={() => scrollPrev()} size="small">
                 <ChevronLeft />
             </IconButton>
         </div>
@@ -30,7 +30,7 @@ function RightArrow(props) {
 
     return (
         <div disabled={isLastItemVisible} >
-            <IconButton className={classes.arrow} onClick={scrollNext} size="small">
+            <IconButton className={classes.arrow} onClick={() => scrollNext()} size="small">
                 <ChevronRight />
             </IconButton>
         </div>

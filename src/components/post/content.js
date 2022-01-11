@@ -1,4 +1,4 @@
-import { Avatar, Backdrop, Box, Button, CardContent, CardHeader, CardMedia, CircularProgress, Dialog, DialogActions, DialogTitle, IconButton, Menu, MenuItem, Modal, Typography } from '@material-ui/core';
+import { Avatar, Backdrop, Box, Button, CardContent, CardHeader, CardMedia, CircularProgress, Dialog, DialogActions, DialogContent, DialogTitle, IconButton, Menu, MenuItem, Modal, Typography } from '@material-ui/core';
 import { MoreVert } from '@material-ui/icons';
 import { Rating } from '@material-ui/lab';
 import React, { useState } from 'react'
@@ -55,6 +55,7 @@ function Header(props) {
 
     const handleCloseDelete = () => {
         setShowDelete(false);
+        handleCloseMenu();
     }
 
     const handleDeletePost = () => {
@@ -129,11 +130,12 @@ function Header(props) {
                                     aria-describedby="show-delete-dialog-description"
                                 >
                                     <DialogTitle id="alert-dialog-title">{"Bạn có chắc chắn muốn xóa?"}</DialogTitle>
+                                    <DialogContent>Bạn sẽ không thể khôi phục lại dữ liệu sau khi xóa!</DialogContent>
                                     <DialogActions>
                                         <Button onClick={handleCloseDelete}>
                                             Hủy
                                         </Button>
-                                        <Button onClick={handleDeletePost}>
+                                        <Button onClick={handleDeletePost} className={classes.delete}>
                                             {
                                                 state.loading ?
                                                     <CircularProgress size={15} /> : "Xóa"

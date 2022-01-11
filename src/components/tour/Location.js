@@ -180,7 +180,7 @@ export default function Location(props) {
                                             <Button onClick={handleCloseDelete}>
                                                 Hủy
                                             </Button>
-                                            <Button onClick={handleDeleteLocation}>
+                                            <Button onClick={handleDeleteLocation} className={classes.delete}>
                                                 Xóa
                                             </Button>
                                         </DialogActions>

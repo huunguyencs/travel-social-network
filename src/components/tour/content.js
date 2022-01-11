@@ -1,4 +1,4 @@
-import { Avatar, Backdrop, Button, CardContent, CardHeader, CardMedia, CircularProgress, Dialog, DialogActions, DialogTitle, IconButton, Menu, MenuItem, Modal, Typography } from '@material-ui/core'
+import { Avatar, Backdrop, Button, CardContent, CardHeader, CardMedia, CircularProgress, Dialog, DialogActions, DialogContent, DialogTitle, IconButton, Menu, MenuItem, Modal, Typography } from '@material-ui/core'
 import { MoreVert } from '@material-ui/icons'
 import React, { useEffect, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
@@ -127,11 +127,13 @@ function ShareContent({ tour }) {
                                         aria-describedby="show-delete-dialog-description"
                                     >
                                         <DialogTitle id="alert-dialog-title">{"Bạn có chắc chắn muốn xóa?"}</DialogTitle>
+
+                                        <DialogContent>Bạn sẽ không thể khôi phục lại dữ liệu sau khi xóa!</DialogContent>
                                         <DialogActions>
                                             <Button onClick={handleCloseDelete}>
                                                 Hủy
                                             </Button>
-                                            <Button onClick={handleDeleteTour}>
+                                            <Button onClick={handleDeleteTour} className={classes.delete}>
                                                 {
                                                     state.loading ? <CircularProgress size={15} /> : "Xóa"
                                                 }
@@ -351,11 +353,12 @@ function BaseContent(props) {
                                         aria-describedby="show-delete-dialog-description"
                                     >
                                         <DialogTitle id="alert-dialog-title">{"Bạn có chắc chắn muốn xóa?"}</DialogTitle>
+                                        <DialogContent>Bạn sẽ không thể khôi phục lại dữ liệu sau khi xóa!</DialogContent>
                                         <DialogActions>
                                             <Button onClick={handleCloseDelete}>
                                                 Hủy
                                             </Button>
-                                            <Button onClick={handleDeleteTour}>
+                                            <Button onClick={handleDeleteTour} className={classes.delete}>
                                                 {
                                                     state.loadingDelete ? <CircularProgress size={15} /> : "Xóa"
                                                 }

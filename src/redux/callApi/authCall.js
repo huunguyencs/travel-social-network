@@ -53,7 +53,7 @@ export const refreshToken = (token) => async (dispatch) => {
     const login = localStorage.getItem("login");
     if (login && !token) {
         try {
-            console.log("refresh");
+            // console.log("refresh");
             const res = await customAxios().post("/user/refresh_token", {}, {
                 // withCredentials: true,
                 credentials: 'include',

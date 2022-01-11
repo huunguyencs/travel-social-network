@@ -20,6 +20,8 @@ export default function EventItem(props) {
                     className={classes.media}
                     image={event.images[0]}
                     title={event.fullname}
+                    component={Link}
+                    to={'/event/' + event.name}
                 />
             </CardActionArea>
             <CardContent>

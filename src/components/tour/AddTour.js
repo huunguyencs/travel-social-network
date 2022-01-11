@@ -281,7 +281,7 @@ export default function AddTour(props) {
                                         <Button onClick={handleCloseDelete}>
                                             Hủy
                                         </Button>
-                                        <Button onClick={handleDeleteDate}>
+                                        <Button onClick={handleDeleteDate} className={classes.delete}>
                                             Xóa
                                         </Button>
                                     </DialogActions>
