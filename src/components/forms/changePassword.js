@@ -112,6 +112,10 @@ export default function ChangePassword(props) {
         }
     }, [errors, submit, context, dispatch, token])
 
+    useEffect(() => {
+        document.title = "Thay đổi mật khẩu";
+    }, [])
+
     return (
         <div className={classes.change_password}>
             <div className={classes.change_password_form}>

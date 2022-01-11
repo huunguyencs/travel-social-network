@@ -1,0 +1,241 @@
+import React, { useEffect, useState } from "react";
+import { TextField, Button, Radio, CircularProgress } from "@material-ui/core";
+import { PhotoCamera } from "@material-ui/icons";
+import { RadioGroup, FormControlLabel } from "@material-ui/core";
+import DateFnsUtils from '@date-io/date-fns';
+
+import Validator, { username, validatePhoneNumber } from "../../utils/validator";
+import { KeyboardDatePicker, MuiPickersUtilsProvider } from "@material-ui/pickers";
+import { useDispatch, useSelector } from "react-redux";
+import { profileStyles } from "../../style";
+import { changeInfo } from "../../redux/callApi/authCall";
+
+
+export default function ChangeInfo(props) {
+
+    const classes = profileStyles();
+
+    const { user, token } = useSelector(state => state.auth);
+
+    const [loading, setLoading] = useState(false);
+    const [submit, setSubmit] = useState(false);
+    const [errorServer, setErrorServer] = useState(null);
+    const [errors, setErrors] = useState({});
+
+    const dispatch = useDispatch();
+
+    const [context, setContext] = useState({
+        username: user.username,
+        fullname: user.fullname,
+        email: user.email,
+        phone: user.phone,
+        birthday: user.birthday,
+        gender: user.gender
+    })
+
+    useEffect(() => {
+        document.title = "Thay đổi thông tin";
+    }, []);
+
+    const rules = [
+        {
+            field: "username",
+            method: username,
+            validWhen: true,
+            message: "Tên tài khoản không hợp lệ!"
+        },
+        {
+            field: "fullname",
+            method: "isEmpty",
+            validWhen: false,
+            message: "Tên đầy đủ không được bỏ trống!"
+        },
+        {
+            field: "email",
+            method: "isEmpty",
+            validWhen: false,
+            message: "Email không được bỏ trống!"
+        },
+        {
+            field: "email",
+            method: "isEmail",
+            validWhen: true,
+            message: "Email không hợp lệ!"
+        },
+        {
+            field: "phone",
+            method: validatePhoneNumber,
+            validWhen: true,
+            message: "Số điện thoại không hợp lệ"
+        }
+    ]
+
+    const validator = new Validator(rules);
+
+    const handleInput = (e) => {
+        setContext({
+            ...context,
+            [e.target.name]: e.target.value
+        })
+        setErrors({
+            ...errors,
+            [e.target.name]: null
+        })
+    }
+
+    const handleChangeDate = (value) => {
+        setContext({
+            ...context,
+            birthday: value
+        })
+        setErrors({
+            birthday: null
+        })
+    }
+
+    const handleSubmit = e => {
+        e.preventDefault();
+        setSubmit(true);
+        setErrors(validator.validate(context));
+    }
+
+    useEffect(() => {
+        if (submit) {
+            setLoading(true);
+            setErrorServer(null);
+            if (Object.keys(errors).length === 0) {
+                dispatch(changeInfo(token, {
+                    username: context.username,
+                    fullname: context.fullname,
+                    email: context.email,
+                    phone: context.phone,
+                    birthday: context.birthday,
+                    gender: context.gender
+                }, () => {
+                    setLoading(false);
+                }, (msg) => {
+                    setLoading(false);
+                    setErrorServer(msg);
+                }))
+            }
+            else {
+                setLoading(false);
+            }
+            setSubmit(false);
+        }
+    }, [submit, errors, context, dispatch, token])
+
+    return (
+        <div className={classes.change_info}>
+            <div className={classes.change_background}>
+                <div className={classes.change_background_upload}>
+                    <input accept="image/*" style={{ display: "none" }} id="icon-button-file" type="file" />
+                    <label htmlFor="icon-button-file" style={{ cursor: 'pointer' }}>
+                        <PhotoCamera />
+                    </label>
+                </div>
+                <img className={classes.change_bg} src={user?.background} alt="cover"></img>
+            </div>
+            <div className={classes.change_wrapper}>
+                <div className={classes.change_avatar}>
+                    <div className={classes.change_avatar_upload}>
+                        <input accept="image/*" style={{ display: "none" }} id="icon-button-file" type="file" />
+                        <label htmlFor="icon-button-file" style={{ cursor: 'pointer' }}>
+                            <PhotoCamera />
+                        </label>
+                    </div>
+                    <img className={classes.change_avatar_img} src={user?.avatar} alt="avatar"></img>
+                </div>
+                <div className={classes.change_form}>
+                    <form
+                        onSubmit={handleSubmit}
+                    >
+                        <TextField
+                            value={context.username}
+                            label="Tên tài khoản"
+                            variant="outlined"
+                            name="username"
+                            className="form-input"
+                            required
+                            error={errors?.username}
+                            helperText={errors?.username}
+                            onChange={handleInput}
+                        />
+                        <TextField
+                            value={context.fullname}
+                            label="Họ và Tên"
+                            variant="outlined"
+                            name="fullname"
+                            className="form-input"
+                            required
+                            error={errors?.fullname}
+                            helperText={errors?.fullname}
+                            onChange={handleInput}
+                        />
+                        <TextField
+                            value={context.email}
+                            label="Email"
+                            variant="outlined"
+                            name="email"
+                            className="form-input"
+                            required
+                            error={errors?.email}
+                            helperText={errors?.email}
+                            onChange={handleInput}
+                        />
+                        <TextField
+                            value={context.phone}
+                            label="Số điện thoại"
+                            variant="outlined"
+                            name="phone"
+                            className="form-input"
+                            error={errors?.phone}
+                            helperText={errors?.phone}
+                            onChange={handleInput}
+                        />
+                        <MuiPickersUtilsProvider utils={DateFnsUtils} >
+                            <KeyboardDatePicker
+                                name="birthday"
+                                disableToolbar
+                                variant="inline"
+                                format="dd/MM/yyyy"
+                                margin="normal"
+                                id="birthday"
+                                label="Ngày sinh"
+                                KeyboardButtonProps={{
+                                    'aria-label': 'change date',
+                                }}
+                                onChange={handleChangeDate}
+                                error={errors?.birthday}
+                                helperText={errors?.birthday}
+                                value={context.birthday}
+                                className={classes.inputfield}
+                            />
+                        </MuiPickersUtilsProvider>
+                        <RadioGroup id="gender" className={classes.inputfield} row aria-label="gender" name="gender" value={context?.gender} onChange={handleInput}>
+                            <FormControlLabel value="male" control={<Radio color="primary" />} label="Nam" />
+                            <FormControlLabel value="female" control={<Radio color="primary" />} label="Nữ" />
+                            <FormControlLabel value="other" control={<Radio color="primary" />} label="Khác" />
+                        </RadioGroup>
+
+                        <span style={{ fontSize: "15px", color: "red", marginInline: "20px", marginTop: "10px" }}>{errorServer}</span>
+                        <div className="login-group">
+                            <Button
+                                variant="contained"
+                                // color="primary"
+                                type="submit"
+                                className="login-button"
+                            >
+                                {
+                                    loading ?
+                                        <CircularProgress size="25px" style={{ color: "white" }} />
+                                        : "Cập nhật"
+                                }
+                            </Button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    )
+}

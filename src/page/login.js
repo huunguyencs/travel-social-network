@@ -99,10 +99,10 @@ export default function Login(props) {
                     setErrorServer(err);
                 }));
             }
-            setContext({
-                ...context,
-                submit: false,
-            })
+            else {
+                setLoading(false);
+            }
+            setSubmit(false);
         }
     }, [errors, submit, dispatch, context])
 

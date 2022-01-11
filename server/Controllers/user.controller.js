@@ -124,7 +124,7 @@ class UserController {
             const passwordValid = await bcrypt.compare(oldPassword, user.password)
             if (passwordValid) {
                 const passwordHash = await bcrypt.hash(newPassword, 12);
-                await Users.findOneAndUpdate({ _id: user._id }, {
+                await Users.findByIdAndUpdate(user._id, {
                     password: passwordHash
                 })
                 res.json({ success: true, message: "Cập nhật mật khẩu thành công!" })
@@ -164,11 +164,30 @@ class UserController {
     }
     async editProfile(req, res) {
         try {
-            const { fullname, phone, address, birthday, hobbies, gender } = req.body
-            await Users.findByIdAndUpdate(req.user._id, {
-                fullname, phone, address, birthday, hobbies, gender
-            })
-            res.json({ success: true, message: "Cập nhật thông tin tài khoản thành công!" })
+            const { username, fullname, email, phone, birthday, gender } = req.body;
+
+            const user = await Users.findById(req.user.id);
+
+            if (user.username !== username) {
+                const findUsername = await Users.find({ username: username });
+                if (findUsername) {
+                    res.status(400).json({ success: false, message: "Tên tài khoản đã tồn tại!" })
+                    return;
+                }
+            }
+            if (user.email !== email) {
+                const findEmail = await Users.find({ email: email });
+                if (findEmail) {
+                    res.status(400).json({ success: false, message: "Email đã tồn tại" })
+                    return;
+                }
+            }
+
+            const newUser = await Users.findByIdAndUpdate(req.user._id, {
+                username, fullname, email, phone, birthday, gender
+            }, { new: true })
+
+            res.json({ success: true, message: "Cập nhật thông tin tài khoản thành công!", newUser })
         } catch (err) {
             console.log(err)
             res.status(500).json({ success: false, message: err.message })

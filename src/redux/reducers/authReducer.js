@@ -27,6 +27,12 @@ const authReducer = (state = INIT_STATE, action) => {
                 }
             }
         }
+        case AUTH_TYPES.UPDATE_INFO: {
+            return {
+                ...state,
+                user: action.payload.user
+            }
+        }
         default: {
             return state
         }

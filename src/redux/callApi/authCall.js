@@ -85,6 +85,7 @@ export const logout = (data) => async (dispatch) => {
     }
 }
 
+
 export const follow = (token, userId, socket, next) => async (dispatch) => {
     try {
         await customAxios(token).put(`/user/${userId}/follow`).then(res => {
@@ -115,7 +116,22 @@ export const unfollow = (token, userId, socket, next) => async (dispatch) => {
 export const changePassword = (token, data, next, error) => async (dispatch) => {
     try {
         await customAxios(token).patch('/user/change_password', data);
-        dispatch(alertAction.success({ message: "Cập nhật mật khẩu thành công" }))
+        dispatch(alertAction.success({ message: "Cập nhật mật khẩu thành công!" }))
+        next();
+    }
+    catch (err) {
+        if (err.response && err.response.data && err.response.data.message) {
+            error(err.response.data.message);
+        }
+        else error("Có lỗi xảy ra")
+    }
+}
+
+export const changeInfo = (token, data, next, error) => async (dispatch) => {
+    try {
+        const res = await customAxios(token).patch('/user/change_info', data);
+        dispatch(alertAction.success({ message: "Cập nhật thông tin thành công!" }));
+        dispatch(authAction.updateInfo({ user: res.data.newUser }))
         next();
     }
     catch (err) {

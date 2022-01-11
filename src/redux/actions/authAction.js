@@ -19,3 +19,10 @@ export const updateFollowing = (props) => {
         payload: props
     }
 }
+
+export const updateInfo = (props) => {
+    return {
+        type: AUTH_TYPES.UPDATE_INFO,
+        payload: props
+    }
+}
