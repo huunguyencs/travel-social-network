@@ -23,7 +23,7 @@ const MenuListProps = {
 
 function ShareContent({ tour }) {
 
-    const { auth } = useSelector(state => state);
+    const { auth, socket } = useSelector(state => state);
     const [state, setState] = useState({
         loading: false,
         error: false
@@ -60,7 +60,7 @@ function ShareContent({ tour }) {
             loading: true,
             error: false
         })
-        dispatch(deleteTour(tour._id, auth.token, () => {
+        dispatch(deleteTour(tour, auth.token,socket, () => {
             setState({
                 loading: false,
                 error: false
@@ -168,7 +168,7 @@ function BaseContent(props) {
 
     const { tour, setTour, share } = props;
 
-    const { auth } = useSelector(state => state);
+    const { auth, socket } = useSelector(state => state);
 
     const [anchorEl, setAnchorEl] = useState(null);
     const [showDelete, setShowDelete] = useState(false);
@@ -278,7 +278,7 @@ function BaseContent(props) {
             loadingDelete: true,
             error: false
         })
-        dispatch(deleteTour(tour._id, auth.token, () => {
+        dispatch(deleteTour(tour, auth.token,socket, () => {
             setState({
                 loadingDelete: false,
                 error: false

@@ -1,6 +1,7 @@
 import * as tourAction from '../actions/tourAction';
 import customAxios from '../../utils/fetchData';
 import * as imageUtils from '../../utils/uploadImage'
+import {createNotify, deleteNotify} from './notifyCall';
 
 export const getTours = (data) => async (dispatch) => {
     dispatch(tourAction.getTours({ tour: [] }));
@@ -48,7 +49,7 @@ export const getUserTour = (id, token) => async (dispatch) => {
     }
 }
 
-export const saveTour = (tour, image, token, next, error) => async (dispatch) => {
+export const saveTour = (tour, image, token,socket, next, error) => async (dispatch) => {
 
     try {
         // call api to save tour
@@ -70,7 +71,17 @@ export const saveTour = (tour, image, token, next, error) => async (dispatch) =>
         const res = await customAxios(token).post('/tour/create_tour', data);
         next();
         dispatch(tourAction.addTour({ tour: res.data.newTour }))
-
+       
+        //notify
+        const dataNotify = {
+            id: res.data.newTour._id,
+            text: " thêm hành trình mới",
+            recipients: res.data.newTour.userId.followers,
+            content: res.data.newTour.content,
+            image: image.length >0? image[0]: "empty",
+            url: `/tour/${res.data.newTour._id}`,
+        }
+        dispatch(createNotify(dataNotify,token,socket));
     }
     catch (err) {
         error();
@@ -111,12 +122,19 @@ export const updateTour = (id, tour, image, token, next, error) => async (dispat
     }
 }
 
-export const deleteTour = (id, token, next, error) => async (dispatch) => {
+export const deleteTour = (tour, token,socket, next, error) => async (dispatch) => {
     try {
-        // call api to delete tour
-        await customAxios(token).delete(`/tour/${id}`)
+        // Notify
+        const dataNotify = {
+            id: tour._id,
+            url: `/tour/${tour._id}`,
+            type: 'deleteTour'
+        }
+        dispatch(deleteNotify(dataNotify, token,socket));
+
+        await customAxios(token).delete(`/tour/${tour._id}`)
         next();
-        dispatch(tourAction.deleteTour({ id: id }));
+        dispatch(tourAction.deleteTour({ id: tour._id }));
     }
     catch (err) {
         // dispatch(tourAction.error({ error: err.response.data.message }));
@@ -124,29 +142,45 @@ export const deleteTour = (id, token, next, error) => async (dispatch) => {
     }
 }
 
-export const likeTour = (id, token, socket, next) => async (dispatch) => {
+export const likeTour = (id, auth, socket, next) => async (dispatch) => {
 
     try {
 
-        const res = await customAxios(token).patch(`/tour/${id}/like`)
+        const res = await customAxios(auth.token).patch(`/tour/${id}/like`)
         dispatch(tourAction.updateLike({ id: id, likes: res.data.likes }));
         // console.log(res.data.likes);
         socket.emit('like', { type: 'tour', id: id, likes: res.data.likes });
+
+        //notify
+        const dataNotify = {
+            id: auth.user._id,
+            text: " thích hành trình của bạn",
+            recipients: [res.data.tour.userId],
+            content: res.data.tour.content,
+            image: res.data.tour.image.length >0 ? res.data.tour.image[0] : "empty",
+            url: `/tour/${id}`,
+        }
+        dispatch(createNotify(dataNotify,auth.token,socket));
     }
     catch (err) {
         next();
     }
 }
 
-export const unlikeTour = (id, token, socket, next) => async (dispatch) => {
+export const unlikeTour = (id, auth, socket, next) => async (dispatch) => {
 
 
     try {
 
-        const res = await customAxios(token).patch(`/tour/${id}/unlike`);
+        const res = await customAxios(auth.token).patch(`/tour/${id}/unlike`);
         dispatch(tourAction.updateLike({ id: id, likes: res.data.likes }));
-        // console.log(res.data.likes);
         socket.emit('unlike', { type: 'tour', id: id, likes: res.data.likes });
+        // Notify
+        const dataNotify = {
+            id: auth.user._id,
+            url: `/tour/${id}`
+        }
+        dispatch(deleteNotify(dataNotify, auth.token,socket));
     }
     catch (err) {
         next();

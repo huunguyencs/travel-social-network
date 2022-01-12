@@ -66,7 +66,7 @@ export default function AddTour(props) {
     })
 
     const dispatch = useDispatch();
-    const { createTour, location, auth } = useSelector(state => state);
+    const { createTour, location, auth, socket } = useSelector(state => state);
     const [tab, setTab] = useState(0)
     const [currentProvince, setCurrentProvince] = useState(null);
     const [loc, setLoc] = useState(null);
@@ -98,7 +98,7 @@ export default function AddTour(props) {
             tour: createTour.tour,
             cost: calculateCost(createTour.services),
             services: extractService(createTour.services)
-        }, createTour.image, auth.token, () => {
+        }, createTour.image, auth.token,socket, () => {
             setState({
                 loading: false,
                 error: false

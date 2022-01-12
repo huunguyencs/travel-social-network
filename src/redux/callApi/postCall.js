@@ -174,15 +174,17 @@ export const updatePost = (data, token,socket, next, error) => async (dispatch) 
 export const deletePost = (post, token,socket, next, error) => async (dispatch) => {
 
     try {
-        await customAxios(token).delete(`/post/${post._id}`);
-        dispatch(postAction.deletePost({ id: post._id}));
-
         // Notify
         const dataNotify = {
             id: post._id,
             url: `/post/${post._id}`,
+            type: 'deletePost'
         }
         dispatch(deleteNotify(dataNotify, token,socket));
+
+        await customAxios(token).delete(`/post/${post._id}`);
+        dispatch(postAction.deletePost({ id: post._id}));
+
         next();
     }
     catch (err) {

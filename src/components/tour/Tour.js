@@ -73,7 +73,7 @@ export default function Tour(props) {
         let newLike = [...prevLike, auth.user]
         updateLike(newLike);
 
-        dispatch(likeTour(tour._id, auth.token, socket, () => {
+        dispatch(likeTour(tour._id, auth, socket, () => {
             if (like) {
                 setLike(false);
                 updateLike(prevLike);
@@ -87,7 +87,7 @@ export default function Tour(props) {
         let newLikes = prevLike.filter(user => user._id !== auth.user._id);
         updateLike(newLikes);
 
-        dispatch(unlikeTour(tour._id, auth.token, socket, () => {
+        dispatch(unlikeTour(tour._id, auth, socket, () => {
             if (!like) {
                 setLike(true);
                 updateLike(prevLike);

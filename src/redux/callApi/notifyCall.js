@@ -12,7 +12,7 @@ export const createNotify = (data,token,socket) => async (dispatch) => {
 
 export const deleteNotify = (dataNotify, token,socket) => async (dispatch) => {
     try {
-        const res = await customAxios(token).delete(`/notify/${dataNotify.id}?url=${dataNotify.url}`);
+        const res = await customAxios(token).delete(`/notify/${dataNotify.id}?url=${dataNotify.url}&type=${dataNotify.type}`);
         if(res.data.notify !== null) socket.emit('deleteNotify',res.data.notify);
 
     } catch (error) {
@@ -23,6 +23,7 @@ export const deleteNotify = (dataNotify, token,socket) => async (dispatch) => {
 export const getNotifies = (token) => async (dispatch) => {
     try {
         const res = await customAxios(token).get('/notify/get_notifies');
+        console.log(res.data);
         dispatch(notifyAction.getNotifies(res.data.notifies));
     } catch (error) {
         console.log(error);

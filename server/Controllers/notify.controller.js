@@ -1,6 +1,6 @@
 const Notifies = require('../Models/notify.model');
-
-
+const Users = require('../Models/user.model');
+const Posts = require('../Models/post.model');
 class  NotifyController{
     async createNotify(req,res){
         try{
@@ -12,11 +12,17 @@ class  NotifyController{
                id, user: req.user._id, recipients, url, content, text, image
             })
             await newNotify.save();
-
+            const user = await Users.findById(req.user._id)
             res.json({
                 success: true,
                 message: "Create Notify successful",
-                newNotify
+                newNotify:{ 
+                    ...newNotify._doc,
+                    user: {
+                        fullname: user.fullname,
+                        avatar: user.avatar,
+                    }
+                }
             })
 
         }catch(err){
@@ -30,6 +36,10 @@ class  NotifyController{
         try {
             const notify = await Notifies.findOneAndDelete({ id: req.params.id, url: req.query.url });
             
+            if(req.query.type === 'deletePost' || req.query.type === 'deleteTour'){
+                 await Notifies.deleteMany({url: req.query.url});
+            }
+
             res.json({
                 success: true, message: "Delete Notify success", notify
             });
@@ -41,7 +51,9 @@ class  NotifyController{
     // lấy thông báo của 1 user(user._id)
     async getNotifies(req, res){
         try {
-            const notifies = await Notifies.find({recipients: req.user._id}).sort('-createdAt')
+            const notifies = await Notifies.find({recipients: req.user._id}).sort('-createdAt').populate("user","fullname avatar")
+            
+
             res.json({
                 success: true, 
                 message: "Get notifies success",

@@ -38,7 +38,8 @@ class TourController {
                     userId: {
                         fullname: req.user.fullname,
                         _id: req.user._id,
-                        avatar: req.user.avatar
+                        avatar: req.user.avatar,
+                        followers: req.user.followers
                     }
                 }
             })
@@ -144,7 +145,8 @@ class TourController {
             }, { new: true }).populate("likes", "username fullname avatar")
             res.json({
                 success: true, message: "like tour success",
-                likes: tour.likes
+                likes: tour.likes,
+                tour
             });
         } catch (err) {
             console.log(err)

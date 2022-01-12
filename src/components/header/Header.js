@@ -165,7 +165,7 @@ export default function Header(props) {
                                                             
                                                             <div style={{}}>
                                                                 <div style={{display:"flex", alignItems:"center"}}>
-                                                                    <strong style={{marginRight:"5px"}}>Huy</strong>
+                                                                    <strong style={{marginRight:"5px"}}>{item.user.fullname}</strong>
                                                                     <p>{item.text} : {item.content.length > 20 ? item.content.slice(0,20) : item.content} </p>
                                                                 </div>
                                                                 <div style={{}}>
