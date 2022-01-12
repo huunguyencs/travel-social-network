@@ -10,13 +10,12 @@ import * as tourAction from '../../redux/actions/createTourAction';
 import { useHistory } from "react-router-dom";
 import UpdateDateForm from "../forms/updateDate";
 import UpdateTourInfo from "../forms/updateInfoCreateTour";
-import { convertDateToStr } from "../../utils/date";
+import { convertDateToStr, convertDateToStrShort } from "../../utils/date";
 import { saveTour, updateTour } from "../../redux/callApi/tourCall";
 import AddLocation from "./AddLocation";
 import { getProvinces } from '../../redux/callApi/locationCall';
 import AddService from "./AddService";
 import { Close } from "@material-ui/icons";
-import { ScrollMenu } from "react-horizontal-scrolling-menu";
 
 
 function a11yProps(index) {
@@ -268,13 +267,13 @@ export default function AddTour(props) {
 
                             </Container>
                             <div className={classes.smallTimeline}>
-                                <ScrollMenu className={classes.timelineWrap}>
+                                <div className={classes.timelineWrap}>
                                     {createTour.tour.map((item, index) => (
-                                        <Button className={index === idx ? classes.activeTimeline : classes.unactiveTimeline} onClick={() => setIdx(index)}>
-                                            {convertDateToStr(new Date(item.date))}
+                                        <Button key={index} className={index === idx ? classes.activeTimeline : classes.unactiveTimeline} onClick={() => setIdx(index)}>
+                                            {convertDateToStrShort(new Date(item.date))}
                                         </Button>
                                     ))}
-                                </ScrollMenu>
+                                </div>
                             </div>
 
                             <div className={classes.addDayWrap}>

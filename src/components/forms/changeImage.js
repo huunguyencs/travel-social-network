@@ -1,6 +1,6 @@
 import { Button, CircularProgress, IconButton, Paper, Typography } from '@material-ui/core'
 import { Close, CloudUpload } from '@material-ui/icons';
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux';
 import { changeAvatar, changeBackground } from '../../redux/callApi/authCall';
 import { formStyles } from '../../style'
@@ -18,37 +18,39 @@ export default function ChangeImage(props) {
 
     const classes = formStyles();
 
-    const holder = document.getElementById('upload-holder')
-    if (holder) {
-        holder.ondragover = function () {
-            this.className = classes.borderDashHover;
-            return false;
-        }
-        holder.ondragend = function () {
-            this.className = classes.borderDash;
-            return false;
-        }
 
-        holder.ondrop = function (e) {
-            this.className = classes.borderDash;
-            e.preventDefault();
-            setError(null);
-            const image = e.dataTransfer.files[0];
-            const check = checkImage(image);
-            if (check !== "")
-                setSrc(image)
-            else setError(check);
+    useEffect(() => {
+        const holder = document.getElementById('upload-holder')
+        if (holder) {
+            holder.ondragover = function () {
+                this.className = classes.borderDashHover;
+                console.log("on drag")
+                return false;
+            }
+            holder.ondrop = function (e) {
+                console.log("on drop")
+                this.className = classes.borderDash;
+                e.preventDefault();
+                setError(null);
+                const image = e.dataTransfer.files[0];
+                const check = checkImage(image);
+                if (check === "")
+                    setSrc(image)
+                else setError(check);
+            }
         }
-    }
+    }, [classes, src])
 
     const changeImage = (e) => {
         if (e.target.files) {
             setError(null);
             const image = e.target.files[0];
             const check = checkImage(image);
-            if (check !== "")
+            if (check === "")
                 setSrc(image)
-            else setError(check);
+            else {
+                setError(check);
+            }
         }
     }
 
@@ -91,22 +93,30 @@ export default function ChangeImage(props) {
                 </IconButton>
             </div>
             <div className={classes.bodyChangeImage}>
-                {src ?
-
-                    <img src={typeof src === 'string' ? src : URL.createObjectURL(src)} alt="Avatar" title={title} className={classes.imageChange} />
-                    :
-                    <div className={classes.borderDash} id="upload-holder">
-                        <div className={classes.uploadWrap}>
-                            <Typography variant='h6'>
-                                Kéo hình vào đây hoặc
-                            </Typography>
-                            <input accept="image/*" id="icon-button-file" type="file" onChange={changeImage} className={classes.imageChageInput} />
+                <div className={classes.center}>
+                    {src ?
+                        <img src={typeof src === 'string' ? src : URL.createObjectURL(src)} alt="Avatar" title={title} className={classes.imageChange} />
+                        :
+                        <div className={classes.borderDash} id="upload-holder">
+                            <div className={classes.uploadWrap}>
+                                <Typography variant='h6'>
+                                    Kéo hình vào đây hoặc
+                                </Typography>
+                                <input name="images" style={{ display: 'none' }} accept="image/*" id="icon-button-file" type="file" onChange={changeImage} className={classes.imageChageInput} />
+                                <div className={classes.center}>
+                                    <label htmlFor='icon-button-file'>
+                                        <Button variant="contained" component="span" color="primary">
+                                            Chọn tệp ...
+                                        </Button>
+                                    </label>
+                                </div>
+                            </div>
                         </div>
-                    </div>
-                }
+                    }
+                </div>
                 <span style={{ fontSize: "15px", color: "red", marginInline: "20px", marginTop: "10px" }}>{error}</span>
                 <div className={classes.buttonWrap}>
-                    <Button onClick={removeImage} className={classes.removeImageChange} disabled={loading}>
+                    <Button onClick={removeImage} className={classes.removeImageChange} disabled={loading || !src}>
                         Xóa
                     </Button>
                     <Button

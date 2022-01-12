@@ -7,6 +7,9 @@ const formStyles = makeStyles((theme) => ({
     paperContainer: {
         padding: 20,
         borderRadius: attr.borderRadius.md,
+        [theme.breakpoints.down("sm")]: {
+            padding: 10
+        }
     },
     formContainer: {
         padding: 30,
@@ -24,7 +27,12 @@ const formStyles = makeStyles((theme) => ({
         backgroundColor: color.turquoise,
         padding: 10,
         paddingInline: 30,
-        marginBlock: 20
+        marginBlock: 20,
+        [theme.breakpoints.down("sm")]: {
+            padding: 5,
+            paddingInline: 10,
+            marginBlock: 10,
+        }
     },
     hashtag: {
         width: "100%",
@@ -32,6 +40,9 @@ const formStyles = makeStyles((theme) => ({
     },
     postContentInput: {
         width: "500px",
+        [theme.breakpoints.down("sm")]: {
+            width: "300px"
+        }
     },
     input: {
         backgroundColor: color.lightgray,
@@ -74,14 +85,21 @@ const formStyles = makeStyles((theme) => ({
     },
     imageInputContainer: {
         marginInline: "20px",
-        maxWidth: "500px"
+        maxWidth: "500px",
+        [theme.breakpoints.down("sm")]: {
+            maxWidth: "300px"
+        }
     },
     imageInput: {
         width: "150px",
         height: "150px",
         margin: "5px",
         position: "relative",
-        cursor: "pointer"
+        cursor: "pointer",
+        [theme.breakpoints.down("sm")]: {
+            width: "100px",
+            height: "100px"
+        }
     },
     nameTourInput: {
         display: "flex",
@@ -108,20 +126,32 @@ const formStyles = makeStyles((theme) => ({
     },
     imageChange: {
         height: "350px",
+        margin: 'auto',
+        [theme.breakpoints.down("sm")]: {
+            height: "200px"
+        }
     },
     borderDash: {
-        border: '3px dashed #000',
+        border: '2px dashed #000',
         height: "350px",
         width: "500px",
         display: 'flex',
-        justifyContent: 'center'
+        justifyContent: 'center',
+        [theme.breakpoints.down("sm")]: {
+            height: "200px",
+            width: "300px"
+        }
     },
     borderDashHover: {
-        border: "3px dashed #aaa",
+        border: "3px dashed #aaa !important",
         height: "350px",
         width: "500px",
         display: 'flex',
-        justifyContent: 'center'
+        justifyContent: 'center',
+        [theme.breakpoints.down("sm")]: {
+            height: "200px",
+            width: "300px"
+        }
     },
     imageChageInput: {
 

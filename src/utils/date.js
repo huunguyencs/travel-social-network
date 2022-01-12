@@ -6,6 +6,11 @@ export function convertDateToStr(date) {
     return temp.toLocaleDateString("vi-VN");
 }
 
+export function convertDateToStrShort(date) {
+    let temp = new Date(date);
+    return temp.getDate() + '/' + (temp.getMonth() + 1);
+}
+
 export function getTime(date) {
     let temp = new Date(date);
     return ('0' + temp.getHours()).slice(-2) + ":" + ('0' + temp.getMinutes()).slice(-2);

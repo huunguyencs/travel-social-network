@@ -39,11 +39,13 @@ const tourdetailStyles = makeStyles((theme) => ({
         [theme.breakpoints.down("sm")]: {
             display: 'flex',
             justifyContent: 'center',
-            marginBottom: 20
+            marginBottom: 20,
+
         }
     },
     timelineWrap: {
-        display: 'flex'
+        display: 'flex',
+        overflow: 'auto',
     },
     cardContainer: {
         margin: 30,
@@ -87,7 +89,8 @@ const tourdetailStyles = makeStyles((theme) => ({
         backgroundColor: "#52BEDB",
         color: "black",
         [theme.breakpoints.down("sm")]: {
-            marginInline: 20
+            marginInline: 20,
+            paddingInline: 10
         }
     },
     unactiveTimeline: {

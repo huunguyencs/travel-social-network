@@ -4,13 +4,10 @@ import { Timeline, TimelineItem, TimelineSeparator, TimelineConnector, TimelineC
 
 import { tourdetailStyles } from "../../style";
 import Location from './Location';
-import { convertDateToStr } from "../../utils/date";
+import { convertDateToStr, convertDateToStrShort } from "../../utils/date";
 // import { useSelector } from "react-redux";
 import MapCard from "../card/MapCard";
 import { Link } from "react-router-dom";
-import { ScrollMenu } from "react-horizontal-scrolling-menu";
-
-
 
 
 export default function TourDetail(props) {
@@ -64,6 +61,13 @@ export default function TourDetail(props) {
                                 ))}
                             </div>
                         </div>
+                        {
+                            isOwn &&
+                            <div className={classes.center}>
+                                <Button className={classes.editButton} component={Link} to={`?edit=true`}>Chỉnh sửa hành trình</Button>
+                            </div>
+                        }
+
 
                         <Grid container className={classes.container}>
                             <Grid item md={2} sm={12} xs={12}>
@@ -85,21 +89,19 @@ export default function TourDetail(props) {
                                     </Timeline>
                                 </Container>
                                 <div className={classes.smallTimeline}>
-                                    <ScrollMenu className={classes.timelineWrap}>
+                                    <div className={classes.timelineWrap}>
                                         {tour.tour.map((item, index) => (
-                                            <Button className={index === idx ? classes.activeTimeline : classes.unactiveTimeline} onClick={() => setIdx(index)}>
-                                                {convertDateToStr(new Date(item.date))}
+                                            <Button key={index} className={index === idx ? classes.activeTimeline : classes.unactiveTimeline} onClick={() => setIdx(index)}>
+                                                {convertDateToStrShort(new Date(item.date))}
                                             </Button>
                                         ))}
-                                    </ScrollMenu>
+                                    </div>
                                 </div>
 
 
                             </Grid>
                             <Grid item md={6} sm={12} xs={12} className={classes.feedTour}>
-                                <div className={classes.center}>
-                                    <Button className={classes.editButton} component={Link} to={`?edit=true`}>Chỉnh sửa hành trình</Button>
-                                </div>
+
                                 {
                                     tour.tour[idx].locations.map((item, index) => (
                                         <Location

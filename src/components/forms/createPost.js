@@ -103,6 +103,7 @@ export default function CreatePostForm(props) {
                             <div className={classes.postContentInput}>
                                 <InputBase
                                     placeholder="Bạn đang nghĩ gì?..."
+                                    title="Bạn đang nghĩ gì"
                                     rows={10}
                                     name="content"
                                     id="content"
@@ -115,6 +116,7 @@ export default function CreatePostForm(props) {
                             <div >
                                 <InputBase
                                     placeholder="Hashtag (cách nhau bằng dấu cách). Vd: #bien #lehoi ..."
+                                    title="Hashtag (cách nhau bằng dấu cách). Vd: #bien #lehoi ..."
                                     variant="outlined"
                                     name="hashtag"
                                     id="hashtag"
