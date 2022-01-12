@@ -27,7 +27,10 @@ import {
     FileCopy,
     Build,
     BubbleChart,
-    FiberManualRecord
+    FiberManualRecord,
+    Person,
+    Settings,
+    ExitToApp
 } from "@material-ui/icons";
 import { Link, useHistory } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
@@ -137,9 +140,27 @@ export default function Header(props) {
                                             <ClickAwayListener onClickAway={handleCloseUser}>
                                                 <Paper>
                                                     <MenuList autoFocusItem={Boolean(toggleMenuUser)} id="user-menu">
-                                                        <MenuItem aria-label="profile" component={Link} to={`/profile/${user._id}/`} onClick={handleCloseUser}>Trang cá nhân</MenuItem>
-                                                        <MenuItem aria-label="change-info" onClick={handleCloseUser} component={Link} to={'/change_info'}>Thay đổi thông tin</MenuItem>
-                                                        <MenuItem aria-label="log-out" onClick={handleLogout}>Đăng xuất</MenuItem>
+                                                        <MenuItem aria-label="profile" component={Link} to={`/profile/${user._id}/`} onClick={handleCloseUser}>
+                                                            <ListItemIcon>
+                                                                <Person fontSize="medium" />
+                                                            </ListItemIcon>
+                                                            <ListItemText>Trang cá nhân</ListItemText>
+                                                        </MenuItem>
+                                                        <MenuItem aria-label="change-info" onClick={handleCloseUser} component={Link} to={'/change_info'}>
+                                                            <ListItemIcon>
+                                                                <Build fontSize="medium" />
+                                                            </ListItemIcon>
+                                                            <ListItemText>Thay đổi thông tin</ListItemText>
+                                                        </MenuItem>
+                                                        <Divider />
+                                                        <MenuItem aria-label="log-out" onClick={handleLogout}>
+                                                            <Button variant="outlined">
+                                                                <ListItemIcon>
+                                                                    <ExitToApp fontSize="medium" />
+                                                                </ListItemIcon>
+                                                                <ListItemText>Đăng xuất</ListItemText>
+                                                            </Button>
+                                                        </MenuItem>
                                                     </MenuList>
                                                 </Paper>
                                             </ClickAwayListener>
