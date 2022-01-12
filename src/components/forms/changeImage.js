@@ -24,11 +24,11 @@ export default function ChangeImage(props) {
         if (holder) {
             holder.ondragover = function () {
                 this.className = classes.borderDashHover;
-                console.log("on drag")
+                // console.log("on drag")
                 return false;
             }
             holder.ondrop = function (e) {
-                console.log("on drop")
+                // console.log("on drop")
                 this.className = classes.borderDash;
                 e.preventDefault();
                 setError(null);
