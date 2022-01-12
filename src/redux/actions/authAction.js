@@ -26,3 +26,17 @@ export const updateInfo = (props) => {
         payload: props
     }
 }
+
+export const changeBackground = (props) => {
+    return {
+        type: AUTH_TYPES.CHANGE_BG,
+        payload: props
+    }
+}
+
+export const changeAvatar = (props) => {
+    return {
+        type: AUTH_TYPES.CHANGE_AVATAR,
+        payload: props
+    }
+}

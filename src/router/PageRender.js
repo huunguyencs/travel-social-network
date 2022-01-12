@@ -4,7 +4,7 @@ import { useParams } from "react-router-dom";
 
 import NotFound from "../page/404";
 
-const generatePage = (pageName) => {
+const GeneratePage = (pageName) => {
     const component = () => require(`../page/${pageName}`).default;
 
     try {
@@ -15,7 +15,7 @@ const generatePage = (pageName) => {
     }
 }
 
-const PageRender = (role) => {
+const PageRender = () => {
     const { user } = useSelector(state => state.auth);
     const { page, id, subpage } = useParams();
 
@@ -53,7 +53,7 @@ const PageRender = (role) => {
     }
 
 
-    return generatePage(pageName)
+    return GeneratePage(pageName)
 }
 
 export default PageRender;

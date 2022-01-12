@@ -98,6 +98,51 @@ const formStyles = makeStyles((theme) => ({
         justifyContent: 'center',
         color: 'red',
         marginTop: 10
+    },
+    title: {
+        display: 'flex',
+        justifyContent: 'space-between'
+    },
+    bodyChangeImage: {
+        padding: 10,
+    },
+    imageChange: {
+        height: "350px",
+    },
+    borderDash: {
+        border: '3px dashed #000',
+        height: "350px",
+        width: "500px",
+        display: 'flex',
+        justifyContent: 'center'
+    },
+    borderDashHover: {
+        border: "3px dashed #aaa",
+        height: "350px",
+        width: "500px",
+        display: 'flex',
+        justifyContent: 'center'
+    },
+    imageChageInput: {
+
+    },
+    buttonWrap: {
+        margin: 20,
+        display: 'flex',
+        justifyContent: 'space-between'
+    },
+    uploadWrap: {
+        marginTop: "100px",
+    },
+    imageChangeContent: {
+        display: 'block'
+    },
+    removeImageChange: {
+        color: color.white,
+        backgroundColor: color.red,
+        "&:hover": {
+            backgroundColor: color.darkred
+        }
     }
 }))
 

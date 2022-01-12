@@ -33,6 +33,24 @@ const authReducer = (state = INIT_STATE, action) => {
                 user: action.payload.user
             }
         }
+        case AUTH_TYPES.CHANGE_BG: {
+            return {
+                ...state,
+                user: {
+                    ...state.user,
+                    background: action.payload.background
+                }
+            }
+        }
+        case AUTH_TYPES.CHANGE_AVATAR: {
+            return {
+                ...state,
+                user: {
+                    ...state.user,
+                    avatar: action.payload.avatar
+                }
+            }
+        }
         default: {
             return state
         }

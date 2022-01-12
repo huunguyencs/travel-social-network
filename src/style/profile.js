@@ -58,9 +58,9 @@ const profileStyles = makeStyles((theme) => ({
   },
   change_avatar_upload: {
     position: "absolute",
-    top: "50%",
-    left: "50%",
-    transform: "translate(-50%,-50%)"
+    bottom: 0,
+    right: 0,
+    // transform: "translate(-50%,-50%)"
   },
   change_avatar_img: {
     width: "100%",

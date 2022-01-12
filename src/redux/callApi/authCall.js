@@ -2,6 +2,7 @@ import * as authAction from '../actions/authAction';
 import * as userAction from '../actions/userAction';
 import customAxios from '../../utils/fetchData';
 import * as alertAction from '../actions/alertAction';
+import * as imageUtils from '../../utils/uploadImage';
 
 
 export const login = (data, next, callback) => async (dispatch) => {
@@ -133,6 +134,57 @@ export const changeInfo = (token, data, next, error) => async (dispatch) => {
         dispatch(alertAction.success({ message: "Cập nhật thông tin thành công!" }));
         dispatch(authAction.updateInfo({ user: res.data.newUser }))
         next();
+    }
+    catch (err) {
+        if (err.response && err.response.data && err.response.data.message) {
+            error(err.response.data.message);
+        }
+        else error("Có lỗi xảy ra")
+    }
+}
+
+
+export const changeBackground = (token, src, next, error) => async (dispatch) => {
+    try {
+        const image = await imageUtils.uploadImages([src]);
+        if (image?.length > 0) {
+            const url = image[0];
+            await customAxios(token).patch('/user/change_background', {
+                background: url
+            });
+
+            dispatch(authAction.changeBackground({ background: url }));
+            next();
+            dispatch(alertAction.success({ message: "Cập nhật ảnh bìa thành công!" }));
+        }
+        else {
+            error("Có lỗi xảy ra")
+        }
+    }
+    catch (err) {
+        if (err.response && err.response.data && err.response.data.message) {
+            error(err.response.data.message);
+        }
+        else error("Có lỗi xảy ra")
+    }
+}
+
+export const changeAvatar = (token, src, next, error) => async (dispatch) => {
+    try {
+        const image = await imageUtils.uploadImages([src]);
+        if (image?.length > 0) {
+            const url = image[0];
+            await customAxios(token).patch('/user/change_avatar', {
+                avatar: url
+            });
+
+            dispatch(authAction.changeAvatar({ avatar: url }));
+            next();
+            dispatch(alertAction.success({ message: "Cập nhật ảnh đại diện thành công!" }));
+        }
+        else {
+            error("Có lỗi xảy ra")
+        }
     }
     catch (err) {
         if (err.response && err.response.data && err.response.data.message) {

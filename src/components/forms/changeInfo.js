@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { TextField, Button, Radio, CircularProgress } from "@material-ui/core";
+import { TextField, Button, Radio, CircularProgress, Backdrop, Modal, Fade, IconButton } from "@material-ui/core";
 import { PhotoCamera } from "@material-ui/icons";
 import { RadioGroup, FormControlLabel } from "@material-ui/core";
 import DateFnsUtils from '@date-io/date-fns';
@@ -9,6 +9,7 @@ import { KeyboardDatePicker, MuiPickersUtilsProvider } from "@material-ui/picker
 import { useDispatch, useSelector } from "react-redux";
 import { profileStyles } from "../../style";
 import { changeInfo } from "../../redux/callApi/authCall";
+import ChangeImage from "./changeImage";
 
 
 export default function ChangeInfo(props) {
@@ -99,6 +100,24 @@ export default function ChangeInfo(props) {
         setErrors(validator.validate(context));
     }
 
+    const [showChangeBg, setShowChangeBg] = useState(false);
+
+    const handleShowChangeBg = () => {
+        setShowChangeBg(true)
+    }
+    const handleCloseChangeBg = () => {
+        setShowChangeBg(false);
+    }
+
+    const [showChangeAvatar, setShowChangeAvatar] = useState(false);
+
+    const handleShowChangeAvatar = () => {
+        setShowChangeAvatar(true)
+    }
+    const handleCloseChangeAvatar = () => {
+        setShowChangeAvatar(false);
+    }
+
     useEffect(() => {
         if (submit) {
             setLoading(true);
@@ -129,22 +148,58 @@ export default function ChangeInfo(props) {
         <div className={classes.change_info}>
             <div className={classes.change_background}>
                 <div className={classes.change_background_upload}>
-                    <input accept="image/*" style={{ display: "none" }} id="icon-button-file" type="file" />
-                    <label htmlFor="icon-button-file" style={{ cursor: 'pointer' }}>
-                        <PhotoCamera />
-                    </label>
+                    <Button
+                        variant="contained"
+                        className={classes.buttonChangeImage}
+                        startIcon={<PhotoCamera />}
+                        onClick={handleShowChangeBg}
+                    >
+                        Thay đổi ảnh bìa
+                    </Button>
+                    <Modal
+                        aria-labelledby="transition-modal-title"
+                        aria-describedby="transition-modal-description"
+                        className={classes.modal}
+                        open={showChangeBg}
+                        onClose={handleCloseChangeBg}
+                        closeAfterTransition
+                        BackdropComponent={Backdrop}
+                        BackdropProps={{
+                            timeout: 500,
+                        }}
+                    >
+                        <Fade in={showChangeBg}>
+                            <ChangeImage title={"Thay đổi ảnh bìa"} img={user?.background} handleClose={handleCloseChangeBg} type='background' />
+                        </Fade>
+                    </Modal>
+
                 </div>
-                <img className={classes.change_bg} src={user?.background} alt="cover"></img>
+                <img className={classes.change_bg} src={user?.background} alt="cover" />
             </div>
             <div className={classes.change_wrapper}>
                 <div className={classes.change_avatar}>
                     <div className={classes.change_avatar_upload}>
-                        <input accept="image/*" style={{ display: "none" }} id="icon-button-file" type="file" />
-                        <label htmlFor="icon-button-file" style={{ cursor: 'pointer' }}>
+                        <IconButton onClick={handleShowChangeAvatar}>
                             <PhotoCamera />
-                        </label>
+                        </IconButton>
+                        <Modal
+                            aria-labelledby="transition-modal-title"
+                            aria-describedby="transition-modal-description"
+                            className={classes.modal}
+                            open={showChangeAvatar}
+                            onClose={handleCloseChangeAvatar}
+                            closeAfterTransition
+                            BackdropComponent={Backdrop}
+                            BackdropProps={{
+                                timeout: 500,
+                            }}
+                        >
+                            <Fade in={showChangeAvatar}>
+                                <ChangeImage title={"Thay đổi đại diện"} img={user?.avatar} handleClose={handleCloseChangeAvatar} type='avatar' />
+                            </Fade>
+                        </Modal>
                     </div>
-                    <img className={classes.change_avatar_img} src={user?.avatar} alt="avatar"></img>
+                    <img className={classes.change_avatar_img} src={user?.avatar} alt="avatar" />
                 </div>
                 <div className={classes.change_form}>
                     <form
