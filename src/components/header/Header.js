@@ -46,6 +46,7 @@ export default function Header(props) {
     const [open, setOpen] = useState(false);
     const [toggleMenuUser, setToggleMenuUser] = useState(null);
     const [toggleNoti, setToggleNoti] = useState(null);
+    const openNoti = Boolean(toggleNoti)
     const [search, setSearch] = useState("");
 
     const handleToggleUser = (e) => {
@@ -80,6 +81,11 @@ export default function Header(props) {
     const handleIsRead = (msg) => {
         dispatch(isSeenNotify(msg, auth.token))
     }
+
+    const calculate = (notify) => {
+        return notify.filter(item => !item.seen).length;
+    }
+
     return (
         <AppBar style={{ zIndex: 1 }}>
             <Toolbar className={classes.toolbar}>
@@ -163,57 +169,59 @@ export default function Header(props) {
                                     </Popper>
                                 </div>
                                 <IconButton className={classes.badge} aria-label="notifications" onClick={handleToggleNoti}>
-                                    <Badge badgeContent={notify.data.length} color="secondary">
+                                    <Badge badgeContent={calculate(notify.data)} color="secondary">
                                         <Notifications />
                                     </Badge>
-                                    <Popper
-                                        open={Boolean(toggleNoti)}
-                                        anchorEl={toggleNoti}
-                                        onClose={handleCloseNoti}
-                                        disablePortal={true}
-                                    // transformOrigin={{
-                                    //     vertical: "top",
-                                    //     horizontal: "left"
-                                    // }}
-                                    // anchorOrigin={{
-                                    //     vertical: "bottom",
-                                    //     horizontal: "center",
-                                    // }}
-                                    >
-                                        <Grow className={classes.grow} >
 
-                                            <ClickAwayListener onClickAway={handleCloseNoti}>
-                                                <Paper className={classes.paperNoti}>
-                                                    <MenuList>
-                                                        {notify.data.map((item) => (
-
-                                                            <MenuItem key={item._id} component={Link} to={`${item.url}`} onClick={() => {
-                                                                handleIsRead(item)
-                                                                handleCloseNoti();
-                                                            }}>
-                                                                <Avatar className={classes.avatar} alt="avatar" src={item.user.avatar} />
-
-                                                                <div style={{}}>
-                                                                    <div style={{ display: "flex", alignItems: "center" }}>
-                                                                        <strong style={{ marginRight: "5px" }}>{item.user.fullname}</strong>
-                                                                        <p>{item.text} : {item.content.length > 20 ? item.content.slice(0, 20) : item.content} </p>
-                                                                    </div>
-                                                                    <div style={{}}>
-                                                                        <strong style={{ color: "#a5dec8" }}>{timeAgo(new Date(item.createdAt))}</strong>
-                                                                    </div>
-                                                                </div>
-                                                                {
-                                                                    !item.seen && <FiberManualRecord style={{ color: "#a5dec8" }} />
-                                                                }
-                                                            </MenuItem>
-                                                        ))}
-                                                    </MenuList>
-                                                </Paper>
-                                            </ClickAwayListener>
-
-                                        </Grow>
-                                    </Popper>
                                 </IconButton>
+                                <Popper
+                                    open={openNoti}
+                                    anchorEl={toggleNoti}
+                                    onClose={handleCloseNoti}
+                                    disablePortal={true}
+                                // transformOrigin={{
+                                //     vertical: "top",
+                                //     horizontal: "left"
+                                // }}
+                                // anchorOrigin={{
+                                //     vertical: "bottom",
+                                //     horizontal: "center",
+                                // }}
+                                >
+                                    <Grow className={classes.grow} >
+
+                                        <ClickAwayListener onClickAway={handleCloseNoti}>
+                                            <Paper className={classes.paperNoti}>
+                                                <MenuList>
+                                                    {notify.data.map((item) => (
+
+                                                        <MenuItem key={item._id} onClick={(e) => {
+                                                            handleCloseNoti(e);
+                                                            handleIsRead(item)
+                                                            history.push(`${item.url}`)
+                                                        }}>
+                                                            <Avatar className={classes.avatar} alt="avatar" src={item.user.avatar} />
+
+                                                            <div style={{}}>
+                                                                <div style={{ display: "flex", alignItems: "center" }}>
+                                                                    <strong style={{ marginRight: "5px" }}>{item.user.fullname}</strong>
+                                                                    <p>{item.text} : {item.content.length > 20 ? item.content.slice(0, 20) : item.content} </p>
+                                                                </div>
+                                                                <div style={{}}>
+                                                                    <strong style={{ color: "#a5dec8" }}>{timeAgo(new Date(item.createdAt))}</strong>
+                                                                </div>
+                                                            </div>
+                                                            {
+                                                                !item.seen && <FiberManualRecord style={{ color: "#a5dec8" }} />
+                                                            }
+                                                        </MenuItem>
+                                                    ))}
+                                                </MenuList>
+                                            </Paper>
+                                        </ClickAwayListener>
+
+                                    </Grow>
+                                </Popper>
                                 <IconButton className={classes.badge} aria-label="messages" component={Link} to="/message">
                                     <Badge>
                                         <WhatsApp />
