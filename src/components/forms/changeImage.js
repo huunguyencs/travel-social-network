@@ -4,6 +4,7 @@ import React, { useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux';
 import { changeAvatar, changeBackground } from '../../redux/callApi/authCall';
 import { formStyles } from '../../style'
+import { checkImage } from '../../utils/uploadImage';
 
 export default function ChangeImage(props) {
 
@@ -32,15 +33,22 @@ export default function ChangeImage(props) {
             this.className = classes.borderDash;
             e.preventDefault();
             setError(null);
-            setSrc(e.dataTransfer.files[0])
+            const image = e.dataTransfer.files[0];
+            const check = checkImage(image);
+            if (check !== "")
+                setSrc(image)
+            else setError(check);
         }
     }
 
     const changeImage = (e) => {
-        console.log(e);
         if (e.target.files) {
             setError(null);
-            setSrc(e.target.files[0])
+            const image = e.target.files[0];
+            const check = checkImage(image);
+            if (check !== "")
+                setSrc(image)
+            else setError(check);
         }
     }
 
@@ -67,8 +75,6 @@ export default function ChangeImage(props) {
                 setError(err);
             }))
         }
-
-
     }
 
     const removeImage = () => {

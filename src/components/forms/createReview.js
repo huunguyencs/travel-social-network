@@ -10,6 +10,7 @@ import { formStyles } from '../../style';
 import LoginModal from "../modal/login";
 import EmojiPicker from "../input/emojiPicker";
 import { createPost } from "../../redux/callApi/postCall";
+import { checkImage } from "../../utils/uploadImage";
 
 
 export default function CreateReviewForm(props) {
@@ -20,7 +21,7 @@ export default function CreateReviewForm(props) {
     const { location, handleClose, tourDateId, indexLocation } = props;
     const [state, setState] = useState({
         loading: false,
-        error: false,
+        error: '',
     })
 
 
@@ -48,7 +49,21 @@ export default function CreateReviewForm(props) {
     }
 
     const handleChangeImageUpload = (e) => {
-        setImageUpload(oldImage => [...oldImage, ...e.target.files])
+        let error = "";
+        for (const file of e.target.files) {
+            const check = checkImage(file);
+            if (check !== "") {
+                error = check;
+                break;
+            }
+        }
+        if (error === "")
+            setImageUpload(oldImage => [...oldImage, ...e.target.files])
+        else
+            setState({
+                ...state,
+                error: error
+            })
     }
 
     const removeImage = (index) => {
@@ -176,6 +191,7 @@ export default function CreateReviewForm(props) {
                             </div>
                         </div>
                     </form>
+                    <span style={{ fontSize: "15px", color: "red", marginInline: "20px", marginTop: "10px" }}>{state.error}</span>
                     <div
                         className={classes.imageInputContainer}
                     >

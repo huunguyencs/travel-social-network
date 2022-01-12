@@ -34,16 +34,21 @@ export default function UpdatePostForm(props) {
 
     const handleChangeImageUpload = (e) => {
         if (!change) setChange(true);
-        let valid = true;
+        let error = "";
         for (const file of e.target.files) {
             const check = checkImage(file);
             if (check !== "") {
-                valid = false;
+                error = check;
                 break;
             }
         }
-        if (valid)
+        if (error === "")
             setImageUpload(oldImage => [...oldImage, ...e.target.files])
+        else
+            setState({
+                ...state,
+                error: error
+            })
     }
 
     const removeImage = (index) => {
@@ -173,7 +178,7 @@ export default function UpdatePostForm(props) {
                                         alt="Error"
                                         className={classes.imageInput}
                                         onClick={() => removeImage(index)}
-                                        src={URL.createObjectURL(item)}
+                                        src={typeof item === "string" ? item : URL.createObjectURL(item)}
                                     />
                                 )}
                             </ScrollMenu>
