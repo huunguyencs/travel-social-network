@@ -23,11 +23,17 @@ const locationStyles = makeStyles((theme) => ({
     },
     provinceName: {
         fontWeight: 400,
+        [theme.breakpoints.down("sm")]: {
+            fontSize: "26px",
+        }
     },
     iconProvince: {
         fontSize: "40px",
         marginRight: "10px",
         color: "black",
+        [theme.breakpoints.down("sm")]: {
+            fontSize: "30px",
+        }
     },
     infoPanel: {
         marginInline: 20,
@@ -75,6 +81,11 @@ const locationStyles = makeStyles((theme) => ({
         transition: "0.5s",
         "&:hover": {
             filter: "brightness(85%)",
+        }
+    },
+    titleFullname: {
+        [theme.breakpoints.down("sm")]: {
+            fontSize: 40
         }
     }
 }))

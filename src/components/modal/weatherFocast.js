@@ -19,7 +19,7 @@ export default function WeatherFocast({ weather, handleClose, nameShow, alert })
                 </IconButton>
             </div>
             <div style={{ marginBottom: 30 }} className={classes.center}>
-                <Typography variant={"h4"}>Dự báo thời tiết {nameShow}</Typography>
+                <Typography variant={"h4"} className={classes.title}>Dự báo thời tiết {nameShow}</Typography>
             </div>
             {alert &&
                 <div className={classes.center}>

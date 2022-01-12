@@ -8,6 +8,7 @@ import { convertDateToStr } from "../../utils/date";
 // import { useSelector } from "react-redux";
 import MapCard from "../card/MapCard";
 import { Link } from "react-router-dom";
+import { ScrollMenu } from "react-horizontal-scrolling-menu";
 
 
 
@@ -65,7 +66,7 @@ export default function TourDetail(props) {
                         </div>
 
                         <Grid container className={classes.container}>
-                            <Grid item md={2} >
+                            <Grid item md={2} sm={12} xs={12}>
                                 <Container className={classes.timeline}>
                                     <Timeline align="right">
                                         {tour.tour.map((item, index) => (
@@ -83,11 +84,22 @@ export default function TourDetail(props) {
                                         ))}
                                     </Timeline>
                                 </Container>
+                                <div className={classes.smallTimeline}>
+                                    <ScrollMenu className={classes.timelineWrap}>
+                                        {tour.tour.map((item, index) => (
+                                            <Button className={index === idx ? classes.activeTimeline : classes.unactiveTimeline} onClick={() => setIdx(index)}>
+                                                {convertDateToStr(new Date(item.date))}
+                                            </Button>
+                                        ))}
+                                    </ScrollMenu>
+                                </div>
 
 
                             </Grid>
-                            <Grid item md={6} className={classes.feedTour}>
-                                <Button component={Link} to={`?edit=true`}>Chỉnh sửa hành trình</Button>
+                            <Grid item md={6} sm={12} xs={12} className={classes.feedTour}>
+                                <div className={classes.center}>
+                                    <Button className={classes.editButton} component={Link} to={`?edit=true`}>Chỉnh sửa hành trình</Button>
+                                </div>
                                 {
                                     tour.tour[idx].locations.map((item, index) => (
                                         <Location

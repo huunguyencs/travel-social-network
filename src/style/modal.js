@@ -50,6 +50,9 @@ const modalStyles = makeStyles((theme) => ({
     },
     link: {
         textDecorationLine: 'underline',
+    },
+    title: {
+        fontSize: 20
     }
 }))
 

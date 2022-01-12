@@ -48,10 +48,10 @@ export default function CovidCard(props) {
 
             </div>
 
-            <CardContent className={classes.content}>
+            <CardContent>
                 {
                     data ?
-                        <div className={classes.detailInfo}>
+                        <div className={classes.detailInfoCovid}>
                             <div className={classes.center}>
                                 <Typography variant="h6">{data.name}</Typography>
                             </div>

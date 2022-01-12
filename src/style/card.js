@@ -7,7 +7,7 @@ const cardStyles = makeStyles((theme) => ({
         margin: 20,
         borderRadius: attr.borderRadius.md,
         [theme.breakpoints.down("sm")]: {
-            margin: 0,
+            marginBlock: 10,
         },
     },
     image: {
@@ -20,7 +20,7 @@ const cardStyles = makeStyles((theme) => ({
             textDecorationLine: 'underline',
         },
         [theme.breakpoints.down("sm")]: {
-            fontSize: 30,
+            fontSize: 20,
         },
     },
     footer: {
@@ -46,7 +46,7 @@ const cardStyles = makeStyles((theme) => ({
         borderRadius: attr.borderRadius.md,
     },
     covidCardContainer: {
-        marginTop: 40,
+        marginBlock: 40,
         borderRadius: attr.borderRadius.md,
     },
     content: {
@@ -56,6 +56,9 @@ const cardStyles = makeStyles((theme) => ({
         width: 150,
         marginTop: 0,
         marginBottom: 0,
+        [theme.breakpoints.down("sm")]: {
+            display: 'none'
+        }
     },
     weatherTitle: {
         textAlign: "center",
@@ -73,14 +76,25 @@ const cardStyles = makeStyles((theme) => ({
             marginLeft: 0,
             marginRight: 0,
         },
-        [theme.breakpoints.down("xs")]: {
-            marginLeft: 20,
-            marginRight: 30,
-        },
+        // [theme.breakpoints.down("xs")]: {
+        //     marginLeft: 20,
+        //     marginRight: 30,
+        // },
     },
     detailInfo: {
         marginTop: 30,
         paddingInline: 20,
+        [theme.breakpoints.down("sm")]: {
+            display: 'none'
+        },
+    },
+    detailInfoCovid: {
+        marginTop: 30,
+        paddingInline: 20,
+        [theme.breakpoints.down("sm")]: {
+            marginTop: 10,
+            paddingInline: 5,
+        },
     },
     itemInfo: {
         display: "flex",

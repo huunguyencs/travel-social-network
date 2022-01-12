@@ -16,6 +16,7 @@ import AddLocation from "./AddLocation";
 import { getProvinces } from '../../redux/callApi/locationCall';
 import AddService from "./AddService";
 import { Close } from "@material-ui/icons";
+import { ScrollMenu } from "react-horizontal-scrolling-menu";
 
 
 function a11yProps(index) {
@@ -247,7 +248,7 @@ export default function AddTour(props) {
                     </div>
 
                     <Grid container className={classes.container}>
-                        <Grid item md={2} >
+                        <Grid item md={2} sm={12} xs={12}>
                             <Container className={classes.timeline}>
                                 <Timeline align="right">
                                     {createTour.tour.map((item, index) => (
@@ -264,26 +265,35 @@ export default function AddTour(props) {
                                         </TimelineItem>
                                     ))}
                                 </Timeline>
-                                <div>
-                                    <Button className={classes.addDay} onClick={handleAddDay}>
-                                        Thêm ngày
-                                    </Button>
-                                </div>
-                                <div>
-                                    <Button className={classes.addDay} onClick={isUpdate ? handleUpdate : handleSave}>
-                                        {state.loading ?
-                                            <CircularProgress size="25px" color="inherit" />
-                                            : "Lưu lại"
-                                        }
-                                    </Button>
-                                </div>
-                            </Container>
 
+                            </Container>
+                            <div className={classes.smallTimeline}>
+                                <ScrollMenu className={classes.timelineWrap}>
+                                    {createTour.tour.map((item, index) => (
+                                        <Button className={index === idx ? classes.activeTimeline : classes.unactiveTimeline} onClick={() => setIdx(index)}>
+                                            {convertDateToStr(new Date(item.date))}
+                                        </Button>
+                                    ))}
+                                </ScrollMenu>
+                            </div>
+
+                            <div className={classes.addDayWrap}>
+                                <Button className={classes.addDay} onClick={handleAddDay}>
+                                    Thêm ngày
+                                </Button>
+
+                                <Button className={classes.addDay} onClick={isUpdate ? handleUpdate : handleSave}>
+                                    {state.loading ?
+                                        <CircularProgress size="25px" color="inherit" />
+                                        : "Lưu lại"
+                                    }
+                                </Button>
+                            </div>
 
                         </Grid>
-                        <Grid item md={6} className={classes.feedTour}>
-                            <div>
-                                <Button onClick={handleShowDelete}>
+                        <Grid item md={6} sm={12} xs={12} className={classes.feedTour}>
+                            <div className={classes.center}>
+                                <Button onClick={handleShowDelete} className={classes.editButton}>
                                     Xóa ngày
                                 </Button>
                                 <Dialog
@@ -302,7 +312,7 @@ export default function AddTour(props) {
                                         </Button>
                                     </DialogActions>
                                 </Dialog>
-                                <Button onClick={handleShowUpdate}>
+                                <Button onClick={handleShowUpdate} className={classes.editButton}>
                                     Thay đổi ngày
                                 </Button>
                                 <Modal

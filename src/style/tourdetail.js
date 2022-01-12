@@ -31,10 +31,19 @@ const tourdetailStyles = makeStyles((theme) => ({
         position: "sticky",
         top: 0,
         [theme.breakpoints.down("sm")]: {
-            display: 'flex',
-            paddingTop: 0,
-            marginTop: 10,
+            display: 'none',
         }
+    },
+    smallTimeline: {
+        display: 'none',
+        [theme.breakpoints.down("sm")]: {
+            display: 'flex',
+            justifyContent: 'center',
+            marginBottom: 20
+        }
+    },
+    timelineWrap: {
+        display: 'flex'
     },
     cardContainer: {
         margin: 30,
@@ -77,9 +86,15 @@ const tourdetailStyles = makeStyles((theme) => ({
     activeTimeline: {
         backgroundColor: "#52BEDB",
         color: "black",
+        [theme.breakpoints.down("sm")]: {
+            marginInline: 20
+        }
     },
     unactiveTimeline: {
         color: "black",
+        [theme.breakpoints.down("sm")]: {
+            marginInline: 20
+        }
     },
     activeDot: {
         backgroundColor: "#52BEDB !important",
@@ -189,6 +204,26 @@ const tourdetailStyles = makeStyles((theme) => ({
     },
     addServiceContent: {
         padding: 20,
+    },
+    addDayWrap: {
+        [theme.breakpoints.down("sm")]: {
+            display: "flex",
+            justifyContent: 'center'
+        }
+    },
+    editButton: {
+        textTransform: 'none',
+        backgroundColor: color.turquoise,
+        marginInline: 20
+    },
+    center: {
+        display: 'flex',
+        justifyContent: 'center'
+    },
+    feedTour: {
+        [theme.breakpoints.down("sm")]: {
+            marginTop: 30
+        }
     }
 }))
 

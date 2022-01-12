@@ -12,6 +12,10 @@ const modalListStyles = makeStyles((theme) => ({
         overflow: "hidden",
         padding: "2px",
         // boxShadow: theme.shadows[5]
+        [theme.breakpoints.down("sm")]: {
+            width: "360px",
+            height: "460px",
+        }
     },
     modal_header: {
         display: "flex",
@@ -49,6 +53,7 @@ const modalListStyles = makeStyles((theme) => ({
         },
     },
     modal_body_user_button: {
+        textTransform: 'none',
         color: color.gray,
         marginTop: "27px",
         marginRight: "25px",
@@ -91,7 +96,7 @@ const modalListStyles = makeStyles((theme) => ({
             textDecorationLine: 'underline',
         },
         [theme.breakpoints.down("sm")]: {
-            fontSize: "12px",
+            fontSize: "14px",
         },
     },
     imageList: {

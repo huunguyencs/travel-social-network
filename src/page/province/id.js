@@ -7,7 +7,6 @@ import { provinceStyles } from "../../style";
 import WeatherCardGeneral from "../../components/card/WeatherCard";
 import CovidCard from "../../components/card/CovidCard";
 import SpeedDialButton from "../../components/speedDialBtn";
-import RightBar from "../../components/rightbar/RightBar";
 import { Pagination } from "@material-ui/lab";
 import ServiceCard from "../../components/card/ServiceCard";
 import customAxios from "../../utils/fetchData";
@@ -195,7 +194,7 @@ export default function Province(props) {
                                 {
                                     province && <>
                                         <SpeedDialButton />
-                                        <Grid item md={12}>
+                                        <Grid item md={12} sm={12} xs={12}>
                                             <div
                                                 className={classes.img}
                                             >
@@ -205,7 +204,7 @@ export default function Province(props) {
                                                 </Typography>
                                             </div>
                                         </Grid>
-                                        <Grid item md={9}>
+                                        <Grid item md={9} sm={12} xs={12}>
                                             <Card className={classes.desContainer}>
                                                 <div className={classes.title}>
                                                     <Typography variant="h5">Thông tin về {province.fullname}</Typography>
@@ -351,11 +350,13 @@ export default function Province(props) {
 
                                             </div>
                                         </Grid>
-                                        <Grid item md={3}>
-                                            <RightBar>
-                                                <WeatherCardGeneral position={province?.position} nameShow={province?.fullname} />
-                                                <CovidCard name={province?.fullname} />
-                                            </RightBar>
+                                        <Grid item md={3} sm={12} xs={12}>
+                                            <div className={classes.rightbar}>
+                                                <div>
+                                                    <WeatherCardGeneral position={province?.position} nameShow={province?.fullname} />
+                                                    <CovidCard name={province?.fullname} />
+                                                </div>
+                                            </div>
                                         </Grid>
                                     </>
                                 }
