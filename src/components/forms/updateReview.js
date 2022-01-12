@@ -9,6 +9,7 @@ import { formStyles } from '../../style';
 import LoginModal from "../modal/login";
 import EmojiPicker from "../input/emojiPicker";
 import { updatePost } from "../../redux/callApi/postCall";
+import { checkImage } from "../../utils/uploadImage";
 
 
 
@@ -20,7 +21,7 @@ export default function UpdateReviewForm(props) {
     const { review, handleClose } = props;
     const [state, setState] = useState({
         loading: false,
-        error: false,
+        error: '',
     })
 
 
@@ -61,7 +62,21 @@ export default function UpdateReviewForm(props) {
 
     const handleChangeImageUpload = (e) => {
         if (!change) setChange(true);
-        setImageUpload(oldImage => [...oldImage, ...e.target.files])
+        let error = "";
+        for (const file of e.target.files) {
+            const check = checkImage(file);
+            if (check !== "") {
+                error = check;
+                break;
+            }
+        }
+        if (error === "")
+            setImageUpload(oldImage => [...oldImage, ...e.target.files])
+        else
+            setState({
+                ...state,
+                error: error
+            })
     }
 
     const removeImage = (index) => {
@@ -83,7 +98,7 @@ export default function UpdateReviewForm(props) {
         }
         setState({
             loading: true,
-            error: false
+            error: ''
         })
         var ht = hashtagSplit(context.hashtags);
         dispatch(updatePost({
@@ -100,14 +115,14 @@ export default function UpdateReviewForm(props) {
             () => {
                 setState({
                     loading: false,
-                    error: false
+                    error: ''
                 })
                 handleClose();
             },
             () => {
                 setState({
                     loading: false,
-                    error: true,
+                    error: 'Có lỗi xảy ra',
                 })
             }
         ))
@@ -194,6 +209,9 @@ export default function UpdateReviewForm(props) {
                             </div>
                         </div>
                     </form>
+
+                    <span style={{ fontSize: "15px", color: "red", marginInline: "20px", marginTop: "10px" }}>{state.error}</span>
+
                     <div
                         className={classes.imageInputContainer}
                     >
@@ -204,10 +222,10 @@ export default function UpdateReviewForm(props) {
                                 {imageUpload.map((item, index) =>
                                     <img
                                         key={index}
-                                        alt="not found"
+                                        alt="Error"
                                         className={classes.imageInput}
                                         onClick={() => removeImage(index)}
-                                        src={URL.createObjectURL(item)}
+                                        src={typeof item === "string" ? item : URL.createObjectURL(item)}
                                     />
                                 )}
                             </ScrollMenu>

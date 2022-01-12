@@ -11,7 +11,8 @@ router.post("/logout", UserController.logout);
 router.post('/refresh_token', UserController.refreshToken);
 router.patch("/change_avatar", auth, UserController.changeAvatar);
 router.patch("/change_background", auth, UserController.changeBackground);
-router.patch("/change_profile", auth, UserController.editProfile);
+router.patch("/change_info", auth, UserController.editProfile);
+router.patch("/change_password", auth, UserController.changePassword)
 
 router.get('/search', UserController.searchUsers);
 // lấy thông tin một user

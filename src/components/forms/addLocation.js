@@ -5,73 +5,60 @@ import { useDispatch, useSelector } from "react-redux";
 
 import { formStyles } from '../../style';
 import * as tourAction from '../../redux/actions/createTourAction';
-import { getProvinces } from "../../redux/callApi/locationCall";
 import customAxios from "../../utils/fetchData";
 
 
 export default function AddLocationForm(props) {
 
+    const classes = formStyles();
+
+    const [isFetch, setIsFetch] = useState(false);
     const [loc, setLoc] = useState(null);
-    const [currentProvince, setCurrentProvince] = useState('');
 
-
+    const dispatch = useDispatch();
     const { location } = useSelector(state => state);
-    const [locations, setLocations] = useState([]);
+    const { currentProvince, setCurrentProvince, handleClose, locations, setLocations, indexDate } = props;
+
+
+
+
+    const getLocInit = async (province, setLocations) => {
+        await customAxios().get(`/location/locations/${province._id}`)
+            .then((req) => {
+                setLocations(req.data.locations);
+            }).catch(err => {
+                setLocations([]);
+            })
+    }
+
+    useEffect(() => {
+        if (currentProvince && locations.length === 0 && isFetch) {
+            getLocInit(currentProvince, setLocations)
+            setIsFetch(true)
+        }
+    }, [currentProvince, locations, setLocations, isFetch, setIsFetch])
 
     const getLoc = async (province) => {
         if (province && province._id !== currentProvince) {
-            await customAxios().get(`location/locations/${province._id}`)
+            setLoc(null);
+            await customAxios().get(`/location/locations/${province._id}`)
                 .then((req) => {
                     setLocations(req.data.locations);
                 }).catch(err => {
                     setLocations([]);
                 })
-            setCurrentProvince(province._id);
-            props.setProvinceCache(province)
+            setCurrentProvince(province);
         }
     }
 
-    const getLocInit = React.useCallback(async () => {
-        const cache = props.provinceCache;
-        if (cache && cache._id !== currentProvince) {
-            await customAxios().get(`/location/locations/${cache._id}`)
-                .then((req) => {
-                    setLocations(req.data.locations);
-                }).catch(err => {
-                    setLocations([]);
-                })
-            setCurrentProvince(cache._id);
-        }
-    }, [props.provinceCache, currentProvince])
-
-    useEffect(() => {
-        if (props.provinceCache) {
-            getLocInit()
-        }
-    }, [props.provinceCache, getLocInit])
-
-    const dispatch = useDispatch();
 
     const handleSubmit = (e) => {
         e.preventDefault();
         if (loc)
-            dispatch(tourAction.addLocation({ location: loc, indexDate: props.indexDate }))
-        props.handleClose();
+            dispatch(tourAction.addLocation({ location: loc, indexDate: indexDate }))
+        handleClose();
     }
 
-
-
-    useEffect(() => {
-        if (location.provinces?.length === 0) {
-            dispatch(getProvinces());
-        }
-    }, [dispatch, location.provinces])
-
-
-
-
-
-    const classes = formStyles();
 
     return (
         <Paper className={`${classes.paperContainer} ${classes.addFormContainer}`}>
@@ -85,6 +72,7 @@ export default function AddLocationForm(props) {
             >
                 <div className={classes.center}>
                     <Autocomplete
+                        value={currentProvince}
                         id="choose-province"
                         options={location.provinces}
                         getOptionLabel={(option) => option?.fullname}
@@ -96,6 +84,7 @@ export default function AddLocationForm(props) {
                 </div>
                 <div className={classes.center}>
                     <Autocomplete
+                        value={loc}
                         id="choose-location"
                         options={locations}
                         getOptionLabel={(option) => option?.fullname}

@@ -7,7 +7,6 @@ import { provinceStyles } from "../../style";
 import WeatherCardGeneral from "../../components/card/WeatherCard";
 import CovidCard from "../../components/card/CovidCard";
 import SpeedDialButton from "../../components/speedDialBtn";
-import RightBar from "../../components/rightbar/RightBar";
 import { Pagination } from "@material-ui/lab";
 import ServiceCard from "../../components/card/ServiceCard";
 import customAxios from "../../utils/fetchData";
@@ -58,7 +57,7 @@ export default function Province(props) {
 
     const classes = provinceStyles();
 
-    const getProvince = async (id, next) => {
+    const getProvince = async (id) => {
         if (id) {
             setState({
                 loading: true,
@@ -66,7 +65,7 @@ export default function Province(props) {
             })
             setNotFound(false);
             await customAxios().get(`/province/${id}`).then(res => {
-                next(res.data.province, res.data.locations, res.data.services, res.data.events);
+                setProvince(res.data.province, res.data.locations, res.data.services, res.data.events);
                 setState({
                     loading: false,
                     error: false,
@@ -83,14 +82,14 @@ export default function Province(props) {
         }
     }
 
-    const getLocation = async (id, next) => {
+    const getLocation = async (id) => {
         if (id) {
             setStateLocation({
                 loading: true,
                 error: false,
             })
             await customAxios().get(`/province/location/${id}`).then(res => {
-                next(res.data.locations)
+                setLocations(res.data.locations)
                 setStateLocation({
                     loading: false,
                     error: false,
@@ -104,14 +103,14 @@ export default function Province(props) {
         }
     }
 
-    const getEvent = async (id, next) => {
+    const getEvent = async (id) => {
         if (id) {
             setStateEvent({
                 loading: true,
                 error: false,
             })
             await customAxios().get(`/province/event/${id}`).then(res => {
-                next(res.data.events)
+                setEvents(res.data.events)
                 setStateEvent({
                     loading: false,
                     error: false,
@@ -125,14 +124,14 @@ export default function Province(props) {
         }
     }
 
-    const getService = async (id, next) => {
+    const getService = async (id) => {
         if (id) {
             setStateService({
                 loading: true,
                 error: false,
             })
             await customAxios().get(`/province/service/${id}`).then(res => {
-                next(res.data.services)
+                setServices(res.data.services)
                 setStateService({
                     loading: false,
                     error: false,
@@ -148,36 +147,26 @@ export default function Province(props) {
 
     const tryAgain = () => {
         if (id) {
-            getProvince(id, (province) => {
-                setProvince(province);
-            });
+            getProvince(id);
         }
     }
 
     useEffect(() => {
         if (id) {
-            getProvince(id, (province) => {
-                setProvince(province);
-            });
+            getProvince(id);
         }
 
-    }, [id, setProvince]);
+    }, [id]);
 
     useEffect(() => {
         if (province) {
-            getLocation(province._id, (locations) => {
-                setLocations(locations);
-            });
+            getLocation(province._id);
 
-            getEvent(province._id, (events) => {
-                setEvents(events)
-            })
+            getEvent(province._id)
 
-            getService(province._id, (services) => {
-                setServices(services)
-            })
+            getService(province._id)
         }
-    }, [province, setLocations, setEvents, setServices])
+    }, [province])
 
     useEffect(() => {
         if (province && province.fullname) {
@@ -205,7 +194,7 @@ export default function Province(props) {
                                 {
                                     province && <>
                                         <SpeedDialButton />
-                                        <Grid item md={12}>
+                                        <Grid item md={12} sm={12} xs={12}>
                                             <div
                                                 className={classes.img}
                                             >
@@ -215,7 +204,7 @@ export default function Province(props) {
                                                 </Typography>
                                             </div>
                                         </Grid>
-                                        <Grid item md={9}>
+                                        <Grid item md={9} sm={12} xs={12}>
                                             <Card className={classes.desContainer}>
                                                 <div className={classes.title}>
                                                     <Typography variant="h5">Thông tin về {province.fullname}</Typography>
@@ -282,7 +271,7 @@ export default function Province(props) {
                                                         </div> :
                                                         stateLocation.error ?
                                                             <div className={classes.centerMarginTop}>
-                                                                <Button onClick={() => getLocation(province._id, (locations) => setLocations(locations))}>Thử lại</Button>
+                                                                <Button onClick={() => getLocation(province._id)}>Thử lại</Button>
                                                             </div> :
                                                             locations &&
                                                             <>
@@ -311,7 +300,7 @@ export default function Province(props) {
                                                         </div> :
                                                         stateEvent.error ?
                                                             <div className={classes.centerMarginTop}>
-                                                                <Button onClick={() => getEvent(province._id, (events) => setEvents(events))}>Thử lại</Button>
+                                                                <Button onClick={() => getEvent(province._id)}>Thử lại</Button>
                                                             </div> :
                                                             events &&
                                                             <>
@@ -341,7 +330,7 @@ export default function Province(props) {
                                                         </div> :
                                                         stateService.error ?
                                                             <div className={classes.centerMarginTop}>
-                                                                <Button onClick={() => getService(province._id, (services) => setServices(services))}>Thử lại</Button>
+                                                                <Button onClick={() => getService(province._id)}>Thử lại</Button>
                                                             </div> :
                                                             services &&
                                                             <>
@@ -361,11 +350,13 @@ export default function Province(props) {
 
                                             </div>
                                         </Grid>
-                                        <Grid item md={3}>
-                                            <RightBar>
-                                                <WeatherCardGeneral position={province?.position} nameShow={province?.fullname} />
-                                                <CovidCard name={province?.fullname} />
-                                            </RightBar>
+                                        <Grid item md={3} sm={12} xs={12}>
+                                            <div className={classes.rightbar}>
+                                                <div>
+                                                    <WeatherCardGeneral position={province?.position} nameShow={province?.fullname} />
+                                                    <CovidCard name={province?.fullname} />
+                                                </div>
+                                            </div>
                                         </Grid>
                                     </>
                                 }

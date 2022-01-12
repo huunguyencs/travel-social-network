@@ -4,37 +4,6 @@ const TourDates = require('../Models/tourDate.model');
 const Locations = require('../Models/location.model')
 
 class PostController {
-
-    async updateRate(inc, rate, locationId) {
-        switch (parseInt(rate)) {
-            case 1:
-                await Locations.findByIdAndUpdate(locationId, {
-                    $inc: { "star.0": inc }
-                }, { new: true })
-                break;
-            case 2:
-                await Locations.findByIdAndUpdate(locationId, {
-                    $inc: { "star.1": inc }
-                }, { new: true })
-                break;
-            case 3:
-                await Locations.findByIdAndUpdate(locationId, {
-                    $inc: { "star.2": inc }
-                }, { new: true })
-                break;
-            case 4:
-                await Locations.findByIdAndUpdate(locationId, {
-                    $inc: { "star.3": inc }
-                }, { new: true })
-                break;
-            case 5:
-                await Locations.findByIdAndUpdate(locationId, {
-                    $inc: { "star.4": inc }
-                }, { new: true })
-                break;
-        }
-    }
-
     //co hai loai post
     async createPost(req, res) {
         try {
@@ -69,21 +38,25 @@ class PostController {
 
             const newPost = new Posts({
                 userId: req.user._id, content, hashtags, shareId
-            }).populate("userId", "username fullname avatar")
-                .populate({
-                    path: "shareId",
-                    populate: {
-                        path: "userId",
-                        select: "username fullname avatar"
-                    }
-                })
+            })
 
             await newPost.save()
+
+            const share = await Posts.findById(shareId).populate("userId", "username fullname avatar")
 
             res.json({
                 success: true,
                 message: 'Chia sẻ thành công!',
-                newPost
+                newPost: {
+                    ...newPost._doc,
+                    userId: {
+                        _id: req.user._id,
+                        username: req.user.username,
+                        fullname: req.user.fullname,
+                        avatar: req.user.avatar
+                    },
+                    shareId: share
+                }
             })
         }
         catch (err) {
@@ -105,37 +78,6 @@ class PostController {
                     'locations.$.postId': newPost._doc._id
                 }
             }, { new: true, safe: true, upsert: true })
-
-
-
-
-            // switch (parseInt(rate)) {
-            //     case 1:
-            //         await Locations.findByIdAndUpdate(locationId, {
-            //             $inc: { "star.0": 1 }
-            //         }, { new: true })
-            //         break;
-            //     case 2:
-            //         await Locations.findByIdAndUpdate(locationId, {
-            //             $inc: { "star.1": 1 }
-            //         }, { new: true })
-            //         break;
-            //     case 3:
-            //         await Locations.findByIdAndUpdate(locationId, {
-            //             $inc: { "star.2": 1 }
-            //         }, { new: true })
-            //         break;
-            //     case 4:
-            //         await Locations.findByIdAndUpdate(locationId, {
-            //             $inc: { "star.3": 1 }
-            //         }, { new: true })
-            //         break;
-            //     case 5:
-            //         await Locations.findByIdAndUpdate(locationId, {
-            //             $inc: { "star.4": 1 }
-            //         }, { new: true })
-            //         break;
-            // }
 
 
             res.json({
@@ -458,8 +400,6 @@ class PostController {
             res.status(500).json({ success: false, message: err.message })
         }
     }
-
-
 
 }
 

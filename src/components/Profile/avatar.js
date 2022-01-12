@@ -1,12 +1,12 @@
 import React, { useEffect, useState } from "react";
-import { WhatsApp, RssFeed } from "@material-ui/icons";
+import { WhatsApp, RssFeed, Update } from "@material-ui/icons";
 import { Avatar, Button, Container, Typography, Modal, Backdrop, CircularProgress } from "@material-ui/core";
 
 import { profileStyles } from "../../style";
 import UserList from "../modal/userList";
 import ImageModal from "../modal/image";
 import { useSelector, useDispatch } from "react-redux";
-import { useParams, useHistory } from "react-router-dom";
+import { useParams, useHistory, Link } from "react-router-dom";
 import { follow, unfollow } from "../../redux/callApi/userCall";
 
 
@@ -189,18 +189,21 @@ export default function Profile_Avatar(props) {
                 </Modal>
               </div>
             </div>
-            {
-              user._id !== auth.user?._id &&
-              <div className={classes.profile_button}>
-                <Button startIcon={< RssFeed />} className={classes.button} onClick={handleFollow} disabled={!auth.token}>
-                  {stateFollow.loading ? <CircularProgress /> : followed ? "Hủy Theo dõi" : "Theo dõi"}
-                </Button>
-                <Button startIcon={<WhatsApp />} className={classes.button} disabled={!auth.token}>
-                  Nhắn tin
-                </Button>
-              </div>
+            <div className={classes.profile_button}>
+              {
+                user._id !== auth.user?._id ?
+                  <>
+                    <Button startIcon={< RssFeed />} className={classes.button} onClick={handleFollow} disabled={!auth.token}>
+                      {stateFollow.loading ? <CircularProgress /> : followed ? "Hủy theo dõi" : "Theo dõi"}
+                    </Button>
+                    <Button startIcon={<WhatsApp />} className={classes.button} disabled={!auth.token}>
+                      Nhắn tin
+                    </Button>
+                  </> :
+                  <Button startIcon={<Update />} className={classes.button} component={Link} to='/change_info'>Thay đổi thông tin</Button>
 
-            }
+              }
+            </div>
           </div>
         </>
       }

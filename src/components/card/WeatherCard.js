@@ -46,7 +46,7 @@ function WeatherCard(props) {
             <div className={classes.weatherTitle}>
                 <Typography variant="h5">{nameShow}</Typography>
                 <Typography>{convertDateToStr(weather.dt * 1000)}</Typography>
-                <img src={`http://openweathermap.org/img/wn/${weather.weather[0].icon}@2x.png`} alt={weather.weather[0].main} className={classes.icon} />
+                <img src={`http://openweathermap.org/img/wn/${weather.weather[0].icon}@2x.png`} alt={"Loading..."} className={classes.icon} />
             </div>
 
             <div className={classes.temp}>
@@ -105,7 +105,7 @@ export function WeatherFocastItem(props) {
             <CardContent className={classes.content}>
                 <div className={classes.weatherTitle}>
                     <Typography variant="h6">{convertDateToStr(weather.dt * 1000)}</Typography>
-                    <img src={`http://openweathermap.org/img/wn/${weather.weather[0].icon}@2x.png`} alt={weather.weather[0].main} className={classes.icon} />
+                    <img src={`http://openweathermap.org/img/wn/${weather.weather[0].icon}@2x.png`} alt={"Loading..."} className={classes.icon} />
                 </div>
 
                 <div className={classes.temp}>
@@ -164,6 +164,14 @@ export default function WeatherCardGeneral(props) {
 
     const [show, setShow] = useState(false);
 
+    const handleShow = () => {
+        setShow(true);
+    }
+
+    const handleClose = () => {
+        setShow(false);
+    }
+
     useEffect(() => {
         weatherFocast(position, (respone) => {
             setWeather(respone);
@@ -176,7 +184,7 @@ export default function WeatherCardGeneral(props) {
                 <>
                     <WeatherCard weather={weather.current} nameShow={nameShow} />
                     <div style={{ margin: 20 }} className={classes.center}>
-                        <Button onClick={() => setShow(true)} className={classes.button}>
+                        <Button onClick={handleShow} className={classes.button}>
                             Xem dự báo
                         </Button>
                     </div>
@@ -188,7 +196,7 @@ export default function WeatherCardGeneral(props) {
                         aria-describedby="transition-modal-description"
                         className={classes.modal}
                         open={show}
-                        onClose={() => setShow(false)}
+                        onClose={handleClose}
                         closeAfterTransition
                         BackdropComponent={Backdrop}
                         BackdropProps={{
@@ -196,7 +204,7 @@ export default function WeatherCardGeneral(props) {
                         }}
                     >
                         <Fade in={show}>
-                            <WeatherFocast weather={weather.daily} handleClose={() => setShow(false)} nameShow={nameShow} alert={weather.alert} />
+                            <WeatherFocast weather={weather.daily} handleClose={handleClose} nameShow={nameShow} alert={weather.alert} />
                         </Fade>
                     </Modal>
                 </> :

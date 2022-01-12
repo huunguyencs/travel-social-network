@@ -114,9 +114,9 @@ export default function Location(props) {
                                     location &&
                                     <>
                                         <SpeedDialButton />
-                                        <Grid item md={12}>
+                                        <Grid item md={12} sm={12} xs={12}>
                                             <div className={classes.fullname}>
-                                                <Typography variant="h2" noWrap={false}>
+                                                <Typography variant="h2" noWrap={false} className={classes.titleFullname}>
                                                     {location.fullname}
                                                 </Typography>
                                             </div>
@@ -131,7 +131,7 @@ export default function Location(props) {
 
 
                                         </Grid>
-                                        <Grid item md={3} sm={12}>
+                                        <Grid item md={3} sm={12} xs={12}>
                                             <div className={classes.infoPanel}>
                                                 <div className={classes.infoHeader}>
                                                     <Typography variant="h6">
@@ -145,12 +145,12 @@ export default function Location(props) {
                                         </Grid>
 
 
-                                        <Grid item md={6} sm={12}>
+                                        <Grid item md={6} sm={12} xs={12}>
                                             <div className={classes.map}>
                                                 <MapCard position={location.position} zoom={12} name={location.fullname} height={400} />
                                             </div>
                                         </Grid>
-                                        <Grid item md={3} sm={12}>
+                                        <Grid item md={3} sm={12} xs={12}>
                                             <Card className={classes.imageList}>
                                                 <img src={location.images[0]} alt="Loading..." className={classes.image} onClick={handleShowImage} />
                                                 {showImg && (
@@ -169,17 +169,17 @@ export default function Location(props) {
                                                 )}
                                             </Card>
                                         </Grid>
-                                        <Grid item md={3} sm={12}>
+                                        <Grid item md={3} sm={12} xs={12}>
                                             <div style={{ margin: 30 }}>
                                                 <RatingChart star={location.star} />
                                             </div>
                                         </Grid>
-                                        <Grid item md={6} sm={12}>
+                                        <Grid item md={6} sm={12} xs={12}>
                                             <div className={classes.review}>
                                                 <FeedReview id={location._id} />
                                             </div>
                                         </Grid>
-                                        <Grid item md={3} sm={12}>
+                                        <Grid item md={3} sm={12} xs={12}>
                                             <div style={{ margin: 30 }}>
                                                 <WeatherCardGeneral position={location.position} nameShow={location.fullname} />
                                             </div>

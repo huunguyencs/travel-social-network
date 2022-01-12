@@ -33,6 +33,11 @@ const locationCardStyles = makeStyles((theme) => ({
         [theme.breakpoints.down("sm")]: {
             marginTop: 3
         }
+    },
+    fullname: {
+        "&:hover": {
+            textDecorationLine: 'underline',
+        }
     }
 }))
 

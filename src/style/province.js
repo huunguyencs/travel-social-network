@@ -87,6 +87,10 @@ const provinceStyles = makeStyles((theme) => ({
         display: 'flex',
         justifyContent: 'center',
         marginTop: 150
+    },
+    rightbar: {
+        display: 'flex',
+        justifyContent: 'center'
     }
 }))
 

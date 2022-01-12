@@ -26,15 +26,15 @@ export default function ServicePage(props) {
             {/* <Grid item md={12} >
                 <Slider />
             </Grid> */}
-            <Grid item md={3} sm={12}>
+            <Grid item md={3} sm={2} xs={2}>
                 <LeftBar >
                     <Menu menuList={homeMenu} />
                 </LeftBar>
             </Grid>
-            <Grid item md={6}>
+            <Grid item md={6} sm={10} xs={10}>
                 <FeedService />
             </Grid>
-            <Grid item md={3} sm={0} className={classes.rightbar}>
+            <Grid item md={3} className={classes.rightbar}>
                 <RightBar>
                     <Calendar />
                     <FriendRecommendCard />

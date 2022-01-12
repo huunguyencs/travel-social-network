@@ -18,7 +18,7 @@ export default function CreatePostForm(props) {
     const history = useHistory();
     const [state, setState] = useState({
         loading: false,
-        error: false
+        error: null
     })
 
     const { auth,socket } = useSelector(state => state);
@@ -33,16 +33,21 @@ export default function CreatePostForm(props) {
     }
 
     const handleChangeImageUpload = (e) => {
-        let valid = true;
+        let error = "";
         for (const file of e.target.files) {
             const check = checkImage(file);
             if (check !== "") {
-                valid = false;
+                error = check;
                 break;
             }
         }
-        if (valid)
+        if (error === "")
             setImageUpload(oldImage => [...oldImage, ...e.target.files])
+        else
+            setState({
+                ...state,
+                error: error
+            })
     }
 
     const removeImage = (index) => {
@@ -63,19 +68,19 @@ export default function CreatePostForm(props) {
         if (text !== '' || imageUpload.length > 0 || ht.length > 0) {
             setState({
                 loading: true,
-                error: false
+                error: null
             })
             dispatch(createPost({ content: text, images: imageUpload, hashtags: ht }, auth.token, "post",socket, () => {
                 setState({
                     loading: false,
-                    error: false,
+                    error: null,
                 })
                 props.handleClose();
                 history.push("/");
-            }, () => {
+            }, (err) => {
                 setState({
                     loading: false,
-                    error: true
+                    error: err
                 })
             }));
 
@@ -98,6 +103,7 @@ export default function CreatePostForm(props) {
                             <div className={classes.postContentInput}>
                                 <InputBase
                                     placeholder="Bạn đang nghĩ gì?..."
+                                    title="Bạn đang nghĩ gì"
                                     rows={10}
                                     name="content"
                                     id="content"
@@ -110,6 +116,7 @@ export default function CreatePostForm(props) {
                             <div >
                                 <InputBase
                                     placeholder="Hashtag (cách nhau bằng dấu cách). Vd: #bien #lehoi ..."
+                                    title="Hashtag (cách nhau bằng dấu cách). Vd: #bien #lehoi ..."
                                     variant="outlined"
                                     name="hashtag"
                                     id="hashtag"
@@ -154,6 +161,12 @@ export default function CreatePostForm(props) {
 
                         </div>
                     </form>
+                    {state.error &&
+                        <div className={classes.error}>
+                            <Typography color="inherit">{state.error}</Typography>
+                        </div>
+                    }
+
                     <div
                         className={classes.imageInputContainer}
                     >
@@ -165,7 +178,7 @@ export default function CreatePostForm(props) {
                                 {imageUpload.map((item, index) =>
                                     <img
                                         key={index}
-                                        alt="not found"
+                                        alt="Error"
                                         className={classes.imageInput}
                                         onClick={() => removeImage(index)}
                                         src={URL.createObjectURL(item)}

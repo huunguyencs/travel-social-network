@@ -120,7 +120,21 @@ export default function Tour(props) {
 
     }, [tour, auth.user])
 
+    const handleCloseLogin = () => {
+        setLogin(false);
+    }
 
+    const handleShowShare = () => {
+        setShare(true);
+    }
+
+    const handleCloseShare = () => {
+        setShare(false);
+    }
+
+    const handleCommentPress = () => {
+        setShowCmt(state => !state);
+    }
 
 
     return (
@@ -137,7 +151,7 @@ export default function Tour(props) {
                         aria-describedby="must-login"
                         className={classes.modal}
                         open={login}
-                        onClose={() => setLogin(false)}
+                        onClose={handleCloseLogin}
                         closeAfterTransition
                         BackdropComponent={Backdrop}
                         BackdropProps={{
@@ -164,24 +178,24 @@ export default function Tour(props) {
                     >
                         <UserList listUser={tour.likes} title={"Đã thích"} handleClose={handleClose} />
                     </Modal>
-                    <QuestionAnswer onClick={() => (setShowCmt(value => !value))} className={classes.iconButton} />
+                    <QuestionAnswer onClick={handleCommentPress} className={classes.iconButton} />
                     <Typography className={classes.numCmt}>
                         {tour.comments.length}
                     </Typography>
-                    <Share onClick={() => setShare(true)} className={classes.iconButton} />
+                    <Share onClick={handleShowShare} className={classes.iconButton} />
                     <Modal
                         aria-labelledby="share"
                         aria-describedby="share-this-tour"
                         className={classes.modal}
                         open={share}
-                        onClose={() => setShare(false)}
+                        onClose={handleCloseShare}
                         closeAfterTransition
                         BackdropComponent={Backdrop}
                         BackdropProps={{
                             timeout: 500,
                         }}
                     >
-                        <SharePost object={tour.shareId ? tour.shareId : tour} type="tour" handleClose={() => setShare(false)} />
+                        <SharePost object={tour.shareId ? tour.shareId : tour} type="tour" handleClose={handleCloseShare} />
                     </Modal>
                 </CardActions>
 

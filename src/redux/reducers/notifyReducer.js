@@ -1,43 +1,44 @@
 import * as NOTIFY_TYPES from '../constants/notifyConstant';
-
 const INIT_STATE = {
     loading: false,
-    success: false,
-    error: null,
-    message: "",
+    data: []
 }
 
 const notifyReducer = (state = INIT_STATE, action) => {
     switch (action.type) {
-        case NOTIFY_TYPES.CALL_START: { // bat dau goi api
+        case NOTIFY_TYPES.CREATE_NOTIFY:
             return {
                 ...state,
-                loading: true,
-                success: false,
-                message: "",
+                data: [action.payload, ...state.data]
             }
-        }
-        case NOTIFY_TYPES.CALL_SUCCESS: {
+
+
+        case NOTIFY_TYPES.GET_NOTIFIES:
             return {
                 ...state,
-                loading: false,
-                success: true,
-                error: null,
-                message: action.payload.message,
+                data: action.payload
             }
-        }
-        case NOTIFY_TYPES.CALL_FAIL: {
+
+        case NOTIFY_TYPES.UPDATE_NOTIFY:
             return {
                 ...state,
-                loading: false,
-                success: false,
-                error: action.payload.error,
-                message: "",
+                data: state.data.map(item => item._id === action.payload._id ?
+                    {
+                        ...item,
+                        seen: action.payload.seen
+                    } : item
+                )
             }
-        }
-        default: {
-            return state
-        }
+
+        case NOTIFY_TYPES.DELETE_NOTIFY:
+            return {
+                ...state,
+                data: state.data.filter(item => item._id !== action.payload._id)
+            }
+
+        default:
+            return state;
+
     }
 }
 

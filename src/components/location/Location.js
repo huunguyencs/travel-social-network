@@ -19,10 +19,12 @@ export default function LocationCard(props) {
                     className={classes.media}
                     image={location.images[0]}
                     title={location.fullname}
+                    component={Link}
+                    to={'/location/' + location.name}
                 />
             </CardActionArea>
             <CardContent className={classes.content}>
-                <Typography variant="h5" component={Link} to={"/location/" + location.name}>
+                <Typography variant="h5" component={Link} to={"/location/" + location.name} className={classes.fullname}>
                     {location.fullname}
                 </Typography>
                 <div className={classes.rate}>

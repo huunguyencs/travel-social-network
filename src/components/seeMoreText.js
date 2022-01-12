@@ -17,6 +17,10 @@ export function SeeMoreText(props) {
 
     const classes = useStyles();
 
+    const handleShowMore = () => {
+        setMore(state => !state);
+    }
+
     const { maxText, text, variant } = props;
 
     return (
@@ -26,7 +30,7 @@ export function SeeMoreText(props) {
                     <>
                         <span>{text?.slice(0, maxText)}</span>
                         {more ? <span>{text?.slice(maxText)}</span> : <span>...</span>}
-                        {<span onClick={() => setMore(!more)} className={classes.moreButton}>{more ? "Thu gọn" : "Xem thêm"}</span>}
+                        {<span onClick={handleShowMore} className={classes.moreButton}>{more ? "Thu gọn" : "Xem thêm"}</span>}
                     </>
                 )
             }

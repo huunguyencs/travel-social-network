@@ -9,13 +9,13 @@ export const getProvinces = (props) => {
 
 export const loading = (props) => {
     return {
-        type: LOC_TYPES.LOADING,
+        type: LOC_TYPES.LOADING_LOCATION,
     }
 }
 
 export const error = (props) => {
     return {
-        type: LOC_TYPES.ERROR,
+        type: LOC_TYPES.ERROR_LOCATION,
         payload: props
     }
 }

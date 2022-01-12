@@ -6,6 +6,7 @@ import { useDispatch } from "react-redux";
 import { formStyles } from '../../style';
 import { updateInfo } from '../../redux/actions/createTourAction';
 import EmojiPicker from "../input/emojiPicker";
+import { checkImage } from "../../utils/uploadImage";
 
 
 export default function UpdateTourInfo({ name, content, hashtags, image, handleClose, cost }) {
@@ -20,6 +21,7 @@ export default function UpdateTourInfo({ name, content, hashtags, image, handleC
     })
 
     const [text, setText] = useState(content);
+    const [error, setError] = useState('');
 
 
     const handleInput = (e) => {
@@ -31,10 +33,18 @@ export default function UpdateTourInfo({ name, content, hashtags, image, handleC
 
     const handleChangeImageUpload = (e) => {
         // setImageUpload(e.target.files)
-        setState({
-            ...state,
-            image: e.target.files[0],
-        })
+        const image = e.target.files[0];
+        const check = checkImage(image)
+        if (check !== '') {
+            setState({
+                ...state,
+                image: image,
+            })
+        }
+        else {
+            setError(check)
+        }
+
     }
 
     const removeImage = () => {
@@ -56,6 +66,7 @@ export default function UpdateTourInfo({ name, content, hashtags, image, handleC
         dispatch(updateInfo({ name: state.name, content: text, hashtags: ht, image: state.image, cost: state.cost }));
         handleClose();
     }
+
 
     const classes = formStyles();
 
@@ -138,14 +149,17 @@ export default function UpdateTourInfo({ name, content, hashtags, image, handleC
 
                 </div>
             </form>
+
+            <span style={{ fontSize: "15px", color: "red", marginInline: "20px", marginTop: "10px" }}>{error}</span>
+
             <div
                 className={classes.imageInputContainer}
             >
                 {state.image &&
                     <img
-                        alt="not found"
+                        alt="Error"
                         className={classes.imageInput}
-                        onClick={() => removeImage()}
+                        onClick={removeImage}
                         src={URL.createObjectURL(state.image)}
                     />
                 }

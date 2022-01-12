@@ -1,37 +1,21 @@
 import * as tourAction from '../actions/tourAction';
 import customAxios from '../../utils/fetchData';
 import * as imageUtils from '../../utils/uploadImage'
-import {createNotify, deleteNotify} from './notifyCall';
+import { createNotify, deleteNotify } from './notifyCall';
+import * as alertAction from '../actions/alertAction'
 
 export const getTours = (data) => async (dispatch) => {
-    dispatch(tourAction.getTours({ tour: [] }));
     dispatch(tourAction.loading());
+    // console.log(dispatch)
     try {
 
         const res = await customAxios().get("/tour/tours");
-
-        dispatch(tourAction.getTours({ tour: res.data.tours }));
+        // console.log(res.data.tours)
+        dispatch(tourAction.getTours({ tours: res.data.tours }));
     }
     catch (err) {
         // console.log(err);
-        dispatch(tourAction.error({ error: "Lỗi" }))
-
-    }
-}
-
-export const getTourDetail = (id, next) => async (dispatch) => {
-    dispatch(tourAction.loading());
-    try {
-
-        const res = await customAxios().get(`/tour/${id}`);
-
-        next(res.data.tour);
-
-        // dispatch(tourAction.getTourDetail({ tourdetail: res }));
-    }
-    catch (err) {
-        // console.log(err);
-        // dispatch(tourAction.error({ error: err.response.data.message }));
+        dispatch(tourAction.error({ error: "Có lỗi xảy ra" }))
     }
 }
 
@@ -41,15 +25,15 @@ export const getUserTour = (id, token) => async (dispatch) => {
     try {
         const res = await customAxios(token).get(`/tour/user_tours/${id}`);
         // console.log(res.data.tours);
-        dispatch(tourAction.getTours({ tour: res.data.tours }))
+        dispatch(tourAction.getTours({ tours: res.data.tours }))
     }
     catch (err) {
-        dispatch(tourAction.error({ error: "Lỗi" }))
+        dispatch(tourAction.error({ error: "Có lỗi xảy ra" }))
         // console.log(err);
     }
 }
 
-export const saveTour = (tour, image, token,socket, next, error) => async (dispatch) => {
+export const saveTour = (tour, image, token, socket, next, error) => async (dispatch) => {
 
     try {
         // call api to save tour
@@ -70,18 +54,19 @@ export const saveTour = (tour, image, token,socket, next, error) => async (dispa
 
         const res = await customAxios(token).post('/tour/create_tour', data);
         next();
+        dispatch(alertAction.success({ message: "Lưu lịch trình thành công!" }))
         dispatch(tourAction.addTour({ tour: res.data.newTour }))
-       
+
         //notify
         const dataNotify = {
             id: res.data.newTour._id,
             text: " thêm hành trình mới",
             recipients: res.data.newTour.userId.followers,
             content: res.data.newTour.content,
-            image: image.length >0? image[0]: "empty",
+            image: image.length > 0 ? image[0] : "empty",
             url: `/tour/${res.data.newTour._id}`,
         }
-        dispatch(createNotify(dataNotify,token,socket));
+        dispatch(createNotify(dataNotify, token, socket));
     }
     catch (err) {
         error();
@@ -112,17 +97,21 @@ export const updateTour = (id, tour, image, token, next, error) => async (dispat
         const res = await customAxios(token).patch(`/tour/${id}`, data);
         next();
         // console.log(res.data.newTour)
-        dispatch(tourAction.updateTour({ id: id, tour: res.data.newTour }))
+        dispatch(tourAction.updateTour({ id: id, tour: res.data.newTour }));
+        dispatch(alertAction.success({ message: "Cập nhật thành công!" }))
 
     }
     catch (err) {
         // console.log(err);
         error();
-
+        if (err.response && err.response.data && err.response.data.message)
+            dispatch(alertAction.error({ message: err.response.data.message }))
+        else
+            dispatch(alertAction.error({ message: "Có lỗi xảy ra" }));
     }
 }
 
-export const deleteTour = (tour, token,socket, next, error) => async (dispatch) => {
+export const deleteTour = (tour, token, socket, next, error) => async (dispatch) => {
     try {
         // Notify
         const dataNotify = {
@@ -130,15 +119,20 @@ export const deleteTour = (tour, token,socket, next, error) => async (dispatch) 
             url: `/tour/${tour._id}`,
             type: 'deleteTour'
         }
-        dispatch(deleteNotify(dataNotify, token,socket));
+        dispatch(deleteNotify(dataNotify, token, socket));
 
         await customAxios(token).delete(`/tour/${tour._id}`)
         next();
         dispatch(tourAction.deleteTour({ id: tour._id }));
+        dispatch(alertAction.success({ message: "Xóa thành công!" }))
     }
     catch (err) {
         // dispatch(tourAction.error({ error: err.response.data.message }));
         error();
+        if (err.response && err.response.data && err.response.data.message)
+            dispatch(alertAction.error({ message: err.response.data.message }))
+        else
+            dispatch(alertAction.error({ message: "Có lỗi xảy ra" }));
     }
 }
 
@@ -157,13 +151,17 @@ export const likeTour = (id, auth, socket, next) => async (dispatch) => {
             text: " thích hành trình của bạn",
             recipients: [res.data.tour.userId],
             content: res.data.tour.content,
-            image: res.data.tour.image.length >0 ? res.data.tour.image[0] : "empty",
+            image: res.data.tour.image.length > 0 ? res.data.tour.image[0] : "empty",
             url: `/tour/${id}`,
         }
-        dispatch(createNotify(dataNotify,auth.token,socket));
+        dispatch(createNotify(dataNotify, auth.token, socket));
     }
     catch (err) {
         next();
+        if (err.response && err.response.data && err.response.data.message)
+            dispatch(alertAction.error({ message: err.response.data.message }))
+        else
+            dispatch(alertAction.error({ message: "Có lỗi xảy ra" }));
     }
 }
 
@@ -180,10 +178,14 @@ export const unlikeTour = (id, auth, socket, next) => async (dispatch) => {
             id: auth.user._id,
             url: `/tour/${id}`
         }
-        dispatch(deleteNotify(dataNotify, auth.token,socket));
+        dispatch(deleteNotify(dataNotify, auth.token, socket));
     }
     catch (err) {
         next();
+        if (err.response && err.response.data && err.response.data.message)
+            dispatch(alertAction.error({ message: err.response.data.message }))
+        else
+            dispatch(alertAction.error({ message: "Có lỗi xảy ra" }));
     }
 }
 
@@ -195,6 +197,10 @@ export const joinTour = (id, token, next, error) => async (dispatch) => {
     }
     catch (err) {
         error();
+        if (err.response && err.response.data && err.response.data.message)
+            dispatch(alertAction.error({ message: err.response.data.message }))
+        else
+            dispatch(alertAction.error({ message: "Có lỗi xảy ra" }));
     }
 }
 
@@ -206,6 +212,10 @@ export const unJoinTour = (id, token, next, error) => async (dispatch) => {
     }
     catch (err) {
         error();
+        if (err.response && err.response.data && err.response.data.message)
+            dispatch(alertAction.error({ message: err.response.data.message }))
+        else
+            dispatch(alertAction.error({ message: "Có lỗi xảy ra" }));
     }
 }
 
@@ -218,5 +228,9 @@ export const removeJoin = (tourId, userId, token, next) => async (dispatch) => {
     }
     catch (err) {
         next();
+        if (err.response && err.response.data && err.response.data.message)
+            dispatch(alertAction.error({ message: err.response.data.message }))
+        else
+            dispatch(alertAction.error({ message: "Có lỗi xảy ra" }));
     }
 }

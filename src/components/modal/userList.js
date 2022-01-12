@@ -85,7 +85,7 @@ export default function UserList(props) {
             <div className={classes.modal_header}>
                 <h2 className={classes.modal_header_left}>{title}: {listUser.length}</h2>
                 <div className={classes.modal_header_right}>
-                    <IconButton onClick={handleClose}>
+                    <IconButton onClick={handleClose} size="small">
                         <Close className={classes.modal_header_closeIcon} />
                     </IconButton>
                 </div>
@@ -93,18 +93,17 @@ export default function UserList(props) {
             <ul>
                 {listUser.map((user) => (
                     <li button className={classes.modal_body_user} key={user._id}>
-
-                        <div className={classes.avatar}>
-                            <Avatar alt="avatar" src={user.avatar} />
-                        </div>
-                        <div className={classes.fullname}>
-                            <Link to={`/profile/${user._id}`} onClick={handleClose}>{user.fullname}</Link>
+                        <div className={classes.userWrap}>
+                            <Avatar alt="avatar" src={user.avatar} className={classes.avatar} />
+                            <div className={classes.fullnameWrap}>
+                                <Link to={`/profile/${user._id}`} onClick={handleClose} className={classes.fullname}>{user.fullname}</Link>
+                            </div>
                         </div>
                         <div>
                             {
                                 auth.user && user._id !== auth.user._id &&
                                 <Button variant="outlined" className={classes.modal_body_user_button} onClick={() => handleFollow(user._id)}>
-                                    {stateFollow.loading && stateFollow.id === user._id ? <CircularProgress /> : isFollowed(user._id) ? "Hủy theo dõi" : "Theo dõi"}
+                                    {stateFollow.loading && stateFollow.id === user._id ? <CircularProgress fontSize="small" /> : isFollowed(user._id) ? "Hủy theo dõi" : "Theo dõi"}
                                 </Button>
                             }
                         </div>

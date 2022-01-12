@@ -11,16 +11,20 @@ const profileStyles = makeStyles((theme) => ({
   },
   tabs: {
     borderRight: `1px solid ${theme.palette.divider}`,
-    width: "30%",
-    marginTop: "5%"
+    // width: "30%",
+    marginTop: 50,
   },
   tab: {
-    textAlign: "center"
+    textAlign: "center",
+    textTransform: "none",
+    fontSize: 16,
+    marginRight: 30
   },
   tabPanel: {
     flex: 1
   },
   change_background: {
+    marginLeft: 10,
     width: "100%",
     height: "180px",
     position: "relative",
@@ -49,13 +53,14 @@ const profileStyles = makeStyles((theme) => ({
     height: "140px",
     marginTop: "-80px",
     // overflow: "hidden",
-    position: "relative"
+    position: "relative",
+    marginLeft: 30
   },
   change_avatar_upload: {
     position: "absolute",
-    top: "50%",
-    left: "50%",
-    transform: "translate(-50%,-50%)"
+    bottom: 0,
+    right: 0,
+    // transform: "translate(-50%,-50%)"
   },
   change_avatar_img: {
     width: "100%",
@@ -66,7 +71,8 @@ const profileStyles = makeStyles((theme) => ({
   },
   change_form: {
     width: "100%",
-    margin: "0 20px"
+    marginTop: 20,
+    marginLeft: 20,
   }
   ,
   container: {
@@ -146,6 +152,7 @@ const profileStyles = makeStyles((theme) => ({
     padding: "8px",
     paddingInline: "16px",
     borderRadius: attr.borderRadius.md,
+    textTransform: 'none',
     [theme.breakpoints.down("md")]: {
       marginBottom: 5
     },
@@ -184,6 +191,16 @@ const profileStyles = makeStyles((theme) => ({
     [theme.breakpoints.down("sm")]: {
       fontSize: 14
     },
+  },
+  change_password: {
+    marginTop: 50
+  },
+  inputfield: {
+    marginTop: 20,
+    marginLeft: 20
+  },
+  change_password_form: {
+    margin: 30
   }
 }));
 

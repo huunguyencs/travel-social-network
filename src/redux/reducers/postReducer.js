@@ -11,7 +11,6 @@ const INIT_STATE = {
 const postRecuder = (state = INIT_STATE, action) => {
     switch (action.type) {
         case POST_TYPES.GET_POSTS: {  // tai danh sach cac post (thanh cong)
-            // console.log(action.payload.posts);
             return {
                 ...state,
                 posts: action.payload.posts,
@@ -37,7 +36,7 @@ const postRecuder = (state = INIT_STATE, action) => {
                 error: null,
             }
         }
-        case POST_TYPES.LOADING: { // dang tai danh sach
+        case POST_TYPES.LOADING_POST: { // dang tai danh sach
             return {
                 ...state,
                 loading: true,
@@ -60,7 +59,7 @@ const postRecuder = (state = INIT_STATE, action) => {
                     : post)
             }
         }
-        case POST_TYPES.UPDATE_LIKE: {
+        case POST_TYPES.UPDATE_LIKE_POST: {
             return {
                 ...state,
                 posts: state.posts.map(item => item._id === action.payload.id ? {
@@ -69,7 +68,7 @@ const postRecuder = (state = INIT_STATE, action) => {
                 } : item)
             }
         }
-        case POST_TYPES.ADD_COMMENT: {
+        case POST_TYPES.ADD_COMMENT_POST: {
             return {
                 ...state,
                 posts: state.posts.map(item => item._id === action.payload.id ? {
@@ -78,7 +77,7 @@ const postRecuder = (state = INIT_STATE, action) => {
                 } : item)
             }
         }
-        case POST_TYPES.UPDATE_COMMENT: {
+        case POST_TYPES.UPDATE_COMMENT_POST: {
             return {
                 ...state,
                 posts: state.posts.map(item => item._id === action.payload.postId ? {
@@ -87,16 +86,16 @@ const postRecuder = (state = INIT_STATE, action) => {
                 } : item)
             }
         }
-        case POST_TYPES.DELETE_COMMENT: {
+        case POST_TYPES.DELETE_COMMENT_POST: {
             return {
                 ...state,
                 posts: state.posts.map(item => item._id === action.payload.postId ? {
                     ...item,
-                    comments: item.comments.filter(comment => comment._id === action.payload.id)
+                    comments: item.comments.filter(comment => comment._id !== action.payload.id)
                 } : item)
             }
         }
-        case POST_TYPES.ERROR: { // loi trong khi tai danh sach cac post
+        case POST_TYPES.ERROR_POST: { // loi trong khi tai danh sach cac post
             return {
                 ...state,
                 loading: false,

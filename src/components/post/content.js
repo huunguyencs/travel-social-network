@@ -1,4 +1,4 @@
-import { Avatar, Backdrop, Box, Button, CardContent, CardHeader, CardMedia, CircularProgress, Dialog, DialogActions, DialogTitle, IconButton, Menu, MenuItem, Modal, Typography } from '@material-ui/core';
+import { Avatar, Backdrop, Box, Button, CardContent, CardHeader, CardMedia, CircularProgress, Dialog, DialogActions, DialogContent, DialogTitle, IconButton, Menu, MenuItem, Modal, Typography } from '@material-ui/core';
 import { MoreVert } from '@material-ui/icons';
 import { Rating } from '@material-ui/lab';
 import React, { useState } from 'react'
@@ -49,6 +49,15 @@ function Header(props) {
         handleCloseMenu();
     }
 
+    const handleShowDelete = () => {
+        setShowDelete(true);
+    }
+
+    const handleCloseDelete = () => {
+        setShowDelete(false);
+        handleCloseMenu();
+    }
+
     const handleDeletePost = () => {
         setState({
             loading: true,
@@ -59,7 +68,7 @@ function Header(props) {
                 loading: false,
                 error: false
             })
-            setShowDelete(false);
+            handleCloseDelete();
             handleCloseMenu();
         }, () => {
             setState({
@@ -69,6 +78,11 @@ function Header(props) {
         }));
 
     }
+
+    const handleShowEdit = () => {
+        setShowEdit(true)
+    }
+
 
     const classes = postStyles();
 
@@ -81,7 +95,7 @@ function Header(props) {
                 <>
                     {
                         auth.user && auth.user._id === post.userId._id && !share && <>
-                            <IconButton aria-label="settings" onClick={handleShowMenu} className={classes.action}>
+                            <IconButton aria-label="settings" onClick={handleShowMenu} className={classes.action} size='small'>
                                 <MoreVert />
                             </IconButton>
                             <Menu
@@ -91,7 +105,7 @@ function Header(props) {
                                 disablePortal={true}
                                 MenuListProps={MenuListProps}
                             >
-                                <MenuItem onClick={() => setShowEdit(true)}>Chỉnh sửa bài viết</MenuItem>
+                                <MenuItem onClick={handleShowEdit}>Chỉnh sửa bài viết</MenuItem>
                                 <Modal
                                     aria-labelledby="transition-modal-edit"
                                     aria-describedby="transition-modal-edit-description"
@@ -108,19 +122,20 @@ function Header(props) {
                                         <UpdatePostForm post={post} handleClose={handleCloseEdit} />
                                     }
                                 </Modal>
-                                <MenuItem onClick={() => setShowDelete(true)}>Xóa bài viết</MenuItem>
+                                <MenuItem onClick={handleShowDelete}>Xóa bài viết</MenuItem>
                                 <Dialog
                                     open={showDelete}
-                                    onClose={() => setShowDelete(false)}
+                                    onClose={handleCloseDelete}
                                     aria-labelledby="show-delete-dialog"
                                     aria-describedby="show-delete-dialog-description"
                                 >
                                     <DialogTitle id="alert-dialog-title">{"Bạn có chắc chắn muốn xóa?"}</DialogTitle>
+                                    <DialogContent>Bạn sẽ không thể khôi phục lại dữ liệu sau khi xóa!</DialogContent>
                                     <DialogActions>
-                                        <Button onClick={() => setShowDelete(false)}>
+                                        <Button onClick={handleCloseDelete}>
                                             Hủy
                                         </Button>
-                                        <Button onClick={handleDeletePost}>
+                                        <Button onClick={handleDeletePost} className={classes.delete}>
                                             {
                                                 state.loading ?
                                                     <CircularProgress size={15} /> : "Xóa"

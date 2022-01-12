@@ -1,9 +1,10 @@
-// import * as notifyAction from '../actions/notifyAction'
 import * as postAction from '../actions/postAction';
 import * as tourAction from '../actions/tourAction';
 import * as imageUtils from '../../utils/uploadImage';
 import customAxios from '../../utils/fetchData';
-import {createNotify, deleteNotify} from './notifyCall';
+import { createNotify, deleteNotify } from './notifyCall';
+import * as alertAction from '../actions/alertAction';
+
 
 export const getPosts = (token) => async (dispatch) => {
     // dispatch(postAction.getPosts({ posts: [] }));
@@ -11,15 +12,17 @@ export const getPosts = (token) => async (dispatch) => {
 
     try {
         // call api to get post list
-        const res = await customAxios().get("post/posts");
+        const res = await customAxios().get("/post/posts");
 
         // console.log(res);
+
+        // console.log(res.data.posts)
 
         dispatch(postAction.getPosts({ posts: res.data.posts }));
     }
     catch (err) {
         // console.log(err);
-        dispatch(postAction.error({ error: "Lỗi" }))
+        dispatch(postAction.error({ error: "Có lỗi xảy ra" }))
     }
 
 }
@@ -34,7 +37,7 @@ export const getPostsLocation = (id) => async (dispatch) => {
         dispatch(postAction.getPosts({ posts: res.data.posts }));
     }
     catch (err) {
-        dispatch(postAction.error({ error: "Lỗi" }))
+        dispatch(postAction.error({ error: "Có lỗi xảy ra" }))
     }
 }
 
@@ -61,7 +64,7 @@ export const getUserPost = (id, token, offset) => async (dispatch) => {
 
         // console.log(err.response.data.message);
         // console.log(err);
-        dispatch(postAction.error({ error: "Lỗi" }))
+        dispatch(postAction.error({ error: "Có lỗi xảy ra" }))
     }
 }
 
@@ -78,7 +81,7 @@ export const getMorePost = (data) => async (dispatch) => {
         dispatch(postAction.getMorePost({ posts: res }));
     }
     catch (err) {
-        dispatch(postAction.error({ error: "Lỗi" }));
+        dispatch(postAction.error({ error: "Có lỗi xảy ra" }));
     }
 }
 
@@ -96,12 +99,12 @@ export const getPostById = (id, next) => async (dispatch) => {
     }
     catch (err) {
         // console.log(err);
-        dispatch(postAction.error({ error: "Lỗi" }))
+        dispatch(postAction.error({ error: "Có lỗi xảy ra" }))
     }
 
 }
 
-export const createPost = (data, token, type,socket, next, error) => async (dispatch) => {
+export const createPost = (data, token, type, socket, next, error) => async (dispatch) => {
     // post api
     try {
 
@@ -124,18 +127,18 @@ export const createPost = (data, token, type,socket, next, error) => async (disp
 
         // console.log(res.data);
         dispatch(postAction.addPost({ post: res.data.newPost }))
-        
+
         //notify
         const dataNotify = {
             id: res.data.newPost._id,
             text: " thêm bài viết mới",
             recipients: res.data.newPost.userId.followers,
             content: res.data.newPost.content,
-            image: image.length >0? image[0]: "empty",
+            image: image.length > 0 ? image[0] : "empty",
             url: `/post/${res.data.newPost._id}`,
         }
-        dispatch(createNotify(dataNotify,token,socket));
-       
+        dispatch(createNotify(dataNotify, token, socket));
+
         next();
     }
     catch (err) {
@@ -143,7 +146,7 @@ export const createPost = (data, token, type,socket, next, error) => async (disp
     }
 }
 
-export const updatePost = (data, token,socket, next, error) => async (dispatch) => {
+export const updatePost = (data, token, socket, next, error) => async (dispatch) => {
 
     try {
         // call api to update post
@@ -162,7 +165,8 @@ export const updatePost = (data, token,socket, next, error) => async (dispatch) 
 
         const res = await customAxios(token).patch(`/post/${data.id}`, post);
 
-        dispatch(postAction.updatePost({ post: res.data.post }))
+        dispatch(postAction.updatePost({ post: res.data.post }));
+        dispatch(alertAction.success({ message: "Cập nhật thành công!" }))
         next();
     }
     catch (err) {
@@ -171,7 +175,7 @@ export const updatePost = (data, token,socket, next, error) => async (dispatch) 
 }
 
 
-export const deletePost = (post, token,socket, next, error) => async (dispatch) => {
+export const deletePost = (post, token, socket, next, error) => async (dispatch) => {
 
     try {
         // Notify
@@ -180,10 +184,10 @@ export const deletePost = (post, token,socket, next, error) => async (dispatch) 
             url: `/post/${post._id}`,
             type: 'deletePost'
         }
-        dispatch(deleteNotify(dataNotify, token,socket));
+        dispatch(deleteNotify(dataNotify, token, socket));
 
         await customAxios(token).delete(`/post/${post._id}`);
-        dispatch(postAction.deletePost({ id: post._id}));
+        dispatch(postAction.deletePost({ id: post._id }));
 
         next();
     }
@@ -205,15 +209,19 @@ export const likePost = (id, auth, socket, next) => async (dispatch) => {
             text: " thích bài viết của bạn",
             recipients: [res.data.post.userId],
             content: res.data.post.content,
-            image: res.data.post.images.length >0 ? res.data.post.images[0] : "empty",
+            image: res.data.post.images.length > 0 ? res.data.post.images[0] : "empty",
             url: `/post/${id}`,
         }
-        dispatch(createNotify(dataNotify,auth.token,socket));
+        dispatch(createNotify(dataNotify, auth.token, socket));
 
     }
     catch (err) {
         next();
         // console.log(err);
+        if (err.response && err.response.data && err.response.data.message)
+            dispatch(alertAction.error({ message: err.response.data.message }))
+        else
+            dispatch(alertAction.error({ message: "Có lỗi xảy ra" }));
     }
 }
 
@@ -229,11 +237,15 @@ export const unlikePost = (id, auth, socket, next) => async (dispatch) => {
             id: auth.user._id,
             url: `/post/${id}`
         }
-        dispatch(deleteNotify(dataNotify, auth.token,socket));
+        dispatch(deleteNotify(dataNotify, auth.token, socket));
     }
     catch (err) {
         next();
         // console.log(err);
+        if (err.response && err.response.data && err.response.data.message)
+            dispatch(alertAction.error({ message: err.response.data.message }))
+        else
+            dispatch(alertAction.error({ message: "Có lỗi xảy ra" }));
     }
 }
 
@@ -252,8 +264,13 @@ export const share = (type, token, shareId, content, hashtags, next, error) => a
         else if (type === "tour") {
             dispatch(tourAction.addTour({ tour: res.data.newTour }))
         }
+        dispatch(alertAction.success({ message: "Chia sẻ thành công!" }))
     }
     catch (err) {
         error();
+        if (err.response && err.response.data && err.response.data.message)
+            dispatch(alertAction.error({ message: err.response.data.message }))
+        else
+            dispatch(alertAction.error({ message: "Có lỗi xảy ra" }));
     }
 }

@@ -18,6 +18,7 @@ import { getTours } from "../../redux/callApi/tourCall";
 export default function TourPage(props) {
 
     const classes = useStyles();
+
     const dispatch = useDispatch();
 
     useEffect(() => {
@@ -31,12 +32,8 @@ export default function TourPage(props) {
 
     return (
         <>
-
             <Grid container style={{ margin: 0, padding: 0 }}>
                 <SpeedDialButton />
-                {/* <Grid item md={12} xs={12}>
-                    <Slider />
-                </Grid> */}
                 <Grid item md={3} sm={2} xs={2} className={classes.leftbar}>
                     <LeftBar >
                         <Menu menuList={homeMenu} />

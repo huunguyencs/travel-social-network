@@ -104,6 +104,18 @@ export default function Post(props) {
         setShowCmt(!showCmt)
     }
 
+    const handleCloseLogin = () => {
+        setLogin(false);
+    }
+
+    const handleShowShare = () => {
+        setShare(true);
+    }
+
+    const handleCloseShare = () => {
+        setShare(false);
+    }
+
     useEffect(() => {
         setPost(props.post);
     }, [props.post]);
@@ -130,7 +142,7 @@ export default function Post(props) {
                         aria-describedby="must-login"
                         className={classes.modal}
                         open={login}
-                        onClose={() => setLogin(false)}
+                        onClose={handleCloseLogin}
                         closeAfterTransition
                         BackdropComponent={Backdrop}
                         BackdropProps={{
@@ -160,20 +172,20 @@ export default function Post(props) {
                     <Typography className={classes.numCmt}>
                         {post.comments.length}
                     </Typography>
-                    <Share onClick={() => setShare(true)} className={classes.iconButton} />
+                    <Share onClick={handleShowShare} className={classes.iconButton} />
                     <Modal
                         aria-labelledby="share"
                         aria-describedby="share-this-post"
                         className={classes.modal}
                         open={share}
-                        onClose={() => setShare(false)}
+                        onClose={handleCloseShare}
                         closeAfterTransition
                         BackdropComponent={Backdrop}
                         BackdropProps={{
                             timeout: 500,
                         }}
                     >
-                        <SharePost object={post.shareId ? post.shareId : post} type="post" handleClose={() => setShare(false)} />
+                        <SharePost object={post.shareId ? post.shareId : post} type="post" handleClose={handleCloseShare} />
                     </Modal>
                 </CardActions>
 

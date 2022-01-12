@@ -104,11 +104,11 @@ function Location(props) {
                 <ClickAwayListener onClickAway={handlePopoverClose}>
                     <Paper className={classes.locationPopper}>
                         <img src={location.images[0]} alt={"Loading..."} height={200} width="100%" title={location.fullname} />
-                        <div className={classes.center}>
-                            <Typography component={Link} to={`/location/${location.name}`}>{location.fullname.length > 28 ? location.fullname.slice(0, 28) + "..." : location.fullname}</Typography>
+                        <div className={classes.fullnameWrap}>
+                            <Typography title={location.fullname} component={Link} to={`/location/${location.name}`}>{location.fullname.length > 28 ? location.fullname.slice(0, 28) + "..." : location.fullname}</Typography>
                         </div>
-                        <div style={{ marginTop: 10 }} className={classes.center}>
-                            <Button onClick={addLoc}>Thêm địa điểm</Button>
+                        <div style={{ marginTop: 10 }} className={classes.buttonWrap}>
+                            <Button onClick={addLoc} className={classes.addButton}>Thêm địa điểm</Button>
                         </div>
 
                     </Paper>
@@ -120,7 +120,7 @@ function Location(props) {
 
 export default function AddLocMap(props) {
 
-    const { locations, currentProvince, setLoc, defaultState, setCurrentProvince, provinces, state, setState, indexDate } = props;
+    const { locations, currentProvince, setLoc, setCurrentProvince, provinces, state, setState, indexDate } = props;
 
     const setProvince = (province) => {
         if (province) {
@@ -139,8 +139,8 @@ export default function AddLocMap(props) {
         <div style={{ height: 500, marginBlock: 20 }}>
             <GoogleMapReact
                 bootstrapURLKeys={{ key: KEY }}
-                defaultCenter={defaultState.center}
-                defaultZoom={defaultState.zoom}
+                defaultCenter={{ lat: 14.489055527436275, lng: 107.96608963227854 }}
+                defaultZoom={8}
                 center={state.center}
                 zoom={state.zoom}
             >

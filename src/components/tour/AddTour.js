@@ -1,20 +1,21 @@
-import { Button, Container, Grid, Modal, Typography, Backdrop, Fade, Dialog, DialogActions, DialogTitle, CircularProgress, Tab, Tabs } from "@material-ui/core";
+import { Button, Container, Grid, Modal, Typography, Backdrop, Fade, Dialog, DialogActions, DialogTitle, CircularProgress, Tab, Tabs, Paper, IconButton } from "@material-ui/core";
 import React, { useEffect, useState } from "react";
 import { Timeline, TimelineItem, TimelineSeparator, TimelineConnector, TimelineContent, TimelineDot } from '@material-ui/lab'
 import { useDispatch, useSelector } from "react-redux";
 
 import { tourdetailStyles } from "../../style";
-// import AddLocationForm from "../forms/addLocation";
+import AddLocationForm from "../forms/addLocation";
 import Location from './Location';
 import * as tourAction from '../../redux/actions/createTourAction';
 import { useHistory } from "react-router-dom";
 import UpdateDateForm from "../forms/updateDate";
 import UpdateTourInfo from "../forms/updateInfoCreateTour";
-import { convertDateToStr } from "../../utils/date";
+import { convertDateToStr, convertDateToStrShort } from "../../utils/date";
 import { saveTour, updateTour } from "../../redux/callApi/tourCall";
 import AddLocation from "./AddLocation";
 import { getProvinces } from '../../redux/callApi/locationCall';
 import AddService from "./AddService";
+import { Close } from "@material-ui/icons";
 
 
 function a11yProps(index) {
@@ -72,6 +73,21 @@ export default function AddTour(props) {
     const [loc, setLoc] = useState(null);
     const [locations, setLocations] = useState([]);
 
+    const [showAddLoc, setShowAddLoc] = useState(false);
+    const handleShowAddLoc = () => {
+        setShowAddLoc(true);
+    }
+    const handleCloseAddLoc = () => {
+        setShowAddLoc(false);
+    }
+
+    const [showAddService, setShowAddService] = useState(false);
+    const handleShowAddService = () => {
+        setShowAddService(true);
+    }
+    const handleCloseAddService = () => {
+        setShowAddService(false);
+    }
 
     const [idx, setIdx] = useState(0);
     // const [addLoc, setAddLoc] = useState(false);
@@ -177,6 +193,9 @@ export default function AddTour(props) {
         }
     }, [dispatch, location.provinces])
 
+    const handleShowUpdateInfo = () => {
+        setShowChangeInfo(true);
+    }
 
 
     const classes = tourdetailStyles();
@@ -206,7 +225,7 @@ export default function AddTour(props) {
                             </Typography>
                         </div>
                         <div className={classes.itemInfo}>
-                            <Button onClick={() => setShowChangeInfo(true)}>Chỉnh sửa thông tin</Button>
+                            <Button onClick={handleShowUpdateInfo}>Chỉnh sửa thông tin</Button>
                         </div>
 
                         <Modal
@@ -228,7 +247,7 @@ export default function AddTour(props) {
                     </div>
 
                     <Grid container className={classes.container}>
-                        <Grid item md={2} >
+                        <Grid item md={2} sm={12} xs={12}>
                             <Container className={classes.timeline}>
                                 <Timeline align="right">
                                     {createTour.tour.map((item, index) => (
@@ -245,26 +264,35 @@ export default function AddTour(props) {
                                         </TimelineItem>
                                     ))}
                                 </Timeline>
-                                <div>
-                                    <Button className={classes.addDay} onClick={handleAddDay}>
-                                        Thêm ngày
-                                    </Button>
-                                </div>
-                                <div>
-                                    <Button className={classes.addDay} onClick={isUpdate ? handleUpdate : handleSave}>
-                                        {state.loading ?
-                                            <CircularProgress size="25px" color="inherit" />
-                                            : "Lưu lại"
-                                        }
-                                    </Button>
-                                </div>
-                            </Container>
 
+                            </Container>
+                            <div className={classes.smallTimeline}>
+                                <div className={classes.timelineWrap}>
+                                    {createTour.tour.map((item, index) => (
+                                        <Button key={index} className={index === idx ? classes.activeTimeline : classes.unactiveTimeline} onClick={() => setIdx(index)}>
+                                            {convertDateToStrShort(new Date(item.date))}
+                                        </Button>
+                                    ))}
+                                </div>
+                            </div>
+
+                            <div className={classes.addDayWrap}>
+                                <Button className={classes.addDay} onClick={handleAddDay}>
+                                    Thêm ngày
+                                </Button>
+
+                                <Button className={classes.addDay} onClick={isUpdate ? handleUpdate : handleSave}>
+                                    {state.loading ?
+                                        <CircularProgress size="25px" color="inherit" />
+                                        : "Lưu lại"
+                                    }
+                                </Button>
+                            </div>
 
                         </Grid>
-                        <Grid item md={6} className={classes.feedTour}>
-                            <div>
-                                <Button onClick={handleShowDelete}>
+                        <Grid item md={6} sm={12} xs={12} className={classes.feedTour}>
+                            <div className={classes.center}>
+                                <Button onClick={handleShowDelete} className={classes.editButton}>
                                     Xóa ngày
                                 </Button>
                                 <Dialog
@@ -278,12 +306,12 @@ export default function AddTour(props) {
                                         <Button onClick={handleCloseDelete}>
                                             Hủy
                                         </Button>
-                                        <Button onClick={handleDeleteDate}>
+                                        <Button onClick={handleDeleteDate} className={classes.delete}>
                                             Xóa
                                         </Button>
                                     </DialogActions>
                                 </Dialog>
-                                <Button onClick={handleShowUpdate}>
+                                <Button onClick={handleShowUpdate} className={classes.editButton}>
                                     Thay đổi ngày
                                 </Button>
                                 <Modal
@@ -317,30 +345,67 @@ export default function AddTour(props) {
                                     />
                                 ))
                             }
-                            {/* <div className={classes.addContainer}>
-                        <Button className={classes.addTour} onClick={handleShow}>
-                            Thêm địa điểm
-                        </Button>
-                        <Modal
-                            aria-labelledby="transition-modal-title"
-                            aria-describedby="transition-modal-description"
-                            open={addLoc}
-                            className={classes.modal}
-                            onClose={handleClose}
-                            closeAfterTransition
-                            BackdropComponent={Backdrop}
-                            BackdropProps={{
-                                timeout: 500,
-                            }}
-                        >
-                            <Fade in={addLoc}>
-                                <AddLocationForm handleClose={handleClose} indexDate={idx} provinceCache={provinceCache} setProvinceCache={setProvinceCache} />
-                            </Fade>
-                        </Modal>
-                    </div> */}
+                            <div className={classes.addContainerSmall}>
+                                <>
+                                    <Button className={classes.addTour} onClick={handleShowAddLoc}>
+                                        Thêm địa điểm
+                                    </Button>
+                                    <Modal
+                                        aria-labelledby="modal-add-location"
+                                        aria-describedby="modal-add-location-description"
+                                        open={showAddLoc}
+                                        className={classes.modal}
+                                        onClose={handleCloseAddLoc}
+                                        closeAfterTransition
+                                        BackdropComponent={Backdrop}
+                                        BackdropProps={{
+                                            timeout: 500,
+                                        }}
+                                    >
+                                        <Fade in={showAddLoc}>
+                                            <AddLocationForm
+                                                handleClose={handleCloseAddLoc}
+                                                indexDate={idx}
+                                                currentProvince={currentProvince}
+                                                setCurrentProvince={setCurrentProvince}
+                                                locations={locations}
+                                                setLocations={setLocations}
+                                            />
+                                        </Fade>
+                                    </Modal>
+                                    <Button className={classes.addTour} onClick={handleShowAddService}>
+                                        Thêm dịch vụ
+                                    </Button>
+                                    <Modal
+                                        aria-labelledby="modal-add-service"
+                                        aria-describedby="modal-add-service-description"
+                                        open={showAddService}
+                                        className={classes.modal}
+                                        onClose={handleCloseAddService}
+                                        closeAfterTransition
+                                        BackdropComponent={Backdrop}
+                                        BackdropProps={{
+                                            timeout: 500,
+                                        }}
+                                    >
+                                        <Fade in={showAddService}>
+                                            <Paper className={classes.paperAddService}>
+                                                <div className={classes.headerService}>
+                                                    <IconButton onClick={handleCloseAddService} size="small">
+                                                        <Close />
+                                                    </IconButton>
+                                                </div>
+                                                <div className={classes.addServiceContent}>
+                                                    <AddService />
+                                                </div>
+                                            </Paper>
+                                        </Fade>
+                                    </Modal>
+                                </>
+                            </div>
 
                         </Grid>
-                        <Grid item md={4}>
+                        <Grid item md={4} className={classes.addContainerLarge}>
                             <Container style={{ marginLeft: 30 }}>
                                 <div className={classes.addHeader}>
                                     <Tabs value={tab} onChange={handleChangeTab} aria-label="tabs tour">
@@ -362,8 +427,6 @@ export default function AddTour(props) {
                                 <TabPanel value={tab} index={1}>
                                     <AddService />
                                 </TabPanel>
-
-
                             </Container>
                         </Grid>
                     </Grid>

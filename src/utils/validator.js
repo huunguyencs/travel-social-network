@@ -40,7 +40,7 @@ const nonSpace = (text, state) => {
 }
 
 const username = (text, state) => {
-    const regex = /^[a-zA-Z0-9._^&()@$]{3,50}$/
+    const regex = /^[a-zA-Z0-9_^&()@$]{3,25}$/
     return regex.test(text);
 }
 

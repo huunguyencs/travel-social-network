@@ -27,8 +27,8 @@ export default function CovidModal(props) {
         <Paper className={classes.container}>
             <div className={classes.header}>
                 <div />
-                <IconButton>
-                    <Close onClick={handleClose} />
+                <IconButton onClick={handleClose} size='small'>
+                    <Close />
                 </IconButton>
             </div>
             <Box

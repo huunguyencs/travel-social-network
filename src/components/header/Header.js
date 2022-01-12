@@ -13,14 +13,19 @@ import {
     MenuItem,
     ClickAwayListener,
     Badge,
-    Paper
+    Paper,
+    ListItemIcon
 } from "@material-ui/core";
 import {
     Search,
     Notifications,
     WhatsApp,
     Cancel,
-    FiberManualRecord
+    FiberManualRecord,
+    AccountCircle,
+    Update,
+    ExitToApp,
+    SupervisorAccount
 } from "@material-ui/icons";
 import { Link, useHistory } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
@@ -28,12 +33,12 @@ import { useDispatch, useSelector } from "react-redux";
 import { headerStyles } from "../../style";
 import { logout } from "../../redux/callApi/authCall";
 import { timeAgo } from '../../utils/date';
-import {isSeenNotify} from '../../redux/callApi/notifyCall';
+import { isSeenNotify } from '../../redux/callApi/notifyCall';
 
 
 export default function Header(props) {
 
-    const { auth, notify1 } = useSelector(state => state);
+    const { auth, notify } = useSelector(state => state);
     const user = auth.user;
     const dispatch = useDispatch();
     const history = useHistory();
@@ -92,13 +97,13 @@ export default function Header(props) {
                     <Cancel className={classes.cancel} onClick={(e) => setOpen(false)} />
                 </div>
                 <div>
-                    <IconButton onClick={(e) => setOpen(true)}>
+                    <IconButton onClick={(e) => setOpen(true)} size="small">
                         <Search className={classes.searchButton} />
                     </IconButton>
                 </div>
                 <div className={classes.icons}>
                     {
-                        auth.token ? (
+                        user ? (
                             <>
                                 <div className={classes.user}>
                                     <Button className={classes.button} onClick={handleToggleUser} controls={toggleMenuUser ? "user-menu" : undefined}>
@@ -126,9 +131,31 @@ export default function Header(props) {
                                             <ClickAwayListener onClickAway={handleCloseUser}>
                                                 <Paper>
                                                     <MenuList autoFocusItem={Boolean(toggleMenuUser)} id="user-menu">
-                                                        <MenuItem aria-label="profile" component={Link} to={`/profile/${user._id}/`} onClick={handleCloseUser}>Trang cá nhân</MenuItem>
-                                                        <MenuItem aria-label="change-info" onClick={handleCloseUser} component={Link} to={'/change_info'}>Thay đổi thông tin</MenuItem>
-                                                        <MenuItem aria-label="log-out" onClick={handleLogout}>Đăng xuất</MenuItem>
+                                                        {user.role === 2 &&
+                                                            <MenuItem aria-label="admin" onClick={handleCloseUser} component={Link} to={'/admin'}>
+                                                                <ListItemIcon>
+                                                                    <SupervisorAccount fontSize="small" />
+                                                                </ListItemIcon>
+                                                                <Typography variant="inherit">Trang quản trị</Typography>
+                                                            </MenuItem>}
+                                                        <MenuItem aria-label="profile" component={Link} to={`/profile/${user._id}/`} onClick={handleCloseUser}>
+                                                            <ListItemIcon>
+                                                                <AccountCircle fontSize="small" />
+                                                            </ListItemIcon>
+                                                            <Typography variant="inherit">Trang cá nhân</Typography>
+                                                        </MenuItem>
+                                                        <MenuItem aria-label="change-info" onClick={handleCloseUser} component={Link} to={'/change_info'}>
+                                                            <ListItemIcon>
+                                                                <Update fontSize="small" />
+                                                            </ListItemIcon>
+                                                            <Typography variant="inherit">Thay đổi thông tin</Typography>
+                                                        </MenuItem>
+                                                        <MenuItem aria-label="log-out" onClick={handleLogout}>
+                                                            <ListItemIcon>
+                                                                <ExitToApp fontSize="small" />
+                                                            </ListItemIcon>
+                                                            <Typography variant="inherit">Đăng xuất</Typography>
+                                                        </MenuItem>
                                                     </MenuList>
                                                 </Paper>
                                             </ClickAwayListener>
@@ -136,7 +163,7 @@ export default function Header(props) {
                                     </Popper>
                                 </div>
                                 <IconButton className={classes.badge} aria-label="notifications" onClick={handleToggleNoti}>
-                                    <Badge badgeContent={notify1.data.length} color="secondary">
+                                    <Badge badgeContent={notify.data.length} color="secondary">
                                         <Notifications />
                                     </Badge>
                                     <Popper
@@ -158,25 +185,28 @@ export default function Header(props) {
                                             <ClickAwayListener onClickAway={handleCloseNoti}>
                                                 <Paper className={classes.paperNoti}>
                                                     <MenuList>
-                                                    {notify1.data.map((item)=>(
-                                                        
-                                                        <MenuItem component={Link} to={`${item.url}`}  onClick={() => handleIsRead(item)}  >
-                                                            <Avatar className={classes.avatar} alt="avatar" src={item.user.avatar} />
-                                                            
-                                                            <div style={{}}>
-                                                                <div style={{display:"flex", alignItems:"center"}}>
-                                                                    <strong style={{marginRight:"5px"}}>{item.user.fullname}</strong>
-                                                                    <p>{item.text} : {item.content.length > 20 ? item.content.slice(0,20) : item.content} </p>
-                                                                </div>
+                                                        {notify.data.map((item) => (
+
+                                                            <MenuItem key={item._id} component={Link} to={`${item.url}`} onClick={() => {
+                                                                handleIsRead(item)
+                                                                handleCloseNoti();
+                                                            }}>
+                                                                <Avatar className={classes.avatar} alt="avatar" src={item.user.avatar} />
+
                                                                 <div style={{}}>
-                                                                    <strong style={{color:"#a5dec8"}}>{timeAgo(new Date(item.createdAt))}</strong>
+                                                                    <div style={{ display: "flex", alignItems: "center" }}>
+                                                                        <strong style={{ marginRight: "5px" }}>{item.user.fullname}</strong>
+                                                                        <p>{item.text} : {item.content.length > 20 ? item.content.slice(0, 20) : item.content} </p>
+                                                                    </div>
+                                                                    <div style={{}}>
+                                                                        <strong style={{ color: "#a5dec8" }}>{timeAgo(new Date(item.createdAt))}</strong>
+                                                                    </div>
                                                                 </div>
-                                                            </div>
-                                                            {
-                                                                !item.seen &&  <FiberManualRecord style={{color:"#a5dec8"}}/>
-                                                            }
-                                                        </MenuItem>
-                                                    ))}
+                                                                {
+                                                                    !item.seen && <FiberManualRecord style={{ color: "#a5dec8" }} />
+                                                                }
+                                                            </MenuItem>
+                                                        ))}
                                                     </MenuList>
                                                 </Paper>
                                             </ClickAwayListener>

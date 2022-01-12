@@ -20,18 +20,18 @@ export default function Login(props) {
 
     const dispatch = useDispatch();
     const { auth } = useSelector(state => state);
-    const [loading, setLoading] = useState(false);
+
     const [context, setContext] = useState({
         email: '',
         password: '',
-        errors: {},
-        submit: false,
     })
 
     const [showPassword, setShowPassword] = useState(false);
     const [errorServer, setErrorServer] = useState(null);
+    const [loading, setLoading] = useState(false);
+    const [errors, setErrors] = useState({});
+    const [submit, setSubmit] = useState(false);
 
-    const { errors } = context;
 
     const rules = [
         {
@@ -56,20 +56,21 @@ export default function Login(props) {
     const validator = new Validator(rules);
 
     const handleInput = (e) => {
+
         setContext({
             ...context,
-            errors: {},
             [e.target.name]: e.target.value,
+        })
+        setErrors({
+            ...errors,
+            [e.target.name]: null
         })
     }
 
     const handleSubmit = (e) => {
         e.preventDefault();
-        setContext({
-            ...context,
-            submit: true,
-            errors: validator.validate(context)
-        })
+        setSubmit(true);
+        setErrors(validator.validate(context));
     }
 
 
@@ -84,7 +85,7 @@ export default function Login(props) {
     }, [])
 
     useEffect(() => {
-        if (context.submit) {
+        if (submit) {
             setLoading(true);
             setErrorServer(null);
             if (Object.keys(errors).length === 0) {
@@ -98,12 +99,12 @@ export default function Login(props) {
                     setErrorServer(err);
                 }));
             }
-            setContext({
-                ...context,
-                submit: false,
-            })
+            else {
+                setLoading(false);
+            }
+            setSubmit(false);
         }
-    }, [errors, dispatch, context])
+    }, [errors, submit, dispatch, context])
 
 
 
@@ -164,6 +165,7 @@ export default function Login(props) {
                                         aria-label="toggle password visibility"
                                         onClick={handleClickShowPassword}
                                         edge="end"
+                                        size="small"
                                     >
                                         {showPassword ? <Visibility /> : <VisibilityOff />}
                                     </IconButton>

@@ -15,8 +15,9 @@ import { refreshToken } from "./redux/callApi/authCall";
 import { io } from 'socket.io-client';
 import SocketClient from "./SocketClient";
 import * as SOCKET_TYPES from './redux/constants/index';
+import NotificationBar from "./components/alert/Alert";
 
-import {getNotifies} from './redux/callApi/notifyCall';
+import { getNotifies } from './redux/callApi/notifyCall';
 
 function App() {
   const location = useLocation();
@@ -31,15 +32,9 @@ function App() {
       return false;
     return true;
   }
-  useEffect(()=>{
-    dispatch(refreshToken(()=>{}));
-    const socket = io()
-    dispatch({type: SOCKET_TYPES.SOCKET, payload: socket})
-    return () => socket.close()
-  },[dispatch])
 
   useEffect(() => {
-    if(auth.token) {
+    if (auth.token) {
       dispatch(getNotifies(auth.token))
     }
   }, [dispatch, auth.token])
@@ -55,11 +50,18 @@ function App() {
 
   //   }
   // }, [dispatch, history, location.pathname, auth.token])
+  useEffect(() => {
+    dispatch(refreshToken(auth?.token));
+    const socket = io();
+    dispatch({ type: SOCKET_TYPES.SOCKET, payload: socket });
+    return () => socket.close();
+  }, [dispatch, history, location.pathname, auth.token])
 
   return (
     <div>
       <WithRouterScroll />
       <Scroll showBelow={500} />
+      <NotificationBar />
       {displayHeader() && <Header />}
       {auth.token && <SocketClient />}
       <Route path="/" component={HomePage} exact />

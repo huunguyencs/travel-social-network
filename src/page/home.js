@@ -28,7 +28,7 @@ function HomePage() {
 
   useEffect(() => {
     document.title = "GOGO";
-  })
+  }, [])
 
 
   return (

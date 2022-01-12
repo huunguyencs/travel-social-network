@@ -14,15 +14,14 @@ class TourController {
             await newTour.save()
 
             if (tour.length > 0) {
-                tour.forEach(async function (element, index) {
+                tour.forEach(async function (element) {
                     const newTourDate = new TourDates({
                         date: element.date, locations: element.locations
                     })
                     await newTourDate.save();
                     await Tours.findOneAndUpdate({ _id: newTour._id }, {
                         $push: {
-                            tour: newTourDate._id,
-                            $position: index
+                            tour: newTourDate._id
                         }
                     });
                 });
@@ -85,7 +84,7 @@ class TourController {
     ///
     async updateTour(req, res) {
         try {
-            const { content, name, isPublic, image, hashtags, service, tour } = req.body
+            const { content, name, isPublic, image, hashtags, service, tour } = req.body;
 
             const newTour = await Tours.findOneAndUpdate({ _id: req.params.id, userId: req.user.id }, {
                 content, image, name, hashtags, isPublic, service
@@ -121,7 +120,7 @@ class TourController {
                 res.json({ success: true, message: "update tour successful", newTour })
             }
             else {
-                res.status(404).json({ success: false, message: "Không tìm thấy" })
+                res.status(404).json({ success: false, message: "Không tìm thấy tour" })
             }
 
         } catch (err) {

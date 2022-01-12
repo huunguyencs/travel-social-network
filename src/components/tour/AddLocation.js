@@ -16,13 +16,12 @@ export default function AddLocation(props) {
 
     const dispatch = useDispatch();
     const { location } = useSelector(state => state);
-    const { currentProvince, setCurrentProvince, loc, setLoc, locations, setLocations } = props;
+    const { currentProvince, setCurrentProvince, loc, setLoc, locations, setLocations, indexDate } = props;
 
-    const defaultState = {
+    const [state, setState] = useState({
         zoom: 8,
         center: { lat: 14.489055527436275, lng: 107.96608963227854 }
-    }
-    const [state, setState] = useState(defaultState);
+    });
 
     const changeLoc = (loc) => {
         if (loc) {
@@ -87,7 +86,7 @@ export default function AddLocation(props) {
     const handleSubmit = (e) => {
         e.preventDefault();
         if (loc)
-            dispatch(tourAction.addLocation({ location: loc, indexDate: props.indexDate }))
+            dispatch(tourAction.addLocation({ location: loc, indexDate: indexDate }))
     }
 
     return (
@@ -139,7 +138,6 @@ export default function AddLocation(props) {
                     provinces={locations.provinces}
                     state={state}
                     setState={setState}
-                    defaultState={defaultState}
                     indexDate={props.indexDate}
                 />
             </form>
