@@ -3,6 +3,7 @@ import customAxios from '../../utils/fetchData';
 import * as imageUtils from '../../utils/uploadImage'
 import { createNotify, deleteNotify } from './notifyCall';
 import * as alertAction from '../actions/alertAction'
+import { sortTourDate } from '../../utils/utils';
 
 export const getTours = (data) => async (dispatch) => {
     dispatch(tourAction.loading());
@@ -11,7 +12,8 @@ export const getTours = (data) => async (dispatch) => {
 
         const res = await customAxios().get("/tour/tours");
         // console.log(res.data.tours)
-        dispatch(tourAction.getTours({ tours: res.data.tours }));
+        var tours = res.data.tours.map(item => sortTourDate(item));
+        dispatch(tourAction.getTours({ tours: tours }));
     }
     catch (err) {
         // console.log(err);
@@ -24,8 +26,9 @@ export const getUserTour = (id, token) => async (dispatch) => {
     dispatch(tourAction.loading())
     try {
         const res = await customAxios(token).get(`/tour/user_tours/${id}`);
+        var tours = res.data.tours.map(item => sortTourDate(item))
         // console.log(res.data.tours);
-        dispatch(tourAction.getTours({ tours: res.data.tours }))
+        dispatch(tourAction.getTours({ tours: tours }))
     }
     catch (err) {
         dispatch(tourAction.error({ error: "Có lỗi xảy ra" }))

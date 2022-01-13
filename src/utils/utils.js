@@ -13,3 +13,10 @@ export function getStar(stars) {
     return 0;
 
 }
+
+export function sortTourDate(tour) {
+    return {
+        ...tour,
+        tour: tour.tour.sort((a, b) => a.date > b.date)
+    }
+}

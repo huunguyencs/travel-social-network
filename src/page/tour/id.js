@@ -8,6 +8,7 @@ import { NotFound } from "../404";
 import { useDispatch, useSelector } from "react-redux";
 import { loadTour } from "../../redux/actions/createTourAction";
 import AddTour from "../../components/tour/AddTour";
+import { sortTourDate } from "../../utils/utils";
 
 export default function TourDetail(props) {
 
@@ -48,7 +49,8 @@ export default function TourDetail(props) {
             notFound: false,
         })
         await customAxios().get(`/tour/${id}`).then(res => {
-            setTour(res.data.tour);
+
+            setTour(sortTourDate(res.data.tour));
             setState({
                 loading: false,
                 error: false,
