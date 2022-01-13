@@ -1344,6 +1344,13 @@
   "resolved" "https://registry.npmjs.org/@humanwhocodes/object-schema/-/object-schema-1.2.0.tgz"
   "version" "1.2.0"
 
+"@iconify/react@^3.1.1":
+  "integrity" "sha512-KsMXgZD94UTah5kFO41qMTQGVSt9xYnC2OCX3LiV7aRThUuTdjTFyu9EfVzHLjwhgYnkP54/DZNa+3ssBqiLBQ=="
+  "resolved" "https://registry.npmjs.org/@iconify/react/-/react-3.1.1.tgz"
+  "version" "3.1.1"
+  dependencies:
+    "cross-fetch" "^3.1.4"
+
 "@istanbuljs/load-nyc-config@^1.0.0":
   "integrity" "sha512-VjeHSlIzpv/NyD3N0YuHfXOPDIixcA1q2ZV98wsMqcYlPmv2n3Yb2lYP9XMElnaFVXg5A7YLTeLu6V84uQDjmQ=="
   "resolved" "https://registry.npmjs.org/@istanbuljs/load-nyc-config/-/load-nyc-config-1.1.0.tgz"
@@ -2899,6 +2906,13 @@
     "postcss" "^7.0.32"
     "postcss-value-parser" "^4.1.0"
 
+"autosuggest-highlight@^3.2.0":
+  "integrity" "sha512-BI38Ju70l3XP7c/eZHOhEy1eUK0Bpweepcr+/ru1e0LOK2nWdEl8HysyNwibfNqcLFSNZ9t2Jcv3pjiSB+UG1Q=="
+  "resolved" "https://registry.npmjs.org/autosuggest-highlight/-/autosuggest-highlight-3.2.0.tgz"
+  "version" "3.2.0"
+  dependencies:
+    "diacritic" "0.0.2"
+
 "axe-core@^4.0.2":
   "integrity" "sha512-/lqqLAmuIPi79WYfRpy2i8z+x+vxU3zX2uAm0gs1q52qTuKwolOj1P8XbufpXcsydrpKx2yGn2wzAnxCMV86QA=="
   "resolved" "https://registry.npmjs.org/axe-core/-/axe-core-4.3.3.tgz"
@@ -4016,6 +4030,13 @@
     "safe-buffer" "^5.0.1"
     "sha.js" "^2.4.8"
 
+"cross-fetch@^3.1.4":
+  "integrity" "sha512-1eAtFWdIubi6T4XPy6ei9iUFoKpUkIF971QLN8lIvvvwueI65+Nw5haMNKUwfJxabqlIIDODJKGrQ66gxC0PbQ=="
+  "resolved" "https://registry.npmjs.org/cross-fetch/-/cross-fetch-3.1.4.tgz"
+  "version" "3.1.4"
+  dependencies:
+    "node-fetch" "2.6.1"
+
 "cross-spawn@^6.0.0":
   "integrity" "sha512-eTVLrBSt7fjbDygz805pMnstIs2VTBNkRm0qxZd+M7A5XDdxVRWO5MxGBXZhjY4cqLYLdtrGqRf8mBPmzwSpWQ=="
   "resolved" "https://registry.npmjs.org/cross-spawn/-/cross-spawn-6.0.5.tgz"
@@ -4610,6 +4631,11 @@
   dependencies:
     "address" "^1.0.1"
     "debug" "^2.6.0"
+
+"diacritic@0.0.2":
+  "integrity" "sha1-/CqIe1pbwKCoVPthTHwvIJBh7gQ="
+  "resolved" "https://registry.npmjs.org/diacritic/-/diacritic-0.0.2.tgz"
+  "version" "0.0.2"
 
 "diff-sequences@^26.6.2":
   "integrity" "sha512-Mv/TDa3nZ9sbc5soK+OoA74BsS3mL37yixCvUAQkiuA4Wz6YtwP/K47n2rv2ovzHZvoiQeA5FTQOschKkEwB0Q=="
@@ -5482,6 +5508,11 @@
     "regex-not" "^1.0.0"
     "snapdragon" "^0.8.1"
     "to-regex" "^3.0.1"
+
+"faker@^6.6.6":
+  "integrity" "sha512-9tCqYEDHI5RYFQigXFwF1hnCwcWCOJl/hmll0lr5D2Ljjb0o4wphb69wikeJDz5qCEzXCoPvG6ss5SDP6IfOdg=="
+  "resolved" "https://registry.npmjs.org/faker/-/faker-6.6.6.tgz"
+  "version" "6.6.6"
 
 "fast-deep-equal@^3.1.1", "fast-deep-equal@^3.1.3":
   "integrity" "sha512-f3qQ9oQy9j2AhBe/H9VC91wLmKBCCU/gDOnKNAYG5hswO7BLKj09Hc5HYNz9cGI++xlpDCIgDaitVs03ATR84Q=="
@@ -8195,6 +8226,11 @@
   dependencies:
     "lower-case" "^2.0.2"
     "tslib" "^2.0.3"
+
+"node-fetch@2.6.1":
+  "integrity" "sha512-V4aYg89jEoVRxRb2fJdAg8FHvI7cEyYdVAh94HH0UIK8oJxUfkjlDQN9RbMx+bEjP7+ggMiFRprSti032Oipxw=="
+  "resolved" "https://registry.npmjs.org/node-fetch/-/node-fetch-2.6.1.tgz"
+  "version" "2.6.1"
 
 "node-forge@^0.10.0":
   "integrity" "sha512-PPmu8eEeG9saEUvI97fm4OYxXVB6bFvyNTyiUOBichBpFG8A1Ljw3bY62+5oOjDEMHRnd0Y7HQ+x7uzxOzC6JA=="

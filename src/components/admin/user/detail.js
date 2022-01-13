@@ -61,43 +61,14 @@ function AdminUserDetail(props) {
             ></TextField>
             <TextField
               autoComplete=""
-              label="Sở thích du lịch"
+              label="Thiết lập lại mật khẩu"
               variant="outlined"
               required={true}
               name="hobby"
               type="text"
               className="form-input"
             ></TextField>
-            <TextField
-              id="date"
-              label="Birthday"
-              type="date"
-              defaultValue="2017-05-24"
-              style={{ margin: "10px 0", width: "30%" }}
-            ></TextField>
-            <RadioGroup
-              row
-              aria-label="position"
-              name="position"
-              defaultValue="man"
-              style={{ marginBottom: "10px" }}
-            >
-              <FormControlLabel
-                value="man"
-                control={<Radio color="primary" />}
-                label="Nam"
-              />
-              <FormControlLabel
-                value="male"
-                control={<Radio color="primary" />}
-                label="Nữ"
-              />
-              <FormControlLabel
-                value="other"
-                control={<Radio color="primary" />}
-                label="Khác"
-              />
-            </RadioGroup>
+            
             <div className="login-group">
               <Button
                 variant="contained"

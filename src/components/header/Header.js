@@ -172,7 +172,6 @@ export default function Header(props) {
                                     <Badge badgeContent={calculate(notify.data)} color="secondary">
                                         <Notifications />
                                     </Badge>
-
                                 </IconButton>
                                 <Popper
                                     open={openNoti}
