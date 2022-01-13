@@ -82,7 +82,7 @@ export default function Header(props) {
         dispatch(isSeenNotify(msg, auth.token))
     }
 
-    const calculate = (notify) => {
+    const calculateUnSeen = (notify) => {
         return notify.filter(item => !item.seen).length;
     }
 
@@ -169,7 +169,7 @@ export default function Header(props) {
                                     </Popper>
                                 </div>
                                 <IconButton className={classes.badge} aria-label="notifications" onClick={handleToggleNoti}>
-                                    <Badge badgeContent={calculate(notify.data)} color="secondary">
+                                    <Badge badgeContent={calculateUnSeen(notify.data)} color="secondary">
                                         <Notifications />
                                     </Badge>
 
@@ -197,26 +197,34 @@ export default function Header(props) {
 
                                                         <MenuItem key={item._id} onClick={(e) => {
                                                             handleCloseNoti(e);
-                                                            handleIsRead(item)
                                                             history.push(`${item.url}`)
+                                                            handleIsRead(item)
                                                         }}>
                                                             <Avatar className={classes.avatar} alt="avatar" src={item.user.avatar} />
 
-                                                            <div style={{}}>
+                                                            <div>
                                                                 <div style={{ display: "flex", alignItems: "center" }}>
                                                                     <strong style={{ marginRight: "5px" }}>{item.user.fullname}</strong>
                                                                     <p>{item.text} : {item.content.length > 20 ? item.content.slice(0, 20) : item.content} </p>
                                                                 </div>
-                                                                <div style={{}}>
-                                                                    <strong style={{ color: "#a5dec8" }}>{timeAgo(new Date(item.createdAt))}</strong>
+                                                                <div>
+                                                                    <span style={{ color: "#34495e" }}>{timeAgo(new Date(item.createdAt))}</span>
                                                                 </div>
                                                             </div>
                                                             {
-                                                                !item.seen && <FiberManualRecord style={{ color: "#a5dec8" }} />
+                                                                !item.seen && <FiberManualRecord style={{ color: "#34495e" }} />
                                                             }
                                                         </MenuItem>
                                                     ))}
                                                 </MenuList>
+                                                <div className={classes.center}>
+                                                    <Typography className={classes.seeAll} variant="body1" onClick={() => {
+                                                        handleCloseNoti();
+                                                        history.push('/notifications')
+                                                    }}>
+                                                        Xem tất cả
+                                                    </Typography>
+                                                </div>
                                             </Paper>
                                         </ClickAwayListener>
 

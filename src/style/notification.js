@@ -7,16 +7,18 @@ const notificationStyles = makeStyles((theme) => ({
     container: {
         height: "100vh",
         display: "flex",
-        flexDirection: "column"
+        flexDirection: "column",
     },
     fixWidth: {
         maxWidth: "60%",
         backgroundColor: color.white,
+        paddingBottom: "1px"
     },
     list: {
         margin: 50,
     },
     itemContainer: {
+        cursor: 'pointer',
         marginTop: 30,
         paddingTop: 20,
         paddingBottom: 20,
@@ -24,9 +26,39 @@ const notificationStyles = makeStyles((theme) => ({
         backgroundColor: color.lightgray,
         height: 100,
         borderRadius: attr.borderRadius.md,
+        "&:hover": {
+            backgroundColor: color.silver
+        }
     },
     unSeen: {
+        cursor: 'pointer',
+        marginTop: 30,
+        paddingTop: 20,
+        paddingBottom: 20,
+        paddingInline: 70,
+        height: 100,
+        borderRadius: attr.borderRadius.md,
         backgroundColor: color.gray,
+    },
+    center: {
+        display: 'flex',
+        justifyContent: 'center'
+    },
+    centerMarginTop: {
+        display: 'flex',
+        justifyContent: 'center',
+        marginTop: 150
+    },
+    seeAll: {
+        color: color.blue,
+        margin: 10,
+        cursor: "pointer",
+        "&:hover": {
+            textDecorationLine: 'underline',
+        }
+    },
+    avatar: {
+        marginRight: theme.spacing(2),
     }
 
 }))

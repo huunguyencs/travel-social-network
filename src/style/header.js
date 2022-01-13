@@ -107,11 +107,20 @@ const headerStyles = makeStyles((theme) => ({
         transformOrigin: 'center bottom'
     },
     paperNoti: {
-        width: 300
+        width: 450
     },
-    // button: {
-    //     color: "white"
-    // }
+    center: {
+        display: 'flex',
+        justifyContent: 'center'
+    },
+    seeAll: {
+        color: color.blue,
+        margin: 10,
+        cursor: "pointer",
+        "&:hover": {
+            textDecorationLine: 'underline',
+        }
+    }
 }));
 
 export default headerStyles;

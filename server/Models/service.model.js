@@ -1,10 +1,20 @@
 const mongoose = require('mongoose');
 
 const serviceSchema = new mongoose.Schema({
-    name: String,
-    cooperator: { type: mongoose.Types.ObjectId, ref: 'users' },
+    name: {
+        type: String,
+        required: true
+    },
+    cooperator: {
+        type: mongoose.Types.ObjectId,
+        required: true,
+        ref: 'users'
+    },
     description: String,
-    type: String, // di chuyen, nha hang, khach san, 
+    type: {
+        type: String,
+        required: true
+    }, // di chuyen, nha hang, khach san, 
     province: { type: mongoose.Types.ObjectId, ref: 'provinces' },
     star: {
         type: [Number],
