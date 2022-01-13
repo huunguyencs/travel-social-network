@@ -216,7 +216,7 @@ export default function Header(props) {
                                                             <Typography variant="body2" color="text.secondary"></Typography>
                                                         </MenuItem>
                                                         <Divider />
-                                                        <MenuItem>
+                                                        <MenuItem component={Link} to={`/notifications`}>
                                                             <ListItemIcon>
                                                                 <AddBox fontSize="small" />
                                                             </ListItemIcon>
