@@ -3,9 +3,6 @@ import {
   makeStyles,
   Button,
   Container,
-  RadioGroup,
-  FormControlLabel,
-  Radio,
   TextField,
 } from "@material-ui/core";
 
@@ -68,7 +65,7 @@ function AdminUserDetail(props) {
               type="text"
               className="form-input"
             ></TextField>
-            
+
             <div className="login-group">
               <Button
                 variant="contained"

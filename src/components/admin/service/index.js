@@ -1,9 +1,5 @@
 import React from "react";
-import { makeStyles, Container, Card, CardHeader, Box, Stack, Grid, Button } from "@material-ui/core";
-
-import { DataGrid } from "@mui/x-data-grid";
-
-import { ResponsiveContainer, LineChart, Line, XAxis, YAxis, CartesianGrid, Legend } from 'recharts';
+import { makeStyles, Container, Button } from "@material-ui/core";
 
 //Table
 import PropTypes from 'prop-types';
@@ -30,7 +26,7 @@ import FilterListIcon from '@material-ui/icons/FilterList';
 
 
 import { Link } from "react-router-dom";
-import { AddBusiness, AddIcCall, Edit, MoreVert } from "@material-ui/icons";
+import { AddIcCall, Edit } from "@material-ui/icons";
 
 import TextField from '@material-ui/core/TextField';
 import Autocomplete, { createFilterOptions } from '@material-ui/lab/Autocomplete';
@@ -48,6 +44,7 @@ const useStyles = makeStyles((theme) => ({
     },
     table: {
         backgroundColor: "white",
+        minWidth: 750,
     },
     chart: {
         margin: 50,
@@ -58,9 +55,6 @@ const useStyles = makeStyles((theme) => ({
     paper: {
         width: '100%',
         marginBottom: theme.spacing(2),
-    },
-    table: {
-        minWidth: 750,
     },
     visuallyHidden: {
         border: 0,
@@ -365,31 +359,31 @@ function AdminServices(props) {
             <div className={classes.appBarSpacer} />
 
             <div
-        className={classes.admin_location_header}
-        style={{
-          display: "flex",
-          flexDirection: "row",
-          justifyContent: "space-between",
-          paddingLeft: "20px",
-          paddingRight: "20px",
-        }}
-      >
-        <div className={classes.admin_location_header_left}>
-          <Typography variant="h4">100 Dịch vụ</Typography>
-        </div>
-        <div className={classes.admin_location_header_right}>
-          <Button
-            variant="contained"
-            style={{
-              backgroundColor: "#179250",
-              borderRadius: "10px",
-            }}
-          >
-            <AddIcCall></AddIcCall>
-            <Typography>Hợp tác</Typography>
-          </Button>
-        </div>
-      </div>
+                className={classes.admin_location_header}
+                style={{
+                    display: "flex",
+                    flexDirection: "row",
+                    justifyContent: "space-between",
+                    paddingLeft: "20px",
+                    paddingRight: "20px",
+                }}
+            >
+                <div className={classes.admin_location_header_left}>
+                    <Typography variant="h4">100 Dịch vụ</Typography>
+                </div>
+                <div className={classes.admin_location_header_right}>
+                    <Button
+                        variant="contained"
+                        style={{
+                            backgroundColor: "#179250",
+                            borderRadius: "10px",
+                        }}
+                    >
+                        <AddIcCall></AddIcCall>
+                        <Typography>Hợp tác</Typography>
+                    </Button>
+                </div>
+            </div>
 
             <div className={classes.admin_location_body}>
                 <div className={classes.tableContainer}>
