@@ -5,14 +5,23 @@ import color from "./color";
 const profileStyles = makeStyles((theme) => ({
   root: {
     backgroundColor: theme.palette.background.paper,
-    display: "flex",
-    height: "100vh",
-    paddingTop: "75px"
+    // display: "flex",
+    // height: "100vh",
+    paddingTop: "75px",
+    marginBottom: 20
+  },
+  tabsWrap: {
+    display: 'flex',
+    justifyContent: 'center'
   },
   tabs: {
     borderRight: `1px solid ${theme.palette.divider}`,
     // width: "30%",
     marginTop: 50,
+    [theme.breakpoints.down("sm")]: {
+      borderRight: 'none',
+      marginBottom: 20
+    }
   },
   tab: {
     textAlign: "center",

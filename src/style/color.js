@@ -13,6 +13,8 @@ const color = {
     darkgray: "#686868",
     red: "#e74c3c",
     darkred: "#c0392b",
+    blue: "#2980b9",
+    silver: "#bdc3c7"
 };
 
 export default color;
