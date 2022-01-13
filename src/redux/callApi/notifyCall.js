@@ -32,9 +32,10 @@ export const getNotifies = (token) => async (dispatch) => {
 
 export const isSeenNotify = (data, token) => async (dispatch) => {
     try {
-
-        const res = await customAxios(token).patch(`/notify/isSeenNotify/${data._id}`);
-        dispatch(notifyAction.updateNotify(res.data.notify))
+        if (!data.seen) {
+            const res = await customAxios(token).patch(`/notify/isSeenNotify/${data._id}`);
+            dispatch(notifyAction.updateNotify(res.data.notify))
+        }
     } catch (error) {
         console.log(error);
     }

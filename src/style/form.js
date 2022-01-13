@@ -143,7 +143,7 @@ const formStyles = makeStyles((theme) => ({
         }
     },
     borderDashHover: {
-        border: "3px dashed #aaa !important",
+        border: "3px dashed #aaa",
         height: "350px",
         width: "500px",
         display: 'flex',

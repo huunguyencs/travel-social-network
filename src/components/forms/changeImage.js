@@ -27,6 +27,9 @@ export default function ChangeImage(props) {
                 // console.log("on drag")
                 return false;
             }
+            holder.ondragend = function (e) {
+                this.className = classes.borderDash;
+            }
             holder.ondrop = function (e) {
                 // console.log("on drop")
                 this.className = classes.borderDash;

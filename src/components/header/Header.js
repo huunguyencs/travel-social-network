@@ -192,10 +192,11 @@ export default function Header(props) {
 
                                         <ClickAwayListener onClickAway={handleCloseNoti}>
                                             <Paper className={classes.paperNoti}>
+                                                <Typography className={classes.notiTitle} variant="h5">Thông báo</Typography>
                                                 <MenuList>
                                                     {notify.data.map((item) => (
 
-                                                        <MenuItem key={item._id} onClick={(e) => {
+                                                        <MenuItem key={item._id} className={classes.notiItem} onClick={(e) => {
                                                             handleCloseNoti(e);
                                                             history.push(`${item.url}`)
                                                             handleIsRead(item)

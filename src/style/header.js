@@ -107,7 +107,8 @@ const headerStyles = makeStyles((theme) => ({
         transformOrigin: 'center bottom'
     },
     paperNoti: {
-        width: 450
+        width: 450,
+        padding: 10,
     },
     center: {
         display: 'flex',
@@ -120,6 +121,12 @@ const headerStyles = makeStyles((theme) => ({
         "&:hover": {
             textDecorationLine: 'underline',
         }
+    },
+    notiTitle: {
+        marginInline: 10,
+    },
+    notiItem: {
+        borderRadius: attr.borderRadius.md
     }
 }));
 
