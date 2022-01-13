@@ -26,6 +26,7 @@ const notificationStyles = makeStyles((theme) => ({
         backgroundColor: color.lightgray,
         height: 100,
         borderRadius: attr.borderRadius.md,
+        transition: "0.5s",
         "&:hover": {
             backgroundColor: color.silver
         }

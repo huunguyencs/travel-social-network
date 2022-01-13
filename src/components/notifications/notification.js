@@ -1,5 +1,4 @@
 import { Avatar, ListItem, ListItemAvatar, ListItemText } from "@material-ui/core";
-import { FiberManualRecord } from "@material-ui/icons";
 import React from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useHistory } from "react-router-dom";
@@ -43,9 +42,6 @@ export default function NotificationItem(props) {
                         <span style={{ color: "#34495e" }}>{timeAgo(new Date(noti.createdAt))}</span>
                     </div>
                 </div>
-                {
-                    !noti.seen && <FiberManualRecord style={{ color: "#34495e" }} />
-                }
             </ListItemText>
         </ListItem>
 

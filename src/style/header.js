@@ -126,7 +126,11 @@ const headerStyles = makeStyles((theme) => ({
         marginInline: 10,
     },
     notiItem: {
-        borderRadius: attr.borderRadius.md
+        borderRadius: attr.borderRadius.md,
+    },
+    unSeen: {
+        borderRadius: attr.borderRadius.md,
+        backgroundColor: color.lightgray,
     }
 }));
 

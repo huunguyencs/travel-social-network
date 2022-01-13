@@ -114,7 +114,7 @@ export default function AddTour(props) {
             tour: createTour.tour,
             cost: calculateCost(createTour.services),
             services: extractService(createTour.services)
-        }, createTour.image, auth.token,socket, () => {
+        }, createTour.image, auth.token, socket, () => {
             setState({
                 loading: false,
                 error: false

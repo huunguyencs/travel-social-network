@@ -53,10 +53,10 @@ export const saveTour = (tour, image, token, socket, next, error) => async (disp
 
 
         const res = await customAxios(token).post('/tour/create_tour', data);
-        next();
-        dispatch(alertAction.success({ message: "Lưu lịch trình thành công!" }))
-        dispatch(tourAction.addTour({ tour: res.data.newTour }))
 
+        dispatch(alertAction.success({ message: "Lưu lịch trình thành công!" }))
+        // dispatch(tourAction.addTour({ tour: res.data.newTour }))
+        next();
         //notify
         const dataNotify = {
             id: res.data.newTour._id,
@@ -67,6 +67,7 @@ export const saveTour = (tour, image, token, socket, next, error) => async (disp
             url: `/tour/${res.data.newTour._id}`,
         }
         dispatch(createNotify(dataNotify, token, socket));
+
     }
     catch (err) {
         error();
