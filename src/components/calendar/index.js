@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react'
-import { Backdrop, Button, Card, Modal, Paper, Typography } from '@material-ui/core';
+import { Backdrop, Button, Modal, Paper, Typography } from '@material-ui/core';
 
 import * as utils from './utils';
 import './style.css';
@@ -276,9 +276,10 @@ export default function Calendar() {
 
     return (
         <div>
-            <Card className={classes.container}>
+
+            <div style={{ display: 'flex', justifyContent: 'center' }}>
                 <Table setContent={setContent} setDetail={setDetail} />
-            </Card>
+            </div>
             <Modal
                 open={detail}
                 onClose={handleClose}
