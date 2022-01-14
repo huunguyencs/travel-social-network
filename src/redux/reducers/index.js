@@ -9,6 +9,7 @@ import post from './postReducer';
 import tour from './tourReducer';
 import socket from './socketReducer';
 import notify from './notifyReducer';
+import message from './messageReducer';
 
 const rootReducer = combineReducers({
     post,
@@ -19,7 +20,8 @@ const rootReducer = combineReducers({
     socket,
     user,
     tour,
-    notify
+    notify,
+    message
 });
 
 export default rootReducer;

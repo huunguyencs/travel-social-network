@@ -6,21 +6,45 @@ import Header from "../../components/header/Header";
 // import LeftBar from "../../components/leftbar/LeftBar";
 import { messageStyles } from "../../style";
 // import { profileMenu } from "../../constant/menu";
-
+import { useDispatch, useSelector } from "react-redux";
+import customAxios from '../../utils/fetchData';
+import { useHistory } from "react-router-dom";
+import { addUser, getConversations} from '../../redux/callApi/messageCall';
 
 export default function Message(props) {
     const classes = messageStyles();
-
+ 
+    const {auth, message, socket} = useSelector(state => state);
+    const dispatch = useDispatch();
+    const history = useHistory();
     const [search, setSearch] = useState('');
-
-    const handleSearch = (e) => {
+    const [searchUsers, setSearchUsers] = useState('');
+    const handleSearch = async (e) => {
         e.preventDefault();
-        setSearch('');
+        if(!search) return setSearchUsers([]);
+        try{
+            const res = await customAxios().get(`/user/search?fullname=${search}`)
+            setSearchUsers(res.data.users);
+            // console.log(searchUsers);
+        }catch(err){
+            console.log(err)
+        }
     }
 
-    useEffect(() => {
-        document.title = "Tin nhắn";
-    }, []);
+    const handleAddChat = (user) =>{
+        setSearchUsers([]);
+        setSearch('');
+        dispatch(addUser(user, message, socket));
+        return history.push(`/message/${user._id}`);
+    }
+    // useEffect(() => {
+    //     document.title = "Tin nhắn";
+    // }, []);
+
+    useEffect(()=>{
+        if(message.firstLoad) return;
+        dispatch(getConversations(auth, socket));
+    },[message.firstLoad,dispatch])
 
     return (
         <div>
@@ -40,36 +64,37 @@ export default function Message(props) {
                                 {search !== '' && <Cancel className={classes.message_closeIcon} />}
                             </form>
                             <List className={classes.message_users_list}>
-                                <ListItem button>
-                                    <ListItemAvatar>
-                                        <Avatar alt="avatar" src="">
-                                        </Avatar>
-                                    </ListItemAvatar>
-                                    <ListItemText primary="Tran Van An" />
-                                </ListItem>
-                                <ListItem button>
-                                    <ListItemAvatar>
-                                        <Avatar alt="avatar" src="">
-                                        </Avatar>
-                                    </ListItemAvatar>
-                                    <ListItemText primary="Tran Van Be" />
-                                </ListItem>
+                                {
+                                    searchUsers.length>0 ? <>
+                                        {searchUsers.map(user=>(
+                                            <ListItem button key={user._id} onClick={()=>handleAddChat(user)}>
+                                                <ListItemAvatar>
+                                                    <Avatar alt="avatar" src={user.avatar}>
+                                                    </Avatar>
+                                                </ListItemAvatar>
+                                                <ListItemText primary={user.fullname}/>
+                                            </ListItem>
+                                        ))}
+                                    </> : <></>
+                                }
                             </List>
                             <List className={classes.message_card_list} >
-                                <ListItem button>
-                                    <ListItemAvatar>
-                                        <Avatar alt="avatar" src="">
-                                        </Avatar>
-                                    </ListItemAvatar>
-                                    <ListItemText primary="Tran Van An" secondary="tin nhan" />
-                                </ListItem>
-                                <ListItem button>
-                                    <ListItemAvatar>
-                                        <Avatar alt="avatar" src="">
-                                        </Avatar>
-                                    </ListItemAvatar>
-                                    <ListItemText primary="Tran Van Be" secondary="tin nhan" />
-                                </ListItem>
+                                {
+                                    message.users.length > 0 ? <>
+                                        {
+                                            message.users.map(user =>(
+                                                <ListItem button key={user._id} onClick={()=>handleAddChat(user)}>
+                                                    <ListItemAvatar>
+                                                        <Avatar alt="avatar" src={user.avatar}>
+                                                        </Avatar>
+                                                    </ListItemAvatar>
+                                                    <ListItemText primary={user.fullname} secondary="tin nhan" />
+                                                </ListItem>
+                                            ))
+                                        }
+                                    </>
+                                    : <></>
+                                }
                             </List>
                         </div>
                     </div>
