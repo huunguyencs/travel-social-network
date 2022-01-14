@@ -31,7 +31,7 @@ export default function NotificationBar() {
                     horizontal: 'left'
                 }}
                 open={success}
-                autoHideDuration={6000}
+                autoHideDuration={3000}
                 onClose={handleClose}
             >
                 <Alert onClose={handleClose} severity="success">
@@ -44,7 +44,7 @@ export default function NotificationBar() {
                     horizontal: 'left'
                 }}
                 open={error}
-                autoHideDuration={6000}
+                autoHideDuration={3000}
                 onClose={handleClose}
             >
                 <Alert onClose={handleClose} severity="error">
