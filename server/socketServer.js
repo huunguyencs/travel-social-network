@@ -68,7 +68,9 @@ const SocketServer = (socket) => {
 
     //create notify
     socket.on('createNotify', data=>{
+        console.log("socket server")
         const clients = users.filter(user => data.recipients.includes(user.id))
+        console.log(clients)
         if( clients.length >0){
             clients.forEach(user => {
                 socket.to(user.socketId).emit('createNotifyToClient', data)

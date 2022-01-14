@@ -106,6 +106,7 @@ const SocketClient = () => {
         socket.on('createNotifyToClient', data=>{
             dispatch(notifyAction.createNotify(data));
         })
+       
         return () => socket.off('createNotifyToClient');
     },[socket,dispatch])
 
