@@ -60,7 +60,7 @@ function ShareContent({ tour }) {
             loading: true,
             error: false
         })
-        dispatch(deleteTour(tour, auth.token,socket, () => {
+        dispatch(deleteTour(tour, auth.token, socket, () => {
             setState({
                 loading: false,
                 error: false
@@ -148,7 +148,7 @@ function ShareContent({ tour }) {
                     </>
                 }
                 title={
-                    <Typography noWrap={false} className={classes.userName} component={Link} to={`/profile/${tour.userId._id}`}>{tour.userId.fullname}</Typography>
+                    <Typography noWrap={false} className={classes.userName} component={Link} to={`/u/${tour.userId._id}`}>{tour.userId.fullname}</Typography>
                 }
                 subheader={
                     <Link to={`/tour/${tour._id}`} style={{ cursor: "pointer" }}>
@@ -296,7 +296,7 @@ function BaseContent(props) {
             loadingDelete: true,
             error: false
         })
-        dispatch(deleteTour(tour, auth.token,socket, () => {
+        dispatch(deleteTour(tour, auth.token, socket, () => {
             setState({
                 loadingDelete: false,
                 error: false
@@ -373,7 +373,7 @@ function BaseContent(props) {
                     </>
                 }
                 title={
-                    <Typography noWrap={false} className={classes.userName} component={Link} to={`/profile/${tour.userId._id}`}>{tour.userId.fullname}</Typography>
+                    <Typography noWrap={false} className={classes.userName} component={Link} to={`/u/${tour.userId._id}`}>{tour.userId.fullname}</Typography>
                 }
                 subheader={
                     <Link to={`/tour/${tour._id}`} className={classes.subheader}>

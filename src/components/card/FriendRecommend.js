@@ -2,8 +2,11 @@ import React from "react";
 import { Avatar, Card, List, ListItem, ListItemAvatar, ListItemText, Typography } from "@material-ui/core";
 
 import { friendCardStyles } from "../../style";
+import { useHistory } from "react-router-dom";
 
 export default function FriendRecommendCard(props) {
+
+    const history = useHistory();
 
     const classes = friendCardStyles();
 
@@ -12,7 +15,7 @@ export default function FriendRecommendCard(props) {
             <Typography variant="h5">Gợi ý theo dõi</Typography>
             <div>
                 <List className={classes.list}>
-                    <ListItem button className={classes.item}>
+                    <ListItem button className={classes.item} onClick={() => history.push('/user/ab')}>
                         <ListItemAvatar>
                             <Avatar className={classes.avatar} alt="avatar" src="https://media.istockphoto.com/vectors/default-profile-picture-avatar-photo-placeholder-vector-illustration-vector-id1223671392?k=20&m=1223671392&s=612x612&w=0&h=lGpj2vWAI3WUT1JeJWm1PRoHT3V15_1pdcTn2szdwQ0=" />
                         </ListItemAvatar>

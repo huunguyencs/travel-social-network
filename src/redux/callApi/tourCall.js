@@ -70,7 +70,7 @@ export const saveTour = (tour, image, token, socket, next, error) => async (disp
             image: res.data.newTour.image,
             url: `/tour/${res.data.newTour._id}`,
         }
-
+        console.log(dataNotify);
         dispatch(createNotify(dataNotify, token, socket));
         dispatch(alertAction.success({ message: "Lưu lịch trình thành công!" }))
         next();

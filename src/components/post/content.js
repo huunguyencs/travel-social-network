@@ -26,7 +26,7 @@ function Header(props) {
 
     const dispatch = useDispatch();
 
-    const { auth,socket } = useSelector(state => state);
+    const { auth, socket } = useSelector(state => state);
 
     const [anchorEl, setAnchorEl] = useState(null);
     const [showEdit, setShowEdit] = useState(false);
@@ -63,7 +63,7 @@ function Header(props) {
             loading: true,
             error: false,
         })
-        dispatch(deletePost(post, auth.token,socket, () => {
+        dispatch(deletePost(post, auth.token, socket, () => {
             setState({
                 loading: false,
                 error: false
@@ -151,7 +151,7 @@ function Header(props) {
             }
             title={
 
-                <Typography component={Link} to={`/profile/${post.userId._id}`} noWrap={false} className={classes.userName}>{post.userId.fullname}</Typography>
+                <Typography component={Link} to={`/u/${post.userId._id}`} noWrap={false} className={classes.userName}>{post.userId.fullname}</Typography>
             }
             subheader={
                 <Link to={`/post/${post._id}`} className={classes.subheader}>

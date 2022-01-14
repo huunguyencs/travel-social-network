@@ -50,7 +50,7 @@ export default function ManageUserJoin(props) {
                             <Avatar alt="avatar" src={user.avatar} className={classes.avatar} />
 
                             <div className={classes.fullnameWrap}>
-                                <Link to={`/profile/${user._id}`} onClick={handleClose} className={classes.fullname}>{user.fullname}</Link>
+                                <Link to={`/u/${user._id}`} onClick={handleClose} className={classes.fullname}>{user.fullname}</Link>
                             </div>
                         </div>
                         <div>
