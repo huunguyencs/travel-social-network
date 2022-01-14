@@ -109,6 +109,9 @@ const headerStyles = makeStyles((theme) => ({
     paperNoti: {
         width: 450,
         padding: 10,
+        [theme.breakpoints.down("sm")]: {
+            width: 400
+        }
     },
     center: {
         display: 'flex',

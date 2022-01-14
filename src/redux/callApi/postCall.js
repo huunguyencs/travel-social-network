@@ -142,7 +142,7 @@ export const createPost = (data, token, type, socket, next, error) => async (dis
         next();
     }
     catch (err) {
-        error();
+        error(err);
     }
 }
 

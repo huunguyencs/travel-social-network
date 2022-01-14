@@ -21,7 +21,7 @@ export default function CreatePostForm(props) {
         error: null
     })
 
-    const { auth,socket } = useSelector(state => state);
+    const { auth, socket } = useSelector(state => state);
 
     const [imageUpload, setImageUpload] = useState([]);
 
@@ -70,7 +70,7 @@ export default function CreatePostForm(props) {
                 loading: true,
                 error: null
             })
-            dispatch(createPost({ content: text, images: imageUpload, hashtags: ht }, auth.token, "post",socket, () => {
+            dispatch(createPost({ content: text, images: imageUpload, hashtags: ht }, auth.token, "post", socket, () => {
                 setState({
                     loading: false,
                     error: null,
