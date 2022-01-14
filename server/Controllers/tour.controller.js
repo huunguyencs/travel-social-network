@@ -261,6 +261,10 @@ class TourController {
             // console.log(req.params.id)
             let tour = await Tours.findById(req.params.id);
             let requestId;
+            if (!tour) {
+                res.status(404).json({ success: false, message: "not found" });
+                return;
+            }
             if (tour.shareId) {
                 requestId = tour.shareId;
             }
@@ -291,13 +295,11 @@ class TourController {
                         select: "-password"
                     },
                 })
-            if (tour) {
-                res.json({
-                    success: true, message: "get info 1 tour success", tour
-                });
-            } else {
-                res.status(404).json({ success: false, message: "not found" });
-            }
+
+            res.json({
+                success: true, message: "get info 1 tour success", tour
+            });
+
 
         } catch (err) {
             console.log(err)

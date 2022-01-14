@@ -86,19 +86,20 @@ export default function TourDetail(props) {
     return (
         <>
             {
-                state.loading ?
-                    <div style={{ display: 'flex', justifyContent: 'center', marginTop: 150 }}>
-                        <CircularProgress />
-                    </div>
-                    : state.error ?
+                state.notFound ?
+                    <NotFound /> :
+                    state.loading ?
                         <div style={{ display: 'flex', justifyContent: 'center', marginTop: 150 }}>
-                            <>
-                                <Typography>Có lỗi xảy ra</Typography>
-                                <Button onClick={() => getTourDetail(id)}>Thử lại</Button>
-                            </>
-                        </div> :
-                        state.notFound ?
-                            <NotFound /> :
+                            <CircularProgress />
+                        </div>
+                        : state.error ?
+                            <div style={{ display: 'flex', justifyContent: 'center', marginTop: 150 }}>
+                                <>
+                                    <Typography>Có lỗi xảy ra</Typography>
+                                    <Button onClick={() => getTourDetail(id)}>Thử lại</Button>
+                                </>
+                            </div> :
+
                             tour && (edit === 'true' && isOwn ? <AddTour isUpdate={true} /> : <Tour tour={tour} isOwn={isOwn} />)
             }
         </>

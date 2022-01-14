@@ -4,7 +4,7 @@ export const createNotify = (data, token, socket) => async (dispatch) => {
     try {
         const res = await customAxios(token).post('/notify/create_notify', data);
         socket.emit('createNotify', res.data.newNotify);
-        // console.log(res.data.newNotify);
+        console.log(res.data.newNotify);
     } catch (error) {
         console.log(error);
     }

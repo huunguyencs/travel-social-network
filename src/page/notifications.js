@@ -111,7 +111,7 @@ export default function NotificationPage(props) {
                                                 state.loadingMore ?
                                                     <CircularProgress /> :
                                                     <Typography onClick={loadMore} className={classes.seeAll}>
-                                                        Tải thêm ...
+                                                        Xem thêm ...
                                                     </Typography>
                                             }
                                         </div>
