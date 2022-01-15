@@ -408,11 +408,17 @@ function BaseContent(props) {
                     maxText={100}
                     text={tour.content}
                 />
-                <Typography style={{ marginTop: 10 }}>Địa điểm: {tour.provinces.join(", ")}</Typography>
-                <Typography style={{ marginTop: 10 }}>
-                    Thời gian: {tour.tour?.length} ngày - Bắt đầu {convertDateToStr(tour.tour[0]?.date)}
-                </Typography>
-                <Typography style={{ marginTop: 10 }}>
+                <Typography style={{ marginTop: 5 }}>Địa điểm: {tour.provinces.join(", ")}</Typography>
+
+                {tour.tour.length > 1 ?
+                    <Typography style={{ marginTop: 5 }}>
+                        Từ {convertDateToStr(tour.tour[0]?.date)} đến {convertDateToStr(tour.tour[tour.tour.length - 1]?.date)}
+                    </Typography> :
+                    <Typography>
+                        Ngày {convertDateToStr(tour.tour[0]?.date)}
+                    </Typography>
+                }
+                <Typography style={{ marginTop: 5 }}>
                     Chi phí: {new Intl.NumberFormat().format(tour.cost * 1000)} VND
                 </Typography>
                 <div>

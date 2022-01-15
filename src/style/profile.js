@@ -12,7 +12,11 @@ const profileStyles = makeStyles((theme) => ({
   },
   tabsWrap: {
     display: 'flex',
-    justifyContent: 'center'
+    justifyContent: 'center',
+    marginBottom: 50,
+    [theme.breakpoints.down("sm")]: {
+      marginBottom: 0
+    }
   },
   tabs: {
     borderRight: `1px solid ${theme.palette.divider}`,
