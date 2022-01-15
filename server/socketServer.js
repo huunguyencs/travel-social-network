@@ -68,9 +68,9 @@ const SocketServer = (socket) => {
 
     //create notify
     socket.on('createNotify', data=>{
-        console.log("socket server")
+        // console.log("socket server")
         const clients = users.filter(user => data.recipients.includes(user.id))
-        console.log(clients)
+        // console.log(clients)
         if( clients.length >0){
             clients.forEach(user => {
                 socket.to(user.socketId).emit('createNotifyToClient', data)
@@ -83,8 +83,16 @@ const SocketServer = (socket) => {
         const clients = users.filter(user => data.recipients.includes(user.id))
         if( clients.length >0){
             clients.forEach(user => {
-                socket.to(user.socketId).emit('deleteNotifyToClient', data)
+                socket.to(user.socketId).emit('deleteNotifyToClient', data);
             })
+        }
+    })
+
+    //add message
+    socket.on('addMessage',data=>{
+        const user = users.filter(user => user.id === data.recipient );
+        if(user.length >0){
+            socket.to(user[0].socketId).emit('addMessageToClient',data);
         }
     })
 }

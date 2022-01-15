@@ -17,7 +17,7 @@ export const addMessage = (msg, auth, socket) => async(dispatch) =>{
     try{
         dispatch(messageAction.addMessage(msg));
         await customAxios(auth.token).post('/message/create_message', msg)
-        // console.log(res.data)
+        socket.emit('addMessage',msg);
     }catch(err){
         console.log(err);
     }
