@@ -187,7 +187,6 @@ export default function Header(props) {
                                 // }}
                                 >
                                     <Grow className={classes.grow} >
-
                                         <ClickAwayListener onClickAway={handleCloseNoti}>
                                             <Paper className={classes.paperNoti}>
                                                 <Typography className={classes.notiTitle} variant="h5">Thông báo</Typography>

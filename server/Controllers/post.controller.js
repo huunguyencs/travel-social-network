@@ -88,7 +88,8 @@ class PostController {
                     userId: {
                         _id: req.user._id,
                         fullname: req.user.fullname,
-                        avatar: req.user.avatar
+                        avatar: req.user.avatar,
+                        followers: req.user.followers
                     }
                 }
             })
@@ -391,6 +392,36 @@ class PostController {
             const post = await Posts.findById(req.params.id)
             await Posts.findOneAndDelete({ _id: req.params.id, userId: req.user._id });
             if (post.comments) await Comments.deleteMany({ _id: { $in: post.comments } });
+
+            if (post.rate) {
+                switch (parseInt(post.rate)) {
+                    case 1:
+                        await Locations.findByIdAndUpdate(post.locationId, {
+                            $inc: { "star.0": -1 }
+                        }, { new: true })
+                        break;
+                    case 2:
+                        await Locations.findByIdAndUpdate(post.locationId, {
+                            $inc: { "star.1": -1 }
+                        }, { new: true })
+                        break;
+                    case 3:
+                        await Locations.findByIdAndUpdate(post.locationId, {
+                            $inc: { "star.2": -1 }
+                        }, { new: true })
+                        break;
+                    case 4:
+                        await Locations.findByIdAndUpdate(post.locationId, {
+                            $inc: { "star.3": -1 }
+                        }, { new: true })
+                        break;
+                    case 5:
+                        await Locations.findByIdAndUpdate(post.locationId, {
+                            $inc: { "star.4": -1 }
+                        }, { new: true })
+                        break;
+                }
+            }
 
             res.json({
                 success: true, message: "Delete post success"

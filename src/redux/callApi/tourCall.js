@@ -4,6 +4,7 @@ import * as imageUtils from '../../utils/uploadImage'
 import { createNotify, deleteNotify } from './notifyCall';
 import * as alertAction from '../actions/alertAction'
 import { extractProvinceTour, sortTourDate } from '../../utils/utils';
+import { resetTour } from '../actions/createTourAction';
 
 export const getTours = (data) => async (dispatch) => {
     dispatch(tourAction.loading());
@@ -73,6 +74,7 @@ export const saveTour = (tour, image, token, socket, next, error) => async (disp
         console.log(dataNotify);
         dispatch(createNotify(dataNotify, token, socket));
         dispatch(alertAction.success({ message: "Lưu lịch trình thành công!" }))
+        dispatch(resetTour());
         next();
     }
     catch (err) {
@@ -106,7 +108,7 @@ export const updateTour = (id, tour, image, token, next, error) => async (dispat
         // console.log(res.data.newTour)
         dispatch(tourAction.updateTour({ id: id, tour: res.data.newTour }));
         dispatch(alertAction.success({ message: "Cập nhật thành công!" }))
-
+        dispatch(resetTour());
     }
     catch (err) {
         // console.log(err);

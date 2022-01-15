@@ -17,7 +17,7 @@ export default function CreateReviewForm(props) {
 
     const dispatch = useDispatch();
     const history = useHistory();
-    const { auth,socket } = useSelector(state => state);
+    const { auth, socket } = useSelector(state => state);
     const { location, handleClose, tourDateId, indexLocation } = props;
     const [state, setState] = useState({
         loading: false,
@@ -26,18 +26,10 @@ export default function CreateReviewForm(props) {
 
 
     const [imageUpload, setImageUpload] = useState([]);
-    const [context, setContext] = useState({
-        hashtags: "",
-        rate: 0,
-    })
+    const [hashtags, setHashtags] = useState("")
+    const [rate, setRate] = useState(0);
     const [text, setText] = useState("");
 
-    const handleInput = (e) => {
-        setContext({
-            ...state,
-            [e.target.name]: e.target.value,
-        })
-    }
 
     const handleChange = e => {
         setText(e.target.value);
@@ -75,20 +67,20 @@ export default function CreateReviewForm(props) {
 
     const handleSubmit = (e) => {
         e.preventDefault();
-        if (!context.rate) {
+        if (!rate || rate === 0) {
             return;
         }
         setState({
             loading: true,
             error: false
         })
-        var ht = hashtagSplit(context.hashtags);
+        var ht = hashtagSplit(hashtags);
         dispatch(createPost({
             content: text,
             image: imageUpload,
             hashtags: ht,
-            rate: context.rate,
-            locationId: location,
+            rate: rate,
+            locationId: location._id,
             tourDateId: tourDateId,
             indexLocation: indexLocation
         },
@@ -101,7 +93,7 @@ export default function CreateReviewForm(props) {
                     error: false
                 })
                 handleClose();
-                history.push(`/location/${location}`);
+                history.push(`/location/${location.name}`);
             },
             () => {
                 setState({
@@ -132,8 +124,8 @@ export default function CreateReviewForm(props) {
                             <div className={classes.formCreateReview}>
                                 <Rating
                                     name="rate"
-                                    value={context.rate}
-                                    onChange={handleInput}
+                                    value={rate}
+                                    onChange={(e) => setRate(e.target.value)}
                                 />
                             </div>
                             <div className={classes.postContentInput}>
@@ -152,10 +144,10 @@ export default function CreateReviewForm(props) {
                                     placeholder="Hashtag (cách nhau bằng dấu cách). Vd: #bien #lehoi ..."
                                     variant="outlined"
                                     name="hashtags"
-                                    id="hashtag"
+                                    id="hashtags"
                                     className={classes.hashtag}
-                                    value={context.hashtags}
-                                    onChange={handleInput}
+                                    value={hashtags}
+                                    onChange={(e) => setHashtags(e.target.value)}
                                 />
                             </div>
                             <div className={classes.formAction}>

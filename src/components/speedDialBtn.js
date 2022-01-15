@@ -53,13 +53,13 @@ function CreatePostIcon(props) {
 function CreateTourIcon(props) {
     const [show, setShow] = useState(false);
 
-    const { createTour } = useSelector(state => state);
+    const { createTour, auth } = useSelector(state => state);
     const history = useHistory();
 
     const classes = speedDialStyles();
 
     const handleShow = () => {
-        if (createTour.tour.length > 0) {
+        if (auth.token && createTour.tour.length > 0) {
             history.push("/createtour");
         }
         else {
@@ -71,8 +71,6 @@ function CreateTourIcon(props) {
     const handleClose = () => {
         setShow(false);
     }
-
-
 
     return (
         <>

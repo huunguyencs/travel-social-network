@@ -105,11 +105,12 @@ export const getPostById = (id, next) => async (dispatch) => {
 }
 
 export const createPost = (data, token, type, socket, next, error) => async (dispatch) => {
+    console.log("go?")
     // post api
     try {
 
         let image = [];
-        if (data.images.length > 0) image = await imageUtils.uploadImages(data.images);
+        if (data.images && data.images.length > 0) image = await imageUtils.uploadImages(data.images);
         const post = {
             ...data,
             images: image
@@ -124,6 +125,7 @@ export const createPost = (data, token, type, socket, next, error) => async (dis
         // call api to save post
 
         const res = await customAxios(token).post(url, post);
+
 
         // console.log(res.data);
         dispatch(postAction.addPost({ post: res.data.newPost }))
@@ -142,6 +144,7 @@ export const createPost = (data, token, type, socket, next, error) => async (dis
         next();
     }
     catch (err) {
+        console.log(err);
         error(err);
     }
 }

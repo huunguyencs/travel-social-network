@@ -93,6 +93,10 @@ export default function Location(props) {
         }
     }, [location])
 
+    const tryAgain = () => {
+        getLocation(id);
+    }
+
     return (
         <>
             {
@@ -104,7 +108,7 @@ export default function Location(props) {
                         <div className={classes.centerMarginTop}>
                             <div>
                                 <Typography>Có lỗi xảy ra</Typography>
-                                <Button onClick={() => getLocation(id)}>Thử lại</Button>
+                                <Button onClick={tryAgain}>Thử lại</Button>
                             </div>
                         </div> :
                         notFound ?

@@ -1,4 +1,4 @@
-import { Backdrop, Button, Card, Dialog, DialogActions, DialogTitle, Fade, IconButton, Menu, MenuItem, Modal, Paper, TextField, Typography } from '@material-ui/core';
+import { Backdrop, Button, Card, ClickAwayListener, Dialog, DialogActions, DialogTitle, Fade, Grow, IconButton, MenuItem, MenuList, Modal, Paper, Popper, TextField, Typography } from '@material-ui/core';
 import React, { useEffect, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux';
 import customAxios from '../../utils/fetchData';
@@ -7,31 +7,6 @@ import { Autocomplete } from '@material-ui/lab';
 import { formStyles } from '../../style';
 import { Link } from 'react-router-dom';
 import { MoreVert } from '@material-ui/icons';
-
-const MenuListProps = {
-    elevation: 0,
-    overflow: 'visible',
-    filter: 'drop-shadow(0px 2px 8px rgba(0,0,0,0.32))',
-    mt: 1.5,
-    '& .MuiAvatar-root': {
-        width: 32,
-        height: 32,
-        ml: -0.5,
-        mr: 1,
-    },
-    '&:before': {
-        content: '""',
-        display: 'block',
-        position: 'absolute',
-        top: 0,
-        right: 14,
-        width: 10,
-        height: 10,
-        bgcolor: 'background.paper',
-        transform: 'translateY(-50%) rotate(45deg)',
-        zIndex: 0,
-    },
-}
 
 function ServiceItemAddForm(props) {
 
@@ -188,36 +163,49 @@ export function ServiceCard(props) {
             <div className={classes.serviceInfo}>
                 {isEdit &&
                     <div style={{ display: 'flex', justifyContent: 'right' }}>
-                        <IconButton size="small" onClick={handleShowMenu}>
+                        <IconButton
+                            size="small"
+                            onClick={handleShowMenu}
+                            controls={anchorEl ? "service-item-menu" : undefined}
+                        >
                             <MoreVert />
                         </IconButton>
-                        <Menu
-                            anchorEl={anchorEl}
+                        <Popper
                             open={Boolean(anchorEl)}
+                            anchorEl={anchorEl}
                             onClose={handleCloseMenu}
-                            disablePortal={true}
-                            MenuListProps={MenuListProps}
+                            disablePortal
                         >
-                            <MenuItem onClick={handleShowDelete}>
-                                Xóa
-                            </MenuItem>
-                            <Dialog
-                                open={showDelete}
-                                onClose={handleCloseDelete}
-                                aria-labelledby="alert-dialog-title"
-                                aria-describedby="alert-dialog-description"
+                            <Grow
+                                style={{ transformOrigin: "center bottom" }}
                             >
-                                <DialogTitle id="alert-dialog-title">{"Bạn có chắc chắn muốn xóa?"}</DialogTitle>
-                                <DialogActions>
-                                    <Button onClick={handleCloseDelete}>
-                                        Hủy
-                                    </Button>
-                                    <Button onClick={handleDelete} className={classes.delete}>
-                                        Xóa
-                                    </Button>
-                                </DialogActions>
-                            </Dialog>
-                        </Menu>
+                                <ClickAwayListener onClickAway={handleCloseMenu}>
+                                    <Paper>
+                                        <MenuList>
+                                            <MenuItem onClick={handleShowDelete}>
+                                                Xóa
+                                            </MenuItem>
+                                            <Dialog
+                                                open={showDelete}
+                                                onClose={handleCloseDelete}
+                                                aria-labelledby="alert-dialog-title"
+                                                aria-describedby="alert-dialog-description"
+                                            >
+                                                <DialogTitle id="alert-dialog-title">{"Bạn có chắc chắn muốn xóa?"}</DialogTitle>
+                                                <DialogActions>
+                                                    <Button onClick={handleCloseDelete}>
+                                                        Hủy
+                                                    </Button>
+                                                    <Button onClick={handleDelete} className={classes.delete}>
+                                                        Xóa
+                                                    </Button>
+                                                </DialogActions>
+                                            </Dialog>
+                                        </MenuList>
+                                    </Paper>
+                                </ClickAwayListener>
+                            </Grow>
+                        </Popper>
                     </div>
                 }
 

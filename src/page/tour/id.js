@@ -82,6 +82,10 @@ export default function TourDetail(props) {
         }
     }, [edit, tour, dispatch])
 
+    const tryAgain = () => {
+        getTourDetail(id);
+    }
+
 
     return (
         <>
@@ -96,7 +100,7 @@ export default function TourDetail(props) {
                             <div style={{ display: 'flex', justifyContent: 'center', marginTop: 150 }}>
                                 <>
                                     <Typography>Có lỗi xảy ra</Typography>
-                                    <Button onClick={() => getTourDetail(id)}>Thử lại</Button>
+                                    <Button onClick={tryAgain}>Thử lại</Button>
                                 </>
                             </div> :
 

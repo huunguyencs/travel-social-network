@@ -23,12 +23,14 @@ export default function NotificationItem(props) {
         dispatch(isSeenNotify(msg, token))
     }
 
+    const notiClick = () => {
+        history.push(`${noti.url}`)
+        handleIsRead(noti)
+    }
+
     return (
 
-        <ListItem className={noti.seen ? classes.itemContainer : classes.unSeen} onClick={() => {
-            history.push(`${noti.url}`)
-            handleIsRead(noti)
-        }}>
+        <ListItem className={noti.seen ? classes.itemContainer : classes.unSeen} onClick={notiClick}>
             <ListItemAvatar>
                 <Avatar className={classes.avatar} alt="avatar" src={noti.user.avatar} />
             </ListItemAvatar>
