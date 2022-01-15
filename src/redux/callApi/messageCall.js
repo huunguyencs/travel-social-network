@@ -16,7 +16,7 @@ export const addUser = (user, message, socket) => async (dispatch) => {
 export const addMessage = (msg, auth, socket) => async(dispatch) =>{
     try{
         dispatch(messageAction.addMessage(msg));
-        const res = await customAxios(auth.token).post('/message/create_message', msg)
+        await customAxios(auth.token).post('/message/create_message', msg)
         // console.log(res.data)
     }catch(err){
         console.log(err);
@@ -26,7 +26,29 @@ export const addMessage = (msg, auth, socket) => async(dispatch) =>{
 export const getConversations = (auth, socket) => async(dispatch)=>{
     try {
         const res = await customAxios(auth.token).get('/message/get_conversations');
-        console.log(res.data);
+    //    console.log(res.data);
+       let newArr = [];
+       res.data.conversations.forEach(conversation => {
+           conversation.members.forEach( item =>{ 
+               if(item._id !== auth.user._id){ 
+                   newArr.push({...item, text:conversation.text})
+               }
+           })
+       });
+    //    console.log(newArr);
+       dispatch(messageAction.getConversations(newArr))
+
+    } catch (err) {
+        console.log(err);
+    }
+}
+
+export const getMessages = (id,auth, socket) => async(dispatch)=>{
+    try {
+        const res = await customAxios(auth.token).get(`/message/get_messages/${id}`);
+        // console.log(res.data);
+        dispatch(messageAction.getMessages(res.data.messages))
+
     } catch (err) {
         console.log(err);
     }

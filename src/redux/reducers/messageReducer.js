@@ -23,6 +23,17 @@ const messageReducer = (state = INIT_STATE, action) => {
                     : user
                     )
             }
+        case MESSAGE_TYPES.GET_CONVERSATIONS:
+            return {
+               ...state,
+               users: action.payload,
+               firstLoad: true
+            }
+        case MESSAGE_TYPES.GET_MESSAGES:
+            return{
+                ...state,
+                data: action.payload
+            }
         default:
             return state;
 

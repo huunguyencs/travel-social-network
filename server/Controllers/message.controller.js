@@ -40,6 +40,7 @@ class MessageController{
         }
     }
 
+    //get conversations of 1 user
     async getConversations(req, res) {
         try {
             const conversations = await Conversations.find({members:req.user._id}).sort('-updatedAt')
@@ -49,6 +50,27 @@ class MessageController{
                 success: true,
                 message: "Get conversations successful",
                 conversations
+            })
+        } catch (err) {
+            console.log(err)
+            res.status(500).json({ success: false, message: err.message })
+        }
+    }
+
+    // get messages of the conversation
+    async getMessages(req, res) {
+        try {
+            const messages = await Messages.find({
+                $or:[
+                    {sender: req.user._id, recipient: req.params.id },
+                    {sender: req.params.id, recipient: req.user._id}
+                ]
+            }).sort('-createAt')
+
+            res.json({
+                success: true,
+                message: "Get messages successful",
+                messages
             })
         } catch (err) {
             console.log(err)
