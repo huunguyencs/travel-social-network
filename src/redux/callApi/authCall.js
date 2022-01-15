@@ -40,6 +40,8 @@ export const register = (data, next, callback) => async (dispatch) => {
         next();
         // stop loading
         // dispatch(alertAction.callSuccess({ message: res.data.message }));
+
+        dispatch(alertAction.success({ message: "Đăng ký tài khoản thành công!" }))
     }
     catch (err) {
         // console.log(err);

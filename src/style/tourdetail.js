@@ -227,6 +227,15 @@ const tourdetailStyles = makeStyles((theme) => ({
         [theme.breakpoints.down("sm")]: {
             marginTop: 30
         }
+    },
+    cost: {
+        cursor: "pointer"
+    },
+    servicePaper: {
+        padding: 10,
+        height: 500,
+        overflow: "hidden",
+        overflowY: "scroll",
     }
 }))
 

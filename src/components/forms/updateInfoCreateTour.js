@@ -63,7 +63,7 @@ export default function UpdateTourInfo({ name, content, hashtags, image, handleC
     const handleSubmit = () => {
         // console.log(state);
         let ht = hashtagSplit(state.hashtags)
-        dispatch(updateInfo({ name: state.name, content: text, hashtags: ht, image: state.image, cost: state.cost }));
+        dispatch(updateInfo({ name: state.name, content: text, hashtags: ht, image: state.image, cost: parseInt(state.cost) }));
         handleClose();
     }
 

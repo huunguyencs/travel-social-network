@@ -173,6 +173,26 @@ const formStyles = makeStyles((theme) => ({
         "&:hover": {
             backgroundColor: color.darkred
         }
+    },
+    description: {
+        margin: 10
+    },
+    serviceCard: {
+        display: 'flex',
+        marginTop: 20,
+        paddingBlock: 10,
+        paddingInline: 20,
+        marginInline: 30,
+        [theme.breakpoints.down("md")]: {
+            marginInline: 0,
+        }
+    },
+    imageService: {
+        width: 100,
+        height: 100,
+    },
+    serviceInfo: {
+        margin: 15,
     }
 }))
 

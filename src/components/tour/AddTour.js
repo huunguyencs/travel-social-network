@@ -41,16 +41,8 @@ function TabPanel(props) {
     )
 }
 
-function calculateCost(services) {
-    if (services) {
-        return services.reduce((accum, item) => accum + item.cost, 0) * 1000;
-    }
-    return 0;
-}
-
 function extractService(services) {
     return services.map((item) => ({
-        cooperator: item.cooperator._id,
         service: item.service._id,
         cost: item.cost
     }))
@@ -112,7 +104,7 @@ export default function AddTour(props) {
             content: createTour.content,
             hashtags: createTour.hashtags,
             tour: createTour.tour,
-            cost: calculateCost(createTour.services),
+            cost: createTour.cost,
             services: extractService(createTour.services)
         }, createTour.image, auth.token, socket, () => {
             console.log("save")
@@ -141,7 +133,7 @@ export default function AddTour(props) {
             content: createTour.content,
             hashtags: createTour.hashtags,
             tour: createTour.tour,
-            cost: calculateCost(createTour.services),
+            cost: createTour.cost,
             services: extractService(createTour.services)
         }, createTour.image, auth.token, () => {
             // console.log("done");
@@ -222,7 +214,7 @@ export default function AddTour(props) {
                         </div>
                         <div className={classes.itemInfo}>
                             <Typography variant="body1" className={classes.content}>
-                                Chi phí: {new Intl.NumberFormat().format(calculateCost(createTour.services))} VND
+                                Chi phí: {new Intl.NumberFormat().format(createTour.cost * 1000)} VND
                             </Typography>
                         </div>
                         <div className={classes.itemInfo}>

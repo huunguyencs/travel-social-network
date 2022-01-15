@@ -219,6 +219,7 @@ class TourController {
                         select: "date"
                     }
                 })
+
             res.json({ success: true, message: "get tours successful", tours })
         }
         catch (err) {
@@ -294,6 +295,13 @@ class TourController {
                         path: "userId likes",
                         select: "-password"
                     },
+                })
+                .populate({
+                    path: "services",
+                    populate: {
+                        path: "service",
+                        select: "name images"
+                    }
                 })
 
             res.json({

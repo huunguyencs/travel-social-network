@@ -216,13 +216,18 @@ export default function Header(props) {
                                                         </MenuItem>
                                                     ))}
                                                 </MenuList>
+
                                                 <div className={classes.center}>
-                                                    <Typography className={classes.seeAll} variant="body1" onClick={() => {
-                                                        handleCloseNoti();
-                                                        history.push('/notifications')
-                                                    }}>
-                                                        Xem tất cả
-                                                    </Typography>
+                                                    {
+                                                        notify.data.length === 0 ? <i>Không có thông báo</i> :
+                                                            <Typography className={classes.seeAll} variant="body1" onClick={() => {
+                                                                handleCloseNoti();
+                                                                history.push('/notifications')
+                                                            }}>
+                                                                Xem tất cả
+                                                            </Typography>
+                                                    }
+
                                                 </div>
                                             </Paper>
                                         </ClickAwayListener>
