@@ -20,3 +20,12 @@ export function sortTourDate(tour) {
         tour: tour.tour.sort((a, b) => a.date > b.date)
     }
 }
+
+export function extractProvinceTour(tour) {
+    var province = [];
+    tour.map(item => {
+        item.locations.map(location => province.push(location.location.province.fullname))
+        return false;
+    })
+    return new Set(province);
+}

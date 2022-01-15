@@ -21,7 +21,8 @@ const tourSchema = new mongoose.Schema({
     services: [{
         service: { type: mongoose.Types.ObjectId, ref: 'services' },
         cost: Number
-    }]
+    }],
+    provinces: [{ type: String }]
 }, {
     timestamps: true
 })

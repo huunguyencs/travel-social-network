@@ -183,8 +183,10 @@ const formStyles = makeStyles((theme) => ({
         paddingBlock: 10,
         paddingInline: 20,
         marginInline: 30,
+        width: 370,
         [theme.breakpoints.down("md")]: {
             marginInline: 0,
+            width: 300
         }
     },
     imageService: {
@@ -192,7 +194,8 @@ const formStyles = makeStyles((theme) => ({
         height: 100,
     },
     serviceInfo: {
-        margin: 15,
+        marginLeft: 15,
+        width: "100%"
     }
 }))
 

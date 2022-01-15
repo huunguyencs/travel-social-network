@@ -408,10 +408,11 @@ function BaseContent(props) {
                     maxText={100}
                     text={tour.content}
                 />
-                <Typography style={{ marginTop: 20 }}>
+                <Typography style={{ marginTop: 10 }}>Địa điểm: {tour.provinces.join(", ")}</Typography>
+                <Typography style={{ marginTop: 10 }}>
                     Thời gian: {tour.tour?.length} ngày - Bắt đầu {convertDateToStr(tour.tour[0]?.date)}
                 </Typography>
-                <Typography style={{ marginTop: 20 }}>
+                <Typography style={{ marginTop: 10 }}>
                     Chi phí: {new Intl.NumberFormat().format(tour.cost * 1000)} VND
                 </Typography>
                 <div>

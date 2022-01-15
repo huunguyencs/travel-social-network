@@ -3,7 +3,7 @@ import customAxios from '../../utils/fetchData';
 import * as imageUtils from '../../utils/uploadImage'
 import { createNotify, deleteNotify } from './notifyCall';
 import * as alertAction from '../actions/alertAction'
-import { sortTourDate } from '../../utils/utils';
+import { extractProvinceTour, sortTourDate } from '../../utils/utils';
 
 export const getTours = (data) => async (dispatch) => {
     dispatch(tourAction.loading());
@@ -49,11 +49,11 @@ export const saveTour = (tour, image, token, socket, next, error) => async (disp
                 ...item,
                 locations: item.locations.map(location => ({
                     location: location.location._id,
-                }))
+                })),
             })),
+            provinces: Array.from(extractProvinceTour(tour.tour)),
             image: image ? imageUpload[0] : ""
         }
-
 
         const res = await customAxios(token).post('/tour/create_tour', data);
 

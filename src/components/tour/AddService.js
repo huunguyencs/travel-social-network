@@ -1,4 +1,4 @@
-import { Backdrop, Button, Card, Fade, Modal, Paper, TextField, Typography } from '@material-ui/core';
+import { Backdrop, Button, Card, Dialog, DialogActions, DialogTitle, Fade, IconButton, Menu, MenuItem, Modal, Paper, TextField, Typography } from '@material-ui/core';
 import React, { useEffect, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux';
 import customAxios from '../../utils/fetchData';
@@ -6,6 +6,32 @@ import * as tourAction from '../../redux/actions/createTourAction';
 import { Autocomplete } from '@material-ui/lab';
 import { formStyles } from '../../style';
 import { Link } from 'react-router-dom';
+import { MoreVert } from '@material-ui/icons';
+
+const MenuListProps = {
+    elevation: 0,
+    overflow: 'visible',
+    filter: 'drop-shadow(0px 2px 8px rgba(0,0,0,0.32))',
+    mt: 1.5,
+    '& .MuiAvatar-root': {
+        width: 32,
+        height: 32,
+        ml: -0.5,
+        mr: 1,
+    },
+    '&:before': {
+        content: '""',
+        display: 'block',
+        position: 'absolute',
+        top: 0,
+        right: 14,
+        width: 10,
+        height: 10,
+        bgcolor: 'background.paper',
+        transform: 'translateY(-50%) rotate(45deg)',
+        zIndex: 0,
+    },
+}
 
 function ServiceItemAddForm(props) {
 
@@ -126,9 +152,33 @@ function ServiceItemAddForm(props) {
 }
 
 export function ServiceCard(props) {
-    const { service } = props;
+    const { service, index, isEdit } = props;
 
     const classes = formStyles();
+    const [anchorEl, setAnchorEl] = useState(null);
+    const [showDelete, setShowDelete] = useState(false);
+
+    const dispatch = useDispatch();
+
+    const handleShowMenu = (e) => {
+        setAnchorEl(e.currentTarget);
+    }
+
+    const handleCloseMenu = () => {
+        setAnchorEl(null);
+    }
+
+    const handleShowDelete = () => {
+        setShowDelete(true);
+    }
+
+    const handleCloseDelete = () => {
+        setShowDelete(false);
+    }
+
+    const handleDelete = () => {
+        dispatch(tourAction.deleteService({ index: index }))
+    }
 
     return (
         <Card className={classes.serviceCard}>
@@ -136,6 +186,41 @@ export function ServiceCard(props) {
                 <img src={service.service.images[0]} alt="Loading..." className={classes.imageService} />
             </div>
             <div className={classes.serviceInfo}>
+                {isEdit &&
+                    <div style={{ display: 'flex', justifyContent: 'right' }}>
+                        <IconButton size="small" onClick={handleShowMenu}>
+                            <MoreVert />
+                        </IconButton>
+                        <Menu
+                            anchorEl={anchorEl}
+                            open={Boolean(anchorEl)}
+                            onClose={handleCloseMenu}
+                            disablePortal={true}
+                            MenuListProps={MenuListProps}
+                        >
+                            <MenuItem onClick={handleShowDelete}>
+                                Xóa
+                            </MenuItem>
+                            <Dialog
+                                open={showDelete}
+                                onClose={handleCloseDelete}
+                                aria-labelledby="alert-dialog-title"
+                                aria-describedby="alert-dialog-description"
+                            >
+                                <DialogTitle id="alert-dialog-title">{"Bạn có chắc chắn muốn xóa?"}</DialogTitle>
+                                <DialogActions>
+                                    <Button onClick={handleCloseDelete}>
+                                        Hủy
+                                    </Button>
+                                    <Button onClick={handleDelete} className={classes.delete}>
+                                        Xóa
+                                    </Button>
+                                </DialogActions>
+                            </Dialog>
+                        </Menu>
+                    </div>
+                }
+
                 <Typography variant='h6' component={Link} to={`/service/${service.service._id}`}>{service.service.name.length > 30 ? service.service.name.slice(0, 30) : service.service.name}</Typography>
                 <Typography>Chi phí: {new Intl.NumberFormat().format(service.cost * 1000)} VND</Typography>
             </div>
@@ -172,7 +257,7 @@ export default function AddService(props) {
             <div>
                 {
                     services && services.map((item, index) => (
-                        <ServiceCard service={item} key={index} />
+                        <ServiceCard service={item} key={index} index={index} isEdit={true} />
                     ))
                 }
             </div>
