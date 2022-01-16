@@ -136,7 +136,7 @@ export default function Comment(props) {
                                 </div>
                             </div>
                             {
-                                auth.user._id === comment.userId._id &&
+                                auth.user && auth.user._id === comment.userId._id &&
                                 <div>
                                     <IconButton onClick={handleShowMenu} size="small">
                                         <MoreVert />

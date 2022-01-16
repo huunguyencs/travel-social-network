@@ -2,7 +2,7 @@ import { Button, Card, CardContent, CardMedia, Grid, IconButton, Modal, Typograp
 import React, { useState } from "react";
 import { Rating } from '@material-ui/lab'
 import { MoreVert } from "@material-ui/icons";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { Link } from "react-router-dom";
 
 import { tourdetailStyles } from "../../style";
@@ -10,11 +10,14 @@ import CreateReviewForm from "../forms/createReview";
 import EditLocationForm from "../forms/editLocation";
 import * as tourAction from '../../redux/actions/createTourAction';
 import customAxios from "../../utils/fetchData";
+import { removeReview } from "../../redux/callApi/tourCall";
 
 
 export default function Location(props) {
 
     const classes = tourdetailStyles();
+
+    const { token } = useSelector(state => state.auth)
 
     const dispatch = useDispatch();
 
@@ -70,8 +73,12 @@ export default function Location(props) {
         await customAxios().get(`/post/${location.postId}`).then(res => {
             setReview(res.data.post);
         }).catch(err => {
-            if (err.response.status === 404)
+            if (err.response.status === 404) {
                 setNotFoundRv(true);
+                dispatch(removeReview(tourDateId, token, location._id))
+                console.log(tourDateId)
+                console.log(location._id)
+            }
         });
 
     }

@@ -116,15 +116,18 @@ class CommentController {
             const comment = await Comments.findOneAndDelete({
                 _id: req.params.id, userId: req.user._id
             })
+
+            const { postId } = req.query;
+
             switch (comment.commentType) {
                 case "post":
-                    await Posts.findOneAndUpdate({ _id: comment.postId }, {
+                    await Posts.findOneAndUpdate({ _id: postId }, {
                         $pull: { comments: req.params.id }
                     })
                     break;
 
                 case "tour":
-                    await Tours.findOneAndUpdate({ _id: comment.tourId }, {
+                    await Tours.findOneAndUpdate({ _id: postId }, {
                         $pull: { comments: req.params.id }
                     })
                     break;

@@ -338,7 +338,7 @@ class TourController {
 
     async unJoinTour(req, res) {
         try {
-            const tour = await Tours.findOneAndUpdate({ _id: req.params.id }, {
+            const tour = await Tours.findByIdAndUpdate(req.params.id, {
                 $pull: {
                     joinIds: req.user._id
                 }
@@ -361,7 +361,7 @@ class TourController {
                 return;
             }
             const { user } = req.body;
-            tour = await Tours.findOneAndUpdate({ _id: req.params.id }, {
+            tour = await Tours.findByIdAndUpdate(req.params.id, {
                 $pull: {
                     joinIds: user
                 }
@@ -374,6 +374,27 @@ class TourController {
 
         }
         catch (err) {
+            res.status(500).json({ success: false, message: err.message })
+        }
+    }
+
+    async removeReview(req, res) {
+        try {
+            const { locationId } = req.body;
+
+            await TourDates.findOneAndUpdate({ _id: req.params.id, locations: { $elemMatch: { _id: locationId } } }, {
+                $set: {
+                    'locations.$.postId': null
+                }
+            }, { new: true, safe: true, upsert: true })
+
+            res.json({
+                success: true,
+                message: "Xóa review thành công"
+            })
+        }
+        catch (err) {
+            console.log(err);
             res.status(500).json({ success: false, message: err.message })
         }
     }

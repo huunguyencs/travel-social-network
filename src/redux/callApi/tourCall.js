@@ -244,3 +244,13 @@ export const removeJoin = (tourId, userId, token, next) => async (dispatch) => {
             dispatch(alertAction.error({ message: "Có lỗi xảy ra" }));
     }
 }
+
+export const removeReview = (tourDateId, token, locationId) => async (dispatch) => {
+    try {
+        await customAxios(token).patch(`/tour/${tourDateId}/remove_review`, {
+            locationId
+        })
+    }
+    catch (err) {
+    }
+}

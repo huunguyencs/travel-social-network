@@ -154,7 +154,7 @@ export const unlikeComment = (id, auth, type, postId, socket) => async (dispatch
 
 export const deleteComment = (id, auth, type, postId, socket, next) => async (dispatch) => {
     try {
-        await customAxios(auth.token).delete(`/comment/${id}`);
+        await customAxios(auth.token).delete(`/comment/${id}?postId=${postId}`);
         if (type === "post") {
             dispatch(commentAction.deleteCommentPost({ id: id, postId: postId }))
 
