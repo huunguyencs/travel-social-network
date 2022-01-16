@@ -29,7 +29,7 @@ function CreatePostIcon(props) {
     }
     return (
         <>
-            <IconButton onClick={handleShow}><Create /></IconButton>
+            <Create onClick={handleShow} />
             <Modal
                 aria-labelledby="create-post"
                 aria-describedby="create-post-modal"
@@ -74,7 +74,7 @@ function CreateTourIcon(props) {
 
     return (
         <>
-            <IconButton onClick={handleShow}><Explore /></IconButton>
+            <Explore onClick={handleShow} />
             <Modal
                 aria-labelledby="create-tour"
                 aria-describedby="create-tour-modal"

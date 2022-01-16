@@ -64,9 +64,10 @@ class CommentController {
     async updateComment(req, res) {
         try {
             const { content } = req.body;
-            await Comments.findOneAndUpdate({ _id: req.params.id, user: req.user._id }, { content });
+            const comment = await Comments.findOneAndUpdate({ _id: req.params.id, user: req.user._id }, { content }, { new: true })
+                .populate("userId", "avatar fullname username");
 
-            res.json({ success: true, message: "Update comment successful" })
+            res.json({ success: true, message: "Update comment successful", comment })
         } catch (err) {
             console.log(err)
             res.status(500).json({ success: false, message: err.message })

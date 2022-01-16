@@ -46,13 +46,6 @@ export default function Tour(props) {
     }
 
 
-    const addComment = (comment) => {
-        setTour({
-            ...tour,
-            comments: [...tour.comments, comment]
-        })
-    }
-
 
     const classes = postStyles({ showCmt });
 
@@ -209,7 +202,7 @@ export default function Tour(props) {
                     </div>
                 </Collapse>
 
-                <InputComment type="tour" id={tour._id} addComment={addComment} />
+                <InputComment type="tour" id={tour._id} />
             </>}
         </Card>
     )

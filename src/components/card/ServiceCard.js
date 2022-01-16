@@ -17,6 +17,8 @@ export default function ServiceCard(props) {
             <CardMedia
                 className={classes.image}
                 image={service.images[0]}
+                alt={service.name}
+                title={service.name}
             />
             <CardContent>
                 <Typography component={Link} to={'/service/' + service._id} className={classes.locationName} variant="h6">{service.name.length > 30 ? service.name.slice(0, 30) + "..." : service.name}</Typography>

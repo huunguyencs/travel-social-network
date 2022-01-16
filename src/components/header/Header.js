@@ -112,7 +112,7 @@ export default function Header(props) {
                             <>
                                 <div className={classes.user}>
                                     <Button className={classes.button} onClick={handleToggleUser} controls={toggleMenuUser ? "user-menu" : undefined}>
-                                        <Avatar className={classes.avatar} alt="avatar" src={user.avatar} />
+                                        <Avatar component="span" className={classes.avatar} alt="avatar" src={user.avatar} />
                                         <Typography noWrap={false} className={classes.userName}>{user.fullname}</Typography>
                                     </Button>
                                     <Popper

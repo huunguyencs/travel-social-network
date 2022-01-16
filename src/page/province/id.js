@@ -364,7 +364,7 @@ export default function Province(props) {
                                         </Grid>
                                         <Grid item md={3} sm={12} xs={12}>
                                             <div className={classes.rightbar}>
-                                                <div>
+                                                <div style={{ marginTop: 50 }}>
                                                     <WeatherCardGeneral position={province?.position} nameShow={province?.fullname} />
                                                     <CovidCard name={province?.fullname} />
                                                 </div>
