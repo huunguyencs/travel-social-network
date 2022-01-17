@@ -90,7 +90,7 @@ class ServiceController {
 
     async getServiceByProvince(req, res) {
         try {
-            const services = await Services.find({ provinces: mongoose.Types.ObjectId(req.params.id) });
+            const services = await Services.find({ province: mongoose.Types.ObjectId(req.params.id) });
             res.json({ success: true, message: "", services })
         }
         catch (err) {
