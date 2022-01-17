@@ -13,11 +13,11 @@ const friendCardStyles = makeStyles((theme) => ({
     },
     text: {
         fontSize: "1.15em",
-        fontWeight: 500,
+        // fontWeight: 500,
     },
     item: {
         borderRadius: attr.borderRadius.md,
-        paddingInline: theme.spacing(5),
+        paddingInline: theme.spacing(4),
     },
 }))
 

@@ -21,7 +21,6 @@ import {
     Notifications,
     WhatsApp,
     Cancel,
-    FiberManualRecord,
     AccountCircle,
     Update,
     ExitToApp,
@@ -113,7 +112,7 @@ export default function Header(props) {
                             <>
                                 <div className={classes.user}>
                                     <Button className={classes.button} onClick={handleToggleUser} controls={toggleMenuUser ? "user-menu" : undefined}>
-                                        <Avatar className={classes.avatar} alt="avatar" src={user.avatar} />
+                                        <Avatar component="span" className={classes.avatar} alt="avatar" src={user.avatar} />
                                         <Typography noWrap={false} className={classes.userName}>{user.fullname}</Typography>
                                     </Button>
                                     <Popper
@@ -144,7 +143,7 @@ export default function Header(props) {
                                                                 </ListItemIcon>
                                                                 <Typography variant="inherit">Trang quản trị</Typography>
                                                             </MenuItem>}
-                                                        <MenuItem aria-label="profile" component={Link} to={`/profile/${user._id}/`} onClick={handleCloseUser}>
+                                                        <MenuItem aria-label="profile" component={Link} to={`/u/${user._id}/`} onClick={handleCloseUser}>
                                                             <ListItemIcon>
                                                                 <AccountCircle fontSize="small" />
                                                             </ListItemIcon>
@@ -188,14 +187,13 @@ export default function Header(props) {
                                 // }}
                                 >
                                     <Grow className={classes.grow} >
-
                                         <ClickAwayListener onClickAway={handleCloseNoti}>
                                             <Paper className={classes.paperNoti}>
                                                 <Typography className={classes.notiTitle} variant="h5">Thông báo</Typography>
                                                 <MenuList>
-                                                    {notify.data.map((item) => (
+                                                    {notify.data.slice(0, 5).map((item) => (
 
-                                                        <MenuItem key={item._id} className={classes.notiItem} onClick={(e) => {
+                                                        <MenuItem key={item._id} className={item.seen ? classes.notiItem : classes.unSeen} onClick={(e) => {
                                                             handleCloseNoti(e);
                                                             history.push(`${item.url}`)
                                                             handleIsRead(item)
@@ -211,19 +209,24 @@ export default function Header(props) {
                                                                     <span style={{ color: "#34495e" }}>{timeAgo(new Date(item.createdAt))}</span>
                                                                 </div>
                                                             </div>
-                                                            {
+                                                            {/* {
                                                                 !item.seen && <FiberManualRecord style={{ color: "#34495e" }} />
-                                                            }
+                                                            } */}
                                                         </MenuItem>
                                                     ))}
                                                 </MenuList>
+
                                                 <div className={classes.center}>
-                                                    <Typography className={classes.seeAll} variant="body1" onClick={() => {
-                                                        handleCloseNoti();
-                                                        history.push('/notifications')
-                                                    }}>
-                                                        Xem tất cả
-                                                    </Typography>
+                                                    {
+                                                        notify.data.length === 0 ? <i>Không có thông báo</i> :
+                                                            <Typography className={classes.seeAll} variant="body1" onClick={() => {
+                                                                handleCloseNoti();
+                                                                history.push('/notifications')
+                                                            }}>
+                                                                Xem tất cả
+                                                            </Typography>
+                                                    }
+
                                                 </div>
                                             </Paper>
                                         </ClickAwayListener>

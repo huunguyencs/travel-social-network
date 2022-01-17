@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React from "react";
 import { Box, Tab, Tabs, Container, useMediaQuery, useTheme, Grid } from "@material-ui/core";
 import PropTypes from 'prop-types';
 
@@ -57,10 +57,6 @@ export default function Change_info(props) {
 
     const theme = useTheme();
     const downSm = useMediaQuery(theme.breakpoints.down("sm"));
-
-    useEffect(() => {
-        console.log(downSm)
-    }, [downSm])
 
     return (
         <div>

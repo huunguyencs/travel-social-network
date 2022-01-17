@@ -28,7 +28,8 @@ const feedStyles = makeStyles((theme) => ({
     createTourContainer: {
         display: 'flex',
         justifyContent: 'center',
-        paddingTop: 20
+        paddingTop: 20,
+        marginBottom: 30,
     },
     createTour: {
         backgroundColor: color.turquoise,

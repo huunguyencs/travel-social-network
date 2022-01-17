@@ -40,6 +40,8 @@ export const register = (data, next, callback) => async (dispatch) => {
         next();
         // stop loading
         // dispatch(alertAction.callSuccess({ message: res.data.message }));
+
+        dispatch(alertAction.success({ message: "Đăng ký tài khoản thành công!" }))
     }
     catch (err) {
         // console.log(err);
@@ -191,5 +193,19 @@ export const changeAvatar = (token, src, next, error) => async (dispatch) => {
             error(err.response.data.message);
         }
         else error("Có lỗi xảy ra")
+    }
+}
+
+export const saveTour = (tourId, token) => async (dispatch) => {
+    try {
+        const res = await customAxios(token).put('/user/save_tour', {
+            tour: tourId
+        })
+
+        dispatch(authAction.saveTour({ tourSaved: res.data.tourSaved }))
+        dispatch(alertAction.success({ message: "Lưu hành trình thành công" }))
+    }
+    catch (err) {
+        dispatch(alertAction.error({ message: "Có lỗi xảy ra!" }))
     }
 }

@@ -22,5 +22,7 @@ router.patch('/:id/join', auth, TourController.joinTour);
 router.patch('/:id/unjoin', auth, TourController.unJoinTour);
 router.patch('/:id/remove_join', auth, TourController.removeJoin);
 
+router.patch('/:id/remove_review', auth, TourController.removeReview)
+
 
 module.exports = router;

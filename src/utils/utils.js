@@ -13,3 +13,19 @@ export function getStar(stars) {
     return 0;
 
 }
+
+export function sortTourDate(tour) {
+    return {
+        ...tour,
+        tour: tour.tour.sort((a, b) => a.date > b.date)
+    }
+}
+
+export function extractProvinceTour(tour) {
+    var province = [];
+    tour.map(item => {
+        item.locations.map(location => province.push(location.location.province.fullname))
+        return false;
+    })
+    return new Set(province);
+}

@@ -40,3 +40,10 @@ export const changeAvatar = (props) => {
         payload: props
     }
 }
+
+export const saveTour = (props) => {
+    return {
+        type: AUTH_TYPES.SAVE_TOUR,
+        payload: props
+    }
+}

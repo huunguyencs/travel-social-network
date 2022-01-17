@@ -82,7 +82,7 @@ const tourReducer = (state = INIT_STATE, action) => {
                 ...state,
                 tours: state.tours.map(item => item._id === action.payload.tourId ? {
                     ...item,
-                    comments: item.comments.map(comment => comment._id === action.payload.id ? action.payload.comment : comment)
+                    comments: item.comments.map(comment => comment._id === action.payload.comment._id ? action.payload.comment : comment)
                 } : item)
             }
         }

@@ -17,7 +17,7 @@ export default function UpdateReviewForm(props) {
 
     const [change, setChange] = useState(false);
     const dispatch = useDispatch();
-    const { auth,socket } = useSelector(state => state);
+    const { auth, socket } = useSelector(state => state);
     const { review, handleClose } = props;
     const [state, setState] = useState({
         loading: false,
@@ -26,28 +26,27 @@ export default function UpdateReviewForm(props) {
 
 
     const [imageUpload, setImageUpload] = useState(review.images);
-    const [context, setContext] = useState({
-        hashtags: "",
-        rate: 0,
-    })
+
+    const [hashtags, setHashtags] = useState("");
+    const [rate, setRate] = useState(0);
+    const [text, setText] = useState(review.content)
 
     useEffect(() => {
         if (review) {
-            setContext({
-                hashtags: review.hashtags.join(" "),
-                rate: review.rate
-            })
+            setHashtags(review.hashtags.join(" "))
+            setRate(review.rate);
+            setText(review.content);
         }
-    }, [setContext, review])
+    }, [setHashtags, setRate, setText, review])
 
-    const [text, setText] = useState(review.content);
-
-    const handleInput = (e) => {
+    const handleChangeHashtags = e => {
         if (!change) setChange(true);
-        setContext({
-            ...context,
-            [e.target.name]: e.target.value,
-        })
+        setHashtags(e.target.value)
+    }
+
+    const handleChangeRate = e => {
+        if (!change) setChange(true);
+        setRate(e.target.value)
     }
 
     const handleChange = e => {
@@ -70,8 +69,14 @@ export default function UpdateReviewForm(props) {
                 break;
             }
         }
-        if (error === "")
+        if (error === "") {
+            setState({
+                ...state,
+                error: null
+            })
             setImageUpload(oldImage => [...oldImage, ...e.target.files])
+        }
+
         else
             setState({
                 ...state,
@@ -89,24 +94,25 @@ export default function UpdateReviewForm(props) {
 
     const handleSubmit = (e) => {
         e.preventDefault();
-        if (!context.rate) {
-            return;
-        }
+
         if (!change) {
             handleClose();
+            return;
+        }
+        if (!rate || rate === 0) {
             return;
         }
         setState({
             loading: true,
             error: ''
         })
-        var ht = hashtagSplit(context.hashtags);
+        var ht = hashtagSplit(hashtags);
         dispatch(updatePost({
             id: review._id,
             content: text,
             images: imageUpload,
             hashtags: ht,
-            rate: context.rate,
+            rate: rate,
             oldRate: review.rate,
             locationId: review.locationId._id
         },
@@ -149,8 +155,8 @@ export default function UpdateReviewForm(props) {
                             <div className={classes.formCreateReview}>
                                 <Rating
                                     name="rate"
-                                    value={context.rate}
-                                    onChange={handleInput}
+                                    value={rate}
+                                    onChange={handleChangeRate}
                                 />
                             </div>
                             <div className={classes.postContentInput}>
@@ -171,8 +177,8 @@ export default function UpdateReviewForm(props) {
                                     name="hashtags"
                                     id="hashtags"
                                     className={classes.hashtag}
-                                    value={context.hashtags}
-                                    onChange={handleInput}
+                                    value={hashtags}
+                                    onChange={handleChangeHashtags}
                                 />
                             </div>
                             <div className={classes.formAction}>
@@ -226,6 +232,7 @@ export default function UpdateReviewForm(props) {
                                         className={classes.imageInput}
                                         onClick={() => removeImage(index)}
                                         src={typeof item === "string" ? item : URL.createObjectURL(item)}
+                                        title="Xoá"
                                     />
                                 )}
                             </ScrollMenu>

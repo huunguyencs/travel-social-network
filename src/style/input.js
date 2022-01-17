@@ -8,11 +8,11 @@ const inputStyles = makeStyles((theme) => ({
         backgroundColor: "#ededed",
         margin: 20,
         borderRadius: attr.borderRadius.lg,
+        maxWidth: "100%",
     },
     writeCmtText: {
         paddingInline: 5,
         width: "100%",
-
     },
 }))
 

@@ -223,7 +223,9 @@ function Table({ setContent, setDetail }) {
         <>
             {currentMonth && currentMonth.length !== 0 &&
                 <table className="amlich" border="0" cellPadding="0" cellSpacing="0" width="100px">
-                    {utils.LOOP7.map((i) => <col width="50px" key={i} />)}
+                    <colgroup>
+                        {utils.LOOP7.map((i) => <col width="50px" key={i} />)}
+                    </colgroup>
                     <tbody>
                         <Head month={month} year={year} setMonth={setMonth} setYear={setYear} />
                         {utils.LOOP6.map((i) => (

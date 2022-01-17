@@ -282,6 +282,22 @@ class UserController {
             res.status(500).json({ success: false, message: err.message })
         }
     }
+
+    async saveTour(req, res) {
+        try {
+
+            const { tour } = req.body;
+
+            const user = await Users.findByIdAndUpdate(req.user._id, {
+                $addToSet: { tourSaved: tour }
+            }, { new: true })
+
+            res.json({ success: true, message: "Lưu tour thành công", tourSaved: user.tourSaved })
+        }
+        catch (err) {
+            res.status(500).json({ success: false, message: err.message })
+        }
+    }
 }
 
 module.exports = new UserController

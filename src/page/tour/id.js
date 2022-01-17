@@ -8,6 +8,7 @@ import { NotFound } from "../404";
 import { useDispatch, useSelector } from "react-redux";
 import { loadTour } from "../../redux/actions/createTourAction";
 import AddTour from "../../components/tour/AddTour";
+import { sortTourDate } from "../../utils/utils";
 
 export default function TourDetail(props) {
 
@@ -48,7 +49,8 @@ export default function TourDetail(props) {
             notFound: false,
         })
         await customAxios().get(`/tour/${id}`).then(res => {
-            setTour(res.data.tour);
+
+            setTour(sortTourDate(res.data.tour));
             setState({
                 loading: false,
                 error: false,
@@ -80,23 +82,28 @@ export default function TourDetail(props) {
         }
     }, [edit, tour, dispatch])
 
+    const tryAgain = () => {
+        getTourDetail(id);
+    }
+
 
     return (
         <>
             {
-                state.loading ?
-                    <div style={{ display: 'flex', justifyContent: 'center', marginTop: 150 }}>
-                        <CircularProgress />
-                    </div>
-                    : state.error ?
+                state.notFound ?
+                    <NotFound /> :
+                    state.loading ?
                         <div style={{ display: 'flex', justifyContent: 'center', marginTop: 150 }}>
-                            <>
-                                <Typography>Có lỗi xảy ra</Typography>
-                                <Button onClick={() => getTourDetail(id)}>Thử lại</Button>
-                            </>
-                        </div> :
-                        state.notFound ?
-                            <NotFound /> :
+                            <CircularProgress />
+                        </div>
+                        : state.error ?
+                            <div style={{ display: 'flex', justifyContent: 'center', marginTop: 150 }}>
+                                <>
+                                    <Typography>Có lỗi xảy ra</Typography>
+                                    <Button onClick={tryAgain}>Thử lại</Button>
+                                </>
+                            </div> :
+
                             tour && (edit === 'true' && isOwn ? <AddTour isUpdate={true} /> : <Tour tour={tour} isOwn={isOwn} />)
             }
         </>

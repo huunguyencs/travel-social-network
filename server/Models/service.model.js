@@ -15,7 +15,7 @@ const serviceSchema = new mongoose.Schema({
         type: String,
         required: true
     }, // di chuyen, nha hang, khach san, 
-    province: { type: mongoose.Types.ObjectId, ref: 'provinces' },
+    provinces: [{ type: mongoose.Types.ObjectId, ref: 'provinces' }],
     star: {
         type: [Number],
         default: [0, 0, 0, 0, 0]
@@ -28,11 +28,7 @@ const serviceSchema = new mongoose.Schema({
         }
     ],
     images: [{ type: String }],
-    cost: Number,
-    discount: {
-        description: String,
-        cost: Number
-    }
+    discount: [{ type: String }]
 }, {
     timestamps: true
 })
