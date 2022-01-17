@@ -65,7 +65,7 @@ const messageStyles = makeStyles((theme) => ({
         maxHeight: "80vh",
         overflowY: "auto",
         zIndex: 20,
-        display: "none"
+        // display: "none"
     },
     message_card_list: {
         maxHeight: "80vh",

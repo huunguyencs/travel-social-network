@@ -53,20 +53,22 @@ export const saveTour = (tour, image, token, socket, next, error) => async (disp
 
 
         const res = await customAxios(token).post('/tour/create_tour', data);
-        next();
+        
         dispatch(alertAction.success({ message: "Lưu lịch trình thành công!" }))
         dispatch(tourAction.addTour({ tour: res.data.newTour }))
 
+        
         //notify
         const dataNotify = {
             id: res.data.newTour._id,
             text: " thêm hành trình mới",
             recipients: res.data.newTour.userId.followers,
-            content: res.data.newTour.content,
-            image: image.length > 0 ? image[0] : "empty",
+            content: res.data.newTour.name,
+            image: res.data.newTour.image,
             url: `/tour/${res.data.newTour._id}`,
         }
         dispatch(createNotify(dataNotify, token, socket));
+        next();
     }
     catch (err) {
         error();
@@ -145,13 +147,14 @@ export const likeTour = (id, auth, socket, next) => async (dispatch) => {
         // console.log(res.data.likes);
         socket.emit('like', { type: 'tour', id: id, likes: res.data.likes });
 
+        console.log(res.data.tour);
         //notify
         const dataNotify = {
             id: auth.user._id,
             text: " thích hành trình của bạn",
             recipients: [res.data.tour.userId],
-            content: res.data.tour.content,
-            image: res.data.tour.image.length > 0 ? res.data.tour.image[0] : "empty",
+            content: res.data.tour.name,
+            image: res.data.tour.image,
             url: `/tour/${id}`,
         }
         dispatch(createNotify(dataNotify, auth.token, socket));
