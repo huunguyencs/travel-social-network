@@ -1,8 +1,8 @@
 import React, { useState } from "react";
 import { SpeedDial, SpeedDialAction, SpeedDialIcon } from "@material-ui/lab";
 import { Create, Explore, WhatsApp } from "@material-ui/icons";
-import { Link, useHistory } from "react-router-dom";
-import { Fade, IconButton, Modal, Backdrop } from "@material-ui/core";
+import { useHistory } from "react-router-dom";
+import { Fade, Modal, Backdrop } from "@material-ui/core";
 import { useSelector } from "react-redux";
 
 import CreatePostForm from "./forms/createPost";
@@ -12,8 +12,21 @@ import { speedDialStyles } from "../style";
 const actions = [
     { icon: < CreatePostIcon />, name: "Tạo bài viết" },
     { icon: < CreateTourIcon />, name: "Tạo hành trình" },
-    { icon: <IconButton component={Link} to={"/message"}><WhatsApp /></IconButton>, name: "Tin nhắn" },
+    { icon: <MessageIcon />, name: "Tin nhắn" },
 ]
+
+function MessageIcon(props) {
+
+    const history = useHistory();
+
+    const toMessage = () => {
+        history.push('/message')
+    }
+
+    return (
+        <WhatsApp onClick={toMessage} />
+    )
+}
 
 function CreatePostIcon(props) {
     const [show, setShow] = useState(false);

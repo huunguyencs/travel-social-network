@@ -69,8 +69,14 @@ export default function UpdateReviewForm(props) {
                 break;
             }
         }
-        if (error === "")
+        if (error === "") {
+            setState({
+                ...state,
+                error: null
+            })
             setImageUpload(oldImage => [...oldImage, ...e.target.files])
+        }
+
         else
             setState({
                 ...state,
@@ -226,6 +232,7 @@ export default function UpdateReviewForm(props) {
                                         className={classes.imageInput}
                                         onClick={() => removeImage(index)}
                                         src={typeof item === "string" ? item : URL.createObjectURL(item)}
+                                        title="Xoá"
                                     />
                                 )}
                             </ScrollMenu>

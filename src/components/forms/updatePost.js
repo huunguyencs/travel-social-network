@@ -20,7 +20,7 @@ export default function UpdatePostForm(props) {
         error: false
     })
 
-    const { auth,socket } = useSelector(state => state);
+    const { auth, socket } = useSelector(state => state);
 
     const [imageUpload, setImageUpload] = useState(post.images);
 
@@ -42,8 +42,14 @@ export default function UpdatePostForm(props) {
                 break;
             }
         }
-        if (error === "")
+        if (error === "") {
+            setState({
+                ...state,
+                error: null
+            })
             setImageUpload(oldImage => [...oldImage, ...e.target.files])
+        }
+
         else
             setState({
                 ...state,
@@ -76,7 +82,7 @@ export default function UpdatePostForm(props) {
                 loading: true,
                 error: false
             })
-            dispatch(updatePost({ id: post._id, content: text, images: imageUpload, hashtags: ht }, auth.token,socket, () => {
+            dispatch(updatePost({ id: post._id, content: text, images: imageUpload, hashtags: ht }, auth.token, socket, () => {
                 setState({
                     loading: false,
                     error: false,
@@ -164,6 +170,10 @@ export default function UpdatePostForm(props) {
 
                         </div>
                     </form>
+
+                    <div className={classes.error}>
+                        <Typography variant="caption" color="inherit">{state.error}</Typography>
+                    </div>
                     <div
                         className={classes.imageInputContainer}
                     >
@@ -179,6 +189,7 @@ export default function UpdatePostForm(props) {
                                         className={classes.imageInput}
                                         onClick={() => removeImage(index)}
                                         src={typeof item === "string" ? item : URL.createObjectURL(item)}
+                                        title="Xóa"
                                     />
                                 )}
                             </ScrollMenu>

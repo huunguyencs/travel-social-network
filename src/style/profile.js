@@ -97,6 +97,7 @@ const profileStyles = makeStyles((theme) => ({
     flexDirection: "column",
   },
   profile_overImage: {
+    backgroundColor: color.white,
     borderRadius: "10px",
     position: "absolute",
     width: "100%",
@@ -113,6 +114,7 @@ const profileStyles = makeStyles((theme) => ({
     },
   },
   profile_avatar__img: {
+    backgroundColor: color.white,
     height: "200px",
     width: "200px",
     border: "5px solid white",

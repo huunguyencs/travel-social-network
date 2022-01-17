@@ -265,7 +265,7 @@ class PostController {
     //lấy nhiều post gắn lên trang feed theo người mình theo dõi  hoặc  group 
     async getPosts(req, res) {
         try {
-            const posts = await Posts.find({}).limit(5)
+            const posts = await Posts.find({}).limit(8)
                 .populate("userId likes", "username fullname avatar")
                 .populate({
                     path: "comments",

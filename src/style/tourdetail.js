@@ -232,6 +232,9 @@ const tourdetailStyles = makeStyles((theme) => ({
         height: 500,
         overflow: "hidden",
         overflowY: "scroll",
+    },
+    line: {
+        width: "80%"
     }
 }))
 

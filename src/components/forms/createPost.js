@@ -41,8 +41,13 @@ export default function CreatePostForm(props) {
                 break;
             }
         }
-        if (error === "")
+        if (error === "") {
+            setState({
+                ...state,
+                error: null
+            })
             setImageUpload(oldImage => [...oldImage, ...e.target.files])
+        }
         else
             setState({
                 ...state,
@@ -161,11 +166,9 @@ export default function CreatePostForm(props) {
 
                         </div>
                     </form>
-                    {state.error &&
-                        <div className={classes.error}>
-                            <Typography color="inherit">{state.error}</Typography>
-                        </div>
-                    }
+                    <div className={classes.error}>
+                        <Typography variant="caption" color="inherit">{state.error}</Typography>
+                    </div>
 
                     <div
                         className={classes.imageInputContainer}
@@ -182,6 +185,7 @@ export default function CreatePostForm(props) {
                                         className={classes.imageInput}
                                         onClick={() => removeImage(index)}
                                         src={URL.createObjectURL(item)}
+                                        title={"Xoá"}
                                     />
                                 )}
                             </ScrollMenu>

@@ -214,12 +214,13 @@ export default function Location(props) {
                         </Modal>
                     </CardContent>
                 </Grid>
-                <Collapse in={showRv}>
+
+                <Collapse in={showRv} style={{ width: "100%" }}>
                     {!notFoundRv ?
                         review ?
-                            <Grid item md={12}>
+                            <Grid item md={12} sm={12} xs={12}>
+                                <hr className={classes.line} />
                                 <CardContent className={classes.review}>
-                                    <Typography component="legend">Đánh giá: </Typography>
                                     <Rating
                                         name={"rating" + review._id}
                                         value={review.rate}
