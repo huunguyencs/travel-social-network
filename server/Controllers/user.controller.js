@@ -298,6 +298,65 @@ class UserController {
             res.status(500).json({ success: false, message: err.message })
         }
     }
+
+    async getFriendRecommend(req, res) {
+        try {
+
+            const { limit } = req.query;
+            var user = await Users.findById(req.user._id, "followings")
+                .populate("followings", "followings")
+
+            const followeds = [...user.followings.map(item => item._id.toString()), user._id.toString()]
+
+            if (user) {
+                var rawArrFriend = [];
+                for (var f of user.followings) {
+                    // console.log(f);
+                    rawArrFriend = [...rawArrFriend, ...f.followings.map(item => item.toString())]
+                }
+            }
+
+            // console.log(rawArrFriend);
+
+            rawArrFriend = rawArrFriend.filter(item => !followeds.includes(item))
+
+            var counts = rawArrFriend.reduce(function (map, id) {
+                map[id] = (map[id] || 0) + 1;
+                return map;
+            }, {});
+
+            var sorted = Object.keys(counts).sort(function (a, b) {
+                return counts[b] - counts[a];
+            });
+
+            if (limit) {
+                sorted = sorted.slice(0, limit)
+                var recommend = await Users.find({
+                    _id: {
+                        $in: sorted
+                    }
+                }, "username fullname avatar")
+
+                res.json({ success: true, message: `Lấy top ${limit} recommend`, recommend })
+            }
+            else {
+                sorted = sorted.slice(0, 50)
+                var recommend = await Users.find({
+                    _id: {
+                        $in: sorted
+                    }
+                }, "username fullname avatar")
+
+                res.json({ success: true, message: `Lấy max 50 recommend`, recommend })
+            }
+
+
+        }
+        catch (err) {
+            console.log(err);
+            res.status(500).json({ success: false, message: err.massage })
+        }
+    }
 }
 
 module.exports = new UserController

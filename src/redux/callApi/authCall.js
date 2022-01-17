@@ -209,3 +209,13 @@ export const saveTour = (tourId, token) => async (dispatch) => {
         dispatch(alertAction.error({ message: "Có lỗi xảy ra!" }))
     }
 }
+
+export const getFriendRecommend = (token, limit) => async (dispatch) => {
+    try {
+        const res = await customAxios(token).get(`/user/get_friend_recommend?limit=${limit}`);
+        dispatch(authAction.getFriendRecommend({ friendsRecommend: res.data.recommend }))
+    }
+    catch (err) {
+        console.log(err);
+    }
+}

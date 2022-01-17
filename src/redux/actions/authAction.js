@@ -47,3 +47,10 @@ export const saveTour = (props) => {
         payload: props
     }
 }
+
+export const getFriendRecommend = (props) => {
+    return {
+        type: AUTH_TYPES.GET_FRIEND_RECOMMEND,
+        payload: props
+    }
+}
