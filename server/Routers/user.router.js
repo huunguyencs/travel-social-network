@@ -21,4 +21,6 @@ router.get("/:id", UserController.getUser);
 router.put('/:id/follow', auth, UserController.follow); //id là id của người mà mình follow
 router.put('/:id/unfollow', auth, UserController.unfollow); // id là id của người mình unfollow
 
+router.put('/save_tour', auth, UserController.saveTour);
+
 module.exports = router;

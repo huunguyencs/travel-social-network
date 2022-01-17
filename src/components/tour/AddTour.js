@@ -282,7 +282,7 @@ export default function AddTour(props) {
                             </div>
 
                         </Grid>
-                        <Grid item md={6} sm={12} xs={12} className={classes.feedTour}>
+                        <Grid item md={4} sm={12} xs={12} className={classes.feedTour}>
                             <div className={classes.center}>
                                 <Button onClick={handleShowDelete} className={classes.editButton}>
                                     Xóa ngày
@@ -397,7 +397,7 @@ export default function AddTour(props) {
                             </div>
 
                         </Grid>
-                        <Grid item md={4} className={classes.addContainerLarge}>
+                        <Grid item md={6} className={classes.addContainerLarge}>
                             <Container style={{ marginLeft: 30 }}>
                                 <div className={classes.addHeader}>
                                     <Tabs value={tab} onChange={handleChangeTab} aria-label="tabs tour">

@@ -51,6 +51,15 @@ const authReducer = (state = INIT_STATE, action) => {
                 }
             }
         }
+        case AUTH_TYPES.SAVE_TOUR: {
+            return {
+                ...state,
+                user: {
+                    ...state.user,
+                    tourSaved: action.payload.tourSaved
+                }
+            }
+        }
         default: {
             return state
         }
