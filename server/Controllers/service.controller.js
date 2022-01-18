@@ -100,9 +100,26 @@ class ServiceController {
 
     async getServiceByCoop(req, res) {
         try {
-            const services = await Services.find({ cooperator: req.params.id }).populate("province", "name fullname");
+            const services = await Services.find({ cooperator: req.params.id }, "-rate").populate("province", "name fullname");
             res.json({ success: true, message: "", services })
         } catch (err) {
+            res.status(500).json({ success: false, message: err.message })
+        }
+    }
+
+    async getServiceRate(req, res) {
+        try {
+            const services = await Services.findById(req.params.id, "rate")
+                .populate({
+                    path: "rate",
+                    populate: {
+                        path: "userId",
+                        select: "name fullname avatar"
+                    }
+                })
+            res.json({ success: true, message: "", rate: services.rate });
+        }
+        catch (err) {
             res.status(500).json({ success: false, message: err.message })
         }
     }

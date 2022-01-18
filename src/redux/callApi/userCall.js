@@ -68,3 +68,14 @@ export const unfollow = (follow, token, socket, next) => async (dispatch) => {
             dispatch(alertAction.error({ message: "Có lỗi xảy ra" }));
     }
 }
+
+export const getRate = (id, next, error) => async (dispatch) => {
+    try {
+        const res = await customAxios().get(`/service/get_rate/${id}`);
+        console.log(res);
+        dispatch(userAction.getRate({ rate: res.data.rate, id: id }))
+        next();
+    } catch (err) {
+        error();
+    }
+}

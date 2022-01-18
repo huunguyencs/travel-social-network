@@ -1,5 +1,6 @@
 import { makeStyles } from "@material-ui/core";
 import color from "./color";
+import attr from './attr'
 
 
 const serviceStyles = makeStyles((theme) => ({
@@ -34,6 +35,21 @@ const serviceStyles = makeStyles((theme) => ({
     },
     reviewContainer: {
         width: 500
+    },
+    reviewItemContainer: {
+        margin: 20,
+        display: 'flex'
+    },
+    reviewContentContainer: {
+        borderRadius: attr.borderRadius.md,
+        backgroundColor: color.lightgray,
+        padding: 10
+    },
+    reviewerName: {
+
+    },
+    reviewContent: {
+
     }
 }))
 

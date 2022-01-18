@@ -134,6 +134,7 @@ const headerStyles = makeStyles((theme) => ({
     unSeen: {
         borderRadius: attr.borderRadius.md,
         backgroundColor: color.lightgray,
+        marginBlock: 3
     }
 }));
 

@@ -20,3 +20,10 @@ export const getServices = (props) => {
         payload: props
     }
 }
+
+export const getRate = (props) => {
+    return {
+        type: USER_TYPES.GET_RATE,
+        payload: props
+    }
+}
