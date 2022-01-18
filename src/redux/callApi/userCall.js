@@ -14,6 +14,11 @@ export const getUser = (id, role, callback) => async (dispatch) => {
             if (err.response.status === 404)
                 callback();
         });
+
+        if (role === 1) {
+            const res = await customAxios().get(`/service/get_by_coop/${id}`);
+            dispatch(userAction.getServices({ services: res.data.services }))
+        }
     }
     catch (err) {
         // console.log(err);

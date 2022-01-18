@@ -1,7 +1,8 @@
 import * as USER_TYPES from '../constants/userConstant';
 
 const INIT_STATE = {
-    user: null
+    user: null,
+    services: []
 }
 
 const userReducer = (state = INIT_STATE, action) => {
@@ -9,7 +10,8 @@ const userReducer = (state = INIT_STATE, action) => {
         case USER_TYPES.GET_USER_INFO: {
             return {
                 ...state,
-                user: action.payload.user
+                user: action.payload.user,
+                // services: []
             }
         }
         case USER_TYPES.UPDATE_FOLLOW: {
@@ -19,6 +21,12 @@ const userReducer = (state = INIT_STATE, action) => {
                     ...state.user,
                     followers: action.payload.followers
                 }
+            }
+        }
+        case USER_TYPES.GET_SERVICES: {
+            return {
+                ...state,
+                services: action.payload.services
             }
         }
         default: {

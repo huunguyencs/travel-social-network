@@ -13,6 +13,7 @@ import useStyles from "../../../style";
 import RightBar from "../../../components/rightbar/RightBar";
 import Calendar from "../../../components/calendar";
 import FriendRecommendCard from "../../../components/card/FriendRecommend";
+import ServiceList from "../../../components/service/ServiceList";
 
 export default function ServicesServicePage(props) {
 
@@ -38,6 +39,7 @@ export default function ServicesServicePage(props) {
         }
     }, [user.user, id, dispatch, setNotFound])
 
+
     return (
         <>
             {
@@ -52,7 +54,7 @@ export default function ServicesServicePage(props) {
                                 <LeftBar menuList={serviceMenu} />
                             </Grid>
                             <Grid item md={6} sm={10} xs={2}>
-
+                                <ServiceList />
                             </Grid>
                             <Grid item md={3} className={classes.rightbar}>
                                 <RightBar ref={ref}>

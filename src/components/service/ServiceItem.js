@@ -1,6 +1,10 @@
-import { Button, Card, CardActionArea, CardActions, CardContent, CardMedia, Drawer, Typography } from '@material-ui/core'
+import { Button, Card, CardContent, CardMedia, Drawer, Typography } from '@material-ui/core'
+import { Rating } from '@material-ui/lab';
 import React, { useState } from 'react'
 import { serviceStyles } from '../../style';
+import { getStar } from '../../utils/utils';
+import { SeeMoreText } from '../seeMoreText';
+import ImageList from '../modal/ImageList';
 
 export default function ServiceItem(props) {
 
@@ -18,37 +22,38 @@ export default function ServiceItem(props) {
 
     return (
         <>
-            <Card>
-                <CardMedia
-                    image={service.images[0]}
-                    title={service.name}
-                />
-                <CardContent>
-                    <Typography>
-                        {service.name}
-                    </Typography>
-                    <Typography>
-                        {service.description}
-                    </Typography>
-                    <div className={classes.star}>
-                        <Typography noWrap={false}>{getStar(service.star)}</Typography>
-                        <Star className={classes.starIcon} />
+            <Card className={classes.container} id={service._id}>
+                <CardMedia>
+                    <ImageList imageList={service.images} show2Image={true} />
+                </CardMedia>
+                <div>
+                    <CardContent>
+                        <Typography variant='h5' className={classes.serviceName}>
+                            {service.name}
+                        </Typography>
+                        <SeeMoreText maxText={50} text={service.description} variant={'body1'} />
+                        <div className={classes.rate}>
+                            <Rating name="read-only" value={getStar(service.star)} readOnly size="medium" />
+                        </div>
+                        <Typography className={classes.discount}>{service.discount}</Typography>
+                    </CardContent>
+                    <div>
+                        <Button className={classes.seeReview} onClick={toggleDrawer(true)}>Xem review</Button>
                     </div>
-                    <Typography>{service.discount}</Typography>
-                </CardContent>
-                <CardActionArea>
-                    <CardActions>
-                        <Button onClick={toggleDrawer(true)}>Xem review</Button>
-                    </CardActions>
-                </CardActionArea>
+                </div>
             </Card>
             <Drawer
                 anchor={'right'}
                 open={open}
                 onClose={toggleDrawer(false)}
             >
-                <div>
+                <div className={classes.reviewContainer}>
+                    <div className={classes.centerMarginTop}>
+                        <Typography variant='h5'>Review {service.name}</Typography>
+                    </div>
+                    <div>
 
+                    </div>
                 </div>
             </Drawer>
         </>

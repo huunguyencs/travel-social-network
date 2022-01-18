@@ -130,6 +130,7 @@ export default function Profile_Avatar(props) {
     }
   }, [user])
 
+
   return (
     <Container className={classes.container}>
       {

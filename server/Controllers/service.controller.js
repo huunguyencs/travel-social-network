@@ -97,6 +97,15 @@ class ServiceController {
             res.status(500).json({ success: false, message: err.message })
         }
     }
+
+    async getServiceByCoop(req, res) {
+        try {
+            const services = await Services.find({ cooperator: req.params.id }).populate("province", "name fullname");
+            res.json({ success: true, message: "", services })
+        } catch (err) {
+            res.status(500).json({ success: false, message: err.message })
+        }
+    }
 }
 
 module.exports = new ServiceController;
