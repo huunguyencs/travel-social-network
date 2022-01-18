@@ -1,15 +1,15 @@
 import { Grid } from "@material-ui/core";
 import React, { createRef, useEffect } from "react";
 
-import Calendar from '../../components/calendar';
-import FriendRecommendCard from "../../components/card/FriendRecommend";
-import FeedService from "../../components/feed/FeedService";
-import LeftBar from "../../components/leftbar/LeftBar";
-import RightBar from "../../components/rightbar/RightBar";
+import Calendar from '../components/calendar';
+import FriendRecommendCard from "../components/card/FriendRecommend";
+import FeedService from "../components/feed/FeedService";
+import LeftBar from "../components/leftbar/LeftBar";
+import RightBar from "../components/rightbar/RightBar";
 // import Slider from "../../components/slider/slider";
-import SpeedDialButton from "../../components/speedDialBtn";
-import { homeMenu } from "../../constant/menu";
-import useStyles from "../../style";
+import SpeedDialButton from "../components/speedDialBtn";
+import { homeMenu } from "../constant/menu";
+import useStyles from "../style";
 
 export default function ServicePage(props) {
 

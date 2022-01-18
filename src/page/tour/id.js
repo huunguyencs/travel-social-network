@@ -57,7 +57,7 @@ export default function TourDetail(props) {
                 notFound: false,
             })
         }).catch(err => {
-            if (err?.response.status === 404)
+            if (err && err.response && err.response.status === 404)
                 setState({
                     loading: false,
                     error: true,

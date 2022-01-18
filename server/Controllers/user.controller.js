@@ -196,9 +196,18 @@ class UserController {
 
     async getUser(req, res) {
         try {
+            const { role } = req.query;
             if (ObjectId.isValid(req.params.id)) {
-                const user = await Users.findById(req.params.id)
-                    .populate("followers followings", "username fullname avatar followings followers")
+                var user;
+                if (parseInt(role) === 1) {
+                    user = await Users.findOne({ _id: req.params.id, role: 1 })
+                        .populate("followers followings", "username fullname avatar followings followers")
+                }
+                else {
+                    user = await Users.findOne({ _id: req.params.id, role: { $ne: 1 } })
+                        .populate("followers followings", "username fullname avatar followings followers")
+                }
+
                 if (!user) return res.status(404).json({ success: false, massage: "Người dùng không tồn tại" })
                 res.json({ success: true, user })
             }

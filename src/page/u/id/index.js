@@ -20,7 +20,7 @@ import useStyles from "../../../style";
 function InfoProfile() {
 
     // const classes = useStyles();
-    const { auth, user } = useSelector(state => state);
+    const { user } = useSelector(state => state);
     const dispatch = useDispatch();
     const [notFound, setNotFound] = useState(false);
 
@@ -29,11 +29,11 @@ function InfoProfile() {
     useEffect(() => {
         if (!user.user || user.user._id !== id) {
             setNotFound(false);
-            dispatch(getUser(id, auth.user, () => {
+            dispatch(getUser(id, 0, () => {
                 setNotFound(true);
             }));
         }
-    }, [user.user, id, dispatch, auth, setNotFound])
+    }, [user.user, id, dispatch, setNotFound])
 
     const classes = useStyles();
 

@@ -31,11 +31,11 @@ function ProfileTours() {
   useEffect(() => {
     if (!user.user || user.user._id !== id) {
       setNotFound(false);
-      dispatch(getUser(id, auth.user, () => {
+      dispatch(getUser(id, 0, () => {
         setNotFound(true);
       }));
     }
-  }, [user.user, id, dispatch, auth, setNotFound])
+  }, [user.user, id, dispatch, setNotFound])
 
   useEffect(() => {
     if (user.user) {

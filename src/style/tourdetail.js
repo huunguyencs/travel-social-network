@@ -75,8 +75,8 @@ const tourdetailStyles = makeStyles((theme) => ({
         borderRadius: attr.borderRadius.md,
         padding: 8,
         paddingInline: 15,
-        marginTop: 35,
-        marginBottom: 15,
+        marginTop: 15,
+        marginBottom: 5,
     },
     locationName: {
         marginTop: 40,

@@ -143,7 +143,7 @@ export default function Header(props) {
                                                                 </ListItemIcon>
                                                                 <Typography variant="inherit">Trang quản trị</Typography>
                                                             </MenuItem>}
-                                                        <MenuItem aria-label="profile" component={Link} to={`/u/${user._id}/`} onClick={handleCloseUser}>
+                                                        <MenuItem aria-label="profile" component={Link} to={user.role === 1 ? `/co/${user._id}` : `/u/${user._id}/`} onClick={handleCloseUser}>
                                                             <ListItemIcon>
                                                                 <AccountCircle fontSize="small" />
                                                             </ListItemIcon>

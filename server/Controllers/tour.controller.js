@@ -112,9 +112,37 @@ class TourController {
                     }
                 })
 
+
+
             if (newTour) {
+                const oldTour = newTour.tour.map(item => item._id);
+                let tourId = []
+                tour.forEach((item) => {
+                    if (item._id) tourId.push(item._id.toString())
+                })
+                oldTour.forEach(async function (element) {
+                    if (!tourId.includes(element.toString())) {
+                        await Tours.findByIdAndUpdate(req.params.id, {
+                            $pull: {
+                                tour: element._id
+                            }
+                        })
+                    }
+                })
                 tour.forEach(async function (element) {
-                    await TourDates.findOneAndUpdate({ _id: element._id }, { date: element.date, locations: element.locations }, { new: true })
+                    if (element._id)
+                        await TourDates.findOneAndUpdate({ _id: element._id }, { date: element.date, locations: element.locations }, { new: true })
+                    else {
+                        let newTourDate = new TourDates({
+                            date: element.date, locations: element.locations
+                        })
+                        await newTourDate.save();
+                        await Tours.findByIdAndUpdate(req.params.id, {
+                            $push: {
+                                tour: newTourDate._id
+                            }
+                        });
+                    }
                 })
 
                 res.json({ success: true, message: "update tour successful", newTour })

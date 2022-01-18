@@ -87,20 +87,20 @@ const serviceMenu = {
     prefix: "service",
     menu: [
         {
-            name: "Giới thiệu",
-            icon: Home,
-            link: "/"
-        },
-        {
             name: "Dịch vụ",
             icon: Accessibility,
-            link: "/services"
+            link: "/"
         },
         {
             name: "Bài viết",
             icon: Toc,
             link: "/posts"
-        }
+        },
+        {
+            name: "Hành trình",
+            icon: Explore,
+            link: "/tours"
+        },
     ]
 }
 

@@ -3,22 +3,17 @@ import * as authAction from '../actions/authAction';
 import * as userAction from '../actions/userAction';
 import * as alertAction from '../actions/alertAction';
 
-export const getUser = (id, user, callback) => async (dispatch) => {
+export const getUser = (id, role, callback) => async (dispatch) => {
     try {
-        if (user && id === user._id) {
-            dispatch(userAction.getUserInfo({ user: user }))
-        }
-        else {
 
-            await customAxios().get(`/user/${id}`).then(res => {
-                dispatch(userAction.getUserInfo({ user: res.data.user })
-                )
-            }).catch(err => {
-                // console.log(err.response.status);
-                if (err.response.status === 404)
-                    callback();
-            });
-        }
+        await customAxios().get(`/user/${id}?role=${role}`).then(res => {
+            dispatch(userAction.getUserInfo({ user: res.data.user }))
+            console.log(res.data.user)
+        }).catch(err => {
+            // console.log(err.response.status);
+            if (err.response.status === 404)
+                callback();
+        });
     }
     catch (err) {
         // console.log(err);
