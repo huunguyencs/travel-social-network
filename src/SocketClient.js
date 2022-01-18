@@ -123,17 +123,17 @@ const SocketClient = () => {
     useEffect(()=>{
         socket.on('addMessageToClient', data=>{ 
             // console.log(data);
-            dispatch(messageAction.addMessage(data));
+            dispatch(messageAction.addMessage(data.msg));
             
-            // const user ={
-            //     _id: data.auth._id,
-            //     fullname: data.auth.fullname,
-            //     username: data.auth.username,
-            //     avatar: data.auth.avatar,
-            //     text: data.msg.text
-            // }
-            // console.log(user);
-            // dispatch(messageAction.addUser(user))
+            const user ={
+                _id: data.user._id,
+                fullname: data.user.fullname,
+                username: data.user.username,
+                avatar: data.user.avatar,
+                text: data.msg.text,
+                seen: false
+            }
+            dispatch(messageAction.addUser(user))
         })
         return ()=> socket.off('addMessageToClient');
     },[socket,dispatch])

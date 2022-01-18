@@ -2,7 +2,11 @@ const mongoose = require('mongoose');
 
 const conversationSchema = new mongoose.Schema({
   members: [{ type: mongoose.Types.ObjectId, ref: "users" }],
-  text: String
+  text: String,
+  seen:{
+    type: Boolean,
+    default: false
+  }
 },{
     timestamps: true
 })

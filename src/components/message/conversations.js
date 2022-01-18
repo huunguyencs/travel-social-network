@@ -1,4 +1,5 @@
-import {Avatar, Grid, List, ListItem, ListItemText, ListItemAvatar } from "@material-ui/core";
+import {Avatar, Grid, List, ListItem, ListItemText, ListItemAvatar,ListItemIcon } from "@material-ui/core";
+import {FiberManualRecord} from "@material-ui/icons";
 import React, { useEffect, useState } from "react";
 import { Search, Cancel } from "@material-ui/icons";
 import { messageStyles } from "../../style";
@@ -88,6 +89,9 @@ export default function Conversations() {
                                                 <ListItemText primary={user.fullname} secondary={
                                                     user.text ? user.text : user.fullname
                                                 } />
+                                                <ListItemIcon>
+                                                    {!user.seen && <FiberManualRecord style={{ color: "#a5dec8" }} />}
+                                                </ListItemIcon>
                                             </ListItem>
                                         ))
                                     }
