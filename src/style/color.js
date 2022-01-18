@@ -14,7 +14,8 @@ const color = {
     red: "#e74c3c",
     darkred: "#c0392b",
     blue: "#2980b9",
-    silver: "#bdc3c7"
+    silver: "#bdc3c7",
+    timeAgoGray: "#34495e"
 };
 
 export default color;

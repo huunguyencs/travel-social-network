@@ -17,16 +17,18 @@ export default function ServiceCard(props) {
             <CardMedia
                 className={classes.image}
                 image={service.images[0]}
+                alt={service.name}
+                title={service.name}
             />
             <CardContent>
-                <Typography className={classes.locationName} variant="h6">{service.fullname.length > 30 ? service.fullname.slice(0, 30) + "..." : service.fullname}</Typography>
+                <Typography component={Link} to={'/service/' + service._id} className={classes.locationName} variant="h6">{service.name.length > 30 ? service.name.slice(0, 30) + "..." : service.name}</Typography>
             </CardContent>
             <CardActions className={classes.footer}>
                 <div className={classes.star}>
                     <Typography>{getStar(service.star)}</Typography>
                     <Star className={classes.starIcon} />
                 </div>
-                <Button className={classes.seeMore} component={Link} to={"/service/" + service.name}>
+                <Button className={classes.seeMore} component={Link} to={"/service/" + service._id}>
                     Xem thêm
                 </Button>
             </CardActions>

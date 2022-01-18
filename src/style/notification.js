@@ -12,7 +12,10 @@ const notificationStyles = makeStyles((theme) => ({
     fixWidth: {
         maxWidth: "60%",
         backgroundColor: color.white,
-        paddingBottom: "1px"
+        paddingBottom: "1px",
+        [theme.breakpoints.down("md")]: {
+            maxWidth: "100%"
+        }
     },
     list: {
         margin: 50,
@@ -26,8 +29,12 @@ const notificationStyles = makeStyles((theme) => ({
         backgroundColor: color.lightgray,
         height: 100,
         borderRadius: attr.borderRadius.md,
+        transition: "0.5s",
         "&:hover": {
             backgroundColor: color.silver
+        },
+        [theme.breakpoints.down("sm")]: {
+            paddingInline: 20
         }
     },
     unSeen: {
@@ -39,6 +46,9 @@ const notificationStyles = makeStyles((theme) => ({
         height: 100,
         borderRadius: attr.borderRadius.md,
         backgroundColor: color.gray,
+        [theme.breakpoints.down("sm")]: {
+            paddingInline: 20
+        }
     },
     center: {
         display: 'flex',
@@ -59,6 +69,23 @@ const notificationStyles = makeStyles((theme) => ({
     },
     avatar: {
         marginRight: theme.spacing(2),
+    },
+    fullname: {
+        marginRight: "5px",
+        [theme.breakpoints.down("sm")]: {
+            fontSize: 14
+        }
+    },
+    timeAgo: {
+        color: color.timeAgoGray,
+        [theme.breakpoints.down("sm")]: {
+            fontSize: 12
+        }
+    },
+    content: {
+        [theme.breakpoints.down("sm")]: {
+            fontSize: 14
+        }
     }
 
 }))

@@ -1,8 +1,8 @@
 import React, { useState } from "react";
 import { SpeedDial, SpeedDialAction, SpeedDialIcon } from "@material-ui/lab";
 import { Create, Explore, WhatsApp } from "@material-ui/icons";
-import { Link, useHistory } from "react-router-dom";
-import { Fade, IconButton, Modal, Backdrop } from "@material-ui/core";
+import { useHistory } from "react-router-dom";
+import { Fade, Modal, Backdrop } from "@material-ui/core";
 import { useSelector } from "react-redux";
 
 import CreatePostForm from "./forms/createPost";
@@ -12,8 +12,21 @@ import { speedDialStyles } from "../style";
 const actions = [
     { icon: < CreatePostIcon />, name: "Tạo bài viết" },
     { icon: < CreateTourIcon />, name: "Tạo hành trình" },
-    { icon: <IconButton component={Link} to={"/message"}><WhatsApp /></IconButton>, name: "Tin nhắn" },
+    { icon: <MessageIcon />, name: "Tin nhắn" },
 ]
+
+function MessageIcon(props) {
+
+    const history = useHistory();
+
+    const toMessage = () => {
+        history.push('/message')
+    }
+
+    return (
+        <WhatsApp onClick={toMessage} />
+    )
+}
 
 function CreatePostIcon(props) {
     const [show, setShow] = useState(false);
@@ -29,7 +42,7 @@ function CreatePostIcon(props) {
     }
     return (
         <>
-            <IconButton onClick={handleShow}><Create /></IconButton>
+            <Create onClick={handleShow} />
             <Modal
                 aria-labelledby="create-post"
                 aria-describedby="create-post-modal"
@@ -53,13 +66,13 @@ function CreatePostIcon(props) {
 function CreateTourIcon(props) {
     const [show, setShow] = useState(false);
 
-    const { createTour } = useSelector(state => state);
+    const { createTour, auth } = useSelector(state => state);
     const history = useHistory();
 
     const classes = speedDialStyles();
 
     const handleShow = () => {
-        if (createTour.tour.length > 0) {
+        if (auth.token && createTour.tour.length > 0) {
             history.push("/createtour");
         }
         else {
@@ -72,11 +85,9 @@ function CreateTourIcon(props) {
         setShow(false);
     }
 
-
-
     return (
         <>
-            <IconButton onClick={handleShow}><Explore /></IconButton>
+            <Explore onClick={handleShow} />
             <Modal
                 aria-labelledby="create-tour"
                 aria-describedby="create-tour-modal"

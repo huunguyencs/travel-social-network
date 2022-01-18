@@ -6,6 +6,8 @@ import * as authAction from './redux/actions/authAction';
 import * as userAction from './redux/actions/userAction';
 import * as tourAction from './redux/actions/tourAction';
 import * as notifyAction from './redux/actions/notifyAction';
+import * as messageAction from './redux/actions/messageAction';
+
 const SocketClient = () => {
     const { auth, socket } = useSelector(state => state);
     const dispatch = useDispatch();
@@ -15,7 +17,6 @@ const SocketClient = () => {
         if (auth.user) {
             socket.emit('joinUser', auth.user._id)
         }
-
     }, [socket, auth.user])
 
     //like
@@ -106,6 +107,7 @@ const SocketClient = () => {
         socket.on('createNotifyToClient', data=>{
             dispatch(notifyAction.createNotify(data));
         })
+       
         return () => socket.off('createNotifyToClient');
     },[socket,dispatch])
 
@@ -116,7 +118,29 @@ const SocketClient = () => {
         })
         return () => socket.off('deleteNotifyToClient');
     },[socket,dispatch])
+
+    //add Message
+    useEffect(()=>{
+        socket.on('addMessageToClient', data=>{ 
+            // console.log(data);
+            dispatch(messageAction.addMessage(data));
+            
+            // const user ={
+            //     _id: data.auth._id,
+            //     fullname: data.auth.fullname,
+            //     username: data.auth.username,
+            //     avatar: data.auth.avatar,
+            //     text: data.msg.text
+            // }
+            // console.log(user);
+            // dispatch(messageAction.addUser(user))
+        })
+        return ()=> socket.off('addMessageToClient');
+    },[socket,dispatch])
+
     return <></>
+
+    
 }
 
 export default SocketClient;

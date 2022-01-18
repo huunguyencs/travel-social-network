@@ -59,6 +59,9 @@ export default function FeedTour(props) {
                 <div className={classes.feedContent}>
                     {
                         tour.loading ?
+                            <div className={classes.centerMarginTop}>
+                                <CircularProgress color={"inherit"} />
+                            </div> :
                             tour.error ?
                                 <div className={classes.centerMarginTop}>
                                     <div>
@@ -66,15 +69,12 @@ export default function FeedTour(props) {
                                         <Button onClick={tryAgain}>Thử lại</Button>
                                     </div>
                                 </div> :
-                                <div className={classes.centerMarginTop}>
-                                    <CircularProgress color={"inherit"} />
-                                </div> :
-                            tour.tours.map((tour) => (
-                                <Tour
-                                    tour={tour}
-                                    key={tour._id}
-                                />
-                            ))
+                                tour.tours.map((tour) => (
+                                    <Tour
+                                        tour={tour}
+                                        key={tour._id}
+                                    />
+                                ))
                     }
                 </div>
 

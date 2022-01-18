@@ -4,6 +4,8 @@
   font-family: Roboto, sans-serif;
   border-radius: 5px;
   table-layout:fixed;
+  background-color: #fff;
+  padding: 5px !important;
 }
 .calendar { font-size: 14px; }
 .calendar td { background-color: #e9eff3;  }

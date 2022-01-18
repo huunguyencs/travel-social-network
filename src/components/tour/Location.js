@@ -1,8 +1,8 @@
-import { Button, Card, CardContent, CardMedia, Grid, IconButton, Modal, Typography, Backdrop, Fade, Menu, MenuItem, Dialog, DialogTitle, DialogActions, Collapse, CircularProgress, CardActions } from "@material-ui/core";
+import { Button, Card, CardContent, CardMedia, Grid, IconButton, Modal, Typography, Backdrop, Fade, MenuItem, Dialog, DialogTitle, DialogActions, Collapse, CircularProgress, CardActions, Popper, Grow, ClickAwayListener, Paper, MenuList } from "@material-ui/core";
 import React, { useState } from "react";
 import { Rating } from '@material-ui/lab'
 import { MoreVert } from "@material-ui/icons";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { Link } from "react-router-dom";
 
 import { tourdetailStyles } from "../../style";
@@ -10,37 +10,14 @@ import CreateReviewForm from "../forms/createReview";
 import EditLocationForm from "../forms/editLocation";
 import * as tourAction from '../../redux/actions/createTourAction';
 import customAxios from "../../utils/fetchData";
-
-
-const MenuListProps = {
-    elevation: 0,
-    overflow: 'visible',
-    filter: 'drop-shadow(0px 2px 8px rgba(0,0,0,0.32))',
-    mt: 1.5,
-    '& .MuiAvatar-root': {
-        width: 32,
-        height: 32,
-        ml: -0.5,
-        mr: 1,
-    },
-    '&:before': {
-        content: '""',
-        display: 'block',
-        position: 'absolute',
-        top: 0,
-        right: 14,
-        width: 10,
-        height: 10,
-        bgcolor: 'background.paper',
-        transform: 'translateY(-50%) rotate(45deg)',
-        zIndex: 0,
-    },
-}
+import { removeReview } from "../../redux/callApi/tourCall";
 
 
 export default function Location(props) {
 
     const classes = tourdetailStyles();
+
+    const { token } = useSelector(state => state.auth)
 
     const dispatch = useDispatch();
 
@@ -96,8 +73,12 @@ export default function Location(props) {
         await customAxios().get(`/post/${location.postId}`).then(res => {
             setReview(res.data.post);
         }).catch(err => {
-            if (err.response.status === 404)
+            if (err.response.status === 404) {
                 setNotFoundRv(true);
+                dispatch(removeReview(tourDateId, token, location._id))
+                console.log(tourDateId)
+                console.log(location._id)
+            }
         });
 
     }
@@ -133,66 +114,73 @@ export default function Location(props) {
                                         <MoreVert />
                                     </IconButton>
                                 </div>
-                                <Menu
+                                <Popper
                                     anchorEl={anchorEl}
                                     open={Boolean(anchorEl)}
                                     onClose={handleCloseMenu}
-                                    disablePortal={true}
-                                    MenuListProps={MenuListProps}
-                                // transformOrigin={{ horizontal: 'right', vertical: 'bottom' }}
-                                // anchorOrigin={{ horizontal: 'right', vertical: 'bottom' }}
+                                    disablePortal
                                 >
-                                    <MenuItem onClick={handleShowEdit}>
-                                        Chỉnh sửa
-                                    </MenuItem>
-                                    <Modal
-                                        aria-labelledby="transition-modal-edit"
-                                        aria-describedby="transition-modal-edit-description"
-                                        open={editLoc}
-                                        className={classes.modal}
-                                        onClose={handleCloseEdit}
-                                        BackdropComponent={Backdrop}
-                                        BackdropProps={{
-                                            timeout: 500,
-                                        }}
+                                    <Grow
+                                        style={{ transformOrigin: "center bottom" }}
                                     >
-                                        <Fade in={editLoc}>
-                                            <EditLocationForm
-                                                handleCloseParent={handleCloseMenu}
-                                                handleClose={handleCloseEdit}
-                                                indexDate={indexDate}
-                                                indexLocation={indexLocation}
-                                                location={location}
-                                            />
-                                        </Fade>
-                                    </Modal>
-                                    <MenuItem onClick={handleShowDelete}>
-                                        Xóa
-                                    </MenuItem>
-                                    <Dialog
-                                        open={showDeleteLocation}
-                                        onClose={handleCloseDelete}
-                                        aria-labelledby="alert-dialog-title"
-                                        aria-describedby="alert-dialog-description"
-                                    >
-                                        <DialogTitle id="alert-dialog-title">{"Bạn có chắc chắn muốn xóa?"}</DialogTitle>
-                                        <DialogActions>
-                                            <Button onClick={handleCloseDelete}>
-                                                Hủy
-                                            </Button>
-                                            <Button onClick={handleDeleteLocation} className={classes.delete}>
-                                                Xóa
-                                            </Button>
-                                        </DialogActions>
-                                    </Dialog>
-                                </Menu>
+                                        <ClickAwayListener onClickAway={handleCloseMenu}>
+                                            <Paper>
+                                                <MenuList>
+                                                    <MenuItem onClick={handleShowEdit}>
+                                                        Chỉnh sửa
+                                                    </MenuItem>
+                                                    <Modal
+                                                        aria-labelledby="transition-modal-edit"
+                                                        aria-describedby="transition-modal-edit-description"
+                                                        open={editLoc}
+                                                        className={classes.modal}
+                                                        onClose={handleCloseEdit}
+                                                        BackdropComponent={Backdrop}
+                                                        BackdropProps={{
+                                                            timeout: 500,
+                                                        }}
+                                                    >
+                                                        <Fade in={editLoc}>
+                                                            <EditLocationForm
+                                                                handleCloseParent={handleCloseMenu}
+                                                                handleClose={handleCloseEdit}
+                                                                indexDate={indexDate}
+                                                                indexLocation={indexLocation}
+                                                                location={location}
+                                                            />
+                                                        </Fade>
+                                                    </Modal>
+                                                    <MenuItem onClick={handleShowDelete}>
+                                                        Xóa
+                                                    </MenuItem>
+                                                    <Dialog
+                                                        open={showDeleteLocation}
+                                                        onClose={handleCloseDelete}
+                                                        aria-labelledby="alert-dialog-title"
+                                                        aria-describedby="alert-dialog-description"
+                                                    >
+                                                        <DialogTitle id="alert-dialog-title">{"Bạn có chắc chắn muốn xóa?"}</DialogTitle>
+                                                        <DialogActions>
+                                                            <Button onClick={handleCloseDelete}>
+                                                                Hủy
+                                                            </Button>
+                                                            <Button onClick={handleDeleteLocation} className={classes.delete}>
+                                                                Xóa
+                                                            </Button>
+                                                        </DialogActions>
+                                                    </Dialog>
+                                                </MenuList>
+                                            </Paper>
+                                        </ClickAwayListener>
+                                    </Grow>
+                                </Popper>
                             </div>
                         }
                         <div>
-                            <Typography variant="h4" className={classes.locationName} component={Link} to={"/location/" + location.location.name}>{location.location.fullname}</Typography>
+                            <Typography variant="h5" className={classes.locationName} component={Link} to={"/location/" + location.location.name}>{location.location.fullname}</Typography>
                         </div>
                         <div>
-                            <Typography variant="h5" component={Link} to={"/province/" + location.location.province.name}>{location.location.province.fullname}</Typography>
+                            <Typography variant="h6" component={Link} to={"/province/" + location.location.province.name}>{location.location.province.fullname}</Typography>
                         </div>
                         {
                             isSave && isOwn && !location.postId && <Button className={classes.reviewBtn} onClick={handleShow}>Tạo Review</Button>
@@ -216,23 +204,23 @@ export default function Location(props) {
                         >
                             <Fade in={showCreateRv}>
                                 <CreateReviewForm
-                                    location={location.location._id}
+                                    location={location.location}
                                     cost={location.cost}
                                     handleClose={handleClose}
                                     tourDateId={tourDateId}
                                     indexLocation={location._id}
-                                    locationName={location.location.name}
                                 />
                             </Fade>
                         </Modal>
                     </CardContent>
                 </Grid>
-                <Collapse in={showRv}>
+
+                <Collapse in={showRv} style={{ width: "100%" }}>
                     {!notFoundRv ?
                         review ?
-                            <Grid item md={12}>
+                            <Grid item md={12} sm={12} xs={12}>
+                                <hr className={classes.line} />
                                 <CardContent className={classes.review}>
-                                    <Typography component="legend">Đánh giá: </Typography>
                                     <Rating
                                         name={"rating" + review._id}
                                         value={review.rate}

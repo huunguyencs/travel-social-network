@@ -109,6 +109,9 @@ const headerStyles = makeStyles((theme) => ({
     paperNoti: {
         width: 450,
         padding: 10,
+        [theme.breakpoints.down("sm")]: {
+            width: 400
+        }
     },
     center: {
         display: 'flex',
@@ -126,7 +129,11 @@ const headerStyles = makeStyles((theme) => ({
         marginInline: 10,
     },
     notiItem: {
-        borderRadius: attr.borderRadius.md
+        borderRadius: attr.borderRadius.md,
+    },
+    unSeen: {
+        borderRadius: attr.borderRadius.md,
+        backgroundColor: color.lightgray,
     }
 }));
 

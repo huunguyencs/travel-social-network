@@ -26,7 +26,7 @@ const formStyles = makeStyles((theme) => ({
         // width: "100%",
         backgroundColor: color.turquoise,
         padding: 10,
-        paddingInline: 30,
+        paddingInline: 20,
         marginBlock: 20,
         [theme.breakpoints.down("sm")]: {
             padding: 5,
@@ -96,6 +96,10 @@ const formStyles = makeStyles((theme) => ({
         margin: "5px",
         position: "relative",
         cursor: "pointer",
+        transition: "0.5s",
+        "&:hover": {
+            filter: "brightness(80%)",
+        },
         [theme.breakpoints.down("sm")]: {
             width: "100px",
             height: "100px"
@@ -173,6 +177,29 @@ const formStyles = makeStyles((theme) => ({
         "&:hover": {
             backgroundColor: color.darkred
         }
+    },
+    description: {
+        margin: 10
+    },
+    serviceCard: {
+        display: 'flex',
+        marginTop: 20,
+        paddingBlock: 10,
+        paddingInline: 20,
+        marginInline: 30,
+        width: 370,
+        [theme.breakpoints.down("md")]: {
+            marginInline: 0,
+            width: 300
+        }
+    },
+    imageService: {
+        width: 100,
+        height: 100,
+    },
+    serviceInfo: {
+        marginLeft: 15,
+        width: "100%"
     }
 }))
 

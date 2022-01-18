@@ -174,6 +174,18 @@ export default function Province(props) {
         }
     }, [province])
 
+    const tryAgainLocation = () => {
+        getLocation(province._id);
+    }
+
+    const tryAgainEvent = () => {
+        getEvent(province._id)
+    }
+
+    const tryAgainService = () => {
+
+    }
+
     return (
         <>
             {
@@ -271,7 +283,7 @@ export default function Province(props) {
                                                         </div> :
                                                         stateLocation.error ?
                                                             <div className={classes.centerMarginTop}>
-                                                                <Button onClick={() => getLocation(province._id)}>Thử lại</Button>
+                                                                <Button onClick={tryAgainLocation}>Thử lại</Button>
                                                             </div> :
                                                             locations &&
                                                             <>
@@ -300,7 +312,7 @@ export default function Province(props) {
                                                         </div> :
                                                         stateEvent.error ?
                                                             <div className={classes.centerMarginTop}>
-                                                                <Button onClick={() => getEvent(province._id)}>Thử lại</Button>
+                                                                <Button onClick={tryAgainEvent}>Thử lại</Button>
                                                             </div> :
                                                             events &&
                                                             <>
@@ -330,7 +342,7 @@ export default function Province(props) {
                                                         </div> :
                                                         stateService.error ?
                                                             <div className={classes.centerMarginTop}>
-                                                                <Button onClick={() => getService(province._id)}>Thử lại</Button>
+                                                                <Button onClick={tryAgainService}>Thử lại</Button>
                                                             </div> :
                                                             services &&
                                                             <>
@@ -352,7 +364,7 @@ export default function Province(props) {
                                         </Grid>
                                         <Grid item md={3} sm={12} xs={12}>
                                             <div className={classes.rightbar}>
-                                                <div>
+                                                <div style={{ marginTop: 50 }}>
                                                     <WeatherCardGeneral position={province?.position} nameShow={province?.fullname} />
                                                     <CovidCard name={province?.fullname} />
                                                 </div>

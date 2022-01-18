@@ -1,4 +1,4 @@
-import React from "react";
+import React, { forwardRef } from "react";
 import {
     Container,
 } from "@material-ui/core";
@@ -7,13 +7,28 @@ import {
 import { rightbarStyles } from "../../style";
 
 
-export default function RightBar(props) {
+
+const RightBar = forwardRef((props, ref) => {
     const classes = rightbarStyles();
-
     return (
-        <Container className={classes.container}>
-            {props?.children}
+        <Container ref={ref} className={classes.container}>
+            {props.children}
         </Container>
-
     )
-}
+})
+
+export default RightBar;
+
+
+
+
+// export default function RightBar((props, ref)) {
+//     const classes = rightbarStyles();
+
+//     return (
+//         <Container className={classes.container}>
+//             {props?.children}
+//         </Container>
+
+//     )
+// }

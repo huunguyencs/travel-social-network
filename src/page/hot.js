@@ -1,9 +1,8 @@
 import { Grid } from "@material-ui/core";
-import React, { useEffect } from "react";
+import React, { createRef, useEffect } from "react";
 
 import FeedHot from "../components/feed/FeedHot";
 import LeftBar from "../components/leftbar/LeftBar";
-import Menu from "../components/leftbar/menu";
 import RightBar from "../components/rightbar/RightBar";
 import SpeedDialButton from "../components/speedDialBtn";
 import { homeMenu } from "../constant/menu";
@@ -17,6 +16,8 @@ export default function HotPage(props) {
 
     const classes = useStyles();
 
+    const ref = createRef();
+
 
     useEffect(() => {
         document.title = "Hot | GOGO";
@@ -26,15 +27,13 @@ export default function HotPage(props) {
         <Grid container style={{ margin: 0, padding: 0 }}>
             <SpeedDialButton />
             <Grid item md={3} sm={2} xs={2}>
-                <LeftBar >
-                    <Menu menuList={homeMenu} />
-                </LeftBar>
+                <LeftBar menuList={homeMenu} />
             </Grid>
             <Grid item md={6} sm={10} xs={10}>
                 <FeedHot />
             </Grid>
             <Grid item md={3} className={classes.rightbar}>
-                <RightBar>
+                <RightBar ref={ref}>
                     <Calendar />
                     <FriendRecommendCard />
                 </RightBar>

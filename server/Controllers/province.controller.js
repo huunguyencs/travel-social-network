@@ -105,7 +105,7 @@ class ProvinceController {
 
     async getServicesProvince(req, res) {
         try {
-            const services = await Services.find({ province: req.params.id });
+            const services = await Services.find({ provinces: req.params.id });
             res.json({
                 success: true,
                 message: "Success",

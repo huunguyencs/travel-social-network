@@ -45,12 +45,6 @@ export default function Post(props) {
         })
     }
 
-    const addComment = (comment) => {
-        setPost({
-            ...post,
-            comments: [...post.comments, comment]
-        })
-    }
 
     const likePress = () => {
         if (!auth.user) {
@@ -198,7 +192,7 @@ export default function Post(props) {
                     </div>
                 </Collapse>
 
-                <InputComment type="post" id={post._id} addComment={addComment} />
+                <InputComment type="post" id={post._id} />
             </>}
         </Card>
     )

@@ -4,7 +4,8 @@ import color from "./color";
 
 const commentStyles = makeStyles((theme) => ({
     comment: {
-        display: "flex",
+        display: 'flex',
+        width: "100%",
         marginTop: 10,
         marginBottom: 20,
         marginInline: 30,
@@ -64,6 +65,18 @@ const commentStyles = makeStyles((theme) => ({
     },
     userName: {
         cursor: "pointer",
+        "&:hover": {
+            textDecorationLine: 'underline',
+        }
+    },
+    menuItem: {
+        fontSize: 12
+    },
+    cancelBtn: {
+        cursor: 'pointer',
+        color: color.blue,
+        fontSize: 14,
+        marginLeft: 20,
         "&:hover": {
             textDecorationLine: 'underline',
         }

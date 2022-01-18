@@ -5,24 +5,34 @@ import { useDispatch, useSelector } from "react-redux";
 
 import EmojiPicker from "./emojiPicker";
 import { inputStyles } from "../../style";
-import { createComment } from "../../redux/callApi/commentCall";
+import { createComment, updateComment } from "../../redux/callApi/commentCall";
 
 
 export default function InputComment(props) {
 
-    const { type, id, addComment } = props;
-    
+    const { type, id, isUpdate, comment, handleClose, commentId } = props;
+
     const classes = inputStyles();
-    const [text, setText] = useState("");
+    const [text, setText] = useState(comment ? comment : "");
 
     const dispatch = useDispatch();
     const { auth, socket } = useSelector(state => state);
 
     const handleComment = (e) => {
         e.preventDefault();
+        setText("");
         if (text.trim() !== "") {
-            setText("");
-            dispatch(createComment(id, text, auth, type, socket, (newComment) => addComment(newComment)));
+            if (isUpdate) {
+                if (text === comment) {
+                    handleClose();
+                    return;
+                }
+                dispatch(updateComment(commentId, id, text, auth, type))
+                handleClose();
+            }
+            else {
+                dispatch(createComment(id, text, auth, type, socket));
+            }
 
         }
     }
@@ -31,6 +41,7 @@ export default function InputComment(props) {
         <form
             onSubmit={handleComment}
             className={classes.writeCmt}
+            style={{ margin: isUpdate ? 0 : 20 }}
         >
             <EmojiPicker content={text} setContent={setText} />
 
@@ -41,7 +52,7 @@ export default function InputComment(props) {
                 onChange={e => setText(e.target.value)}
                 disabled={!auth.user}
             />
-            <IconButton disabled={text.trim() === ""} type="submit">
+            <IconButton disabled={!text || text.trim() === ""} type="submit">
                 <Send />
             </IconButton>
         </form>

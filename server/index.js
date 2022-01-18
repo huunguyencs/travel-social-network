@@ -42,7 +42,7 @@ app.use('/province', require('./Routers/province.router'));
 app.use('/service', require('./Routers/service.router'));
 app.use('/event', require('./Routers/event.router'));
 app.use('/notify',require('./Routers/notify.router'));
-
+app.use('/message', require('./Routers/message.router'));
 
 //connect MongoDB
 mongoose.connect(MONGO_URL, {

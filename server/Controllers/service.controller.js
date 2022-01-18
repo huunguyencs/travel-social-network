@@ -1,4 +1,5 @@
 const Services = require('../Models/service.model')
+const mongoose = require('mongoose');
 
 
 class ServiceController {
@@ -9,10 +10,10 @@ class ServiceController {
                 return;
             }
 
-            const { name, description, type, province, images, cost, discount } = req.body
+            const { name, description, type, provinces, images, discount } = req.body
 
             const newService = new Services({
-                cooperator: req.user._id, name, description, type, province, images, cost, discount
+                cooperator: req.user._id, name, description, type, provinces, images, discount
             })
 
             await newService.save()
@@ -89,8 +90,7 @@ class ServiceController {
 
     async getServiceByProvince(req, res) {
         try {
-            const services = Services.find({ province: req.params.id })
-                .populate("cooperator");
+            const services = await Services.find({ province: mongoose.Types.ObjectId(req.params.id) });
             res.json({ success: true, message: "", services })
         }
         catch (err) {

@@ -33,7 +33,7 @@ export default function NotificationPage(props) {
             error: false,
             loading: true
         })
-        await customAxios(token).get('/notify/get_notifies?limit=9&offset=0').then(res => {
+        await customAxios(token).get('/notify/get_notifies?limit=10&offset=0').then(res => {
             if (res.data.notifies.length < 10) {
                 setEnd(true);
             }
@@ -55,7 +55,8 @@ export default function NotificationPage(props) {
             loadingMore: true,
             error: false,
         })
-        await customAxios(token).get(`/notify/get_notifies?limit=9&offset=${offset}`).then(res => {
+
+        await customAxios(token).get(`/notify/get_notifies?limit=10&offset=${offset}`).then(res => {
             if (res.data.notifies.length < 10) {
                 setEnd(true);
             }
@@ -77,7 +78,9 @@ export default function NotificationPage(props) {
     }
 
     useEffect(() => {
-        getNotifications(token)
+        if (token) {
+            getNotifications(token)
+        }
     }, [token])
 
 
@@ -108,7 +111,7 @@ export default function NotificationPage(props) {
                                                 state.loadingMore ?
                                                     <CircularProgress /> :
                                                     <Typography onClick={loadMore} className={classes.seeAll}>
-                                                        Tải thêm ...
+                                                        Xem thêm ...
                                                     </Typography>
                                             }
                                         </div>

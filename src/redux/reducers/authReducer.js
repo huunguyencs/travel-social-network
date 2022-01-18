@@ -3,6 +3,7 @@ import * as AUTH_TYPES from '../constants/authConstant';
 const INIT_STATE = {
     user: null,
     token: null,
+    friendsRecommend: []
 }
 
 const authReducer = (state = INIT_STATE, action) => {
@@ -49,6 +50,22 @@ const authReducer = (state = INIT_STATE, action) => {
                     ...state.user,
                     avatar: action.payload.avatar
                 }
+            }
+        }
+        case AUTH_TYPES.SAVE_TOUR: {
+            return {
+                ...state,
+                user: {
+                    ...state.user,
+                    tourSaved: action.payload.tourSaved
+                }
+            }
+        }
+        case AUTH_TYPES.GET_FRIEND_RECOMMEND: {
+            // console.log(action.payload.friendsRecommend);
+            return {
+                ...state,
+                friendsRecommend: action.payload.friendsRecommend
             }
         }
         default: {

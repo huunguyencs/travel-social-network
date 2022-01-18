@@ -15,6 +15,8 @@ export default function EventCard(props) {
             <CardMedia
                 className={classes.image}
                 image={event.images[0]}
+                alt={event.name}
+                title={event.fullname}
             />
             <CardContent>
                 <Typography component={Link} to={"/event/" + event.name} className={classes.locationName} variant="h6">{event.fullname.length > 28 ? event.fullname.slice(0, 28) + "..." : event.fullname}</Typography>
