@@ -34,22 +34,68 @@ const serviceStyles = makeStyles((theme) => ({
         backgroundColor: color.turquoise
     },
     reviewContainer: {
-        width: 500
+        width: 500,
+        display: "flex",
+        justifyContent: "space-between",
+        flexDirection: "column",
+        height: "100%",
+        backgroundColor: color.cloud
     },
     reviewItemContainer: {
         margin: 20,
-        display: 'flex'
+        display: 'flex',
+
     },
     reviewContentContainer: {
         borderRadius: attr.borderRadius.md,
         backgroundColor: color.lightgray,
-        padding: 10
+        padding: 10,
+        width: "100%",
+        marginInline: 30
     },
     reviewerName: {
-
+        fontSize: 16
     },
     reviewContent: {
-
+        fontSize: 14
+    },
+    formReview: {
+        // width: "100%",
+        // marginRight: 40
+    },
+    contentInput: {
+        backgroundColor: color.lightgray,
+        borderRadius: attr.borderRadius.md,
+        paddingInline: 10,
+        width: "100%",
+        fontSize: 14
+    },
+    contentWrap: {
+        display: 'flex',
+        justifyContent: 'space-between'
+    },
+    formContainer: {
+        // marginInline: 20,
+        width: "100%"
+    },
+    reviewArea: {
+        // position: 'absolute',
+        // bottom: 0
+        marginBottom: 30
+    },
+    contentReview: {
+        display: 'flex',
+        justifyContent: 'flex-start',
+        flexDirection: 'column',
+        minHeight: "100%",
+        height: "73vh"
+    },
+    contentContainerWrap: {
+        position: "relative",
+        overflowY: "auto",
+    },
+    center: {
+        textAlign: 'center'
     }
 }))
 

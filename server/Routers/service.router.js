@@ -10,6 +10,7 @@ router.get('/get_by_coop/:id', ServiceController.getServiceByCoop)
 router.get('/get_rate/:id', ServiceController.getServiceRate)
 
 // router.get('/user_services/:id', ServiceController.getUserService);
+router.post('/review/:id', auth, ServiceController.reviewService)
 
 router.get('/:id', ServiceController.getService);
 router.patch('/:id', ServiceController.updateService);

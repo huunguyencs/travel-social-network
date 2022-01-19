@@ -38,6 +38,16 @@ const userReducer = (state = INIT_STATE, action) => {
                 } : item)
             }
         }
+        case USER_TYPES.REVIEW_SERVICE: {
+            return {
+                ...state,
+                services: state.services.map(item => item._id === action.payload.id ? {
+                    ...item,
+                    rate: [...item.rate, action.payload.review],
+                    star: action.payload.star
+                } : item)
+            }
+        }
         default: {
             return state
         }

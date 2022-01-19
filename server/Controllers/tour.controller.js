@@ -328,7 +328,7 @@ class TourController {
                     path: "services",
                     populate: {
                         path: "service",
-                        select: "name images"
+                        select: "name images cooperator"
                     }
                 })
 

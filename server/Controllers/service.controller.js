@@ -123,6 +123,51 @@ class ServiceController {
             res.status(500).json({ success: false, message: err.message })
         }
     }
+
+    async reviewService(req, res) {
+        try {
+            const { rate, content } = req.body;
+            await Services.findByIdAndUpdate(req.params.id, {
+                $push: {
+                    rate: { rate, content, userId: req.user.id }
+                }
+            }, { new: true })
+
+            var service;
+
+            switch (parseInt(rate)) {
+                case 1:
+                    service = await Services.findByIdAndUpdate(req.params.id, {
+                        $inc: { "star.0": 1 }
+                    }, { new: true })
+                    break;
+                case 2:
+                    service = await Services.findByIdAndUpdate(req.params.id, {
+                        $inc: { "star.1": 1 }
+                    }, { new: true })
+                    break;
+                case 3:
+                    service = await Services.findByIdAndUpdate(req.params.id, {
+                        $inc: { "star.2": 1 }
+                    }, { new: true })
+                    break;
+                case 4:
+                    service = await Services.findByIdAndUpdate(req.params.id, {
+                        $inc: { "star.3": 1 }
+                    }, { new: true })
+                    break;
+                case 5:
+                    service = await Services.findByIdAndUpdate(req.params.id, {
+                        $inc: { "star.4": 1 }
+                    }, { new: true })
+                    break;
+            }
+
+            res.json({ success: true, message: "", star: service.star })
+        } catch (err) {
+            res.status(500).json({ success: false, message: err.message })
+        }
+    }
 }
 
 module.exports = new ServiceController;
