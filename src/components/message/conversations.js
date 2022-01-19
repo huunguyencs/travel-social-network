@@ -57,13 +57,13 @@ export default function Conversations() {
                         <form className={classes.message_search_form} onSubmit={handleSearch}>
                             <Search className={classes.message_searchIcon} />
                             <input placeholder="Tìm bạn bè..." type="text" name="search" className={classes.message_input} value={search} onChange={e => setSearch(e.target.value)} />
-                            {search !== '' && <Cancel className={classes.message_closeIcon} onClick={handleClose} />}
+                            {search !== '' && <Cancel className={classes.message_closeIcon} onClick={() => handleClose()} />}
                         </form>
                         <List className={classes.message_users_list}>
                             {
                                 searchUsers.length > 0 ? <>
                                     {searchUsers.map(user => (
-                                        <ListItem button key={user._id} onClick={handleAddChat(user)}>
+                                        <ListItem button key={user._id} onClick={() => handleAddChat(user)}>
                                             <ListItemAvatar>
                                                 <Avatar alt="avatar" src={user.avatar}>
                                                 </Avatar>
@@ -80,7 +80,7 @@ export default function Conversations() {
                                 message.users.length > 0 && searchUsers.length === 0 ? <>
                                     {
                                         message.users.map(user => (
-                                            <ListItem button key={user._id} onClick={handleAddChat(user)}>
+                                            <ListItem button key={user._id} onClick={() => handleAddChat(user)}>
                                                 <ListItemAvatar>
                                                     <Avatar alt="avatar" src={user.avatar}>
                                                     </Avatar>
