@@ -114,7 +114,7 @@ class ServiceController {
                     path: "rate",
                     populate: {
                         path: "userId",
-                        select: "name fullname avatar role"
+                        select: "name fullname avatar"
                     }
                 })
             res.json({ success: true, message: "", rate: services.rate });

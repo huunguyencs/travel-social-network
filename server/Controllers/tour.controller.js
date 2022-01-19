@@ -53,12 +53,12 @@ class TourController {
             const { content, hashtags, shareId } = req.body
             const newTour = new Tours({
                 userId: req.user._id, content, hashtags, shareId
-            }).populate("userId", "username fullname avatar role")
+            }).populate("userId", "username fullname avatar")
                 .populate({
                     path: "shareId",
                     populate: {
                         path: "userId",
-                        select: "username fullname avatar role"
+                        select: "username fullname avatar"
                     }
                 })
                 .populate({
@@ -88,20 +88,20 @@ class TourController {
 
             const newTour = await Tours.findOneAndUpdate({ _id: req.params.id, userId: req.user.id }, {
                 content, image, name, hashtags, isPublic, services, cost
-            }, { new: true }).populate("userId joinIds likes", "username fullname avatar role")
+            }, { new: true }).populate("userId joinIds likes", "username fullname avatar")
                 .populate("tour", "date")
                 .populate({
                     path: "comments",
                     populate: {
                         path: "userId likes",
-                        select: "username fullname avatar role"
+                        select: "username fullname avatar"
                     }
                 })
                 .populate({
                     path: "shareId",
                     populate: {
                         path: "userId",
-                        select: "username fullname avatar role"
+                        select: "username fullname avatar"
                     }
                 })
                 .populate({
@@ -169,7 +169,7 @@ class TourController {
                 $push: {
                     likes: req.user._id
                 }
-            }, { new: true }).populate("likes", "username fullname avatar role")
+            }, { new: true }).populate("likes", "username fullname avatar")
             res.json({
                 success: true, message: "like tour success",
                 likes: tour.likes,
@@ -188,7 +188,7 @@ class TourController {
                 $pull: {
                     likes: req.user._id
                 }
-            }, { new: true }).populate("likes", "username fullname avatar role")
+            }, { new: true }).populate("likes", "username fullname avatar")
 
             res.json({
                 success: true, message: "unlike tour success",
@@ -224,20 +224,20 @@ class TourController {
     async getTours(req, res) {
         try {
             const tours = await Tours.find({}).sort("-createdAt")
-                .populate("userId joinIds likes", "username fullname avatar role")
+                .populate("userId joinIds likes", "username fullname avatar")
                 .populate("tour", "date")
                 .populate({
                     path: "comments",
                     populate: {
                         path: "userId likes",
-                        select: "username fullname avatar role"
+                        select: "username fullname avatar"
                     }
                 })
                 .populate({
                     path: "shareId",
                     populate: {
                         path: "userId",
-                        select: "username fullname avatar role"
+                        select: "username fullname avatar"
                     }
                 })
                 .populate({
@@ -260,20 +260,20 @@ class TourController {
     async getUserTour(req, res) {
         try {
             const tours = await Tours.find({ userId: req.params.id }).sort("-createdAt")
-                .populate("userId joinIds likes", "username fullname avatar role")
+                .populate("userId joinIds likes", "username fullname avatar")
                 .populate("tour", "date")
                 .populate({
                     path: "comments",
                     populate: {
                         path: "userId likes",
-                        select: "username fullname avatar role"
+                        select: "username fullname avatar"
                     }
                 })
                 .populate({
                     path: "shareId",
                     populate: {
                         path: "userId",
-                        select: "username fullname avatar role"
+                        select: "username fullname avatar"
                     }
                 })
 
@@ -316,12 +316,12 @@ class TourController {
                         }
                     }
                 })
-                .populate("userId likes", "fullname avatar role")
+                .populate("userId likes", "fullname avatar")
                 .populate({
                     path: "comments",
                     populate: {
                         path: "userId likes",
-                        select: "fullname avatar role"
+                        select: "fullname avatar"
                     },
                 })
                 .populate({
@@ -354,7 +354,7 @@ class TourController {
                 $push: {
                     joinIds: req.user._id
                 }
-            }, { new: true }).populate("joinIds", "avatar fullname username role")
+            }, { new: true }).populate("joinIds", "avatar fullname username")
             res.json({
                 success: true, message: "join tour success",
                 joinIds: tour.joinIds
@@ -370,7 +370,7 @@ class TourController {
                 $pull: {
                     joinIds: req.user._id
                 }
-            }, { new: true }).populate("joinIds", "avatar fullname username role")
+            }, { new: true }).populate("joinIds", "avatar fullname username")
 
             res.json({
                 success: true, message: "unjoin tour success",
@@ -393,7 +393,7 @@ class TourController {
                 $pull: {
                     joinIds: user
                 }
-            }, { new: true }).populate("joinIds", "avatar fullname username role")
+            }, { new: true }).populate("joinIds", "avatar fullname username")
 
             res.json({
                 success: true, message: "remove user success",

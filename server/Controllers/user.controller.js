@@ -41,7 +41,7 @@ class UserController {
         try {
             const { email, password } = req.body
 
-            const user = await Users.findOne({ email }).populate("followers followings", "username avatar fullname followings role")
+            const user = await Users.findOne({ email }).populate("followers followings", "username avatar fullname followings")
             if (!user) return res.status(400).json({ success: false, message: "Email không đúng!" })
             const passwordValid = await bcrypt.compare(password, user.password)
             if (!passwordValid) return res.status(400).json({ success: false, message: "Mật khẩu không đúng!" })
@@ -83,7 +83,7 @@ class UserController {
             jwt.verify(refresh_token, "REFRESH_TOKEN_SECRET", async (err, result) => {
                 if (err) return res.status(400).json({ message: "No token" });
 
-                const user = await Users.findById(result.id).select("-password").populate("followers followings", "username avatar fullname followings role")
+                const user = await Users.findById(result.id).select("-password").populate("followers followings", "username avatar fullname followings")
                 if (!user) return res.status(400).json("No token");
 
                 const accessToken = jwt.sign({ id: user._id }, process.env.ACCESS_TOKEN_SECRET || "abcdefghiklmn")
@@ -196,18 +196,9 @@ class UserController {
 
     async getUser(req, res) {
         try {
-            const { role } = req.query;
             if (ObjectId.isValid(req.params.id)) {
-                var user;
-                if (parseInt(role) === 1) {
-                    user = await Users.findOne({ _id: req.params.id, role: 1 })
-                        .populate("followers followings", "username fullname avatar followings followers role")
-                }
-                else {
-                    user = await Users.findOne({ _id: req.params.id, role: { $ne: 1 } })
-                        .populate("followers followings", "username fullname avatar followings followers role")
-                }
-
+                const user = await Users.findById(req.params.id)
+                    .populate("followers followings", "username fullname avatar followings followers")
                 if (!user) return res.status(404).json({ success: false, massage: "Người dùng không tồn tại" })
                 res.json({ success: true, user })
             }
@@ -233,12 +224,12 @@ class UserController {
             //cập nhập ds follower ở B
             const followers = await Users.findOneAndUpdate({ _id: req.params.id }, {
                 $push: { followers: req.user._id }
-            }, { new: true }).populate("followers", "username fullname avatar followings followers role")
+            }, { new: true }).populate("followers", "username fullname avatar followings followers")
 
             //cập nhập ds following ở A
             const followings = await Users.findOneAndUpdate({ _id: req.user._id }, {
                 $push: { followings: req.params.id }
-            }, { new: true }).populate("followings", "username fullname avatar followings followers role")
+            }, { new: true }).populate("followings", "username fullname avatar followings followers")
 
             res.json({
                 success: true,
@@ -258,12 +249,12 @@ class UserController {
             // cập nhập ds ở B
             const followers = await Users.findOneAndUpdate({ _id: req.params.id }, {
                 $pull: { followers: req.user._id }
-            }, { new: true }).populate("followers", "username fullname avatar followings followers role")
+            }, { new: true }).populate("followers", "username fullname avatar followings followers")
 
             //cập nhập ds ở A
             const followings = await Users.findOneAndUpdate({ _id: req.user._id }, {
                 $pull: { followings: req.params.id }
-            }, { new: true }).populate("followings", "username fullname avatar followings followers role")
+            }, { new: true }).populate("followings", "username fullname avatar followings followers")
 
             res.json({
                 success: true,
@@ -283,7 +274,7 @@ class UserController {
             // console.log("====", req.query.fullname)
             // res.json("ok")
             const users = await Users.find({ fullname: { $regex: req.query.fullname } })
-                .limit(10).select("fullname avatar role");
+                .limit(10).select("fullname avatar");
 
             res.json({ success: true, users })
         } catch (err) {
@@ -344,7 +335,7 @@ class UserController {
                     _id: {
                         $in: sorted
                     }
-                }, "username fullname avatar role")
+                }, "username fullname avatar")
 
                 res.json({ success: true, message: `Lấy top ${limit} recommend`, recommend })
             }
@@ -354,7 +345,7 @@ class UserController {
                     _id: {
                         $in: sorted
                     }
-                }, "username fullname avatar role")
+                }, "username fullname avatar")
 
                 res.json({ success: true, message: `Lấy max 50 recommend`, recommend })
             }

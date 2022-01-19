@@ -216,7 +216,7 @@ export function ServiceCard(props) {
                         </div>
                     }
 
-                    <Typography variant='h6' component={Link} to={`/co/${service.service.cooperator}`}>{service.service.name.length > 30 ? service.service.name.slice(0, 30) : service.service.name}</Typography>
+                    <Typography variant='h6' component={Link} to={`/u/${service.service.cooperator}`}>{service.service.name.length > 30 ? service.service.name.slice(0, 30) : service.service.name}</Typography>
                     <Typography>Chi phí: {new Intl.NumberFormat().format(service.cost * 1000)} VND</Typography>
                     {review && (
 

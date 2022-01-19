@@ -58,7 +58,7 @@ class NotifyController {
                 .limit(parseInt(limit))
                 .sort("seen")
                 .sort('-createdAt')
-                .populate("user", "fullname avatar role")
+                .populate("user", "fullname avatar")
 
             res.json({
                 success: true,

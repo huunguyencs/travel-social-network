@@ -13,12 +13,6 @@ export default function FriendRecommendCard(props) {
 
     const classes = friendCardStyles();
 
-    const clickRecommend = (item) => {
-        if (item.role === 1) {
-            history.push(`/co/${item._id}`)
-        }
-        else history.push(`/u/${item._id}`)
-    }
 
     return (
         <Card className={classes.friend}>
@@ -27,7 +21,7 @@ export default function FriendRecommendCard(props) {
                 <List className={classes.list}>
                     {friendsRecommend?.length > 0 ?
                         friendsRecommend.map((item) => (
-                            <ListItem key={item._id} button className={classes.item} onClick={() => history.push(clickRecommend(item))}>
+                            <ListItem key={item._id} button className={classes.item} onClick={() => history.push(`/u/${item._id}`)}>
                                 <ListItemAvatar>
                                     <Avatar className={classes.avatar} alt="avatar" src={item.avatar} />
                                 </ListItemAvatar>

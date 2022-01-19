@@ -72,13 +72,13 @@ function ReviewService(props) {
         <div className={classes.reviewItemContainer}>
             <Avatar alt="avatar" src={review.userId.avatar} className={classes.avatar} />
             <div className={classes.reviewContentContainer}>
-                <strong className={classes.reviewerName} component={Link} to={review.userId.role === 1 ? `/co/${review.userId._id}` : `/u/${review.userId._id}`}>{review.userId.fullname}</strong>
+                <strong className={classes.reviewerName} component={Link} to={`/u/${review.userId._id}`}>{review.userId.fullname}</strong>
                 <div className={classes.rate}>
                     <Rating name="read-only" value={review.rate} readOnly size="small" />
                 </div>
                 <Typography className={classes.reviewContent}>{review.content}</Typography>
             </div>
-        </div>
+        </div >
     )
 }
 

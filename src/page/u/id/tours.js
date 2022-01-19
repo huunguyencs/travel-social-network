@@ -7,7 +7,7 @@ import LeftBar from "../../../components/leftbar/LeftBar";
 import RightBar from "../../../components/rightbar/RightBar";
 import Scroll from "../../../components/scroll";
 import useStyles from "../../../style";
-import { profileMenu } from "../../../constant/menu";
+import { profileMenu, serviceMenu } from "../../../constant/menu";
 import FeedTourUser from "../../../components/feed/FeedTourUser";
 import ProfileAvatar from "../../../components/Profile/avatar";
 import SpeedDialButton from "../../../components/speedDialBtn";
@@ -31,7 +31,7 @@ function ProfileTours() {
   useEffect(() => {
     if (!user.user || user.user._id !== id) {
       setNotFound(false);
-      dispatch(getUser(id, 0, () => {
+      dispatch(getUser(id, () => {
         setNotFound(true);
       }));
     }
@@ -57,7 +57,9 @@ function ProfileTours() {
             <ProfileAvatar user={user.user} />
             <Grid container style={{ margin: 0, padding: 0 }}>
               <Grid item md={3} sm={2} xs={2}>
-                <LeftBar menuList={profileMenu} />
+                {user.user && (
+                  <LeftBar menuList={user.user.role === 1 ? serviceMenu : profileMenu} />
+                )}
               </Grid>
               <Grid item md={6} sm={10} xs={10}>
                 <FeedTourUser id={id} />

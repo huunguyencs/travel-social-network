@@ -161,7 +161,7 @@ function Header(props) {
             }
             title={
 
-                <Typography component={Link} to={post.userId.role === 1 ? `/co/${post.userId._id}` : `/u/${post.userId._id}`} noWrap={false} className={classes.userName}>{post.userId.fullname}</Typography>
+                <Typography component={Link} to={`/u/${post.userId._id}`} noWrap={false} className={classes.userName}>{post.userId.fullname}</Typography>
             }
             subheader={
                 <Link to={`/post/${post._id}`} className={classes.subheader}>
