@@ -1,17 +1,17 @@
 const Messages = require('../Models/message.model');
 const Conversations = require('../Models/conversation.model');
 
-class MessageController{
+class MessageController {
     async createMessage(req, res) {
         try {
             const { sender, recipient, text } = req.body;
-            if(!recipient || !text.trim()) return;
+            if (!recipient || !text.trim()) return;
 
 
             const newConversation = await Conversations.findOneAndUpdate({
                 $or: [
-                    {members: [sender, recipient]},
-                    {members: [recipient, sender]}
+                    { members: [sender, recipient] },
+                    { members: [recipient, sender] }
                 ]
             }, {
                 members: [sender, recipient],
@@ -20,8 +20,8 @@ class MessageController{
 
             const newMessage = new Messages({
                 conversation: newConversation._id,
-                sender, 
-                recipient, 
+                sender,
+                recipient,
                 text
             })
 
@@ -43,8 +43,8 @@ class MessageController{
     //get conversations of 1 user
     async getConversations(req, res) {
         try {
-            const conversations = await Conversations.find({members:req.user._id}).sort('-updatedAt')
-            .populate('members', 'avatar username fullname')
+            const conversations = await Conversations.find({ members: req.user._id }).sort('-updatedAt')
+                .populate('members', 'avatar username fullname role')
 
             res.json({
                 success: true,
@@ -61,9 +61,9 @@ class MessageController{
     async getMessages(req, res) {
         try {
             const messages = await Messages.find({
-                $or:[
-                    {sender: req.user._id, recipient: req.params.id },
-                    {sender: req.params.id, recipient: req.user._id}
+                $or: [
+                    { sender: req.user._id, recipient: req.params.id },
+                    { sender: req.params.id, recipient: req.user._id }
                 ]
             }).sort('-createAt')
 

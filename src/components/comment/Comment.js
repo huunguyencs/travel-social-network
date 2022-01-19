@@ -108,7 +108,7 @@ export default function Comment(props) {
 
                         <>
                             <div className={classes.cmtInfo}>
-                                <Typography noWrap={false} variant="subtitle2" className={classes.userName} component={Link} to={`/u/${comment.userId?._id}`}>
+                                <Typography noWrap={false} variant="subtitle2" className={classes.userName} component={Link} to={comment.userId.role === 1 ? `/co/${comment.userId?._id}` : `/u/${comment.userId?._id}`}>
                                     {comment.userId?.fullname}
                                 </Typography>
                                 <div className={classes.content}>

@@ -9,8 +9,9 @@ import { getRate, reviewService } from '../../redux/callApi/serviceCall';
 import { useDispatch, useSelector } from 'react-redux';
 import EmojiPicker from '../input/emojiPicker';
 import { Send } from '@material-ui/icons';
+import { Link } from 'react-router-dom';
 
-function ReviewArea(props) {
+export function ReviewArea(props) {
     const { id } = props;
     const [text, setText] = useState('')
     const { auth } = useSelector(state => state);
@@ -71,7 +72,7 @@ function ReviewService(props) {
         <div className={classes.reviewItemContainer}>
             <Avatar alt="avatar" src={review.userId.avatar} className={classes.avatar} />
             <div className={classes.reviewContentContainer}>
-                <strong className={classes.reviewerName}>{review.userId.fullname}</strong>
+                <strong className={classes.reviewerName} component={Link} to={review.userId.role === 1 ? `/co/${review.userId._id}` : `/u/${review.userId._id}`}>{review.userId.fullname}</strong>
                 <div className={classes.rate}>
                     <Rating name="read-only" value={review.rate} readOnly size="small" />
                 </div>

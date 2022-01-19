@@ -182,7 +182,6 @@ const formStyles = makeStyles((theme) => ({
         margin: 10
     },
     serviceCard: {
-        display: 'flex',
         marginTop: 20,
         paddingBlock: 10,
         paddingInline: 20,

@@ -42,7 +42,7 @@ class PostController {
 
             await newPost.save()
 
-            const share = await Posts.findById(shareId).populate("userId", "username fullname avatar")
+            const share = await Posts.findById(shareId).populate("userId", "username fullname avatar role")
 
             res.json({
                 success: true,
@@ -136,20 +136,20 @@ class PostController {
             const post = await Posts.findOneAndUpdate({ _id: req.params.id, userId: req.user.id }, {
                 content, images, rate, hashtags
             }, { new: true })
-                .populate("userId likes", "username fullname avatar")
+                .populate("userId likes", "username fullname avatar role")
                 .populate("locationId", "name fullname")
                 .populate({
                     path: "comments",
                     populate: {
                         path: "userId likes",
-                        select: "username fullname avatar"
+                        select: "username fullname avatar role"
                     }
                 })
                 .populate({
                     path: "shareId",
                     populate: {
                         path: "userId",
-                        select: "username fullname avatar"
+                        select: "username fullname avatar role"
                     }
                 })
                 .populate({
@@ -229,20 +229,20 @@ class PostController {
         try {
             const { offset } = req.body;
             const posts = await Posts.find({ userId: req.params.id }).skip(offset).limit(5).sort("-createdAt")
-                .populate("userId likes", "username fullname avatar")
+                .populate("userId likes", "username fullname avatar role")
                 .populate("locationId", "name fullname")
                 .populate({
                     path: "comments",
                     populate: {
                         path: "userId likes",
-                        select: "username fullname avatar"
+                        select: "username fullname avatar role"
                     }
                 })
                 .populate({
                     path: "shareId",
                     populate: {
                         path: "userId",
-                        select: "username fullname avatar"
+                        select: "username fullname avatar role"
                     }
                 })
                 .populate({
@@ -266,12 +266,12 @@ class PostController {
     async getPosts(req, res) {
         try {
             const posts = await Posts.find({}).limit(8)
-                .populate("userId likes", "username fullname avatar")
+                .populate("userId likes", "username fullname avatar role")
                 .populate({
                     path: "comments",
                     populate: {
                         path: "userId likes",
-                        select: "username fullname avatar"
+                        select: "username fullname avatar role"
                     }
                 })
                 .populate("locationId", "name fullname")
@@ -279,7 +279,7 @@ class PostController {
                     path: "shareId",
                     populate: {
                         path: "userId",
-                        select: "username fullname avatar"
+                        select: "username fullname avatar role"
                     }
                 })
                 .populate({
@@ -303,12 +303,12 @@ class PostController {
     async getPost(req, res) {
         try {
             const post = await Posts.findById(req.params.id)
-                .populate("userId likes", "username fullname avatar")
+                .populate("userId likes", "username fullname avatar role")
                 .populate({
                     path: "comments",
                     populate: {
                         path: "userId likes",
-                        select: "username fullname avatar"
+                        select: "username fullname avatar role"
                     },
                 })
                 .populate("locationId", "name fullname")
@@ -316,7 +316,7 @@ class PostController {
                     path: "shareId",
                     populate: {
                         path: "userId",
-                        select: "username fullname avatar"
+                        select: "username fullname avatar role"
                     }
                 })
                 .populate({
@@ -353,7 +353,7 @@ class PostController {
                 $push: {
                     likes: req.user._id
                 }
-            }, { new: true }).populate("likes", "username fullname avatar")
+            }, { new: true }).populate("likes", "username fullname avatar role")
 
 
             res.json({
@@ -375,7 +375,7 @@ class PostController {
                 $pull: {
                     likes: req.user._id
                 }
-            }, { new: true }).populate("likes", "username fullname avatar")
+            }, { new: true }).populate("likes", "username fullname avatar role")
 
             res.json({
                 success: true, message: "unlike post success",

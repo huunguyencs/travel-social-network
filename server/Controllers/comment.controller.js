@@ -65,7 +65,7 @@ class CommentController {
         try {
             const { content } = req.body;
             const comment = await Comments.findOneAndUpdate({ _id: req.params.id, user: req.user._id }, { content }, { new: true })
-                .populate("userId", "avatar fullname username");
+                .populate("userId", "avatar fullname username role");
 
             res.json({ success: true, message: "Update comment successful", comment })
         } catch (err) {
@@ -87,7 +87,7 @@ class CommentController {
                 $push: {
                     likes: req.user._id
                 }
-            }, { new: true }).populate("userId", "avatar fullname username");
+            }, { new: true }).populate("userId", "avatar fullname username role");
             res.json({ success: true, message: "Like comment", newComment })
         } catch (err) {
             console.log(err)
@@ -102,7 +102,7 @@ class CommentController {
                 $pull: {
                     likes: req.user._id
                 }
-            }, { new: true }).populate("userId", "avatar fullname username");
+            }, { new: true }).populate("userId", "avatar fullname username role");
             res.json({ success: true, message: "Unlike comment", newComment })
         } catch (err) {
             console.log(err)

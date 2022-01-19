@@ -150,7 +150,7 @@ function ShareContent({ tour }) {
                     </>
                 }
                 title={
-                    <Typography noWrap={false} className={classes.userName} component={Link} to={`/u/${tour.userId._id}`}>{tour.userId.fullname}</Typography>
+                    <Typography noWrap={false} className={classes.userName} component={Link} to={tour.userId.role === 1 ? `/co/${tour.userId._id}` : `/u/${tour.userId._id}`}>{tour.userId.fullname}</Typography>
                 }
                 subheader={
                     <Link to={`/tour/${tour._id}`} style={{ cursor: "pointer" }}>
@@ -413,7 +413,7 @@ function BaseContent(props) {
 
                 }
                 title={
-                    <Typography noWrap={false} className={classes.userName} component={Link} to={`/u/${tour.userId._id}`}>{tour.userId.fullname}</Typography>
+                    <Typography noWrap={false} className={classes.userName} component={Link} to={tour.userId.role === 1 ? `/co/${tour.userId._id}` : `/u/${tour.userId._id}`}>{tour.userId.fullname}</Typography>
                 }
                 subheader={
                     <Link to={`/tour/${tour._id}`} className={classes.subheader}>

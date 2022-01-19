@@ -49,7 +49,6 @@ export default function TourDetail(props) {
             notFound: false,
         })
         await customAxios().get(`/tour/${id}`).then(res => {
-
             setTour(sortTourDate(res.data.tour));
             setState({
                 loading: false,
@@ -85,6 +84,10 @@ export default function TourDetail(props) {
     const tryAgain = () => {
         getTourDetail(id);
     }
+
+    useEffect(() => {
+        console.log(tour)
+    }, [tour])
 
 
     return (

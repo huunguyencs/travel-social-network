@@ -37,8 +37,6 @@ export default function TourDetail(props) {
     const { tour, isOwn } = props;
 
 
-
-
     useEffect(() => {
         if (tour && tour.tour[idx].locations.length > 0) {
             setPosition(tour.tour[idx].locations[0].location.position)
@@ -92,7 +90,7 @@ export default function TourDetail(props) {
                                             <Typography variant="h5">Dịch vụ trong tour</Typography>
                                         </div>
                                         {tour.services.map((item, index) => (
-                                            <ServiceCard service={item} key={index} />
+                                            <ServiceCard service={item} key={index} review={isOwn} />
                                         ))}
                                     </Paper>
                                 </Fade>
