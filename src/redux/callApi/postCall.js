@@ -105,7 +105,7 @@ export const getPostById = (id, next) => async (dispatch) => {
 }
 
 export const createPost = (data, token, type, socket, next, error) => async (dispatch) => {
-    console.log("go?")
+    // console.log("go?")
     // post api
     try {
 
@@ -149,7 +149,7 @@ export const createPost = (data, token, type, socket, next, error) => async (dis
     }
 }
 
-export const updatePost = (data, token, socket, next, error) => async (dispatch) => {
+export const updatePost = (data, token, next, error) => async (dispatch) => {
 
     try {
         // call api to update post

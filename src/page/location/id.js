@@ -180,7 +180,7 @@ export default function Location(props) {
                                         </Grid>
                                         <Grid item md={6} sm={12} xs={12}>
                                             <div className={classes.review}>
-                                                <FeedReview id={location._id} />
+                                                <FeedReview location={location} />
                                             </div>
                                         </Grid>
                                         <Grid item md={3} sm={12} xs={12}>

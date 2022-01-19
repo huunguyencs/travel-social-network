@@ -4,7 +4,7 @@ import { Rating } from "@material-ui/lab";
 import React, { useState } from "react";
 import { ScrollMenu } from "react-horizontal-scrolling-menu";
 import { useDispatch, useSelector } from "react-redux";
-import { useHistory } from "react-router-dom";
+// import { useHistory } from "react-router-dom";
 
 import { formStyles } from '../../style';
 import LoginModal from "../modal/login";
@@ -16,7 +16,7 @@ import { checkImage } from "../../utils/uploadImage";
 export default function CreateReviewForm(props) {
 
     const dispatch = useDispatch();
-    const history = useHistory();
+    // const history = useHistory();
     const { auth, socket } = useSelector(state => state);
     const { location, handleClose, tourDateId, indexLocation } = props;
     const [state, setState] = useState({
@@ -74,6 +74,10 @@ export default function CreateReviewForm(props) {
     const handleSubmit = (e) => {
         e.preventDefault();
         if (!rate || rate === 0) {
+            setState({
+                ...state,
+                error: "Hãy thêm đánh giá sao!"
+            })
             return;
         }
         setState({
@@ -99,7 +103,7 @@ export default function CreateReviewForm(props) {
                     error: false
                 })
                 handleClose();
-                history.push(`/location/${location.name}`);
+                // history.push(`/location/${location.name}`);
             },
             () => {
                 setState({
@@ -190,7 +194,11 @@ export default function CreateReviewForm(props) {
                             </div>
                         </div>
                     </form>
-                    <span style={{ fontSize: "15px", color: "red", marginInline: "20px", marginTop: "10px" }}>{state.error}</span>
+                    <div className={classes.center}>
+                        <span style={{ fontSize: "15px", color: "red", marginInline: "20px", marginTop: "10px" }}>{state.error}</span>
+                    </div>
+
+
                     <div
                         className={classes.imageInputContainer}
                     >

@@ -149,8 +149,10 @@ export default function UpdateTourInfo({ name, content, hashtags, image, handleC
 
                 </div>
             </form>
+            <div className={classes.center}>
+                <span style={{ fontSize: "15px", color: "red", marginInline: "20px", marginTop: "10px" }}>{error}</span>
+            </div>
 
-            <span style={{ fontSize: "15px", color: "red", marginInline: "20px", marginTop: "10px" }}>{error}</span>
 
             <div
                 className={classes.imageInputContainer}
