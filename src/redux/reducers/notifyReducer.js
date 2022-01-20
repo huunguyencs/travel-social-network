@@ -11,8 +11,6 @@ const notifyReducer = (state = INIT_STATE, action) => {
                 ...state,
                 data: [action.payload, ...state.data]
             }
-
-
         case NOTIFY_TYPES.GET_NOTIFIES:
             return {
                 ...state,
@@ -35,7 +33,14 @@ const notifyReducer = (state = INIT_STATE, action) => {
                 ...state,
                 data: state.data.filter(item => item._id !== action.payload._id)
             }
-
+        case NOTIFY_TYPES.MARK_ALL_READ:
+            return {
+                ...state,
+                data: state.data.map(item => ({
+                    ...item,
+                    seen: true
+                }))
+            }
         default:
             return state;
 

@@ -3,31 +3,29 @@ import * as authAction from '../actions/authAction';
 import * as userAction from '../actions/userAction';
 import * as alertAction from '../actions/alertAction';
 
-export const getUser = (id, user, callback) => async (dispatch) => {
+export const getUser = (id, callback) => async (dispatch) => {
     try {
-        if (user && id === user._id) {
-            dispatch(userAction.getUserInfo({ user: user }))
-        }
-        else {
 
-            await customAxios().get(`/user/${id}`).then(res => {
-                dispatch(userAction.getUserInfo({ user: res.data.user })
-                )
-            }).catch(err => {
-                // console.log(err.response.status);
-                if (err.response.status === 404)
-                    callback();
-            });
+        const res = await customAxios().get(`/user/${id}`);
+
+        dispatch(userAction.getUserInfo({ user: res.data.user }))
+
+        console.log(res)
+
+        if (res.data.user.role === 1) {
+            const res = await customAxios().get(`/service/get_by_coop/${id}`);
+            dispatch(userAction.getServices({ services: res.data.services }))
         }
     }
     catch (err) {
-        // console.log(err);
-        // console.log(err.response.data.message);
-        if (err.response && err.response.data && err.response.data.message)
-            dispatch(alertAction.error({ message: err.response.data.message }))
-        else
-            dispatch(alertAction.error({ message: "Có lỗi xảy ra" }));
-
+        if (err.response && err.response?.status === 404)
+            callback();
+        else {
+            if (err.response && err.response.data && err.response.data.message)
+                dispatch(alertAction.error({ message: err.response.data.message }))
+            else
+                dispatch(alertAction.error({ message: "Có lỗi xảy ra" }));
+        }
     }
 }
 
@@ -68,3 +66,4 @@ export const unfollow = (follow, token, socket, next) => async (dispatch) => {
             dispatch(alertAction.error({ message: "Có lỗi xảy ra" }));
     }
 }
+

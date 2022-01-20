@@ -84,10 +84,10 @@ class TourController {
     ///
     async updateTour(req, res) {
         try {
-            const { content, name, isPublic, image, hashtags, service, tour } = req.body;
+            const { content, name, isPublic, image, hashtags, services, tour, cost } = req.body;
 
             const newTour = await Tours.findOneAndUpdate({ _id: req.params.id, userId: req.user.id }, {
-                content, image, name, hashtags, isPublic, service
+                content, image, name, hashtags, isPublic, services, cost
             }, { new: true }).populate("userId joinIds likes", "username fullname avatar")
                 .populate("tour", "date")
                 .populate({
@@ -112,9 +112,37 @@ class TourController {
                     }
                 })
 
+
+
             if (newTour) {
+                const oldTour = newTour.tour.map(item => item._id);
+                let tourId = []
+                tour.forEach((item) => {
+                    if (item._id) tourId.push(item._id.toString())
+                })
+                oldTour.forEach(async function (element) {
+                    if (!tourId.includes(element.toString())) {
+                        await Tours.findByIdAndUpdate(req.params.id, {
+                            $pull: {
+                                tour: element._id
+                            }
+                        })
+                    }
+                })
                 tour.forEach(async function (element) {
-                    await TourDates.findOneAndUpdate({ _id: element._id }, { date: element.date, locations: element.locations }, { new: true })
+                    if (element._id)
+                        await TourDates.findOneAndUpdate({ _id: element._id }, { date: element.date, locations: element.locations }, { new: true })
+                    else {
+                        let newTourDate = new TourDates({
+                            date: element.date, locations: element.locations
+                        })
+                        await newTourDate.save();
+                        await Tours.findByIdAndUpdate(req.params.id, {
+                            $push: {
+                                tour: newTourDate._id
+                            }
+                        });
+                    }
                 })
 
                 res.json({ success: true, message: "update tour successful", newTour })
@@ -288,19 +316,19 @@ class TourController {
                         }
                     }
                 })
-                .populate("userId likes", "username email fullname avatar followers")
+                .populate("userId likes", "fullname avatar")
                 .populate({
                     path: "comments",
                     populate: {
                         path: "userId likes",
-                        select: "-password"
+                        select: "fullname avatar"
                     },
                 })
                 .populate({
                     path: "services",
                     populate: {
                         path: "service",
-                        select: "name images"
+                        select: "name images cooperator"
                     }
                 })
 

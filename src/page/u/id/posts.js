@@ -6,7 +6,7 @@ import LeftBar from "../../../components/leftbar/LeftBar";
 import RightBar from "../../../components/rightbar/RightBar";
 import Scroll from "../../../components/scroll";
 import ProfileAvatar from "../../../components/Profile/avatar";
-import { profileMenu } from "../../../constant/menu";
+import { profileMenu, serviceMenu } from "../../../constant/menu";
 import SpeedDialButton from "../../../components/speedDialBtn";
 import { useDispatch, useSelector } from "react-redux";
 import { useParams } from "react-router-dom";
@@ -32,12 +32,12 @@ function ProfilePosts() {
   useEffect(() => {
     if (!user.user || user.user._id !== id) {
       setNotFound(false);
-      dispatch(getUser(id, auth.user, () => {
+      dispatch(getUser(id, () => {
         setNotFound(true);
       }));
 
     }
-  }, [user.user, id, dispatch, auth, setNotFound])
+  }, [user.user, id, dispatch, setNotFound])
 
   useEffect(() => {
     if (user.user) {
@@ -61,7 +61,9 @@ function ProfilePosts() {
             <ProfileAvatar user={user.user} />
             <Grid container style={{ margin: 0, padding: 0 }}>
               <Grid item md={3} sm={2} xs={2}>
-                <LeftBar menuList={profileMenu} />
+                {user.user && (
+                  <LeftBar menuList={user.user.role === 1 ? serviceMenu : profileMenu} />
+                )}
               </Grid>
               <Grid item md={6} sm={10} xs={10}>
                 <FeedPostUser id={id} />

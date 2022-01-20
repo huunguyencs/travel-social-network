@@ -13,6 +13,7 @@ export default function FriendRecommendCard(props) {
 
     const classes = friendCardStyles();
 
+
     return (
         <Card className={classes.friend}>
             <Typography variant="h5">Gợi ý theo dõi</Typography>

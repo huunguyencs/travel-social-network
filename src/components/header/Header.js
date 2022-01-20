@@ -85,6 +85,10 @@ export default function Header(props) {
         return notify.filter(item => !item.seen).length;
     }
 
+    const markAllRead = () => {
+        dispatch(markAllRead(auth.token));
+    }
+
     return (
         <AppBar style={{ zIndex: 1 }}>
             <Toolbar className={classes.toolbar}>
@@ -143,7 +147,7 @@ export default function Header(props) {
                                                                 </ListItemIcon>
                                                                 <Typography variant="inherit">Trang quản trị</Typography>
                                                             </MenuItem>}
-                                                        <MenuItem aria-label="profile" component={Link} to={`/u/${user._id}/`} onClick={handleCloseUser}>
+                                                        <MenuItem aria-label="profile" component={Link} to={`/u/${user._id}`} onClick={handleCloseUser}>
                                                             <ListItemIcon>
                                                                 <AccountCircle fontSize="small" />
                                                             </ListItemIcon>
@@ -189,7 +193,10 @@ export default function Header(props) {
                                     <Grow className={classes.grow} >
                                         <ClickAwayListener onClickAway={handleCloseNoti}>
                                             <Paper className={classes.paperNoti}>
-                                                <Typography className={classes.notiTitle} variant="h5">Thông báo</Typography>
+                                                <div className={classes.notiHeader}>
+                                                    <Typography className={classes.notiTitle} variant="h5">Thông báo</Typography>
+                                                    <Typography onClick={markAllRead} className={classes.markAllRead}>Đánh dấu tất cả đã đọc</Typography>
+                                                </div>
                                                 <MenuList>
                                                     {notify.data.slice(0, 5).map((item) => (
 

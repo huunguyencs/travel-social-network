@@ -1,8 +1,102 @@
 import { makeStyles } from "@material-ui/core";
+import color from "./color";
+import attr from './attr'
 
 
 const serviceStyles = makeStyles((theme) => ({
+    centerMarginTop: {
+        display: 'flex',
+        justifyContent: 'center',
+        marginTop: 50
+    },
+    listContainer: {
+        marginInline: 20,
+        marginBlock: 50
+    },
+    container: {
+        marginInline: 50
+    },
+    image: {
 
+    },
+    serviceName: {
+        marginBottom: 10
+    },
+    rate: {
+        marginTop: 5
+    },
+    discount: {
+
+    },
+    seeReview: {
+        marginInline: 30,
+        marginBottom: 20,
+        backgroundColor: color.turquoise
+    },
+    reviewContainer: {
+        width: 500,
+        display: "flex",
+        justifyContent: "space-between",
+        flexDirection: "column",
+        height: "100%",
+        backgroundColor: color.cloud
+    },
+    reviewItemContainer: {
+        margin: 20,
+        display: 'flex',
+
+    },
+    reviewContentContainer: {
+        borderRadius: attr.borderRadius.md,
+        backgroundColor: color.lightgray,
+        padding: 10,
+        width: "100%",
+        marginInline: 30
+    },
+    reviewerName: {
+        fontSize: 16
+    },
+    reviewContent: {
+        fontSize: 14
+    },
+    formReview: {
+        // width: "100%",
+        // marginRight: 40
+    },
+    contentInput: {
+        backgroundColor: color.lightgray,
+        borderRadius: attr.borderRadius.md,
+        paddingInline: 10,
+        width: "100%",
+        fontSize: 14
+    },
+    contentWrap: {
+        display: 'flex',
+        justifyContent: 'space-between'
+    },
+    formContainer: {
+        // marginInline: 20,
+        width: "100%"
+    },
+    reviewArea: {
+        // position: 'absolute',
+        // bottom: 0
+        marginBottom: 30
+    },
+    contentReview: {
+        display: 'flex',
+        justifyContent: 'flex-start',
+        flexDirection: 'column',
+        minHeight: "100%",
+        height: "73vh"
+    },
+    contentContainerWrap: {
+        position: "relative",
+        overflowY: "auto",
+    },
+    center: {
+        textAlign: 'center'
+    }
 }))
 
 export default serviceStyles;

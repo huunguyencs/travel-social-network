@@ -15,7 +15,8 @@ const color = {
     darkred: "#c0392b",
     blue: "#2980b9",
     silver: "#bdc3c7",
-    timeAgoGray: "#34495e"
+    timeAgoGray: "#34495e",
+    cloud: "#ecf0f1"
 };
 
 export default color;

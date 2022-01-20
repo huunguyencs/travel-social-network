@@ -97,7 +97,8 @@ export const updateTour = (id, tour, image, token, next, error) => async (dispat
                     location: location.location._id,
                 }))
             })),
-            image: image ? imageUpload[0] : ""
+            image: image ? imageUpload[0] : "",
+            provinces: Array.from(extractProvinceTour(tour.tour)),
         }
 
         // console.log(data);

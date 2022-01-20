@@ -1,5 +1,5 @@
 import React from "react";
-import { makeStyles, Container, Button } from "@material-ui/core";
+import { makeStyles, Container } from "@material-ui/core";
 
 //Table
 import PropTypes from 'prop-types';
@@ -419,7 +419,7 @@ function AdminUsers(props) {
                                                         <TableCell align="left">{row.name}</TableCell>
                                                         <TableCell align="left">{row.email}</TableCell>
                                                         <TableCell align="left">{row.phone}</TableCell>
-                                                        <TableCell align="left"><Button component={Link} to="/admin/user/detail"><Edit></Edit></Button></TableCell>
+                                                        <TableCell align="left"><IconButton size="small" component={Link} to="/admin/user/detail"><Edit /></IconButton></TableCell>
                                                     </TableRow>
                                                 );
                                             })}

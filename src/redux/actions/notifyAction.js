@@ -27,3 +27,10 @@ export const deleteNotify = (props) => {
         payload: props
     }
 }
+
+export const markAllRead = (props) => {
+    return {
+        type: NOTIFY_TYPES.MARK_ALL_READ,
+        payload: props
+    }
+}

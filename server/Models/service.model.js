@@ -28,7 +28,7 @@ const serviceSchema = new mongoose.Schema({
         }
     ],
     images: [{ type: String }],
-    discount: [{ type: String }]
+    discount: { type: String }
 }, {
     timestamps: true
 })

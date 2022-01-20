@@ -17,7 +17,7 @@ export default function UpdateReviewForm(props) {
 
     const [change, setChange] = useState(false);
     const dispatch = useDispatch();
-    const { auth, socket } = useSelector(state => state);
+    const { auth } = useSelector(state => state);
     const { review, handleClose } = props;
     const [state, setState] = useState({
         loading: false,
@@ -100,6 +100,10 @@ export default function UpdateReviewForm(props) {
             return;
         }
         if (!rate || rate === 0) {
+            setState({
+                loading: false,
+                error: "Hãy thêm đánh giá sao!"
+            })
             return;
         }
         setState({
@@ -117,7 +121,6 @@ export default function UpdateReviewForm(props) {
             locationId: review.locationId._id
         },
             auth.token,
-            socket,
             () => {
                 setState({
                     loading: false,
@@ -215,8 +218,10 @@ export default function UpdateReviewForm(props) {
                             </div>
                         </div>
                     </form>
+                    <div className={classes.center}>
+                        <span style={{ fontSize: "15px", color: "red", marginInline: "20px", marginTop: "10px" }}>{state.error}</span>
+                    </div>
 
-                    <span style={{ fontSize: "15px", color: "red", marginInline: "20px", marginTop: "10px" }}>{state.error}</span>
 
                     <div
                         className={classes.imageInputContainer}
