@@ -53,7 +53,7 @@ function InfoProfile() {
                                 <LeftBar menuList={profileMenu} />
                             </Grid>
                             <Grid item md={6} sm={10} xs={10}>
-
+                                
                             </Grid>
                             <Grid item md={3} className={classes.rightbar}>
                                 <RightBar ref={ref}>

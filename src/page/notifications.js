@@ -89,6 +89,8 @@ export default function NotificationPage(props) {
             <div className={classes.appBarSpacer} />
             <Box flex={1} overflow="auto">
                 <Container className={classes.fixWidth}>
+                    <div className={classes.appBarSpacer} />
+                    <Typography variant="h4">Thông báo</Typography>
                     {
                         state.loading ?
                             <div className={classes.centerMarginTop}>

@@ -380,7 +380,7 @@ function AdminServices(props) {
                         }}
                     >
                         <AddIcCall></AddIcCall>
-                        <Typography>Hợp tác</Typography>
+                        <Typography component={Link} to="admin/service/cooperate">Hợp tác</Typography>
                     </Button>
                 </div>
             </div>
