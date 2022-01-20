@@ -11,7 +11,7 @@ import './App.css'
 import { WithRouterScroll } from './components/scroll';
 import { useLocation, useHistory } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
-import { refreshToken } from "./redux/callApi/authCall";
+import { getFriendRecommend, refreshToken } from "./redux/callApi/authCall";
 import { io } from 'socket.io-client';
 import SocketClient from "./SocketClient";
 import * as SOCKET_TYPES from './redux/constants/index';
@@ -38,18 +38,13 @@ function App() {
       dispatch(getNotifies(auth.token))
     }
   }, [dispatch, auth.token])
-  // useEffect(() => {
-  //   if (!auth.token) {
-  //     dispatch(refreshToken(() => {
-  //       // if (location.pathname !== "/login" && location.pathname !== "/register")
-  //       //   history.push("/login");
-  //     }));
-  //     const socket = io();
-  //     dispatch({ type: SOCKET_TYPES.SOCKET, payload: socket });
-  //     return () => socket.close();
 
-  //   }
-  // }, [dispatch, history, location.pathname, auth.token])
+  useEffect(() => {
+    if (auth.token) {
+      dispatch(getFriendRecommend(auth.token, 5))
+    }
+  }, [auth.token, dispatch])
+
   useEffect(() => {
     dispatch(refreshToken(auth?.token));
     const socket = io();

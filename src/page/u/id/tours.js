@@ -1,5 +1,5 @@
 import { Grid } from "@material-ui/core";
-import React, { useEffect, useState } from "react";
+import React, { createRef, useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 
@@ -11,7 +11,6 @@ import { profileMenu } from "../../../constant/menu";
 import FeedTourUser from "../../../components/feed/FeedTourUser";
 import ProfileAvatar from "../../../components/Profile/avatar";
 import SpeedDialButton from "../../../components/speedDialBtn";
-import Menu from "../../../components/leftbar/menu";
 import Calendar from "../../../components/calendar";
 import FriendRecommendCard from "../../../components/card/FriendRecommend";
 import { NotFound } from "../../404";
@@ -45,6 +44,8 @@ function ProfileTours() {
     }
   }, [dispatch, user.user, auth.token])
 
+  const ref = createRef();
+
 
   return (
     <div>
@@ -56,15 +57,13 @@ function ProfileTours() {
             <ProfileAvatar user={user.user} />
             <Grid container style={{ margin: 0, padding: 0 }}>
               <Grid item md={3} sm={2} xs={2}>
-                <LeftBar >
-                  <Menu menuList={profileMenu} />
-                </LeftBar>
+                <LeftBar menuList={profileMenu} />
               </Grid>
               <Grid item md={6} sm={10} xs={10}>
                 <FeedTourUser id={id} />
               </Grid>
               <Grid item md={3} className={classes.rightbar}>
-                <RightBar>
+                <RightBar ref={ref}>
                   <Calendar />
                   <FriendRecommendCard />
                 </RightBar>

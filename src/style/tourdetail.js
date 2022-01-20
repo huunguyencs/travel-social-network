@@ -50,14 +50,18 @@ const tourdetailStyles = makeStyles((theme) => ({
     cardContainer: {
         margin: 30,
         borderRadius: attr.borderRadius.sm,
+        [theme.breakpoints.down("md")]: {
+            marginInline: 10,
+
+        }
     },
     imgContainer: {
-        padding: 30,
+        padding: 20,
         justifyContent: "center",
         display: "flex",
     },
     img: {
-        height: "250px",
+        height: "150px",
         width: "100%",
         [theme.breakpoints.down("md")]: {
             height: "100px",
@@ -65,14 +69,6 @@ const tourdetailStyles = makeStyles((theme) => ({
     },
     contentContainer: {
         marginTop: 10,
-    },
-    costContainer: {
-        textAlign: "right",
-        marginRight: 30,
-        backgroundColor: "#52BEDB",
-        borderRadius: attr.borderRadius.sm,
-        padding: 5,
-        paddingInline: 10,
     },
     reviewBtn: {
         backgroundColor: "#ECCC68",
@@ -83,7 +79,7 @@ const tourdetailStyles = makeStyles((theme) => ({
         marginBottom: 15,
     },
     locationName: {
-        marginTop: 20,
+        marginTop: 40,
     },
     activeTimeline: {
         backgroundColor: "#52BEDB",
@@ -227,6 +223,18 @@ const tourdetailStyles = makeStyles((theme) => ({
         [theme.breakpoints.down("sm")]: {
             marginTop: 30
         }
+    },
+    cost: {
+        cursor: "pointer"
+    },
+    servicePaper: {
+        padding: 10,
+        height: 500,
+        overflow: "hidden",
+        overflowY: "scroll",
+    },
+    line: {
+        width: "80%"
     }
 }))
 

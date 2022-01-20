@@ -1,5 +1,6 @@
-/* @import url('./components/leftbar/LeftBar.css'); */
+@import url(./style/volunteer.css);
 @import url(./style/login.css);
+
 body {
   font-family: 'Roboto';
 }

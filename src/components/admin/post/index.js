@@ -70,24 +70,24 @@ const useStyles = makeStyles((theme) => ({
     },
 }))
 
-function createData(name, user, numNember, status, action) {
-    return { name, user, numNember, status, action };
+function createData(id, name, email, phone, action) {
+    return { id, name, email, phone, action };
 }
 
 const rows = [
-    createData('Cupcake', 'Triệu Tấn Hùng', 10, 'Công khai'),
-    createData('Donut', 'Triệu Tấn Hùng', 100, 'Riêng tư'),
-    createData('Eclair', 'Triệu Tấn Hùng', 13, 'Riêng tư'),
-    createData('Frozen yoghurt', 'Triệu Tấn Hùng', 24, 'Công khai'),
-    createData('Gingerbread', 'Triệu Tấn Hùng', 56, 'Công khai'),
-    createData('Honeycomb', 'Triệu Tấn Hùng', 67, 'Công khai'),
-    createData('Ice cream sandwich', 'Triệu Tấn Hùng', 60, 'Riêng tư'),
-    createData('Jelly Bean', 'Triệu Tấn Hùng', 4567, 'Riêng tư'),
-    createData('KitKat', 'Triệu Tấn Hùng', 12, 'Riêng tư'),
-    createData('Lollipop', 'Triệu Tấn Hùng', 2345, 'Công khai'),
-    createData('Marshmallow', 'Triệu Tấn Hùng', 23, 'Riêng tư'),
-    createData('Nougat', 'Triệu Tấn Hùng', 2134, 'Riêng tư'),
-    createData('Oreo', 'Triệu Tấn Hùng', 2345, 'Công khai'),
+    createData('Cupcake', 'Triệu Tấn Hùng', 'test@gmail.com', '0376608773'),
+    createData('Donut', 'Triệu Tấn Hùng', 'test@gmail.com', '0376608773'),
+    createData('Eclair', 'Triệu Tấn Hùng', 'test@gmail.com', '0376608773'),
+    createData('Frozen yoghurt', 'Triệu Tấn Hùng', 'test@gmail.com', '0376608773'),
+    createData('Gingerbread', 'Triệu Tấn Hùng', 'test@gmail.com', '0376608773'),
+    createData('Honeycomb', 'Triệu Tấn Hùng', 'test@gmail.com', '0376608773'),
+    createData('Ice cream sandwich', 'Triệu Tấn Hùng', 'test@gmail.com', '0376608773'),
+    createData('Jelly Bean', 'Triệu Tấn Hùng', 'test@gmail.com', '0376608773'),
+    createData('KitKat', 'Triệu Tấn Hùng', 'test@gmail.com', '0376608773'),
+    createData('Lollipop', 'Triệu Tấn Hùng', 'test@gmail.com', '0376608773'),
+    createData('Marshmallow', 'Triệu Tấn Hùng', 'test@gmail.com', '0376608773'),
+    createData('Nougat', 'Triệu Tấn Hùng', 'test@gmail.com', '0376608773'),
+    createData('Oreo', 'Triệu Tấn Hùng', 'test@gmail.com', '0376608773'),
 ];
 
 function descendingComparator(a, b, orderBy) {
@@ -117,11 +117,11 @@ function stableSort(array, comparator) {
 }
 
 const headCells = [
-    { id: 'name', numeric: false, disablePadding: true, label: 'Tên Nhóm' },
-    { id: 'user', numeric: false, disablePadding: true, label: 'Người sáng lập' },
-    { id: 'numNember', numeric: false, disablePadding: true, label: 'Số thành viên' },
-    { id: 'status', numeric: false, disablePadding: true, label: 'Chế độ' },
-    { id: 'action', numeric: false, disablePadding: true, label: 'Xem chi tiết' },
+    { id: 'id', numeric: false, disablePadding: true, label: 'Tên Tài khoản' },
+    { id: 'name', numeric: false, disablePadding: true, label: 'Họ và tên' },
+    { id: 'email', numeric: false, disablePadding: true, label: 'Email' },
+    { id: 'phone', numeric: false, disablePadding: true, label: 'Số điện thoại' },
+    { id: 'action', numeric: false, disablePadding: true, label: '  ' },
 ];
 
 function EnhancedTableHead(props) {
@@ -260,9 +260,9 @@ const EnhancedTableToolbar = (props) => {
                             return option.inputValue;
                         }
                         // Regular option
-                        return option.name;
+                        return option.id;
                     }}
-                    renderOption={(option) => option.name}
+                    renderOption={(option) => option.id}
                     style={{ width: 300 }}
                     freeSolo
                     renderInput={(params) => (
@@ -294,7 +294,7 @@ EnhancedTableToolbar.propTypes = {
 
 
 
-function AdminGroups(props) {
+function AdminPosts(props) {
     const classes = useStyles();
     const [order, setOrder] = React.useState('asc');
     const [orderBy, setOrderBy] = React.useState('calories');
@@ -366,7 +366,7 @@ function AdminGroups(props) {
                 }}
             >
                 <Typography variant="h4" gutterBottom>
-                    100 Nhóm
+                    100 Người dùng
                 </Typography>
             </div>
 
@@ -415,12 +415,12 @@ function AdminGroups(props) {
                                                             />
                                                         </TableCell>
                                                         <TableCell component="th" id={labelId} scope="row" padding="none">
-                                                            {row.name}
+                                                            {row.id}
                                                         </TableCell>
-                                                        <TableCell align="right">{row.user}</TableCell>
-                                                        <TableCell align="right">{row.numNember}</TableCell>
-                                                        <TableCell align="right">{row.status}</TableCell>
-                                                        <TableCell align="right"><Button component={Link} to="/"><Edit></Edit></Button></TableCell>
+                                                        <TableCell align="left">{row.name}</TableCell>
+                                                        <TableCell align="left">{row.email}</TableCell>
+                                                        <TableCell align="left">{row.phone}</TableCell>
+                                                        <TableCell align="left"><Button component={Link} to="/"><Edit></Edit></Button></TableCell>
                                                     </TableRow>
                                                 );
                                             })}
@@ -453,4 +453,4 @@ function AdminGroups(props) {
     );
 }
 
-export default AdminGroups;
+export default AdminPosts;

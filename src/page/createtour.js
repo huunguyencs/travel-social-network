@@ -18,6 +18,6 @@ export default function CreateTour(props) {
     }
 
     return (
-        <AddTour />
+        <AddTour isUpdate={false} />
     )
 }

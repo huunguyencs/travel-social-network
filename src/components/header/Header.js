@@ -21,7 +21,6 @@ import {
     Notifications,
     WhatsApp,
     Cancel,
-    FiberManualRecord,
     AccountCircle,
     Update,
     ExitToApp,
@@ -82,7 +81,7 @@ export default function Header(props) {
         dispatch(isSeenNotify(msg, auth.token))
     }
 
-    const calculate = (notify) => {
+    const calculateUnSeen = (notify) => {
         return notify.filter(item => !item.seen).length;
     }
 
@@ -113,7 +112,7 @@ export default function Header(props) {
                             <>
                                 <div className={classes.user}>
                                     <Button className={classes.button} onClick={handleToggleUser} controls={toggleMenuUser ? "user-menu" : undefined}>
-                                        <Avatar className={classes.avatar} alt="avatar" src={user.avatar} />
+                                        <Avatar component="span" className={classes.avatar} alt="avatar" src={user.avatar} />
                                         <Typography noWrap={false} className={classes.userName}>{user.fullname}</Typography>
                                     </Button>
                                     <Popper
@@ -144,7 +143,7 @@ export default function Header(props) {
                                                                 </ListItemIcon>
                                                                 <Typography variant="inherit">Trang quản trị</Typography>
                                                             </MenuItem>}
-                                                        <MenuItem aria-label="profile" component={Link} to={`/profile/${user._id}/`} onClick={handleCloseUser}>
+                                                        <MenuItem aria-label="profile" component={Link} to={`/u/${user._id}/`} onClick={handleCloseUser}>
                                                             <ListItemIcon>
                                                                 <AccountCircle fontSize="small" />
                                                             </ListItemIcon>
@@ -169,10 +168,9 @@ export default function Header(props) {
                                     </Popper>
                                 </div>
                                 <IconButton className={classes.badge} aria-label="notifications" onClick={handleToggleNoti}>
-                                    <Badge badgeContent={calculate(notify.data)} color="secondary">
+                                    <Badge badgeContent={calculateUnSeen(notify.data)} color="secondary">
                                         <Notifications />
                                     </Badge>
-
                                 </IconButton>
                                 <Popper
                                     open={openNoti}
@@ -189,34 +187,47 @@ export default function Header(props) {
                                 // }}
                                 >
                                     <Grow className={classes.grow} >
-
                                         <ClickAwayListener onClickAway={handleCloseNoti}>
                                             <Paper className={classes.paperNoti}>
+                                                <Typography className={classes.notiTitle} variant="h5">Thông báo</Typography>
                                                 <MenuList>
-                                                    {notify.data.map((item) => (
+                                                    {notify.data.slice(0, 5).map((item) => (
 
-                                                        <MenuItem key={item._id} onClick={(e) => {
+                                                        <MenuItem key={item._id} className={item.seen ? classes.notiItem : classes.unSeen} onClick={(e) => {
                                                             handleCloseNoti(e);
-                                                            handleIsRead(item)
                                                             history.push(`${item.url}`)
+                                                            handleIsRead(item)
                                                         }}>
                                                             <Avatar className={classes.avatar} alt="avatar" src={item.user.avatar} />
 
-                                                            <div style={{}}>
+                                                            <div>
                                                                 <div style={{ display: "flex", alignItems: "center" }}>
                                                                     <strong style={{ marginRight: "5px" }}>{item.user.fullname}</strong>
                                                                     <p>{item.text} : {item.content.length > 20 ? item.content.slice(0, 20) : item.content} </p>
                                                                 </div>
-                                                                <div style={{}}>
-                                                                    <strong style={{ color: "#a5dec8" }}>{timeAgo(new Date(item.createdAt))}</strong>
+                                                                <div>
+                                                                    <span style={{ color: "#34495e" }}>{timeAgo(new Date(item.createdAt))}</span>
                                                                 </div>
                                                             </div>
-                                                            {
-                                                                !item.seen && <FiberManualRecord style={{ color: "#a5dec8" }} />
-                                                            }
+                                                            {/* {
+                                                                !item.seen && <FiberManualRecord style={{ color: "#34495e" }} />
+                                                            } */}
                                                         </MenuItem>
                                                     ))}
                                                 </MenuList>
+
+                                                <div className={classes.center}>
+                                                    {
+                                                        notify.data.length === 0 ? <i>Không có thông báo</i> :
+                                                            <Typography className={classes.seeAll} variant="body1" onClick={() => {
+                                                                handleCloseNoti();
+                                                                history.push('/notifications')
+                                                            }}>
+                                                                Xem tất cả
+                                                            </Typography>
+                                                    }
+
+                                                </div>
                                             </Paper>
                                         </ClickAwayListener>
 

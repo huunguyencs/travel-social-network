@@ -5,10 +5,10 @@ const Comments = require('../Models/comment.model')
 class TourController {
     async createTour(req, res) {
         try {
-            const { content, name, taggedIds, image, hashtags, tour, services, cost } = req.body
+            const { content, name, taggedIds, image, hashtags, tour, services, cost, provinces } = req.body
 
             const newTour = new Tours({
-                userId: req.user._id, content, image, name, taggedIds, hashtags, services, cost, tour: []
+                userId: req.user._id, content, image, name, taggedIds, hashtags, services, cost, provinces, tour: []
             })
 
             await newTour.save()
@@ -219,6 +219,7 @@ class TourController {
                         select: "date"
                     }
                 })
+
             res.json({ success: true, message: "get tours successful", tours })
         }
         catch (err) {
@@ -261,6 +262,10 @@ class TourController {
             // console.log(req.params.id)
             let tour = await Tours.findById(req.params.id);
             let requestId;
+            if (!tour) {
+                res.status(404).json({ success: false, message: "not found" });
+                return;
+            }
             if (tour.shareId) {
                 requestId = tour.shareId;
             }
@@ -291,13 +296,18 @@ class TourController {
                         select: "-password"
                     },
                 })
-            if (tour) {
-                res.json({
-                    success: true, message: "get info 1 tour success", tour
-                });
-            } else {
-                res.status(404).json({ success: false, message: "not found" });
-            }
+                .populate({
+                    path: "services",
+                    populate: {
+                        path: "service",
+                        select: "name images"
+                    }
+                })
+
+            res.json({
+                success: true, message: "get info 1 tour success", tour
+            });
+
 
         } catch (err) {
             console.log(err)
@@ -328,7 +338,7 @@ class TourController {
 
     async unJoinTour(req, res) {
         try {
-            const tour = await Tours.findOneAndUpdate({ _id: req.params.id }, {
+            const tour = await Tours.findByIdAndUpdate(req.params.id, {
                 $pull: {
                     joinIds: req.user._id
                 }
@@ -351,7 +361,7 @@ class TourController {
                 return;
             }
             const { user } = req.body;
-            tour = await Tours.findOneAndUpdate({ _id: req.params.id }, {
+            tour = await Tours.findByIdAndUpdate(req.params.id, {
                 $pull: {
                     joinIds: user
                 }
@@ -364,6 +374,27 @@ class TourController {
 
         }
         catch (err) {
+            res.status(500).json({ success: false, message: err.message })
+        }
+    }
+
+    async removeReview(req, res) {
+        try {
+            const { locationId } = req.body;
+
+            await TourDates.findOneAndUpdate({ _id: req.params.id, locations: { $elemMatch: { _id: locationId } } }, {
+                $set: {
+                    'locations.$.postId': null
+                }
+            }, { new: true, safe: true, upsert: true })
+
+            res.json({
+                success: true,
+                message: "Xóa review thành công"
+            })
+        }
+        catch (err) {
+            console.log(err);
             res.status(500).json({ success: false, message: err.message })
         }
     }

@@ -1,5 +1,5 @@
 import React from "react";
-import { Box, Tab, Tabs, Container } from "@material-ui/core";
+import { Box, Tab, Tabs, Container, useMediaQuery, useTheme, Grid } from "@material-ui/core";
 import PropTypes from 'prop-types';
 
 
@@ -54,31 +54,45 @@ export default function Change_info(props) {
     const handleChange = (event, newValue) => {
         setValue(newValue);
     };
+
+    const theme = useTheme();
+    const downSm = useMediaQuery(theme.breakpoints.down("sm"));
+
     return (
         <div>
             <Container className={classes.root}>
+                <Grid container>
+                    <Grid item md={3} sm={12} xs={12}>
+                        <div className={classes.tabsWrap}>
+                            <Tabs
+                                orientation={downSm ? "horizontal" : "vertical"}
+                                variant="scrollable"
+                                value={value}
+                                onChange={handleChange}
+                                aria-label="Vertical tabs example"
+                                className={classes.tabs}
+                            >
+                                <Tab className={classes.tab} label="Thay đổi thông tin" {...a11yProps(0)} />
+                                <Tab className={classes.tab} label="Thay đổi mật khẩu" {...a11yProps(1)} />
+                                <Tab className={classes.tab} label="Bảo mật và riêng tư" {...a11yProps(2)} />
+                            </Tabs>
+                        </div>
+                    </Grid>
+                    <Grid item md={9} sm={12} xs={12}>
+                        <TabPanel value={value} index={0} className={classes.tabPanel}>
+                            {token && <ChangeInfo />}
+                        </TabPanel>
+                        <TabPanel value={value} index={1} className={classes.tabPanel}>
+                            <ChangePassword />
+                        </TabPanel>
+                        <TabPanel value={value} index={2} className={classes.tabPanel}>
+                            404
+                        </TabPanel>
+                    </Grid>
+                </Grid>
 
-                <Tabs
-                    orientation="vertical"
-                    variant="scrollable"
-                    value={value}
-                    onChange={handleChange}
-                    aria-label="Vertical tabs example"
-                    className={classes.tabs}
-                >
-                    <Tab className={classes.tab} label="Thay đổi thông tin" {...a11yProps(0)} />
-                    <Tab className={classes.tab} label="Thay đổi mật khẩu" {...a11yProps(1)} />
-                    <Tab className={classes.tab} label="Bảo mật và riêng tư" {...a11yProps(2)} />
-                </Tabs>
-                <TabPanel value={value} index={0} className={classes.tabPanel}>
-                    {token && <ChangeInfo />}
-                </TabPanel>
-                <TabPanel value={value} index={1} className={classes.tabPanel}>
-                    <ChangePassword />
-                </TabPanel>
-                <TabPanel value={value} index={2} className={classes.tabPanel}>
-                    404
-                </TabPanel>
+
+
             </Container>
         </div>
     )

@@ -124,27 +124,9 @@ const createTourReducer = (state = INIT_STATE, action) => {
                 services: [...state.services, action.payload.service]
             }
         }
-        case TOUR_TYPES.UPDATE_SERVICE: {
-
-            let newCost = state.cost;
-            let newService = state.services.map((item, index) => {
-                if (index === action.payload.index) {
-                    newCost = newCost - item.cost + action.payload.service.cost;
-                    return action.payload.service;
-                }
-                else return item
-            })
-
-            return {
-                ...state,
-                cost: newCost,
-                services: newService
-            }
-        }
         case TOUR_TYPES.DELETE_SERVICE: {
 
             let newCost = state.cost - state.services[action.payload.index].cost;
-
 
             return {
                 ...state,

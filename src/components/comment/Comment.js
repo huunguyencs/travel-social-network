@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { Avatar, Typography } from "@material-ui/core";
+import { Avatar, Button, CircularProgress, ClickAwayListener, Dialog, DialogActions, DialogContent, DialogTitle, Grow, IconButton, MenuItem, MenuList, Paper, Popper, Typography } from "@material-ui/core";
 
 import { commentStyles } from "../../style";
 import { SeeMoreText } from "../seeMoreText";
@@ -7,11 +7,32 @@ import { timeAgo, timeAgoShort } from "../../utils/date";
 // import { auth } from "../../redux/actions/authAction";
 import { useDispatch, useSelector } from "react-redux";
 import { Link } from "react-router-dom";
-import { likeComment, unlikeComment } from "../../redux/callApi/commentCall";
+import { deleteComment, likeComment, unlikeComment } from "../../redux/callApi/commentCall";
+import { MoreVert } from "@material-ui/icons";
+import InputComment from "../input/comment";
 
 export default function Comment(props) {
 
     const { comment, type, id } = props;
+
+    const [anchorEl, setAnchorEl] = useState(null);
+    const [edit, setEdit] = useState(false);
+
+    const handleShowMenu = (e) => {
+        setAnchorEl(e.currentTarget)
+    }
+
+    const handleCloseMenu = () => {
+        setAnchorEl(null);
+    }
+
+    const handleEdit = () => {
+        setEdit(true);
+    }
+
+    const editDone = () => {
+        setEdit(false);
+    }
 
     const [like, setLike] = useState(false);
     const [numLike, setNumLike] = useState(0);
@@ -51,6 +72,24 @@ export default function Comment(props) {
     }, [comment.likes, auth.user]);
 
 
+    const [loadingDelete, setLoadingDelete] = useState(false);
+    const [showDelete, setShowDelete] = useState(false);
+    const handleShowDelete = () => {
+        setShowDelete(true);
+    }
+
+    const handleCloseDelete = () => {
+        setShowDelete(false);
+        handleCloseMenu();
+    }
+
+    const handleDelete = () => {
+        setLoadingDelete(true);
+        dispatch(deleteComment(comment._id, auth, type, id, socket, () => {
+            setLoadingDelete(false);
+        }))
+    }
+
     return (
         <div className={classes.comment}>
             <div className={classes.avatar}>
@@ -59,37 +98,101 @@ export default function Comment(props) {
                     atl="Avatar"
                 />
             </div>
-            <div className={classes.cmtInfo}>
-                <Typography noWrap={false} variant="subtitle2" className={classes.userName} component={Link} to={`/profile/${comment.userId?._id}`}>
-                    {comment.userId?.fullname}
-                </Typography>
-                <div className={classes.content}>
-                    {/* <Typography variant="body2">
-                        {props.comment.content}
-                    </Typography> */}
-                    <SeeMoreText
-                        variant="body2"
-                        maxText={100}
-                        text={comment.content}
-                    />
-                </div>
-                <div className={classes.cmtSubinfo}>
-                    <div className={classes.like}>
-                        <Typography className={classes.smallText}>
-                            {numLike}
-                        </Typography>
-                        <Typography className={`${classes.smallText} ${classes.likeBtn}`} onClick={likePress}>Like</Typography>
-                    </div>
-                    <div className={classes.time}>
-                        <Typography className={classes.dateComment}>
-                            {timeAgo(new Date(comment.createdAt))}
-                        </Typography>
-                        <Typography className={classes.dateCommentShort}>
-                            {timeAgoShort(new Date(comment.createdAt))}
-                        </Typography>
-                    </div>
-                </div>
+            <div style={{ display: 'flex' }}>
+                {
+                    edit ?
+                        <div>
+                            <InputComment isUpdate={true} type={type} id={id} handleClose={editDone} commentId={comment._id} comment={comment.content} />
+                            <Typography noWrap={true} className={classes.cancelBtn} onClick={editDone}>Hủy</Typography>
+                        </div> :
+
+                        <>
+                            <div className={classes.cmtInfo}>
+                                <Typography noWrap={false} variant="subtitle2" className={classes.userName} component={Link} to={`/u/${comment.userId?._id}`}>
+                                    {comment.userId?.fullname}
+                                </Typography>
+                                <div className={classes.content}>
+                                    <SeeMoreText
+                                        variant="body2"
+                                        maxText={100}
+                                        text={comment.content}
+                                    />
+                                </div>
+                                <div className={classes.cmtSubinfo}>
+                                    <div className={classes.like}>
+                                        <Typography className={classes.smallText}>
+                                            {numLike}
+                                        </Typography>
+                                        <Typography className={`${classes.smallText} ${classes.likeBtn}`} onClick={likePress}>Like</Typography>
+                                    </div>
+                                    <div className={classes.time}>
+                                        <Typography className={classes.dateComment}>
+                                            {timeAgo(new Date(comment.createdAt))}
+                                        </Typography>
+                                        <Typography className={classes.dateCommentShort}>
+                                            {timeAgoShort(new Date(comment.createdAt))}
+                                        </Typography>
+                                    </div>
+                                </div>
+                            </div>
+                            {
+                                auth.user && auth.user._id === comment.userId._id &&
+                                <div>
+                                    <IconButton onClick={handleShowMenu} size="small">
+                                        <MoreVert />
+                                    </IconButton>
+                                    <Popper
+                                        open={Boolean(anchorEl)}
+                                        anchorEl={anchorEl}
+                                        onClose={handleCloseMenu}
+                                        disablePortal
+                                    >
+                                        <Grow
+                                            style={{ transformOrigin: 'center bottom' }}
+                                        >
+                                            <ClickAwayListener onClickAway={handleCloseMenu}>
+                                                <Paper>
+                                                    <MenuList>
+                                                        <MenuItem className={classes.menuItem} onClick={handleEdit}>
+                                                            Chỉnh sửa bình luận
+                                                        </MenuItem>
+                                                        <MenuItem className={classes.menuItem} onClick={handleShowDelete}>
+                                                            Xóa bình luận
+                                                        </MenuItem>
+                                                        <Dialog
+                                                            open={showDelete}
+                                                            onClose={handleCloseDelete}
+                                                            aria-labelledby="show-delete-dialog"
+                                                            aria-describedby="show-delete-dialog-description"
+                                                        >
+                                                            <DialogTitle id="alert-dialog-title">{"Bạn có chắc chắn muốn xóa?"}</DialogTitle>
+
+                                                            <DialogContent>Bạn sẽ không thể khôi phục lại dữ liệu sau khi xóa!</DialogContent>
+                                                            <DialogActions>
+                                                                <Button onClick={handleCloseDelete}>
+                                                                    Hủy
+                                                                </Button>
+                                                                <Button onClick={handleDelete} className={classes.delete}>
+                                                                    {
+                                                                        loadingDelete ? <CircularProgress size={15} /> : "Xóa"
+                                                                    }
+                                                                </Button>
+                                                            </DialogActions>
+                                                        </Dialog>
+                                                    </MenuList>
+                                                </Paper>
+                                            </ClickAwayListener>
+                                        </Grow>
+                                    </Popper>
+                                </div>
+                            }
+
+                        </>
+                }
+
             </div>
+
         </div>
+
     )
 }

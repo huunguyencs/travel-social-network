@@ -41,16 +41,8 @@ function TabPanel(props) {
     )
 }
 
-function calculateCost(services) {
-    if (services) {
-        return services.reduce((accum, item) => accum + item.cost, 0) * 1000;
-    }
-    return 0;
-}
-
 function extractService(services) {
     return services.map((item) => ({
-        cooperator: item.cooperator._id,
         service: item.service._id,
         cost: item.cost
     }))
@@ -112,9 +104,9 @@ export default function AddTour(props) {
             content: createTour.content,
             hashtags: createTour.hashtags,
             tour: createTour.tour,
-            cost: calculateCost(createTour.services),
+            cost: createTour.cost,
             services: extractService(createTour.services)
-        }, createTour.image, auth.token,socket, () => {
+        }, createTour.image, auth.token, socket, () => {
             setState({
                 loading: false,
                 error: false
@@ -140,7 +132,7 @@ export default function AddTour(props) {
             content: createTour.content,
             hashtags: createTour.hashtags,
             tour: createTour.tour,
-            cost: calculateCost(createTour.services),
+            cost: createTour.cost,
             services: extractService(createTour.services)
         }, createTour.image, auth.token, () => {
             // console.log("done");
@@ -221,7 +213,7 @@ export default function AddTour(props) {
                         </div>
                         <div className={classes.itemInfo}>
                             <Typography variant="body1" className={classes.content}>
-                                Chi phí: {new Intl.NumberFormat().format(calculateCost(createTour.services))} VND
+                                Chi phí: {new Intl.NumberFormat().format(createTour.cost * 1000)} VND
                             </Typography>
                         </div>
                         <div className={classes.itemInfo}>
@@ -290,7 +282,7 @@ export default function AddTour(props) {
                             </div>
 
                         </Grid>
-                        <Grid item md={6} sm={12} xs={12} className={classes.feedTour}>
+                        <Grid item md={4} sm={12} xs={12} className={classes.feedTour}>
                             <div className={classes.center}>
                                 <Button onClick={handleShowDelete} className={classes.editButton}>
                                     Xóa ngày
@@ -405,7 +397,7 @@ export default function AddTour(props) {
                             </div>
 
                         </Grid>
-                        <Grid item md={4} className={classes.addContainerLarge}>
+                        <Grid item md={6} className={classes.addContainerLarge}>
                             <Container style={{ marginLeft: 30 }}>
                                 <div className={classes.addHeader}>
                                     <Tabs value={tab} onChange={handleChangeTab} aria-label="tabs tour">

@@ -5,14 +5,27 @@ import color from "./color";
 const profileStyles = makeStyles((theme) => ({
   root: {
     backgroundColor: theme.palette.background.paper,
-    display: "flex",
-    height: "100vh",
-    paddingTop: "75px"
+    // display: "flex",
+    // height: "100vh",
+    paddingTop: "75px",
+    marginBottom: 20
+  },
+  tabsWrap: {
+    display: 'flex',
+    justifyContent: 'center',
+    marginBottom: 50,
+    [theme.breakpoints.down("sm")]: {
+      marginBottom: 0
+    }
   },
   tabs: {
     borderRight: `1px solid ${theme.palette.divider}`,
     // width: "30%",
     marginTop: 50,
+    [theme.breakpoints.down("sm")]: {
+      borderRight: 'none',
+      marginBottom: 20
+    }
   },
   tab: {
     textAlign: "center",
@@ -84,6 +97,7 @@ const profileStyles = makeStyles((theme) => ({
     flexDirection: "column",
   },
   profile_overImage: {
+    backgroundColor: color.white,
     borderRadius: "10px",
     position: "absolute",
     width: "100%",
@@ -100,6 +114,7 @@ const profileStyles = makeStyles((theme) => ({
     },
   },
   profile_avatar__img: {
+    backgroundColor: color.white,
     height: "200px",
     width: "200px",
     border: "5px solid white",

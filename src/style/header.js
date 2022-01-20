@@ -107,11 +107,34 @@ const headerStyles = makeStyles((theme) => ({
         transformOrigin: 'center bottom'
     },
     paperNoti: {
-        width: 300
+        width: 450,
+        padding: 10,
+        [theme.breakpoints.down("sm")]: {
+            width: 400
+        }
     },
-    // button: {
-    //     color: "white"
-    // }
+    center: {
+        display: 'flex',
+        justifyContent: 'center'
+    },
+    seeAll: {
+        color: color.blue,
+        margin: 10,
+        cursor: "pointer",
+        "&:hover": {
+            textDecorationLine: 'underline',
+        }
+    },
+    notiTitle: {
+        marginInline: 10,
+    },
+    notiItem: {
+        borderRadius: attr.borderRadius.md,
+    },
+    unSeen: {
+        borderRadius: attr.borderRadius.md,
+        backgroundColor: color.lightgray,
+    }
 }));
 
 export default headerStyles;

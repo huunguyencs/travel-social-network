@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react'
-import { Backdrop, Button, Card, Modal, Paper, Typography } from '@material-ui/core';
+import { Backdrop, Button, Modal, Paper, Typography } from '@material-ui/core';
 
 import * as utils from './utils';
 import './style.css';
@@ -223,7 +223,9 @@ function Table({ setContent, setDetail }) {
         <>
             {currentMonth && currentMonth.length !== 0 &&
                 <table className="amlich" border="0" cellPadding="0" cellSpacing="0" width="100px">
-                    {utils.LOOP7.map((i) => <col width="50px" key={i} />)}
+                    <colgroup>
+                        {utils.LOOP7.map((i) => <col width="50px" key={i} />)}
+                    </colgroup>
                     <tbody>
                         <Head month={month} year={year} setMonth={setMonth} setYear={setYear} />
                         {utils.LOOP6.map((i) => (
@@ -276,9 +278,10 @@ export default function Calendar() {
 
     return (
         <div>
-            <Card className={classes.container}>
+
+            <div style={{ display: 'flex', justifyContent: 'center' }}>
                 <Table setContent={setContent} setDetail={setDetail} />
-            </Card>
+            </div>
             <Modal
                 open={detail}
                 onClose={handleClose}

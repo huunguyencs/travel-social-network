@@ -1,88 +1,87 @@
-import { Box, Container, List } from "@material-ui/core";
-import React, { useEffect } from "react";
+import { Box, CircularProgress, Container, List, Typography } from "@material-ui/core";
+import React, { useEffect, useState } from "react";
+import { useSelector } from "react-redux";
 
 import NotificationItem from "../components/notifications/notification";
 import { notificationStyles } from "../style";
+import customAxios from "../utils/fetchData";
 
-
-const listNoti = [
-    {
-        _id: 465,
-        isSeen: false,
-        content: "Thông báo 1",
-        time: "4/11/2021"
-    },
-    {
-        _id: 467,
-        isSeen: false,
-        content: "Thông báo 2",
-        time: "4/11/2021",
-    },
-    {
-        _id: 4,
-        isSeen: true,
-        content: "Thông báo 3",
-        time: "3/11/2021",
-    },
-    {
-        _id: 46,
-        isSeen: true,
-        content: "Thông báo 4",
-        time: "3/11/2021",
-    },
-    {
-        _id: 479,
-        isSeen: true,
-        content: "Thông báo 5",
-        time: "2/11/2021",
-    },
-    {
-        _id: 879,
-        isSeen: true,
-        content: "Thông báo 5",
-        time: "2/11/2021",
-    },
-    {
-        _id: 5,
-        isSeen: true,
-        content: "Thông báo 5",
-        time: "2/11/2021",
-    },
-    {
-        _id: 4895,
-        isSeen: true,
-        content: "Thông báo 5",
-        time: "2/11/2021",
-    },
-    {
-        _id: 4798,
-        isSeen: true,
-        content: "Thông báo 5",
-        time: "2/11/2021",
-    },
-    {
-        _id: 123,
-        isSeen: true,
-        content: "Thông báo 5",
-        time: "1/11/2021",
-    },
-    {
-        _id: 783,
-        isSeen: true,
-        content: "Thông báo 5",
-        time: "1/11/2021",
-    },
-
-]
 
 
 export default function NotificationPage(props) {
 
     const classes = notificationStyles();
 
+    const [end, setEnd] = useState(false);
+
+    const [offset, setOffset] = useState(10);
+    const [listNoti, setListNoti] = useState(null);
+    const [state, setState] = useState({
+        loading: false,
+        loadingMore: false,
+        error: false,
+    })
+
+    const { token } = useSelector(state => state.auth)
+
     useEffect(() => {
         document.title = "Thông báo";
-    })
+    }, [])
+
+    const getNotifications = async (token) => {
+        setState({
+            error: false,
+            loading: true
+        })
+        await customAxios(token).get('/notify/get_notifies?limit=10&offset=0').then(res => {
+            if (res.data.notifies.length < 10) {
+                setEnd(true);
+            }
+            setListNoti(res.data.notifies);
+            setState({
+                loading: false,
+                error: false,
+            })
+        }).catch(err => {
+            setState({
+                loading: false,
+                error: true
+            })
+        })
+    }
+
+    const loadMore = async () => {
+        setState({
+            loadingMore: true,
+            error: false,
+        })
+
+        await customAxios(token).get(`/notify/get_notifies?limit=10&offset=${offset}`).then(res => {
+            if (res.data.notifies.length < 10) {
+                setEnd(true);
+            }
+            setListNoti(state => ([
+                ...state,
+                ...res.data.notifies
+            ]));
+            setState({
+                loadingMore: false,
+                error: false,
+            })
+            setOffset(state => state + 10)
+        }).catch(err => {
+            setState({
+                loadingMore: false,
+                error: true
+            })
+        })
+    }
+
+    useEffect(() => {
+        if (token) {
+            getNotifications(token)
+        }
+    }, [token])
 
 
     return (
@@ -90,11 +89,36 @@ export default function NotificationPage(props) {
             <div className={classes.appBarSpacer} />
             <Box flex={1} overflow="auto">
                 <Container className={classes.fixWidth}>
-                    <List className={classes.list}>
-                        {listNoti.map((item) => (
-                            <NotificationItem noti={item} key={item._id} />
-                        ))}
-                    </List>
+                    {
+                        state.loading ?
+                            <div className={classes.centerMarginTop}>
+                                <CircularProgress />
+                            </div> :
+                            state.error ?
+                                <div>
+                                    <Typography className={classes.centerMarginTop}>
+                                        Có lỗi xảy ra
+                                    </Typography>
+                                </div> : listNoti &&
+                                <List className={classes.list}>
+                                    {listNoti.map((item) => (
+                                        <NotificationItem noti={item} key={item._id} />
+                                    ))}
+                                    {
+                                        !end &&
+                                        <div className={classes.center}>
+                                            {
+                                                state.loadingMore ?
+                                                    <CircularProgress /> :
+                                                    <Typography onClick={loadMore} className={classes.seeAll}>
+                                                        Xem thêm ...
+                                                    </Typography>
+                                            }
+                                        </div>
+                                    }
+
+                                </List>
+                    }
                 </Container>
             </Box>
         </Box>

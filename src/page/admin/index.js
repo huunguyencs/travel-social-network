@@ -1,8 +1,7 @@
-import { Card, Grid, makeStyles, Typography } from "@material-ui/core";
+import { Card, Grid, makeStyles, Typography, Box, CardHeader } from "@material-ui/core";
 import { Group, Person, PostAdd } from "@material-ui/icons";
 import React from "react";
 import LeftBar from "../../components/leftbar/LeftBar";
-import Menu from "../../components/leftbar/menu";
 import { adminListMenu } from "../../constant/adminMenu";
 import { ResponsiveContainer, LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, Legend } from 'recharts';
 
@@ -46,9 +45,7 @@ export default function AdminHome(props) {
     return (
         <Grid container>
             <Grid item md={3}>
-                <LeftBar >
-                    <Menu menuList={adminListMenu} />
-                </LeftBar>
+                <LeftBar menuList={adminListMenu} />
             </Grid>
 
             <Grid item md={9} style={{ height: "100vh" }}>
@@ -89,44 +86,49 @@ export default function AdminHome(props) {
                     </Grid>
                 </Grid>
 
-                <Grid container>
-                    <div
-                        style={{
-                            display: "flex",
-                            justifyContent: "center",
-                            marginTop: "20px"
-                        }}>
+                <Grid>
+                    <Card>
+                        <CardHeader title="Website Visits" subheader="(+43%) than last year" />
+                        <Box>
+                            <div
+                                style={{
+                                    display: "flex",
+                                    justifyContent: "center",
+                                    marginTop: "20px"
+                                }}>
 
-                        <div
-                            style={{
-                                backgroundColor: "#FFFFFF",
-                                paddingTop: "20px",
-                                borderRadius: "15px",
-                                width: "90%",
-                                justifyContent: "center",
-                                display: "flex",
-                            }}
-                        >
-                            <ResponsiveContainer className="chart" height={300}>
-                                <LineChart
-                                    width={600}
-                                    height={300}
-                                    data={data}
-                                    margin={{ top: 5, right: 20, left: 10, bottom: 5 }}
+                                <div
+                                    style={{
+                                        backgroundColor: "#FFFFFF",
+                                        paddingTop: "20px",
+                                        borderRadius: "15px",
+                                        width: "90%",
+                                        justifyContent: "center",
+                                        display: "flex",
+                                    }}
                                 >
-                                    <XAxis dataKey="month" />
-                                    <YAxis />
-                                    <CartesianGrid strokeDasharray="3 3" />
-                                    <Tooltip />
-                                    <Legend />
-                                    <Line type="monotone" dataKey="user" stroke="#8884d8" activeDot={{ r: 8 }} />
-                                    <Line type="monotone" dataKey="post" stroke="#82ca9d" />
-                                    <Line type="monotone" dataKey="group" stroke="#ECCC68" />
-                                </LineChart>
-                            </ResponsiveContainer>
-                        </div>
+                                    <ResponsiveContainer className="chart" height={300}>
+                                        <LineChart
+                                            width={400}
+                                            height={300}
+                                            data={data}
+                                            margin={{ top: 5, right: 20, left: 10, bottom: 5 }}
+                                        >
+                                            <XAxis dataKey="month" />
+                                            <YAxis />
+                                            <CartesianGrid strokeDasharray="3 3" />
+                                            <Tooltip />
+                                            <Legend />
+                                            <Line type="monotone" dataKey="user" stroke="#8884d8" activeDot={{ r: 8 }} />
+                                            <Line type="monotone" dataKey="post" stroke="#82ca9d" />
+                                            <Line type="monotone" dataKey="group" stroke="#ECCC68" />
+                                        </LineChart>
+                                    </ResponsiveContainer>
+                                </div>
+                            </div>
+                        </Box>
+                    </Card>
 
-                    </div>
                 </Grid>
             </Grid>
         </Grid>

@@ -1,10 +1,12 @@
-import { Backdrop, Button, Card, Fade, Modal, Paper, TextField, Typography } from '@material-ui/core';
+import { Backdrop, Button, Card, ClickAwayListener, Dialog, DialogActions, DialogTitle, Fade, Grow, IconButton, MenuItem, MenuList, Modal, Paper, Popper, TextField, Typography } from '@material-ui/core';
 import React, { useEffect, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux';
 import customAxios from '../../utils/fetchData';
 import * as tourAction from '../../redux/actions/createTourAction';
 import { Autocomplete } from '@material-ui/lab';
 import { formStyles } from '../../style';
+import { Link } from 'react-router-dom';
+import { MoreVert } from '@material-ui/icons';
 
 function ServiceItemAddForm(props) {
 
@@ -18,12 +20,13 @@ function ServiceItemAddForm(props) {
     const [province, setProvince] = useState(provinceCache);
     const [service, setService] = useState(null);
     const [services, setServices] = useState(serviceCache);
+    const [cost, setCost] = useState(0);
 
     const getServicesInit = async (province, setServices, setServiceCache) => {
         await customAxios().get(`/service/get_by_province/${province._id}`).then(res => {
             setServices(res.data.services);
             setServiceCache(res.data.services);
-        })
+        }).catch(err => console.log(err))
     }
 
     useEffect(() => {
@@ -53,14 +56,16 @@ function ServiceItemAddForm(props) {
         }
     }
 
+    const handleChangeCost = (e) => {
+        setCost(e.target.value)
+    }
 
     const handleSubmit = () => {
         if (service) {
             dispatch(tourAction.addService({
                 service: {
-                    cooperator: service.cooperator,
                     service: service,
-                    cost: service.cost
+                    cost: parseInt(cost)
                 }
             }))
             handleClose();
@@ -89,20 +94,31 @@ function ServiceItemAddForm(props) {
                 <Autocomplete
                     id="choose-province"
                     options={services}
-                    getOptionLabel={(option) => `${option?.name} - ${option?.cost}`}
+                    getOptionLabel={(option) => `${option?.name}`}
                     className={classes.autocomplete}
                     onChange={(e, value) => setService(value)}
                     value={service}
-                    renderInput={(params) => <TextField {...params} name="provinces" label="Chọn loại dịch vụ" variant="outlined" />}
+                    renderInput={(params) => <TextField {...params} name="provinces" label="Chọn dịch vụ" variant="outlined" />}
                 />
             </div>
             {
                 service &&
-                <div>
-                    <Typography>{service.cooperator.fullname}</Typography>
-                    <Typography>{service.description}</Typography>
+                <div className={classes.description}>
+                    <Typography variant='body2'>{service.description}</Typography>
                 </div>
             }
+            <div style={{ display: 'flex', justifyContent: 'center', marginTop: 30 }}>
+                <TextField
+                    label="Chi phí (nghìn VND)"
+                    variant="outlined"
+                    name="cost"
+                    id="cost"
+                    style={{ width: "100%" }}
+                    type={"number"}
+                    value={cost}
+                    onChange={handleChangeCost}
+                />
+            </div>
             <div style={{ marginTop: 10 }} className={classes.center}>
                 <Button onClick={handleSubmit}>Xong</Button>
             </div>
@@ -110,19 +126,92 @@ function ServiceItemAddForm(props) {
     )
 }
 
-function ServiceCard(props) {
-    const { service } = props;
+export function ServiceCard(props) {
+    const { service, index, isEdit } = props;
 
-    const handleBooking = () => {
+    const classes = formStyles();
+    const [anchorEl, setAnchorEl] = useState(null);
+    const [showDelete, setShowDelete] = useState(false);
 
+    const dispatch = useDispatch();
+
+    const handleShowMenu = (e) => {
+        setAnchorEl(e.currentTarget);
+    }
+
+    const handleCloseMenu = () => {
+        setAnchorEl(null);
+    }
+
+    const handleShowDelete = () => {
+        setShowDelete(true);
+    }
+
+    const handleCloseDelete = () => {
+        setShowDelete(false);
+    }
+
+    const handleDelete = () => {
+        dispatch(tourAction.deleteService({ index: index }))
     }
 
     return (
-        <Card>
-            <Typography>{service.cooperator.fullname}</Typography>
-            <Typography>{service.service.name}</Typography>
-            <Typography>{new Intl.NumberFormat().format(service.cost) * 1000} VND</Typography>
-            <Button onClick={handleBooking}>Đặt trước</Button>
+        <Card className={classes.serviceCard}>
+            <div>
+                <img src={service.service.images[0]} alt="Loading..." className={classes.imageService} />
+            </div>
+            <div className={classes.serviceInfo}>
+                {isEdit &&
+                    <div style={{ display: 'flex', justifyContent: 'right' }}>
+                        <IconButton
+                            size="small"
+                            onClick={handleShowMenu}
+                            controls={anchorEl ? "service-item-menu" : undefined}
+                        >
+                            <MoreVert />
+                        </IconButton>
+                        <Popper
+                            open={Boolean(anchorEl)}
+                            anchorEl={anchorEl}
+                            onClose={handleCloseMenu}
+                            disablePortal
+                        >
+                            <Grow
+                                style={{ transformOrigin: "center bottom" }}
+                            >
+                                <ClickAwayListener onClickAway={handleCloseMenu}>
+                                    <Paper>
+                                        <MenuList>
+                                            <MenuItem onClick={handleShowDelete}>
+                                                Xóa
+                                            </MenuItem>
+                                            <Dialog
+                                                open={showDelete}
+                                                onClose={handleCloseDelete}
+                                                aria-labelledby="alert-dialog-title"
+                                                aria-describedby="alert-dialog-description"
+                                            >
+                                                <DialogTitle id="alert-dialog-title">{"Bạn có chắc chắn muốn xóa?"}</DialogTitle>
+                                                <DialogActions>
+                                                    <Button onClick={handleCloseDelete}>
+                                                        Hủy
+                                                    </Button>
+                                                    <Button onClick={handleDelete} className={classes.delete}>
+                                                        Xóa
+                                                    </Button>
+                                                </DialogActions>
+                                            </Dialog>
+                                        </MenuList>
+                                    </Paper>
+                                </ClickAwayListener>
+                            </Grow>
+                        </Popper>
+                    </div>
+                }
+
+                <Typography variant='h6' component={Link} to={`/service/${service.service._id}`}>{service.service.name.length > 30 ? service.service.name.slice(0, 30) : service.service.name}</Typography>
+                <Typography>Chi phí: {new Intl.NumberFormat().format(service.cost * 1000)} VND</Typography>
+            </div>
         </Card>
     )
 }
@@ -155,8 +244,8 @@ export default function AddService(props) {
             </div>
             <div>
                 {
-                    services && services.map((item) => (
-                        <ServiceCard service={item} />
+                    services && services.map((item, index) => (
+                        <ServiceCard service={item} key={index} index={index} isEdit={true} />
                     ))
                 }
             </div>
