@@ -419,7 +419,7 @@ function AdminUsers(props) {
                                                         <TableCell align="left">{row.name}</TableCell>
                                                         <TableCell align="left">{row.email}</TableCell>
                                                         <TableCell align="left">{row.phone}</TableCell>
-                                                        <TableCell align="left"><Button component={Link} to="/"><Edit></Edit></Button></TableCell>
+                                                        <TableCell align="left"><Button component={Link} to="/admin/user/detail"><Edit></Edit></Button></TableCell>
                                                     </TableRow>
                                                 );
                                             })}

@@ -38,7 +38,10 @@ function AdminUserDetail(props) {
               variant="outlined"
               name="name"
               className="form-input"
-              required={true}
+              InputProps={{
+                readOnly: true,
+              }}
+              defaultValue="Test"
             ></TextField>
             <TextField
               autoComplete=""
@@ -47,6 +50,10 @@ function AdminUserDetail(props) {
               name="email"
               className="form-input"
               required={true}
+              InputProps={{
+                readOnly: true,
+              }}
+              defaultValue="Test"
             ></TextField>
             <TextField
               autoComplete=""
@@ -55,6 +62,10 @@ function AdminUserDetail(props) {
               name="phone"
               className="form-input"
               required={true}
+              InputProps={{
+                readOnly: true,
+              }}
+              defaultValue="Test"
             ></TextField>
             <TextField
               autoComplete=""

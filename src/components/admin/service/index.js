@@ -364,12 +364,12 @@ function AdminServices(props) {
                     display: "flex",
                     flexDirection: "row",
                     justifyContent: "space-between",
-                    paddingLeft: "20px",
-                    paddingRight: "20px",
+                    paddingLeft: "50px",
+                    paddingRight: "50px",
                 }}
             >
                 <div className={classes.admin_location_header_left}>
-                    <Typography variant="h4">100 Dịch vụ</Typography>
+                    <Typography variant="h4" gutterBottom>100 Dịch vụ</Typography>
                 </div>
                 <div className={classes.admin_location_header_right}>
                     <Button
@@ -380,7 +380,7 @@ function AdminServices(props) {
                         }}
                     >
                         <AddIcCall></AddIcCall>
-                        <Typography component={Link} to="admin/service/cooperate">Hợp tác</Typography>
+                        <Typography component={Link} to="/admin/service/cooperate">Hợp tác</Typography>
                     </Button>
                 </div>
             </div>
@@ -435,7 +435,7 @@ function AdminServices(props) {
                                                         <TableCell align="left">{row.provided}</TableCell>
                                                         <TableCell align="left">{row.piece}</TableCell>
                                                         <TableCell align="left">{row.type}</TableCell>
-                                                        <TableCell align="left"><Button component={Link} to="/"><Edit></Edit></Button></TableCell>
+                                                        <TableCell align="left"><Button component={Link} to="/admin/service/detail"><Edit></Edit></Button></TableCell>
                                                     </TableRow>
                                                 );
                                             })}
