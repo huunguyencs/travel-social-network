@@ -135,6 +135,19 @@ const headerStyles = makeStyles((theme) => ({
         borderRadius: attr.borderRadius.md,
         backgroundColor: color.lightgray,
         marginBlock: 3
+    },
+    notiHeader: {
+        display: 'flex',
+        justifyContent: 'space-between'
+    },
+    markAllRead: {
+        fontSize: 14,
+        cursor: "pointer",
+        color: color.blue,
+        margin: 5,
+        "&:hover": {
+            textDecorationLine: "underline"
+        }
     }
 }));
 

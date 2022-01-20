@@ -87,6 +87,15 @@ class NotifyController {
             res.status(500).json({ success: false, message: err.message })
         }
     }
+
+    async markAllRead(req, res) {
+        try {
+
+        }
+        catch (err) {
+
+        }
+    }
 }
 
 module.exports = new NotifyController;
