@@ -28,7 +28,10 @@ const serviceSchema = new mongoose.Schema({
             content: String
         }
     ],
-    cost: String,
+    cost: {
+        from: Number,
+        to: Number
+    },
     position: {
         description: String,
         lat: Number,

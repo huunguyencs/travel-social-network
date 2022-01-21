@@ -7,7 +7,7 @@ const serviceStyles = makeStyles((theme) => ({
     centerMarginTop: {
         display: 'flex',
         justifyContent: 'center',
-        marginTop: 50
+        marginBlock: 20
     },
     listContainer: {
         marginInline: 20,
@@ -34,7 +34,7 @@ const serviceStyles = makeStyles((theme) => ({
         backgroundColor: color.turquoise
     },
     reviewContainer: {
-        width: 500,
+        width: 700,
         display: "flex",
         justifyContent: "space-between",
         flexDirection: "column",
@@ -84,11 +84,7 @@ const serviceStyles = makeStyles((theme) => ({
         marginBottom: 30
     },
     contentReview: {
-        display: 'flex',
-        justifyContent: 'flex-start',
-        flexDirection: 'column',
-        minHeight: "100%",
-        height: "73vh"
+        marginInline: 20
     },
     contentContainerWrap: {
         position: "relative",
@@ -96,6 +92,12 @@ const serviceStyles = makeStyles((theme) => ({
     },
     center: {
         textAlign: 'center'
+    },
+    reviewTitle: {
+        marginLeft: 30
+    },
+    detailDes: {
+        marginInline: 30
     }
 }))
 
