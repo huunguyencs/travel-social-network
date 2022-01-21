@@ -27,7 +27,7 @@ class LocationController {
         try {
             const { name, images, province, position, information } = req.body
 
-            const location = await Locations.findOneAndUpdate({ _id: req.params.id }, {
+            const location = await Locations.findByIdAndUpdate(req.params.id, {
                 name, images, province, position, information
             }, { new: true })
 
@@ -40,7 +40,7 @@ class LocationController {
 
     async deleteLocation(req, res) {
         try {
-            const location = await Locations.findOneAndDelete({ _id: req.params.id });
+            const location = await Locations.findByIdAndDelete(req.params.id);
             if (location.posts != null) await Posts.deleteMany({ _id: { $in: location.posts } });
 
             res.json({

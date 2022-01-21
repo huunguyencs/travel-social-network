@@ -83,7 +83,7 @@ class CommentController {
                 return res.status(400).json({ success: false, message: "You liked this comment." })
             }
 
-            const newComment = await Comments.findOneAndUpdate({ _id: req.params.id }, {
+            const newComment = await Comments.findByIdAndUpdate(req.params.id, {
                 $push: {
                     likes: req.user._id
                 }
@@ -98,7 +98,7 @@ class CommentController {
     // A(req.user._id) unlike comment B(params.id)
     async unlikeComment(req, res) {
         try {
-            const newComment = await Comments.findOneAndUpdate({ _id: req.params.id }, {
+            const newComment = await Comments.findByIdAndUpdate(req.params.id, {
                 $pull: {
                     likes: req.user._id
                 }
@@ -121,13 +121,13 @@ class CommentController {
 
             switch (comment.commentType) {
                 case "post":
-                    await Posts.findOneAndUpdate({ _id: postId }, {
+                    await Posts.findByIdAndUpdate(postId, {
                         $pull: { comments: req.params.id }
                     })
                     break;
 
                 case "tour":
-                    await Tours.findOneAndUpdate({ _id: postId }, {
+                    await Tours.findByIdAndUpdate(postId, {
                         $pull: { comments: req.params.id }
                     })
                     break;

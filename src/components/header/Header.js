@@ -32,7 +32,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { headerStyles } from "../../style";
 import { logout } from "../../redux/callApi/authCall";
 import { timeAgo } from '../../utils/date';
-import { isSeenNotify } from '../../redux/callApi/notifyCall';
+import { isSeenNotify, markAllRead } from '../../redux/callApi/notifyCall';
 
 
 export default function Header(props) {
@@ -78,15 +78,21 @@ export default function Header(props) {
         // console.log(search);
     }
     const handleIsRead = (msg) => {
-        dispatch(isSeenNotify(msg, auth.token))
+        if (!isSeen(msg)) {
+            dispatch(isSeenNotify(msg, auth.token))
+        }
     }
 
     const calculateUnSeen = (notify) => {
-        return notify.filter(item => !item.seen).length;
+        return notify.filter(item => !isSeen(item)).length;
     }
 
-    const markAllRead = () => {
-        dispatch(markAllRead(auth.token));
+    const markAllReadClick = () => {
+        dispatch(markAllRead(auth.token, auth.user._id));
+    }
+
+    const isSeen = (notify) => {
+        return notify.seen.find(item => item.id_recipient === auth.user._id)?.isSeen;
     }
 
     return (
@@ -181,26 +187,18 @@ export default function Header(props) {
                                     anchorEl={toggleNoti}
                                     onClose={handleCloseNoti}
                                     disablePortal={true}
-                                // transformOrigin={{
-                                //     vertical: "top",
-                                //     horizontal: "left"
-                                // }}
-                                // anchorOrigin={{
-                                //     vertical: "bottom",
-                                //     horizontal: "center",
-                                // }}
                                 >
                                     <Grow className={classes.grow} >
                                         <ClickAwayListener onClickAway={handleCloseNoti}>
                                             <Paper className={classes.paperNoti}>
                                                 <div className={classes.notiHeader}>
                                                     <Typography className={classes.notiTitle} variant="h5">Thông báo</Typography>
-                                                    <Typography onClick={markAllRead} className={classes.markAllRead}>Đánh dấu tất cả đã đọc</Typography>
+                                                    <Typography onClick={markAllReadClick} className={classes.markAllRead}>Đánh dấu tất cả đã đọc</Typography>
                                                 </div>
                                                 <MenuList>
                                                     {notify.data.slice(0, 5).map((item) => (
 
-                                                        <MenuItem key={item._id} className={item.seen ? classes.notiItem : classes.unSeen} onClick={(e) => {
+                                                        <MenuItem key={item._id} className={isSeen(item) ? classes.notiItem : classes.unSeen} onClick={(e) => {
                                                             handleCloseNoti(e);
                                                             history.push(`${item.url}`)
                                                             handleIsRead(item)

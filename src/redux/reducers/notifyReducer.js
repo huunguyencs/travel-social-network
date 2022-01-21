@@ -38,7 +38,10 @@ const notifyReducer = (state = INIT_STATE, action) => {
                 ...state,
                 data: state.data.map(item => ({
                     ...item,
-                    seen: true
+                    seen: item.seen.map(item => item.id_recipient === action.payload.userId ? {
+                        ...item,
+                        seen: true
+                    } : item)
                 }))
             }
         default:

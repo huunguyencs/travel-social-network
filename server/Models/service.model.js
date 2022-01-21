@@ -11,6 +11,7 @@ const serviceSchema = new mongoose.Schema({
         ref: 'users'
     },
     description: String,
+    attribute: [String],
     type: {
         type: String,
         required: true
@@ -27,6 +28,12 @@ const serviceSchema = new mongoose.Schema({
             content: String
         }
     ],
+    cost: String,
+    position: {
+        description: String,
+        lat: Number,
+        lon: Number
+    },
     images: [{ type: String }],
     discount: { type: String }
 }, {

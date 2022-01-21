@@ -24,7 +24,7 @@ function ServiceItemAddForm(props) {
     const [cost, setCost] = useState(0);
 
     const getServicesInit = async (province, setServices, setServiceCache) => {
-        await customAxios().get(`/service/get_by_province/${province._id}`).then(res => {
+        await customAxios().get(`/province/service/${province._id}`).then(res => {
             setServices(res.data.services);
             setServiceCache(res.data.services);
         }).catch(err => console.log(err))
@@ -42,7 +42,7 @@ function ServiceItemAddForm(props) {
         if (value) {
             if (!provinceCache || value._id !== provinceCache._id) {
                 setProvinceCache(value);
-                await customAxios().get(`/service/get_by_province/${value._id}`).then(res => {
+                await customAxios().get(`/province/service/${value._id}`).then(res => {
                     setServices(res.data.services);
                     setServiceCache(res.data.services);
                 })

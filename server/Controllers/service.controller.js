@@ -37,7 +37,7 @@ class ServiceController {
 
             const { name, description, type, province, images, cost, discount } = req.body;
 
-            const service = await Services.findOneAndUpdate({ _id: req.params.id, cooperator: req.user.id }, {
+            const service = await Services.findOneAndUpdate({ _id: req.params.id, cooperator: req.user._id }, {
                 name, description, type, province, images, cost, discount
             }, { new: true })
 
@@ -50,7 +50,7 @@ class ServiceController {
 
     async deleteService(req, res) {
         try {
-            await Services.findOneAndDelete({ _id: req.params.id, cooperator: req.user.id });
+            await Services.findOneAndDelete({ _id: req.params.id, cooperator: req.user._id });
 
 
             res.json({
@@ -88,16 +88,6 @@ class ServiceController {
         }
     }
 
-    async getServiceByProvince(req, res) {
-        try {
-            const services = await Services.find({ province: mongoose.Types.ObjectId(req.params.id) });
-            res.json({ success: true, message: "", services })
-        }
-        catch (err) {
-            res.status(500).json({ success: false, message: err.message })
-        }
-    }
-
     async getServiceByCoop(req, res) {
         try {
             const services = await Services.find({ cooperator: req.params.id }, "-rate").populate("province", "name fullname");
@@ -129,7 +119,7 @@ class ServiceController {
             const { rate, content } = req.body;
             await Services.findByIdAndUpdate(req.params.id, {
                 $push: {
-                    rate: { rate, content, userId: req.user.id }
+                    rate: { rate, content, userId: req.user._id }
                 }
             }, { new: true })
 

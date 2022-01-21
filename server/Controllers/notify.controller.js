@@ -8,8 +8,15 @@ class NotifyController {
 
             if (recipients.includes(req.user._id.toString())) return;
 
+            const seen = recipients.map(item => {
+                return {
+                    id_recipient: item,
+                    isSeen: false
+                }
+            })
+
             const newNotify = new Notifies({
-                id, user: req.user._id, recipients, url, content, text, image
+                id, user: req.user._id, recipients, url, content, text, image, seen
             })
             await newNotify.save();
             const user = await Users.findById(req.user._id)
@@ -53,6 +60,8 @@ class NotifyController {
         try {
             const { offset, limit } = req.query;
 
+            // const notifies = await Notifies.find({ recipients: req.user._id })
+
             const notifies = await Notifies.find({ recipients: req.user._id })
                 .skip(parseInt(offset))
                 .limit(parseInt(limit))
@@ -73,11 +82,13 @@ class NotifyController {
 
     async isSeenNotify(req, res) {
         try {
-            const notify = await Notifies.findOneAndUpdate({ _id: req.params.id }, {
-                seen: true
+            const notify = await Notifies.findOneAndUpdate({ _id: req.params.id, seen: { $elemMatch: { id_recipient: req.user._id } } }, {
+                $set: {
+                    'seen.$.isSeen': true
+                }
             }, { new: true })
 
-            return res.json({
+            res.json({
                 success: true,
                 message: "Is Seen notify success",
                 notify
@@ -90,10 +101,19 @@ class NotifyController {
 
     async markAllRead(req, res) {
         try {
-
+            await Notifies.updateMany({ recipients: req.user._id, seen: { $elemMatch: { id_recipient: req.user._id } } }, {
+                $set: {
+                    'seen.$.isSeen': true
+                }
+            })
+            res.json({
+                success: true,
+                message: "seen all notify success",
+            })
         }
         catch (err) {
-
+            console.log(err)
+            res.status(500).json({ success: false, message: err.message })
         }
     }
 }

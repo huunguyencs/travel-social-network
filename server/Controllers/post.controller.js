@@ -134,7 +134,7 @@ class PostController {
     async updatePost(req, res) {
         try {
             const { content, images, rate, hashtags, oldRate, locationId } = req.body;
-            const post = await Posts.findOneAndUpdate({ _id: req.params.id, userId: req.user.id }, {
+            const post = await Posts.findOneAndUpdate({ _id: req.params.id, userId: req.user._id }, {
                 content, images, rate, hashtags
             }, { new: true })
                 .populate("userId likes", "username fullname avatar")
@@ -372,7 +372,7 @@ class PostController {
     //A(user._id) unlike post B(params.id)
     async unlikePost(req, res) {
         try {
-            const post = await Posts.findOneAndUpdate({ _id: req.params.id }, {
+            const post = await Posts.findByIdAndUpdate(req.params.id, {
                 $pull: {
                     likes: req.user._id
                 }

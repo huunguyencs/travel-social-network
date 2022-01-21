@@ -32,19 +32,17 @@ export const getNotifies = (token) => async (dispatch) => {
 
 export const isSeenNotify = (data, token) => async (dispatch) => {
     try {
-        if (!data.seen) {
-            const res = await customAxios(token).patch(`/notify/is_seen_notify/${data._id}`);
-            dispatch(notifyAction.updateNotify(res.data.notify))
-        }
+        const res = await customAxios(token).patch(`/notify/is_seen_notify/${data._id}`);
+        dispatch(notifyAction.updateNotify(res.data.notify))
     } catch (error) {
         console.log(error);
     }
 }
 
-export const markAllRead = (token) => async (dispatch) => {
+export const markAllRead = (token, id) => async (dispatch) => {
     try {
-        await customAxios(token).patch(`/mark_all_read`);
-        dispatch(notifyAction.markAllRead())
+        await customAxios(token).patch(`/notify/mark_all_read`);
+        dispatch(notifyAction.markAllRead({ userId: id }))
     } catch (error) {
         console.log(error)
     }

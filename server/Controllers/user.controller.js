@@ -166,7 +166,7 @@ class UserController {
         try {
             const { username, fullname, email, phone, birthday, gender } = req.body;
 
-            const user = await Users.findById(req.user.id);
+            const user = await Users.findById(req.user._id);
 
             if (user.username !== username) {
                 const findUsername = await Users.find({ username: username });
@@ -217,8 +217,8 @@ class UserController {
     async follow(req, res) {
         try {
 
-            const user = await Users.find({ _id: req.params.id, followers: req.user._id })
-            if (user.length > 0) {
+            const user = await Users.findOne({ _id: req.params.id, followers: req.user._id })
+            if (user) {
                 return res.status(400).json({ success: false, message: "Bạn đã theo dõi người dùng này!" });
             }
             //cập nhập ds follower ở B
@@ -227,7 +227,7 @@ class UserController {
             }, { new: true }).populate("followers", "username fullname avatar followings followers")
 
             //cập nhập ds following ở A
-            const followings = await Users.findOneAndUpdate({ _id: req.user._id }, {
+            const followings = await Users.findByIdAndUpdate(req.user._id, {
                 $push: { followings: req.params.id }
             }, { new: true }).populate("followings", "username fullname avatar followings followers")
 
@@ -247,12 +247,12 @@ class UserController {
     async unfollow(req, res) {
         try {
             // cập nhập ds ở B
-            const followers = await Users.findOneAndUpdate({ _id: req.params.id }, {
+            const followers = await Users.findByIdAndUpdate(req.params.id, {
                 $pull: { followers: req.user._id }
             }, { new: true }).populate("followers", "username fullname avatar followings followers")
 
             //cập nhập ds ở A
-            const followings = await Users.findOneAndUpdate({ _id: req.user._id }, {
+            const followings = await Users.findByIdAndUpdate(req.user._id, {
                 $pull: { followings: req.params.id }
             }, { new: true }).populate("followings", "username fullname avatar followings followers")
 

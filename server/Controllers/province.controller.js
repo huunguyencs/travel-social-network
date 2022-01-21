@@ -30,7 +30,7 @@ class ProvinceController {
         try {
             const { name, information, image } = req.body
 
-            const province = await Provinces.findOneAndUpdate({ _id: req.params.id }, {
+            const province = await Provinces.findByIdAndUpdate(req.params.id, {
                 name, information, image
             }, { new: true })
 
@@ -43,7 +43,7 @@ class ProvinceController {
 
     async deleteProvince(req, res) {
         try {
-            await Provinces.findOneAndDelete({ _id: req.params.id });
+            await Provinces.findByIdAndDelete(req.params.id);
 
             res.json({
                 success: true, message: "Delete province success"
@@ -105,7 +105,7 @@ class ProvinceController {
 
     async getServicesProvince(req, res) {
         try {
-            const services = await Services.find({ provinces: req.params.id });
+            const services = await Services.find({ province: req.params.id });
             res.json({
                 success: true,
                 message: "Success",

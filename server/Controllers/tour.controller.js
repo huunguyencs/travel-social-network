@@ -86,7 +86,7 @@ class TourController {
         try {
             const { content, name, isPublic, image, hashtags, services, tour, cost } = req.body;
 
-            const newTour = await Tours.findOneAndUpdate({ _id: req.params.id, userId: req.user.id }, {
+            const newTour = await Tours.findOneAndUpdate({ _id: req.params.id, userId: req.user._id }, {
                 content, image, name, hashtags, isPublic, services, cost
             }, { new: true }).populate("userId joinIds likes", "username fullname avatar")
                 .populate("tour", "date")
@@ -131,7 +131,7 @@ class TourController {
                 })
                 tour.forEach(async function (element) {
                     if (element._id)
-                        await TourDates.findOneAndUpdate({ _id: element._id }, { date: element.date, locations: element.locations }, { new: true })
+                        await TourDates.findByIdAndUpdate(element._id, { date: element.date, locations: element.locations }, { new: true })
                     else {
                         let newTourDate = new TourDates({
                             date: element.date, locations: element.locations
@@ -160,12 +160,12 @@ class TourController {
     //A(user._id) like tour B(params.id)
     async likeTour(req, res) {
         try {
-            var tour = await Tours.find({ _id: req.params.id, likes: req.user._id });
-            if (tour.length > 0) {
+            var tour = await Tours.findOne({ _id: req.params.id, likes: req.user._id });
+            if (tour) {
                 return res.status(400).json({ success: false, message: "You liked this tour." })
             }
 
-            tour = await Tours.findOneAndUpdate({ _id: req.params.id }, {
+            tour = await Tours.findByIdAndUpdate(req.params.id, {
                 $push: {
                     likes: req.user._id
                 }
@@ -184,7 +184,7 @@ class TourController {
     //A(user._id) unlike tour B(params.id)
     async unlikeTour(req, res) {
         try {
-            const tour = await Tours.findOneAndUpdate({ _id: req.params.id }, {
+            const tour = await Tours.findByIdAndUpdate(req.params.id, {
                 $pull: {
                     likes: req.user._id
                 }
@@ -350,7 +350,7 @@ class TourController {
                 return res.status(400).json({ success: false, message: "You joined this tour." })
             }
 
-            tour = await Tours.findOneAndUpdate({ _id: req.params.id }, {
+            tour = await Tours.findByIdAndUpdate(req.params.id, {
                 $push: {
                     joinIds: req.user._id
                 }
