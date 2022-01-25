@@ -65,7 +65,6 @@ class NotifyController {
             const notifies = await Notifies.find({ recipients: req.user._id })
                 .skip(parseInt(offset))
                 .limit(parseInt(limit))
-                .sort("seen")
                 .sort('-createdAt')
                 .populate("user", "fullname avatar")
 

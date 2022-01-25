@@ -159,7 +159,7 @@ export default function Header(props) {
                                                             </ListItemIcon>
                                                             <Typography variant="inherit">Trang cá nhân</Typography>
                                                         </MenuItem>
-                                                        <MenuItem aria-label="change-info" onClick={handleCloseUser} component={Link} to={'/change_info'}>
+                                                        <MenuItem aria-label="change-info" onClick={handleCloseUser} component={Link} to={'/changeinfo'}>
                                                             <ListItemIcon>
                                                                 <Update fontSize="small" />
                                                             </ListItemIcon>

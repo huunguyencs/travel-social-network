@@ -201,7 +201,7 @@ export default function Profile_Avatar(props) {
                       Nhắn tin
                     </Button>
                   </> :
-                  <Button startIcon={<Update />} className={classes.button} component={Link} to='/change_info'>Thay đổi thông tin</Button>
+                  <Button startIcon={<Update />} className={classes.button} component={Link} to='/changeinfo'>Thay đổi thông tin</Button>
 
               }
             </div>

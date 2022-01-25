@@ -80,7 +80,8 @@ const profileStyles = makeStyles((theme) => ({
     height: "100%",
     borderRadius: "50%",
     objectFit: "cover",
-    border: "5px solid #fff"
+    border: "5px solid #fff",
+    backgroundColor: color.white,
   },
   change_form: {
     width: "100%",

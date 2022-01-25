@@ -94,7 +94,7 @@ export default function MapCard(props) {
                 position &&
                 <GoogleMapReact
                     bootstrapURLKeys={{ key: KEY }}
-                    defaultCenter={{ lat: 14.489055527436275, lng: 107.96608963227854 }}
+                    defaultCenter={{ lat: 14.5, lng: 108 }}
                     defaultZoom={8}
                     center={center}
                     zoom={zoom}

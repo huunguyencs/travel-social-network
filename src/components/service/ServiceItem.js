@@ -62,6 +62,43 @@ export function ReviewArea(props) {
     )
 }
 
+function DetailService(props) {
+    const { attribute, type } = props;
+    return (
+        <>
+            <Typography>Phù hợp:</Typography>
+            <Typography>
+                {attribute.conform}
+            </Typography>
+            <Typography>Đặc trưng:</Typography>
+            <Typography>
+                {attribute.featured}
+            </Typography>
+            <Typography>{type === "nhahang" ? "Menu:" : type === "khachsan" ? "Phòng:" : type === "dichuyen" ? "Các loại phương tiện:" : "Các loại dịch vụ"}</Typography>
+            <ul>
+                {attribute.menu.map((item, index) => (
+                    <li key={index}>{item}</li>
+                ))}
+            </ul>
+            <Typography>Tiện nghi:</Typography>
+            <Typography>{attribute.convenient}</Typography>
+            <Typography>Cách đặt trước:</Typography>
+            <Typography>{attribute.book}</Typography>
+            <Typography>Thời gian mở cửa:</Typography>
+            <Typography>{attribute.time}</Typography>
+            <Typography>Các lưu ý:</Typography>
+            <Typography>{attribute.note}</Typography>
+            <Typography>Thông tin thêm:</Typography>
+
+            {attribute.space && <Typography>Không gian: {attribute.space}</Typography>}
+            {attribute.park && <Typography>Chỗ đỗ xe: {attribute.park}</Typography>}
+            {attribute.shuttle && <Typography>Đưa đón: {attribute.shuttle}</Typography>}
+            {attribute.pickup && <Typography>Điểm đón: {attribute.pickup}</Typography>}
+            {attribute.stop && <Typography>Đưa trả: {attribute.stop}</Typography>}
+        </>
+    )
+}
+
 
 function ReviewService(props) {
 
@@ -95,10 +132,7 @@ function ServiceDetail(props) {
             </div>
             <div className={classes.contentContainerWrap}>
                 <div className={classes.detailDes}>
-                    <Typography>Địa chỉ: {service.position.description}</Typography>
-                    <Typography>Từ {new Intl.NumberFormat().format(service.cost.from * 1000)} đến {new Intl.NumberFormat().format(service.cost.to * 1000)} VND</Typography>
-
-                    <Typography>Mô tả chi tiết</Typography>
+                    <DetailService attribute={service.attribute} type={service.type} />
                     <div style={{ margin: 20 }}>
                         <MapCard position={service.position} zoom={12} name={service.name} height={300} />
                     </div>

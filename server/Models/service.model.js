@@ -11,7 +11,24 @@ const serviceSchema = new mongoose.Schema({
         ref: 'users'
     },
     description: String,
-    attribute: [String],
+    attribute: {
+        conform: String, // Phù hợp
+        featured: String, // Đặc trưng
+        menu: [String],  // Menu
+        more_info: [String], // Thông tin thêm
+        park: String, // Chỗ đỗ xe
+        space: String, // không gian
+        convenient: String, // Tiện nghi
+        shuttle: String, // Đưa đón
+        // room: [String], // Phòng
+        // vehicle: [String], // Loại phương tiện
+        pickup: [String], // Điểm đón
+        stop: [String], // Điểm trả
+        book: String, // cách đặt trước
+        note: String, // các lưu ý
+        time: String, // Thời gian mở cửa
+    },
+    contact: String,
     type: {
         type: String,
         required: true
@@ -28,17 +45,14 @@ const serviceSchema = new mongoose.Schema({
             content: String
         }
     ],
-    cost: {
-        from: Number,
-        to: Number
-    },
+    cost: String,
     position: {
         description: String,
         lat: Number,
         lon: Number
     },
     images: [{ type: String }],
-    discount: { type: String }
+    discount: [{ type: String }]
 }, {
     timestamps: true
 })

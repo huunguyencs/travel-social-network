@@ -14,6 +14,44 @@ const inputStyles = makeStyles((theme) => ({
         paddingInline: 5,
         width: "100%",
     },
+    addImageContainer: {
+        display: 'flex',
+        overflow: 'auto'
+    },
+    item: {
+        // width: 200,
+        // height: 300,
+        margin: 20
+    },
+    addArea: {
+        width: 250,
+        height: 200,
+        margin: 20,
+        border: '1px dashed #000',
+        display: 'flex',
+        justifyContent: 'center',
+        alignItems: 'center',
+        cursor: 'pointer',
+        borderRadius: 5
+    },
+    addAreaHover: {
+        width: 250,
+        height: 200,
+        margin: 20,
+        border: '2px dashed #555',
+        display: 'flex',
+        justifyContent: 'center',
+        alignItems: 'center',
+        cursor: 'pointer',
+    },
+    imageItem: {
+        position: 'relative'
+    },
+    removeButton: {
+        position: 'absolute',
+        top: 5,
+        right: 5,
+    },
 }))
 
 export default inputStyles;
