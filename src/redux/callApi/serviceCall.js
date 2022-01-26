@@ -1,12 +1,13 @@
 import customAxios from '../../utils/fetchData';
 import * as serviceAction from '../actions/serviceAction';
 import * as alertAction from '../actions/alertAction';
+import * as imageUtils from '../../utils/uploadImage'
 
-export const getRate = (id, next, error) => async (dispatch) => {
+export const getDetail = (id, next, error) => async (dispatch) => {
     try {
-        const res = await customAxios().get(`/service/get_rate/${id}`);
+        const res = await customAxios().get(`/service/get_detail/${id}`);
         console.log(res);
-        dispatch(serviceAction.getRate({ rate: res.data.rate, id: id }))
+        dispatch(serviceAction.getDetail({ rate: res.data.rate, attribute: res.data.attribute, id: id }))
         next();
     } catch (err) {
         error();
@@ -31,6 +32,20 @@ export const reviewService = (id, auth, rate, content) => async (dispatch) => {
         dispatch(serviceAction.reviewService({ id: id, review: newReview, star: res.data.star }))
 
     } catch (err) {
+        dispatch(alertAction.error({ message: "Có lỗi xảy ra!" }))
+    }
+}
+
+export const createService = (token, data, images_data, next) => async (dispatch) => {
+    try {
+        let images = await imageUtils.uploadImages(images_data);
+        await customAxios(token).post('/service/create_service', {
+            ...data,
+            images: images
+        })
+        next();
+    }
+    catch (err) {
         dispatch(alertAction.error({ message: "Có lỗi xảy ra!" }))
     }
 }

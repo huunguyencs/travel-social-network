@@ -1,11 +1,11 @@
-import { Avatar, Button, Card, CardContent, CardMedia, CircularProgress, Drawer, IconButton, InputBase, Typography } from '@material-ui/core'
+import { Avatar, Button, Card, CardContent, CardMedia, Chip, CircularProgress, Drawer, IconButton, InputBase, Typography } from '@material-ui/core'
 import { Rating } from '@material-ui/lab';
 import React, { useEffect, useState } from 'react'
 import { serviceStyles } from '../../style';
 import { getStar } from '../../utils/utils';
 import { SeeMoreText } from '../seeMoreText';
 import ImageList from '../modal/ImageList';
-import { getRate, reviewService } from '../../redux/callApi/serviceCall';
+import { getDetail, reviewService } from '../../redux/callApi/serviceCall';
 import { useDispatch, useSelector } from 'react-redux';
 import EmojiPicker from '../input/emojiPicker';
 import { Send } from '@material-ui/icons';
@@ -66,36 +66,37 @@ function DetailService(props) {
     const { attribute, type } = props;
     return (
         <>
-            <Typography>Phù hợp:</Typography>
-            <Typography>
-                {attribute.conform}
-            </Typography>
-            <Typography>Đặc trưng:</Typography>
-            <Typography>
-                {attribute.featured}
-            </Typography>
-            <Typography>{type === "nhahang" ? "Menu:" : type === "khachsan" ? "Phòng:" : type === "dichuyen" ? "Các loại phương tiện:" : "Các loại dịch vụ"}</Typography>
-            <ul>
-                {attribute.menu.map((item, index) => (
-                    <li key={index}>{item}</li>
-                ))}
-            </ul>
-            <Typography>Tiện nghi:</Typography>
-            <Typography>{attribute.convenient}</Typography>
-            <Typography>Cách đặt trước:</Typography>
-            <Typography>{attribute.book}</Typography>
-            <Typography>Thời gian mở cửa:</Typography>
-            <Typography>{attribute.time}</Typography>
-            <Typography>Các lưu ý:</Typography>
-            <Typography>{attribute.note}</Typography>
-            <Typography>Thông tin thêm:</Typography>
-
-            {attribute.space && <Typography>Không gian: {attribute.space}</Typography>}
-            {attribute.park && <Typography>Chỗ đỗ xe: {attribute.park}</Typography>}
-            {attribute.shuttle && <Typography>Đưa đón: {attribute.shuttle}</Typography>}
-            {attribute.pickup && <Typography>Điểm đón: {attribute.pickup}</Typography>}
-            {attribute.stop && <Typography>Đưa trả: {attribute.stop}</Typography>}
+            {attribute &&
+                <>
+                    <Typography>Phù hợp: {attribute.conform}</Typography>
+                    <Typography>Đặc trưng: {attribute.featured}</Typography>
+                    <Typography>{type === "nhahang" ? "Menu:" : type === "khachsan" ? "Phòng:" : type === "dichuyen" ? "Các loại phương tiện:" : "Các loại dịch vụ"}</Typography>
+                    <ul style={{ marginLeft: 20, listStyleType: 'circle' }}>
+                        {attribute.menu.map((item, index) => (
+                            <li key={index}>{item}</li>
+                        ))}
+                    </ul>
+                    <Typography>Tiện nghi:</Typography>
+                    <Typography>{attribute.convenient}</Typography>
+                    <Typography>Cách đặt trước:</Typography>
+                    <Typography>{attribute.book}</Typography>
+                    <Typography>Thời gian mở cửa:</Typography>
+                    <Typography>{attribute.time}</Typography>
+                    <Typography>Các lưu ý:</Typography>
+                    <Typography>{attribute.note}</Typography>
+                    <Typography>Thông tin thêm:</Typography>
+                    {attribute.more_info.map(item => (
+                        <Chip key={item} label={item} variant='outlined' />
+                    ))}
+                    {attribute.space && <Typography>Không gian: {attribute.space}</Typography>}
+                    {attribute.park && <Typography>Chỗ đỗ xe: {attribute.park}</Typography>}
+                    {attribute.shuttle && <Typography>Đưa đón: {attribute.shuttle}</Typography>}
+                    {attribute.pickup && <Typography>Điểm đón: {attribute.pickup}</Typography>}
+                    {attribute.stop && <Typography>Đưa trả: {attribute.stop}</Typography>}
+                </>
+            }
         </>
+
     )
 }
 
@@ -122,7 +123,7 @@ function ReviewService(props) {
 
 function ServiceDetail(props) {
 
-    const { service, state, getServiceRate } = props;
+    const { service, state, getServiceDetail } = props;
     const classes = serviceStyles();
 
     return (
@@ -155,7 +156,7 @@ function ServiceDetail(props) {
                             </div> :
                             state.error ?
                                 <div className={classes.centerMarginTop}>
-                                    <Button onClick={getServiceRate(service)}>Thử lại</Button>
+                                    <Button onClick={getServiceDetail(service)}>Thử lại</Button>
                                 </div> :
                                 service.rate && (
                                     service.rate.length === 0 ?
@@ -196,12 +197,12 @@ export default function ServiceItem(props) {
         setOpen(open);
     }
 
-    const getServiceRate = (service, dispatch) => {
+    const getServiceDetail = (service, dispatch) => {
         setState({
             loading: true,
             error: false
         })
-        dispatch(getRate(service._id, () => {
+        dispatch(getDetail(service._id, () => {
             setState({
                 loading: false,
                 error: false
@@ -217,7 +218,7 @@ export default function ServiceItem(props) {
 
     useEffect(() => {
         if (open && !service.rate) {
-            getServiceRate(service, dispatch);
+            getServiceDetail(service, dispatch);
         }
     }, [open, service, dispatch])
 
@@ -228,20 +229,24 @@ export default function ServiceItem(props) {
         <>
             <Card className={classes.container} id={service._id}>
                 <CardMedia>
-                    <ImageList imageList={service.images} show2Image={true} />
+                    <ImageList imageList={service.images} show2Image={false} />
                 </CardMedia>
                 <div>
                     <CardContent>
                         <Typography variant='h5' className={classes.serviceName}>
                             {service.name}
                         </Typography>
-                        <Typography>{service.position.description}</Typography>
-                        <Typography>Từ {new Intl.NumberFormat().format(service.cost.from * 1000)} đến {new Intl.NumberFormat().format(service.cost.to * 1000)} VND</Typography>
+                        <Typography>{service.andress}</Typography>
+                        <Typography>{service.cost}</Typography>
                         <SeeMoreText maxText={100} text={service.description} variant={'body1'} />
                         <div className={classes.rate}>
                             <Rating name="read-only" value={getStar(service.star)} readOnly size="medium" />
                         </div>
-                        <Typography className={classes.discount}>{service.discount}</Typography>
+                        <ul className={classes.discount}>
+                            {service.discount.map(item => (
+                                <li key={item}>{item}</li>
+                            ))}
+                        </ul>
                     </CardContent>
                     <div>
                         <Button className={classes.seeReview} onClick={toggleDrawer(true)}>Xem chi tiết</Button>
@@ -253,7 +258,7 @@ export default function ServiceItem(props) {
                 open={open}
                 onClose={toggleDrawer(false)}
             >
-                <ServiceDetail service={service} state={state} getServiceRate={getServiceRate} />
+                <ServiceDetail service={service} state={state} getServiceDetail={getServiceDetail} />
             </Drawer>
         </>
     )

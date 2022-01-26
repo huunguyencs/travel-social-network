@@ -2,9 +2,11 @@ import { Button, Container, Step, StepLabel, Stepper, Typography } from '@materi
 import { CheckCircle } from '@material-ui/icons';
 import React, { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
+import { useHistory } from 'react-router-dom';
 
 import { BasicServiceInfo, DetailServiceInfo } from '../components/service/AddService';
 import { getProvinces } from '../redux/callApi/locationCall';
+import { createService } from '../redux/callApi/serviceCall';
 import { addServiceStyles } from '../style';
 import NotFound from './404';
 
@@ -47,6 +49,7 @@ export default function AddServicePage() {
 
     const { auth, location } = useSelector(state => state);
     const dispatch = useDispatch();
+    const history = useHistory();
 
     const [images, setImages] = useState([]);
     const [context, setContext] = useState({
@@ -57,6 +60,7 @@ export default function AddServicePage() {
         cost: "",
         andress: "",
         province: null,
+        position: null
     });
     const [detail, setDetail] = useState({
         conform: "",
@@ -90,7 +94,16 @@ export default function AddServicePage() {
     }
 
     const handleSubmit = () => {
-
+        if (images.length === 0) {
+            setError("Cần thêm ít nhất 1 ảnh");
+            return;
+        }
+        dispatch(createService(auth.token, {
+            ...context,
+            attribute: { ...detail }
+        }, images, () => {
+            history.push(`/u/${auth.user._id}`)
+        }))
     }
 
 

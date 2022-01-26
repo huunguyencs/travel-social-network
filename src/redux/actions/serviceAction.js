@@ -1,8 +1,8 @@
 import * as USER_TYPES from '../constants/userConstant';
 
-export const getRate = (props) => {
+export const getDetail = (props) => {
     return {
-        type: USER_TYPES.GET_RATE,
+        type: USER_TYPES.GET_DETAIL,
         payload: props
     }
 }

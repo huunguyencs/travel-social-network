@@ -6,7 +6,7 @@ const auth = require('../Middlewares/auth')
 router.post('/create_service', auth, ServiceController.createService);
 router.get('/services', ServiceController.getServices);
 router.get('/get_by_coop/:id', ServiceController.getServiceByCoop)
-router.get('/get_rate/:id', ServiceController.getServiceRate)
+router.get('/get_detail/:id', ServiceController.getServiceDetail)
 
 // router.get('/user_services/:id', ServiceController.getUserService);
 router.post('/review/:id', auth, ServiceController.reviewService)

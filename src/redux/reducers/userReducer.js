@@ -29,12 +29,13 @@ const userReducer = (state = INIT_STATE, action) => {
                 services: action.payload.services
             }
         }
-        case USER_TYPES.GET_RATE: {
+        case USER_TYPES.GET_DETAIL: {
             return {
                 ...state,
                 services: state.services.map(item => item._id === action.payload.id ? {
                     ...item,
-                    rate: action.payload.rate
+                    rate: action.payload.rate,
+                    attribute: action.payload.attribute
                 } : item)
             }
         }

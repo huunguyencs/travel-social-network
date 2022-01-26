@@ -17,7 +17,7 @@ export default function MapPicker(props) {
     const changePosition = (e) => {
         setPosition({
             lat: e.lat,
-            lng: e.lng
+            lon: e.lng
         })
         setState({
             zoom: 10,

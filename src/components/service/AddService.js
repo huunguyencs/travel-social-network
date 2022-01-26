@@ -133,7 +133,7 @@ export function BasicServiceInfo(props) {
 
             />
             <div style={{ height: 400 }}>
-                {/* <MapPicker setPosition={setPosition} /> */}
+                <MapPicker setPosition={setPosition} />
             </div>
             <Autocomplete
                 id="province"
@@ -288,7 +288,7 @@ export function DetailServiceInfo(props) {
                 multiple
                 className={classes.fullField}
                 id="more-info"
-                name="more-info"
+                name="more_info"
                 options={MORE_INFO.map(option => option.label)}
                 onChange={handleChange}
                 filterSelectedOptions

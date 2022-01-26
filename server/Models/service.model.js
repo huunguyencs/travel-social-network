@@ -46,8 +46,8 @@ const serviceSchema = new mongoose.Schema({
         }
     ],
     cost: String,
+    andress: String,
     position: {
-        description: String,
         lat: Number,
         lon: Number
     },

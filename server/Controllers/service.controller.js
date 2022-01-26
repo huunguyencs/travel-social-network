@@ -10,10 +10,10 @@ class ServiceController {
                 return;
             }
 
-            const { name, description, type, provinces, images, discount } = req.body
+            const { name, description, attribute, contact, type, province, cost, andress, position, images, discount } = req.body
 
             const newService = new Services({
-                cooperator: req.user._id, name, description, type, provinces, images, discount
+                cooperator: req.user._id, name, description, attribute, contact, type, province, cost, andress, position, images, discount
             })
 
             await newService.save()
@@ -90,16 +90,16 @@ class ServiceController {
 
     async getServiceByCoop(req, res) {
         try {
-            const services = await Services.find({ cooperator: req.params.id }, "-rate").populate("province", "name fullname");
+            const services = await Services.find({ cooperator: req.params.id }, "-rate -attribute").populate("province", "name fullname");
             res.json({ success: true, message: "", services })
         } catch (err) {
             res.status(500).json({ success: false, message: err.message })
         }
     }
 
-    async getServiceRate(req, res) {
+    async getServiceDetail(req, res) {
         try {
-            const services = await Services.findById(req.params.id, "rate")
+            const service = await Services.findById(req.params.id, "rate attribute")
                 .populate({
                     path: "rate",
                     populate: {
@@ -107,7 +107,7 @@ class ServiceController {
                         select: "name fullname avatar"
                     }
                 })
-            res.json({ success: true, message: "", rate: services.rate });
+            res.json({ success: true, message: "", rate: service.rate, attribute: service.attribute });
         }
         catch (err) {
             res.status(500).json({ success: false, message: err.message })
