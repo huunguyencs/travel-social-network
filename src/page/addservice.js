@@ -6,6 +6,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { BasicServiceInfo, DetailServiceInfo } from '../components/service/AddService';
 import { getProvinces } from '../redux/callApi/locationCall';
 import { addServiceStyles } from '../style';
+import NotFound from './404';
 
 function getStep() {
     return ["Thông tin cơ bản", "Thông tin chi tiết", "Hoàn thành"]
@@ -18,7 +19,7 @@ function Complele(props) {
                 <CheckCircle style={{ fontSize: 100, color: "#777" }} />
             </div>
             <div style={{ display: 'flex', justifyContent: 'center' }}>
-                <Typography>Nhấn HOÀN TẤC để kết thúc</Typography>
+                <Typography>Nhấn HOÀN TẤT để kết thúc</Typography>
             </div>
         </div>
 
@@ -42,14 +43,15 @@ function getStepContent(step, props) {
 export default function AddServicePage() {
 
     const classes = addServiceStyles();
+    const [error, setError] = useState('');
 
-    const { location } = useSelector(state => state);
+    const { auth, location } = useSelector(state => state);
     const dispatch = useDispatch();
 
     const [images, setImages] = useState([]);
     const [context, setContext] = useState({
         name: "",
-        type: "",
+        type: null,
         description: "",
         contact: "",
         cost: "",
@@ -59,6 +61,17 @@ export default function AddServicePage() {
     const [detail, setDetail] = useState({
         conform: "",
         featured: "",
+        more_info: [],
+        park: "",
+        space: "",
+        convenient: "",
+        shuttle: "",
+        pickup: [],
+        stop: [],
+        book: "",
+        note: "",
+        time: "",
+        menu: []
     })
     const [activeStep, setActiveStep] = useState(0);
     const step = getStep();
@@ -68,6 +81,11 @@ export default function AddServicePage() {
     }
 
     const handleNext = () => {
+        if (context.name === '' || !context.type || !context.province) {
+            setError("Vui lòng điền các thông tin cần thiết");
+            return
+        };
+        setError("");
         setActiveStep(prev => prev + 1)
     }
 
@@ -87,49 +105,55 @@ export default function AddServicePage() {
     }, [])
 
     return (
-
-        <Container className={classes.root}>
-            <Stepper activeStep={activeStep}>
-                {step.map((label) => (
-                    <Step key={label}>
-                        <StepLabel>{label}</StepLabel>
-                    </Step>
-                ))}
-            </Stepper>
-            <div>
-                <div>
-                    {getStepContent(activeStep, {
-                        images: images,
-                        setImages: setImages,
-                        context: context,
-                        setContext: setContext,
-                        detail: detail,
-                        setDetail: setDetail
-                    })}
-                </div>
-                <div className={classes.buttonContainer}>
-                    <Button disabled={activeStep === 0} onClick={handleBack} variant='contained' color="primary">
-                        Quay lại
-                    </Button>
-                    {
-                        activeStep === step.length - 1 ?
-                            <Button
-                                onClick={handleSubmit}
-                                variant='contained'
-                                color="primary"
-                            >
-                                Hoàn tất
-                            </Button> :
-                            <Button
-                                onClick={handleNext}
-                                variant='contained'
-                                color="primary"
-                            >
-                                Tiếp
+        <>
+            {auth.user && auth.user.role === 1 ?
+                <Container className={classes.root}>
+                    <Stepper activeStep={activeStep}>
+                        {step.map((label) => (
+                            <Step key={label}>
+                                <StepLabel>{label}</StepLabel>
+                            </Step>
+                        ))}
+                    </Stepper>
+                    <div>
+                        <div>
+                            {getStepContent(activeStep, {
+                                images: images,
+                                setImages: setImages,
+                                context: context,
+                                setContext: setContext,
+                                detail: detail,
+                                setDetail: setDetail
+                            })}
+                        </div>
+                        <span style={{ color: 'red', fontSize: '15px' }}>{error}</span>
+                        <div className={classes.buttonContainer}>
+                            <Button disabled={activeStep === 0} onClick={handleBack} variant='contained' color="primary">
+                                Quay lại
                             </Button>
-                    }
-                </div>
-            </div>
-        </Container>
+                            {
+                                activeStep === step.length - 1 ?
+                                    <Button
+                                        onClick={handleSubmit}
+                                        variant='contained'
+                                        color="primary"
+                                    >
+                                        Hoàn tất
+                                    </Button> :
+                                    <Button
+                                        onClick={handleNext}
+                                        variant='contained'
+                                        color="primary"
+                                    >
+                                        Tiếp
+                                    </Button>
+                            }
+                        </div>
+                    </div>
+                </Container>
+                : <NotFound />
+            }
+
+        </>
     );
 }

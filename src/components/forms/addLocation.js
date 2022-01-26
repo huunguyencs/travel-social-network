@@ -18,16 +18,20 @@ export default function AddLocationForm(props) {
     const dispatch = useDispatch();
     const { location } = useSelector(state => state);
     const { currentProvince, setCurrentProvince, handleClose, locations, setLocations, indexDate } = props;
+    const [loading, setLoading] = useState(false);
 
 
 
 
     const getLocInit = async (province, setLocations) => {
+        setLoading(true);
         await customAxios().get(`/location/locations/${province._id}`)
             .then((req) => {
                 setLocations(req.data.locations);
+                setLoading(false);
             }).catch(err => {
                 setLocations([]);
+                setLoading(false);
             })
     }
 
@@ -41,11 +45,14 @@ export default function AddLocationForm(props) {
     const getLoc = async (province) => {
         if (province && province._id !== currentProvince) {
             setLoc(null);
+            setLoading(true);
             await customAxios().get(`/location/locations/${province._id}`)
                 .then((req) => {
                     setLocations(req.data.locations);
+                    setLoading(false);
                 }).catch(err => {
                     setLocations([]);
+                    setLoading(false);
                 })
             setCurrentProvince(province);
         }
@@ -75,6 +82,7 @@ export default function AddLocationForm(props) {
                         value={currentProvince}
                         id="choose-province"
                         options={location.provinces}
+                        loading={location.loading}
                         getOptionLabel={(option) => option?.fullname}
                         className={classes.autocomplete}
                         onChange={(e, value) => getLoc(value)}
@@ -87,6 +95,7 @@ export default function AddLocationForm(props) {
                         value={loc}
                         id="choose-location"
                         options={locations}
+                        loading={loading}
                         getOptionLabel={(option) => option?.fullname}
                         className={classes.autocomplete}
                         onChange={(e, value) => setLoc(value)}

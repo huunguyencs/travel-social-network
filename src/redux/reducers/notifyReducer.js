@@ -34,6 +34,8 @@ const notifyReducer = (state = INIT_STATE, action) => {
                 data: state.data.filter(item => item._id !== action.payload._id)
             }
         case NOTIFY_TYPES.MARK_ALL_READ:
+            // console.log(state.data)
+            // console.log(action.payload.userId)
             return {
                 ...state,
                 data: state.data.map(item => ({

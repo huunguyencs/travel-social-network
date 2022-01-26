@@ -4,6 +4,7 @@ import customAxios from '../../utils/fetchData';
 
 export const getProvinces = (data) => async (dispatch) => {
     // dispatch(alertActions.callStart());
+    dispatch(locationActions.loading())
     try {
         const res = await customAxios().get('/province/provinces');
         dispatch(locationActions.getProvinces({ provinces: res.data.provinces }));

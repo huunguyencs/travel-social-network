@@ -22,12 +22,15 @@ function ServiceItemAddForm(props) {
     const [service, setService] = useState(null);
     const [services, setServices] = useState(serviceCache);
     const [cost, setCost] = useState(0);
+    const [loading, setLoading] = useState(false);
 
     const getServicesInit = async (province, setServices, setServiceCache) => {
+        setLoading(true);
         await customAxios().get(`/province/service/${province._id}`).then(res => {
             setServices(res.data.services);
             setServiceCache(res.data.services);
-        }).catch(err => console.log(err))
+            setLoading(false);
+        }).catch(err => setLoading(false))
     }
 
     useEffect(() => {
@@ -42,9 +45,11 @@ function ServiceItemAddForm(props) {
         if (value) {
             if (!provinceCache || value._id !== provinceCache._id) {
                 setProvinceCache(value);
+                setLoading(true);
                 await customAxios().get(`/province/service/${value._id}`).then(res => {
                     setServices(res.data.services);
                     setServiceCache(res.data.services);
+                    setLoading(false)
                 })
             }
             else {
@@ -84,6 +89,7 @@ function ServiceItemAddForm(props) {
                 <Autocomplete
                     id="choose-province"
                     options={location.provinces}
+                    loading={location.loading}
                     getOptionLabel={(option) => option?.fullname}
                     className={classes.autocomplete}
                     onChange={(e, value) => getServices(value)}
@@ -95,6 +101,7 @@ function ServiceItemAddForm(props) {
                 <Autocomplete
                     id="choose-province"
                     options={services}
+                    loading={loading}
                     getOptionLabel={(option) => `${option?.name}`}
                     className={classes.autocomplete}
                     onChange={(e, value) => setService(value)}
@@ -163,74 +170,79 @@ export function ServiceCard(props) {
 
     return (
         <Card className={classes.serviceCard}>
-            <div style={{ display: 'flex' }}>
-                <div>
-                    <img src={service.service.images[0]} alt="Loading..." className={classes.imageService} />
-                </div>
-                <div className={classes.serviceInfo}>
-                    {isEdit &&
-                        <div style={{ display: 'flex', justifyContent: 'right' }}>
-                            <IconButton
-                                size="small"
-                                onClick={handleShowMenu}
-                                controls={anchorEl ? "service-item-menu" : undefined}
-                            >
-                                <MoreVert />
-                            </IconButton>
-                            <Popper
-                                open={Boolean(anchorEl)}
-                                anchorEl={anchorEl}
-                                onClose={handleCloseMenu}
-                                disablePortal
-                            >
-                                <Grow
-                                    style={{ transformOrigin: "center bottom" }}
-                                >
-                                    <ClickAwayListener onClickAway={handleCloseMenu}>
-                                        <Paper>
-                                            <MenuList>
-                                                <MenuItem onClick={handleShowDelete}>
-                                                    Xóa
-                                                </MenuItem>
-                                                <Dialog
-                                                    open={showDelete}
-                                                    onClose={handleCloseDelete}
-                                                    aria-labelledby="alert-dialog-title"
-                                                    aria-describedby="alert-dialog-description"
-                                                >
-                                                    <DialogTitle id="alert-dialog-title">{"Bạn có chắc chắn muốn xóa?"}</DialogTitle>
-                                                    <DialogActions>
-                                                        <Button onClick={handleCloseDelete}>
-                                                            Hủy
-                                                        </Button>
-                                                        <Button onClick={handleDelete} className={classes.delete}>
-                                                            Xóa
-                                                        </Button>
-                                                    </DialogActions>
-                                                </Dialog>
-                                            </MenuList>
-                                        </Paper>
-                                    </ClickAwayListener>
-                                </Grow>
-                            </Popper>
+            {service.service &&
+                <>
+                    <div style={{ display: 'flex' }}>
+                        <div>
+                            <img src={service.service.images[0]} alt="Loading..." className={classes.imageService} />
                         </div>
-                    }
+                        <div className={classes.serviceInfo}>
+                            {isEdit &&
+                                <div style={{ display: 'flex', justifyContent: 'right' }}>
+                                    <IconButton
+                                        size="small"
+                                        onClick={handleShowMenu}
+                                        controls={anchorEl ? "service-item-menu" : undefined}
+                                    >
+                                        <MoreVert />
+                                    </IconButton>
+                                    <Popper
+                                        open={Boolean(anchorEl)}
+                                        anchorEl={anchorEl}
+                                        onClose={handleCloseMenu}
+                                        disablePortal
+                                    >
+                                        <Grow
+                                            style={{ transformOrigin: "center bottom" }}
+                                        >
+                                            <ClickAwayListener onClickAway={handleCloseMenu}>
+                                                <Paper>
+                                                    <MenuList>
+                                                        <MenuItem onClick={handleShowDelete}>
+                                                            Xóa
+                                                        </MenuItem>
+                                                        <Dialog
+                                                            open={showDelete}
+                                                            onClose={handleCloseDelete}
+                                                            aria-labelledby="alert-dialog-title"
+                                                            aria-describedby="alert-dialog-description"
+                                                        >
+                                                            <DialogTitle id="alert-dialog-title">{"Bạn có chắc chắn muốn xóa?"}</DialogTitle>
+                                                            <DialogActions>
+                                                                <Button onClick={handleCloseDelete}>
+                                                                    Hủy
+                                                                </Button>
+                                                                <Button onClick={handleDelete} className={classes.delete}>
+                                                                    Xóa
+                                                                </Button>
+                                                            </DialogActions>
+                                                        </Dialog>
+                                                    </MenuList>
+                                                </Paper>
+                                            </ClickAwayListener>
+                                        </Grow>
+                                    </Popper>
+                                </div>
+                            }
 
-                    <Typography variant='h6' component={Link} to={`/u/${service.service.cooperator}`}>{service.service.name.length > 30 ? service.service.name.slice(0, 30) : service.service.name}</Typography>
-                    <Typography>Chi phí: {new Intl.NumberFormat().format(service.cost * 1000)} VND</Typography>
-                    {review && (
+                            <Typography variant='h6' component={Link} to={`/u/${service.service.cooperator}`}>{service.service.name.length > 30 ? service.service.name.slice(0, 30) : service.service.name}</Typography>
+                            <Typography>Chi phí: {new Intl.NumberFormat().format(service.cost * 1000)} VND</Typography>
+                            {review && (
 
-                        <Button onClick={handleShowReview}>Đánh giá</Button>
+                                <Button onClick={handleShowReview}>Đánh giá</Button>
 
 
-                    )}
-                </div>
-            </div>
-            <div>
-                <Collapse in={showReview}>
-                    <ReviewArea id={service.service._id} />
-                </Collapse>
-            </div>
+                            )}
+                        </div>
+                    </div>
+                    <div>
+                        <Collapse in={showReview}>
+                            <ReviewArea id={service.service._id} />
+                        </Collapse>
+                    </div>
+                </>
+            }
+
         </Card>
     )
 }

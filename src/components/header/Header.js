@@ -24,7 +24,8 @@ import {
     AccountCircle,
     Update,
     ExitToApp,
-    SupervisorAccount
+    SupervisorAccount,
+    AccessibilityNew
 } from "@material-ui/icons";
 import { Link, useHistory } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
@@ -152,7 +153,16 @@ export default function Header(props) {
                                                                     <SupervisorAccount fontSize="small" />
                                                                 </ListItemIcon>
                                                                 <Typography variant="inherit">Trang quản trị</Typography>
-                                                            </MenuItem>}
+                                                            </MenuItem>
+                                                        }
+                                                        {user.role === 1 &&
+                                                            <MenuItem aria-label="admin" onClick={handleCloseUser} component={Link} to={'/addservice'}>
+                                                                <ListItemIcon>
+                                                                    <AccessibilityNew fontSize="small" />
+                                                                </ListItemIcon>
+                                                                <Typography variant="inherit">Thêm dịch vụ</Typography>
+                                                            </MenuItem>
+                                                        }
                                                         <MenuItem aria-label="profile" component={Link} to={`/u/${user._id}`} onClick={handleCloseUser}>
                                                             <ListItemIcon>
                                                                 <AccountCircle fontSize="small" />
@@ -193,7 +203,7 @@ export default function Header(props) {
                                             <Paper className={classes.paperNoti}>
                                                 <div className={classes.notiHeader}>
                                                     <Typography className={classes.notiTitle} variant="h5">Thông báo</Typography>
-                                                    <Typography onClick={markAllReadClick} className={classes.markAllRead}>Đánh dấu tất cả đã đọc</Typography>
+                                                    <Typography component={"button"} onClick={markAllReadClick} className={classes.markAllRead}>Đánh dấu tất cả đã đọc</Typography>
                                                 </div>
                                                 <MenuList>
                                                     {notify.data.slice(0, 5).map((item) => (

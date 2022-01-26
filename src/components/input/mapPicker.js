@@ -5,7 +5,7 @@ import { LocationOn } from '@material-ui/icons';
 
 export default function MapPicker(props) {
 
-    // const { setPosition } = props;
+    const { setPosition } = props;
     const [state, setState] = useState({
         center: {
             lat: 14.5,
@@ -15,10 +15,10 @@ export default function MapPicker(props) {
     })
 
     const changePosition = (e) => {
-        // setPosition({
-        //     lat: e.lat,
-        //     lng: e.lng
-        // })
+        setPosition({
+            lat: e.lat,
+            lng: e.lng
+        })
         setState({
             zoom: 10,
             center: {

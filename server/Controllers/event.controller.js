@@ -70,16 +70,16 @@ class EventController {
 
             const events1 = await Events.find({
                 $or: [
-                    { calendarType: false, time: { $gte: gteLunar > 351 ? gteLunar : 365, $lte: 355, $ne: 0 } },
-                    { calendarType: true, time: { $gte: gteSolar > 361 ? gteSolar : 366, $lte: 365, $ne: 0 } }
+                    { calendarType: false, time: { $gte: gteLunar > 348 ? gteLunar : 365, $lte: 355, $ne: 0 } },
+                    { calendarType: true, time: { $gte: gteSolar > 358 ? gteSolar : 366, $lte: 365, $ne: 0 } }
                 ]
             }, "timedes name fullname images provinceId").populate("provinceId", "fullname").sort('time')
 
 
             const events2 = await Events.find({
                 $or: [
-                    { calendarType: false, time: { $gte: gteLunar > 351 ? 0 : gteLunar, $lte: (dateIntLunar + 365) % 355, $ne: 0 } },
-                    { calendarType: true, time: { $gte: gteSolar > 361 ? 0 : gteSolar, $lte: (dateIntSolar + 375) % 365, $ne: 0 } },
+                    { calendarType: false, time: { $gte: gteLunar > 348 ? 0 : gteLunar, $lte: (dateIntLunar + 10) % 355, $ne: 0 } },
+                    { calendarType: true, time: { $gte: gteSolar > 358 ? 0 : gteSolar, $lte: (dateIntSolar + 10) % 365, $ne: 0 } },
                 ]
             }, "timedes name fullname images provinceId").populate("provinceId", "fullname").sort('time')
 

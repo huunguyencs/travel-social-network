@@ -6,12 +6,16 @@ import { checkImage } from '../../utils/uploadImage'
 
 export default function AddImageHorizontal(props) {
 
-    const { images, onChange } = props;
+    const { images, onChange, maxImage } = props;
     const classes = inputStyles();
     const [error, setError] = useState('');
 
     const addImage = (e) => {
         setError("")
+        if (maxImage && images.length >= maxImage) {
+            setError(`Không được phép quá ${maxImage} ảnh`);
+            return;
+        }
         const file = e.target.files[0];
         const check = checkImage(file)
         if (check === "")

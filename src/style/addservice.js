@@ -24,8 +24,22 @@ const addServiceStyles = makeStyles((theme) => ({
         display: 'flex',
         justifyContent: 'space-between',
         margin: 50
+    },
+    itemContainer: {
+        display: 'flex',
+        justifyContent: 'space-between',
+        marginBlock: 10,
+        marginRight: 10,
+        paddingInline: 10,
+        paddingBlock: 5,
+        borderRadius: 3,
+        backgroundColor: color.background
+    },
+    formAdd: {
+        width: "100%",
+        marginBlock: 5,
+        paddingBottom: 10
     }
-
 }))
 
 export default addServiceStyles;
