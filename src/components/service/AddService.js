@@ -29,8 +29,30 @@ export function BasicServiceInfo(props) {
     const classes = addServiceStyles();
 
     const { location } = useSelector(state => state)
+    const [tempDiscount, setTempDiscount] = useState('');
+
+
 
     const { images, setImages, context, setContext } = props;
+
+    const handleAddDiscount = (e) => {
+        e.preventDefault();
+        setTempDiscount('')
+        setContext({
+            ...context,
+            discount: [...context.discount, tempDiscount]
+        })
+    }
+
+    const handleRemoveDiscount = (idx) => {
+        setContext({
+            ...context,
+            discount: [
+                ...context.discount.slice(0, idx),
+                ...context.discount.slice(idx + 1)
+            ]
+        })
+    }
 
     const handleChange = (e) => {
         setContext({
@@ -145,6 +167,34 @@ export function BasicServiceInfo(props) {
                 onChange={(e, value) => changeProvince(value)}
                 value={context.province}
             />
+            <Grid container>
+                {context.discount.map((item, index) => (
+                    <Grid item md={6} sm={12} xs={12} key={index}>
+                        <Item item={item} handleRemove={() => handleRemoveDiscount(index)} />
+                    </Grid>
+                ))}
+            </Grid>
+            <form
+                onSubmit={handleAddDiscount}
+                className={classes.formAdd}
+            >
+                <TextField
+                    label="Các ưu đãi"
+                    variant="outlined"
+                    name="discount"
+                    className={classes.fullField}
+                    onChange={(e) => setTempDiscount(e.target.value)}
+                    value={tempDiscount}
+                />
+                <Button
+                    type="submit"
+                    disabled={!tempDiscount}
+                    variant='contained'
+                    color="primary"
+                >
+                    Thêm
+                </Button>
+            </form>
         </div>
     )
 }

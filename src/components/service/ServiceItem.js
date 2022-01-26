@@ -68,31 +68,30 @@ function DetailService(props) {
         <>
             {attribute &&
                 <>
-                    <Typography>Phù hợp: {attribute.conform}</Typography>
-                    <Typography>Đặc trưng: {attribute.featured}</Typography>
-                    <Typography>{type === "nhahang" ? "Menu:" : type === "khachsan" ? "Phòng:" : type === "dichuyen" ? "Các loại phương tiện:" : "Các loại dịch vụ"}</Typography>
-                    <ul style={{ marginLeft: 20, listStyleType: 'circle' }}>
+                    <Typography><b>Phù hợp: </b>{attribute.conform}</Typography>
+                    <Typography><b>Đặc trưng: </b>{attribute.featured}</Typography>
+                    <Typography><b>{type === "nhahang" ? "Menu:" : type === "khachsan" ? "Phòng:" : type === "dichuyen" ? "Các loại phương tiện:" : "Các loại dịch vụ"}</b></Typography>
+                    <ul style={{ marginLeft: 20, listStyleType: 'disc' }}>
                         {attribute.menu.map((item, index) => (
                             <li key={index}>{item}</li>
                         ))}
                     </ul>
-                    <Typography>Tiện nghi:</Typography>
-                    <Typography>{attribute.convenient}</Typography>
-                    <Typography>Cách đặt trước:</Typography>
-                    <Typography>{attribute.book}</Typography>
-                    <Typography>Thời gian mở cửa:</Typography>
-                    <Typography>{attribute.time}</Typography>
-                    <Typography>Các lưu ý:</Typography>
-                    <Typography>{attribute.note}</Typography>
-                    <Typography>Thông tin thêm:</Typography>
-                    {attribute.more_info.map(item => (
-                        <Chip key={item} label={item} variant='outlined' />
-                    ))}
-                    {attribute.space && <Typography>Không gian: {attribute.space}</Typography>}
-                    {attribute.park && <Typography>Chỗ đỗ xe: {attribute.park}</Typography>}
-                    {attribute.shuttle && <Typography>Đưa đón: {attribute.shuttle}</Typography>}
-                    {attribute.pickup && <Typography>Điểm đón: {attribute.pickup}</Typography>}
-                    {attribute.stop && <Typography>Đưa trả: {attribute.stop}</Typography>}
+                    <Typography><b>Tiện nghi: </b>{attribute.convenient}</Typography>
+                    <Typography><b>Cách đặt trước: </b>{attribute.book}</Typography>
+
+                    <Typography><b>Các lưu ý: </b>{attribute.note}</Typography>
+                    <Typography><b>Thông tin thêm:</b></Typography>
+                    <div style={{ marginLeft: 10 }}>
+                        {attribute.more_info.map(item => (
+                            <Chip key={item} label={item} color='primary' />
+                        ))}
+                    </div>
+                    {attribute?.time !== "" && <Typography><b>Thời gian mở cửa: </b>{attribute.time}</Typography>}
+                    {attribute?.space !== "" && <Typography><b>Không gian: </b>{attribute.space}</Typography>}
+                    {attribute?.park !== "" && <Typography><b>Chỗ đỗ xe: </b>{attribute.park}</Typography>}
+                    {attribute?.shuttle !== "" && <Typography><b>Đưa đón: </b>{attribute.shuttle}</Typography>}
+                    {attribute.pickup.length > 0 && <Typography><b>Điểm đón khách: </b>{attribute.pickup.join(", ")}</Typography>}
+                    {attribute.stop.length > 0 && <Typography><b>Điểm trả khách: </b>{attribute.stop.join(", ")}</Typography>}
                 </>
             }
         </>
@@ -133,10 +132,26 @@ function ServiceDetail(props) {
             </div>
             <div className={classes.contentContainerWrap}>
                 <div className={classes.detailDes}>
+                    <Typography>{service.description}</Typography>
+                    {service.andress !== "" && <Typography><b>Địa chỉ: </b>{service.andress}</Typography>}
+                    {service.discount.length > 0 &&
+                        <>
+                            <b>Ưu đãi:</b>
+                            <ul style={{ marginLeft: 20, listStyleType: 'disc' }}>
+                                {service.discount.map((item, index) => (
+                                    <li key={index}>{item}</li>
+                                ))}
+                            </ul>
+                        </>
+
+                    }
                     <DetailService attribute={service.attribute} type={service.type} />
-                    <div style={{ margin: 20 }}>
-                        <MapCard position={service.position} zoom={12} name={service.name} height={300} />
-                    </div>
+                    {service.position &&
+                        <div style={{ margin: 20 }}>
+                            <MapCard position={service.position} zoom={12} name={service.name} height={300} />
+                        </div>
+                    }
+
                 </div>
 
                 <div className={classes.center}>
@@ -161,7 +176,7 @@ function ServiceDetail(props) {
                                 service.rate && (
                                     service.rate.length === 0 ?
                                         <div className={classes.centerMarginTop}>
-                                            <Typography>Chưa có review cho dịch vụ này</Typography>
+                                            <Typography><i>Chưa có review cho dịch vụ này</i></Typography>
                                         </div> :
                                         <div>
                                             {service.rate.map((item, index) => (
@@ -172,7 +187,14 @@ function ServiceDetail(props) {
                     }
                 </div>
             </div>
+
             <div className={classes.reviewArea}>
+                <hr
+                    style={{
+                        color: '#aaa',
+                        width: '60%'
+                    }}
+                />
                 <ReviewArea id={service._id} />
             </div>
         </div>

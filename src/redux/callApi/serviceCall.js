@@ -36,7 +36,7 @@ export const reviewService = (id, auth, rate, content) => async (dispatch) => {
     }
 }
 
-export const createService = (token, data, images_data, next) => async (dispatch) => {
+export const createService = (token, data, images_data, next, error) => async (dispatch) => {
     try {
         let images = await imageUtils.uploadImages(images_data);
         await customAxios(token).post('/service/create_service', {
@@ -46,6 +46,7 @@ export const createService = (token, data, images_data, next) => async (dispatch
         next();
     }
     catch (err) {
+        error();
         dispatch(alertAction.error({ message: "Có lỗi xảy ra!" }))
     }
 }

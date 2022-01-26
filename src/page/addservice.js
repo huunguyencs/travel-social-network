@@ -1,4 +1,4 @@
-import { Button, Container, Step, StepLabel, Stepper, Typography } from '@material-ui/core';
+import { Button, CircularProgress, Container, Step, StepLabel, Stepper, Typography } from '@material-ui/core';
 import { CheckCircle } from '@material-ui/icons';
 import React, { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
@@ -46,6 +46,7 @@ export default function AddServicePage() {
 
     const classes = addServiceStyles();
     const [error, setError] = useState('');
+    const [loading, setLoading] = useState(false);
 
     const { auth, location } = useSelector(state => state);
     const dispatch = useDispatch();
@@ -60,7 +61,8 @@ export default function AddServicePage() {
         cost: "",
         andress: "",
         province: null,
-        position: null
+        position: null,
+        discount: []
     });
     const [detail, setDetail] = useState({
         conform: "",
@@ -98,11 +100,15 @@ export default function AddServicePage() {
             setError("Cần thêm ít nhất 1 ảnh");
             return;
         }
+        setLoading(true);
         dispatch(createService(auth.token, {
             ...context,
             attribute: { ...detail }
         }, images, () => {
-            history.push(`/u/${auth.user._id}`)
+            history.push(`/u/${auth.user._id}`);
+            setLoading(false);
+        }, () => {
+            setLoading(false)
         }))
     }
 
@@ -151,7 +157,7 @@ export default function AddServicePage() {
                                         variant='contained'
                                         color="primary"
                                     >
-                                        Hoàn tất
+                                        {loading ? <CircularProgress /> : "Hoàn tất"}
                                     </Button> :
                                     <Button
                                         onClick={handleNext}
