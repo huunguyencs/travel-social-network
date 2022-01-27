@@ -13,3 +13,10 @@ export const reviewService = (props) => {
         payload: props
     }
 }
+
+export const addService = (props) => {
+    return {
+        type: USER_TYPES.ADD_SERVICE,
+        payload: props
+    }
+}

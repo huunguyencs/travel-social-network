@@ -49,6 +49,12 @@ const userReducer = (state = INIT_STATE, action) => {
                 } : item)
             }
         }
+        case USER_TYPES.ADD_SERVICE: {
+            return {
+                ...state,
+                services: [...state.services, action.payload.newService]
+            }
+        }
         default: {
             return state
         }

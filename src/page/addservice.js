@@ -101,7 +101,7 @@ export default function AddServicePage() {
             return;
         }
         setLoading(true);
-        dispatch(createService(auth.token, {
+        dispatch(createService(auth.token, auth.user._id, {
             ...context,
             attribute: { ...detail }
         }, images, () => {

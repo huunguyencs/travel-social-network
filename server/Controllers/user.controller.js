@@ -357,6 +357,16 @@ class UserController {
             res.status(500).json({ success: false, message: err.massage })
         }
     }
+
+    async getAll(req, res) {
+        try {
+            const users = Users.find({}).select("username fullname avatar email role confirmAccount");
+            res.json({ success: true, message: "Lấy toàn bộ user thành công", users })
+        } catch (err) {
+            console.log(err);
+            res.status(500).json({ success: false, message: err.massage })
+        }
+    }
 }
 
 module.exports = new UserController

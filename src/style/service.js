@@ -14,7 +14,7 @@ const serviceStyles = makeStyles((theme) => ({
         marginBlock: 50
     },
     container: {
-        marginInline: 50
+        margin: 50
     },
     image: {
 

@@ -36,14 +36,18 @@ export const reviewService = (id, auth, rate, content) => async (dispatch) => {
     }
 }
 
-export const createService = (token, data, images_data, next, error) => async (dispatch) => {
+export const createService = (token, userId, data, images_data, next, error) => async (dispatch) => {
     try {
         let images = await imageUtils.uploadImages(images_data);
-        await customAxios(token).post('/service/create_service', {
+        const res = await customAxios(token).post('/service/create_service', {
             ...data,
             images: images
         })
         next();
+        if (userId === res.data.newService.cooperator) {
+            dispatch(serviceAction.addService({ newService: res.data.newService }))
+        }
+
     }
     catch (err) {
         error();

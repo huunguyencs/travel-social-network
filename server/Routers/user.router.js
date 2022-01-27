@@ -14,6 +14,8 @@ router.patch("/change_background", auth, UserController.changeBackground);
 router.patch("/change_info", auth, UserController.editProfile);
 router.patch("/change_password", auth, UserController.changePassword)
 
+router.get("/get_all", auth, UserController.getAll)
+
 router.get('/get_friend_recommend', auth, UserController.getFriendRecommend)
 router.get('/search', UserController.searchUsers);
 // lấy thông tin một user

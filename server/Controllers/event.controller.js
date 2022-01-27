@@ -103,6 +103,22 @@ class EventController {
             })
         }
     }
+    async getAll(req, res) {
+        try {
+            const events = await Events.find({}).select("name fullname timedes provinceId calendarType")
+                .populate("provinceId", "fullname name")
+            res.json({
+                success: true,
+                message: "Lấy tất cả các sự kiện thành công",
+                events
+            })
+        } catch (err) {
+            res.status(500).json({
+                success: false,
+                message: err.message
+            })
+        }
+    }
 }
 
 module.exports = new EventController;
