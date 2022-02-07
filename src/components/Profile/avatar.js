@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
-import { WhatsApp, RssFeed, Update } from "@material-ui/icons";
-import { Avatar, Button, Container, Typography, Modal, Backdrop, CircularProgress } from "@material-ui/core";
+import { WhatsApp, RssFeed, Update, VerifiedUser } from "@material-ui/icons";
+import { Avatar, Button, Container, Typography, Modal, Backdrop, CircularProgress, Tooltip } from "@material-ui/core";
 
 import { profileStyles } from "../../style";
 import UserList from "../modal/userList";
@@ -154,8 +154,11 @@ export default function Profile_Avatar(props) {
               />
             </div>
             <div className={classes.infoUser}>
-              <Typography variant="body1" component="p" className={classes.fullname}>
+              <Typography variant="body1" className={classes.fullname}>
                 {user.fullname}
+                <Tooltip title={'Tài khoản đã được xác thực'} aria-label='verified'>
+                  {user.confirmAccount.state && <VerifiedUser color="primary" fontSize="small" />}
+                </Tooltip>
               </Typography>
               <div variant="body1" component="p" className={classes.follow}>
                 <Typography className={classes.followInfo} onClick={handleOpenFollowing} >{user.followings.length} đang theo dõi</Typography>

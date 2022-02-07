@@ -128,6 +128,16 @@ class ProvinceController {
         }
     }
 
+    async getAllDetail(req, res) {
+        try {
+            const provinces = await Provinces.find({}, "fullname name image information");
+            res.json({ success: true, message: "get all provinces success", provinces })
+        } catch (err) {
+            console.log(err)
+            res.status(500).json({ success: false, message: err.message })
+        }
+    }
+
 }
 
 module.exports = new ProvinceController;

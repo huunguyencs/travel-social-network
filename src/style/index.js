@@ -33,21 +33,10 @@ import addServiceStyles from "./addservice";
 
 
 const useStyles = makeStyles((theme) => ({
-    leftbar: {
-        // [theme.breakpoints.down("md")]: {
-        //     maxWidth: "40%"
-        // },
-        // [theme.breakpoints.down("xs")]: {
-        //     maxWidth: "100%"
-        // }
-    },
-    content: {
-        // [theme.breakpoints.down("md")]: {
-        //     maxWidth: "70%"
-        // },
-        // [theme.breakpoints.down("xs")]: {
-        //     maxWidth: "100%"
-        // }
+    center: {
+        display: 'flex',
+        justifyContent: 'center',
+        marginTop: 200
     },
     rightbar: {
         marginTop: 20,

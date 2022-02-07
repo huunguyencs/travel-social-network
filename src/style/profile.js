@@ -189,11 +189,12 @@ const profileStyles = makeStyles((theme) => ({
     },
   },
   fullname: {
-    fontSize: "35px",
+    fontSize: "30px",
     color: 'inherit',
     [theme.breakpoints.down("sm")]: {
       display: 'flex',
-      alignSelf: 'center'
+      alignSelf: 'center',
+      fontSize: "22px"
     },
   },
   follow: {

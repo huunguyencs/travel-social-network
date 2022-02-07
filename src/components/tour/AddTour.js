@@ -15,7 +15,7 @@ import { saveTour, updateTour } from "../../redux/callApi/tourCall";
 import AddLocation from "./AddLocation";
 import { getProvinces } from '../../redux/callApi/locationCall';
 import AddService from "./AddService";
-import { Close } from "@material-ui/icons";
+import { AddCircle, Close, Delete, Save, Update } from "@material-ui/icons";
 
 
 function a11yProps(index) {
@@ -269,22 +269,25 @@ export default function AddTour(props) {
                             </div>
 
                             <div className={classes.addDayWrap}>
-                                <Button className={classes.addDay} onClick={handleAddDay}>
-                                    Thêm ngày
-                                </Button>
-
-                                <Button className={classes.addDay} onClick={isUpdate ? handleUpdate : handleSave}>
-                                    {state.loading ?
-                                        <CircularProgress size="25px" color="inherit" />
-                                        : "Lưu lại"
-                                    }
-                                </Button>
+                                <div>
+                                    <Button className={classes.addDay} onClick={handleAddDay} startIcon={(<AddCircle />)}>
+                                        Thêm ngày
+                                    </Button>
+                                </div>
+                                <div>
+                                    <Button className={classes.addDay} onClick={isUpdate ? handleUpdate : handleSave} startIcon={(<Save />)}>
+                                        {state.loading ?
+                                            <CircularProgress size="25px" color="inherit" />
+                                            : "Lưu lại"
+                                        }
+                                    </Button>
+                                </div>
                             </div>
 
                         </Grid>
                         <Grid item md={4} sm={12} xs={12} className={classes.feedTour}>
                             <div className={classes.center}>
-                                <Button onClick={handleShowDelete} className={classes.editButton}>
+                                <Button onClick={handleShowDelete} className={classes.removeButton} startIcon={(<Delete />)}>
                                     Xóa ngày
                                 </Button>
                                 <Dialog
@@ -303,7 +306,7 @@ export default function AddTour(props) {
                                         </Button>
                                     </DialogActions>
                                 </Dialog>
-                                <Button onClick={handleShowUpdate} className={classes.editButton}>
+                                <Button onClick={handleShowUpdate} className={classes.editButton} startIcon={(<Update />)}>
                                     Thay đổi ngày
                                 </Button>
                                 <Modal

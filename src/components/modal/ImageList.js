@@ -9,25 +9,22 @@ import useMediaQuery from '@material-ui/core/useMediaQuery';
 export default function ImageList(props) {
     const classes = modalListStyles();
 
-    const { imageList, show2Image } = props;
+    const { imageList, show2Image, defaultHeight } = props;
 
     const [open, setOpen] = useState(false);
     const [pictureIndex, setPictureIndex] = useState(0);
-    const [height, setHeight] = useState(500);
-    const media920 = useMediaQuery('(max-width:920px)');
+    const [twoImage, setTwoImage] = useState(show2Image || false);
     const media1280 = useMediaQuery('(max-width:1280px)');
 
     useEffect(() => {
         if (media1280) {
-            setHeight(395)
+            setTwoImage(false);
         }
-        else if (media920) {
-            setHeight(495)
+        else {
+            setTwoImage(true);
         }
-        else setHeight(495)
 
-        // window.addEventListener("resize", changeHeight);
-    }, [setHeight, media1280, media920]);
+    }, [media1280]);
 
     const handleClick = (i) => {
         setOpen(true);
@@ -48,7 +45,7 @@ export default function ImageList(props) {
 
     return (
         <>
-            <ImgList rowHeight={height} className={classes.imageList} cols={imageList.length > 1 && show2Image ? 2 : 1}>
+            <ImgList rowHeight={defaultHeight || 500} className={classes.imageList} cols={imageList.length > 1 && twoImage ? 2 : 1}>
                 <ImageListItem
                     key={imageList[0]}
                     className={classes.imageItem}
@@ -56,7 +53,7 @@ export default function ImageList(props) {
                 >
                     <img src={imageList[0]} alt={"Loading..."} />
                 </ImageListItem>
-                {imageList.length > 1 && show2Image && (
+                {imageList.length > 1 && twoImage && (
                     <ImageListItem
                         key={imageList[1]}
                         className={imageList.length > 2 ? classes.more : classes.imageItem}

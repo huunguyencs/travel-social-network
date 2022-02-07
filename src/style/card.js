@@ -13,6 +13,9 @@ const cardStyles = makeStyles((theme) => ({
     image: {
         height: 180,
     },
+    imageProvince: {
+        height: 220,
+    },
     locationName: {
         marginInline: 20,
         cursor: 'pointer',
@@ -219,6 +222,12 @@ const cardStyles = makeStyles((theme) => ({
     },
     addButton: {
         backgroundColor: color.turquoise
+    },
+    link: {
+        cursor: 'pointer',
+        "&:hover": {
+            textDecorationLine: 'underline'
+        }
     }
 }))
 

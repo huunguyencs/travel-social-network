@@ -228,7 +228,7 @@ function BaseContent(props) {
             {
                 post.images.length > 0 &&
                 <CardMedia>
-                    <ImageList imageList={post.images} show2Image={true} />
+                    <ImageList imageList={post.images} show2Image={true} defaultHeight={500} />
                 </CardMedia>
             }
         </>

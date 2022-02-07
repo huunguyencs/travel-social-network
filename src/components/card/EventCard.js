@@ -20,6 +20,7 @@ export default function EventCard(props) {
             />
             <CardContent>
                 <Typography component={Link} to={"/event/" + event.name} className={classes.locationName} variant="h6">{event.fullname.length > 28 ? event.fullname.slice(0, 28) + "..." : event.fullname}</Typography>
+                <Typography variant="body2" className={classes.locationName}>{event.timedes}</Typography>
             </CardContent>
             <CardActions className={classes.footer}>
                 <Button className={classes.seeMore} component={Link} to={"/event/" + event.name}>

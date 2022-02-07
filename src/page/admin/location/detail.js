@@ -105,7 +105,7 @@ export default function Location(props) {
                                 </Grid>
                                 <Grid item md={3} sm={12}>
                                     <Card className={classes.imageList}>
-                                        <ImageList imgList={location.images} show2Image={false} height={395} />
+                                        <ImageList imgList={location.images} show2Image={false} defaultHeight={395} />
                                     </Card>
                                 </Grid>
                                 <Grid item md={3} sm={12}>
