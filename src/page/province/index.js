@@ -40,17 +40,13 @@ export default function ProvincePage() {
             <Grid item md={9} sm={10} xs={10} className={classes.content}>
                 <Grid container style={{ marginTop: 100 }}>
                     {loading ?
-                        <div >
-                            <div className={classes.center}>
-                                <CircularProgress />
-                            </div>
+                        <div className={classes.center}>
+                            <CircularProgress />
                         </div> :
                         error ?
-                            <div>
-                                <div className={classes.center}>
-                                    <Typography >Có lỗi xảy ra</Typography>
-                                    <Button onClick={getProvince}>Thử lại</Button>
-                                </div>
+                            <div className={classes.center}>
+                                <Typography >Có lỗi xảy ra</Typography>
+                                <Button onClick={getProvince}>Thử lại</Button>
                             </div> :
                             provinces.map(province =>
                             (
