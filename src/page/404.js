@@ -14,7 +14,7 @@ export function NotFound() {
 
     return (
         <div className={classes.notFoundContainer}>
-            <Typography variant="h1" style={{ paddingTop: '48vh' }}>404!</Typography>
+            <Typography variant="h1" style={{ paddingTop: '30vh' }}>404!</Typography>
             <Typography variant="h2" style={{ paddingBottom: 30 }}>Trang không tồn tại</Typography>
             <Link to="/">Quay lại trang chủ</Link>
         </div>

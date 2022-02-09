@@ -38,24 +38,28 @@ export default function ProvincePage() {
                 <LeftBar menuList={homeMenu} />
             </Grid>
             <Grid item md={9} sm={10} xs={10} className={classes.content}>
-                <Grid container style={{ marginTop: 100 }}>
-                    {loading ?
+
+                {loading ?
+                    <div className={classes.center}>
+                        <CircularProgress />
+                    </div> :
+                    error ?
                         <div className={classes.center}>
-                            <CircularProgress />
+                            <Typography >Có lỗi xảy ra</Typography>
+                            <Button onClick={getProvince}>Thử lại</Button>
                         </div> :
-                        error ?
-                            <div className={classes.center}>
-                                <Typography >Có lỗi xảy ra</Typography>
-                                <Button onClick={getProvince}>Thử lại</Button>
-                            </div> :
-                            provinces.map(province =>
-                            (
-                                <Grid item md={4} sm={6} xs={12} key={province._id}>
-                                    <ProvinceCard province={province} />
-                                </Grid>
-                            )
-                            )}
-                </Grid>
+                        <Grid container style={{ marginTop: 100 }}>
+                            {
+                                provinces.map(province =>
+                                (
+                                    <Grid item md={4} sm={6} xs={12} key={province._id}>
+                                        <ProvinceCard province={province} />
+                                    </Grid>
+                                )
+
+                                )}
+                        </Grid>}
+
             </Grid>
         </Grid>
     );

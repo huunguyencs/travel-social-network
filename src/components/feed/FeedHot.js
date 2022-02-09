@@ -95,11 +95,11 @@ export default function FeedHot(props) {
                     </div>
                     <div className={classes.hotFeed}>
                         {stateLocation.loading ?
-                            <div>
+                            <div className={classes.centerMarginTop}>
                                 <CircularProgress />
                             </div> :
                             stateLocation.error ?
-                                <div>
+                                <div className={classes.centerMarginTop}>
                                     <Button onClick={getHotLocations}>Thử lại</Button>
                                 </div> :
                                 locations.map((item) =>

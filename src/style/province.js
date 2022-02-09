@@ -90,7 +90,10 @@ const provinceStyles = makeStyles((theme) => ({
     },
     rightbar: {
         display: 'flex',
-        justifyContent: 'center'
+        justifyContent: 'center',
+        [theme.breakpoints.down("sm")]: {
+            display: 'none'
+        }
     }
 }))
 

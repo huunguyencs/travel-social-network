@@ -43,7 +43,8 @@ const cardStyles = makeStyles((theme) => ({
     seeMore: {
         backgroundColor: color.turquoise,
         borderRadius: attr.borderRadius.md,
-        paddingInline: 20,
+        paddingInline: 10,
+        textTransform: 'none'
     },
     weatherCardContainer: {
         borderRadius: attr.borderRadius.md,

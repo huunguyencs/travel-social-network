@@ -156,9 +156,12 @@ export default function Profile_Avatar(props) {
             <div className={classes.infoUser}>
               <Typography variant="body1" className={classes.fullname}>
                 {user.fullname}
-                <Tooltip title={'Tài khoản đã được xác thực'} aria-label='verified'>
-                  {user.confirmAccount.state && <VerifiedUser color="primary" fontSize="small" />}
-                </Tooltip>
+                {
+                  user.confirmAccount.state &&
+                  <Tooltip title={'Tài khoản đã được xác thực'} aria-label='verified'>
+                    <VerifiedUser color="primary" fontSize="small" />
+                  </Tooltip>
+                }
               </Typography>
               <div variant="body1" component="p" className={classes.follow}>
                 <Typography className={classes.followInfo} onClick={handleOpenFollowing} >{user.followings.length} đang theo dõi</Typography>
