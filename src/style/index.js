@@ -28,7 +28,7 @@ import serviceStyles from "./service";
 import modalListStyles from "./modalList";
 import emojiPickerStyles from "./emojiPicker";
 import modalStyles from "./modal";
-
+import volunteerDetailStyles from "./volunteerDetail";
 
 
 
@@ -91,4 +91,5 @@ export {
     modalListStyles,
     emojiPickerStyles,
     modalStyles,
+    volunteerDetailStyles
 };

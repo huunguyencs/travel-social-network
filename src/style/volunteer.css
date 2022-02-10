@@ -111,22 +111,3 @@
     display: flex;
     flex-direction: column;
   }
-
-
-
-
-
- .volunteer-detail_title{ 
-  color: #999;
-  font-weight: 300;
-  font-size: 30px;
- }
-
- .volunteer-info{
-   margin-top: 20px;
-   max-width: 70%;
- }
- .volunteer-schedule{
-    margin-top: 20px;
-    max-width: 70%;
- }
