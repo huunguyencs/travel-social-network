@@ -164,6 +164,9 @@ const tourdetailStyles = makeStyles((theme) => ({
             marginLeft: 10,
         }
     },
+    info: {
+        marginInline: 100
+    },
     itemInfo: {
         marginTop: 10,
         display: "flex",

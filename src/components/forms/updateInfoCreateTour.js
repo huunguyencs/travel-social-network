@@ -1,27 +1,25 @@
-import { InputBase, Typography, Button, Paper, IconButton, TextField } from "@material-ui/core";
-import { Image } from "@material-ui/icons";
+import { InputBase, Typography, Button, Paper, TextField } from "@material-ui/core";
+
 import React, { useState } from "react";
 import { useDispatch } from "react-redux";
 
 import { formStyles } from '../../style';
 import { updateInfo } from '../../redux/actions/createTourAction';
 import EmojiPicker from "../input/emojiPicker";
-import { checkImage } from "../../utils/uploadImage";
 
 
-export default function UpdateTourInfo({ name, content, hashtags, image, handleClose, cost }) {
+
+export default function UpdateTourInfo({ name, content, hashtags, handleClose, cost }) {
 
     const dispatch = useDispatch();
 
     const [state, setState] = useState({
         name: name,
         hashtags: hashtags.join(" "),
-        image: image,
         cost: cost
     })
 
     const [text, setText] = useState(content);
-    const [error, setError] = useState('');
 
 
     const handleInput = (e) => {
@@ -31,29 +29,7 @@ export default function UpdateTourInfo({ name, content, hashtags, image, handleC
         })
     }
 
-    const handleChangeImageUpload = (e) => {
-        // setImageUpload(e.target.files)
-        const image = e.target.files[0];
-        const check = checkImage(image)
-        if (check !== '') {
-            setState({
-                ...state,
-                image: image,
-            })
-        }
-        else {
-            setError(check)
-        }
 
-    }
-
-    const removeImage = () => {
-        // setImageUpload(null)
-        setState({
-            ...state,
-            image: null,
-        })
-    }
 
     const hashtagSplit = (text) => {
         var ht = text.split(" ");
@@ -63,7 +39,7 @@ export default function UpdateTourInfo({ name, content, hashtags, image, handleC
     const handleSubmit = () => {
         // console.log(state);
         let ht = hashtagSplit(state.hashtags)
-        dispatch(updateInfo({ name: state.name, content: text, hashtags: ht, image: state.image, cost: parseInt(state.cost) }));
+        dispatch(updateInfo({ name: state.name, content: text, hashtags: ht, cost: parseInt(state.cost) }));
         handleClose();
     }
 
@@ -123,20 +99,6 @@ export default function UpdateTourInfo({ name, content, hashtags, image, handleC
                     </div>
                     <div className={classes.formAction}>
                         <div>
-                            <input
-                                accept="image/*"
-                                className={classes.input}
-                                style={{ display: 'none' }}
-                                id="input-image"
-                                name="input-image"
-                                type="file"
-                                onChange={handleChangeImageUpload}
-                            />
-                            <label htmlFor="input-image">
-                                <IconButton variant="raised" component="span">
-                                    <Image titleAccess="Thêm ảnh" />
-                                </IconButton>
-                            </label>
                             <EmojiPicker content={text} setContent={setText} />
                         </div>
                         <div>
@@ -149,23 +111,6 @@ export default function UpdateTourInfo({ name, content, hashtags, image, handleC
 
                 </div>
             </form>
-            <div className={classes.center}>
-                <span style={{ fontSize: "15px", color: "red", marginInline: "20px", marginTop: "10px" }}>{error}</span>
-            </div>
-
-
-            <div
-                className={classes.imageInputContainer}
-            >
-                {state.image &&
-                    <img
-                        alt="Error"
-                        className={classes.imageInput}
-                        onClick={removeImage}
-                        src={URL.createObjectURL(state.image)}
-                    />
-                }
-            </div>
         </Paper>
     )
 }

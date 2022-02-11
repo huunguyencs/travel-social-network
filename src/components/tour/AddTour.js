@@ -16,6 +16,7 @@ import AddLocation from "./AddLocation";
 import { getProvinces } from '../../redux/callApi/locationCall';
 import AddService from "./AddService";
 import { AddCircle, Close, Delete, Save, Update } from "@material-ui/icons";
+import ChangeImageTour from "./ChangeImageTour";
 
 
 function a11yProps(index) {
@@ -201,41 +202,48 @@ export default function AddTour(props) {
                         <Typography variant="h3" className={classes.title}>{createTour.name}</Typography>
                     </div>
                     <div className={classes.info}>
-                        <div className={classes.itemInfo}>
-                            <Typography variant="body1" className={classes.content}>
-                                {createTour.content}
-                            </Typography>
-                        </div>
-                        <div className={classes.hashtagWrap}>
-                            {createTour.hashtags.map((hashtag, index) => (
-                                <Typography className={classes.hashtag} key={index}>{hashtag}</Typography>
-                            ))}
-                        </div>
-                        <div className={classes.itemInfo}>
-                            <Typography variant="body1" className={classes.content}>
-                                Chi phí: {new Intl.NumberFormat().format(createTour.cost * 1000)} VND
-                            </Typography>
-                        </div>
-                        <div className={classes.itemInfo}>
-                            <Button onClick={handleShowUpdateInfo}>Chỉnh sửa thông tin</Button>
-                        </div>
+                        <Grid container>
+                            <Grid item md={6} sm={12} xs={12}>
+                                <div className={classes.itemInfo}>
+                                    <Typography variant="body1" className={classes.content}>
+                                        {createTour.content}
+                                    </Typography>
+                                </div>
+                                <div className={classes.hashtagWrap}>
+                                    {createTour.hashtags.map((hashtag, index) => (
+                                        <Typography className={classes.hashtag} key={index}>{hashtag}</Typography>
+                                    ))}
+                                </div>
+                                <div className={classes.itemInfo}>
+                                    <Typography variant="body1" className={classes.content}>
+                                        Chi phí: {new Intl.NumberFormat().format(createTour.cost * 1000)} VND
+                                    </Typography>
+                                </div>
+                                <div className={classes.itemInfo}>
+                                    <Button onClick={handleShowUpdateInfo}>Chỉnh sửa thông tin</Button>
+                                </div>
 
-                        <Modal
-                            aria-labelledby="transition-modal-title"
-                            aria-describedby="transition-modal-description"
-                            className={classes.modal}
-                            open={showChangeInfo}
-                            onClose={handleCloseUpdateInfo}
-                            closeAfterTransition
-                            BackdropComponent={Backdrop}
-                            BackdropProps={{
-                                timeout: 500,
-                            }}
-                        >
-                            <Fade in={showChangeInfo}>
-                                <UpdateTourInfo name={createTour.name} content={createTour.content} hashtags={createTour.hashtags} image={createTour.image} handleClose={handleCloseUpdateInfo} cost={createTour.cost} />
-                            </Fade>
-                        </Modal>
+                                <Modal
+                                    aria-labelledby="transition-modal-title"
+                                    aria-describedby="transition-modal-description"
+                                    className={classes.modal}
+                                    open={showChangeInfo}
+                                    onClose={handleCloseUpdateInfo}
+                                    closeAfterTransition
+                                    BackdropComponent={Backdrop}
+                                    BackdropProps={{
+                                        timeout: 500,
+                                    }}
+                                >
+                                    <Fade in={showChangeInfo}>
+                                        <UpdateTourInfo name={createTour.name} content={createTour.content} hashtags={createTour.hashtags} image={createTour.image} handleClose={handleCloseUpdateInfo} cost={createTour.cost} />
+                                    </Fade>
+                                </Modal>
+                            </Grid>
+                            <Grid item md={6} sm={12} xs={12}>
+                                <ChangeImageTour />
+                            </Grid>
+                        </Grid>
                     </div>
 
                     <Grid container className={classes.container}>
