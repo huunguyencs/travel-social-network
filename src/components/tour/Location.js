@@ -21,7 +21,7 @@ export default function Location(props) {
 
     const dispatch = useDispatch();
 
-    const { location, isOwn, isEdit, isSave, tourDateId, indexDate, indexLocation } = props;
+    const { location, isOwn, isEdit, isSave, tourDateId, indexDate, indexLocation, addReview } = props;
 
     const [showRv, setShowRv] = useState(false);
     const [showCreateRv, setShowCreateRv] = useState(false);
@@ -218,6 +218,7 @@ export default function Location(props) {
                                     handleClose={handleClose}
                                     tourDateId={tourDateId}
                                     indexLocation={location._id}
+                                    addReview={addReview}
                                 />
                             </Fade>
                         </Modal>

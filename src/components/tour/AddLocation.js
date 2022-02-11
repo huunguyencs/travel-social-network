@@ -137,6 +137,7 @@ export default function AddLocation(props) {
                         type="submit"
                         onClick={handleSubmit}
                         startIcon={(<AddCircle />)}
+                        disabled={!loc}
                     >
                         Thêm
                     </Button>

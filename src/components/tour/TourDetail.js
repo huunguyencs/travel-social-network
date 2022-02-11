@@ -34,7 +34,20 @@ export default function TourDetail(props) {
         setShowService(false);
     }
 
-    const { tour, isOwn } = props;
+    const { tour, isOwn, setTour } = props;
+
+    const createReview = (id, index_loc, tourdate_id) => {
+        setTour(state => ({
+            ...state,
+            tour: state.tour.map(item => item._id === tourdate_id ? {
+                ...item,
+                locations: item.locations.map((location, index) => index === index_loc ? {
+                    ...location,
+                    postId: id
+                } : location)
+            } : item)
+        }))
+    }
 
 
     useEffect(() => {
@@ -164,6 +177,7 @@ export default function TourDetail(props) {
                                             indexDate={idx}
                                             indexLocation={index}
                                             isEdit={false}
+                                            addReview={createReview}
                                         />
                                     ))
                                 }

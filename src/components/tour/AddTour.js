@@ -17,6 +17,7 @@ import { getProvinces } from '../../redux/callApi/locationCall';
 import AddService from "./AddService";
 import { AddCircle, Close, Delete, Save, Update } from "@material-ui/icons";
 import ChangeImageTour from "./ChangeImageTour";
+import { error } from "../../redux/actions/alertAction";
 
 
 function a11yProps(index) {
@@ -99,7 +100,13 @@ export default function AddTour(props) {
             loading: true,
             error: false
         })
-
+        if (!createTour.image || createTour.image === "") {
+            setState({
+                loading: false,
+                error: true
+            })
+            return;
+        }
         dispatch(saveTour({
             name: createTour.name,
             content: createTour.content,
@@ -116,8 +123,9 @@ export default function AddTour(props) {
         }, () => {
             setState({
                 loading: false,
-                error: true
+                error: false
             })
+            dispatch(error({ error: "Có lỗi xảy ra" }))
         }))
     }
 
@@ -127,6 +135,14 @@ export default function AddTour(props) {
             loading: true,
             error: false
         })
+
+        if (!createTour.image || createTour.image === "") {
+            setState({
+                loading: false,
+                error: true
+            })
+            return;
+        }
 
         dispatch(updateTour(createTour._id, {
             name: createTour.name,
@@ -145,8 +161,9 @@ export default function AddTour(props) {
         }, () => {
             setState({
                 loading: false,
-                error: true
+                error: false
             })
+            dispatch(error({ error: "Có lỗi xảy ra" }))
         }))
     }
 
@@ -243,6 +260,7 @@ export default function AddTour(props) {
                             <Grid item md={6} sm={12} xs={12}>
                                 <ChangeImageTour />
                             </Grid>
+
                         </Grid>
                     </div>
 
@@ -289,7 +307,9 @@ export default function AddTour(props) {
                                             : "Lưu lại"
                                         }
                                     </Button>
+
                                 </div>
+                                {state.error && <span style={{ fontSize: "15px", color: "red", marginInline: "20px", marginTop: "10px" }}>Bạn cần thêm ảnh</span>}
                             </div>
 
                         </Grid>

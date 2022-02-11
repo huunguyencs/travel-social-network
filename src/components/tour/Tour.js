@@ -111,7 +111,10 @@ export default function Tour(props) {
         }
 
 
-    }, [tour, auth.user])
+    }, [tour, auth.user]);
+
+
+
 
     const handleCloseLogin = () => {
         setLogin(false);
