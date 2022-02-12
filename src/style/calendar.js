@@ -1,6 +1,6 @@
 import { makeStyles } from "@material-ui/core";
 // import attr from "./attr";
-// import color from "./color";
+import color from "./color";
 
 const calendarStyles = makeStyles((theme) => ({
     container: {
@@ -13,7 +13,7 @@ const calendarStyles = makeStyles((theme) => ({
     },
     paperModal: {
         width: 500,
-        backgroundColor: "#fff",
+        backgroundColor: color.white,
         borderRadius: 5,
         padding: 30,
         margin: "auto",
@@ -26,7 +26,7 @@ const calendarStyles = makeStyles((theme) => ({
     button: {
         padding: 10,
         paddingInline: 30,
-        backgroundColor: '#fff'
+        backgroundColor: color.turquoise
     },
     modal: {
         display: 'flex',
@@ -36,15 +36,21 @@ const calendarStyles = makeStyles((theme) => ({
     },
     tableCard: {
         padding: 5,
-        borderRadius: 5
+        borderRadius: 5,
     },
     amlich: {
         borderCollapse: 'collapse',
         fontSize: '16px',
         borderRadius: 5,
         tableLayout: 'fixed',
-        backgroundColor: '#fff',
+        backgroundColor: color.white,
         padding: '5px',
+    },
+    colWidth: {
+        width: '50px',
+        [theme.breakpoints.down(1600)]: {
+            width: '40px',
+        }
     },
     ngaythang: {
         cursor: 'pointer',
@@ -53,103 +59,134 @@ const calendarStyles = makeStyles((theme) => ({
         padding: '8px',
         margin: 2,
         '&:hover': {
-            backgroundColor: '#eee'
+            backgroundColor: color.lightgray
         }
     },
     ngaytuan: {
         textAlign: 'center',
-        color: '#330033',
-        backgroundColor: '#eee',
+        color: color.text,
+        backgroundColor: color.gray,
         padding: '3px',
         width: '14.286%',
-        fontSize: '12px',
-        fontWeight: 'bold'
+        fontSize: '14px',
+        fontWeight: 'bold',
+        [theme.breakpoints.down(1600)]: {
+            fontSize: '12px'
+        }
+
     },
     t2t6: {
         textAlign: 'left',
-        color: '#5a5c5b',
-        fontWeight: 'bold'
+        color: color.text,
+        fontWeight: 'bold',
+        fontSize: '16px',
+        [theme.breakpoints.down(1600)]: {
+            fontSize: '12px',
+        }
     },
     t7: {
         fontWeight: 'bold',
         textAlign: 'left',
-        color: 'blue',
+        color: color.blue,
+        fontSize: '16px',
+        [theme.breakpoints.down(1600)]: {
+            fontSize: '12px',
+        }
     },
     cn: {
         fontWeight: 'bold',
         textAlign: 'left',
-        color: 'red',
+        color: color.red,
+        fontSize: '16px',
+        [theme.breakpoints.down(1600)]: {
+            fontSize: '12px',
+        }
     },
     am: {
         textAlign: 'right',
-        fontSize: '75%',
-        color: '#554C00'
+        fontSize: '12px',
+        color: color.text,
+        [theme.breakpoints.down(1600)]: {
+            fontSize: '10px'
+        }
     },
     am2: {
         textAlign: 'right',
-        fontSize: '75%',
-        color: '#337ab7',
-        fontWeight: 'bold'
+        fontSize: '12px',
+        color: color.primary,
+        fontWeight: 'bold',
+        [theme.breakpoints.down(1600)]: {
+            fontSize: '10px'
+        }
     },
     today: {
-        backgroundColor: '#ada372',
-        color: '#fff',
+        backgroundColor: color.silver,
+        color: color.text,
         borderRadius: '50%',
         // border: '1px solid #000',
         padding: '8px',
         cursor: 'pointer',
         '&:hover': {
-            backgroundColor: '#beb483',
+            backgroundColor: color.lightgray,
         }
     },
     leam: {
-        backgroundColor: '#d9edf7',
+        backgroundColor: color.cloud,
         borderRadius: '50%',
         padding: '8px',
         cursor: 'pointer',
         '&:hover': {
-            backgroundColor: '#eafef8',
+            backgroundColor: color.lightgray,
         }
     },
     leduong: {
-        backgroundColor: '#dff0d8',
+        backgroundColor: color.cloud,
         borderRadius: '50%',
         padding: '8px',
         cursor: 'pointer',
         '&:hover': {
-            backgroundColor: '#eff1e9',
+            backgroundColor: color.lightgray,
         }
     },
     tet: {
-        backgroundColor: '#f2dede',
+        backgroundColor: color.turquoise,
         borderRadius: '50%',
         padding: '8px',
         cursor: 'pointer',
         '&:hover': {
-            backgroundColor: '#f3efef',
+            backgroundColor: color.lightgray,
         }
     },
     buttonControl: {
         cursor: 'pointer',
         padding: '10px',
-        color: '#000',
+        color: color.text,
         '&:hover': {
-            color: '#444'
+            color: color.darkgray
+        },
+        [theme.breakpoints.down("md")]: {
+            padding: '5px',
         }
     },
     tenthang: {
         textAlign: 'center',
         padding: '6px',
         // backgroundColor: '#1e8cbe',
-        color: '#000',
-        fontSize: '120%'
+        color: color.text,
+        fontSize: '120%',
+        [theme.breakpoints.down(1600)]: {
+            fontSize: "100%"
+        }
     },
     navi: {
         textAlign: 'center',
         padding: '5px',
         // backgroundColor: '#1e8cbe',
-        color: '#fff',
-        fontWeight: 'bold'
+        color: color.white,
+        fontWeight: 'bold',
+        [theme.breakpoints.down("md")]: {
+            padding: '0px',
+        }
     }
 }))
 
