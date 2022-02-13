@@ -2,8 +2,9 @@ import { Card, CardContent, CardMedia, Container, Grid, Typography } from "@mate
 import { LocationOn } from "@material-ui/icons";
 import React, { useEffect, useState } from "react";
 import { Link, useParams } from "react-router-dom";
-import ImageList from "../../components/modal/ImageList";
-import SpeedDialButton from "../../components/speedDialBtn";
+
+import ImageList from "../../components/Modal/ImageList";
+import SpeedDialButton from "../../components/SpeedDialBtn";
 import { eventStyles } from "../../style";
 import customAxios from "../../utils/fetchData";
 import { NotFound } from "../404";

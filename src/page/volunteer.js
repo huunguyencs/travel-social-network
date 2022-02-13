@@ -1,10 +1,11 @@
 import { Grid } from '@material-ui/core';
-import React, { createRef } from 'react'
-import Calendar from '../components/calendar';
-import FriendRecommendCard from '../components/card/FriendRecommend';
-import LeftBar from '../components/leftbar/LeftBar';
-import RightBar from '../components/rightbar/RightBar';
-import SpeedDialButton from '../components/speedDialBtn';
+import React, { createRef } from 'react';
+
+import Calendar from '../components/Calendar';
+import FriendRecommendCard from '../components/Card/FriendRecommend';
+import LeftBar from '../components/Leftbar';
+import RightBar from '../components/Rightbar';
+import SpeedDialButton from '../components/SpeedDialBtn';
 import { homeMenu } from '../constant/menu'
 import useStyles from '../style'
 

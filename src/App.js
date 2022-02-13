@@ -1,14 +1,13 @@
 import React, { useEffect } from "react";
 import { Route } from "react-router-dom";
 
-import Header from "./components/header/Header";
+import Header from "./components/Header";
 import PageRender from "./router/PageRender";
 // import color from "./style/color";
-import Scroll from './components/scroll';
+import Scroll, { WithRouterScroll } from './components/Scroll';
 import CustomRouter from "./router/CustomRouter";
 import HomePage from './page/home';
 import './App.css'
-import { WithRouterScroll } from './components/scroll';
 import { useLocation, useHistory } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { getFriendRecommend, refreshToken } from "./redux/callApi/authCall";

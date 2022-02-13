@@ -1,10 +1,10 @@
 import { Typography, Grid } from "@material-ui/core";
 import React, { useEffect } from "react";
-import Header from "../../components/header/Header";
-import { messageStyles } from "../../style";
-import Conversations from "../../components/message/conversations";
 import { useSelector } from "react-redux";
 import { useHistory } from "react-router-dom";
+
+import { messageStyles } from "../../style";
+import Conversations from "../../components/Message/Conversations";
 
 export default function Message(props) {
     const classes = messageStyles();
@@ -20,7 +20,6 @@ export default function Message(props) {
 
     return (
         <div>
-            <Header />
             {token &&
                 <Grid container style={{ margin: 0, padding: 0 }}>
                     <Conversations />

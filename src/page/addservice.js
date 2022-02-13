@@ -4,7 +4,7 @@ import React, { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { useHistory } from 'react-router-dom';
 
-import { BasicServiceInfo, DetailServiceInfo } from '../components/service/AddService';
+import { BasicServiceInfo, DetailServiceInfo } from '../components/Service/AddService';
 import { getProvinces } from '../redux/callApi/locationCall';
 import { createService } from '../redux/callApi/serviceCall';
 import { addServiceStyles } from '../style';

@@ -3,16 +3,16 @@ import { LocationOn } from "@material-ui/icons";
 import React, { useEffect, useState } from "react";
 import { Link, useParams } from "react-router-dom";
 
-import MapCard from "../../../components/card/MapCard";
-import RatingChart from "../../../components/card/RatingChart";
-import WeatherCardGeneral from "../../../components/card/WeatherCard";
-import FeedReview from "../../../components/feed/FeedReview";
-import { SeeMoreText } from "../../../components/seeMoreText";
-import SpeedDialButton from "../../../components/speedDialBtn";
+import MapCard from "../../../components/Card/MapCard";
+import RatingChart from "../../../components/Card/RatingChart";
+import WeatherCardGeneral from "../../../components/Card/WeatherCard";
+import FeedReview from "../../../components/Feed/FeedReview";
+import { SeeMoreText } from "../../../components/SeeMoreText";
+import SpeedDialButton from "../../../components/SpeedDialBtn";
 import { locationStyles } from "../../../style";
 import customAxios from "../../../utils/fetchData";
 import { NotFound } from "../../404";
-import ImageList from "../../../components/modal/ImageList";
+import ImageList from "../../../components/Modal/ImageList";
 import { getPostsLocation } from "../../../redux/callApi/postCall";
 import { useDispatch } from "react-redux";
 

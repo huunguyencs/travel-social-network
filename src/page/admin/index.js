@@ -1,7 +1,7 @@
 import { Card, Grid, makeStyles, Typography, Box, CardHeader } from "@material-ui/core";
 import { Group, Person, PostAdd } from "@material-ui/icons";
 import React from "react";
-import LeftBar from "../../components/leftbar/LeftBar";
+import LeftBar from "../../components/Leftbar";
 import { adminListMenu } from "../../constant/adminMenu";
 import { ResponsiveContainer, LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, Legend } from 'recharts';
 

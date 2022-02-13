@@ -1,23 +1,22 @@
 import { Grid } from "@material-ui/core";
 import React, { createRef, useEffect, useState } from "react";
-
-import LeftBar from "../../../components/leftbar/LeftBar";
-// import Feed from "../../../components/feed/FeedPost";
-import RightBar from "../../../components/rightbar/RightBar";
-import Scroll from "../../../components/scroll";
-import ProfileAvatar from "../../../components/Profile/avatar";
-import { profileMenu, serviceMenu } from "../../../constant/menu";
-import SpeedDialButton from "../../../components/speedDialBtn";
 import { useDispatch, useSelector } from "react-redux";
 import { useParams } from "react-router-dom";
+
+import LeftBar from "../../../components/Leftbar";
+import RightBar from "../../../components/Rightbar";
+import Scroll from "../../../components/Scroll";
+import ProfileAvatar from "../../../components/Profile/Avatar";
+import { profileMenu, serviceMenu } from "../../../constant/menu";
+import SpeedDialButton from "../../../components/SpeedDialBtn";
 // import Post from "../../../components/post/Post";
-import Calendar from "../../../components/calendar";
-import FriendRecommendCard from "../../../components/card/FriendRecommend";
+import Calendar from "../../../components/Calendar";
+import FriendRecommendCard from "../../../components/Card/FriendRecommend";
 import { NotFound } from "../../404";
 import { getUser } from "../../../redux/callApi/userCall";
 import { getUserPost } from "../../../redux/callApi/postCall";
 import useStyles from "../../../style";
-import FeedPostUser from "../../../components/feed/FeedPostUser";
+import FeedPostUser from "../../../components/Feed/FeedPostUser";
 
 
 

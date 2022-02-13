@@ -1,16 +1,16 @@
 import { Grid } from "@material-ui/core";
 import React, { createRef, useEffect } from "react";
+import { useDispatch } from "react-redux";
 
-import LeftBar from "../components/leftbar/LeftBar";
-import FeedPost from "../components/feed/FeedPost";
-import RightBar from "../components/rightbar/RightBar";
-import Slider from "../components/slider/slider";
+import LeftBar from "../components/Leftbar";
+import FeedPost from "../components/Feed/FeedPost";
+import RightBar from "../components/Rightbar";
+import Slider from "../components/Slider";
 import useStyles from "../style";
 import { homeMenu } from "../constant/menu";
-import SpeedDialButton from "../components/speedDialBtn";
-import Calendar from '../components/calendar';
-import FriendRecommendCard from '../components/card/FriendRecommend';
-import { useDispatch } from "react-redux";
+import SpeedDialButton from "../components/SpeedDialBtn";
+import Calendar from '../components/Calendar';
+import FriendRecommendCard from '../components/Card/FriendRecommend';
 import { getPosts } from "../redux/callApi/postCall";
 
 

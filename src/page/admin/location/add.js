@@ -1,6 +1,6 @@
 import React from "react";
 import { Grid } from "@material-ui/core";
-import LeftBar from "../../../components/leftbar/LeftBar";
+import LeftBar from "../../../components/Leftbar";
 import { adminListMenu } from "../../../constant/adminMenu";
 import GMComponent from "../../../components/admin/location/add"
 

@@ -4,7 +4,7 @@ import PropTypes from 'prop-types';
 import { Link, useLocation } from "react-router-dom";
 
 import { searchStyles } from "../style";
-import SpeedDialButton from "../components/speedDialBtn";
+import SpeedDialButton from "../components/SpeedDialBtn";
 
 
 function TabPanel(props) {

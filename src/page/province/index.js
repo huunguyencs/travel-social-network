@@ -1,8 +1,9 @@
 import { Button, CircularProgress, Grid, Typography } from '@material-ui/core';
 import React, { useEffect, useState } from 'react';
-import ProvinceCard from '../../components/card/ProvinceCard';
-import LeftBar from '../../components/leftbar/LeftBar';
-import SpeedDialButton from '../../components/speedDialBtn';
+
+import ProvinceCard from '../../components/Card/ProvinceCard';
+import LeftBar from '../../components/Leftbar';
+import SpeedDialButton from '../../components/SpeedDialBtn';
 import { homeMenu } from '../../constant/menu';
 import useStyles from '../../style';
 import customAxios from '../../utils/fetchData';

@@ -3,16 +3,15 @@ import TextField from '@material-ui/core/TextField/TextField';
 import Button from '@material-ui/core/Button/Button';
 import { Link } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
-import { login } from '../redux/callApi/authCall';
-import { useHistory } from 'react-router-dom';
-
-import Validator, { isEmpty } from '../utils/validator';
 import { CircularProgress, Grid } from "@material-ui/core";
-
+import { useHistory } from 'react-router-dom';
 import InputAdornment from "@material-ui/core/InputAdornment";
 import Visibility from "@material-ui/icons/Visibility";
 import VisibilityOff from "@material-ui/icons/VisibilityOff";
 import IconButton from "@material-ui/core/IconButton";
+
+import Validator, { isEmpty } from '../utils/validator';
+import { login } from '../redux/callApi/authCall';
 import { authStyles } from "../style";
 
 export default function Login(props) {

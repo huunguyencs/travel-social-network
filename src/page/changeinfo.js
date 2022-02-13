@@ -1,13 +1,12 @@
 import React from "react";
 import { Box, Tab, Tabs, Container, useMediaQuery, useTheme, Grid } from "@material-ui/core";
 import PropTypes from 'prop-types';
-
+import { useSelector } from "react-redux";
 
 import { profileStyles } from "../style";
+import ChangePassword from "../components/Forms/ChangePassword";
+import ChangeInfo from "../components/Forms/ChangeInfo";
 
-import ChangePassword from "../components/forms/changePassword";
-import ChangeInfo from "../components/forms/changeInfo";
-import { useSelector } from "react-redux";
 
 
 function TabPanel(props) {

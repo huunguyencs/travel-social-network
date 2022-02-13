@@ -1,18 +1,18 @@
 import React, { useEffect, useState } from "react";
 import TextField from '@material-ui/core/TextField/TextField';
 import Button from '@material-ui/core/Button/Button';
-// import Checkbox from "@material-ui/core/Checkbox";
 import { Link, useHistory } from "react-router-dom";
-
-import Validator, { nonSpace, username, validatePassword, validatePhoneNumber } from "../utils/validator";
-import { useDispatch } from "react-redux";
-import { CircularProgress, Grid } from "@material-ui/core";
-import { register } from "../redux/callApi/authCall";
-
 import InputAdornment from "@material-ui/core/InputAdornment";
 import Visibility from "@material-ui/icons/Visibility";
 import VisibilityOff from "@material-ui/icons/VisibilityOff";
 import IconButton from "@material-ui/core/IconButton";
+import { useDispatch } from "react-redux";
+import { CircularProgress, Grid } from "@material-ui/core";
+
+import { register } from "../redux/callApi/authCall";
+import Validator, { nonSpace, username, validatePassword, validatePhoneNumber } from "../utils/validator";
+
+
 import { authStyles } from "../style";
 
 export default function Register(props) {

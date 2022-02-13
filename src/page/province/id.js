@@ -1,18 +1,18 @@
 import { Button, Card, CircularProgress, Grid, Typography } from "@material-ui/core";
 import React, { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
-
-import LocationCard from "../../components/card/LocationCard";
-import { provinceStyles } from "../../style";
-import WeatherCardGeneral from "../../components/card/WeatherCard";
-import CovidCard from "../../components/card/CovidCard";
-import SpeedDialButton from "../../components/speedDialBtn";
 import { Pagination } from "@material-ui/lab";
-import ServiceCard from "../../components/card/ServiceCard";
+
+import LocationCard from "../../components/Card/LocationCard";
+import { provinceStyles } from "../../style";
+import WeatherCardGeneral from "../../components/Card/WeatherCard";
+import CovidCard from "../../components/Card/CovidCard";
+import SpeedDialButton from "../../components/SpeedDialBtn";
+import ServiceCard from "../../components/Card/ServiceCard";
 import customAxios from "../../utils/fetchData";
-import MapCard from "../../components/card/MapCard";
+import MapCard from "../../components/Card/MapCard";
 import { NotFound } from "../404";
-import EventCard from "../../components/card/EventCard";
+import EventCard from "../../components/Card/EventCard";
 
 
 const ITEM_PER_PAGE = 6;

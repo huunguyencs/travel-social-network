@@ -2,7 +2,7 @@ import { Typography } from "@material-ui/core";
 import React, { useEffect } from "react";
 import { Link } from "react-router-dom";
 
-import Header from "../components/header/Header";
+import Header from "../components/Header";
 import useStyles from "../style";
 
 export function NotFound() {
