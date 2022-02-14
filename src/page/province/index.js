@@ -47,9 +47,9 @@ export default function ProvincePage() {
 
     }
 
-    // useEffect(() => {
-    //     
-    // }, [search])
+    useEffect(() => {
+        document.title = "Tỉnh thành | GOGO"
+    }, [])
 
     return (
         <Grid container style={{ margin: 0, padding: 0 }}>

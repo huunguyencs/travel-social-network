@@ -3,25 +3,25 @@ import { DataGrid } from '@mui/x-data-grid';
 
 import customAxios from '../../../utils/fetchData';
 import { IconButton } from '@material-ui/core';
-import { Edit } from '@material-ui/icons';
+import { Edit, Visibility } from '@material-ui/icons';
 import { Link, useHistory } from 'react-router-dom';
 
 const columns = [
     {
         field: '_id',
         headerName: 'ID',
-        width: 350,
+        width: 300,
         sortable: false,
     },
     {
         field: 'name',
         headerName: 'Tên',
-        width: 250,
+        width: 200,
     },
     {
         field: 'fullname',
         headerName: 'Tên đầy đủ',
-        width: 350,
+        width: 300,
     },
     {
         field: 'action',
@@ -31,6 +31,17 @@ const columns = [
         renderCell: (province) => (
             <IconButton size='small' component={Link} to={`/admin/province/${province.row.name}`}>
                 <Edit />
+            </IconButton>
+        )
+    },
+    {
+        field: 'detail',
+        headerName: 'Xem trang chi tiết',
+        width: 250,
+        sortable: false,
+        renderCell: (province) => (
+            <IconButton size='small' component={Link} to={`/province/${province.row.name}`} target='_blank'>
+                <Visibility />
             </IconButton>
         )
     }

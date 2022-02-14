@@ -89,6 +89,7 @@ export default function Header(props) {
     }
 
     const markAllReadClick = () => {
+        console.log("remove");
         dispatch(markAllRead(auth.token, auth.user._id));
     }
 
@@ -97,7 +98,7 @@ export default function Header(props) {
     }
 
     return (
-        <AppBar style={{ zIndex: 1 }}>
+        <AppBar style={{ zIndex: 2 }}>
             <Toolbar className={classes.toolbar}>
                 <Link to="/">
                     <Typography variant="h6" className={classes.logo}>
@@ -121,7 +122,7 @@ export default function Header(props) {
                     {
                         user ? (
                             <>
-                                <div className={classes.user}>
+                                <div className={classes.user} title={user.fullname}>
                                     <Button className={classes.button} onClick={handleToggleUser} controls={toggleMenuUser ? "user-menu" : undefined}>
                                         <Avatar component="span" className={classes.avatar} alt="avatar" src={user.avatar} />
                                         <Typography noWrap={false} className={classes.userName}>{user.fullname}</Typography>
@@ -187,7 +188,7 @@ export default function Header(props) {
                                         </Grow>
                                     </Popper>
                                 </div>
-                                <IconButton className={classes.badge} aria-label="notifications" onClick={handleToggleNoti}>
+                                <IconButton className={classes.badge} aria-label="notifications" onClick={handleToggleNoti} title="Thông báo">
                                     <Badge badgeContent={calculateUnSeen(notify.data)} color="secondary">
                                         <Notifications />
                                     </Badge>
@@ -203,7 +204,7 @@ export default function Header(props) {
                                             <Paper className={classes.paperNoti}>
                                                 <div className={classes.notiHeader}>
                                                     <Typography className={classes.notiTitle} variant="h5">Thông báo</Typography>
-                                                    <Typography component={"button"} onClick={markAllReadClick} className={classes.markAllRead}>Đánh dấu tất cả đã đọc</Typography>
+                                                    <Typography onClick={markAllReadClick} className={classes.markAllRead}>Đánh dấu tất cả đã đọc</Typography>
                                                 </div>
                                                 <MenuList>
                                                     {notify.data.slice(0, 5).map((item) => (
@@ -248,7 +249,7 @@ export default function Header(props) {
 
                                     </Grow>
                                 </Popper>
-                                <IconButton className={classes.badge} aria-label="messages" component={Link} to="/message">
+                                <IconButton className={classes.badge} aria-label="messages" component={Link} to="/message" title="Tin nhắn">
                                     <Badge>
                                         <WhatsApp />
                                     </Badge>

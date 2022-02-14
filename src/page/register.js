@@ -7,7 +7,7 @@ import Visibility from "@material-ui/icons/Visibility";
 import VisibilityOff from "@material-ui/icons/VisibilityOff";
 import IconButton from "@material-ui/core/IconButton";
 import { useDispatch } from "react-redux";
-import { CircularProgress, Grid } from "@material-ui/core";
+import { CircularProgress, Grid, Typography } from "@material-ui/core";
 
 import { register } from "../redux/callApi/authCall";
 import Validator, { nonSpace, username, validatePassword, validatePhoneNumber } from "../utils/validator";
@@ -167,12 +167,8 @@ export default function Register(props) {
             </Grid>
             <Grid item md={6} sm={12} xs={12} className={classes.formLogin}>
                 {/* <h3 className="form-login-title">GOGO</h3> */}
-                <div className={classes.buttonContainer}>
-                    <div className={classes.buttonSwitch}>
-                        <Button component={Link} to='/login' className={classes.buttonUnActiveLogin}>Đăng nhập</Button>
-                        <Button component="p" className={classes.buttonActiveRegister}>Đăng ký</Button>
-
-                    </div>
+                <div className={classes.center} style={{ marginBottom: 50 }}>
+                    <Typography variant="h4">Đăng ký tài khoản</Typography>
                 </div>
                 <form
                     className={classes.form}
@@ -311,6 +307,10 @@ export default function Register(props) {
                             Tôi đồng ý với các quy định của GoGo
                         </p>
                     </div> */}
+
+                    <div className={classes.center} style={{ marginTop: 20 }}>
+                        <Typography>Bạn đã có tài khoản? <Link className={classes.registerText} to="/login">Đăng nhập</Link></Typography>
+                    </div>
 
                     <span className={classes.error}>{errorServer}</span>
 

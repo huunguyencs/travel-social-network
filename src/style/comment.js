@@ -20,6 +20,7 @@ const commentStyles = makeStyles((theme) => ({
         backgroundColor: color.background,
         padding: 10,
         borderRadius: 10,
+        marginRight: 10
     },
     cmtSubinfo: {
         display: "flex",

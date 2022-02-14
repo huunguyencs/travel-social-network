@@ -97,6 +97,11 @@ const authStyles = makeStyles((theme) => ({
     },
     form: {
         textAlign: 'center',
+    },
+    registerText: {
+        '&:hover': {
+            textDecoration: 'underline'
+        }
     }
 }))
 

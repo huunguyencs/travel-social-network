@@ -52,8 +52,6 @@ const PageRender = () => {
         }
     }
 
-    console.log(pageName);
-
     return GeneratePage(pageName)
 }
 

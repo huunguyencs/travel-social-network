@@ -238,6 +238,10 @@ const tourdetailStyles = makeStyles((theme) => ({
         marginInline: 20,
         borderRadius: attr.borderRadius.md,
         paddingInline: 10,
+        color: color.white,
+        '&:hover': {
+            color: color.black
+        }
     },
     center: {
         display: 'flex',

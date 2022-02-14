@@ -145,6 +145,8 @@ const headerStyles = makeStyles((theme) => ({
         cursor: "pointer",
         color: color.blue,
         margin: 5,
+        border: 'none',
+        backgroundColor: 'none',
         "&:hover": {
             textDecorationLine: "underline"
         }

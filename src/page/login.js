@@ -1,10 +1,9 @@
 import React, { useEffect, useState } from "react";
 import TextField from '@material-ui/core/TextField/TextField';
 import Button from '@material-ui/core/Button/Button';
-import { Link } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
-import { CircularProgress, Grid } from "@material-ui/core";
-import { useHistory } from 'react-router-dom';
+import { CircularProgress, Grid, Typography } from "@material-ui/core";
+import { Link, useHistory } from 'react-router-dom';
 import InputAdornment from "@material-ui/core/InputAdornment";
 import Visibility from "@material-ui/icons/Visibility";
 import VisibilityOff from "@material-ui/icons/VisibilityOff";
@@ -123,12 +122,10 @@ export default function Login(props) {
             </Grid>
             <Grid item md={6} sm={12} xs={12} className={classes.formLogin}>
                 {/* <h3 className="form-login-title">GOGO</h3> */}
-                <div className={classes.buttonContainer}>
-                    <div className={classes.buttonSwitch}>
-                        <Button component="p" className={classes.buttonActiveLogin}>Đăng nhập</Button>
-                        <Button component={Link} to='/register' className={classes.buttonUnActiveRegister}>Đăng ký</Button>
-                    </div>
+                <div className={classes.center} style={{ marginBottom: 50 }}>
+                    <Typography variant="h4">Đăng nhập</Typography>
                 </div>
+
                 <form
                     onSubmit={handleSubmit}
                     className={classes.form}
@@ -182,6 +179,9 @@ export default function Login(props) {
                     <p className={classes.forgotPassword}>
                         Quên mật khẩu?
                     </p>
+                    <div className={classes.center}>
+                        <Typography>Bạn chưa có tài khoản? <Link className={classes.registerText} to="/register">Đăng ký</Link></Typography>
+                    </div>
                     <span className={classes.error}>{errorServer}</span>
                     <div className={classes.loginGroup}>
                         <Button
