@@ -143,7 +143,7 @@ export default function Login(props) {
                             type="email"
                             className={classes.formInput}
                             required
-                            error={errors?.email}
+                            error={Boolean(errors?.email)}
                             helperText={errors?.email}
                             value={context.email}
                             onChange={handleInput}
@@ -158,7 +158,7 @@ export default function Login(props) {
                             id="password"
                             name="password"
                             type={showPassword ? "text" : "password"}
-                            error={errors?.password}
+                            error={Boolean(errors?.password)}
                             helperText={errors?.password}
                             className={classes.formInput}
                             value={context.password}

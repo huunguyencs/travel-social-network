@@ -59,6 +59,11 @@ const adminStyles = makeStyles((theme) => ({
         width: "100%",
         marginBlock: 10
     },
+    smHidden: {
+        [theme.breakpoints.down("sm")]: {
+            display: 'none'
+        }
+    }
 }))
 
 export default adminStyles;

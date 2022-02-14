@@ -28,10 +28,11 @@ class ProvinceController {
 
     async updateProvince(req, res) {
         try {
-            const { name, information, image } = req.body
+            console.log(req.body);
+            const { name, fullname, information, detail, image, position } = req.body;
 
             const province = await Provinces.findByIdAndUpdate(req.params.id, {
-                name, information, image
+                name, fullname, information, detail, image, position
             }, { new: true })
 
             res.json({ success: true, message: "update province successful", province })

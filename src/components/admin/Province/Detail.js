@@ -1,15 +1,21 @@
 import { Button, Chip, CircularProgress, IconButton, Paper, TextField, Typography } from '@material-ui/core';
-import { ArrowBack, Update } from '@material-ui/icons';
+import { ArrowBack, HighlightOff, Update } from '@material-ui/icons';
 import React, { useEffect, useState } from 'react'
+import { useDispatch, useSelector } from 'react-redux';
 import { Link, useParams } from 'react-router-dom'
 import { NotFound } from '../../../page/404';
+import { error as errorAlert, success } from '../../../redux/actions/alertAction';
 import { adminStyles } from '../../../style';
 import customAxios from '../../../utils/fetchData';
+import { checkImage, uploadImages } from '../../../utils/uploadImage';
+import Validator, { isFloat, username } from '../../../utils/validator';
 
 
 
 export default function DetailProvinceAdmin() {
 
+    const { token } = useSelector(state => state.auth);
+    const dispatch = useDispatch();
 
     const classes = adminStyles();
 
@@ -21,6 +27,9 @@ export default function DetailProvinceAdmin() {
     });
     const [notFound, setNotFound] = useState(false);
     const [tempFood, setTempFood] = useState('');
+    const [errors, setErrors] = useState({});
+    const [src, setSrc] = useState(null);
+    const [loading, setLoading] = useState(false);
 
 
     const getProvince = async (id) => {
@@ -32,6 +41,7 @@ export default function DetailProvinceAdmin() {
             setNotFound(false);
             await customAxios().get(`/province/${id}`).then(res => {
                 setProvince(res.data.province);
+                setSrc(res.data.province.image)
                 setState({
                     loading: false,
                     error: false,
@@ -64,6 +74,10 @@ export default function DetailProvinceAdmin() {
         setProvince(province => ({
             ...province,
             [e.target.name]: e.target.value
+        }));
+        setErrors(state => ({
+            ...state,
+            [e.target.name]: null
         }))
     }
 
@@ -73,6 +87,13 @@ export default function DetailProvinceAdmin() {
             position: {
                 ...province.position,
                 [e.target.name]: e.target.value
+            }
+        }));
+        setErrors(state => ({
+            ...state,
+            position: {
+                ...state.position,
+                [e.target.name]: null
             }
         }))
     }
@@ -128,7 +149,106 @@ export default function DetailProvinceAdmin() {
         }))
     }
 
-    const handleUpdate = () => {
+    const changeImage = (e) => {
+        if (e.target.files) {
+            setErrors(state => ({
+                ...state,
+                image: null
+            }));
+            const image = e.target.files[0];
+            const check = checkImage(image);
+            if (check === "")
+                setSrc(image)
+            else {
+                setErrors(state => ({
+                    ...state,
+                    image: check
+                }));
+            }
+        }
+    }
+
+    const removeImage = (e) => {
+        setSrc(province?.image)
+    }
+
+
+    const rules = [
+        {
+            field: 'name',
+            method: 'isEmpty',
+            validWhen: false,
+            message: 'Tên không được bỏ trống!',
+        },
+        {
+            field: 'fullname',
+            method: 'isEmpty',
+            validWhen: false,
+            message: 'Tên không được bỏ trống!',
+        },
+        {
+            field: 'information',
+            method: 'isEmpty',
+            validWhen: false,
+            message: 'Tên không được bỏ trống!',
+        },
+        {
+            field: 'name',
+            method: username,
+            validWhen: true,
+            message: 'Tên không hợp lệ',
+        }
+    ];
+    const rulesPosition = [
+        {
+            field: 'lat',
+            method: isFloat,
+            validWhen: true,
+            message: 'Vị trí không hợp lệ!',
+        },
+        {
+            field: 'lon',
+            method: isFloat,
+            validWhen: true,
+            message: 'Vị trí không hợp lệ!',
+        },
+    ]
+    const validator = new Validator(rules);
+    const validatorPos = new Validator(rulesPosition);
+
+    const handleUpdate = async () => {
+        setLoading(true);
+        const err = validator.validate(province);
+        const errPos = validatorPos.validate(province.position);
+        const totalErr = {
+            ...err,
+            position: errPos
+        }
+
+        setErrors(totalErr);
+
+        if (src !== province.image) {
+            var image = uploadImages([src]);
+            setProvince(state => ({
+                ...state,
+                image: image[0]
+            }))
+        }
+
+        if (Object.keys(err).length === 0 && Object.keys(errPos).length === 0) {
+            await customAxios(token).patch(`/province/${province._id}`, {
+                ...province
+            }).then(res => {
+                setProvince(res.data.province);
+                setSrc(res.data.province.image);
+                setLoading(false);
+                dispatch(success({ message: "Cập nhật thành công!" }));
+            }).catch(err => {
+                setLoading(false);
+                dispatch(errorAlert({ message: "Có lỗi xảy ra!" }));
+            })
+
+        }
 
     }
 
@@ -162,6 +282,8 @@ export default function DetailProvinceAdmin() {
                                             value={province.name}
                                             className={classes.fullField}
                                             required
+                                            error={Boolean(errors?.name)}
+                                            helperText={errors?.name}
                                         />
                                     </div>
                                     <div style={{ width: '50%', marginLeft: 20 }}>
@@ -173,6 +295,8 @@ export default function DetailProvinceAdmin() {
                                             value={province.fullname}
                                             className={classes.fullField}
                                             required
+                                            error={Boolean(errors?.fullname)}
+                                            helperText={errors?.fullname}
                                         />
                                     </div>
                                 </div>
@@ -190,6 +314,8 @@ export default function DetailProvinceAdmin() {
                                             value={province.position.lat}
                                             className={classes.fullField}
                                             required
+                                            error={Boolean(errors?.position?.lat)}
+                                            helperText={errors?.position?.lat}
                                         />
                                     </div>
                                     <div style={{ width: '50%', marginLeft: 20 }}>
@@ -202,6 +328,8 @@ export default function DetailProvinceAdmin() {
                                             value={province.position.lon}
                                             className={classes.fullField}
                                             required
+                                            error={Boolean(errors?.position?.lon)}
+                                            helperText={errors?.position?.lon}
                                         />
                                     </div>
                                 </div>
@@ -214,7 +342,38 @@ export default function DetailProvinceAdmin() {
                                     value={province.information}
                                     className={classes.fullField}
                                     required
+                                    error={Boolean(errors?.information)}
+                                    helperText={errors?.information}
                                 />
+
+                                <div className={classes.imageItem}>
+                                    <img
+                                        src={typeof src === 'string' ? src : URL.createObjectURL(src)}
+                                        alt="Can not loading img"
+                                        className={classes.item}
+                                        width={500}
+                                        height={300}
+                                    />
+                                    {src !== province.image && <IconButton onClick={removeImage} className={classes.removeButton} size="small"><HighlightOff /></IconButton>}
+                                </div>
+                                <div>
+                                    <input
+                                        accept="image/*"
+                                        style={{ display: 'none' }}
+                                        id="input-image"
+                                        name="images"
+                                        multiple
+                                        type="file"
+                                        onChange={changeImage}
+                                    />
+                                    <label htmlFor='input-image'>
+                                        <Button variant="raised" component="span">
+                                            Thay đổi ảnh
+                                        </Button>
+
+                                    </label>
+                                </div>
+
                                 <div style={{ display: 'flex', justifyContent: 'center', margin: 20 }}>
                                     <Typography variant='h5'>Chi tiết:</Typography>
                                 </div>
@@ -248,7 +407,7 @@ export default function DetailProvinceAdmin() {
                                         className={classes.fullField}
                                     />
                                 </div>
-                                <div>
+                                <div style={{ textAlign: 'center' }}>
                                     <Typography variant='h6'>Phương tiện</Typography>
                                     <TextField
                                         label="Sân bay"
@@ -269,7 +428,7 @@ export default function DetailProvinceAdmin() {
                                         className={classes.fullField}
                                     />
                                 </div>
-                                <div>
+                                <div style={{ textAlign: 'center' }}>
                                     <Typography variant='h6'>Ẩm thực</Typography>
                                     {province.detail.food.map((item, index) => (
                                         <Chip key={index} label={item} onDelete={() => handleRemoveFood(index)} style={{ margin: 5 }} />
@@ -305,7 +464,7 @@ export default function DetailProvinceAdmin() {
                                         color='primary'
                                         variant="contained"
                                     >
-                                        Cập nhật
+                                        {loading ? <CircularProgress /> : "Cập nhật"}
                                     </Button>
                                 </div>
                             </>

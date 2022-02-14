@@ -187,7 +187,7 @@ export default function Register(props) {
                             name="username"
                             required
                             className={classes.formInput}
-                            error={errors?.username}
+                            error={Boolean(errors?.username)}
                             onChange={handleInput}
                             helperText={errors?.username}
                         />
@@ -201,7 +201,7 @@ export default function Register(props) {
                             name="fullname"
                             required
                             className={classes.formInput}
-                            error={errors?.fullname}
+                            error={Boolean(errors?.fullname)}
                             onChange={handleInput}
                             helperText={errors?.fullname}
                         />
@@ -215,7 +215,7 @@ export default function Register(props) {
                             name="email"
                             required
                             className={classes.formInput}
-                            error={errors?.email}
+                            error={Boolean(errors?.email)}
                             onChange={handleInput}
                             helperText={errors?.email}
                         />
@@ -227,7 +227,7 @@ export default function Register(props) {
                             variant="outlined"
                             name="phone"
                             className={classes.formInput}
-                            error={errors?.phone}
+                            error={Boolean(errors?.phone)}
                             helperText={errors?.phone}
                             onChange={handleInput}
                         />
@@ -241,7 +241,7 @@ export default function Register(props) {
                             type={showPassword ? "text" : "password"}
                             required
                             className={classes.formInput}
-                            error={errors?.password}
+                            error={Boolean(errors?.password)}
                             helperText={errors?.password}
                             onChange={handleInput}
                             InputProps={{
@@ -269,7 +269,7 @@ export default function Register(props) {
                             type={showConfirm ? "text" : "password"}
                             required
                             className={classes.formInput}
-                            error={errors?.confirmPassword}
+                            error={Boolean(errors?.confirmPassword)}
                             helperText={errors?.confirmPassword}
                             onChange={handleInput}
                             InputProps={{
