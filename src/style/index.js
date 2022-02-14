@@ -30,6 +30,7 @@ import emojiPickerStyles from "./emojiPicker";
 import modalStyles from "./modal";
 import addServiceStyles from "./addservice";
 import authStyles from "./auth";
+import adminStyles from "./adminStyles";
 
 
 
@@ -83,4 +84,5 @@ export {
     modalStyles,
     addServiceStyles,
     authStyles,
+    adminStyles,
 };

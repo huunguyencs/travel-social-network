@@ -65,7 +65,7 @@ export default function Province(props) {
             })
             setNotFound(false);
             await customAxios().get(`/province/${id}`).then(res => {
-                setProvince(res.data.province, res.data.locations, res.data.services, res.data.events);
+                setProvince(res.data.province);
                 setState({
                     loading: false,
                     error: false,

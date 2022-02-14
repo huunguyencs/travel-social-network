@@ -25,7 +25,7 @@ const PageRender = () => {
         if (user && user.role) {
             if (id) {
                 if (subpage) {
-                    pageName = `admin/${id}/${subpage}`;
+                    pageName = `admin/${id}/id`;
                 }
                 else {
                     pageName = `admin/${id}`;
@@ -52,6 +52,7 @@ const PageRender = () => {
         }
     }
 
+    console.log(pageName);
 
     return GeneratePage(pageName)
 }

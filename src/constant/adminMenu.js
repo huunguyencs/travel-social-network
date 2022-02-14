@@ -27,8 +27,8 @@ export const adminListMenu = {
         },
         {
             icon: Group,
-            name: "Nhóm",
-            link: "/admin/group",
+            name: "Tỉnh",
+            link: "/admin/province",
         },
         {
             icon: PostAdd,

@@ -1,23 +1,23 @@
-    import { makeStyles } from "@material-ui/core";
+import { makeStyles } from "@material-ui/core";
 import color from "./color";
 import attr from "./attr";
 
-const adimStyles = makeStyles((theme) => ({
+const adminStyles = makeStyles((theme) => ({
     container: {
 
     },
 
-    adminLocation_itemInput:{
+    adminLocation_itemInput: {
 
     },
-    adminLocation_body:{
-        
+    adminLocation_body: {
+
     },
-    adminLocation_button:{
+    adminLocation_button: {
         maxWidth: "100%",
         width: "100%",
     },
-    
+
     coverImg: {
         // height: "50vh",
     },
@@ -54,7 +54,11 @@ const adimStyles = makeStyles((theme) => ({
     },
     infoContent: {
         padding: 30,
-    }
+    },
+    fullField: {
+        width: "100%",
+        marginBlock: 10
+    },
 }))
 
-export default adimStyles;
+export default adminStyles;
