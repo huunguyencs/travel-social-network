@@ -14,7 +14,7 @@ import { getFriendRecommend, refreshToken } from "./redux/callApi/authCall";
 import { io } from 'socket.io-client';
 import SocketClient from "./SocketClient";
 import * as SOCKET_TYPES from './redux/constants/index';
-import NotificationBar from "./components/alert/Alert";
+import AlertBar from "./components/Alert";
 
 import { getNotifies } from './redux/callApi/notifyCall';
 
@@ -55,7 +55,7 @@ function App() {
     <div>
       <WithRouterScroll />
       <Scroll showBelow={500} />
-      <NotificationBar />
+      <AlertBar />
       {displayHeader() && <Header />}
       {auth.token && <SocketClient />}
       <Route path="/" component={HomePage} exact />
