@@ -130,7 +130,7 @@ const cardStyles = makeStyles((theme) => ({
     },
     line: {
         maxWidth: "100%",
-        marginRight: 20,
+        // marginRight: 20,
         height: 15,
     },
     iconStar: {

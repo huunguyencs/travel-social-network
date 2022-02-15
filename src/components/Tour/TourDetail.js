@@ -185,7 +185,9 @@ export default function TourDetail(props) {
                             </Grid>
                             <Grid item md={6}>
                                 <Container className={classes.mapRight}>
-                                    {position && <MapCard position={position} zoom={12} locations={locations} />}
+                                    <>
+                                        {position && <MapCard position={position} zoom={12} locations={locations} />}
+                                    </>
                                 </Container>
                             </Grid>
                         </Grid>

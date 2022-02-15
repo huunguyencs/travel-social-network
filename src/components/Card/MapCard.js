@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import GoogleMapReact from 'google-map-react';
-import { Card, ClickAwayListener, Paper, Popper, Typography } from "@material-ui/core";
+import { Card, CircularProgress, ClickAwayListener, Paper, Popper, Typography } from "@material-ui/core";
 import { GpsFixed, LocationOn } from '@material-ui/icons'
 
 import KEY from "../../key/googlemap";
@@ -91,20 +91,21 @@ export default function MapCard(props) {
     return (
         <Card style={{ height: height ? height : 500 }}>
             {
-                position &&
-                <GoogleMapReact
-                    bootstrapURLKeys={{ key: KEY }}
-                    defaultCenter={{ lat: 14.5, lng: 108 }}
-                    defaultZoom={8}
-                    center={center}
-                    zoom={zoom}
-                // onGoogleApiLoaded={({ map, maps }) => renderMarkers(map, maps)}
-                >
-                    {locations && locations.map((item) => (
-                        <MapLocation location={item} key={item._id} lat={item.position.lat} lng={item.position.lon} onClick={() => changeCenter(item.position)} />
-                    ))}
-                    {name && <Position name={name} lat={position.lat} lng={position.lon} />}
-                </GoogleMapReact>
+                position ?
+                    <GoogleMapReact
+                        bootstrapURLKeys={{ key: KEY }}
+                        defaultCenter={{ lat: 14.5, lng: 108 }}
+                        defaultZoom={8}
+                        center={center}
+                        zoom={zoom}
+                    // onGoogleApiLoaded={({ map, maps }) => renderMarkers(map, maps)}
+                    >
+                        {locations && locations.map((item) => (
+                            <MapLocation location={item} key={item._id} lat={item.position.lat} lng={item.position.lon} onClick={() => changeCenter(item.position)} />
+                        ))}
+                        {name && <Position name={name} lat={position.lat} lng={position.lon} />}
+                    </GoogleMapReact>
+                    : <CircularProgress />
             }
 
         </Card>

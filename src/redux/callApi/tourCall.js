@@ -58,10 +58,6 @@ export const saveTour = (tour, image, token, socket, next, error) => async (disp
 
         const res = await customAxios(token).post('/tour/create_tour', data);
 
-
-        // dispatch(tourAction.addTour({ tour: res.data.newTour }))
-
-
         //notify
         const dataNotify = {
             id: res.data.newTour._id,
@@ -100,10 +96,6 @@ export const updateTour = (id, tour, image, token, next, error) => async (dispat
             image: image ? imageUpload[0] : "",
             provinces: Array.from(extractProvinceTour(tour.tour)),
         }
-
-        // console.log(data);
-
-
         const res = await customAxios(token).patch(`/tour/${id}`, data);
         next();
         // console.log(res.data.newTour)
@@ -147,9 +139,7 @@ export const deleteTour = (tour, token, socket, next, error) => async (dispatch)
 }
 
 export const likeTour = (id, auth, socket, next) => async (dispatch) => {
-
     try {
-
         const res = await customAxios(auth.token).patch(`/tour/${id}/like`)
         dispatch(tourAction.updateLike({ id: id, likes: res.data.likes }));
         // console.log(res.data.likes);
@@ -177,10 +167,7 @@ export const likeTour = (id, auth, socket, next) => async (dispatch) => {
 }
 
 export const unlikeTour = (id, auth, socket, next) => async (dispatch) => {
-
-
     try {
-
         const res = await customAxios(auth.token).patch(`/tour/${id}/unlike`);
         dispatch(tourAction.updateLike({ id: id, likes: res.data.likes }));
         socket.emit('unlike', { type: 'tour', id: id, likes: res.data.likes });
@@ -253,5 +240,18 @@ export const removeReview = (tourDateId, token, locationId) => async (dispatch) 
         })
     }
     catch (err) {
+    }
+}
+
+export const getTourSaved = (token) => async (dispatch) => {
+    try {
+        console.log(token);
+        const res = await customAxios(token).get(`/user/get_tour_saved`);
+        var tours = res.data.tours.map(item => sortTourDate(item))
+        // console.log(res.data.tours);
+        dispatch(tourAction.getTours({ tours: tours }))
+    }
+    catch (err) {
+        dispatch(tourAction.error({ error: "Có lỗi xảy ra" }))
     }
 }

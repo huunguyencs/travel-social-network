@@ -367,7 +367,7 @@ export default function DetailProvinceAdmin() {
                                         onChange={changeImage}
                                     />
                                     <label htmlFor='input-image'>
-                                        <Button variant="raised" component="span">
+                                        <Button variant="contained" component="span">
                                             Thay đổi ảnh
                                         </Button>
 

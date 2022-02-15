@@ -43,27 +43,30 @@ export default function ManageUserJoin(props) {
                     </IconButton>
                 </div>
             </div>
-            <ul>
-                {listUser && listUser.map((user) => (
-                    <li button className={classes.modal_body_user} key={user._id}>
-                        <div className={classes.userWrap}>
-                            <Avatar alt="avatar" src={user.avatar} className={classes.avatar} />
+            {listUser &&
+                <ul>
+                    {
+                        listUser.map((user) => (
+                            <li button className={classes.modal_body_user} key={user._id}>
+                                <div className={classes.userWrap}>
+                                    <Avatar alt="avatar" src={user.avatar} className={classes.avatar} />
 
-                            <div className={classes.fullnameWrap}>
-                                <Link to={`/u/${user._id}`} onClick={handleClose} className={classes.fullname}>{user.fullname}</Link>
-                            </div>
-                        </div>
-                        <div>
-                            {
-                                auth.user && auth.user._id !== user._id &&
-                                <Button variant="outlined" className={classes.modal_body_user_button} onClick={() => handleRemove(user._id)}>
-                                    {loading ? <CircularProgress fontSize="small" /> : "Xoá"}
-                                </Button>
-                            }
-                        </div>
-                    </li>
-                ))}
-            </ul>
+                                    <div className={classes.fullnameWrap}>
+                                        <Link to={`/u/${user._id}`} onClick={handleClose} className={classes.fullname}>{user.fullname}</Link>
+                                    </div>
+                                </div>
+                                <div>
+                                    {
+                                        auth.user && auth.user._id !== user._id &&
+                                        <Button variant="outlined" className={classes.modal_body_user_button} onClick={() => handleRemove(user._id)}>
+                                            {loading ? <CircularProgress fontSize="small" /> : "Xoá"}
+                                        </Button>
+                                    }
+                                </div>
+                            </li>
+                        ))}
+                </ul>
+            }
         </div>
     )
 }

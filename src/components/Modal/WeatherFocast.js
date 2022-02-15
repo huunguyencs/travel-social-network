@@ -33,11 +33,14 @@ export default function WeatherFocast({ weather, handleClose, nameShow, alert })
                     </div>
                 </div>
             }
-            <ScrollMenu>
-                {weather && weather.map((item, index) =>
-                    <WeatherFocastItem weather={item} key={index} />
-                )}
-            </ScrollMenu>
+            {
+                weather &&
+                <ScrollMenu>
+                    {weather.map((item, index) =>
+                        <WeatherFocastItem weather={item} key={index} />
+                    )}
+                </ScrollMenu>
+            }
             <div style={{ display: "flex", justifyContent: "right", margin: 10 }}>
                 <Typography variant="subtitle2">Dữ liệu được lấy từ <Link href="https://openweathermap.org/" target='_blank'>OpenWeatherMap</Link></Typography>
             </div>

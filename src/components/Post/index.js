@@ -124,76 +124,78 @@ export default function Post(props) {
 
     return (
         <Card className={classes.cardContainer}>
-            {post && <>
-                <PostContent post={post} />
+            <>
+                {post && <>
+                    <PostContent post={post} />
 
-                <CardActions style={{ marginLeft: 10 }}>
-                    {
-                        like ? <Favorite className={classes.likedIcon} onClick={likePress} /> : <FavoriteBorderOutlined className={classes.iconButton} onClick={likePress} />
-                    }
-                    <Modal
-                        aria-labelledby="login"
-                        aria-describedby="must-login"
-                        className={classes.modal}
-                        open={login}
-                        onClose={handleCloseLogin}
-                        closeAfterTransition
-                        BackdropComponent={Backdrop}
-                        BackdropProps={{
-                            timeout: 500,
-                        }}
-                    >
-                        <LoginModal />
-                    </Modal>
-                    <Typography className={classes.numLike} onClick={handleOpen}>
-                        {post.likes.length}
-                    </Typography>
-                    <Modal
-                        aria-labelledby="like"
-                        aria-describedby="user-like-this-post"
-                        className={classes.modal}
-                        open={showLike}
-                        onClose={handleClose}
-                        closeAfterTransition
-                        BackdropComponent={Backdrop}
-                        BackdropProps={{
-                            timeout: 500,
-                        }}
-                    >
-                        <UserList listUser={post?.likes} title={"Đã thích"} handleClose={handleClose} />
-                    </Modal>
-                    <QuestionAnswer onClick={handleShowCmt} className={classes.iconButton} />
-                    <Typography className={classes.numCmt}>
-                        {post.comments.length}
-                    </Typography>
-                    <Share onClick={handleShowShare} className={classes.iconButton} />
-                    <Modal
-                        aria-labelledby="share"
-                        aria-describedby="share-this-post"
-                        className={classes.modal}
-                        open={share}
-                        onClose={handleCloseShare}
-                        closeAfterTransition
-                        BackdropComponent={Backdrop}
-                        BackdropProps={{
-                            timeout: 500,
-                        }}
-                    >
-                        <SharePost object={post.shareId ? post.shareId : post} type="post" handleClose={handleCloseShare} />
-                    </Modal>
-                </CardActions>
+                    <CardActions style={{ marginLeft: 10 }}>
+                        {
+                            like ? <Favorite className={classes.likedIcon} onClick={likePress} /> : <FavoriteBorderOutlined className={classes.iconButton} onClick={likePress} />
+                        }
+                        <Modal
+                            aria-labelledby="login"
+                            aria-describedby="must-login"
+                            className={classes.modal}
+                            open={login}
+                            onClose={handleCloseLogin}
+                            closeAfterTransition
+                            BackdropComponent={Backdrop}
+                            BackdropProps={{
+                                timeout: 500,
+                            }}
+                        >
+                            <LoginModal />
+                        </Modal>
+                        <Typography className={classes.numLike} onClick={handleOpen}>
+                            {post.likes.length}
+                        </Typography>
+                        <Modal
+                            aria-labelledby="like"
+                            aria-describedby="user-like-this-post"
+                            className={classes.modal}
+                            open={showLike}
+                            onClose={handleClose}
+                            closeAfterTransition
+                            BackdropComponent={Backdrop}
+                            BackdropProps={{
+                                timeout: 500,
+                            }}
+                        >
+                            <UserList listUser={post?.likes} title={"Đã thích"} handleClose={handleClose} />
+                        </Modal>
+                        <QuestionAnswer onClick={handleShowCmt} className={classes.iconButton} />
+                        <Typography className={classes.numCmt}>
+                            {post.comments.length}
+                        </Typography>
+                        <Share onClick={handleShowShare} className={classes.iconButton} />
+                        <Modal
+                            aria-labelledby="share"
+                            aria-describedby="share-this-post"
+                            className={classes.modal}
+                            open={share}
+                            onClose={handleCloseShare}
+                            closeAfterTransition
+                            BackdropComponent={Backdrop}
+                            BackdropProps={{
+                                timeout: 500,
+                            }}
+                        >
+                            <SharePost object={post.shareId ? post.shareId : post} type="post" handleClose={handleCloseShare} />
+                        </Modal>
+                    </CardActions>
 
-                <Collapse className={classes.cmt} in={showCmt}>
-                    <hr className={classes.line} />
-                    <div className={classes.listCmt}>
-                        {post.comments.map((cmt) => (
-                            <Comment comment={cmt} key={cmt._id} id={post._id} type="post" />
-                        ))}
-                    </div>
-                </Collapse>
+                    <Collapse className={classes.cmt} in={showCmt}>
+                        <hr className={classes.line} />
+                        <div className={classes.listCmt}>
+                            {post.comments.map((cmt) => (
+                                <Comment comment={cmt} key={cmt._id} id={post._id} type="post" />
+                            ))}
+                        </div>
+                    </Collapse>
 
-                <InputComment type="post" id={post._id} />
-            </>}
+                    <InputComment type="post" id={post._id} />
+                </>}
+            </>
         </Card>
     )
 }

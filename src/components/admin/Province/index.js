@@ -62,7 +62,6 @@ export default function AdminProvinces() {
         setError(null);
         await customAxios().get('/province/provinces').then(res => {
             setProvinces(res.data.provinces);
-            console.log(res.data.provinces);
             setLoading(false);
         }).catch(err => {
             setLoading(false);

@@ -9,7 +9,6 @@ import Scroll from "../../../components/Scroll";
 import ProfileAvatar from "../../../components/Profile/Avatar";
 import { profileMenu, serviceMenu } from "../../../constant/menu";
 import SpeedDialButton from "../../../components/SpeedDialBtn";
-// import Post from "../../../components/post/Post";
 import Calendar from "../../../components/Calendar";
 import FriendRecommendCard from "../../../components/Card/FriendRecommend";
 import { NotFound } from "../../404";

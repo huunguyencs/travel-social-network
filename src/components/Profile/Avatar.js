@@ -132,10 +132,10 @@ export default function ProfileAvatar(props) {
 
 
   return (
-    <Container className={classes.container}>
+    <>
       {
         user &&
-        <>
+        <Container className={classes.container}>
           <div>
             <img className={classes.profile_overImage} src={user.background} alt="cover" onClick={handleOpenCover} />
             <ImageModal
@@ -212,8 +212,9 @@ export default function ProfileAvatar(props) {
               }
             </div>
           </div>
-        </>
+        </Container>
       }
-    </Container>
+    </>
+
   )
 }

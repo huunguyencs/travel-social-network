@@ -1,4 +1,5 @@
 const Users = require('../Models/user.model');
+const Tours = require('../Models/tour.model')
 const bcrypt = require('bcrypt')
 const jwt = require('jsonwebtoken');
 const ObjectId = require('mongoose').Types.ObjectId;
@@ -299,6 +300,19 @@ class UserController {
         }
     }
 
+    async unsaveTour(req, res) {
+        try {
+            const { tour } = req.body;
+            const user = await Users.findByIdAndUpdate(req.user._id, {
+                $pop: { tourSaved: tour }
+            }, { new: true })
+
+            res.json({ success: true, message: 'Loại khỏi danh sách thành công', tourSaved: user.tourSaved })
+        } catch (err) {
+            res.status(500).json({ success: false, message: err.message })
+        }
+    }
+
     async getFriendRecommend(req, res) {
         try {
 
@@ -360,11 +374,35 @@ class UserController {
 
     async getAll(req, res) {
         try {
-            const users = Users.find({}).select("username fullname avatar email role confirmAccount");
+            const users = await Users.find({}).select("username fullname avatar email role confirmAccount");
             res.json({ success: true, message: "Lấy toàn bộ user thành công", users })
         } catch (err) {
             console.log(err);
             res.status(500).json({ success: false, message: err.massage })
+        }
+    }
+
+    async getTourSaved(req, res) {
+        try {
+            const tourSaved = req.user.tourSaved.map(item => item.toString());
+            const tours = await Tours.find({
+                _id: {
+                    $in: tourSaved
+                }
+            })
+                .populate("userId joinIds likes", "username fullname avatar")
+                .populate("tour", "date")
+                .populate({
+                    path: "comments",
+                    populate: {
+                        path: "userId likes",
+                        select: "username fullname avatar"
+                    }
+                });
+            res.json({ success: true, message: "Lấy tour đã lưu thành công", tours })
+        }
+        catch (err) {
+            res.status(500).json({ success: false, message: err.message })
         }
     }
 }

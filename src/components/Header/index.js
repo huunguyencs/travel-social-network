@@ -25,7 +25,8 @@ import {
     Update,
     ExitToApp,
     SupervisorAccount,
-    AccessibilityNew
+    AccessibilityNew,
+    Bookmark
 } from "@material-ui/icons";
 import { Link, useHistory } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
@@ -176,6 +177,12 @@ export default function Header(props) {
                                                             </ListItemIcon>
                                                             <Typography variant="inherit">Thay đổi thông tin</Typography>
                                                         </MenuItem>
+                                                        <MenuItem aria-label="profile" component={Link} to={`/saved`} onClick={handleCloseUser}>
+                                                            <ListItemIcon>
+                                                                <Bookmark fontSize="small" />
+                                                            </ListItemIcon>
+                                                            <Typography variant="inherit">Tour đã lưu</Typography>
+                                                        </MenuItem>
                                                         <MenuItem aria-label="log-out" onClick={handleLogout}>
                                                             <ListItemIcon>
                                                                 <ExitToApp fontSize="small" />
@@ -225,9 +232,6 @@ export default function Header(props) {
                                                                     <span style={{ color: "#34495e" }}>{timeAgo(new Date(item.createdAt))}</span>
                                                                 </div>
                                                             </div>
-                                                            {/* {
-                                                                !item.seen && <FiberManualRecord style={{ color: "#34495e" }} />
-                                                            } */}
                                                         </MenuItem>
                                                     ))}
                                                 </MenuList>

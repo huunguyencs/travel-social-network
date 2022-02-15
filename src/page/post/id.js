@@ -41,7 +41,6 @@ export default function PostDetail() {
 
     return (
         <>
-
             {
                 notFound ? <NotFound /> :
                     <div>

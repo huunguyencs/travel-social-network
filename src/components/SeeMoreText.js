@@ -24,7 +24,7 @@ export function SeeMoreText(props) {
     const { maxText, text, variant } = props;
 
     return (
-        <Typography variant={variant} noWrap={false} style={{ wordWrap: 'break-word' }}>
+        <Typography variant={variant} noWrap={false}>
             {text?.length < maxText ? text :
                 (
                     <>

@@ -210,6 +210,19 @@ export const saveTour = (tourId, token) => async (dispatch) => {
     }
 }
 
+export const unsavedTour = (tourId, token) => async (dispatch) => {
+    try {
+        const res = await customAxios(token).put('/user/unsave_tour', {
+            tour: tourId
+        })
+        dispatch(authAction.saveTour({ tourSaved: res.data.tourSaved }))
+        dispatch(alertAction.success({ message: "Đã loại khỏi danh sách lưu" }))
+    }
+    catch (err) {
+        dispatch(alertAction.error({ message: "Có lỗi xảy ra!" }))
+    }
+}
+
 export const getFriendRecommend = (token, limit) => async (dispatch) => {
     try {
         const res = await customAxios(token).get(`/user/get_friend_recommend?limit=${limit}`);
