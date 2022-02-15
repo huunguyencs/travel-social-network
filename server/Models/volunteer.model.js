@@ -11,7 +11,7 @@ const volunteerSchema = new mongoose.Schema({
     date: [{ type: mongoose.Types.ObjectId, ref: 'volunteer_dates' }],
     location: [{ type: mongoose.Types.ObjectId, ref: 'volunteer_locations' }],
     image: String,
-    cost: Number,
+    cost: String,
 }, {
     timestamps: true
 })

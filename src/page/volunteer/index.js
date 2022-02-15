@@ -1,91 +1,28 @@
 import { Grid } from '@material-ui/core';
-import React, { createRef } from 'react'
-// import Calendar from '../components/calendar';
-// import FriendRecommendCard from '../components/card/FriendRecommend';
+import React, { useEffect } from 'react'
+import { useDispatch, useSelector } from "react-redux";
 import LeftBar from '../../components/leftbar/LeftBar';
-// import RightBar from '../components/rightbar/RightBar';
 import SpeedDialButton from '../../components/speedDialBtn';
 import { homeMenu } from '../../constant/menu';
-// import useStyles from '../style'
 import { Link } from 'react-router-dom';
 import { Typography } from '@material-ui/core';
+import { getVolunteers } from "../../redux/callApi/volunteerCall";
+import { convertDateToStr} from '../../utils/date';
+
 export default function Volunteer() {
-    const data= [
-        {
-            _id: "01",
-            name: "DU LICH TINH NGUYEN",
-            image:"https://images.unsplash.com/reserve/HgZuGu3gSD6db21T3lxm_San%20Zenone.jpg?ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&ixlib=rb-1.2.1&auto=format&fit=crop&w=1350&q=80",
-            user:{
-                _id: "0123",
-                fullname: "Tran Quang Huy",
-                avatar: "https://images.unsplash.com/photo-1418065460487-3e41a6c84dc5?ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&ixlib=rb-1.2.1&auto=format&fit=crop&w=1350&q=80"
-            },
-            description: "abc",
-            dateStart: "12-02-2022",
-            type: "Giáo dục",
-            location: "Thành phố Hồ Chí Minh"
-        },
-        {
-            _id: "02",
-            name: "DU LICH TINH NGUYEN 2",
-            image:"https://images.unsplash.com/reserve/HgZuGu3gSD6db21T3lxm_San%20Zenone.jpg?ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&ixlib=rb-1.2.1&auto=format&fit=crop&w=1350&q=80",
-            user:{
-                _id: "0123",
-                fullname: "Tran Quang Huy",
-                avatar: "https://images.unsplash.com/photo-1418065460487-3e41a6c84dc5?ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&ixlib=rb-1.2.1&auto=format&fit=crop&w=1350&q=80"
-            },
-            description: "abc",
-            dateStart: "12-02-2022",
-            type: "Giáo dục",
-            location: "Thành phố Hồ Chí Minh"
-        },
-        {
-            _id: "03",
-            name: "DU LICH TINH NGUYEN 3",
-            image:"https://images.unsplash.com/reserve/HgZuGu3gSD6db21T3lxm_San%20Zenone.jpg?ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&ixlib=rb-1.2.1&auto=format&fit=crop&w=1350&q=80",
-            user:{
-                _id: "0123",
-                fullname: "Tran Quang Huy",
-                avatar: "https://images.unsplash.com/photo-1418065460487-3e41a6c84dc5?ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&ixlib=rb-1.2.1&auto=format&fit=crop&w=1350&q=80"
-            },
-            description: "abc",
-            dateStart: "12-02-2022",
-            type: "Giáo dục",
-            location: "Thành phố Hồ Chí Minh"
-        },
-        {
-            _id: "04",
-            name: "DU LICH TINH NGUYEN 4",
-            image:"https://images.unsplash.com/reserve/HgZuGu3gSD6db21T3lxm_San%20Zenone.jpg?ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&ixlib=rb-1.2.1&auto=format&fit=crop&w=1350&q=80",
-            user:{
-                _id: "0123",
-                fullname: "Tran Quang Huy",
-                avatar: "https://images.unsplash.com/photo-1418065460487-3e41a6c84dc5?ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&ixlib=rb-1.2.1&auto=format&fit=crop&w=1350&q=80"
-            },
-            description: "abc",
-            dateStart: "12-02-2022",
-            type: "Giáo dục",
-            location: "Thành phố Hồ Chí Minh"
-        },
-        {
-            _id: "05",
-            name: "DU LICH TINH NGUYEN 4",
-            image:"https://images.unsplash.com/reserve/HgZuGu3gSD6db21T3lxm_San%20Zenone.jpg?ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&ixlib=rb-1.2.1&auto=format&fit=crop&w=1350&q=80",
-            user:{
-                _id: "0123",
-                fullname: "Tran Quang Huy",
-                avatar: "https://images.unsplash.com/photo-1418065460487-3e41a6c84dc5?ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&ixlib=rb-1.2.1&auto=format&fit=crop&w=1350&q=80"
-            },
-            description: "abc",
-            dateStart: "12-02-2022",
-            type: "Giáo dục",
-            location: "Thành phố Hồ Chí Minh"
-        }
 
-    ]
-    // const ref = createRef();
+    const dispatch = useDispatch();
 
-    // const classes = useStyles();
+    useEffect(() => {
+        dispatch(getVolunteers());
+    }, [dispatch])
+
+    useEffect(() => {
+        document.title = "Du lịch tình nguyện | GOGO";
+    }, [])
+
+    const { volunteer } = useSelector(state => state);
+   
 
     return (
         <Grid container style={{ margin: 0, padding: 0 }}>
@@ -96,11 +33,11 @@ export default function Volunteer() {
             <Grid item md={9} sm={10} xs={10}>
                 <div class="cards">
                     {
-                        data.map(item =>(
+                        volunteer.volunteers.map(item =>(
                             <div class="card" component={Link} to={`/volunteer/${item._id}`}>
                                 <img
                                     src={item.image}
-                                    alt=""
+                                    alt="Du lịch tình nguyện"
                                     class="card-image"
                                 />
                                 <div class="card-content">
@@ -108,28 +45,28 @@ export default function Volunteer() {
                                         <Typography class="card-title" component={Link} to={`/volunteer/${item._id}`}>{item.name}</Typography>
                                         <div class="card-user">
                                             <img
-                                                src={item.user.avatar}
-                                                alt=""
+                                                src={item.userId.avatar}
+                                                alt="Avatar"
                                                 class="card-user-avatar"
                                             />
                                             <div class="card-user-info">
                                                 <div class="card-user-top">
-                                                    <Typography class="card-user-name" component={Link} to={`/u/${item.user._id}`} >{item.user.fullname}</Typography>
+                                                    <Typography class="card-user-name" component={Link} to={`/u/${item.userId._id}`} >{item.userId.fullname}</Typography>
                                                 </div>
-                                                <div class="card-user-game">{item.user.fullname}</div>
+                                                <div class="card-user-game">{convertDateToStr(item.date[0].date)}</div>
                                             </div>
                                         </div>
                                     </div>
                                     <div class="card-bottom">
                                         <ul class="card-bottom_info">
                                             <li class="card-bottom_info_li">
-                                                Thời gian: {item.dateStart}
+                                                Thời gian: {convertDateToStr(item.date[0].date)}
                                             </li>
                                             <li  class="card-bottom_info_li">
-                                                Địa điểm: {item.location}
+                                                Địa điểm xuất phát: {item.location[0].location.fullname}
                                             </li>
                                             <li  class="card-bottom_info_li">
-                                                Thể loại: {item.type}
+                                                Thể loại: Giáo dục
                                             </li>
                                         </ul>
                                     </div>

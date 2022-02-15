@@ -10,6 +10,6 @@ router.get('/volunteers', VolunteerController.getVolunteers);
 
 router.get('/:id', VolunteerController.getVolunteer);
 // router.patch('/:id', auth, VolunteerController.updateVolunteer);
-// router.delete('/:id', auth, VolunteerController.deleteVolunteer);
+router.delete('/:id', auth, VolunteerController.deleteVolunteer);
 
 module.exports = router;

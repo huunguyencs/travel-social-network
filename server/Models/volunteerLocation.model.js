@@ -2,13 +2,14 @@ const mongoose = require('mongoose');
 
 const volunteerLocationSchema = new mongoose.Schema({
     users: [{ type: mongoose.Types.ObjectId, ref: 'users' }],
-    timeStart: { type: mongoose.Types.ObjectId, ref: 'volunteer_dates' },
+    timeStart: Date,
     maxUsers: Number,
-    description: String,
+    description: [{type:String}],
     activities: [{ type: String }],
     ageUser: String,
     images: [{type:String}],
-    location: { type: mongoose.Types.ObjectId, ref: 'locations' }
+    location: { type: mongoose.Types.ObjectId, ref: 'locations' },
+    accommodation: String
 }, {
     timestamps: true
 })

@@ -1,14 +1,14 @@
 const Volunteers = require('../Models/volunteer.model')
 const VolunteerDates = require('../Models/volunteerDate.model')
 const VolunteerLocations = require('../Models/volunteerLocation.model')
-
+const Comments = require('../Models/comment.model')
 class VolunteerController {
     async createVolunteer(req, res) {
         try {
-            const { name, image, cost, description, date, location } = req.body
+            const { name, image, cost, descriptions, date, location } = req.body
 
             const newVolunteer = new Volunteers({
-                userId: req.user._id, name,image, description, cost, date: [], location: []
+                userId: req.user._id, name,image, descriptions, cost, date: [], location: []
             })
 
             await newVolunteer.save()
@@ -16,7 +16,7 @@ class VolunteerController {
             if (date.length > 0) {
                 date.forEach(async function (element) {
                     const newVolunteerDate = new VolunteerDates({
-                        activity: element.activity, accommodation: element.accommodation, date: element.date
+                        activities: element.activities, accommodation: element.accommodation, date: element.date
                     })
                     await newVolunteerDate.save();
                     await Volunteers.findOneAndUpdate({ _id: newVolunteer._id }, {
@@ -30,7 +30,8 @@ class VolunteerController {
             if (location.length > 0) {
                 location.forEach(async function (element) {
                     const newVolunteerLocation = new VolunteerLocations({
-                        users: [], timeStart:element.timeStart, maxUsers: element.maxUsers,description:element.description, activities: element.activities,
+                        users: [], timeStart:element.timeStart, maxUsers: element.maxUsers,description:element.description, 
+                        activities: element.activities,
                         ageUser: element.ageUser, images: element.images, location:element.location
                     })
                     await newVolunteerLocation.save();
@@ -69,15 +70,16 @@ class VolunteerController {
         try {
             const volunteers = await Volunteers.find({}).sort("-createdAt")
                 .populate("userId", "username fullname avatar")
+                .populate("date", "accommodation date activities")
                 .populate({
-                    path: "comments",
+                    path: "location",
                     populate: {
-                        path: "userId likes",
-                        select: "username fullname avatar"
+                        path: "location",
+                        select: "fullname position"
                     }
                 })
 
-            res.json({ success: true, message: "get volunteers successful", tours })
+            res.json({ success: true, message: "get volunteers successful", volunteers })
         }
         catch (err) {
             console.log(err);
@@ -99,13 +101,14 @@ class VolunteerController {
             }
 
             volunteer = await Volunteers.findById(req.params.id)
-                .populate("userId", "username email fullname avatar followers")
+                .populate("userId", "username fullname avatar")
+                .populate("date", "accommodation date activities")
                 .populate({
-                    path: "comments",
+                    path: "location",
                     populate: {
-                        path: "userId likes",
-                        select: "-password"
-                    },
+                        path: "location",
+                        select: "fullname position"
+                    }
                 })
                 
 
@@ -114,6 +117,28 @@ class VolunteerController {
             });
 
 
+        } catch (err) {
+            console.log(err)
+            res.status(500).json({ success: false, message: err.message })
+        }
+    }
+
+    async deleteVolunteer(req, res) {
+        try {
+            const volunteer = await Volunteers.findById(req.params.id);
+            if (volunteer) {
+                await Volunteers.findOneAndDelete({ _id: req.params.id, userId: req.user._id });
+                if (volunteer.comments) await Comments.deleteMany({ _id: { $in: volunteer.comments } });
+                if (volunteer.date) await VolunteerDates.deleteMany({ _id: { $in: volunteer.date } });
+                if (volunteer.location) await VolunteerLocations.deleteMany({ _id: { $in: volunteer.location } });
+            }
+            else {
+                res.status(404).json({ success: false, message: "Không tìm thấy Volunteer" })
+            }
+
+            res.json({
+                success: true, message: "Delete volunteer success"
+            });
         } catch (err) {
             console.log(err)
             res.status(500).json({ success: false, message: err.message })
