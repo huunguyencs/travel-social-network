@@ -65,10 +65,8 @@ export default function DetailProvinceAdmin() {
     }, [subpage])
 
     useEffect(() => {
-        if (province && province.fullname) {
-            document.title = 'Chỉnh sửa ' + province.fullname;
-        }
-    }, [province])
+        document.title = 'Chỉnh sửa thông tin tỉnh';
+    }, [])
 
     const handleChange = (e) => {
         setProvince(province => ({
@@ -270,7 +268,7 @@ export default function DetailProvinceAdmin() {
                             province &&
                             <>
                                 <div style={{ display: 'flex', justifyContent: 'center', marginBottom: 30 }}>
-                                    <Typography variant='h4'>Chỉnh sửa thông tin cho {province.fullname}</Typography>
+                                    <Typography variant='h4'>Chỉnh sửa thông tin tỉnh</Typography>
                                 </div>
                                 <div style={{ display: 'flex' }}>
                                     <div style={{ width: '50%', marginRight: 20 }}>

@@ -51,7 +51,6 @@ const userSchema = new mongoose.Schema({
     },
     followings: [{ type: mongoose.Types.ObjectId, ref: 'users' }], // nguoi minh theo doi
     followers: [{ type: mongoose.Types.ObjectId, ref: 'users' }],  //nguoi khac theo doi minh
-    // contract: { type: mongoose.Types.ObjectId, ref: 'contracts' }
     tourSaved: [{ type: mongoose.Types.ObjectId, ref: 'tours' }]
 }, {
     timestamps: true

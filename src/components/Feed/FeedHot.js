@@ -78,11 +78,11 @@ export default function FeedHot(props) {
                     </div>
                     {
                         stateEvent.loading ?
-                            <div>
+                            <div className={classes.centerMarginTop}>
                                 <CircularProgress />
                             </div> :
                             stateEvent.error ?
-                                <div>
+                                <div className={classes.centerMarginTop}>
                                     <Button onClick={getCurrentEvent}>Thử lại</Button>
                                 </div> :
                                 <Event events={events} />
