@@ -63,13 +63,13 @@ export default function AddImageHorizontal(props) {
                 {images.map((item, index) => (
                     <div key={index} className={classes.imageItem}>
                         <img
-                            src={URL.createObjectURL(item)}
+                            src={typeof item === 'string' ? item : URL.createObjectURL(item)}
                             alt="Can not loading img"
                             className={classes.item}
                             width={250}
                             height={200}
                         />
-                        <IconButton onClick={() => removeImage(index)} className={classes.removeButton} size="small"><HighlightOff /></IconButton>
+                        <IconButton title="Xoá" onClick={() => removeImage(index)} className={classes.removeButton} size="small"><HighlightOff /></IconButton>
                     </div>
                 ))}
                 <div className={classes.addArea} id="add-area">
@@ -83,7 +83,7 @@ export default function AddImageHorizontal(props) {
                         onChange={addImage}
                     />
                     <label htmlFor='input-image'>
-                        <IconButton variant="raised" component="span">
+                        <IconButton variant="raised" component="span" title="Thêm ảnh">
                             <AddAPhoto style={{ color: 'inherit' }} />
                         </IconButton>
 

@@ -120,7 +120,7 @@ class LocationController {
 
     async getAllLocations(req, res) {
         try {
-            const locations = await Locations.find({}).select("fullname name province")
+            const locations = await Locations.find({}).select("fullname name province star")
                 .populate("province", "fullname")
             res.json({
                 success: true,

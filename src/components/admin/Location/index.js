@@ -6,9 +6,10 @@ import Typography from '@material-ui/core/Typography';
 import Paper from '@material-ui/core/Paper';
 
 import { Link, useHistory } from "react-router-dom";
-import { AddCircle, Edit, Visibility } from "@material-ui/icons";
+import { AddCircle, Edit } from "@material-ui/icons";
 import { DataGrid } from "@mui/x-data-grid";
 import customAxios from "../../../utils/fetchData";
+import { getStar } from "../../../utils/utils";
 
 
 const useStyles = makeStyles((theme) => ({
@@ -21,6 +22,7 @@ const useStyles = makeStyles((theme) => ({
     justifyContent: "space-between",
     paddingLeft: "20px",
     paddingRight: "20px",
+    marginBottom: 20
   },
   addBtn: {
     backgroundColor: "#179250",
@@ -28,17 +30,16 @@ const useStyles = makeStyles((theme) => ({
   }
 }))
 
+function totalNumRate(star) {
+  return star.reduce((a, b) => a + b, 0)
+}
+
 const columns = [
   {
     field: '_id',
     headerName: 'ID',
     width: 200,
     sortable: false,
-  },
-  {
-    field: 'name',
-    headerName: 'Tên',
-    width: 200,
   },
   {
     field: 'fullname',
@@ -49,7 +50,19 @@ const columns = [
     field: 'province',
     headerName: 'Tỉnh',
     width: 200,
-    renderCell: (location) => location.province.fullname
+    valueGetter: (location) => location.row.province.fullname
+  },
+  {
+    field: 'star',
+    headerName: 'Đánh giá (/5)',
+    width: 150,
+    valueGetter: (location) => getStar(location.row.star)
+  },
+  {
+    field: 'numRate',
+    headerName: 'Lượt đánh giá',
+    width: 200,
+    valueGetter: (location) => totalNumRate(location.row.star)
   },
   {
     field: 'action',
@@ -61,17 +74,6 @@ const columns = [
         <Edit />
       </IconButton>
     )
-  },
-  {
-    field: 'detail',
-    headerName: 'Xem trang chi tiết',
-    width: 250,
-    sortable: false,
-    renderCell: (location) => (
-      <IconButton size='small' component={Link} to={`/location/${location.row.name}`} target='_blank'>
-        <Visibility />
-      </IconButton>
-    )
   }
 ]
 
@@ -81,7 +83,7 @@ const columns = [
 function AdminLocations(props) {
   const history = useHistory();
   const classes = useStyles();
-  const token = useSelector(state => state.auth);
+  const { token } = useSelector(state => state.auth);
 
   const [locations, setLocations] = useState([]);
   const [loading, setLoading] = useState(false);
@@ -111,7 +113,7 @@ function AdminLocations(props) {
         className={classes.admin_location_header}
       >
         <div className={classes.admin_location_header_left}>
-          <Typography variant="h4">{locations.length || 0} Địa điểm du lịch</Typography>
+          <Typography variant="h4">{locations.length} Địa điểm du lịch</Typography>
         </div>
         <div className={classes.admin_location_header_right}>
           <Button
@@ -120,6 +122,8 @@ function AdminLocations(props) {
             startIcon={(
               <AddCircle />
             )}
+            component={Link}
+            to={`/admin/location/add`}
           >
             <Typography>Thêm địa điểm</Typography>
           </Button>

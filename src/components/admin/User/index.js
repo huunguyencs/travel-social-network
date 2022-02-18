@@ -65,7 +65,7 @@ const columns = [
         field: 'join',
         headerName: 'Ngày tham gia',
         width: 200,
-        renderCell: (user) => new Date(user.row.createdAt).toLocaleDateString('vi-VN')
+        valueGetter: (user) => new Date(user.row.createdAt).toLocaleDateString('vi-VN')
     },
     {
         field: 'role',

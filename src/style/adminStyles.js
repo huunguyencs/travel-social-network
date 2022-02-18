@@ -90,6 +90,11 @@ const adminStyles = makeStyles((theme) => ({
         [theme.breakpoints.down("sm")]: {
             display: 'none'
         }
+    },
+    btnRight: {
+        display: 'flex',
+        justifyContent: 'right',
+        margin: 20
     }
 }))
 
