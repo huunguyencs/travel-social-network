@@ -120,8 +120,8 @@ class LocationController {
 
     async getAllLocations(req, res) {
         try {
-            const locations = await Locations.find({}).select("fullname name province star")
-                .populate("province", "fullname name")
+            const locations = await Locations.find({}).select("fullname name province")
+                .populate("province", "fullname")
             res.json({
                 success: true,
                 message: "Lấy tất cả địa điểm thành công",

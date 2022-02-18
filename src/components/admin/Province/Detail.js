@@ -345,16 +345,18 @@ export default function DetailProvinceAdmin() {
                                 />
 
                                 <div className={classes.imageItem}>
-                                    <img
-                                        src={typeof src === 'string' ? src : URL.createObjectURL(src)}
-                                        alt="Can not loading img"
-                                        className={classes.item}
-                                        width={500}
-                                        height={300}
-                                    />
-                                    {src !== province.image && <IconButton onClick={removeImage} className={classes.removeButton} size="small"><HighlightOff /></IconButton>}
+                                    <div style={{ position: 'relative' }}>
+                                        <img
+                                            src={typeof src === 'string' ? src : URL.createObjectURL(src)}
+                                            alt="Can not loading img"
+                                            className={classes.item}
+                                        // width="100%"
+                                        // height={300}
+                                        />
+                                        {src !== province.image && <IconButton title="Xoá ảnh" onClick={removeImage} className={classes.removeButton}><HighlightOff /></IconButton>}
+                                    </div>
                                 </div>
-                                <div>
+                                <div className={classes.btnCover}>
                                     <input
                                         accept="image/*"
                                         style={{ display: 'none' }}
@@ -365,7 +367,7 @@ export default function DetailProvinceAdmin() {
                                         onChange={changeImage}
                                     />
                                     <label htmlFor='input-image'>
-                                        <Button variant="contained" component="span">
+                                        <Button variant="contained" component="span" className={classes.btnChangeImage}>
                                             Thay đổi ảnh
                                         </Button>
 

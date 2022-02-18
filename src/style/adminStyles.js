@@ -21,6 +21,33 @@ const adminStyles = makeStyles((theme) => ({
     coverImg: {
         // height: "50vh",
     },
+    imageItem: {
+        display: 'flex',
+        justifyContent: 'center'
+    },
+    item: {
+        height: 500,
+        width: "100%",
+        [theme.breakpoints.down("md")]: {
+            height: 300
+        },
+        [theme.breakpoints.down("sm")]: {
+            height: 200
+        }
+    },
+    btnCover: {
+        display: 'flex',
+        justifyContent: 'center'
+    },
+    btnChangeImage: {
+
+    },
+    removeButton: {
+        position: 'absolute',
+        color: 'black',
+        top: 0,
+        right: 0,
+    },
     imgBg: {
         backgroundImage: `url(https://toquoc.mediacdn.vn/2018/12/25/cau-vang-ba-na-3-15457134861131150541874.jpg)`,
         height: 700,

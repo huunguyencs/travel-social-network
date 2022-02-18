@@ -374,7 +374,7 @@ class UserController {
 
     async getAll(req, res) {
         try {
-            const users = await Users.find({}).select("username fullname avatar email role confirmAccount");
+            const users = await Users.find({}).select("username fullname email role confirmAccount createdAt");
             res.json({ success: true, message: "Lấy toàn bộ user thành công", users })
         } catch (err) {
             console.log(err);

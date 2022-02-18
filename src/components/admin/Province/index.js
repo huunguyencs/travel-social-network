@@ -65,7 +65,7 @@ export default function AdminProvinces() {
             setLoading(false);
         }).catch(err => {
             setLoading(false);
-            setError('Có lỗi xảy ra')
+            setError(err)
         })
     }
 
@@ -75,7 +75,7 @@ export default function AdminProvinces() {
     }, [])
 
     return (
-        <div style={{ height: 650, marginTop: 150, marginInline: 50, backgroundColor: 'white' }}>
+        <div style={{ marginTop: 150, marginInline: 50, marginBottom: 30, backgroundColor: 'white' }}>
             <DataGrid
                 rows={provinces}
                 columns={columns}
@@ -83,14 +83,16 @@ export default function AdminProvinces() {
                 rowsPerPageOptions={[5, 10, 25]}
                 onPageSizeChange={(newPageSize) => setPageSize(newPageSize)}
                 pagination
-                onRowDoubleClick={(e) => {
-                    history.push(`/admin/province/${e.row.name}`)
+                onRowDoubleClick={(province) => {
+                    history.push(`/admin/province/${province.row.name}`)
                     // console.log(e);
                 }}
+                autoHeight
                 loading={loading}
                 error={error}
                 getRowId={row => row._id}
                 disableSelectionOnClick
+            // style={{background:}}
             />
         </div>
     )
