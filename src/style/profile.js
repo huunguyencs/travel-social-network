@@ -216,6 +216,37 @@ const profileStyles = makeStyles((theme) => ({
   },
   change_password_form: {
     margin: 30
+  },
+  cmnd_front:{
+    width: "200px",
+    height: "140px",
+    // overflow: "hidden",
+    position: "relative",
+    marginBottom: 10
+  },
+  cmnd_front_upload:{
+    position: "absolute",
+    bottom: 0,
+    right: 0,
+  },
+  cmnd_front_image:{
+    width: "100%",
+    height: "100%",
+    objectFit: "cover"
+  },
+  cmnd_textStrong:{
+    fontWeight: "bold"
+  },
+  input_cmnd_number:{
+    width: 550,
+    marginBottom: 10
+  },
+  cmnd_icon_upload:{
+    border: "2px solid white",
+    color: "white",
+  },
+  confirmAccount:{
+    marginTop: 20
   }
 }));
 
