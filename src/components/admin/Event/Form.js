@@ -1,47 +1,30 @@
+import { Button, CircularProgress, FormControl, InputLabel, MenuItem, Select, TextField, Typography } from '@material-ui/core'
 import React, { useEffect, useState } from 'react'
-import { Button, CircularProgress, TextField, Typography } from '@material-ui/core';
+import { useDispatch, useSelector } from 'react-redux';
 import { Autocomplete } from '@material-ui/lab';
 
 import { adminStyles } from '../../../style';
-import AddImageHorizontal from '../../Input/AddImageHorizontal';
-import Validator, { isFloat, nameid } from '../../../utils/validator';
-import { uploadImages } from '../../../utils/uploadImage';
-import { useDispatch, useSelector } from 'react-redux';
 import { getProvinces } from '../../../redux/callApi/locationCall';
+import AddImageHorizontal from '../../Input/AddImageHorizontal';
+import Validator, { nameid } from '../../../utils/validator';
+import { uploadImages } from '../../../utils/uploadImage';
 import customAxios from '../../../utils/fetchData';
 import { error, success } from '../../../redux/actions/alertAction';
 
-
-export default function FormLocationAdmin(props) {
+export default function FormAddEvent(props) {
 
     const classes = adminStyles();
+
+    const { event, setEvent, mode } = props;
 
     const { provinces } = useSelector(state => state.location);
     const { token } = useSelector(state => state.auth)
     const dispatch = useDispatch();
 
-    const { location, setLocation, mode } = props;
     const [errors, setErrors] = useState({});
-    const [imgs, setImgs] = useState(location?.images || []);
     const [loading, setLoading] = useState(false);
+    const [imgs, setImgs] = useState(event?.images || []);
     const [provinceOpt, setProvinceOpt] = useState(null);
-
-    const handleChange = (e) => {
-        setLocation(state => ({
-            ...state,
-            [e.target.name]: e.target.value
-        }))
-    }
-
-    const changePosition = (e) => {
-        setLocation(state => ({
-            ...state,
-            position: {
-                ...state.position,
-                [e.target.name]: e.target.value
-            }
-        }))
-    }
 
     useEffect(() => {
         if (provinces.length === 0) {
@@ -50,18 +33,29 @@ export default function FormLocationAdmin(props) {
     }, [provinces.length, dispatch]);
 
     useEffect(() => {
-        if (location.province && provinces.length > 0) {
-            let temp = provinces.find(item => item._id === location.province._id);
+        if (event.provinceId && provinces.length > 0) {
+            let temp = provinces.find(item => item._id === event.provinceId._id);
             setProvinceOpt(temp);
         }
-    }, [location.province, provinces])
+    }, [event.provinceId, provinces])
+
+    const handleChange = (e) => {
+        setEvent(state => ({
+            ...state,
+            [e.target.name]: e.target.value
+        }))
+    }
+
+    const isInt = (value) => {
+        return !isNaN(value) && (function (x) { return (x | 0) === x; })(parseFloat(value))
+    }
 
     const rules = [
         {
             field: 'name',
             method: 'isEmpty',
             validWhen: false,
-            message: 'Tên không được bỏ trống!',
+            message: 'Tên không được bỏ trống'
         },
         {
             field: 'fullname',
@@ -70,7 +64,7 @@ export default function FormLocationAdmin(props) {
             message: 'Tên đầy đủ không được bỏ trống!',
         },
         {
-            field: 'information',
+            field: 'description',
             method: 'isEmpty',
             validWhen: false,
             message: 'Mô tả không được bỏ trống!',
@@ -80,36 +74,23 @@ export default function FormLocationAdmin(props) {
             method: nameid,
             validWhen: true,
             message: 'Tên không hợp lệ',
+        },
+        {
+            field: 'time',
+            method: isInt,
+            validWhen: true,
+            message: 'Thời gian không hợp lệ',
         }
-    ];
-    const rulesPosition = [
-        {
-            field: 'lat',
-            method: isFloat,
-            validWhen: true,
-            message: 'Vị trí không hợp lệ!',
-        },
-        {
-            field: 'lon',
-            method: isFloat,
-            validWhen: true,
-            message: 'Vị trí không hợp lệ!',
-        },
     ]
 
     const validator = new Validator(rules);
-    const validatorPos = new Validator(rulesPosition);
 
-    const onClickSubmit = async () => {
+    const onClickSubmit = async (e) => {
+        e.preventDefault();
         setLoading(true);
-        const err = validator.validate(location);
-        const errPos = validatorPos.validate(location.position);
-        const totalErr = {
-            ...err,
-            position: errPos
-        }
+        const err = validator.validate(event);
 
-        setErrors(totalErr);
+        setErrors(err);
 
         if (imgs.length === 0) {
             setErrors(err => ({
@@ -121,39 +102,41 @@ export default function FormLocationAdmin(props) {
 
         const imageUpload = await uploadImages(imgs);
 
-        if (Object.keys(err).length === 0 && Object.keys(errPos).length === 0) {
+        if (Object.keys(err).length === 0) {
             if (mode === 'edit') {
-                await customAxios(token).patch(`/location/${location._id}`, {
-                    ...location,
+                await customAxios(token).patch(`/event/${event._id}`, {
+                    ...event,
                     images: imageUpload,
-                    province: provinceOpt._id
+                    provinceId: provinceOpt._id
                 }).then(res => {
-                    setLocation(res.data.location);
-                    dispatch(success({ message: "Cập nhật địa điểm thành công" }))
+                    setEvent(res.data.event);
+
+                    dispatch(success({ message: "Cập nhật sự kiện thành công" }))
                 }).catch(err => {
+
                     dispatch(error({ message: 'Có lỗi xảy ra' }))
                 })
             }
             else {
-                await customAxios(token).post(`/location/create_location`, {
-                    ...location,
-                    province: provinceOpt._id
+                await customAxios(token).post(`/event/create_event`, {
+                    ...event,
+                    provinceId: provinceOpt._id
                 }).then(res => {
-                    dispatch(success({ message: 'Thêm địa điểm thành công' }))
-                }).catch(err => {
 
+                    dispatch(success({ message: 'Thêm sự kiện thành công' }))
+                }).catch(err => {
                     dispatch(error({ message: 'Có lỗi xảy ra' }))
                 })
             }
+
         }
         setLoading(false);
-
     }
 
     return (
         <>
             <div style={{ display: 'flex', justifyContent: 'center', marginBottom: 30 }}>
-                <Typography variant='h4'>{mode === 'edit' ? 'Chỉnh sửa thông tin địa điểm' : 'Thêm địa điểm'}</Typography>
+                <Typography variant='h4'>{mode === 'edit' ? 'Chỉnh sửa thông tin sự kiện' : 'Thêm sự kiện'}</Typography>
             </div>
             <div>
                 <TextField
@@ -161,7 +144,7 @@ export default function FormLocationAdmin(props) {
                     variant='outlined'
                     name='name'
                     onChange={handleChange}
-                    value={location.name}
+                    value={event.name}
                     className={classes.fullField}
                     required
                     error={Boolean(errors?.name)}
@@ -172,44 +155,12 @@ export default function FormLocationAdmin(props) {
                     variant='outlined'
                     name='fullname'
                     onChange={handleChange}
-                    value={location.fullname}
+                    value={event.fullname}
                     className={classes.fullField}
                     required
                     error={Boolean(errors?.fullname)}
                     helperText={errors?.fullname}
                 />
-
-                <div style={{ display: 'flex' }}>
-                    <div style={{ width: '50%', marginRight: 20 }}>
-                        <TextField
-                            label="Vĩ độ"
-                            variant='outlined'
-                            name='lat'
-                            multiline
-                            onChange={changePosition}
-                            value={location.position.lat}
-                            className={classes.fullField}
-                            required
-                            error={Boolean(errors?.position?.lat)}
-                            helperText={errors?.position?.lat}
-                        />
-                    </div>
-                    <div style={{ width: '50%', marginLeft: 20 }}>
-                        <TextField
-                            label="Kinh độ"
-                            variant='outlined'
-                            name='lon'
-                            multiline
-                            onChange={changePosition}
-                            value={location.position.lon}
-                            className={classes.fullField}
-                            required
-                            error={Boolean(errors?.position?.lon)}
-                            helperText={errors?.position?.lon}
-                        />
-                    </div>
-
-                </div>
                 <Autocomplete
                     id='set-province'
                     options={provinces}
@@ -234,17 +185,57 @@ export default function FormLocationAdmin(props) {
                     maxImage={10}
                 />
                 <span style={{ color: 'red' }}>{errors?.images}</span>
+                <div style={{ display: 'flex' }}>
+                    <div style={{ width: '50%', marginRight: 20 }}>
+                        <TextField
+                            label="Thời gian"
+                            variant='outlined'
+                            name='time'
+                            onChange={handleChange}
+                            value={event.time}
+                            className={classes.fullField}
+                            required
+                            error={Boolean(errors?.time)}
+                            helperText={errors?.time}
+                        />
+                    </div>
+                    <FormControl variant="outlined" style={{ width: '50%', marginLeft: 20 }} className={classes.fullField}>
+                        <InputLabel id="calendar-type-select-label">Loại lịch</InputLabel>
+                        <Select
+                            labelId="calendar-type-select-label"
+                            id="calendar-type-select"
+                            value={event.calendarType}
+                            onChange={handleChange}
+                            label="Loại lịch"
+                            name='calendarType'
+                        >
+                            <MenuItem value={false}>Âm lịch</MenuItem>
+                            <MenuItem value={true}>Dương lịch</MenuItem>
+                        </Select>
+                    </FormControl>
+                </div>
+                <TextField
+                    label="Mô tả thời gian"
+                    variant='outlined'
+                    name='timedes'
+                    onChange={handleChange}
+                    value={event.timedes}
+                    className={classes.fullField}
+                    required
+                    error={Boolean(errors?.timedes)}
+                    helperText={errors?.timedes}
+                />
                 <TextField
                     label="Thông tin"
                     variant='outlined'
-                    name='information'
+                    name='description'
                     multiline
                     onChange={handleChange}
-                    value={location.information}
+                    value={event.description}
                     className={classes.fullField}
                     required
-                    error={Boolean(errors?.information)}
-                    helperText={errors?.information}
+                    error={Boolean(errors?.description)}
+                    helperText={errors?.description}
                 />
             </div>
             <div className={classes.btnRight}>

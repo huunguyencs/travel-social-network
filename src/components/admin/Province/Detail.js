@@ -225,17 +225,12 @@ export default function DetailProvinceAdmin() {
 
         setErrors(totalErr);
 
-        if (src !== province.image) {
-            var image = uploadImages([src]);
-            setProvince(state => ({
-                ...state,
-                image: image[0]
-            }))
-        }
+        const image = await uploadImages([src]);
 
         if (Object.keys(err).length === 0 && Object.keys(errPos).length === 0) {
             await customAxios(token).patch(`/province/${province._id}`, {
-                ...province
+                ...province,
+                image: image[0]
             }).then(res => {
                 setProvince(res.data.province);
                 setSrc(res.data.province.image);

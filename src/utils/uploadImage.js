@@ -12,13 +12,13 @@ export const checkImage = (file) => {
 }
 
 export const uploadImages = async (images) => {
-    let imageArr = [];
+    var imageArr = [];
     for (const image of images) {
         if (typeof image === 'string') {
             imageArr.push(image);
-
         }
         else {
+            console.log(image);
             const formData = new FormData();
             formData.append("file", image);
             formData.append("upload_preset", env.CLOUDINARY_UPLOAD_PRESET);
@@ -32,7 +32,7 @@ export const uploadImages = async (images) => {
                 imageArr.push(res.secure_url);
             }
             catch (err) {
-
+                console.log(err);
             }
         }
 

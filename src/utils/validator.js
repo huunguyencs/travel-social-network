@@ -60,9 +60,10 @@ const validatePhoneNumber = (phone, state) => {
     return regex.test(phone);
 }
 
-const isFloat = (text) => {
-    var x = parseFloat(text);
-    return !isNaN(x);
+const isFloat = (value) => {
+    // var x = parseFloat(text);
+    // return !isNaN(x);
+    return !isNaN(value) && value.toString().indexOf('.') !== -1
 }
 
 export default Validator;

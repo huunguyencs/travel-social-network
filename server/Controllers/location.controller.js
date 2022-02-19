@@ -30,6 +30,7 @@ class LocationController {
             const location = await Locations.findByIdAndUpdate(req.params.id, {
                 name, images, province, position, information
             }, { new: true })
+                .populate("province", "name fullname");
 
             res.json({ success: true, message: "update Location successful", location })
         } catch (err) {

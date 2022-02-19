@@ -1,5 +1,5 @@
 
-import { Accessibility, Dashboard, Group, LocationOn, Person, PostAdd, RateReview } from '@material-ui/icons';
+import { Accessibility, Dashboard, Event, LocationCity, LocationOn, Person, PostAdd, RateReview } from '@material-ui/icons';
 
 
 export const adminListMenu = {
@@ -26,9 +26,14 @@ export const adminListMenu = {
             link: "/admin/location",
         },
         {
-            icon: Group,
+            icon: LocationCity,
             name: "Tỉnh",
             link: "/admin/province",
+        },
+        {
+            icon: Event,
+            name: "Sự kiện",
+            link: "/admin/event",
         },
         {
             icon: PostAdd,

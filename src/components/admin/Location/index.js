@@ -14,7 +14,8 @@ import { getStar } from "../../../utils/utils";
 
 const useStyles = makeStyles((theme) => ({
   container: {
-    marginTop: "160px"
+    marginTop: "160px",
+    marginBottom: 20
   },
   admin_location_header: {
     display: "flex",
@@ -105,6 +106,10 @@ function AdminLocations(props) {
   useEffect(() => {
     getAllLocations(token);
   }, [token])
+
+  useEffect(() => {
+    document.title = 'Admin - Địa điểm';
+  }, [])
 
   return (
     <Container className={classes.container}>
