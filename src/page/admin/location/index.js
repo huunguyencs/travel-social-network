@@ -9,10 +9,10 @@ import AdminLocations from "../../../components/admin/Location"
 export default function AdminLocationPage(props) {
     return (
         <Grid container>
-            <Grid item md={3}>
+            <Grid item md={3} sm={2} xs={2}>
                 <LeftBar menuList={adminListMenu} />
             </Grid>
-            <Grid item md={9}>
+            <Grid item md={9} sm={10} xs={10}>
                 <AdminLocations />
             </Grid>
         </Grid>

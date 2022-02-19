@@ -5,6 +5,7 @@ import { adminListMenu } from "../../../constant/adminMenu";
 import AdminUserDetail from "../../../components/admin/User/Detail"
 import { useParams } from "react-router-dom";
 import customAxios from "../../../utils/fetchData";
+import { adminStyles } from "../../../style";
 
 
 
@@ -45,12 +46,14 @@ export default function AdminUserDetailPage(props) {
         document.title = "Admin - Chi tiết người dùng"
     })
 
+    const classes = adminStyles();
+
     return (
         <Grid container>
-            <Grid item md={3}>
+            <Grid item md={3} className={classes.smHidden}>
                 <LeftBar menuList={adminListMenu} />
             </Grid>
-            <Grid item md={9}>
+            <Grid item md={9} sm={12} xs={12}>
                 <>
                     {
                         state.loading ?

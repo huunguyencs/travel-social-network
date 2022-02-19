@@ -77,6 +77,7 @@ const columns = [
         field: 'status',
         headerName: 'Trạng thái',
         width: 150,
+        sortable: false,
         renderCell: (user) => user.row.confirmAccount.state ? (
             <Tooltip title='Đã xác thực'>
                 <CheckCircle style={{ color: '#357a38' }} />
@@ -91,7 +92,7 @@ const columns = [
         width: 150,
         sortable: false,
         renderCell: (user) => (
-            <IconButton size='small' component={Link} to={`/admin/user/${user.row._id}`}>
+            <IconButton size='small' component={Link} to={`/admin/user/${user.row._id}`} title='Chi tiết'>
                 <Visibility />
             </IconButton>
         )

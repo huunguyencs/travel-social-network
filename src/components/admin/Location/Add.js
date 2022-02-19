@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { IconButton, Paper } from "@material-ui/core";
 
 import { Link } from "react-router-dom";
@@ -19,6 +19,10 @@ function AdminAddLocation(props) {
     },
     information: ''
   })
+
+  useEffect(() => {
+    document.title = 'Admin - Thêm địa điểm'
+  }, [])
 
 
   return (

@@ -240,7 +240,7 @@ export default function FormAddEvent(props) {
             </div>
             <div className={classes.btnRight}>
                 <Button onClick={onClickSubmit} color='primary' variant='contained'>
-                    {loading ? <CircularProgress /> : 'Xong'}
+                    {loading ? <CircularProgress size={20} color='inherit' /> : 'Xong'}
                 </Button>
             </div>
         </>

@@ -1,4 +1,4 @@
-import { CircularProgress, IconButton, Paper } from "@material-ui/core";
+import { Button, CircularProgress, IconButton, Paper } from "@material-ui/core";
 import { ArrowBack } from "@material-ui/icons";
 import React, { useEffect, useState } from "react";
 import { Link, useParams } from "react-router-dom";
@@ -47,13 +47,22 @@ function AdminLocationDetail() {
     getLocation(subpage);
   }, [subpage])
 
-
+  useEffect(() => {
+    document.title = 'Admin - Chỉnh sửa địa điểm'
+  }, [])
 
   return (
     <Paper style={{ marginTop: 120, marginInline: 50, marginBottom: 30, padding: 30 }}>
-      <IconButton component={Link} to={`/admin/location`} title="Quay lại">
-        <ArrowBack />
-      </IconButton>
+      <div style={{ display: 'flex', justifyContent: 'space-between' }}>
+        <div>
+          <IconButton component={Link} to={`/admin/location`} title="Quay lại">
+            <ArrowBack />
+          </IconButton>
+        </div>
+        <Button target={'_blank'} component={Link} to={`/location/${subpage}`} style={{ margin: 20, textTransform: 'none' }} color='primary' variant='contained'>
+          Xem trang chi tiết
+        </Button>
+      </div>
       {
         state.notFound ?
           <NotFound /> :

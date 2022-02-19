@@ -14,10 +14,10 @@ export default function AdminUsersPage(props) {
 
     return (
         <Grid container>
-            <Grid item md={3}>
+            <Grid item md={3} sm={2} xs={2}>
                 <LeftBar menuList={adminListMenu} />
             </Grid>
-            <Grid item md={9}>
+            <Grid item md={9} sm={10} xs={10}>
                 <AdminUsers />
             </Grid>
         </Grid>

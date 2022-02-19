@@ -15,7 +15,7 @@ export default function AdminLocationDetailPage() {
             <Grid item md={3} className={classes.smHidden}>
                 <LeftBar menuList={adminListMenu} />
             </Grid>
-            <Grid item md={9}>
+            <Grid item md={9} sm={12} xs={12}>
                 <AdminLocationDetail />
             </Grid>
         </Grid>

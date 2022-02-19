@@ -247,9 +247,16 @@ export default function DetailProvinceAdmin() {
 
     return (
         <Paper style={{ marginTop: 120, marginInline: 50, marginBottom: 30, padding: 30 }}>
-            <IconButton component={Link} to={`/admin/province`} title="Quay lại">
-                <ArrowBack />
-            </IconButton>
+            <div style={{ display: 'flex', justifyContent: 'space-between' }}>
+                <div>
+                    <IconButton component={Link} to={`/admin/province`} title="Quay lại">
+                        <ArrowBack />
+                    </IconButton>
+                </div>
+                <Button target={'_blank'} component={Link} to={`/province/${subpage}`} style={{ margin: 20, textTransform: 'none' }} color='primary' variant='contained'>
+                    Xem trang chi tiết
+                </Button>
+            </div>
             {
                 notFound ? <NotFound /> :
                     state.loading ?
@@ -459,7 +466,7 @@ export default function DetailProvinceAdmin() {
                                         color='primary'
                                         variant="contained"
                                     >
-                                        {loading ? <CircularProgress /> : "Cập nhật"}
+                                        {loading ? <CircularProgress size={20} color='inherit' /> : "Cập nhật"}
                                     </Button>
                                 </div>
                             </>

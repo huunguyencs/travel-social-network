@@ -65,7 +65,7 @@ const columns = [
         width: 150,
         sortable: false,
         renderCell: (event) => (
-            <IconButton size='small' component={Link} to={`/admin/event/${event.row.name}`}>
+            <IconButton size='small' component={Link} to={`/admin/event/${event.row.name}`} title='Chỉnh sửa'>
                 <Edit />
             </IconButton>
         )
@@ -108,7 +108,7 @@ export default function AdminEvent() {
                 className={classes.admin_location_header}
             >
                 <div className={classes.admin_location_header_left}>
-                    <Typography variant="h4">{events.length} Địa điểm du lịch</Typography>
+                    <Typography variant="h4">{events.length} sự kiện</Typography>
                 </div>
                 <div className={classes.admin_location_header_right}>
                     <Button
@@ -138,7 +138,7 @@ export default function AdminEvent() {
                                 onPageSizeChange={(newPageSize) => setPageSize(newPageSize)}
                                 pagination
                                 onRowDoubleClick={(event) => {
-                                    history.push(`/admin/location/${event.row.name}`)
+                                    history.push(`/admin/event/${event.row.name}`)
                                 }}
                                 autoHeight
                                 loading={loading}

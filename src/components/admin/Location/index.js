@@ -71,7 +71,7 @@ const columns = [
     width: 150,
     sortable: false,
     renderCell: (location) => (
-      <IconButton size='small' component={Link} to={`/admin/location/${location.row.name}`}>
+      <IconButton size='small' component={Link} to={`/admin/location/${location.row.name}`} title={'Chỉnh sửa'}>
         <Edit />
       </IconButton>
     )
@@ -118,7 +118,7 @@ function AdminLocations(props) {
         className={classes.admin_location_header}
       >
         <div className={classes.admin_location_header_left}>
-          <Typography variant="h4">{locations.length} Địa điểm du lịch</Typography>
+          <Typography variant="h4">{locations.length} địa điểm du lịch</Typography>
         </div>
         <div className={classes.admin_location_header_right}>
           <Button

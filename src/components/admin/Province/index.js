@@ -29,7 +29,7 @@ const columns = [
         width: 150,
         sortable: false,
         renderCell: (province) => (
-            <IconButton size='small' component={Link} to={`/admin/province/${province.row.name}`}>
+            <IconButton size='small' component={Link} to={`/admin/province/${province.row.name}`} title='Chỉnh sửa'>
                 <Edit />
             </IconButton>
         )
@@ -40,7 +40,7 @@ const columns = [
         width: 250,
         sortable: false,
         renderCell: (province) => (
-            <IconButton size='small' component={Link} to={`/province/${province.row.name}`} target='_blank'>
+            <IconButton size='small' component={Link} to={`/province/${province.row.name}`} target='_blank' title='Chi tiết'>
                 <Visibility />
             </IconButton>
         )

@@ -21,6 +21,7 @@ export default function AdminEventAdd() {
 
     return (
         <Paper style={{ marginTop: 120, marginInline: 50, marginBottom: 30, padding: 30 }}>
+
             <IconButton component={Link} to={`/admin/event`} title="Quay lại">
                 <ArrowBack />
             </IconButton>
