@@ -2,7 +2,7 @@ const Users = require('../Models/user.model');
 const bcrypt = require('bcrypt')
 const jwt = require('jsonwebtoken');
 const ObjectId = require('mongoose').Types.ObjectId;
-
+const Confirms = require('../Models/confirm.model');
 class UserController {
     async register(req, res) {
         try {
@@ -356,6 +356,28 @@ class UserController {
             console.log(err);
             res.status(500).json({ success: false, message: err.massage })
         }
+    }
+
+    async confirmAccount(req, res) {
+        try {
+            const { cmnd, cmndFront, cmndBack, cmndFace } = req.body
+            const newConfirm = new Confirms({
+                cmnd, cmndFront, cmndBack, cmndFace
+            })
+            await newConfirm.save()
+            const confirm = {
+                state: false,
+                confirmId: newConfirm._id
+            }
+            const newUser = await Users.findByIdAndUpdate(req.user._id, {
+                confirmAccount: confirm
+            }, { new: true })
+            res.json({ success: true, newUser })
+        } catch (err) {
+            console.log(err)
+            res.status(500).json({ success: false, message: err.message })
+        }
+            
     }
 }
 

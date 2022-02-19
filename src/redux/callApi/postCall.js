@@ -105,7 +105,6 @@ export const getPostById = (id, next) => async (dispatch) => {
 }
 
 export const createPost = (data, token, type, socket, next, error) => async (dispatch) => {
-    console.log("go?")
     // post api
     try {
 

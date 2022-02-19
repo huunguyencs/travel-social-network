@@ -145,6 +145,19 @@ export const changeInfo = (token, data, next, error) => async (dispatch) => {
     }
 }
 
+export const confirmAccount = (token, data, next) => async (dispatch) => {
+    try {
+        // console.log("data", data)
+        const res = await customAxios(token).post('/user/confirm_account', data);
+        dispatch(alertAction.success({ message: "Đã gửi thông tin thành công!" }));
+        console.log("confirm",res.data)
+        // dispatch(authAction.updateInfo({ user: res.data.newUser }))
+        next();
+    }
+    catch (err) {
+         console.log("err",err)
+    }
+}
 
 export const changeBackground = (token, src, next, error) => async (dispatch) => {
     try {

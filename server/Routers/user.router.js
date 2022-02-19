@@ -13,7 +13,7 @@ router.patch("/change_avatar", auth, UserController.changeAvatar);
 router.patch("/change_background", auth, UserController.changeBackground);
 router.patch("/change_info", auth, UserController.editProfile);
 router.patch("/change_password", auth, UserController.changePassword)
-
+router.post("/confirm_account",auth, UserController.confirmAccount)
 router.get('/get_friend_recommend', auth, UserController.getFriendRecommend)
 router.get('/search', UserController.searchUsers);
 // lấy thông tin một user
