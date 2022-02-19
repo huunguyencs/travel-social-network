@@ -20,9 +20,6 @@ function AdminAddLocation(props) {
     information: ''
   })
 
-  const addLocation = (e) => {
-    e.preventDefault();
-  }
 
   return (
     <Paper style={{ marginTop: 120, marginInline: 50, marginBottom: 30, padding: 30 }}>
@@ -30,7 +27,7 @@ function AdminAddLocation(props) {
         <ArrowBack />
       </IconButton>
 
-      <FormLocationAdmin location={location} setLocation={setLocation} mode='add' handleSubmit={addLocation} />
+      <FormLocationAdmin location={location} setLocation={setLocation} mode='add' />
     </Paper>
   );
 }

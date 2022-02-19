@@ -44,6 +44,11 @@ const username = (text, state) => {
     return regex.test(text);
 }
 
+const nameid = (text, state) => {
+    const regex = /^[a-zA-Z0-9_^&()@$-]{6,60}$/
+    return regex.test(text);
+}
+
 const validatePassword = (password, state) => {
     const regex = /^(?=.*[A-Z])(?=.*[0-9])(?=.*[a-z]).{6,}$/
     return regex.test(password);
@@ -62,4 +67,4 @@ const isFloat = (text) => {
 
 export default Validator;
 
-export { validatePassword, validatePhoneNumber, isEmpty, nonSpace, username, isFloat };
+export { validatePassword, validatePhoneNumber, isEmpty, nonSpace, username, isFloat, nameid };

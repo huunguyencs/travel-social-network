@@ -47,9 +47,6 @@ function AdminLocationDetail() {
     getLocation(subpage);
   }, [subpage])
 
-  const editLocation = (e) => {
-    e.preventDefault();
-  }
 
 
   return (
@@ -66,7 +63,7 @@ function AdminLocationDetail() {
             </div> :
             state.error ?
               <div></div> :
-              location && <FormLocationAdmin location={location} setLocation={setLocation} mode='edit' handleSubmit={editLocation} />
+              location && <FormLocationAdmin location={location} setLocation={setLocation} mode='edit' />
       }
     </Paper>
   );

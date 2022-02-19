@@ -1,22 +1,30 @@
-import React, { useState } from 'react'
-import { Button, TextField, Typography } from '@material-ui/core';
+import React, { useEffect, useState } from 'react'
+import { Button, CircularProgress, TextField, Typography } from '@material-ui/core';
+import { Autocomplete } from '@material-ui/lab';
 
 import { adminStyles } from '../../../style';
 import AddImageHorizontal from '../../Input/AddImageHorizontal';
-// import { useDispatch, useSelector } from 'react-redux';
-// import { getProvinces } from '../../../redux/callApi/locationCall';
+import Validator, { isFloat, nameid } from '../../../utils/validator';
+import { uploadImages } from '../../../utils/uploadImage';
+import { useDispatch, useSelector } from 'react-redux';
+import { getProvinces } from '../../../redux/callApi/locationCall';
+import customAxios from '../../../utils/fetchData';
+import { error, success } from '../../../redux/actions/alertAction';
 
 
 export default function FormLocationAdmin(props) {
 
     const classes = adminStyles();
 
-    // const { provinces } = useSelector(state => state.location);
-    // const dispatch = useDispatch();
+    const { provinces } = useSelector(state => state.location);
+    const { token } = useSelector(state => state.auth)
+    const dispatch = useDispatch();
 
-    const { location, setLocation, mode, handleSubmit } = props;
+    const { location, setLocation, mode } = props;
     const [errors, setErrors] = useState({});
     const [imgs, setImgs] = useState(location?.images || []);
+    const [loading, setLoading] = useState(false);
+    const [provinceOpt, setProvinceOpt] = useState(null);
 
     const handleChange = (e) => {
         setLocation(state => ({
@@ -35,11 +43,117 @@ export default function FormLocationAdmin(props) {
         }))
     }
 
-    // useEffect(() => {
-    //     if (provinces.length === 0) {
-    //         dispatch(getProvinces())
-    //     }
-    // }, [provinces.length, dispatch])
+    useEffect(() => {
+        if (provinces.length === 0) {
+            dispatch(getProvinces())
+        }
+    }, [provinces.length, dispatch]);
+
+    useEffect(() => {
+        if (location.province && provinces.length > 0) {
+            let temp = provinces.find(item => item._id === location.province._id);
+            setProvinceOpt(temp);
+        }
+    }, [location.province, provinces])
+
+    const rules = [
+        {
+            field: 'name',
+            method: 'isEmpty',
+            validWhen: false,
+            message: 'Tên không được bỏ trống!',
+        },
+        {
+            field: 'fullname',
+            method: 'isEmpty',
+            validWhen: false,
+            message: 'Tên không được bỏ trống!',
+        },
+        {
+            field: 'information',
+            method: 'isEmpty',
+            validWhen: false,
+            message: 'Tên không được bỏ trống!',
+        },
+        {
+            field: 'name',
+            method: nameid,
+            validWhen: true,
+            message: 'Tên không hợp lệ',
+        }
+    ];
+    const rulesPosition = [
+        {
+            field: 'lat',
+            method: isFloat,
+            validWhen: true,
+            message: 'Vị trí không hợp lệ!',
+        },
+        {
+            field: 'lon',
+            method: isFloat,
+            validWhen: true,
+            message: 'Vị trí không hợp lệ!',
+        },
+    ]
+
+    const validator = new Validator(rules);
+    const validatorPos = new Validator(rulesPosition);
+
+    const onClickSubmit = async () => {
+        setLoading(true);
+        const err = validator.validate(location);
+        const errPos = validatorPos.validate(location.position);
+        const totalErr = {
+            ...err,
+            position: errPos
+        }
+
+        setErrors(totalErr);
+
+        const imageUpload = uploadImages(imgs);
+        setLocation(state => ({
+            ...state,
+            image: imageUpload,
+        }))
+
+        if (Object.keys(err).length === 0 && Object.keys(errPos).length === 0) {
+            if (mode === 'edit') {
+                // await customAxios(token).patch(`/location/${location._id}`, {
+                //     ...location,
+                //     province: provinceOpt._id
+                // }).then(res => {
+                //     setLocation(res.data.location);
+                //     setLoading(false);
+                //     dispatch(success({ message: "Cập nhật địa điểm thành công" }))
+                // }).catch(err => {
+                //     setLoading(false);
+                //     dispatch(error({ message: 'Có lỗi xảy ra' }))
+                // })
+
+                console.log({
+                    ...location,
+                    province: provinceOpt._id
+                })
+                setLoading(false);
+            }
+            else {
+                await customAxios(token).post(`/location/create_location`, {
+                    ...location,
+                    province: provinceOpt._id
+                }).then(res => {
+                    setLoading(false);
+                    dispatch(success({ message: 'Thêm địa điểm thành công' }))
+                }).catch(err => {
+                    setLoading(false);
+                    dispatch(error({ message: 'Có lỗi xảy ra' }))
+                })
+            }
+
+        }
+
+
+    }
 
     return (
         <>
@@ -101,11 +215,24 @@ export default function FormLocationAdmin(props) {
                     </div>
 
                 </div>
-                {/* <Autocomplete
+                <Autocomplete
                     id='set-province'
                     options={provinces}
-                    value={}
-                /> */}
+                    loading={provinces.length === 0}
+                    value={provinceOpt}
+                    getOptionLabel={(option) => option.fullname}
+                    onChange={(e, value) => setProvinceOpt(value)}
+                    renderInput={(params) => (
+                        <TextField
+                            {...params}
+                            variant='outlined'
+                            label='Tỉnh'
+                            placeholder='Tỉnh thành'
+                            className={classes.fullField}
+                            required
+                        />
+                    )}
+                />
                 <AddImageHorizontal
                     images={imgs}
                     onChange={setImgs}
@@ -125,7 +252,9 @@ export default function FormLocationAdmin(props) {
                 />
             </div>
             <div className={classes.btnRight}>
-                <Button onClick={handleSubmit}>Xong</Button>
+                <Button onClick={onClickSubmit} color='primary' variant='contained'>
+                    {loading ? <CircularProgress /> : 'Xong'}
+                </Button>
             </div>
         </>
     )

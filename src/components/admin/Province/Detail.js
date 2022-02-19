@@ -8,7 +8,7 @@ import { error as errorAlert, success } from '../../../redux/actions/alertAction
 import { adminStyles } from '../../../style';
 import customAxios from '../../../utils/fetchData';
 import { checkImage, uploadImages } from '../../../utils/uploadImage';
-import Validator, { isFloat, username } from '../../../utils/validator';
+import Validator, { isFloat, nameid } from '../../../utils/validator';
 
 
 
@@ -192,7 +192,7 @@ export default function DetailProvinceAdmin() {
         },
         {
             field: 'name',
-            method: username,
+            method: nameid,
             validWhen: true,
             message: 'Tên không hợp lệ',
         }
