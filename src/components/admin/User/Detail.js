@@ -68,7 +68,7 @@ function AdminUserDetail(props) {
     }))
   }
 
-  const updateRole = (e) => {
+  const updateUser = (e) => {
     e.preventDefault();
   }
 
@@ -184,7 +184,7 @@ function AdminUserDetail(props) {
                     )}
                     type="submit"
                     className={classes.login_button}
-                    onClick={updateRole}
+                    onClick={updateUser}
                   >
                     Cập nhập
                   </Button>
