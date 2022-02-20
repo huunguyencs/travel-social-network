@@ -157,7 +157,7 @@ export default function AddServicePage() {
                                         variant='contained'
                                         color="primary"
                                     >
-                                        {loading ? <CircularProgress /> : "Hoàn tất"}
+                                        {loading ? <CircularProgress color='inherit' /> : "Hoàn tất"}
                                     </Button> :
                                     <Button
                                         onClick={handleNext}

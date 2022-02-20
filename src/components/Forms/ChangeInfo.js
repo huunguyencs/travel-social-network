@@ -283,7 +283,7 @@ export default function ChangeInfo(props) {
                             >
                                 {
                                     loading ?
-                                        <CircularProgress size="25px" style={{ color: "white" }} />
+                                        <CircularProgress size="25px" color='inherit' />
                                         : "Cập nhật"
                                 }
                             </Button>

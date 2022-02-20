@@ -172,7 +172,7 @@ function ServiceDetail(props) {
                     {
                         state.loading ?
                             <div className={classes.centerMarginTop}>
-                                <CircularProgress />
+                                <CircularProgress color='inherit' />
                             </div> :
                             state.error ?
                                 <div className={classes.centerMarginTop}>

@@ -59,7 +59,7 @@ export default function ManageUserJoin(props) {
                                     {
                                         auth.user && auth.user._id !== user._id &&
                                         <Button variant="outlined" className={classes.modal_body_user_button} onClick={() => handleRemove(user._id)}>
-                                            {loading ? <CircularProgress fontSize="small" /> : "Xoá"}
+                                            {loading ? <CircularProgress size={16} color='inherit' /> : "Xoá"}
                                         </Button>
                                     }
                                 </div>

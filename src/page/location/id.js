@@ -107,7 +107,6 @@ export default function Location(props) {
                     state.error ?
                         <div className={classes.centerMarginTop}>
                             <div>
-                                <Typography>Có lỗi xảy ra</Typography>
                                 <Button onClick={tryAgain}>Thử lại</Button>
                             </div>
                         </div> :

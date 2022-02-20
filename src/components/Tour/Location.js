@@ -241,7 +241,7 @@ export default function Location(props) {
                                     <Button component={Link} to={`/post/${review._id}`} className={classes.seeDetail}>Xem chi tiết</Button>
                                 </CardActions>
                             </Grid>
-                            : <CircularProgress />
+                            : <CircularProgress color="inherit" />
                         : <Typography>Nội dung không tồn tại</Typography>}
                 </Collapse>
 

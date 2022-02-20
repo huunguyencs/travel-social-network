@@ -134,7 +134,7 @@ function ShareContent({ tour }) {
                                                             </Button>
                                                             <Button onClick={handleDeleteTour} className={classes.delete}>
                                                                 {
-                                                                    state.loading ? <CircularProgress size={15} /> : "Xóa"
+                                                                    state.loading ? <CircularProgress size={15} color='inherit' /> : "Xóa"
                                                                 }
                                                             </Button>
                                                         </DialogActions>
@@ -384,7 +384,7 @@ function BaseContent(props) {
                                                                 </Button>
                                                                 <Button onClick={handleDeleteTour} className={classes.delete}>
                                                                     {
-                                                                        state.loadingDelete ? <CircularProgress size={15} /> : "Xóa"
+                                                                        state.loadingDelete ? <CircularProgress color='inherit' size={15} /> : "Xóa"
                                                                     }
                                                                 </Button>
                                                             </DialogActions>
@@ -445,7 +445,7 @@ function BaseContent(props) {
             <CardContent>
                 <div>
                     {new Date(tour.tour[0]?.date) > new Date() && tour.userId._id !== auth.user?._id &&
-                        <Button onClick={joinClick}>{state.loadingJoin ? <CircularProgress /> : join ? "Rời khỏi tour" : "Tham gia tour"}</Button>
+                        <Button onClick={joinClick}>{state.loadingJoin ? <CircularProgress size={18} color='inherit' /> : join ? "Rời khỏi tour" : "Tham gia tour"}</Button>
 
                     }
                 </div>

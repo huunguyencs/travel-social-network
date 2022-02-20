@@ -94,7 +94,7 @@ export default function NotificationPage(props) {
                     {
                         state.loading ?
                             <div className={classes.centerMarginTop}>
-                                <CircularProgress />
+                                <CircularProgress color='inherit' />
                             </div> :
                             state.error ?
                                 <div>
@@ -111,7 +111,7 @@ export default function NotificationPage(props) {
                                         <div className={classes.center}>
                                             {
                                                 state.loadingMore ?
-                                                    <CircularProgress /> :
+                                                    <CircularProgress color="inherit" /> :
                                                     <Typography onClick={loadMore} className={classes.seeAll}>
                                                         Xem thêm ...
                                                     </Typography>

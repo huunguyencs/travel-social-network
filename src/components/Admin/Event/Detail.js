@@ -65,11 +65,11 @@ export default function AminEventDetail() {
                 state.notFound ?
                     <NotFound /> :
                     state.loading ?
-                        <div>
-                            <CircularProgress />
+                        <div style={{ display: 'flex', justifyContent: 'center', marginTop: 60 }}>
+                            <CircularProgress color='inherit' />
                         </div> :
                         state.error ?
-                            <div></div> :
+                            <div style={{ display: 'flex', justifyContent: 'center', marginTop: 60 }}>Có lỗi xảy ra</div> :
                             event && <FormEventAdmin event={event} setEvent={setEvent} mode='edit' />
             }
         </Paper>

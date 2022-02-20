@@ -201,7 +201,7 @@ export default function ProfileAvatar(props) {
                 user._id !== auth.user?._id ?
                   <>
                     <Button startIcon={< RssFeed />} className={classes.button} onClick={handleFollow} disabled={!auth.token}>
-                      {stateFollow.loading ? <CircularProgress /> : followed ? "Hủy theo dõi" : "Theo dõi"}
+                      {stateFollow.loading ? <CircularProgress size={16} color='inherit' /> : followed ? "Hủy theo dõi" : "Theo dõi"}
                     </Button>
                     <Button startIcon={<WhatsApp />} className={classes.button} disabled={!auth.token} component={Link} to={`/message/${user._id}`}>
                       Nhắn tin

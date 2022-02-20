@@ -1,4 +1,4 @@
-import { InputBase, Typography, Button, Paper, IconButton, CircularProgress } from "@material-ui/core";
+import { InputBase, Typography, Button, Paper, IconButton, CircularProgress, Chip } from "@material-ui/core";
 import { Create, Image } from "@material-ui/icons";
 import React, { useState } from "react";
 import { ScrollMenu } from 'react-horizontal-scrolling-menu';
@@ -27,6 +27,7 @@ export default function CreatePostForm(props) {
 
     const [text, setText] = useState("");
     const [hashtag, setHashtag] = useState("");
+    const [hashtagArr, setHashtagArr] = useState([]);
 
     const handleChange = e => {
         setText(e.target.value);
@@ -70,6 +71,7 @@ export default function CreatePostForm(props) {
     const handleSubmit = (e) => {
         e.preventDefault();
         var ht = hashtagSplit(hashtag);
+        ht = [...hashtagArr, ...ht];
         if (text !== '' || imageUpload.length > 0 || ht.length > 0) {
             setState({
                 loading: true,
@@ -92,6 +94,21 @@ export default function CreatePostForm(props) {
         }
     }
 
+    const addHashtag = (e) => {
+        e.preventDefault();
+        let arr = hashtagSplit(hashtag);
+        arr = [...hashtagArr, ...arr];
+        setHashtagArr(arr);
+        setHashtag('');
+        // console.log([...hashtagArr, ...arr]);
+    }
+
+    const removeHashtag = (index) => {
+        let temp = [...hashtagArr];
+        temp.splice(index, 1);
+        setHashtagArr(temp);
+    }
+
     const classes = formStyles();
 
     return (
@@ -103,7 +120,7 @@ export default function CreatePostForm(props) {
                             Tạo bài viết
                         </Typography>
                     </div>
-                    <form>
+                    <div>
                         <div className={classes.formContainer}>
                             <div className={classes.postContentInput}>
                                 <InputBase
@@ -118,17 +135,31 @@ export default function CreatePostForm(props) {
                                     onChange={(e) => handleChange(e)}
                                 />
                             </div>
-                            <div >
-                                <InputBase
-                                    placeholder="Hashtag (cách nhau bằng dấu cách). Vd: #bien #lehoi ..."
-                                    title="Hashtag (cách nhau bằng dấu cách). Vd: #bien #lehoi ..."
-                                    variant="outlined"
-                                    name="hashtag"
-                                    id="hashtag"
-                                    className={classes.hashtag}
-                                    value={hashtag}
-                                    onChange={e => setHashtag(e.target.value)}
-                                />
+                            <div>
+                                <div>
+                                    {hashtagArr.map((value, idx) => (
+                                        <Chip
+                                            label={value}
+                                            onDelete={() => removeHashtag(idx)}
+                                            key={idx}
+                                            style={{ marginInline: 5 }}
+                                        />
+                                    ))}
+                                </div>
+                                <form
+                                    onSubmit={addHashtag}
+                                >
+                                    <InputBase
+                                        placeholder="Hashtag"
+                                        title="Hashtag"
+                                        variant="outlined"
+                                        name="hashtag"
+                                        id="hashtag"
+                                        className={classes.hashtag}
+                                        value={hashtag}
+                                        onChange={e => setHashtag(e.target.value)}
+                                    />
+                                </form>
                             </div>
                             <div className={classes.formAction}>
                                 <div>
@@ -153,7 +184,7 @@ export default function CreatePostForm(props) {
                                     <Button className={classes.button} onClick={handleSubmit}>
                                         {
                                             state.loading ?
-                                                <CircularProgress size="25px" color="white" /> :
+                                                <CircularProgress size="25px" color="inherit" /> :
                                                 <>
                                                     <Create style={{ marginRight: 10 }} />
                                                     Đăng
@@ -165,7 +196,7 @@ export default function CreatePostForm(props) {
 
 
                         </div>
-                    </form>
+                    </div>
                     <div className={classes.error}>
                         <Typography variant="caption" color="inherit">{state.error}</Typography>
                     </div>

@@ -105,7 +105,7 @@ export default function MapCard(props) {
                         ))}
                         {name && <Position name={name} lat={position.lat} lng={position.lon} />}
                     </GoogleMapReact>
-                    : <CircularProgress />
+                    : <CircularProgress color='inherit' />
             }
 
         </Card>

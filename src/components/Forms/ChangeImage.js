@@ -131,7 +131,7 @@ export default function ChangeImage(props) {
                     >
                         {
                             loading ?
-                                <CircularProgress size="25px" style={{ color: "white" }} />
+                                <CircularProgress size="25px" color='inherit' />
                                 : "Tải lên"
                         }
                     </Button>

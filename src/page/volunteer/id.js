@@ -88,7 +88,7 @@ export default function VolunteerDetail() {
                         <NotFound /> :
                         state.loading ?
                             <div style={{ display: 'flex', justifyContent: 'center', marginTop: 150 }}>
-                                <CircularProgress />
+                                <CircularProgress color="inherit" />
                             </div>
                             : state.error ?
                                 <div style={{ display: 'flex', justifyContent: 'center', marginTop: 150 }}>

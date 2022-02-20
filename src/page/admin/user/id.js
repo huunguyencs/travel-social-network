@@ -57,9 +57,11 @@ export default function AdminUserDetailPage(props) {
                 <>
                     {
                         state.loading ?
-                            <CircularProgress /> :
+                            <div style={{ display: 'flex', justifyContent: 'center', marginTop: 60 }}>
+                                <CircularProgress />
+                            </div> :
                             state.error ?
-                                <div>
+                                <div style={{ display: 'flex', justifyContent: 'center', marginTop: 60 }}>
                                     <Button onClick={() => getUser(subpage)}>Tải lại</Button>
                                 </div> :
                                 <AdminUserDetail user={user} setUser={setUser} />

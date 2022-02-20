@@ -174,7 +174,7 @@ export default function Comment(props) {
                                                                 </Button>
                                                                 <Button onClick={handleDelete} className={classes.delete}>
                                                                     {
-                                                                        loadingDelete ? <CircularProgress size={15} /> : "Xóa"
+                                                                        loadingDelete ? <CircularProgress size={15} color='inherit' /> : "Xóa"
                                                                     }
                                                                 </Button>
                                                             </DialogActions>

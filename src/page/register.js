@@ -322,7 +322,7 @@ export default function Register(props) {
                             className={classes.loginButton}
                         >
                             {loading ?
-                                <CircularProgress size="25px" style={{ color: "white" }} />
+                                <CircularProgress size="25px" color="inherit" />
                                 : "Đăng ký"
                             }
 

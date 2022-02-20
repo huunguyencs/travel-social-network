@@ -104,7 +104,7 @@ export default function UserList(props) {
                                 {
                                     auth.user && user._id !== auth.user._id &&
                                     <Button variant="outlined" className={classes.modal_body_user_button} onClick={() => handleFollow(user._id)}>
-                                        {stateFollow.loading && stateFollow.id === user._id ? <CircularProgress fontSize="small" /> : isFollowed(user._id) ? "Hủy theo dõi" : "Theo dõi"}
+                                        {stateFollow.loading && stateFollow.id === user._id ? <CircularProgress size={16} color='inherit' /> : isFollowed(user._id) ? "Hủy theo dõi" : "Theo dõi"}
                                     </Button>
                                 }
                             </div>

@@ -79,7 +79,7 @@ export default function FeedHot(props) {
                     {
                         stateEvent.loading ?
                             <div className={classes.centerMarginTop}>
-                                <CircularProgress />
+                                <CircularProgress color="inherit" />
                             </div> :
                             stateEvent.error ?
                                 <div className={classes.centerMarginTop}>
@@ -96,7 +96,7 @@ export default function FeedHot(props) {
                     <div className={classes.hotFeed}>
                         {stateLocation.loading ?
                             <div className={classes.centerMarginTop}>
-                                <CircularProgress />
+                                <CircularProgress color='inherit' />
                             </div> :
                             stateLocation.error ?
                                 <div className={classes.centerMarginTop}>

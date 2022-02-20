@@ -144,7 +144,7 @@ function Header(props) {
                                                         <Button onClick={handleDeletePost} className={classes.delete}>
                                                             {
                                                                 state.loading ?
-                                                                    <CircularProgress size={15} /> : "Xóa"
+                                                                    <CircularProgress size={15} color='inherit' /> : "Xóa"
                                                             }
                                                         </Button>
                                                     </DialogActions>

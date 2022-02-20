@@ -1,4 +1,4 @@
-import { Button, CircularProgress, Grid, Input, InputAdornment, Typography } from '@material-ui/core';
+import { Button, CircularProgress, Grid, Input, InputAdornment } from '@material-ui/core';
 import { Search } from '@material-ui/icons';
 import React, { useEffect, useState } from 'react';
 
@@ -61,11 +61,10 @@ export default function ProvincePage() {
 
                 {loading ?
                     <div className={classes.center}>
-                        <CircularProgress />
+                        <CircularProgress color='inherit' />
                     </div> :
                     error ?
                         <div className={classes.center}>
-                            <Typography >Có lỗi xảy ra</Typography>
                             <Button onClick={getProvince}>Thử lại</Button>
                         </div> :
                         <Grid container style={{ marginTop: 100 }}>

@@ -49,7 +49,7 @@ export default function CreateTourForm(props) {
                             Tạo tour du lịch
                         </Typography>
                     </div>
-                    <form>
+                    <div>
                         <div className={classes.nameTourInput}>
                             <TextField
                                 label="Tên tour"
@@ -80,11 +80,11 @@ export default function CreateTourForm(props) {
                             </MuiPickersUtilsProvider>
                         </div>
                         <div className={classes.center}>
-                            <Button className={classes.button} onClick={handleClick} type="submit">
+                            <Button className={classes.button} onClick={handleClick}>
                                 Tạo
                             </Button>
                         </div>
-                    </form>
+                    </div>
                 </Paper>
                 : <LoginModal />
             }

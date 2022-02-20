@@ -215,7 +215,7 @@ export default function ChangePassword(props) {
                         >
                             {
                                 loading ?
-                                    <CircularProgress size="25px" style={{ color: "white" }} />
+                                    <CircularProgress size="25px" color='inherit' />
                                     : "Cập nhật"
                             }
                         </Button>

@@ -49,7 +49,9 @@ export default function PostDetail() {
                                 <div className={classes.contentWrap}>
                                     {
                                         post.loading ?
-                                            <CircularProgress /> :
+                                            <div style={{ display: 'flex', justifyContent: 'center', marginTop: 60 }}>
+                                                <CircularProgress />
+                                            </div> :
                                             post.error ?
                                                 <Typography onClick={tryAgain}>Có lỗi vui lòng thử lại</Typography>
                                                 : <Post post={post.posts[0]} />

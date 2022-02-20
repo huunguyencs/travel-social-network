@@ -157,7 +157,7 @@ export default function UpdatePostForm(props) {
                                     <Button className={classes.button} onClick={handleSubmit}>
                                         {
                                             state.loading ?
-                                                <CircularProgress size="25px" color="white" /> :
+                                                <CircularProgress size="25px" color="inherit" /> :
                                                 <>
                                                     <Update style={{ marginRight: 10 }} />
                                                     Xong
