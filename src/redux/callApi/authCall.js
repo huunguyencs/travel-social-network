@@ -16,7 +16,6 @@ export const login = (data, next, callback) => async (dispatch) => {
 
         });
 
-
         dispatch(authAction.auth({ user: res.data.user, token: res.data.accessToken }));
         localStorage.setItem("login", true);
         next();
@@ -147,10 +146,9 @@ export const changeInfo = (token, data, next, error) => async (dispatch) => {
 
 export const confirmAccount = (token, data, next) => async (dispatch) => {
     try {
-        // console.log("data", data)
+        
         const res = await customAxios(token).post('/user/confirm_account', data);
         dispatch(alertAction.success({ message: "Đã gửi thông tin thành công!" }));
-        console.log("confirm",res.data)
         // dispatch(authAction.updateInfo({ user: res.data.newUser }))
         next();
     }

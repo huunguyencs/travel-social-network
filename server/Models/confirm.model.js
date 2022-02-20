@@ -5,7 +5,7 @@ const confirmSchema = new mongoose.Schema({
     cmndFront: String,
     cmndBack: String,
     cmndFace: String,
-    state: String
+    state: {type:Number, default: 0}
 }, {
     timestamps: true
 })

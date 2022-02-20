@@ -247,6 +247,18 @@ const profileStyles = makeStyles((theme) => ({
   },
   confirmAccount:{
     marginTop: 20
+  },
+  state0:{
+    color: "#ff7200",
+    fontSize: 17
+  },
+  state1:{
+    color: "#61c38e",
+    fontSize: 17
+  },
+  state2:{
+    color: "#ff0000",
+    fontSize: 17
   }
 }));
 

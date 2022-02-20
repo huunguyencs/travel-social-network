@@ -45,8 +45,6 @@
 #     "hobbies": ["a","b"]
 # }
 
-# GET http://localhost:5000/user/6194b6eb141499c52fbb3854
-# Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjYxOTRiNmViMTQxNDk5YzUyZmJiMzg1NCIsImlhdCI6MTYzNzEzODc5NH0.jape8JJwSftn6hdlwHDNyVIymh5NXTcuRTRpF8bZjpg
 
 
 # PUT http://localhost:5000/user/6194c34c3548f2730fc6b8c5/unfollow
@@ -242,3 +240,6 @@ Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjYxY2U3NzM0Y
     "cmndBack": "https://res.cloudinary.com/huunguyencs/image/upload/v1638075905/background_wwpwxy.jpg",
     "cmndFace": "https://res.cloudinary.com/huunguyencs/image/upload/v1638075905/background_wwpwxy.jpg"
 }
+
+# GET http://localhost:5000/user/61ce7734bb9fb1520f41572c
+# Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjYxY2U3NzM0YmI5ZmIxNTIwZjQxNTcyYyIsImlhdCI6MTY0NTM0MTMwOX0.C4p5cpsI90Z01fI3bQX-44pJJCfrrkLUkG1j_5B-jYM

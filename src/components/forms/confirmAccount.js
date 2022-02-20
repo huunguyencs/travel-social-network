@@ -1,15 +1,11 @@
-import React, { useEffect, useState } from "react";
-import { TextField, Button, Radio, CircularProgress, Backdrop, Modal, Fade, IconButton, Typography } from "@material-ui/core";
+import React, { useState } from "react";
+import { TextField, Button,  CircularProgress, IconButton, Typography } from "@material-ui/core";
 import { PhotoCamera } from "@material-ui/icons";
-import { RadioGroup, FormControlLabel } from "@material-ui/core";
-import DateFnsUtils from '@date-io/date-fns';
 
-import Validator, { username, validatePhoneNumber } from "../../utils/validator";
-import { KeyboardDatePicker, MuiPickersUtilsProvider } from "@material-ui/pickers";
 import { useDispatch, useSelector } from "react-redux";
 import { profileStyles } from "../../style";
 import { confirmAccount } from "../../redux/callApi/authCall";
-import { checkImage } from "../../utils/uploadImage";
+import { checkImage, uploadImages } from "../../utils/uploadImage";
 
 export default function ConfirmAccount(props) {
 
@@ -17,24 +13,24 @@ export default function ConfirmAccount(props) {
     const classes = profileStyles();
 
     const dispatch = useDispatch();
-    const { user, token } = useSelector(state => state.auth);
-
-    const [loading, setLoading] = useState(false);
-    const [imageFront, setImageFront] = useState();
-    const [imageBack, setImageBack] = useState();
-    const [imageFace, setImageFace] = useState();
+    const {user,token } = useSelector(state => state.auth);
+    const [text, setText] = useState(user.confirmAccount.confirmId ? user.confirmAccount.confirmId.cmnd:"");
+    const [imageFront, setImageFront] = useState(user.confirmAccount.confirmId ? user.confirmAccount.confirmId.cmndFront:null);
+    const [imageBack, setImageBack] = useState(user.confirmAccount.confirmId ? user.confirmAccount.confirmId.cmndBack:null);
+    const [imageFace, setImageFace] = useState(user.confirmAccount.confirmId ? user.confirmAccount.confirmId.cmndFace:null);
     const [state, setState] = useState({
         loading: false,
         error: null
     })
-    const [text, setText] = useState("");
+    
     
     const handleChange = e => {
-        setText(e.target.value);
+        if(!user.confirmAccount.confirmId ){
+            setText(e.target.value);
+        }
     }
     const handleChangeImageFront = (e) => {
         let error = "";
-        
         const check = checkImage(e.target.files[0]);
         if (check !== "") {
             error = check;
@@ -54,7 +50,6 @@ export default function ConfirmAccount(props) {
     }
     const handleChangeImageBack = (e) => {
         let error = "";
-        
         const check = checkImage(e.target.files[0]);
         if (check !== "") {
             error = check;
@@ -94,31 +89,35 @@ export default function ConfirmAccount(props) {
             })
     }
     const removeImageFront = () => {
-        setImageFront()
+        if(!user.confirmAccount.confirmId ){
+            setImageFront()
+        }
     }
     const removeImageBack= () => {
-        setImageBack()
+        if(!user.confirmAccount.confirmId ){
+            setImageBack()
+        }
     }
     const removeImageFace = () => {
-        setImageFace()
+        if(!user.confirmAccount.confirmId ){
+            setImageFace()
+        }
     }
-    const handleSubmit = (e) => {
+    const handleSubmit = async (e) => {
         e.preventDefault();
-        console.log("front", imageFront)
-        console.log("back", imageBack)
-        console.log("face", imageFace)
-        console.log("text", text)
+        const cmndFront =  await uploadImages([imageFront])
+        const cmndBack = await uploadImages([imageBack])
+        const cmndFace = await uploadImages([imageFace])
         if (text !== '' && imageFront!= null && imageBack != null && imageFace != null) {
             setState({
                 loading: true,
                 error: null
             })
-            dispatch(confirmAccount(token, { cmnd: text, cmndFront: imageFront, cmndBack: imageBack, cmndFace: imageFace }, () => {
+            dispatch(confirmAccount(token, { cmnd: text, cmndFront: cmndFront[0], cmndBack: cmndBack[0], cmndFace: cmndFace[0] }, () => {
                 setState({
                     loading: false,
                     error: null,
                 })
-                // history.push("/");
             }, (err) => {
                 setState({
                     loading: false,
@@ -132,6 +131,24 @@ export default function ConfirmAccount(props) {
     return (
         <div className={classes.confirmAccount}>
             <Typography variant="h5">Xác minh tài khoản</Typography>
+            {
+                user.confirmAccount.confirmId && user.confirmAccount.confirmId.state == 0 ?
+                    <Typography className={classes.state0}>Bạn đã gửi thông tin xác nhận, cần chờ admin xác nhận</Typography>
+                    :
+                    <></>
+            }
+            {
+                user.confirmAccount.confirmId && user.confirmAccount.confirmId.state == 1 ?
+                    <Typography className={classes.state1}>Tài khoản đã được xác minh</Typography>
+                    :
+                    <></>
+            }
+            {
+                user.confirmAccount.confirmId && user.confirmAccount.confirmId.state == 2 ?
+                    <Typography className={classes.state2}>Thông tin chưa được xác minh, bạn cần gửi lại thông tin</Typography>
+                    :
+                    <></>
+            }
             <Typography >Bạn cần xác minh tài khoản để bảo mật cũng như tạo uy tín trong cộng đồng</Typography>
             <div className={classes.confirm_form}>
                 <form >
@@ -156,15 +173,18 @@ export default function ConfirmAccount(props) {
                             type="file"
                             onChange={handleChangeImageFront}
                         />
-                        <label htmlFor="image-front" className={classes.cmnd_front_upload} >
-                            <IconButton variant="raised" component="span">
-                                <PhotoCamera titleAccess="Thêm ảnh" />
-                            </IconButton>
-                        </label>
+                        {
+                            !user.confirmAccount.confirmId && 
+                            <label htmlFor="image-front" className={classes.cmnd_front_upload}>
+                                <IconButton variant="raised" component="span">
+                                    <PhotoCamera titleAccess="Thêm ảnh" />
+                                </IconButton>
+                            </label>
+                        }
                         {
                             imageFront && <img  
                             className={classes.cmnd_front_image}
-                            src={URL.createObjectURL(imageFront)}
+                            src={typeof imageFront === 'string' ? imageFront : URL.createObjectURL(imageFront)}
                             title="Xóa"
                             onClick={() => removeImageFront()}
                             />
@@ -182,15 +202,18 @@ export default function ConfirmAccount(props) {
                             type="file"
                             onChange={handleChangeImageBack}
                         />
-                        <label htmlFor="image-back" className={classes.cmnd_front_upload}>
-                            <IconButton variant="raised" component="span">
-                                <PhotoCamera titleAccess="Thêm ảnh" />
-                            </IconButton>
-                        </label>
+                        {
+                            !user.confirmAccount.confirmId && 
+                            <label htmlFor="image-back" className={classes.cmnd_front_upload}>
+                                <IconButton variant="raised" component="span">
+                                    <PhotoCamera titleAccess="Thêm ảnh" />
+                                </IconButton>
+                            </label>
+                        }
                         {
                             imageBack && <img 
                             className={classes.cmnd_front_image}
-                            src={URL.createObjectURL(imageBack)}
+                            src={typeof imageBack === 'string' ? imageBack : URL.createObjectURL(imageBack)}
                             title="Xóa"
                             onClick={() => removeImageBack()}
                             />
@@ -207,18 +230,26 @@ export default function ConfirmAccount(props) {
                             type="file"
                             onChange={handleChangeImageFace}
                         />
-                        <label htmlFor="image-face" className={classes.cmnd_front_upload}>
-                            <IconButton variant="raised" component="span">
-                                <PhotoCamera titleAccess="Thêm ảnh" />
-                            </IconButton>
-                        </label>
+                        {
+                            !user.confirmAccount.confirmId && 
+                            <label htmlFor="image-face" className={classes.cmnd_front_upload}>
+                                <IconButton variant="raised" component="span">
+                                    <PhotoCamera titleAccess="Thêm ảnh" />
+                                </IconButton>
+                            </label>
+                        }
                         {
                             imageFace && <img 
                             className={classes.cmnd_front_image}
-                            src={URL.createObjectURL(imageFace)}
+                            src={typeof imageFace === 'string' ? imageFace : URL.createObjectURL(imageFace)}
                             title="Xóa"
                             onClick={() => removeImageFace()}
                             />
+                        }
+                    </div>
+                    <div>
+                        {
+                           
                         }
                     </div>
                     <div className="login-group">
@@ -228,9 +259,10 @@ export default function ConfirmAccount(props) {
                                 type="submit"
                                 className="login-button"
                                 onClick={handleSubmit}
+                                disabled={user.confirmAccount.confirmId}
                             >
                                 {
-                                    loading ?
+                                    state.loading ?
                                         <CircularProgress size="25px" style={{ color: "white" }} />
                                         : "Cập nhật"
                                 }

@@ -145,6 +145,23 @@ class VolunteerController {
         }
     }
 
+    async joinVolunteerAll(req, res) {
+        try {
+            var volunteer = await Volunteers.find({ _id: req.params.id});
+            volunteer = await Volunteers.findOneAndUpdate({ _id: req.params.id }, {
+                $push: {
+                    users: req.user._id
+                }
+            }, { new: true }).populate("joinIds", "avatar fullname username")
+            res.json({
+                success: true, message: "join volunteer success",
+                joinIds: volunteer.joinIds
+            });
+        } catch (err) {
+            res.status(500).json({ success: false, message: err.message })
+        }
+    }
+
 
 }
 
