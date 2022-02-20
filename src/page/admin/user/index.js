@@ -2,7 +2,7 @@ import React, { useEffect } from "react";
 import { Grid } from "@material-ui/core";
 import LeftBar from "../../../components/Leftbar";
 import { adminListMenu } from "../../../constant/adminMenu";
-import AdminUsers from "../../../components/admin/User"
+import AdminUsers from "../../../components/Admin/User"
 
 
 

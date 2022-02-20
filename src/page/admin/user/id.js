@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import { Button, CircularProgress, Grid } from "@material-ui/core";
 import LeftBar from "../../../components/Leftbar";
 import { adminListMenu } from "../../../constant/adminMenu";
-import AdminUserDetail from "../../../components/admin/User/Detail"
+import AdminUserDetail from "../../../components/Admin/User/Detail"
 import { useParams } from "react-router-dom";
 import customAxios from "../../../utils/fetchData";
 import { adminStyles } from "../../../style";

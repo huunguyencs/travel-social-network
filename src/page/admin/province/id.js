@@ -3,7 +3,7 @@ import React, { useEffect } from 'react'
 
 import LeftBar from '../../../components/Leftbar';
 import { adminListMenu } from '../../../constant/adminMenu';
-import DetailProvinceAdmin from '../../../components/admin/Province/Detail';
+import DetailProvinceAdmin from '../../../components/Admin/Province/Detail';
 import { adminStyles } from '../../../style';
 
 export default function AdminProvinceDetail() {

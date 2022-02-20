@@ -1,6 +1,6 @@
 import { Grid } from '@material-ui/core';
 import React, { useEffect } from 'react'
-import AdminProvinces from '../../../components/admin/Province';
+import AdminProvinces from '../../../components/Admin/Province';
 import LeftBar from '../../../components/Leftbar';
 import { adminListMenu } from '../../../constant/adminMenu';
 

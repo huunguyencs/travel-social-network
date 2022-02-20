@@ -2,7 +2,7 @@ import React from "react";
 import { Grid } from "@material-ui/core";
 import LeftBar from "../../../components/Leftbar";
 import { adminListMenu } from "../../../constant/adminMenu";
-import AdminAddLocation from "../../../components/admin/Location/Add"
+import AdminAddLocation from "../../../components/Admin/Location/Add"
 
 
 

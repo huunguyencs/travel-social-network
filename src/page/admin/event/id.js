@@ -4,7 +4,7 @@ import React, { useEffect } from 'react'
 import LeftBar from '../../../components/Leftbar';
 import { adminListMenu } from '../../../constant/adminMenu';
 import { adminStyles } from '../../../style';
-import AdminEventDetail from '../../../components/admin/Event/Detail'
+import AdminEventDetail from '../../../components/Admin/Event/Detail'
 
 export default function AdminEventDetailPage() {
     const classes = adminStyles();

@@ -4,7 +4,7 @@ import React from 'react'
 import LeftBar from '../../../components/Leftbar';
 import { adminListMenu } from '../../../constant/adminMenu';
 import { adminStyles } from '../../../style';
-import AdminLocationDetail from '../../../components/admin/Location/Detail';
+import AdminLocationDetail from '../../../components/Admin/Location/Detail';
 
 export default function AdminLocationDetailPage() {
 
