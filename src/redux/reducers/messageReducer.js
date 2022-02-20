@@ -9,31 +9,40 @@ const INIT_STATE = {
 const messageReducer = (state = INIT_STATE, action) => {
     switch (action.type) {
         case MESSAGE_TYPES.ADD_USER:
+            if (state.users.every(item => item._id !== action.payload._id)) {
+                return {
+                    ...state,
+                    users: [action.payload, ...state.users]
+                };
+            }
+            return state;
+        case MESSAGE_TYPES.ADD_MESSAGE:
             return {
                 ...state,
-                users: [action.payload, ...state.users]
-            }
-        case MESSAGE_TYPES.ADD_MESSAGE:
-            return{
-                ...state,
                 data: [...state.data, action.payload],
-                users: state.users.map(user => 
+                users: state.users.map(user =>
                     user._id === action.payload.recipient || user._id === action.payload.sender
-                    ? {...user, text: action.payload.text}
-                    : user
-                    )
+                        ? { ...user, text: action.payload.text }
+                        : user
+                )
             }
         case MESSAGE_TYPES.GET_CONVERSATIONS:
             return {
-               ...state,
-               users: action.payload,
-               firstLoad: true
+                ...state,
+                users: action.payload,
+                firstLoad: true
             }
         case MESSAGE_TYPES.GET_MESSAGES:
-            return{
+            return {
                 ...state,
                 data: action.payload
             }
+        case MESSAGE_TYPES.DELETE_CONVERSATION:
+            return {
+                ...state,
+                users: state.users.filter(user => user.recipient !== action.payload._id),
+                data: state.data.filter(item => item._id !== action.payload.data._id)
+            };
         default:
             return state;
 

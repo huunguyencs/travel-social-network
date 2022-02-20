@@ -16,6 +16,7 @@ router.patch("/change_password", auth, UserController.changePassword)
 
 router.get("/get_all", auth, UserController.getAll)
 
+router.post("/confirm_account", auth, UserController.confirmAccount)
 router.get('/get_friend_recommend', auth, UserController.getFriendRecommend)
 router.get('/search', UserController.searchUsers);
 // lấy thông tin một user

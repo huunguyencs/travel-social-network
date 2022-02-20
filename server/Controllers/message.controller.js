@@ -77,6 +77,25 @@ class MessageController {
             res.status(500).json({ success: false, message: err.message })
         }
     }
+    async deleteConversation(req, res) {
+        try {
+            const newConversation = await Conversations.findOneAndDelete({
+                $or: [
+                    {members: [req.user._id, req.params.id]},
+                    {members: [req.params.id, req.user._id]}
+                ]
+            })
+            await Messages.deleteMany({conversation: newConversation._id})
+            
+            res.json({
+                success: true,
+                message: "Delete conversation successful"
+            })
+        } catch (err) {
+            console.log(err)
+            res.status(500).json({ success: false, message: err.message })
+        }
+    }
 
 }
 module.exports = new MessageController;

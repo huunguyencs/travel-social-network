@@ -45,8 +45,6 @@
 #     "hobbies": ["a","b"]
 # }
 
-# GET http://localhost:5000/user/6194b6eb141499c52fbb3854
-# Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjYxOTRiNmViMTQxNDk5YzUyZmJiMzg1NCIsImlhdCI6MTYzNzEzODc5NH0.jape8JJwSftn6hdlwHDNyVIymh5NXTcuRTRpF8bZjpg
 
 
 # PUT http://localhost:5000/user/6194c34c3548f2730fc6b8c5/unfollow
@@ -148,6 +146,82 @@
 #     "image": "url"
 # }
 
+
+
+# POST http://localhost:5000/volunteer/create_volunteer
+# Content-Type: application/json
+# Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjYxY2U3NzM0YmI5ZmIxNTIwZjQxNTcyYyIsImlhdCI6MTY0NDgyNDQxMX0.mPDebvCIN2r5jw2Lzpb1gbq_mXTL2hsdSJC7afDRS10
+
+# {
+#     "name": "Du lịch tình nguyện C",
+#     "image": "https://res.cloudinary.com/huunguyencs/image/upload/v1644574760/d8qc2m8gqkpcoaggthzx.jpg",
+#     "cost": "2000000",
+#     "descriptions": ["good","good1","good2"],
+#     "date": [{
+#         "activities": [{
+#             "time": "9h-10h",
+#             "activity": "an"
+#         },{
+#             "time": "11h-12h",
+#             "activity": "an"
+#         }],
+#         "accommodation": "hotel1",
+#         "date": "2020-11-25"
+#     },
+#     {
+#         "activities": [{
+#             "time": "9h-10h",
+#             "activity": "an"
+#         },{
+#             "time": "11h-12h",
+#             "activity": "an"
+#         }],
+#         "accommodation": "hotel1",
+#         "date": "2020-11-26"
+#     }],
+#     "location": [{
+#         "users": [],
+#         "timeStart": "2020-11-25",
+#         "maxUsers": 10,
+#         "description": ["abc","DEF"],
+#         "activities": ["day", "an"],
+#         "accommodation":"abc",
+#         "ageUser": "18-40",
+#         "images": [],
+#         "location": "61ca856feb7c69eafd24c4f0"
+#     },
+#     {
+#         "users": [],
+#         "timeStart": "2020-11-25",
+#         "maxUsers": 5,
+#         "description": ["abc","DEF"],
+#         "activities": ["day", "an"],
+#         "accommodation":"abc",
+#         "ageUser": "18-40",
+#         "images": [],
+#         "location": "61ca856feb7c69eafd24c4f2"
+#     },
+#     {
+#         "users": [],
+#         "timeStart": "2020-11-26",
+#         "maxUsers": 5,
+#         "description": ["abc","DEF"],
+#         "activities": ["day", "an"],
+#         "accommodation":"abc",
+#         "ageUser": "18-40",
+#         "images": [],
+#         "location": "61ca856feb7c69eafd24c4f4"
+#     }]
+# }
+
+# GET http://localhost:5000/volunteer/620a18fa19753949cd0b3f95
+# Content-Type: application/json
+# Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjYxY2U3NzM0YmI5ZmIxNTIwZjQxNTcyYyIsImlhdCI6MTY0NDgyNDQxMX0.mPDebvCIN2r5jw2Lzpb1gbq_mXTL2hsdSJC7afDRS10
+
+# DELETE http://localhost:5000/volunteer/620a228f93de006ae71d1736
+# Content-Type: application/json
+# Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjYxY2U3NzM0YmI5ZmIxNTIwZjQxNTcyYyIsImlhdCI6MTY0NDgyNDQxMX0.mPDebvCIN2r5jw2Lzpb1gbq_mXTL2hsdSJC7afDRS10
+
 # POST http://localhost:5000/user/login
 # Content-Type: application/json
 
@@ -156,12 +230,16 @@
 #     "password": "Huytran0207"
 # }
 
-
-PATCH http://localhost:5000/notify/isSeenNotify/61dbb08dbeadaee625163460
+POST http://localhost:5000/user/confirm_account
 Content-Type: application/json
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjYxY2U3NzM0YmI5ZmIxNTIwZjQxNTcyYyIsImlhdCI6MTY0MTgyMzM4OX0.26o9oGX_dJXJkpPYZbMdhEaAxG8DcNC-Dxhdx0tVuB4
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjYxY2U3NzM0YmI5ZmIxNTIwZjQxNTcyYyIsImlhdCI6MTY0NTI3OTQ4MH0.7Q1w8TZZgvdRxXajWqE98K1OS2KycWTQ0rFsvudiasI
 
+{
+    "cmnd": "09191536",
+    "cmndFront": "https://res.cloudinary.com/huunguyencs/image/upload/v1638075905/background_wwpwxy.jpg",
+    "cmndBack": "https://res.cloudinary.com/huunguyencs/image/upload/v1638075905/background_wwpwxy.jpg",
+    "cmndFace": "https://res.cloudinary.com/huunguyencs/image/upload/v1638075905/background_wwpwxy.jpg"
+}
 
-
-
-
+# GET http://localhost:5000/user/61ce7734bb9fb1520f41572c
+# Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjYxY2U3NzM0YmI5ZmIxNTIwZjQxNTcyYyIsImlhdCI6MTY0NTM0MTMwOX0.C4p5cpsI90Z01fI3bQX-44pJJCfrrkLUkG1j_5B-jYM

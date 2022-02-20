@@ -10,6 +10,7 @@ import tour from './tourReducer';
 import socket from './socketReducer';
 import notify from './notifyReducer';
 import message from './messageReducer';
+import volunteer from './volunteerReducer';
 
 const rootReducer = combineReducers({
     post,
@@ -21,7 +22,8 @@ const rootReducer = combineReducers({
     user,
     tour,
     notify,
-    message
+    message,
+    volunteer
 });
 
 export default rootReducer;

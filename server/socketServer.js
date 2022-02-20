@@ -89,10 +89,11 @@ const SocketServer = (socket) => {
     })
 
     //add message
-    socket.on('addMessage', data => {
-        const user = users.filter(user => user.id === data.recipient);
-        if (user.length > 0) {
-            socket.to(user[0].socketId).emit('addMessageToClient', data);
+    socket.on('addMessage',data=>{
+        // console.log(data.user);
+        const user = users.filter(user => user.id === data.msg.recipient );
+        if(user.length >0){
+            socket.to(user[0].socketId).emit('addMessageToClient',data);
         }
     })
 }

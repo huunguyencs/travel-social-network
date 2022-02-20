@@ -27,3 +27,10 @@ export const getMessages = (props) =>{
         payload: props
     }
 }
+
+export const deleteConversation = (props) =>{
+    return{
+        type: MESSAGE_TYPES.DELETE_CONVERSATION,
+        payload: props
+    }
+}
