@@ -32,6 +32,7 @@ import addServiceStyles from "./addservice";
 import volunteerDetailStyles from "./volunteerDetail";
 import authStyles from "./auth";
 import adminStyles from "./adminStyles";
+import volunteerStyles from "./volunteer";
 
 
 
@@ -87,4 +88,5 @@ export {
     volunteerDetailStyles,
     authStyles,
     adminStyles,
+    volunteerStyles,
 };
