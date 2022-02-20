@@ -2,7 +2,7 @@ import React, { useEffect } from "react";
 import { useSelector } from "react-redux";
 import { Redirect } from "react-router";
 
-import AddTour from '../components/tour/AddTour';
+import AddTour from '../components/Tour/AddTour';
 
 export default function CreateTour(props) {
 

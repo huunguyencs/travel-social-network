@@ -10,3 +10,4 @@ export const ADD_SERVICE = "ADD_SERVICE";
 export const DELETE_SERVICE = "DELETE_SERVICE";
 export const LOAD_TOUR = "LOAD_TOUR";
 export const CREATE_TOUR = "CREATE_TOUR";
+export const CHANGE_IMAGE = "CHANGE_IMAGE";

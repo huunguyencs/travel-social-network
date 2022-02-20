@@ -28,10 +28,10 @@ class ProvinceController {
 
     async updateProvince(req, res) {
         try {
-            const { name, information, image } = req.body
+            const { name, fullname, information, detail, image, position } = req.body;
 
             const province = await Provinces.findByIdAndUpdate(req.params.id, {
-                name, information, image
+                name, fullname, information, detail, image, position
             }, { new: true })
 
             res.json({ success: true, message: "update province successful", province })
@@ -122,6 +122,16 @@ class ProvinceController {
         try {
             const provinces = await Provinces.find({}, "fullname name position");
             res.json({ success: true, message: "get all provinces success", provinces });
+        } catch (err) {
+            console.log(err)
+            res.status(500).json({ success: false, message: err.message })
+        }
+    }
+
+    async getAllDetail(req, res) {
+        try {
+            const provinces = await Provinces.find({}, "fullname name image information");
+            res.json({ success: true, message: "get all provinces success", provinces })
         } catch (err) {
             console.log(err)
             res.status(500).json({ success: false, message: err.message })

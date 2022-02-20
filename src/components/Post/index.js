@@ -15,7 +15,7 @@ import {
 } from "@material-ui/icons";
 import { useDispatch, useSelector } from "react-redux";
 
-import Comment from "../comment/Comment";
+import Comment from "../Comment";
 import InputComment from "../Input/Comment";
 import { postStyles } from "../../style";
 import UserList from "../Modal/UserList";

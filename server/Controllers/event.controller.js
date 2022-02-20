@@ -29,8 +29,27 @@ class EventController {
         catch (err) {
             res.status(500).json({ success: false, message: err.message })
         }
+    }
 
+    async updateEvent(req, res) {
+        try {
+            const { description, timedes, name, fullname, provinceId, images, time, calendarType } = req.body;
+            const event = await Events.findOneAndUpdate({ _id: req.params.id }, {
+                description, timedes, name, fullname, provinceId, images, time, calendarType
+            }, { new: true })
+                .populate("provinceId", "name fullname image");
 
+            res.json({
+                success: true,
+                message: "get info 1 event successful",
+                event
+            })
+        } catch (err) {
+            res.status(500).json({
+                success: false,
+                message: err.message
+            })
+        }
     }
 
     async getEvent(req, res) {
@@ -105,8 +124,8 @@ class EventController {
     }
     async getAll(req, res) {
         try {
-            const events = await Events.find({}).select("name fullname timedes provinceId calendarType")
-                .populate("provinceId", "fullname name")
+            const events = await Events.find({}).select("name fullname time provinceId calendarType")
+                .populate("provinceId", "fullname")
             res.json({
                 success: true,
                 message: "Lấy tất cả các sự kiện thành công",

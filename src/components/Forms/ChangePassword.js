@@ -131,7 +131,7 @@ export default function ChangePassword(props) {
                         required
                         onChange={handleInput}
                         helperText={errors?.oldPassword}
-                        error={errors?.oldPassword}
+                        error={Boolean(errors?.oldPassword)}
                         type={showPassword1 ? "text" : "password"}
                         InputProps={{
                             endAdornment: (
@@ -158,7 +158,7 @@ export default function ChangePassword(props) {
                         required
                         onChange={handleInput}
                         helperText={errors?.newPassword}
-                        error={errors?.newPassword}
+                        error={Boolean(errors?.newPassword)}
                         type={showPassword2 ? "text" : "password"}
                         InputProps={{
                             endAdornment: (
@@ -185,7 +185,7 @@ export default function ChangePassword(props) {
                         required
                         onChange={handleInput}
                         helperText={errors?.confirmPassword}
-                        error={errors?.confirmPassword}
+                        error={Boolean(errors?.confirmPassword)}
                         type={showPassword3 ? "text" : "password"}
                         InputProps={{
                             endAdornment: (

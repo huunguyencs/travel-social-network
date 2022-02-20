@@ -6,6 +6,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { formStyles } from '../../style';
 import * as tourAction from '../../redux/actions/createTourAction';
 import customAxios from "../../utils/fetchData";
+import { AddCircle } from "@material-ui/icons";
 
 
 export default function AddLocationForm(props) {
@@ -107,8 +108,10 @@ export default function AddLocationForm(props) {
                         className={classes.button}
                         type="submit"
                         onClick={handleSubmit}
+                        startIcon={(<AddCircle />)}
+                        disabled={!loc}
                     >
-                        Xong
+                        Thêm
                     </Button>
                 </div>
             </form>

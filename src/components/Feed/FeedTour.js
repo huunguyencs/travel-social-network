@@ -1,9 +1,9 @@
 import React, { useState } from "react";
 import { Backdrop, Button, CircularProgress, Fade, Modal, Typography } from "@material-ui/core";
 
-import Tour from "../tour/Tour";
+import Tour from "../Tour";
 import { feedStyles } from "../../style";
-import CreateTourForm from "../forms/createTour";
+import CreateTourForm from "../Forms/CreateTour";
 import { useSelector, useDispatch } from "react-redux";
 import { getTours } from "../../redux/callApi/tourCall"
 

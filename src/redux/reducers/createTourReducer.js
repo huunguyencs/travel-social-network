@@ -111,10 +111,15 @@ const createTourReducer = (state = INIT_STATE, action) => {
             return {
                 ...state,
                 name: action.payload.name,
-                image: action.payload.image,
                 hashtags: action.payload.hashtags,
                 content: action.payload.content,
                 cost: action.payload.cost
+            }
+        }
+        case TOUR_TYPES.CHANGE_IMAGE: {
+            return {
+                ...state,
+                image: action.payload.image
             }
         }
         case TOUR_TYPES.ADD_SERVICE: {

@@ -8,7 +8,7 @@ import { useHistory } from "react-router-dom";
 
 import { formStyles } from "../../style";
 import { createTour } from '../../redux/actions/createTourAction';
-import LoginModal from "../modal/login";
+import LoginModal from "../Modal/Login";
 
 
 export default function CreateTourForm(props) {

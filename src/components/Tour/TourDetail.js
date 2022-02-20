@@ -6,7 +6,7 @@ import { tourdetailStyles } from "../../style";
 import Location from './Location';
 import { convertDateToStr, convertDateToStrShort } from "../../utils/date";
 // import { useSelector } from "react-redux";
-import MapCard from "../card/MapCard";
+import MapCard from "../Card/MapCard";
 import { Link, useHistory } from "react-router-dom";
 import { ServiceCard } from "./AddService";
 import { FileCopy, Update } from "@material-ui/icons";
@@ -34,7 +34,20 @@ export default function TourDetail(props) {
         setShowService(false);
     }
 
-    const { tour, isOwn } = props;
+    const { tour, isOwn, setTour } = props;
+
+    const createReview = (id, index_loc, tourdate_id) => {
+        setTour(state => ({
+            ...state,
+            tour: state.tour.map(item => item._id === tourdate_id ? {
+                ...item,
+                locations: item.locations.map((location, index) => index === index_loc ? {
+                    ...location,
+                    postId: id
+                } : location)
+            } : item)
+        }))
+    }
 
 
     useEffect(() => {
@@ -164,6 +177,7 @@ export default function TourDetail(props) {
                                             indexDate={idx}
                                             indexLocation={index}
                                             isEdit={false}
+                                            addReview={createReview}
                                         />
                                     ))
                                 }
@@ -171,7 +185,9 @@ export default function TourDetail(props) {
                             </Grid>
                             <Grid item md={6}>
                                 <Container className={classes.mapRight}>
-                                    {position && <MapCard position={position} zoom={12} locations={locations} />}
+                                    <>
+                                        {position && <MapCard position={position} zoom={12} locations={locations} />}
+                                    </>
                                 </Container>
                             </Grid>
                         </Grid>

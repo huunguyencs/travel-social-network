@@ -1,20 +1,23 @@
 import React, { useEffect, useState } from "react";
 import TextField from '@material-ui/core/TextField/TextField';
 import Button from '@material-ui/core/Button/Button';
-// import Checkbox from "@material-ui/core/Checkbox";
 import { Link, useHistory } from "react-router-dom";
-
-import Validator, { nonSpace, username, validatePassword, validatePhoneNumber } from "../utils/validator";
-import { useDispatch } from "react-redux";
-import { CircularProgress } from "@material-ui/core";
-import { register } from "../redux/callApi/authCall";
-
 import InputAdornment from "@material-ui/core/InputAdornment";
 import Visibility from "@material-ui/icons/Visibility";
 import VisibilityOff from "@material-ui/icons/VisibilityOff";
 import IconButton from "@material-ui/core/IconButton";
+import { useDispatch } from "react-redux";
+import { CircularProgress, Grid, Typography } from "@material-ui/core";
+
+import { register } from "../redux/callApi/authCall";
+import Validator, { nonSpace, username, validatePassword, validatePhoneNumber } from "../utils/validator";
+
+
+import { authStyles } from "../style";
 
 export default function Register(props) {
+
+    const classes = authStyles();
 
     const history = useHistory();
 
@@ -158,117 +161,129 @@ export default function Register(props) {
     }
 
     return (
-        <div className="login">
-            <div className="login-img">
-                <img src={'/login-1.jpeg'} alt="login"></img>
-            </div>
-            <div className="form-login">
+        <Grid container className={classes.root}>
+            <Grid item md={6} className={classes.imageContainer}>
+                <div className={classes.imageCover} />
+            </Grid>
+            <Grid item md={6} sm={12} xs={12} className={classes.formLogin}>
                 {/* <h3 className="form-login-title">GOGO</h3> */}
-                <div className="login-register-switch">
-                    <h4 className="login-register-switch__notactive"><Link to="/login" style={{ color: "#2F3542" }}> Đăng nhập </Link></h4>
-                    <h4 className="login-register-switch__active__register">Đăng ký</h4>
+                <div className={classes.center} style={{ marginBottom: 50 }}>
+                    <Typography variant="h4">Đăng ký tài khoản</Typography>
                 </div>
                 <form
+                    className={classes.form}
                     onSubmit={handleSubmit}
                 >
-                    <TextField
-                        autoComplete=""
-                        label="Username"
-                        variant="outlined"
-                        id="username"
-                        name="username"
-                        required
-                        className="form-input-half"
-                        error={errors?.username}
-                        onChange={handleInput}
-                        helperText={errors?.username}
-                    />
-                    <TextField
-                        autoComplete=""
-                        label="Tên đầy đủ"
-                        id="fullname"
-                        variant="outlined"
-                        name="fullname"
-                        required
-                        className="form-input-half"
-                        error={errors?.fullname}
-                        onChange={handleInput}
-                        helperText={errors?.fullname}
-                    />
-                    <TextField
-                        autoComplete=""
-                        label="Email"
-                        variant="outlined"
-                        id="email"
-                        name="email"
-                        required
-                        className="form-input"
-                        error={errors?.email}
-                        onChange={handleInput}
-                        helperText={errors?.email}
-                    />
-                    <TextField
-                        autoComplete=""
-                        label="Số điện thoại"
-                        variant="outlined"
-                        name="phone"
-                        className="form-input"
-                        error={errors?.phone}
-                        helperText={errors?.phone}
-                        onChange={handleInput}
-                    />
-                    <TextField
-                        autoComplete=""
-                        label="Mật khẩu (6+ kí tự)"
-                        variant="outlined"
-                        name="password"
-                        type={showPassword ? "text" : "password"}
-                        required
-                        className="form-input"
-                        error={errors?.password}
-                        helperText={errors?.password}
-                        onChange={handleInput}
-                        InputProps={{
-                            endAdornment: (
-                                <InputAdornment position="end">
-                                    <IconButton
-                                        aria-label="toggle password visibility"
-                                        onClick={handleClickShowPassword}
-                                        edge="end"
-                                        size="small"
-                                    >
-                                        {showPassword ? <Visibility /> : <VisibilityOff />}
-                                    </IconButton>
-                                </InputAdornment>
-                            )
-                        }}
-                    />
-                    <TextField
-                        autoComplete=""
-                        label="Xác nhận mật khẩu"
-                        variant="outlined"
-                        name="confirmPassword"
-                        type={showConfirm ? "text" : "password"}
-                        required
-                        className="form-input"
-                        error={errors?.confirmPassword}
-                        helperText={errors?.confirmPassword}
-                        onChange={handleInput}
-                        InputProps={{
-                            endAdornment: (
-                                <InputAdornment position="end">
-                                    <IconButton
-                                        aria-label="toggle password visibility"
-                                        onClick={handleClickShowConfirm}
-                                        edge="end"
-                                        size="small"
-                                    >
-                                        {showConfirm ? <Visibility /> : <VisibilityOff />}
-                                    </IconButton>
-                                </InputAdornment>
-                            )
-                        }}
-                    />
+                    <div className={classes.center}>
+                        <TextField
+                            autoComplete=""
+                            label="Username"
+                            variant="outlined"
+                            id="username"
+                            name="username"
+                            required
+                            className={classes.formInput}
+                            error={Boolean(errors?.username)}
+                            onChange={handleInput}
+                            helperText={errors?.username}
+                        />
+                    </div>
+                    <div className={classes.center}>
+                        <TextField
+                            autoComplete=""
+                            label="Tên đầy đủ"
+                            id="fullname"
+                            variant="outlined"
+                            name="fullname"
+                            required
+                            className={classes.formInput}
+                            error={Boolean(errors?.fullname)}
+                            onChange={handleInput}
+                            helperText={errors?.fullname}
+                        />
+                    </div>
+                    <div className={classes.center}>
+                        <TextField
+                            autoComplete=""
+                            label="Email"
+                            variant="outlined"
+                            id="email"
+                            name="email"
+                            required
+                            className={classes.formInput}
+                            error={Boolean(errors?.email)}
+                            onChange={handleInput}
+                            helperText={errors?.email}
+                        />
+                    </div>
+                    <div className={classes.center}>
+                        <TextField
+                            autoComplete=""
+                            label="Số điện thoại"
+                            variant="outlined"
+                            name="phone"
+                            className={classes.formInput}
+                            error={Boolean(errors?.phone)}
+                            helperText={errors?.phone}
+                            onChange={handleInput}
+                        />
+                    </div>
+                    <div className={classes.center}>
+                        <TextField
+                            autoComplete=""
+                            label="Mật khẩu (6+ kí tự)"
+                            variant="outlined"
+                            name="password"
+                            type={showPassword ? "text" : "password"}
+                            required
+                            className={classes.formInput}
+                            error={Boolean(errors?.password)}
+                            helperText={errors?.password}
+                            onChange={handleInput}
+                            InputProps={{
+                                endAdornment: (
+                                    <InputAdornment position="end">
+                                        <IconButton
+                                            aria-label="toggle password visibility"
+                                            onClick={handleClickShowPassword}
+                                            edge="end"
+                                            size="small"
+                                        >
+                                            {showPassword ? <Visibility /> : <VisibilityOff />}
+                                        </IconButton>
+                                    </InputAdornment>
+                                )
+                            }}
+                        />
+                    </div>
+                    <div className={classes.center}>
+                        <TextField
+                            autoComplete=""
+                            label="Xác nhận mật khẩu"
+                            variant="outlined"
+                            name="confirmPassword"
+                            type={showConfirm ? "text" : "password"}
+                            required
+                            className={classes.formInput}
+                            error={Boolean(errors?.confirmPassword)}
+                            helperText={errors?.confirmPassword}
+                            onChange={handleInput}
+                            InputProps={{
+                                endAdornment: (
+                                    <InputAdornment position="end">
+                                        <IconButton
+                                            aria-label="toggle password visibility"
+                                            onClick={handleClickShowConfirm}
+                                            edge="end"
+                                            size="small"
+                                        >
+                                            {showConfirm ? <Visibility /> : <VisibilityOff />}
+                                        </IconButton>
+                                    </InputAdornment>
+                                )
+                            }}
+                        />
+                    </div>
                     {/* <div style={{
                         display: 'flex',
                         textAlign: 'center',
@@ -293,14 +308,18 @@ export default function Register(props) {
                         </p>
                     </div> */}
 
-                    <span style={{ fontSize: "15px", color: "red", marginInline: "20px", marginTop: "10px" }}>{errorServer}</span>
+                    <div className={classes.center} style={{ marginTop: 20 }}>
+                        <Typography>Bạn đã có tài khoản? <Link className={classes.registerText} to="/login">Đăng nhập</Link></Typography>
+                    </div>
 
-                    <div className="login-group">
+                    <span className={classes.error}>{errorServer}</span>
+
+                    <div className={classes.loginGroup}>
                         <Button
                             variant="contained"
                             // color="primary"
                             type="submit"
-                            className="login-button"
+                            className={classes.loginButton}
                         >
                             {loading ?
                                 <CircularProgress size="25px" style={{ color: "white" }} />
@@ -310,7 +329,7 @@ export default function Register(props) {
                         </Button>
                     </div>
                 </form>
-            </div>
-        </div>
+            </Grid>
+        </Grid>
     )
 }

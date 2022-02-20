@@ -90,26 +90,28 @@ export default function UserList(props) {
                     </IconButton>
                 </div>
             </div>
-            <ul>
-                {listUser.map((user) => (
-                    <li button className={classes.modal_body_user} key={user._id}>
-                        <div className={classes.userWrap}>
-                            <Avatar alt="avatar" src={user.avatar} className={classes.avatar} />
-                            <div className={classes.fullnameWrap}>
-                                <Link to={`/u/${user._id}`} onClick={handleClose} className={classes.fullname}>{user.fullname}</Link>
+            <div style={{ position: "relative", overflowY: "auto" }}>
+                <ul>
+                    {listUser.map((user) => (
+                        <li button className={classes.modal_body_user} key={user._id}>
+                            <div className={classes.userWrap}>
+                                <Avatar alt="avatar" src={user.avatar} className={classes.avatar} />
+                                <div className={classes.fullnameWrap}>
+                                    <Link to={`/u/${user._id}`} onClick={handleClose} className={classes.fullname}>{user.fullname}</Link>
+                                </div>
                             </div>
-                        </div>
-                        <div>
-                            {
-                                auth.user && user._id !== auth.user._id &&
-                                <Button variant="outlined" className={classes.modal_body_user_button} onClick={() => handleFollow(user._id)}>
-                                    {stateFollow.loading && stateFollow.id === user._id ? <CircularProgress fontSize="small" /> : isFollowed(user._id) ? "Hủy theo dõi" : "Theo dõi"}
-                                </Button>
-                            }
-                        </div>
-                    </li>
-                ))}
-            </ul>
+                            <div>
+                                {
+                                    auth.user && user._id !== auth.user._id &&
+                                    <Button variant="outlined" className={classes.modal_body_user_button} onClick={() => handleFollow(user._id)}>
+                                        {stateFollow.loading && stateFollow.id === user._id ? <CircularProgress fontSize="small" /> : isFollowed(user._id) ? "Hủy theo dõi" : "Theo dõi"}
+                                    </Button>
+                                }
+                            </div>
+                        </li>
+                    ))}
+                </ul>
+            </div>
         </div>
     )
 }

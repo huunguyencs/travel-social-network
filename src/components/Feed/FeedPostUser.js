@@ -2,7 +2,7 @@ import React from "react";
 import { CircularProgress, Typography, Button } from "@material-ui/core";
 
 
-import Post from '../post/Post';
+import Post from '../Post';
 import { feedStyles } from "../../style";
 import { useDispatch, useSelector } from "react-redux";
 import { getUserPost } from "../../redux/callApi/postCall";

@@ -1,14 +1,13 @@
 import React from "react";
 import { Box, Tab, Tabs, Container, useMediaQuery, useTheme, Grid } from "@material-ui/core";
 import PropTypes from 'prop-types';
-
+import { useSelector } from "react-redux";
 
 import { profileStyles } from "../style";
+import ChangePassword from "../components/Forms/ChangePassword";
+import ChangeInfo from "../components/Forms/ChangeInfo";
 
-import ChangePassword from "../components/forms/changePassword";
-import ChangeInfo from "../components/forms/changeInfo";
-import { useSelector } from "react-redux";
-import ConfirmAccount from "../components/forms/confirmAccount";
+
 
 function TabPanel(props) {
     const { children, value, index, ...other } = props;
@@ -74,7 +73,7 @@ export default function Change_info(props) {
                             >
                                 <Tab className={classes.tab} label="Thay đổi thông tin" {...a11yProps(0)} />
                                 <Tab className={classes.tab} label="Thay đổi mật khẩu" {...a11yProps(1)} />
-                                <Tab className={classes.tab} label="Xác nhận tài khoản" {...a11yProps(2)} />
+                                <Tab className={classes.tab} label="Bảo mật và riêng tư" {...a11yProps(2)} />
                             </Tabs>
                         </div>
                     </Grid>
@@ -86,7 +85,7 @@ export default function Change_info(props) {
                             <ChangePassword />
                         </TabPanel>
                         <TabPanel value={value} index={2} className={classes.tabPanel}>
-                            <ConfirmAccount/>
+                            404
                         </TabPanel>
                     </Grid>
                 </Grid>

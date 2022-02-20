@@ -4,18 +4,20 @@ import { Timeline, TimelineItem, TimelineSeparator, TimelineConnector, TimelineC
 import { useDispatch, useSelector } from "react-redux";
 
 import { tourdetailStyles } from "../../style";
-import AddLocationForm from "../forms/addLocation";
+import AddLocationForm from "../Forms/AddLocation";
 import Location from './Location';
 import * as tourAction from '../../redux/actions/createTourAction';
 import { useHistory } from "react-router-dom";
-import UpdateDateForm from "../forms/updateDate";
-import UpdateTourInfo from "../forms/updateInfoCreateTour";
+import UpdateDateForm from "../Forms/UpdateDate";
+import UpdateTourInfo from "../Forms/UpdateInfoCreateTour";
 import { convertDateToStr, convertDateToStrShort } from "../../utils/date";
 import { saveTour, updateTour } from "../../redux/callApi/tourCall";
 import AddLocation from "./AddLocation";
 import { getProvinces } from '../../redux/callApi/locationCall';
 import AddService from "./AddService";
-import { Close } from "@material-ui/icons";
+import { AddCircle, Close, Delete, Save, Update } from "@material-ui/icons";
+import ChangeImageTour from "./ChangeImageTour";
+import { error } from "../../redux/actions/alertAction";
 
 
 function a11yProps(index) {
@@ -98,7 +100,13 @@ export default function AddTour(props) {
             loading: true,
             error: false
         })
-
+        if (!createTour.image || createTour.image === "") {
+            setState({
+                loading: false,
+                error: true
+            })
+            return;
+        }
         dispatch(saveTour({
             name: createTour.name,
             content: createTour.content,
@@ -115,8 +123,9 @@ export default function AddTour(props) {
         }, () => {
             setState({
                 loading: false,
-                error: true
+                error: false
             })
+            dispatch(error({ error: "Có lỗi xảy ra" }))
         }))
     }
 
@@ -126,6 +135,14 @@ export default function AddTour(props) {
             loading: true,
             error: false
         })
+
+        if (!createTour.image || createTour.image === "") {
+            setState({
+                loading: false,
+                error: true
+            })
+            return;
+        }
 
         dispatch(updateTour(createTour._id, {
             name: createTour.name,
@@ -144,8 +161,9 @@ export default function AddTour(props) {
         }, () => {
             setState({
                 loading: false,
-                error: true
+                error: false
             })
+            dispatch(error({ error: "Có lỗi xảy ra" }))
         }))
     }
 
@@ -201,41 +219,49 @@ export default function AddTour(props) {
                         <Typography variant="h3" className={classes.title}>{createTour.name}</Typography>
                     </div>
                     <div className={classes.info}>
-                        <div className={classes.itemInfo}>
-                            <Typography variant="body1" className={classes.content}>
-                                {createTour.content}
-                            </Typography>
-                        </div>
-                        <div className={classes.hashtagWrap}>
-                            {createTour.hashtags.map((hashtag, index) => (
-                                <Typography className={classes.hashtag} key={index}>{hashtag}</Typography>
-                            ))}
-                        </div>
-                        <div className={classes.itemInfo}>
-                            <Typography variant="body1" className={classes.content}>
-                                Chi phí: {new Intl.NumberFormat().format(createTour.cost * 1000)} VND
-                            </Typography>
-                        </div>
-                        <div className={classes.itemInfo}>
-                            <Button onClick={handleShowUpdateInfo}>Chỉnh sửa thông tin</Button>
-                        </div>
+                        <Grid container>
+                            <Grid item md={6} sm={12} xs={12}>
+                                <div className={classes.itemInfo}>
+                                    <Typography variant="body1" className={classes.content}>
+                                        {createTour.content}
+                                    </Typography>
+                                </div>
+                                <div className={classes.hashtagWrap}>
+                                    {createTour.hashtags.map((hashtag, index) => (
+                                        <Typography className={classes.hashtag} key={index}>{hashtag}</Typography>
+                                    ))}
+                                </div>
+                                <div className={classes.itemInfo}>
+                                    <Typography variant="body1" className={classes.content}>
+                                        Chi phí: {new Intl.NumberFormat().format(createTour.cost * 1000)} VND
+                                    </Typography>
+                                </div>
+                                <div className={classes.itemInfo}>
+                                    <Button onClick={handleShowUpdateInfo}>Chỉnh sửa thông tin</Button>
+                                </div>
 
-                        <Modal
-                            aria-labelledby="transition-modal-title"
-                            aria-describedby="transition-modal-description"
-                            className={classes.modal}
-                            open={showChangeInfo}
-                            onClose={handleCloseUpdateInfo}
-                            closeAfterTransition
-                            BackdropComponent={Backdrop}
-                            BackdropProps={{
-                                timeout: 500,
-                            }}
-                        >
-                            <Fade in={showChangeInfo}>
-                                <UpdateTourInfo name={createTour.name} content={createTour.content} hashtags={createTour.hashtags} image={createTour.image} handleClose={handleCloseUpdateInfo} cost={createTour.cost} />
-                            </Fade>
-                        </Modal>
+                                <Modal
+                                    aria-labelledby="transition-modal-title"
+                                    aria-describedby="transition-modal-description"
+                                    className={classes.modal}
+                                    open={showChangeInfo}
+                                    onClose={handleCloseUpdateInfo}
+                                    closeAfterTransition
+                                    BackdropComponent={Backdrop}
+                                    BackdropProps={{
+                                        timeout: 500,
+                                    }}
+                                >
+                                    <Fade in={showChangeInfo}>
+                                        <UpdateTourInfo name={createTour.name} content={createTour.content} hashtags={createTour.hashtags} image={createTour.image} handleClose={handleCloseUpdateInfo} cost={createTour.cost} />
+                                    </Fade>
+                                </Modal>
+                            </Grid>
+                            <Grid item md={6} sm={12} xs={12}>
+                                <ChangeImageTour />
+                            </Grid>
+
+                        </Grid>
                     </div>
 
                     <Grid container className={classes.container}>
@@ -269,22 +295,27 @@ export default function AddTour(props) {
                             </div>
 
                             <div className={classes.addDayWrap}>
-                                <Button className={classes.addDay} onClick={handleAddDay}>
-                                    Thêm ngày
-                                </Button>
+                                <div>
+                                    <Button className={classes.addDay} onClick={handleAddDay} startIcon={(<AddCircle />)}>
+                                        Thêm ngày
+                                    </Button>
+                                </div>
+                                <div>
+                                    <Button className={classes.addDay} onClick={isUpdate ? handleUpdate : handleSave} startIcon={(<Save />)}>
+                                        {state.loading ?
+                                            <CircularProgress size="25px" color="inherit" />
+                                            : "Lưu lại"
+                                        }
+                                    </Button>
 
-                                <Button className={classes.addDay} onClick={isUpdate ? handleUpdate : handleSave}>
-                                    {state.loading ?
-                                        <CircularProgress size="25px" color="inherit" />
-                                        : "Lưu lại"
-                                    }
-                                </Button>
+                                </div>
+                                {state.error && <span style={{ fontSize: "15px", color: "red", marginInline: "20px", marginTop: "10px" }}>Bạn cần thêm ảnh</span>}
                             </div>
 
                         </Grid>
                         <Grid item md={4} sm={12} xs={12} className={classes.feedTour}>
                             <div className={classes.center}>
-                                <Button onClick={handleShowDelete} className={classes.editButton}>
+                                <Button onClick={handleShowDelete} className={classes.removeButton} startIcon={(<Delete />)}>
                                     Xóa ngày
                                 </Button>
                                 <Dialog
@@ -303,7 +334,7 @@ export default function AddTour(props) {
                                         </Button>
                                     </DialogActions>
                                 </Dialog>
-                                <Button onClick={handleShowUpdate} className={classes.editButton}>
+                                <Button onClick={handleShowUpdate} className={classes.editButton} startIcon={(<Update />)}>
                                     Thay đổi ngày
                                 </Button>
                                 <Modal

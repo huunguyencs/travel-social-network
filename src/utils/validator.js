@@ -40,7 +40,12 @@ const nonSpace = (text, state) => {
 }
 
 const username = (text, state) => {
-    const regex = /^[a-zA-Z0-9_^&()@$]{3,25}$/
+    const regex = /^[a-zA-Z0-9_^&()@$-]{3,25}$/
+    return regex.test(text);
+}
+
+const nameid = (text, state) => {
+    const regex = /^[a-zA-Z0-9_^&()@$-]{6,60}$/
     return regex.test(text);
 }
 
@@ -55,6 +60,12 @@ const validatePhoneNumber = (phone, state) => {
     return regex.test(phone);
 }
 
+const isFloat = (value) => {
+    // var x = parseFloat(text);
+    // return !isNaN(x);
+    return !isNaN(value) && value.toString().indexOf('.') !== -1
+}
+
 export default Validator;
 
-export { validatePassword, validatePhoneNumber, isEmpty, nonSpace, username };
+export { validatePassword, validatePhoneNumber, isEmpty, nonSpace, username, isFloat, nameid };

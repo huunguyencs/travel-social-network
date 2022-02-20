@@ -1,17 +1,17 @@
 import React, { useEffect, useState } from "react";
-import { WhatsApp, RssFeed, Update } from "@material-ui/icons";
-import { Avatar, Button, Container, Typography, Modal, Backdrop, CircularProgress } from "@material-ui/core";
+import { WhatsApp, RssFeed, Update, VerifiedUser } from "@material-ui/icons";
+import { Avatar, Button, Container, Typography, Modal, Backdrop, CircularProgress, Tooltip } from "@material-ui/core";
 
 import { profileStyles } from "../../style";
-import UserList from "../modal/userList";
-import ImageModal from "../modal/image";
+import UserList from "../Modal/UserList";
+import ImageModal from "../Modal/Image";
 import { useSelector, useDispatch } from "react-redux";
 import { useParams, useHistory, Link } from "react-router-dom";
 import { follow, unfollow } from "../../redux/callApi/userCall";
 
 
 
-export default function Profile_Avatar(props) {
+export default function ProfileAvatar(props) {
 
   const { user } = props;
 
@@ -132,10 +132,10 @@ export default function Profile_Avatar(props) {
 
 
   return (
-    <Container className={classes.container}>
+    <>
       {
         user &&
-        <>
+        <Container className={classes.container}>
           <div>
             <img className={classes.profile_overImage} src={user.background} alt="cover" onClick={handleOpenCover} />
             <ImageModal
@@ -154,8 +154,14 @@ export default function Profile_Avatar(props) {
               />
             </div>
             <div className={classes.infoUser}>
-              <Typography variant="body1" component="p" className={classes.fullname}>
+              <Typography variant="body1" className={classes.fullname}>
                 {user.fullname}
+                {
+                  user.confirmAccount.state &&
+                  <Tooltip title={'Tài khoản đã được xác thực'} aria-label='verified'>
+                    <VerifiedUser color="primary" fontSize="small" />
+                  </Tooltip>
+                }
               </Typography>
               <div variant="body1" component="p" className={classes.follow}>
                 <Typography className={classes.followInfo} onClick={handleOpenFollowing} >{user.followings.length} đang theo dõi</Typography>
@@ -206,8 +212,9 @@ export default function Profile_Avatar(props) {
               }
             </div>
           </div>
-        </>
+        </Container>
       }
-    </Container>
+    </>
+
   )
 }

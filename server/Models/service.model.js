@@ -20,8 +20,6 @@ const serviceSchema = new mongoose.Schema({
         space: String, // không gian
         convenient: String, // Tiện nghi
         shuttle: String, // Đưa đón
-        // room: [String], // Phòng
-        // vehicle: [String], // Loại phương tiện
         pickup: [String], // Điểm đón
         stop: [String], // Điểm trả
         book: String, // cách đặt trước

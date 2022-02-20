@@ -6,8 +6,8 @@ const modalListStyles = makeStyles((theme) => ({
         width: "600px",
         height: "650px",
         backgroundColor: theme.palette.background.paper,
-        // padding: theme.spacing(2, 4, 3),
-        // border: '0.5px solid #000',
+        display: 'flex',
+        flexDirection: 'column',
         borderRadius: "15px",
         overflow: "hidden",
         padding: "2px",
@@ -54,14 +54,14 @@ const modalListStyles = makeStyles((theme) => ({
     },
     modal_body_user_button: {
         textTransform: 'none',
-        color: color.gray,
+        color: color.darkgray,
         marginTop: "27px",
         marginRight: "25px",
         // width: "30%",
         paddingInline: "20px",
         transition: "0.2s",
         '&:hover': {
-            backgroundColor: color.gray,
+            backgroundColor: color.darkgray,
             color: "white",
             // border: "none",
         },
@@ -102,9 +102,9 @@ const modalListStyles = makeStyles((theme) => ({
     imageList: {
         margin: 20,
         height: "100%",
-        [theme.breakpoints.down("md")]: {
-            height: 400,
-        },
+        // [theme.breakpoints.down("md")]: {
+        //     height: 400,
+        // },
         // [theme.breakpoints.down("sm")]: {
         //     height: 200,
         // },

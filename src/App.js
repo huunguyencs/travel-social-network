@@ -1,21 +1,20 @@
 import React, { useEffect } from "react";
 import { Route } from "react-router-dom";
 
-import Header from "./components/header/Header";
+import Header from "./components/Header";
 import PageRender from "./router/PageRender";
 // import color from "./style/color";
-import Scroll from './components/scroll';
+import Scroll, { WithRouterScroll } from './components/Scroll';
 import CustomRouter from "./router/CustomRouter";
 import HomePage from './page/home';
 import './App.css'
-import { WithRouterScroll } from './components/scroll';
 import { useLocation, useHistory } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { getFriendRecommend, refreshToken } from "./redux/callApi/authCall";
 import { io } from 'socket.io-client';
 import SocketClient from "./SocketClient";
 import * as SOCKET_TYPES from './redux/constants/index';
-import NotificationBar from "./components/alert/Alert";
+import AlertBar from "./components/Alert";
 
 import { getNotifies } from './redux/callApi/notifyCall';
 
@@ -56,7 +55,7 @@ function App() {
     <div>
       <WithRouterScroll />
       <Scroll showBelow={500} />
-      <NotificationBar />
+      <AlertBar />
       {displayHeader() && <Header />}
       {auth.token && <SocketClient />}
       <Route path="/" component={HomePage} exact />

@@ -1,13 +1,13 @@
 import { Grid } from '@material-ui/core';
 import React, { useEffect } from 'react'
 import { useDispatch, useSelector } from "react-redux";
-import LeftBar from '../../components/leftbar/LeftBar';
-import SpeedDialButton from '../../components/speedDialBtn';
+import LeftBar from '../../components/Leftbar';
+import SpeedDialButton from '../../components/SpeedDialBtn';
 import { homeMenu } from '../../constant/menu';
 import { Link } from 'react-router-dom';
 import { Typography } from '@material-ui/core';
 import { getVolunteers } from "../../redux/callApi/volunteerCall";
-import { convertDateToStr} from '../../utils/date';
+import { convertDateToStr } from '../../utils/date';
 
 export default function Volunteer() {
 
@@ -22,7 +22,7 @@ export default function Volunteer() {
     }, [])
 
     const { volunteer } = useSelector(state => state);
-   
+
 
     return (
         <Grid container style={{ margin: 0, padding: 0 }}>
@@ -33,7 +33,7 @@ export default function Volunteer() {
             <Grid item md={9} sm={10} xs={10}>
                 <div class="cards">
                     {
-                        volunteer.volunteers.map(item =>(
+                        volunteer.volunteers.map(item => (
                             <div class="card" component={Link} to={`/volunteer/${item._id}`}>
                                 <img
                                     src={item.image}
@@ -62,10 +62,10 @@ export default function Volunteer() {
                                             <li class="card-bottom_info_li">
                                                 Thời gian: {convertDateToStr(item.date[0].date)}
                                             </li>
-                                            <li  class="card-bottom_info_li">
+                                            <li class="card-bottom_info_li">
                                                 Địa điểm xuất phát: {item.location[0].location.fullname}
                                             </li>
-                                            <li  class="card-bottom_info_li">
+                                            <li class="card-bottom_info_li">
                                                 Thể loại: Giáo dục
                                             </li>
                                         </ul>

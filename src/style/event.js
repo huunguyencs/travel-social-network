@@ -91,7 +91,7 @@ const eventStyles = makeStyles((theme) => ({
         fontSize: "40px",
         marginRight: "10px",
         color: color.black
-    }
+    },
 }))
 
 

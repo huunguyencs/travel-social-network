@@ -4,8 +4,8 @@ import { Autocomplete } from '@material-ui/lab';
 import React, { useState } from 'react';
 import { useSelector } from 'react-redux';
 import { addServiceStyles } from '../../style';
-import AddImageHorizontal from '../input/addImageHorizontal';
-import MapPicker from '../input/mapPicker';
+import AddImageHorizontal from '../Input/AddImageHorizontal';
+import MapPicker from '../Input/MapPicker';
 
 
 function Item(props) {

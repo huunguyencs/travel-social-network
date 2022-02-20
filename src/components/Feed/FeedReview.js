@@ -1,11 +1,11 @@
 import React, { useState } from "react";
 import { Backdrop, Button, CircularProgress, Container, Fade, InputBase, Modal, Typography } from "@material-ui/core";
 
-import Post from '../post/Post';
+import Post from '../Post';
 import { feedStyles } from "../../style";
 import { useDispatch, useSelector } from "react-redux";
 import { getPostsLocation } from "../../redux/callApi/postCall";
-import CreateReview from '../forms/createReview'
+import CreateReview from '../Forms/CreateReview'
 
 
 export default function FeedReview(props) {

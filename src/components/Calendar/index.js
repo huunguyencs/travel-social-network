@@ -1,43 +1,45 @@
 import React, { useEffect, useState } from 'react'
-import { Backdrop, Button, Modal, Paper, Typography } from '@material-ui/core';
+import { Backdrop, Button, Card, Modal, Paper, Typography } from '@material-ui/core';
 
-import * as utils from './utils';
-import './style.css';
+import * as utils from '../../utils/calendar';
 import calendarStyles from '../../style/calendar';
 
 
 function Cell({ lunarDate, solarDate, solarMonth, solarYear, setContent, setDetail }) {
-    var cellClass = "ngaythang",
-        solarClass = "t2t6",
-        lunarClass = "am",
+
+    const classes = calendarStyles();
+
+    var cellClass = classes.ngaythang,
+        solarClass = classes.t2t6,
+        lunarClass = classes.am,
         title = '',
         tmp = '',
         dow = (lunarDate.jd + 1) % 7;
     if (dow === 0) {
-        solarClass = "cn";
+        solarClass = classes.cn;
     } else if (dow === 6) {
-        solarClass = "t7";
+        solarClass = classes.t7;
     }
     var today = new Date();
     if (solarDate === today.getDate() && solarMonth === today.getMonth() + 1 && solarYear === today.getFullYear()) {
-        cellClass = "homnay";
+        cellClass = classes.today;
     }
     tmp = utils.checkHolidayLunar(lunarDate.day, lunarDate.month);
     if (tmp !== '') {
-        cellClass = 'leam';
+        cellClass = classes.leam;
         title = tmp;
     }
     tmp = utils.checkHolidaySolar(solarDate, solarMonth);
     if (tmp !== '') {
-        cellClass = 'leduong';
+        cellClass = classes.leduong;
         title = (title === '' ? tmp : title + ', ' + tmp);
     }
     title = (title === '' ? utils.getDayName(lunarDate) : title);
     if (lunarDate.day === 1 && lunarDate.month === 1) {
-        cellClass = "tet";
+        cellClass = classes.tet;
     }
     if (lunarDate.leap === 1) {
-        lunarClass = "am2";
+        lunarClass = classes.am2;
     }
     var lunar = lunarDate.day;
     if (solarDate === 1 || lunar === 1) {
@@ -73,6 +75,7 @@ function Cell({ lunarDate, solarDate, solarMonth, solarYear, setContent, setDeta
 function PrevMonthLink({ month, year, setMonth, setYear }) {
     var mm = month > 1 ? month - 1 : 12;
     var yy = month > 1 ? year : year - 1;
+    const classes = calendarStyles();
 
     const handleClick = () => {
         setMonth(mm);
@@ -80,7 +83,7 @@ function PrevMonthLink({ month, year, setMonth, setYear }) {
     }
 
     return (
-        <span className="prev-month" onClick={handleClick}>&nbsp;&lsaquo;&nbsp;</span>
+        <span className={classes.buttonControl} onClick={handleClick}>&nbsp;&lsaquo;&nbsp;</span>
     )
 }
 
@@ -89,8 +92,9 @@ function PrevYearLink({ year, setYear }) {
     const handleClick = () => {
         setYear(year - 1);
     }
+    const classes = calendarStyles();
 
-    return <span className="prev-year" onClick={handleClick}>&lsaquo;&lsaquo;</span>;
+    return <span className={classes.buttonControl} onClick={handleClick}>&lsaquo;&lsaquo;</span>;
 }
 
 function NextMonthLink({ month, year, setMonth, setYear }) {
@@ -102,7 +106,9 @@ function NextMonthLink({ month, year, setMonth, setYear }) {
         setYear(yy);
     }
 
-    return <span className="next-month" onClick={handleClick}>&nbsp;&rsaquo;&nbsp;</span>
+    const classes = calendarStyles();
+
+    return <span className={classes.buttonControl} onClick={handleClick}>&nbsp;&rsaquo;&nbsp;</span>
 }
 
 function NextYearLink({ year, setYear }) {
@@ -111,31 +117,41 @@ function NextYearLink({ year, setYear }) {
         setYear(year + 1);
     }
 
-    return <span className="next-year" onClick={handleClick}>&rsaquo;&rsaquo;</span>
+    const classes = calendarStyles();
+
+    return <span className={classes.buttonControl} onClick={handleClick}>&rsaquo;&rsaquo;</span>
 }
 
 function Head({ month, year, setMonth, setYear }) {
 
+    const classes = calendarStyles();
+
     return (
         <>
-            <tr>
-                <td colSpan="2" className="navi-l">
+            <tr className={classes.header}>
+                <td colSpan="2" className={classes.navi}>
                     <PrevYearLink year={year} setYear={setYear} />
                     <PrevMonthLink month={month} year={year} setMonth={setMonth} setYear={setYear} />
                 </td>
-                <td colSpan="3" className="tenthang">
-                    {month + "/" + year}
+                <td colSpan="3" className={classes.tenthang}>
+                    {"Tháng " + month + " " + year}
                 </td>
-                <td colSpan="2" className="navi-r">
+                <td colSpan="2" className={classes.navi}>
                     <NextMonthLink month={month} year={year} setMonth={setMonth} setYear={setYear} />
                     <NextYearLink year={year} setYear={setYear} />
                 </td>
             </tr>
+            <tr>
+                <td style={{ height: "20px" }}></td>
+            </tr>
             {/* {utils.LOOP7.map((i) => <col width="50px" key={i} />)} */}
             <tr>
                 {utils.LOOP7.map((i) => (
-                    <td className="ngaytuan" key={i}>{utils.DAYNAMES[i]}</td>
+                    <td className={classes.ngaytuan} key={i}>{utils.DAYNAMES[i]}</td>
                 ))}
+            </tr>
+            <tr>
+                <td style={{ height: "5px" }}></td>
             </tr>
         </>
     )
@@ -198,6 +214,8 @@ function ShowDetail({ content, setDetail, setContent }) {
 
 function Table({ setContent, setDetail }) {
 
+    const classes = calendarStyles();
+
     const today = new Date();
     const [month, setMonth] = useState(today.getMonth() + 1);
     const [year, setYear] = useState(today.getFullYear());
@@ -220,11 +238,11 @@ function Table({ setContent, setDetail }) {
     }, [setCurrentMonth, setEmptyCells, month, year])
 
     return (
-        <>
+        <Card className={classes.tableCard}>
             {currentMonth && currentMonth.length !== 0 &&
-                <table className="amlich" border="0" cellPadding="0" cellSpacing="0" width="100px">
+                <table className={classes.amlich} border="0" cellPadding="0" cellSpacing="0" width="100px">
                     <colgroup>
-                        {utils.LOOP7.map((i) => <col width="50px" key={i} />)}
+                        {utils.LOOP7.map((i) => <col className={classes.colWidth} key={i} />)}
                     </colgroup>
                     <tbody>
                         <Head month={month} year={year} setMonth={setMonth} setYear={setYear} />
@@ -234,9 +252,9 @@ function Table({ setContent, setDetail }) {
                                     k = 7 * i + j;
                                     if (k < emptyCells || k >= emptyCells + currentMonth.length) {
                                         return (
-                                            <td className="ngaythang" key={i + '' + j}>
-                                                <div className="cn">&nbsp;</div>
-                                                <div className="am">&nbsp;</div>
+                                            <td className={classes.ngaythang} key={i + '' + j}>
+                                                <div className={classes.cn}>&nbsp;</div>
+                                                <div className={classes.am}>&nbsp;</div>
                                             </td>
                                         )
                                     }
@@ -261,7 +279,7 @@ function Table({ setContent, setDetail }) {
                     </tbody>
                 </table>
             }
-        </>
+        </Card>
     )
 }
 

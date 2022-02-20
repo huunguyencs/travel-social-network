@@ -2,7 +2,7 @@ import { Box, CircularProgress, Container, List, Typography } from "@material-ui
 import React, { useEffect, useState } from "react";
 import { useSelector } from "react-redux";
 
-import NotificationItem from "../components/notifications/notification";
+import NotificationItem from "../components/Notifications";
 import { notificationStyles } from "../style";
 import customAxios from "../utils/fetchData";
 

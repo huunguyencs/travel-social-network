@@ -38,9 +38,12 @@ export default function RatingChart(props) {
                 </div>
                 <div className={classes.chart}>
                     {star?.map((item, index) => (
-                        <Box display="flex" alignItems="center" key={index}>
-                            <Box className={classes.rateLabel}><Typography>{index + 1}</Typography></Box>
-                            <Box width="80%" mr={1}><LinearProgress variant="determinate" value={totalRate !== 0 ? (item * 100 / totalRate) : 0} className={classes.line} /></Box>
+                        <Box key={index}>
+                            <div style={{ display: 'flex', justifyContent: 'center' }}>
+                                <Box className={classes.rateLabel}><Typography>{index + 1}</Typography></Box>
+                                <Box width="100%" mr={1}><LinearProgress variant="determinate" value={totalRate !== 0 ? (item * 100 / totalRate) : 0} className={classes.line} /></Box>
+                            </div>
+
                         </Box>
                     ))}
                 </div>

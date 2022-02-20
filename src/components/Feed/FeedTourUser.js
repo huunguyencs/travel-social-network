@@ -1,7 +1,7 @@
 import React from "react";
 import { Button, CircularProgress, Typography } from "@material-ui/core";
 
-import Tour from "../tour/Tour";
+import Tour from "../Tour";
 import { feedStyles } from "../../style";
 import { useSelector, useDispatch } from "react-redux";
 import { getUserTour } from "../../redux/callApi/tourCall"

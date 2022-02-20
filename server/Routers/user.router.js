@@ -19,6 +19,8 @@ router.get("/get_all", auth, UserController.getAll)
 router.post("/confirm_account", auth, UserController.confirmAccount)
 router.get('/get_friend_recommend', auth, UserController.getFriendRecommend)
 router.get('/search', UserController.searchUsers);
+router.get('/get_tour_saved', auth, UserController.getTourSaved)
+
 // lấy thông tin một user
 router.get("/:id", UserController.getUser);
 
@@ -26,6 +28,8 @@ router.put('/:id/follow', auth, UserController.follow); //id là id của ngư�
 router.put('/:id/unfollow', auth, UserController.unfollow); // id là id của người mình unfollow
 
 router.put('/save_tour', auth, UserController.saveTour);
+router.put('/unsaved_tour', auth, UserController.unsaveTour);
+
 
 
 

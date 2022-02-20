@@ -1,20 +1,20 @@
 import { Grid } from "@material-ui/core";
 import React, { createRef, useEffect, useState } from "react";
-
-import LeftBar from "../../../components/leftbar/LeftBar";
-import RightBar from "../../../components/rightbar/RightBar";
-import Scroll from "../../../components/scroll";
-import ProfileAvatar from "../../../components/Profile/avatar";
-import { profileMenu, serviceMenu } from "../../../constant/menu";
-import SpeedDialButton from "../../../components/speedDialBtn";
 import { useParams } from "react-router-dom";
-import Calendar from "../../../components/calendar";
-import FriendRecommendCard from "../../../components/card/FriendRecommend";
 import { useDispatch, useSelector } from "react-redux";
+
+import LeftBar from "../../../components/Leftbar";
+import RightBar from "../../../components/Rightbar";
+import Scroll from "../../../components/Scroll";
+import ProfileAvatar from "../../../components/Profile/Avatar";
+import { profileMenu, serviceMenu } from "../../../constant/menu";
+import SpeedDialButton from "../../../components/SpeedDialBtn";
+import Calendar from "../../../components/Calendar";
+import FriendRecommendCard from "../../../components/Card/FriendRecommend";
 import { getUser } from "../../../redux/callApi/userCall";
 import { NotFound } from "../../404";
 import useStyles from "../../../style";
-import ServiceList from "../../../components/service/ServiceList";
+import ServiceList from "../../../components/Service/ServiceList";
 
 
 

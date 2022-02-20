@@ -1,13 +1,13 @@
 import React, { useEffect, useState } from "react";
 import { useLocation, useParams } from "react-router-dom";
 import { Button, CircularProgress, Typography } from '@material-ui/core';
+import { useDispatch, useSelector } from "react-redux";
 
-import Tour from "../../components/tour/TourDetail";
+import Tour from "../../components/Tour/TourDetail";
 import customAxios from "../../utils/fetchData";
 import { NotFound } from "../404";
-import { useDispatch, useSelector } from "react-redux";
 import { loadTour } from "../../redux/actions/createTourAction";
-import AddTour from "../../components/tour/AddTour";
+import AddTour from "../../components/Tour/AddTour";
 import { sortTourDate } from "../../utils/utils";
 
 export default function TourDetail(props) {
@@ -107,7 +107,7 @@ export default function TourDetail(props) {
                                 </>
                             </div> :
 
-                            tour && (edit === 'true' && isOwn ? <AddTour isUpdate={true} /> : <Tour tour={tour} isOwn={isOwn} />)
+                            tour && (edit === 'true' && isOwn ? <AddTour isUpdate={true} /> : <Tour tour={tour} setTour={setTour} isOwn={isOwn} />)
             }
         </>
     )

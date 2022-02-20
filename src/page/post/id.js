@@ -1,10 +1,10 @@
 import React, { useEffect, useState } from 'react'
 import { useParams } from 'react-router-dom'
 import { CircularProgress, Container, Typography } from '@material-ui/core';
-
-import Post from '../../components/post/Post';
-import { NotFound } from '../404';
 import { useDispatch, useSelector } from 'react-redux';
+
+import Post from '../../components/Post';
+import { NotFound } from '../404';
 import { getPostById } from '../../redux/callApi/postCall';
 import { postStyles } from '../../style';
 
@@ -41,7 +41,6 @@ export default function PostDetail() {
 
     return (
         <>
-
             {
                 notFound ? <NotFound /> :
                     <div>

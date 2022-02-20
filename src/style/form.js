@@ -27,7 +27,8 @@ const formStyles = makeStyles((theme) => ({
         backgroundColor: color.turquoise,
         padding: 10,
         paddingInline: 20,
-        marginBlock: 20,
+        marginBlock: 15,
+        borderRadius: attr.borderRadius.md,
         [theme.breakpoints.down("sm")]: {
             padding: 5,
             paddingInline: 10,

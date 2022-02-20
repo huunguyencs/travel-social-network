@@ -39,7 +39,10 @@ const serviceStyles = makeStyles((theme) => ({
         justifyContent: "space-between",
         flexDirection: "column",
         height: "100%",
-        backgroundColor: color.cloud
+        backgroundColor: color.cloud,
+        [theme.breakpoints.down("sm")]: {
+            width: "100%"
+        }
     },
     reviewItemContainer: {
         margin: 20,
@@ -98,6 +101,14 @@ const serviceStyles = makeStyles((theme) => ({
     },
     detailDes: {
         marginInline: 30
+    },
+    closeButton: {
+
+        display: 'none',
+        [theme.breakpoints.down("sm")]: {
+            display: 'flex',
+            justifyContent: 'right',
+        }
     }
 }))
 

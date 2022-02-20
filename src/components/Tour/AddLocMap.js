@@ -158,10 +158,12 @@ export default function AddLocMap(props) {
                     }}
                         indexDate={indexDate}
                     />
-                ))
-                    : provinces && provinces.map((item) => (
-                        <Province onClick={() => setProvince(item)} province={item} key={item._id} lat={item.position.lat} lng={item.position.lon} />
-                    ))
+                )) :
+                    <>
+                        {provinces && provinces.map((item) => (
+                            <Province onClick={() => setProvince(item)} province={item} key={item._id} lat={item.position.lat} lng={item.position.lon} />
+                        ))}
+                    </>
                 }
             </GoogleMapReact>
         </div>

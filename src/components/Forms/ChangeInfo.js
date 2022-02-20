@@ -9,7 +9,7 @@ import { KeyboardDatePicker, MuiPickersUtilsProvider } from "@material-ui/picker
 import { useDispatch, useSelector } from "react-redux";
 import { profileStyles } from "../../style";
 import { changeInfo } from "../../redux/callApi/authCall";
-import ChangeImage from "./changeImage";
+import ChangeImage from "./ChangeImage";
 
 
 export default function ChangeInfo(props) {
@@ -212,7 +212,7 @@ export default function ChangeInfo(props) {
                             name="username"
                             className="form-input"
                             required
-                            error={errors?.username}
+                            error={Boolean(errors?.username)}
                             helperText={errors?.username}
                             onChange={handleInput}
                         />
@@ -223,7 +223,7 @@ export default function ChangeInfo(props) {
                             name="fullname"
                             className="form-input"
                             required
-                            error={errors?.fullname}
+                            error={Boolean(errors?.fullname)}
                             helperText={errors?.fullname}
                             onChange={handleInput}
                         />
@@ -234,7 +234,7 @@ export default function ChangeInfo(props) {
                             name="email"
                             className="form-input"
                             required
-                            error={errors?.email}
+                            error={Boolean(errors?.email)}
                             helperText={errors?.email}
                             onChange={handleInput}
                         />
@@ -244,7 +244,7 @@ export default function ChangeInfo(props) {
                             variant="outlined"
                             name="phone"
                             className="form-input"
-                            error={errors?.phone}
+                            error={Boolean(errors?.phone)}
                             helperText={errors?.phone}
                             onChange={handleInput}
                         />
@@ -261,7 +261,7 @@ export default function ChangeInfo(props) {
                                     'aria-label': 'change date',
                                 }}
                                 onChange={handleChangeDate}
-                                error={errors?.birthday}
+                                error={Boolean(errors?.birthday)}
                                 helperText={errors?.birthday}
                                 value={context.birthday}
                                 className={classes.inputfield}

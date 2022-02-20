@@ -30,6 +30,7 @@ class LocationController {
             const location = await Locations.findByIdAndUpdate(req.params.id, {
                 name, images, province, position, information
             }, { new: true })
+                .populate("province", "name fullname");
 
             res.json({ success: true, message: "update Location successful", location })
         } catch (err) {
@@ -121,7 +122,7 @@ class LocationController {
     async getAllLocations(req, res) {
         try {
             const locations = await Locations.find({}).select("fullname name province star")
-                .populate("province", "fullname name")
+                .populate("province", "fullname")
             res.json({
                 success: true,
                 message: "Lấy tất cả địa điểm thành công",

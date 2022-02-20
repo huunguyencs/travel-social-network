@@ -11,12 +11,15 @@ const color = {
     lightgray: "#DFE4EA",
     brightgreek: "#3742fa",
     darkgray: "#686868",
-    red: "#e74c3c",
+    red: "#f44336",
     darkred: "#c0392b",
     blue: "#2980b9",
     silver: "#bdc3c7",
     timeAgoGray: "#34495e",
-    cloud: "#ecf0f1"
+    cloud: "#ecf0f1",
+    success: "#4caf50",
+    primary: "#3f51b5",
+    warning: "#ff9800"
 };
 
 export default color;

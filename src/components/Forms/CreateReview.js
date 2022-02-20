@@ -18,7 +18,7 @@ export default function CreateReviewForm(props) {
     const dispatch = useDispatch();
     // const history = useHistory();
     const { auth, socket } = useSelector(state => state);
-    const { location, handleClose, tourDateId, indexLocation } = props;
+    const { location, handleClose, tourDateId, indexLocation, addReview } = props;
     const [state, setState] = useState({
         loading: false,
         error: '',
@@ -104,12 +104,16 @@ export default function CreateReviewForm(props) {
                 })
                 handleClose();
                 // history.push(`/location/${location.name}`);
+
             },
             () => {
                 setState({
                     loading: false,
                     error: true,
                 })
+            },
+            (id) => {
+                addReview(id, indexLocation, tourDateId);
             }
         ))
 

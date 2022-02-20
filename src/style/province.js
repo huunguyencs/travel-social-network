@@ -75,7 +75,8 @@ const provinceStyles = makeStyles((theme) => ({
         listStyleType: 'disc'
     },
     subsubtitleDes: {
-        marginLeft: 30
+        marginLeft: 30,
+        // whiteSpace: 'pre'
     },
     source: {
         display: 'flex',
@@ -90,7 +91,10 @@ const provinceStyles = makeStyles((theme) => ({
     },
     rightbar: {
         display: 'flex',
-        justifyContent: 'center'
+        justifyContent: 'center',
+        [theme.breakpoints.down("sm")]: {
+            display: 'none'
+        }
     }
 }))
 

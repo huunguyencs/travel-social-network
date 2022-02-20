@@ -4,13 +4,13 @@ import React, { useEffect, useState } from 'react'
 import { serviceStyles } from '../../style';
 import { getStar } from '../../utils/utils';
 import { SeeMoreText } from '../SeeMoreText';
-import ImageList from '../modal/ImageList';
+import ImageList from '../Modal/ImageList';
 import { getDetail, reviewService } from '../../redux/callApi/serviceCall';
 import { useDispatch, useSelector } from 'react-redux';
-import EmojiPicker from '../input/emojiPicker';
-import { Send } from '@material-ui/icons';
+import EmojiPicker from '../Input/EmojiPicker';
+import { Close, Send } from '@material-ui/icons';
 import { Link } from 'react-router-dom';
-import MapCard from '../card/MapCard';
+import MapCard from '../Card/MapCard';
 
 export function ReviewArea(props) {
     const { id } = props;
@@ -122,11 +122,16 @@ function ReviewService(props) {
 
 function ServiceDetail(props) {
 
-    const { service, state, getServiceDetail } = props;
+    const { service, state, getServiceDetail, handleClose } = props;
     const classes = serviceStyles();
 
     return (
         <div className={classes.reviewContainer}>
+            <div className={classes.closeButton}>
+                <IconButton onClick={handleClose(false)} size='small'>
+                    <Close />
+                </IconButton>
+            </div>
             <div className={classes.centerMarginTop}>
                 <Typography variant='h4'>{service.name}</Typography>
             </div>
@@ -251,7 +256,7 @@ export default function ServiceItem(props) {
         <>
             <Card className={classes.container} id={service._id}>
                 <CardMedia>
-                    <ImageList imageList={service.images} show2Image={false} />
+                    <ImageList imageList={service.images} show2Image={false} defaultHeight={500} />
                 </CardMedia>
                 <div>
                     <CardContent>
@@ -280,7 +285,7 @@ export default function ServiceItem(props) {
                 open={open}
                 onClose={toggleDrawer(false)}
             >
-                <ServiceDetail service={service} state={state} getServiceDetail={getServiceDetail} />
+                <ServiceDetail service={service} state={state} getServiceDetail={getServiceDetail} handleClose={toggleDrawer} />
             </Drawer>
         </>
     )

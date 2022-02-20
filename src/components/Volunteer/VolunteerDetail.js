@@ -23,8 +23,8 @@ export default function VolunteerDetail(props) {
                     <div style={{ marginTop: 80 }}>
                         <Typography className={classes.volunteerDetailTitle}>{volunteer.name}</Typography>
                         <Grid container>
-                            <Grid item md={7}>
-                                <ImageList imageList={[volunteer.image]} show2Image={true} />
+                            <Grid item md={5}>
+                                <ImageList imageList={[volunteer.image]} show2Image={false} defaultHeight={300} />
                             </Grid>
                             <Grid item md={5} style={{ margin: "0 auto", padding: 15 }}>
                                 <CardHeader

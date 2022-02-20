@@ -5,8 +5,8 @@ import { useHistory } from "react-router-dom";
 import { Fade, Modal, Backdrop } from "@material-ui/core";
 import { useSelector } from "react-redux";
 
-import CreatePostForm from "./forms/createPost";
-import CreateTourForm from "./forms/createTour";
+import CreatePostForm from "./Forms/CreatePost";
+import CreateTourForm from "./Forms/CreateTour";
 import { speedDialStyles } from "../style";
 
 const actions = [

@@ -3,9 +3,8 @@ import React, { useEffect } from "react";
 import { useSelector } from 'react-redux';
 import { useHistory } from 'react-router-dom'
 
-import Header from "../../components/header/Header";
-import Conversations from "../../components/message/conversations";
-import Chat from "../../components/message/chat";
+import Conversations from "../../components/Message/Conversations";
+import Chat from "../../components/Message/Chat";
 
 export default function Conversation(props) {
 
@@ -20,7 +19,6 @@ export default function Conversation(props) {
 
     return (
         <div>
-            <Header />
             {token &&
                 <Grid container style={{ margin: 0, padding: 0 }}>
                     <Conversations />

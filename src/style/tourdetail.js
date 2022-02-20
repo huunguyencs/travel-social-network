@@ -48,11 +48,16 @@ const tourdetailStyles = makeStyles((theme) => ({
         overflow: 'auto',
     },
     cardContainer: {
-        margin: 30,
+        marginTop: 30,
         borderRadius: attr.borderRadius.sm,
         [theme.breakpoints.down("md")]: {
+            marginInline: 3,
+        },
+        [theme.breakpoints.down("sm")]: {
+            marginInline: 40,
+        },
+        [theme.breakpoints.down("xs")]: {
             marginInline: 10,
-
         }
     },
     imgContainer: {
@@ -69,6 +74,10 @@ const tourdetailStyles = makeStyles((theme) => ({
     },
     contentContainer: {
         marginTop: 10,
+    },
+    locationContentContainer: {
+        display: 'flex',
+        justifyContent: 'space-between'
     },
     reviewBtn: {
         backgroundColor: "#ECCC68",
@@ -125,6 +134,7 @@ const tourdetailStyles = makeStyles((theme) => ({
         paddingInline: 10,
         backgroundColor: color.turquoise,
         margin: 10,
+        borderRadius: attr.borderRadius.md
     },
     likeIcon: {
         color: color.like,
@@ -146,11 +156,16 @@ const tourdetailStyles = makeStyles((theme) => ({
     addDay: {
         marginTop: 20,
         backgroundColor: color.turquoise,
+        borderRadius: attr.borderRadius.md,
+        paddingInline: 10,
         marginLeft: 20,
         textTransform: 'none',
         [theme.breakpoints.down("md")]: {
             marginLeft: 10,
         }
+    },
+    info: {
+        marginInline: 100
     },
     itemInfo: {
         marginTop: 10,
@@ -172,8 +187,8 @@ const tourdetailStyles = makeStyles((theme) => ({
         }
     },
     imageLocation: {
-        [theme.breakpoints.down("sm")]: {
-            display: "none",
+        [theme.breakpoints.down("xs")]: {
+            display: 'none',
         }
     },
     addHeader: {
@@ -213,7 +228,20 @@ const tourdetailStyles = makeStyles((theme) => ({
     editButton: {
         textTransform: 'none',
         backgroundColor: color.turquoise,
-        marginInline: 20
+        marginInline: 20,
+        borderRadius: attr.borderRadius.md,
+        paddingInline: 10,
+    },
+    removeButton: {
+        textTransform: 'none',
+        backgroundColor: color.red,
+        marginInline: 20,
+        borderRadius: attr.borderRadius.md,
+        paddingInline: 10,
+        color: color.white,
+        '&:hover': {
+            color: color.black
+        }
     },
     center: {
         display: 'flex',

@@ -12,23 +12,30 @@ export const checkImage = (file) => {
 }
 
 export const uploadImages = async (images) => {
-    let imageArr = [];
+    var imageArr = [];
     for (const image of images) {
-        const formData = new FormData();
-        formData.append("file", image);
-        formData.append("upload_preset", env.CLOUDINARY_UPLOAD_PRESET);
-
-        try {
-            const data = await fetch(env.CLOUDINARY_UPLOAD_URL, {
-                method: "POST",
-                body: formData
-            })
-            const res = await data.json();
-            imageArr.push(res.secure_url);
+        if (typeof image === 'string') {
+            imageArr.push(image);
         }
-        catch (err) {
+        else {
+            console.log(image);
+            const formData = new FormData();
+            formData.append("file", image);
+            formData.append("upload_preset", env.CLOUDINARY_UPLOAD_PRESET);
 
+            try {
+                const data = await fetch(env.CLOUDINARY_UPLOAD_URL, {
+                    method: "POST",
+                    body: formData
+                })
+                const res = await data.json();
+                imageArr.push(res.secure_url);
+            }
+            catch (err) {
+                console.log(err);
+            }
         }
+
     }
     return imageArr;
 }

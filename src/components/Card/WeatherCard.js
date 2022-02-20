@@ -4,7 +4,7 @@ import React, { useEffect, useState } from "react";
 import { cardStyles } from "../../style";
 import { weatherFocast } from "../../utils/weather";
 import { convertDateToStr } from "../../utils/date";
-import WeatherFocast from "../modal/weatherFocast";
+import WeatherFocast from "../Modal/WeatherFocast";
 import { getTime } from "../../utils/date";
 
 const convertToVN = (main) => {

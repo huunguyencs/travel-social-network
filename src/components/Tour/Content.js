@@ -3,16 +3,16 @@ import { Bookmark, BookmarkBorder, MoreVert } from '@material-ui/icons'
 import React, { useEffect, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { Link } from 'react-router-dom'
-import { saveTour } from '../../redux/callApi/authCall'
+import { saveTour, unsavedTour } from '../../redux/callApi/authCall'
 import { deleteTour, joinTour, unJoinTour } from '../../redux/callApi/tourCall'
 
 
 import { postStyles } from '../../style'
 import { convertDateToStr, timeAgo } from '../../utils/date'
-import ShareUpdateForm from '../forms/updateShare'
-import ImageModal from '../modal/image'
-import ManageUserJoin from '../modal/manageUserJoin'
-import UserList from '../modal/userList'
+import ShareUpdateForm from '../Forms/UpdateShare'
+import ImageModal from '../Modal/Image'
+import ManageUserJoin from '../Modal/ManageUserJoin'
+import UserList from '../Modal/UserList'
 import { SeeMoreText } from '../SeeMoreText'
 
 function ShareContent({ tour }) {
@@ -336,6 +336,11 @@ function BaseContent(props) {
         handleCloseMenu();
     }
 
+    const handleUnSaveTour = () => {
+        dispatch(unsavedTour(tour._id, auth.token));
+        handleCloseMenu();
+    }
+
     const [open, setOpen] = useState(false);
     return (
         <>
@@ -359,11 +364,10 @@ function BaseContent(props) {
                             >
                                 <ClickAwayListener onClickAway={handleCloseMenu}>
                                     <Paper>
-                                        <MenuList>
+                                        <>
                                             {
                                                 auth.user && auth.user._id === tour.userId._id && !share ?
-
-                                                    <>
+                                                    <MenuList>
                                                         <MenuItem component={Link} to={`/tour/${tour._id}?edit=true`}>Chỉnh sửa hành trình</MenuItem>
                                                         <MenuItem onClick={handleShowDelete}>Xóa hành trình</MenuItem>
                                                         <Dialog
@@ -385,26 +389,31 @@ function BaseContent(props) {
                                                                 </Button>
                                                             </DialogActions>
                                                         </Dialog>
-                                                    </> :
+                                                    </MenuList> :
                                                     <>
                                                         {
                                                             isSaved() ?
-                                                                <MenuItem>
-                                                                    <Bookmark fontSize="small" />
-                                                                    Hành trình đã lưu
-                                                                </MenuItem>
+                                                                <MenuList>
+                                                                    <MenuItem onClick={handleUnSaveTour}>
+                                                                        <Bookmark fontSize="small" />
+                                                                        Hành trình đã lưu
+                                                                    </MenuItem>
+                                                                </MenuList>
                                                                 :
-                                                                <MenuItem onClick={handleSaveTour}>
-                                                                    <BookmarkBorder fontSize="small" />
-                                                                    Lưu hành trình
-                                                                </MenuItem>
+                                                                <MenuList>
+                                                                    <MenuItem onClick={handleSaveTour}>
+                                                                        <BookmarkBorder fontSize="small" />
+                                                                        Lưu hành trình
+                                                                    </MenuItem>
+                                                                </MenuList>
+
                                                         }
 
                                                     </>
                                             }
 
+                                        </>
 
-                                        </MenuList>
                                     </Paper>
                                 </ClickAwayListener>
                             </Grow>

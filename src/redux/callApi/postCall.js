@@ -104,7 +104,7 @@ export const getPostById = (id, next) => async (dispatch) => {
 
 }
 
-export const createPost = (data, token, type, socket, next, error) => async (dispatch) => {
+export const createPost = (data, token, type, socket, next, error, createReview) => async (dispatch) => {
     // console.log("go?")
     // post api
     try {
@@ -140,6 +140,11 @@ export const createPost = (data, token, type, socket, next, error) => async (dis
             url: `/post/${res.data.newPost._id}`,
         }
         dispatch(createNotify(dataNotify, token, socket));
+
+        if (type === "review") {
+            dispatch(alertAction.success({ message: "Tạo review thành công!" }));
+            createReview(res.data.newPost._id);
+        }
 
         next();
     }

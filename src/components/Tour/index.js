@@ -16,15 +16,15 @@ import {
 import { useDispatch, useSelector } from "react-redux";
 
 
-import Comment from "../comment/Comment";
+import Comment from "../Comment";
 import { postStyles } from "../../style";
-import InputComment from "../input/comment";
-import UserList from "../modal/userList";
+import InputComment from "../Input/Comment";
+import UserList from "../Modal/UserList";
 
-import SharePost from "../forms/share";
-import TourContent from "./content";
+import SharePost from "../Forms/Share";
+import TourContent from "./Content";
 import { likeTour, unlikeTour } from "../../redux/callApi/tourCall";
-import LoginModal from "../modal/login";
+import LoginModal from "../Modal/Login";
 
 
 export default function Tour(props) {
@@ -111,7 +111,10 @@ export default function Tour(props) {
         }
 
 
-    }, [tour, auth.user])
+    }, [tour, auth.user]);
+
+
+
 
     const handleCloseLogin = () => {
         setLogin(false);
@@ -132,78 +135,80 @@ export default function Tour(props) {
 
     return (
         <Card className={classes.cardContainer}>
-            {tour && <>
-                <TourContent tour={tour} setTour={setTour} />
+            <>
+                {tour && <>
+                    <TourContent tour={tour} setTour={setTour} />
 
-                <CardActions>
-                    {
-                        like ? <Favorite className={classes.likedIcon} onClick={likePress} /> : <FavoriteBorderOutlined className={classes.iconButton} onClick={likePress} />
-                    }
-                    <Modal
-                        aria-labelledby="login"
-                        aria-describedby="must-login"
-                        className={classes.modal}
-                        open={login}
-                        onClose={handleCloseLogin}
-                        closeAfterTransition
-                        BackdropComponent={Backdrop}
-                        BackdropProps={{
-                            timeout: 500,
-                        }}
-                    >
-                        <LoginModal />
-                    </Modal>
+                    <CardActions>
+                        {
+                            like ? <Favorite className={classes.likedIcon} onClick={likePress} /> : <FavoriteBorderOutlined className={classes.iconButton} onClick={likePress} />
+                        }
+                        <Modal
+                            aria-labelledby="login"
+                            aria-describedby="must-login"
+                            className={classes.modal}
+                            open={login}
+                            onClose={handleCloseLogin}
+                            closeAfterTransition
+                            BackdropComponent={Backdrop}
+                            BackdropProps={{
+                                timeout: 500,
+                            }}
+                        >
+                            <LoginModal />
+                        </Modal>
 
-                    <Typography className={classes.numLike} onClick={handleOpen}>
-                        {tour?.likes.length}
-                    </Typography>
-                    <Modal
-                        aria-labelledby="like"
-                        aria-describedby="user-like-this-tour"
-                        className={classes.modal}
-                        open={showLike}
-                        onClose={handleClose}
-                        closeAfterTransition
-                        BackdropComponent={Backdrop}
-                        BackdropProps={{
-                            timeout: 500,
-                        }}
-                    >
-                        <UserList listUser={tour.likes} title={"Đã thích"} handleClose={handleClose} />
-                    </Modal>
-                    <QuestionAnswer onClick={handleCommentPress} className={classes.iconButton} />
-                    <Typography className={classes.numCmt}>
-                        {tour.comments.length}
-                    </Typography>
-                    <Share onClick={handleShowShare} className={classes.iconButton} />
-                    <Modal
-                        aria-labelledby="share"
-                        aria-describedby="share-this-tour"
-                        className={classes.modal}
-                        open={share}
-                        onClose={handleCloseShare}
-                        closeAfterTransition
-                        BackdropComponent={Backdrop}
-                        BackdropProps={{
-                            timeout: 500,
-                        }}
-                    >
-                        <SharePost object={tour.shareId ? tour.shareId : tour} type="tour" handleClose={handleCloseShare} />
-                    </Modal>
-                </CardActions>
+                        <Typography className={classes.numLike} onClick={handleOpen}>
+                            {tour?.likes.length}
+                        </Typography>
+                        <Modal
+                            aria-labelledby="like"
+                            aria-describedby="user-like-this-tour"
+                            className={classes.modal}
+                            open={showLike}
+                            onClose={handleClose}
+                            closeAfterTransition
+                            BackdropComponent={Backdrop}
+                            BackdropProps={{
+                                timeout: 500,
+                            }}
+                        >
+                            <UserList listUser={tour.likes} title={"Đã thích"} handleClose={handleClose} />
+                        </Modal>
+                        <QuestionAnswer onClick={handleCommentPress} className={classes.iconButton} />
+                        <Typography className={classes.numCmt}>
+                            {tour.comments.length}
+                        </Typography>
+                        <Share onClick={handleShowShare} className={classes.iconButton} />
+                        <Modal
+                            aria-labelledby="share"
+                            aria-describedby="share-this-tour"
+                            className={classes.modal}
+                            open={share}
+                            onClose={handleCloseShare}
+                            closeAfterTransition
+                            BackdropComponent={Backdrop}
+                            BackdropProps={{
+                                timeout: 500,
+                            }}
+                        >
+                            <SharePost object={tour.shareId ? tour.shareId : tour} type="tour" handleClose={handleCloseShare} />
+                        </Modal>
+                    </CardActions>
 
 
-                <Collapse className={classes.cmt} in={showCmt}>
-                    <hr className={classes.line} />
-                    <div className={classes.listCmt}>
-                        {tour.comments.map((cmt) => (
-                            <Comment comment={cmt} key={cmt._id} id={tour._id} type="tour" />
-                        ))}
-                    </div>
-                </Collapse>
+                    <Collapse className={classes.cmt} in={showCmt}>
+                        <hr className={classes.line} />
+                        <div className={classes.listCmt}>
+                            {tour.comments.map((cmt) => (
+                                <Comment comment={cmt} key={cmt._id} id={tour._id} type="tour" />
+                            ))}
+                        </div>
+                    </Collapse>
 
-                <InputComment type="tour" id={tour._id} />
-            </>}
+                    <InputComment type="tour" id={tour._id} />
+                </>}
+            </>
         </Card>
     )
 }

@@ -85,3 +85,10 @@ export const loadTour = (props) => {
         payload: props
     }
 }
+
+export const changeImage = (props) => {
+    return {
+        type: CREATE_TOUR_TYPES.CHANGE_IMAGE,
+        payload: props
+    }
+}

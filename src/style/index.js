@@ -30,25 +30,16 @@ import emojiPickerStyles from "./emojiPicker";
 import modalStyles from "./modal";
 import addServiceStyles from "./addservice";
 import volunteerDetailStyles from "./volunteerDetail";
+import authStyles from "./auth";
+import adminStyles from "./adminStyles";
 
 
 
 const useStyles = makeStyles((theme) => ({
-    leftbar: {
-        // [theme.breakpoints.down("md")]: {
-        //     maxWidth: "40%"
-        // },
-        // [theme.breakpoints.down("xs")]: {
-        //     maxWidth: "100%"
-        // }
-    },
-    content: {
-        // [theme.breakpoints.down("md")]: {
-        //     maxWidth: "70%"
-        // },
-        // [theme.breakpoints.down("xs")]: {
-        //     maxWidth: "100%"
-        // }
+    center: {
+        display: 'flex',
+        justifyContent: 'center',
+        marginTop: 200
     },
     rightbar: {
         marginTop: 20,
@@ -93,5 +84,7 @@ export {
     emojiPickerStyles,
     modalStyles,
     addServiceStyles,
-    volunteerDetailStyles
+    volunteerDetailStyles,
+    authStyles,
+    adminStyles,
 };

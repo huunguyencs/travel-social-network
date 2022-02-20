@@ -2,7 +2,7 @@ import { Backdrop, Button, Card, CardContent, CircularProgress, Fade, Link, Moda
 import React, { useEffect, useState } from "react";
 
 import { cardStyles } from "../../style";
-import CovidModal from "../modal/covid";
+import CovidModal from "../Modal/Covid";
 
 export default function CovidCard(props) {
 

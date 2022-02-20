@@ -13,6 +13,9 @@ const cardStyles = makeStyles((theme) => ({
     image: {
         height: 180,
     },
+    imageProvince: {
+        height: 220,
+    },
     locationName: {
         marginInline: 20,
         cursor: 'pointer',
@@ -40,7 +43,8 @@ const cardStyles = makeStyles((theme) => ({
     seeMore: {
         backgroundColor: color.turquoise,
         borderRadius: attr.borderRadius.md,
-        paddingInline: 20,
+        paddingInline: 10,
+        textTransform: 'none'
     },
     weatherCardContainer: {
         borderRadius: attr.borderRadius.md,
@@ -126,7 +130,7 @@ const cardStyles = makeStyles((theme) => ({
     },
     line: {
         maxWidth: "100%",
-        marginRight: 20,
+        // marginRight: 20,
         height: 15,
     },
     iconStar: {
@@ -219,6 +223,12 @@ const cardStyles = makeStyles((theme) => ({
     },
     addButton: {
         backgroundColor: color.turquoise
+    },
+    link: {
+        cursor: 'pointer',
+        "&:hover": {
+            textDecorationLine: 'underline'
+        }
     }
 }))
 
