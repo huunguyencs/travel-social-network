@@ -168,7 +168,7 @@ function ShareContent({ tour }) {
             </CardContent>
             <div className={classes.hashtagWrap}>
                 {tour.hashtags.map((item, index) =>
-                    <Typography className={classes.hashtag} key={index}>{item}</Typography>
+                    <Typography className={classes.hashtag} key={index}>#{item}</Typography>
                 )}
             </div>
             {tourShare ? <BaseContent tour={tourShare} setTour={setTourShare} share={true} /> : <Typography>Nội dung không còn tồn tại</Typography>}
@@ -498,7 +498,7 @@ function BaseContent(props) {
 
                 <div className={classes.hashtagWrap}>
                     {tour.hashtags.map((item, index) =>
-                        <Typography className={classes.hashtag} key={index}>{item}</Typography>
+                        <Typography className={classes.hashtag} key={index}>#{item}</Typography>
                     )}
                 </div>
 

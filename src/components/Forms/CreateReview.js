@@ -1,4 +1,4 @@
-import { InputBase, Typography, Button, Paper, IconButton, CircularProgress } from "@material-ui/core";
+import { InputBase, Typography, Button, Paper, IconButton, CircularProgress, Chip } from "@material-ui/core";
 import { Create, Image } from "@material-ui/icons";
 import { Rating } from "@material-ui/lab";
 import React, { useState } from "react";
@@ -26,7 +26,8 @@ export default function CreateReviewForm(props) {
 
 
     const [imageUpload, setImageUpload] = useState([]);
-    const [hashtags, setHashtags] = useState("")
+    const [hashtag, setHashtag] = useState("");
+    const [hashtagArr, setHashtagArr] = useState([]);
     const [rate, setRate] = useState(0);
     const [text, setText] = useState("");
 
@@ -84,7 +85,8 @@ export default function CreateReviewForm(props) {
             loading: true,
             error: false
         })
-        var ht = hashtagSplit(hashtags);
+        var ht = hashtagSplit(hashtag);
+        ht = [...hashtagArr, ...ht]
         dispatch(createPost({
             content: text,
             image: imageUpload,
@@ -122,6 +124,21 @@ export default function CreateReviewForm(props) {
 
     const classes = formStyles();
 
+    const addHashtag = (e) => {
+        e.preventDefault();
+        let arr = hashtagSplit(hashtag);
+        arr = [...hashtagArr, ...arr];
+        setHashtagArr(arr);
+        setHashtag('');
+        // console.log([...hashtagArr, ...arr]);
+    }
+
+    const removeHashtag = (index) => {
+        let temp = [...hashtagArr];
+        temp.splice(index, 1);
+        setHashtagArr(temp);
+    }
+
 
     return (
         <>
@@ -133,7 +150,7 @@ export default function CreateReviewForm(props) {
                             Tạo review {location.fullname}
                         </Typography>
                     </div>
-                    <form>
+                    <div>
                         <div className={classes.formContainer}>
                             <div className={classes.formCreateReview}>
                                 <Rating
@@ -153,16 +170,31 @@ export default function CreateReviewForm(props) {
                                     onChange={handleChange}
                                 />
                             </div>
-                            <div >
-                                <InputBase
-                                    placeholder="Hashtag (cách nhau bằng dấu cách). Vd: #bien #lehoi ..."
-                                    variant="outlined"
-                                    name="hashtags"
-                                    id="hashtags"
-                                    className={classes.hashtag}
-                                    value={hashtags}
-                                    onChange={(e) => setHashtags(e.target.value)}
-                                />
+                            <div>
+                                <div>
+                                    {hashtagArr.map((value, idx) => (
+                                        <Chip
+                                            label={'#' + value}
+                                            onDelete={() => removeHashtag(idx)}
+                                            key={idx}
+                                            style={{ marginInline: 5 }}
+                                        />
+                                    ))}
+                                </div>
+                                <form
+                                    onSubmit={addHashtag}
+                                >
+                                    <InputBase
+                                        placeholder="Hashtag"
+                                        title="Hashtag"
+                                        variant="outlined"
+                                        name="hashtag"
+                                        id="hashtag"
+                                        className={classes.hashtag}
+                                        value={hashtag}
+                                        onChange={e => setHashtag(e.target.value)}
+                                    />
+                                </form>
                             </div>
                             <div className={classes.formAction}>
                                 <div >
@@ -197,7 +229,7 @@ export default function CreateReviewForm(props) {
                                 </div>
                             </div>
                         </div>
-                    </form>
+                    </div>
                     <div className={classes.center}>
                         <span style={{ fontSize: "15px", color: "red", marginInline: "20px", marginTop: "10px" }}>{state.error}</span>
                     </div>

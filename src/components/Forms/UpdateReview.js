@@ -1,7 +1,7 @@
-import { InputBase, Typography, Button, Paper, IconButton, CircularProgress } from "@material-ui/core";
+import { InputBase, Typography, Button, Paper, IconButton, CircularProgress, Chip } from "@material-ui/core";
 import { Image, Update } from "@material-ui/icons";
 import { Rating } from "@material-ui/lab";
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import { ScrollMenu } from "react-horizontal-scrolling-menu";
 import { useDispatch, useSelector } from "react-redux";
 
@@ -15,7 +15,6 @@ import { checkImage } from "../../utils/uploadImage";
 
 export default function UpdateReviewForm(props) {
 
-    const [change, setChange] = useState(false);
     const dispatch = useDispatch();
     const { auth } = useSelector(state => state);
     const { review, handleClose } = props;
@@ -27,30 +26,17 @@ export default function UpdateReviewForm(props) {
 
     const [imageUpload, setImageUpload] = useState(review.images);
 
-    const [hashtags, setHashtags] = useState("");
-    const [rate, setRate] = useState(0);
+    const [hashtag, setHashtag] = useState("");
+    const [hashtagArr, setHashtagArr] = useState(review.hashtags);
+    const [rate, setRate] = useState(review.rate);
     const [text, setText] = useState(review.content)
 
-    useEffect(() => {
-        if (review) {
-            setHashtags(review.hashtags.join(" "))
-            setRate(review.rate);
-            setText(review.content);
-        }
-    }, [setHashtags, setRate, setText, review])
-
-    const handleChangeHashtags = e => {
-        if (!change) setChange(true);
-        setHashtags(e.target.value)
-    }
-
     const handleChangeRate = e => {
-        if (!change) setChange(true);
         setRate(e.target.value)
     }
 
     const handleChange = e => {
-        if (!change) setChange(true);
+
         setText(e.target.value);
     }
 
@@ -60,7 +46,6 @@ export default function UpdateReviewForm(props) {
     }
 
     const handleChangeImageUpload = (e) => {
-        if (!change) setChange(true);
         let error = "";
         for (const file of e.target.files) {
             const check = checkImage(file);
@@ -85,7 +70,6 @@ export default function UpdateReviewForm(props) {
     }
 
     const removeImage = (index) => {
-        if (!change) setChange(true);
         setImageUpload(oldImage => [
             ...oldImage.slice(0, index),
             ...oldImage.slice(index + 1)
@@ -95,10 +79,6 @@ export default function UpdateReviewForm(props) {
     const handleSubmit = (e) => {
         e.preventDefault();
 
-        if (!change) {
-            handleClose();
-            return;
-        }
         if (!rate || rate === 0) {
             setState({
                 loading: false,
@@ -110,7 +90,8 @@ export default function UpdateReviewForm(props) {
             loading: true,
             error: ''
         })
-        var ht = hashtagSplit(hashtags);
+        var ht = hashtagSplit(hashtag);
+        ht = [...hashtagArr, ...ht];
         dispatch(updatePost({
             id: review._id,
             content: text,
@@ -141,7 +122,20 @@ export default function UpdateReviewForm(props) {
 
     const classes = formStyles();
 
+    const addHashtag = (e) => {
+        e.preventDefault();
+        let arr = hashtagSplit(hashtag);
+        arr = [...hashtagArr, ...arr];
+        setHashtagArr(arr);
+        setHashtag('');
+        // console.log([...hashtagArr, ...arr]);
+    }
 
+    const removeHashtag = (index) => {
+        let temp = [...hashtagArr];
+        temp.splice(index, 1);
+        setHashtagArr(temp);
+    }
 
     return (
         <>
@@ -173,16 +167,31 @@ export default function UpdateReviewForm(props) {
                                     onChange={handleChange}
                                 />
                             </div>
-                            <div >
-                                <InputBase
-                                    placeholder="Hashtag (cách nhau bằng dấu cách). Vd: #bien #lehoi ..."
-                                    variant="outlined"
-                                    name="hashtags"
-                                    id="hashtags"
-                                    className={classes.hashtag}
-                                    value={hashtags}
-                                    onChange={handleChangeHashtags}
-                                />
+                            <div>
+                                <div>
+                                    {hashtagArr.map((value, idx) => (
+                                        <Chip
+                                            label={'#' + value}
+                                            onDelete={() => removeHashtag(idx)}
+                                            key={idx}
+                                            style={{ marginInline: 5 }}
+                                        />
+                                    ))}
+                                </div>
+                                <form
+                                    onSubmit={addHashtag}
+                                >
+                                    <InputBase
+                                        placeholder="Hashtag"
+                                        title="Hashtag"
+                                        variant="outlined"
+                                        name="hashtag"
+                                        id="hashtag"
+                                        className={classes.hashtag}
+                                        value={hashtag}
+                                        onChange={e => setHashtag(e.target.value)}
+                                    />
+                                </form>
                             </div>
                             <div className={classes.formAction}>
                                 <div >

@@ -185,7 +185,7 @@ function ShareContent({ post }) {
                 />
                 <div className={classes.hashtagWrap}>
                     {post.hashtags.map((item, index) =>
-                        <Typography className={classes.hashtag} key={index}>{item}</Typography>
+                        <Typography className={classes.hashtag} key={index}>#{item}</Typography>
                     )}
                 </div>
                 <Box>
@@ -221,7 +221,7 @@ function BaseContent(props) {
                 />
                 <div className={classes.hashtagWrap}>
                     {post.hashtags.map((item, index) =>
-                        <Typography className={classes.hashtag} key={index}>{item}</Typography>
+                        <Typography className={classes.hashtag} key={index}>#{item}</Typography>
                     )}
                 </div>
             </CardContent>

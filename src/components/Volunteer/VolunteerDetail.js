@@ -16,7 +16,7 @@ export default function VolunteerDetail(props) {
     const classes = volunteerDetailStyles();
 
     const { volunteer } = props;
-    console.log("data", volunteer)
+    // console.log("data", volunteer)
     return (
         <>
             {

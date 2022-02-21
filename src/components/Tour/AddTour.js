@@ -228,7 +228,7 @@ export default function AddTour(props) {
                                 </div>
                                 <div className={classes.hashtagWrap}>
                                     {createTour.hashtags.map((hashtag, index) => (
-                                        <Typography className={classes.hashtag} key={index}>{hashtag}</Typography>
+                                        <Typography className={classes.hashtag} key={index}>#{hashtag}</Typography>
                                     ))}
                                 </div>
                                 <div className={classes.itemInfo}>

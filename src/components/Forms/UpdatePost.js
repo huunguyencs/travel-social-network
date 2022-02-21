@@ -1,4 +1,4 @@
-import { InputBase, Typography, Button, Paper, IconButton, CircularProgress } from "@material-ui/core";
+import { InputBase, Typography, Button, Paper, IconButton, CircularProgress, Chip } from "@material-ui/core";
 import { Image, Update } from "@material-ui/icons";
 import React, { useState } from "react";
 import { ScrollMenu } from 'react-horizontal-scrolling-menu';
@@ -12,7 +12,6 @@ import LoginModal from "../Modal/Login";
 
 export default function UpdatePostForm(props) {
 
-    const [change, setChange] = useState(false);
     const { post, handleClose } = props;
     const dispatch = useDispatch();
     const [state, setState] = useState({
@@ -25,15 +24,14 @@ export default function UpdatePostForm(props) {
     const [imageUpload, setImageUpload] = useState(post.images);
 
     const [text, setText] = useState(post.content);
-    const [hashtag, setHashtag] = useState(post.hashtags.join(" "));
+    const [hashtag, setHashtag] = useState("");
+    const [hashtagArr, setHashtagArr] = useState(post.hashtags);
 
     const handleChange = e => {
-        if (!change) setChange(true);
         setText(e.target.value);
     }
 
     const handleChangeImageUpload = (e) => {
-        if (!change) setChange(true);
         let error = "";
         for (const file of e.target.files) {
             const check = checkImage(file);
@@ -58,7 +56,6 @@ export default function UpdatePostForm(props) {
     }
 
     const removeImage = (index) => {
-        if (!change) setChange(true);
         setImageUpload(oldImage => [
             ...oldImage.slice(0, index),
             ...oldImage.slice(index + 1)
@@ -72,11 +69,8 @@ export default function UpdatePostForm(props) {
 
     const handleSubmit = (e) => {
         e.preventDefault();
-        if (!change) {
-            handleClose();
-            return;
-        }
         var ht = hashtagSplit(hashtag);
+        ht = [...hashtagArr, ...ht];
         if (text !== '' || imageUpload.length > 0 || ht.length > 0) {
             setState({
                 loading: true,
@@ -98,18 +92,33 @@ export default function UpdatePostForm(props) {
         }
     }
 
+    const addHashtag = (e) => {
+        e.preventDefault();
+        let arr = hashtagSplit(hashtag);
+        arr = [...hashtagArr, ...arr];
+        setHashtagArr(arr);
+        setHashtag('');
+        // console.log([...hashtagArr, ...arr]);
+    }
+
+    const removeHashtag = (index) => {
+        let temp = [...hashtagArr];
+        temp.splice(index, 1);
+        setHashtagArr(temp);
+    }
+
     const classes = formStyles();
 
     return (
         <>
             {auth.token ?
-                <Paper className={classes.paperContainer}>
+                <Paper className={classes.paperContainer} style={{ width: 500 }}>
                     <div className={classes.textTitle}>
                         <Typography variant="h5">
                             Chỉnh sửa bài viết
                         </Typography>
                     </div>
-                    <form>
+                    <div>
                         <div className={classes.formContainer}>
                             <div className={classes.postContentInput}>
                                 <InputBase
@@ -123,16 +132,31 @@ export default function UpdatePostForm(props) {
                                     onChange={(e) => handleChange(e)}
                                 />
                             </div>
-                            <div >
-                                <InputBase
-                                    placeholder="Hashtag (cách nhau bằng dấu cách). Vd: #bien #lehoi ..."
-                                    variant="outlined"
-                                    name="hashtag"
-                                    id="hashtag"
-                                    className={classes.hashtag}
-                                    value={hashtag}
-                                    onChange={e => setHashtag(e.target.value)}
-                                />
+                            <div>
+                                <div>
+                                    {hashtagArr.map((value, idx) => (
+                                        <Chip
+                                            label={'#' + value}
+                                            onDelete={() => removeHashtag(idx)}
+                                            key={idx}
+                                            style={{ marginInline: 5 }}
+                                        />
+                                    ))}
+                                </div>
+                                <form
+                                    onSubmit={addHashtag}
+                                >
+                                    <InputBase
+                                        placeholder="Hashtag"
+                                        title="Hashtag"
+                                        variant="outlined"
+                                        name="hashtag"
+                                        id="hashtag"
+                                        className={classes.hashtag}
+                                        value={hashtag}
+                                        onChange={e => setHashtag(e.target.value)}
+                                    />
+                                </form>
                             </div>
                             <div className={classes.formAction}>
                                 <div>
@@ -169,7 +193,7 @@ export default function UpdatePostForm(props) {
 
 
                         </div>
-                    </form>
+                    </div>
 
                     <div className={classes.error}>
                         <Typography variant="caption" color="inherit">{state.error}</Typography>

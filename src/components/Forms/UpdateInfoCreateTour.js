@@ -1,4 +1,4 @@
-import { InputBase, Typography, Button, Paper, TextField } from "@material-ui/core";
+import { InputBase, Typography, Button, Paper, TextField, Chip } from "@material-ui/core";
 
 import React, { useState } from "react";
 import { useDispatch } from "react-redux";
@@ -14,9 +14,10 @@ export default function UpdateTourInfo({ name, content, hashtags, handleClose, c
 
     const [state, setState] = useState({
         name: name,
-        hashtags: hashtags.join(" "),
         cost: cost
-    })
+    });
+    const [hashtagArr, setHashtagArr] = useState(hashtags);
+    const [hashtag, setHashtag] = useState('')
 
     const [text, setText] = useState(content);
 
@@ -37,9 +38,28 @@ export default function UpdateTourInfo({ name, content, hashtags, handleClose, c
 
     const handleSubmit = () => {
         // console.log(state);
-        let ht = hashtagSplit(state.hashtags)
+        let ht = hashtagSplit(hashtag);
+        ht = [...hashtagArr, ...ht];
         dispatch(updateInfo({ name: state.name, content: text, hashtags: ht, cost: parseInt(state.cost) }));
         handleClose();
+    }
+
+    const addHashtag = (e) => {
+        e.preventDefault();
+        let arr = hashtagSplit(hashtag);
+        arr = [...hashtagArr, ...arr];
+        setHashtagArr(arr);
+        setHashtag('')
+    }
+
+    const changeHashtag = (e) => {
+        setHashtag(e.target.value);
+    }
+
+    const removeHashtag = (index) => {
+        let temp = [...hashtagArr];
+        temp.splice(index, 1);
+        setHashtagArr(temp);
     }
 
 
@@ -52,7 +72,7 @@ export default function UpdateTourInfo({ name, content, hashtags, handleClose, c
                     Thay đổi thông tin
                 </Typography>
             </div>
-            <form>
+            <div>
                 <div className={classes.formContainer}>
                     <TextField
                         name="name"
@@ -85,16 +105,30 @@ export default function UpdateTourInfo({ name, content, hashtags, handleClose, c
                             onChange={e => setText(e.target.value)}
                         />
                     </div>
-                    <div >
-                        <InputBase
-                            placeholder="Hashtag. Ex: #bien #lehoi ..."
-                            variant="outlined"
-                            name="hashtags"
-                            id="hashtags"
-                            value={state.hashtags}
-                            className={classes.hashtag}
-                            onChange={handleInput}
-                        />
+                    <div>
+                        <div>
+                            {hashtagArr.map((value, idx) => (
+                                <Chip
+                                    label={'#' + value}
+                                    onDelete={() => removeHashtag(idx)}
+                                    key={idx}
+                                    style={{ marginInline: 5 }}
+                                />
+                            ))}
+                        </div>
+                        <form
+                            onSubmit={addHashtag}
+                        >
+                            <InputBase
+                                placeholder="Hashtag. Ex: #bien #lehoi ..."
+                                variant="outlined"
+                                name="hashtag"
+                                id="hashtag"
+                                value={hashtag}
+                                className={classes.hashtag}
+                                onChange={changeHashtag}
+                            />
+                        </form>
                     </div>
                     <div className={classes.formAction}>
                         <div>
@@ -109,7 +143,7 @@ export default function UpdateTourInfo({ name, content, hashtags, handleClose, c
 
 
                 </div>
-            </form>
+            </div>
         </Paper>
     )
 }

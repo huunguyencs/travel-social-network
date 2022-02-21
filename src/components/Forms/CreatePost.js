@@ -114,7 +114,7 @@ export default function CreatePostForm(props) {
     return (
         <>
             {auth.token ?
-                <Paper className={classes.paperContainer}>
+                <Paper className={classes.paperContainer} style={{ width: 500 }}>
                     <div className={classes.textTitle}>
                         <Typography variant="h5">
                             Tạo bài viết
@@ -139,7 +139,7 @@ export default function CreatePostForm(props) {
                                 <div>
                                     {hashtagArr.map((value, idx) => (
                                         <Chip
-                                            label={value}
+                                            label={'#' + value}
                                             onDelete={() => removeHashtag(idx)}
                                             key={idx}
                                             style={{ marginInline: 5 }}

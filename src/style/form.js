@@ -40,10 +40,10 @@ const formStyles = makeStyles((theme) => ({
         marginBottom: 15,
     },
     postContentInput: {
-        width: "500px",
-        [theme.breakpoints.down("sm")]: {
-            width: "300px"
-        }
+        width: "100%",
+        // [theme.breakpoints.down("sm")]: {
+        //     width: "300px"
+        // }
     },
     input: {
         backgroundColor: color.lightgray,

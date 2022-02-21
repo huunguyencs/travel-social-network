@@ -1,4 +1,4 @@
-import { Button, CircularProgress, InputBase, Paper, Typography } from '@material-ui/core';
+import { Button, Chip, CircularProgress, InputBase, Paper, Typography } from '@material-ui/core';
 import { Share } from '@material-ui/icons';
 import React, { useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
@@ -22,6 +22,7 @@ export default function SharePost(props) {
 
     const [text, setText] = useState("");
     const [hashtag, setHashtag] = useState("");
+    const [hashtagArr, setHashtagArr] = useState([]);
 
     const classes = formStyles();
 
@@ -51,6 +52,21 @@ export default function SharePost(props) {
         }))
     }
 
+    const addHashtag = (e) => {
+        e.preventDefault();
+        let arr = hashtagSplit(hashtag);
+        arr = [...hashtagArr, ...arr];
+        setHashtagArr(arr);
+        setHashtag('');
+        // console.log([...hashtagArr, ...arr]);
+    }
+
+    const removeHashtag = (index) => {
+        let temp = [...hashtagArr];
+        temp.splice(index, 1);
+        setHashtagArr(temp);
+    }
+
 
     return (
         <>
@@ -61,7 +77,7 @@ export default function SharePost(props) {
                             Chia sẻ {type === "post" ? "bài viết" : "lịch trình"} của {object.userId.fullname}
                         </Typography>
                     </div>
-                    <form>
+                    <div>
                         <div className={classes.formContainer}>
                             <div className={classes.postContentInput}>
                                 <InputBase
@@ -75,16 +91,31 @@ export default function SharePost(props) {
                                     onChange={e => setText(e.target.value)}
                                 />
                             </div>
-                            <div >
-                                <InputBase
-                                    placeholder="Hashtag (cách nhau bằng dấu cách). Vd: #bien #lehoi ..."
-                                    variant="outlined"
-                                    name="hashtag"
-                                    id="hashtag"
-                                    className={classes.hashtag}
-                                    value={hashtag}
-                                    onChange={e => setHashtag(e.target.value)}
-                                />
+                            <div>
+                                <div>
+                                    {hashtagArr.map((value, idx) => (
+                                        <Chip
+                                            label={'#' + value}
+                                            onDelete={() => removeHashtag(idx)}
+                                            key={idx}
+                                            style={{ marginInline: 5 }}
+                                        />
+                                    ))}
+                                </div>
+                                <form
+                                    onSubmit={addHashtag}
+                                >
+                                    <InputBase
+                                        placeholder="Hashtag"
+                                        title="Hashtag"
+                                        variant="outlined"
+                                        name="hashtag"
+                                        id="hashtag"
+                                        className={classes.hashtag}
+                                        value={hashtag}
+                                        onChange={e => setHashtag(e.target.value)}
+                                    />
+                                </form>
                             </div>
                             <div className={classes.formAction}>
                                 <EmojiPicker content={text} setContent={setText} />
@@ -103,7 +134,7 @@ export default function SharePost(props) {
                             </div>
 
                         </div>
-                    </form>
+                    </div>
                 </Paper>
                 : <LoginModal />
             }

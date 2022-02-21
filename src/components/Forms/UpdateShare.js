@@ -1,4 +1,4 @@
-import { Button, CircularProgress, InputBase, Paper, Typography } from '@material-ui/core';
+import { Button, Chip, CircularProgress, InputBase, Paper, Typography } from '@material-ui/core';
 import { Update } from '@material-ui/icons';
 import React, { useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
@@ -23,7 +23,9 @@ export default function ShareUpdateForm(props) {
     })
 
     const [text, setText] = useState(object.content);
-    const [hashtag, setHashtag] = useState(object.hashtags.join(" "));
+
+    const [hashtag, setHashtag] = useState("");
+    const [hashtagArr, setHashtagArr] = useState(object.hashtags);
 
     const classes = formStyles();
 
@@ -34,6 +36,7 @@ export default function ShareUpdateForm(props) {
 
     const updateShare = async () => {
         var ht = hashtagSplit(hashtag);
+        ht = [...hashtagArr, ...ht]
         setState({
             loading: true,
             error: false
@@ -76,6 +79,21 @@ export default function ShareUpdateForm(props) {
         updateShare();
     }
 
+    const addHashtag = (e) => {
+        e.preventDefault();
+        let arr = hashtagSplit(hashtag);
+        arr = [...hashtagArr, ...arr];
+        setHashtagArr(arr);
+        setHashtag('');
+        // console.log([...hashtagArr, ...arr]);
+    }
+
+    const removeHashtag = (index) => {
+        let temp = [...hashtagArr];
+        temp.splice(index, 1);
+        setHashtagArr(temp);
+    }
+
     return (
         <>
             {auth.token && object ?
@@ -85,7 +103,7 @@ export default function ShareUpdateForm(props) {
                             Chỉnh sửa nội dung chia sẻ
                         </Typography>
                     </div>
-                    <form>
+                    <div>
                         <div className={classes.formContainer}>
                             <div className={classes.postContentInput}>
                                 <InputBase
@@ -99,16 +117,32 @@ export default function ShareUpdateForm(props) {
                                     onChange={e => setText(e.target.value)}
                                 />
                             </div>
-                            <div >
-                                <InputBase
-                                    placeholder="Hashtag (cách nhau bằng dấu cách). Vd: #bien #lehoi ..."
-                                    variant="outlined"
-                                    name="hashtag"
-                                    id="hashtag"
-                                    className={classes.hashtag}
-                                    value={hashtag}
-                                    onChange={e => setHashtag(e.target.value)}
-                                />
+
+                            <div>
+                                <div>
+                                    {hashtagArr.map((value, idx) => (
+                                        <Chip
+                                            label={'#' + value}
+                                            onDelete={() => removeHashtag(idx)}
+                                            key={idx}
+                                            style={{ marginInline: 5 }}
+                                        />
+                                    ))}
+                                </div>
+                                <form
+                                    onSubmit={addHashtag}
+                                >
+                                    <InputBase
+                                        placeholder="Hashtag"
+                                        title="Hashtag"
+                                        variant="outlined"
+                                        name="hashtag"
+                                        id="hashtag"
+                                        className={classes.hashtag}
+                                        value={hashtag}
+                                        onChange={e => setHashtag(e.target.value)}
+                                    />
+                                </form>
                             </div>
                             <div className={classes.formAction}>
                                 <EmojiPicker content={text} setContent={setText} />
@@ -127,7 +161,7 @@ export default function ShareUpdateForm(props) {
                             </div>
 
                         </div>
-                    </form>
+                    </div>
                 </Paper>
                 : <LoginModal />
             }
