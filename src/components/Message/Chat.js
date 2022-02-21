@@ -27,7 +27,7 @@ export default function Chat() {
             text: text,
             createdAt: new Date().toISOString()
         }
-        await dispatch(addMessage(msg, auth, socket))
+        dispatch(addMessage(msg, auth, socket))
         if (refDisplay.current) {
             refDisplay.current.scrollIntoView({ behavior: 'smooth', block: 'end' });
         }
@@ -43,10 +43,13 @@ export default function Chat() {
     }, [id, dispatch, auth, socket])
 
     useEffect(() => {
-        document.title = "Tin nhắn";
         const currentUser = message.users.find(user => user._id === id);
         if (currentUser) setUser(currentUser);
     }, [id, message.users])
+
+    useEffect(() => {
+        document.title = "Tin nhắn";
+    }, [])
 
     return (
         <>

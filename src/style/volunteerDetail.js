@@ -2,19 +2,19 @@ import { makeStyles } from "@material-ui/core";
 
 
 const volunteerDetailStyles = makeStyles((theme) => ({
-    volunteerDetailTitle:{
-        color: "#999",
-        fontWeight: 300,
-        fontSize: "30px"
+    volunteerDetailTitle: {
+        // fontWeight: 400,
+        // fontSize: "30px"
+        marginBottom: 20
     },
-    volunteerInfo:{
+    volunteerInfo: {
         marginTop: "20px",
         maxWidth: "80%",
         [theme.breakpoints.down("sm")]: {
             maxWidth: "100%",
         }
     },
-    scheduleItem:{
+    scheduleItem: {
         maxWidth: "75%",
         [theme.breakpoints.down("sm")]: {
             maxWidth: "100%",
@@ -38,10 +38,25 @@ const volunteerDetailStyles = makeStyles((theme) => ({
         display: 'flex',
         overflow: 'auto',
     },
-    
+    listTitle: {
+        [theme.breakpoints.down("sm")]: {
+            display: 'flex',
+        },
+        [theme.breakpoints.down("xs")]: {
+            display: 'block',
+        }
+    },
+    username: {
+        fontWeight: 500,
+        fontSize: 18,
+        '&:hover': {
+            textDecoration: 'underline'
+        }
+    },
     activeTimeline: {
         backgroundColor: "#52BEDB",
         color: "black",
+        textTransform: 'none',
         [theme.breakpoints.down("sm")]: {
             marginInline: 20,
             paddingInline: 10
@@ -49,6 +64,7 @@ const volunteerDetailStyles = makeStyles((theme) => ({
     },
     unactiveTimeline: {
         color: "black",
+        textTransform: 'none',
         [theme.breakpoints.down("sm")]: {
             marginInline: 20
         }
@@ -59,45 +75,45 @@ const volunteerDetailStyles = makeStyles((theme) => ({
     unactiveDot: {
         color: "gray"
     },
-    volunteerRegister:{
+    volunteerRegister: {
         marginTop: 20,
         marginBottom: 30
     },
-    registerAll:{
+    registerAll: {
         marginTop: 10,
         marginBottom: 20
     },
-    registerTable:{
+    registerTable: {
         width: "80%",
-        border: "1px solid #bcbcbc",
+        border: "1px solid #888",
         [theme.breakpoints.down("sm")]: {
-            width: "100%",  
+            width: "100%",
         }
     },
-    registerTableTitle:{
+    registerTableTitle: {
         padding: "10px 15px",
-        borderRight: "1px solid #bcbcbc",
-        borderBottom: "1px solid #bcbcbc"
+        borderRight: "1px solid #888",
+        borderBottom: "1px solid #888"
     },
-    registerTableData:{
+    registerTableData: {
         padding: "10px 15px",
-        borderRight: "1px solid #bcbcbc",
+        borderRight: "1px solid #888",
     },
-    registerTableBooking:{
+    registerTableBooking: {
         display: 'flex',
         alignItems: 'center',
         justifyContent: 'space-between'
     },
-    registerTableBookingButton:{
-        height: 50,
-        marginTop: 10,
+    registerTableBookingButton: {
+        // height: 50,
+        // marginTop: 10,
         backgroundColor: '#a5dec8',
         [theme.breakpoints.down("sm")]: {
             height: 35,
-            fontSize: 11    
+            fontSize: 11
         }
     },
-    registerItemBooking:{
+    registerItemBooking: {
         display: 'flex',
         backgroundColor: 'white',
         width: "400px",
@@ -105,11 +121,11 @@ const volunteerDetailStyles = makeStyles((theme) => ({
         justifyContent: 'space-around'
     },
     registerItemBookingButton: {
-        height: 50,
-        marginTop: 10,
+        // height: 50,
+        marginTop: 20,
         backgroundColor: '#a5dec8'
     },
-    volunteerOther:{
+    volunteerOther: {
         maxWidth: "80%"
     }
 }))

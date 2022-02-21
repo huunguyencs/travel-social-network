@@ -1,12 +1,13 @@
 import { Avatar, Grid, CardHeader, List, Radio, ListItem, ListItemIcon, ListItemText, RadioGroup, FormControlLabel } from '@material-ui/core';
 import { Timeline, TimelineItem, TimelineSeparator, TimelineConnector, TimelineContent, TimelineDot } from '@material-ui/lab'
-import { Drafts, Inbox, DoneOutline, RadioButtonUnchecked } from '@material-ui/icons';
+import { DoneOutline, RadioButtonUnchecked, AssistantPhoto, Event, Schedule } from '@material-ui/icons';
 import React, { useState } from "react";
 import { Button, Typography } from '@material-ui/core';
 import { volunteerDetailStyles } from '../../style';
 import ImageList from '../Modal/ImageList';
 
 import { convertDateToStr } from "../../utils/date";
+import { Link } from 'react-router-dom';
 
 export default function VolunteerDetail(props) {
 
@@ -21,7 +22,7 @@ export default function VolunteerDetail(props) {
             {
                 volunteer ?
                     <div style={{ marginTop: 80 }}>
-                        <Typography className={classes.volunteerDetailTitle}>{volunteer.name}</Typography>
+                        <Typography variant='h4' className={classes.volunteerDetailTitle}>{volunteer.name}</Typography>
                         <Grid container>
                             <Grid item md={5}>
                                 <ImageList imageList={[volunteer.image]} show2Image={false} defaultHeight={300} />
@@ -29,28 +30,30 @@ export default function VolunteerDetail(props) {
                             <Grid item md={5} style={{ margin: "0 auto", padding: 15 }}>
                                 <CardHeader
                                     avatar={
-                                        <Avatar aria-label="recipe" src={volunteer.userId.avatar}>
-
-                                        </Avatar>
+                                        <Avatar aria-label="recipe" src={volunteer.userId.avatar} />
                                     }
-                                    title={volunteer.userId.fullname}
+                                    title={
+                                        <Typography component={Link} to={`/u/${volunteer.userId._id}`} className={classes.username}>
+                                            {volunteer.userId.fullname}
+                                        </Typography>
+                                    }
                                 />
-                                <List component="nav" aria-label="main mailbox folders">
+                                <List component="nav" aria-label="main mailbox folders" className={classes.listTitle}>
                                     <ListItem button>
                                         <ListItemIcon>
-                                            <Inbox />
+                                            <Event />
                                         </ListItemIcon>
                                         <ListItemText primary="Ngày khởi hành " secondary={convertDateToStr(volunteer.date[0].date)} />
                                     </ListItem>
                                     <ListItem button>
                                         <ListItemIcon>
-                                            <Drafts />
+                                            <AssistantPhoto />
                                         </ListItemIcon>
                                         <ListItemText primary="Địa điểm xuất phát" secondary={volunteer.location[0].location.fullname} />
                                     </ListItem>
                                     <ListItem button>
                                         <ListItemIcon>
-                                            <Drafts />
+                                            <Schedule />
                                         </ListItemIcon>
                                         <ListItemText primary="Lịch Trình " secondary="2 Ngày - 2 đêm" />
                                     </ListItem>
@@ -64,8 +67,8 @@ export default function VolunteerDetail(props) {
                             <List component="nav" aria-label="main mailbox folders">
                                 {
                                     volunteer.descriptions.length > 0 ?
-                                        volunteer.descriptions.map((item) => (
-                                            <ListItem button>
+                                        volunteer.descriptions.map((item, index) => (
+                                            <ListItem button key={index}>
                                                 <ListItemIcon>
                                                     <DoneOutline style={{ color: "#A5DEC8" }} />
                                                 </ListItemIcon>
@@ -83,7 +86,7 @@ export default function VolunteerDetail(props) {
                                 Lịch trình
                             </Typography>
                             <Grid container>
-                                <Grid item md={3} >
+                                <Grid item md={3} sm={12} xs={12}>
                                     <div className={classes.timeline}>
                                         <Timeline align="right" >
                                             {volunteer.date.map((item, index) => (
@@ -111,7 +114,7 @@ export default function VolunteerDetail(props) {
                                         </div>
                                     </div>
                                 </Grid>
-                                <Grid item md={9}>
+                                <Grid item md={9} sm={12} xs={12}>
                                     <Typography>Lịch trình ngày: {idx}</Typography>
                                     {
                                         volunteer.date[idx].activities.map((item, index) => (
@@ -137,31 +140,41 @@ export default function VolunteerDetail(props) {
                                 Đăng ký tham gia
                             </Typography>
                             <div className={classes.registerAll}>
-                                <Typography variant="h7">
+                                <Typography variant="body1">
                                     Đăng ký tham gia tất cả các địa điểm trong hoạt động
                                 </Typography>
                                 <table className={classes.registerTable}>
-                                    <tr>
-                                        <th className={classes.registerTableTitle}>Điểm khởi hành</th>
-                                        <th className={classes.registerTableTitle}>Ngày khởi hành</th>
-                                        <th className={classes.registerTableTitle}>Tổng chi phí tiêu chuẩn</th>
-                                    </tr>
-                                    <tr>
-                                        <td className={classes.registerTableData}>{volunteer.location[0].location.fullname}</td>
-                                        <td className={classes.registerTableData}>{convertDateToStr(volunteer.date[0].date)}</td>
-                                        <td className={classes.registerTableData}>
-                                            <div className={classes.registerTableBooking}>
-                                                <p>{volunteer.cost}</p>
-                                                <Button className={classes.registerTableBookingButton}>
-                                                    Đăng ký ngay
-                                                </Button>
-                                            </div>
-                                        </td>
-                                    </tr>
+                                    <thead>
+                                        <tr>
+                                            <th className={classes.registerTableTitle}>Điểm khởi hành</th>
+                                            <th className={classes.registerTableTitle}>Ngày khởi hành</th>
+                                            <th className={classes.registerTableTitle}>Tổng chi phí tiêu chuẩn</th>
+                                            <th className={classes.registerTableTitle}>Đăng ký</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                            <td className={classes.registerTableData}>{volunteer.location[0].location.fullname}</td>
+                                            <td className={classes.registerTableData}>{convertDateToStr(volunteer.date[0].date)}</td>
+                                            <td className={classes.registerTableData}>
+                                                <div className={classes.registerTableBooking}>
+                                                    <p>{volunteer.cost}</p>
+
+                                                </div>
+                                            </td>
+                                            <td className={classes.registerTableData}>
+                                                <div style={{ display: 'flex', justifyContent: 'center' }}>
+                                                    <Button className={classes.registerTableBookingButton}>
+                                                        Đăng ký ngay
+                                                    </Button>
+                                                </div>
+                                            </td>
+                                        </tr>
+                                    </tbody>
                                 </table>
                             </div>
                             <div className={classes.registerItem}>
-                                <Typography variant="h7">
+                                <Typography variant="body1">
                                     Đăng ký tham gia từng địa điểm trong hoạt động
                                 </Typography>
                                 <Grid container>
@@ -197,16 +210,16 @@ export default function VolunteerDetail(props) {
                                         <Typography>Thông tin: </Typography>
                                         {
                                             volunteer.location[idxLocation].description.map((item, index) => (
-                                                <>
-                                                    <List component="nav" aria-label="main folders">
-                                                        <ListItem button className={classes.scheduleItem}>
-                                                            <ListItemIcon>
-                                                                <RadioButtonUnchecked style={{ color: "#A5DEC8" }} />
-                                                            </ListItemIcon>
-                                                            <ListItemText primary={item} />
-                                                        </ListItem>
-                                                    </List>
-                                                </>
+
+                                                <List key={index} component="nav" aria-label="main folders">
+                                                    <ListItem button className={classes.scheduleItem}>
+                                                        <ListItemIcon>
+                                                            <RadioButtonUnchecked style={{ color: "#A5DEC8" }} />
+                                                        </ListItemIcon>
+                                                        <ListItemText primary={item} />
+                                                    </ListItem>
+                                                </List>
+
                                             ))
                                         }
 
@@ -220,9 +233,11 @@ export default function VolunteerDetail(props) {
                                                     <FormControlLabel value="no" control={<Radio color="primary" />} label="Không" />
                                                 </RadioGroup>
                                             </div>
-                                            <Button className={classes.registerItemBookingButton}>
-                                                Đăng ký ngay
-                                            </Button>
+                                            <div>
+                                                <Button className={classes.registerItemBookingButton}>
+                                                    Đăng ký ngay
+                                                </Button>
+                                            </div>
 
                                         </div>
                                     </Grid>

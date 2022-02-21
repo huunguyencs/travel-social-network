@@ -1,6 +1,6 @@
 import { Card, Grid, makeStyles, Typography, Box, CardHeader } from "@material-ui/core";
 import { Group, Person, PostAdd } from "@material-ui/icons";
-import React from "react";
+import React, { useEffect } from "react";
 import LeftBar from "../../components/Leftbar";
 import { adminListMenu } from "../../constant/adminMenu";
 import { ResponsiveContainer, LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, Legend } from 'recharts';
@@ -41,6 +41,10 @@ const data = [
 export default function AdminHome(props) {
 
     const classes = useStyles();
+
+    useEffect(() => {
+        document.title = 'Admin';
+    }, [])
 
     return (
         <Grid container>
