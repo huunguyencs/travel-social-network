@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { makeStyles, Container, Button, IconButton } from "@material-ui/core";
+import { Container, Button, IconButton } from "@material-ui/core";
 import { useSelector } from 'react-redux';
 
 import Typography from '@material-ui/core/Typography';
@@ -7,34 +7,17 @@ import Paper from '@material-ui/core/Paper';
 
 import { Link, useHistory } from "react-router-dom";
 import { AddCircle, Edit } from "@material-ui/icons";
-import { DataGrid } from "@mui/x-data-grid";
+import { DataGrid, GridToolbarContainer, GridToolbarExport } from "@mui/x-data-grid";
 import customAxios from "../../../utils/fetchData";
+import { tableStyles } from "../../../style";
 
-const useStyles = makeStyles((theme) => ({
-    container: {
-        marginTop: "160px",
-        marginBottom: 20
-    },
-    admin_location_header: {
-        display: "flex",
-        flexDirection: "row",
-        justifyContent: "space-between",
-        paddingLeft: "20px",
-        paddingRight: "20px",
-        marginBottom: 20
-    },
-    addBtn: {
-        backgroundColor: "#179250",
-        borderRadius: "10px",
-    }
-}))
 
 
 const columns = [
     {
         field: '_id',
         headerName: 'ID',
-        width: 200,
+        width: 230,
         sortable: false,
     },
     {
@@ -72,10 +55,18 @@ const columns = [
     }
 ]
 
+function ExportToolbar() {
+    return (
+        <GridToolbarContainer>
+            <GridToolbarExport />
+        </GridToolbarContainer>
+    );
+}
+
 
 export default function AdminEvent() {
     const history = useHistory();
-    const classes = useStyles();
+    const classes = tableStyles();
     const { token } = useSelector(state => state.auth);
 
     const [events, setEvents] = useState([]);
@@ -104,13 +95,11 @@ export default function AdminEvent() {
     }, [])
     return (
         <Container className={classes.container}>
-            <div
-                className={classes.admin_location_header}
-            >
-                <div className={classes.admin_location_header_left}>
+            <div className={classes.admin_location_header}>
+                <div>
                     <Typography variant="h4">{events.length} sự kiện</Typography>
                 </div>
-                <div className={classes.admin_location_header_right}>
+                <div>
                     <Button
                         variant="contained"
                         className={classes.addBtn}
@@ -120,36 +109,33 @@ export default function AdminEvent() {
                         component={Link}
                         to={`/admin/event/add`}
                     >
-                        <Typography>Thêm sự kiện</Typography>
+                        Thêm sự kiện
                     </Button>
                 </div>
             </div>
 
 
-            <div className={classes.admin_location_body}>
-                <div className={classes.tableContainer}>
-                    <div className={classes.root}>
-                        <Paper className={classes.paper}>
-                            <DataGrid
-                                rows={events}
-                                columns={columns}
-                                pageSize={pageSize}
-                                rowsPerPageOptions={[5, 10, 25]}
-                                onPageSizeChange={(newPageSize) => setPageSize(newPageSize)}
-                                pagination
-                                onRowDoubleClick={(event) => {
-                                    history.push(`/admin/event/${event.row.name}`)
-                                }}
-                                autoHeight
-                                loading={loading}
-                                error={error}
-                                getRowId={row => row._id}
-                                disableSelectionOnClick
-                            />
-                        </Paper>
-                    </div>
-                </div>
-            </div>
+            <Paper className={classes.paper}>
+                <DataGrid
+                    rows={events}
+                    columns={columns}
+                    pageSize={pageSize}
+                    rowsPerPageOptions={[5, 10, 25]}
+                    onPageSizeChange={(newPageSize) => setPageSize(newPageSize)}
+                    pagination
+                    onRowDoubleClick={(event) => {
+                        history.push(`/admin/event/${event.row.name}`)
+                    }}
+                    autoHeight
+                    loading={loading}
+                    error={error}
+                    getRowId={row => row._id}
+                    disableSelectionOnClick
+                    components={{
+                        Toolbar: ExportToolbar
+                    }}
+                />
+            </Paper>
         </Container>
     );
 }

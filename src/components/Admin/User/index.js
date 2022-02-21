@@ -1,65 +1,52 @@
 import React, { useEffect, useState } from "react";
-import { makeStyles, Container, IconButton, Tooltip } from "@material-ui/core";
+import { Container, IconButton, Tooltip } from "@material-ui/core";
 
-import Typography from '@material-ui/core/Typography';
-import Paper from '@material-ui/core/Paper';
+import { Typography, Paper, Avatar } from '@material-ui/core';
 import { Link, useHistory } from "react-router-dom";
-import { CheckCircle, Remove, Visibility } from "@material-ui/icons";
-import { DataGrid } from "@mui/x-data-grid";
+import { CheckCircle, Remove, Edit } from "@material-ui/icons";
+import { DataGrid, GridToolbarContainer, GridToolbarExport } from "@mui/x-data-grid";
 import customAxios from "../../../utils/fetchData";
 import { useSelector } from "react-redux";
+import { tableStyles } from "../../../style";
 
 
-const useStyles = makeStyles((theme) => ({
-    appBarSpacer: {
-        marginTop: 120,
-    },
-    tableContainer: {
-        // height: 400,
-        // margin: 50,
-        marginBottom: 100,
-    },
-    table: {
-        backgroundColor: "white",
-        // minWidth: 750,
-    },
-    root: {
-        width: '100%',
-    },
-    paper: {
-        width: '100%',
-        marginBottom: theme.spacing(2),
-    },
-    visuallyHidden: {
-        border: 0,
-        clip: 'rect(0 0 0 0)',
-        height: 1,
-        margin: -1,
-        overflow: 'hidden',
-        padding: 0,
-        position: 'absolute',
-        top: 20,
-        width: 1,
-    },
-}))
+function ExportToolbar() {
+    return (
+        <GridToolbarContainer>
+            <GridToolbarExport />
+        </GridToolbarContainer>
+    );
+}
 
 
 const columns = [
+    // {
+    //     field: '_id',
+    //     headerName: 'ID',
+    //     width: 200,
+    //     sortable: false,
+    // },
     {
-        field: '_id',
-        headerName: 'ID',
-        width: 200,
+        field: 'avatar',
+        headerName: 'Avatar',
+        width: 130,
         sortable: false,
+        renderCell: (user) => (
+            <Avatar
+                alt={user.row.username}
+                src={user.row.avatar}
+            />
+        )
     },
     {
         field: 'fullname',
         headerName: 'Tên đầy đủ',
-        width: 200,
+        width: 220,
     },
     {
         field: 'email',
         headerName: 'Email',
-        width: 200,
+        width: 250,
     },
     {
         field: 'join',
@@ -71,7 +58,7 @@ const columns = [
         field: 'role',
         headerName: 'Role',
         width: 130,
-        renderCell: (user) => user.row.role === 0 ? 'Bt' : user.row.role === 1 ? 'Co-op' : user.row.role === 2 ? 'Admin' : 'Unknown'
+        valueGetter: (user) => user.row.role === 0 ? 'Bt' : user.row.role === 1 ? 'Co-op' : user.row.role === 2 ? 'Admin' : 'Unknown'
     },
     {
         field: 'status',
@@ -93,7 +80,7 @@ const columns = [
         sortable: false,
         renderCell: (user) => (
             <IconButton size='small' component={Link} to={`/admin/user/${user.row._id}`} title='Chi tiết'>
-                <Visibility />
+                <Edit />
             </IconButton>
         )
     }
@@ -104,7 +91,7 @@ const columns = [
 
 
 function AdminUsers(props) {
-    const classes = useStyles();
+    const classes = tableStyles();
     const history = useHistory();
     const { token } = useSelector(state => state.auth);
 
@@ -132,8 +119,7 @@ function AdminUsers(props) {
 
 
     return (
-        <Container className={classes.container} style={{ marginTop: "160px" }}>
-            <div className={classes.appBarSpacer} />
+        <Container className={classes.container}>
             {
                 users &&
                 <div className={classes.admin_location_header}
@@ -148,31 +134,27 @@ function AdminUsers(props) {
                 </div>
             }
 
-
-            <div className={classes.admin_location_body}>
-                <div className={classes.tableContainer}>
-                    <div className={classes.root}>
-                        <Paper className={classes.paper}>
-                            <DataGrid
-                                rows={users}
-                                columns={columns}
-                                pageSize={pageSize}
-                                rowsPerPageOptions={[5, 10, 25]}
-                                onPageSizeChange={(newPageSize) => setPageSize(newPageSize)}
-                                pagination
-                                onRowDoubleClick={(e) => {
-                                    history.push(`/admin/user/${e.row._id}`)
-                                }}
-                                autoHeight
-                                loading={loading}
-                                error={error}
-                                getRowId={row => row._id}
-                                disableSelectionOnClick
-                            />
-                        </Paper>
-                    </div>
-                </div>
-            </div>
+            <Paper className={classes.paper}>
+                <DataGrid
+                    rows={users}
+                    columns={columns}
+                    pageSize={pageSize}
+                    rowsPerPageOptions={[5, 10, 25]}
+                    onPageSizeChange={(newPageSize) => setPageSize(newPageSize)}
+                    pagination
+                    onRowDoubleClick={(e) => {
+                        history.push(`/admin/user/${e.row._id}`)
+                    }}
+                    autoHeight
+                    loading={loading}
+                    error={error}
+                    getRowId={row => row._id}
+                    disableSelectionOnClick
+                    components={{
+                        Toolbar: ExportToolbar,
+                    }}
+                />
+            </Paper>
         </Container>
     );
 }

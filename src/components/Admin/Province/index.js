@@ -1,10 +1,11 @@
 import React, { useEffect, useState } from 'react'
-import { DataGrid } from '@mui/x-data-grid';
+import { DataGrid, GridToolbarContainer, GridToolbarExport } from '@mui/x-data-grid';
 
 import customAxios from '../../../utils/fetchData';
-import { IconButton } from '@material-ui/core';
+import { Container, IconButton, Paper } from '@material-ui/core';
 import { Edit, Visibility } from '@material-ui/icons';
 import { Link, useHistory } from 'react-router-dom';
+import { tableStyles } from '../../../style';
 
 const columns = [
     {
@@ -26,7 +27,7 @@ const columns = [
     {
         field: 'action',
         headerName: 'Chỉnh sửa',
-        width: 150,
+        width: 180,
         sortable: false,
         renderCell: (province) => (
             <IconButton size='small' component={Link} to={`/admin/province/${province.row.name}`} title='Chỉnh sửa'>
@@ -47,8 +48,18 @@ const columns = [
     }
 ];
 
+function ExportToolbar() {
+    return (
+        <GridToolbarContainer>
+            <GridToolbarExport />
+        </GridToolbarContainer>
+    );
+}
+
 
 export default function AdminProvinces() {
+
+    const classes = tableStyles();
 
     const history = useHistory();
 
@@ -75,25 +86,30 @@ export default function AdminProvinces() {
     }, [])
 
     return (
-        <div style={{ marginTop: 150, marginInline: 50, marginBottom: 30, backgroundColor: 'white' }}>
-            <DataGrid
-                rows={provinces}
-                columns={columns}
-                pageSize={pageSize}
-                rowsPerPageOptions={[5, 10, 25]}
-                onPageSizeChange={(newPageSize) => setPageSize(newPageSize)}
-                pagination
-                onRowDoubleClick={(province) => {
-                    history.push(`/admin/province/${province.row.name}`)
-                    // console.log(e);
-                }}
-                autoHeight
-                loading={loading}
-                error={error}
-                getRowId={row => row._id}
-                disableSelectionOnClick
-            // style={{background:}}
-            />
-        </div>
+        <Container className={classes.container}>
+            <Paper className={classes.paper}>
+                <DataGrid
+                    rows={provinces}
+                    columns={columns}
+                    pageSize={pageSize}
+                    rowsPerPageOptions={[5, 10, 25]}
+                    onPageSizeChange={(newPageSize) => setPageSize(newPageSize)}
+                    pagination
+                    onRowDoubleClick={(province) => {
+                        history.push(`/admin/province/${province.row.name}`)
+                        // console.log(e);
+                    }}
+                    autoHeight
+                    loading={loading}
+                    error={error}
+                    getRowId={row => row._id}
+                    disableSelectionOnClick
+                    components={{
+                        Toolbar: ExportToolbar,
+                    }}
+                // style={{background:}}
+                />
+            </Paper>
+        </Container>
     )
 }

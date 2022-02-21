@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { makeStyles, Container, Button, IconButton } from "@material-ui/core";
+import { Container, Button, IconButton } from "@material-ui/core";
 import { useSelector } from 'react-redux';
 
 import Typography from '@material-ui/core/Typography';
@@ -7,29 +7,12 @@ import Paper from '@material-ui/core/Paper';
 
 import { Link, useHistory } from "react-router-dom";
 import { AddCircle, Edit } from "@material-ui/icons";
-import { DataGrid } from "@mui/x-data-grid";
+import { DataGrid, GridToolbarContainer, GridToolbarExport } from "@mui/x-data-grid";
 import customAxios from "../../../utils/fetchData";
 import { getStar } from "../../../utils/utils";
+import { tableStyles } from "../../../style";
 
 
-const useStyles = makeStyles((theme) => ({
-  container: {
-    marginTop: "160px",
-    marginBottom: 20
-  },
-  admin_location_header: {
-    display: "flex",
-    flexDirection: "row",
-    justifyContent: "space-between",
-    paddingLeft: "20px",
-    paddingRight: "20px",
-    marginBottom: 20
-  },
-  addBtn: {
-    backgroundColor: "#179250",
-    borderRadius: "10px",
-  }
-}))
 
 function totalNumRate(star) {
   return star.reduce((a, b) => a + b, 0)
@@ -39,7 +22,7 @@ const columns = [
   {
     field: '_id',
     headerName: 'ID',
-    width: 200,
+    width: 230,
     sortable: false,
   },
   {
@@ -78,12 +61,20 @@ const columns = [
   }
 ]
 
+function ExportToolbar() {
+  return (
+    <GridToolbarContainer>
+      <GridToolbarExport />
+    </GridToolbarContainer>
+  );
+}
+
 
 
 
 function AdminLocations(props) {
   const history = useHistory();
-  const classes = useStyles();
+  const classes = tableStyles();
   const { token } = useSelector(state => state.auth);
 
   const [locations, setLocations] = useState([]);
@@ -113,14 +104,11 @@ function AdminLocations(props) {
 
   return (
     <Container className={classes.container}>
-
-      <div
-        className={classes.admin_location_header}
-      >
-        <div className={classes.admin_location_header_left}>
+      <div className={classes.admin_location_header}>
+        <div>
           <Typography variant="h4">{locations.length} địa điểm du lịch</Typography>
         </div>
-        <div className={classes.admin_location_header_right}>
+        <div>
           <Button
             variant="contained"
             className={classes.addBtn}
@@ -130,36 +118,33 @@ function AdminLocations(props) {
             component={Link}
             to={`/admin/location/add`}
           >
-            <Typography>Thêm địa điểm</Typography>
+            Thêm địa điểm
           </Button>
         </div>
       </div>
 
 
-      <div className={classes.admin_location_body}>
-        <div className={classes.tableContainer}>
-          <div className={classes.root}>
-            <Paper className={classes.paper}>
-              <DataGrid
-                rows={locations}
-                columns={columns}
-                pageSize={pageSize}
-                rowsPerPageOptions={[5, 10, 25]}
-                onPageSizeChange={(newPageSize) => setPageSize(newPageSize)}
-                pagination
-                onRowDoubleClick={(location) => {
-                  history.push(`/admin/location/${location.row.name}`)
-                }}
-                autoHeight
-                loading={loading}
-                error={error}
-                getRowId={row => row._id}
-                disableSelectionOnClick
-              />
-            </Paper>
-          </div>
-        </div>
-      </div>
+      <Paper className={classes.paper}>
+        <DataGrid
+          rows={locations}
+          columns={columns}
+          pageSize={pageSize}
+          rowsPerPageOptions={[5, 10, 25]}
+          onPageSizeChange={(newPageSize) => setPageSize(newPageSize)}
+          pagination
+          onRowDoubleClick={(location) => {
+            history.push(`/admin/location/${location.row.name}`)
+          }}
+          autoHeight
+          loading={loading}
+          error={error}
+          getRowId={row => row._id}
+          disableSelectionOnClick
+          components={{
+            Toolbar: ExportToolbar,
+          }}
+        />
+      </Paper>
     </Container>
   );
 }

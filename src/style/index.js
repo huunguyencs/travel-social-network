@@ -33,6 +33,7 @@ import volunteerDetailStyles from "./volunteerDetail";
 import authStyles from "./auth";
 import adminStyles from "./adminStyles";
 import volunteerStyles from "./volunteer";
+import tableStyles from "./table";
 
 
 
@@ -89,4 +90,5 @@ export {
     authStyles,
     adminStyles,
     volunteerStyles,
+    tableStyles,
 };
