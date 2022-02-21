@@ -1,4 +1,4 @@
-import { Grid } from '@material-ui/core';
+import { CircularProgress, Grid } from '@material-ui/core';
 import React, { useEffect } from 'react'
 import { useDispatch, useSelector } from "react-redux";
 import LeftBar from '../../components/Leftbar';
@@ -30,15 +30,25 @@ export default function Volunteer() {
                 <LeftBar menuList={homeMenu} />
             </Grid>
             <Grid item md={9} sm={10} xs={10}>
-                <Grid container style={{ marginTop: 120 }}>
-                    {
-                        volunteer.volunteers.map(item => (
-                            <Grid item lg={4} md={6} sm={6} xs={12} key={item._id}>
-                                <VolunteerCard volunteer={item} />
+
+                {
+                    volunteer.loading ?
+                        <div style={{ display: 'flex', justifyContent: 'center', marginTop: 150 }}>
+                            <CircularProgress color='inherit' />
+                        </div> :
+                        volunteer.error ?
+                            <div style={{ display: 'flex', justifyContent: 'center', marginTop: 150 }}>
+                                Có lỗi xảy ra
+                            </div> :
+                            <Grid container style={{ marginTop: 120 }}>
+                                {volunteer.volunteers.map(item => (
+                                    <Grid item lg={4} md={6} sm={6} xs={12} key={item._id}>
+                                        <VolunteerCard volunteer={item} />
+                                    </Grid>
+                                ))}
                             </Grid>
-                        ))
-                    }
-                </Grid>
+                }
+
             </Grid>
             {/* <Grid item md={3} className={classes.rightbar}>
                 <RightBar ref={ref}>
