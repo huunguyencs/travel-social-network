@@ -6,7 +6,7 @@ import { useSelector } from "react-redux";
 import { profileStyles } from "../style";
 import ChangePassword from "../components/Forms/ChangePassword";
 import ChangeInfo from "../components/Forms/ChangeInfo";
-
+import ConfirmAccount from "../components/Forms/ConfirmAccount";
 
 
 function TabPanel(props) {
@@ -73,7 +73,7 @@ export default function Change_info(props) {
                             >
                                 <Tab className={classes.tab} label="Thay đổi thông tin" {...a11yProps(0)} />
                                 <Tab className={classes.tab} label="Thay đổi mật khẩu" {...a11yProps(1)} />
-                                <Tab className={classes.tab} label="Bảo mật và riêng tư" {...a11yProps(2)} />
+                                <Tab className={classes.tab} label="Xác nhận tài khoản" {...a11yProps(2)} />
                             </Tabs>
                         </div>
                     </Grid>
@@ -85,7 +85,7 @@ export default function Change_info(props) {
                             <ChangePassword />
                         </TabPanel>
                         <TabPanel value={value} index={2} className={classes.tabPanel}>
-                            404
+                            <ConfirmAccount/>
                         </TabPanel>
                     </Grid>
                 </Grid>

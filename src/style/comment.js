@@ -14,7 +14,10 @@ const commentStyles = makeStyles((theme) => ({
         marginRight: 10,
     },
     cmtInfo: {
-
+        maxWidth: "70%",
+        [theme.breakpoints.down("sm")]: {
+            maxWidth: 300,
+        }
     },
     content: {
         backgroundColor: color.background,
