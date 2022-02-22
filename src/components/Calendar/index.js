@@ -198,7 +198,8 @@ function ShowDetail({ content, setDetail, setContent }) {
                     <Typography>
                         {state.holiday}
                     </Typography>
-                </div>}
+                </div>
+            }
             <div className={classes.buttonContainer}>
                 <Button
                     onClick={handleClick}
@@ -294,6 +295,10 @@ export default function Calendar() {
 
     const classes = calendarStyles();
 
+    const DetailContent = React.forwardRef((props, ref) =>
+        <ShowDetail {...props} ref={ref} />
+    )
+
     return (
         <div>
 
@@ -312,7 +317,7 @@ export default function Calendar() {
                     timeout: 500,
                 }}
             >
-                <ShowDetail content={content} setDetail={setDetail} setContent={setContent} />
+                <DetailContent content={content} setDetail={setDetail} setContent={setContent} />
             </Modal>
         </div>
     )

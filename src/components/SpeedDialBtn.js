@@ -40,6 +40,8 @@ function CreatePostIcon(props) {
     const handleClose = () => {
         setShow(false);
     }
+
+
     return (
         <>
             <Create onClick={handleShow} />
@@ -84,6 +86,7 @@ function CreateTourIcon(props) {
     const handleClose = () => {
         setShow(false);
     }
+
 
     return (
         <>

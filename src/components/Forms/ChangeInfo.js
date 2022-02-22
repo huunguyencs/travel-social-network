@@ -144,6 +144,7 @@ export default function ChangeInfo(props) {
         }
     }, [submit, errors, context, dispatch, token])
 
+
     return (
         <div className={classes.change_info}>
             <div className={classes.change_background}>

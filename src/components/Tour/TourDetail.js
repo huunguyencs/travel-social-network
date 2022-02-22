@@ -66,6 +66,7 @@ export default function TourDetail(props) {
         history.push('/createtour');
     }
 
+
     return (
         <>
             {

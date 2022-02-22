@@ -41,6 +41,7 @@ export default function CovidCard(props) {
 
     }, [name])
 
+
     return (
         <Card className={classes.covidCardContainer}>
             <div className={classes.title}>

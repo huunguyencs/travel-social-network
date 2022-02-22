@@ -94,7 +94,6 @@ export default function Location(props) {
 
     }
 
-
     return (
         <Card className={classes.cardContainer}>
 

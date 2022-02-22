@@ -23,11 +23,13 @@ export default function CreateTourForm(props) {
 
     const [name, setName] = useState("");
     const [selectedDate, setSelectedDate] = useState(new Date());
+    const [error, setError] = useState(false);
 
     const handleDateChange = (date) => {
         setSelectedDate(date);
     };
     const handleTextChange = (text) => {
+        if (error) setError(false);
         setName(text.target.value);
     }
 
@@ -37,7 +39,7 @@ export default function CreateTourForm(props) {
             dispatch(createTour({ name: name, date: selectedDate }));
             history.push("/createtour");
         }
-
+        else setError(true);
     }
 
     return (
@@ -59,6 +61,8 @@ export default function CreateTourForm(props) {
                                 style={{ width: "100%" }}
                                 value={name}
                                 onChange={handleTextChange}
+                                error={error}
+                                helperText={error ? 'Vui lòng điền tên tour' : ''}
                             />
                         </div>
                         <div className={classes.datepicker}>

@@ -32,6 +32,8 @@ export default function FeedPost(props) {
         dispatch(getPosts(auth.token));
     }
 
+
+
     return (
         <div className={classes.container}>
             <div className={classes.content}>

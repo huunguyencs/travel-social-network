@@ -132,6 +132,17 @@ export default function Tour(props) {
         setShowCmt(state => !state);
     }
 
+    const LoginRef = React.forwardRef((props, ref) => (
+        <LoginModal {...props} ref={ref} />
+    ))
+
+    const UserListRef = React.forwardRef((props, ref) => (
+        <UserList {...props} ref={ref} />
+    ))
+
+    const ShareRef = React.forwardRef((props, ref) => (
+        <SharePost {...props} ref={ref} />
+    ))
 
     return (
         <Card className={classes.cardContainer}>
@@ -155,7 +166,7 @@ export default function Tour(props) {
                                 timeout: 500,
                             }}
                         >
-                            <LoginModal />
+                            <LoginRef />
                         </Modal>
 
                         <Typography className={classes.numLike} onClick={handleOpen}>
@@ -173,7 +184,7 @@ export default function Tour(props) {
                                 timeout: 500,
                             }}
                         >
-                            <UserList listUser={tour.likes} title={"Đã thích"} handleClose={handleClose} />
+                            <UserListRef listUser={tour.likes} title={"Đã thích"} handleClose={handleClose} />
                         </Modal>
                         <QuestionAnswer onClick={handleCommentPress} className={classes.iconButton} />
                         <Typography className={classes.numCmt}>
@@ -192,7 +203,7 @@ export default function Tour(props) {
                                 timeout: 500,
                             }}
                         >
-                            <SharePost object={tour.shareId ? tour.shareId : tour} type="tour" handleClose={handleCloseShare} />
+                            <ShareRef object={tour.shareId ? tour.shareId : tour} type="tour" handleClose={handleCloseShare} />
                         </Modal>
                     </CardActions>
 

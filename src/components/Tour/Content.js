@@ -78,6 +78,10 @@ function ShareContent({ tour }) {
         setShowDelete(true);
     }
 
+    const ShareRef = React.forwardRef((props, ref) => (
+        <ShareUpdateForm {...props} ref={ref} />
+    ))
+
     const classes = postStyles();
     return (
         <>
@@ -116,7 +120,7 @@ function ShareContent({ tour }) {
                                                             timeout: 500,
                                                         }}
                                                     >
-                                                        <ShareUpdateForm object={tour} type={"tour"} handleClose={handleCloseEdit} />
+                                                        <ShareRef object={tour} type={"tour"} handleClose={handleCloseEdit} />
                                                     </Modal>
                                                     <MenuItem onClick={handleShowDelete}>Xóa bài viết</MenuItem>
                                                     <Dialog
@@ -341,6 +345,14 @@ function BaseContent(props) {
         handleCloseMenu();
     }
 
+    const ManageUserRef = React.forwardRef((props, ref) => (
+        <ManageUserJoin {...props} ref={ref} />
+    ))
+
+    const UserListRef = React.forwardRef((props, ref) => (
+        <UserList {...props} ref={ref} />
+    ))
+
     const [open, setOpen] = useState(false);
     return (
         <>
@@ -489,8 +501,8 @@ function BaseContent(props) {
                         }}
                     >
                         {auth.user && auth.user._id === tour.userId._id ?
-                            <ManageUserJoin listUser={[tour.userId, ...tour.joinIds]} updateJoin={updateJoin} tourId={tour._id} title={"Thành viên tham gia"} handleClose={handleCloseJoin} /> :
-                            <UserList listUser={[tour.userId, ...tour.joinIds]} title={"Thành viên tham gia"} handleClose={handleCloseJoin} />
+                            <ManageUserRef listUser={[tour.userId, ...tour.joinIds]} updateJoin={updateJoin} tourId={tour._id} title={"Thành viên tham gia"} handleClose={handleCloseJoin} /> :
+                            <UserListRef listUser={[tour.userId, ...tour.joinIds]} title={"Thành viên tham gia"} handleClose={handleCloseJoin} />
                         }
 
                     </Modal>

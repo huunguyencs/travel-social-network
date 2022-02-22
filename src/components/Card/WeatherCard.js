@@ -178,6 +178,7 @@ export default function WeatherCardGeneral(props) {
         });
     }, [position, setWeather])
 
+
     return (
         <Card className={classes.weatherCardContainer}>
             {weather ?

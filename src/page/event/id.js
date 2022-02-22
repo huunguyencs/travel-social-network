@@ -30,7 +30,7 @@ export default function EventPage(props) {
         if (id) {
             getEvent(id);
         }
-    })
+    }, [id])
 
 
     const classes = eventStyles();

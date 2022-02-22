@@ -80,6 +80,14 @@ function Header(props) {
 
     const classes = postStyles();
 
+    const UpdatePostRef = React.forwardRef((props, ref) => (
+        <UpdatePostForm {...props} ref={ref} />
+    ))
+
+    const UpdateReviewRef = React.forwardRef((props, ref) => (
+        <UpdateReviewForm {...props} ref={ref} />
+    ))
+
     return (
         <CardHeader
             avatar={
@@ -124,8 +132,8 @@ function Header(props) {
                                                     }}
                                                 >
                                                     {post.isPostReview ?
-                                                        <UpdateReviewForm review={post} handleClose={handleCloseEdit} /> :
-                                                        <UpdatePostForm post={post} handleClose={handleCloseEdit} />
+                                                        <UpdateReviewRef review={post} handleClose={handleCloseEdit} /> :
+                                                        <UpdatePostRef post={post} handleClose={handleCloseEdit} />
                                                     }
                                                 </Modal>
                                                 <MenuItem onClick={handleShowDelete}>Xóa bài viết</MenuItem>

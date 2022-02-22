@@ -122,6 +122,18 @@ export default function Post(props) {
         }
     }, [post, auth.user]);
 
+    const Login = React.forwardRef((props, ref) => (
+        <LoginModal {...props} ref={ref} />
+    ))
+
+    const User = React.forwardRef((props, ref) => (
+        <UserList {...props} ref={ref} />
+    ))
+
+    const ShareRef = React.forwardRef((props, ref) => (
+        <SharePost {...props} ref={ref} />
+    ))
+
     return (
         <Card className={classes.cardContainer}>
             {post && <>
@@ -143,7 +155,7 @@ export default function Post(props) {
                             timeout: 500,
                         }}
                     >
-                        <LoginModal />
+                        <Login />
                     </Modal>
                     <Typography className={classes.numLike} onClick={handleOpen}>
                         {post.likes.length}
@@ -160,7 +172,7 @@ export default function Post(props) {
                             timeout: 500,
                         }}
                     >
-                        <UserList listUser={post?.likes} title={"Đã thích"} handleClose={handleClose} />
+                        <User listUser={post?.likes} title={"Đã thích"} handleClose={handleClose} />
                     </Modal>
                     <QuestionAnswer onClick={handleShowCmt} className={classes.iconButton} />
                     <Typography className={classes.numCmt}>
@@ -179,7 +191,7 @@ export default function Post(props) {
                             timeout: 500,
                         }}
                     >
-                        <SharePost object={post.shareId ? post.shareId : post} type="post" handleClose={handleCloseShare} />
+                        <ShareRef object={post.shareId ? post.shareId : post} type="post" handleClose={handleCloseShare} />
                     </Modal>
                 </CardActions>
 
