@@ -2,6 +2,7 @@ import { Avatar, Box, Container, Grid, List, ListItem, ListItemAvatar, ListItemT
 import React, { useEffect, useState } from "react";
 import PropTypes from 'prop-types';
 import { Link, useLocation } from "react-router-dom";
+import clsx from 'clsx';
 
 import { searchStyles } from "../style";
 import SpeedDialButton from "../components/SpeedDialBtn";
@@ -111,12 +112,12 @@ export default function SearchPage(props) {
                         aria-label="Vertical tabs example"
                         className={classes.tabs}
                     >
-                        <Tab label="Tất cả" {...a11yProps(0)} className={value === 0 ? [classes.tab, classes.active] : classes.tab} />
-                        <Tab label="Địa điểm" {...a11yProps(1)} className={value === 1 ? [classes.tab, classes.active] : classes.tab} />
-                        <Tab label="Người dùng" {...a11yProps(2)} className={value === 2 ? [classes.tab, classes.active] : classes.tab} />
-                        <Tab label="Dịch vụ" {...a11yProps(3)} className={value === 3 ? [classes.tab, classes.active] : classes.tab} />
-                        <Tab label="Nhóm" {...a11yProps(4)} className={value === 4 ? [classes.tab, classes.active] : classes.tab} />
-                        <Tab label="Sự kiện" {...a11yProps(5)} className={value === 5 ? [classes.tab, classes.active] : classes.tab} />
+                        <Tab label="Tất cả" {...a11yProps(0)} className={value === 0 ? clsx(classes.tab, classes.active) : classes.tab} />
+                        <Tab label="Địa điểm" {...a11yProps(1)} className={value === 1 ? clsx(classes.tab, classes.active) : classes.tab} />
+                        <Tab label="Người dùng" {...a11yProps(2)} className={value === 2 ? clsx(classes.tab, classes.active) : classes.tab} />
+                        <Tab label="Dịch vụ" {...a11yProps(3)} className={value === 3 ? clsx(classes.tab, classes.active) : classes.tab} />
+                        <Tab label="Nhóm" {...a11yProps(4)} className={value === 4 ? clsx(classes.tab, classes.active) : classes.tab} />
+                        <Tab label="Sự kiện" {...a11yProps(5)} className={value === 5 ? clsx(classes.tab, classes.active) : classes.tab} />
                     </Tabs>
                 </Grid>
                 <Grid item md={9}>

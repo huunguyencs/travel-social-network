@@ -209,55 +209,72 @@ const profileStyles = makeStyles((theme) => ({
   change_password: {
     marginTop: 50
   },
-  inputfield: {
-    marginTop: 20,
-    marginLeft: 20
-  },
   change_password_form: {
     margin: 30
   },
-  cmnd_front:{
+  cmnd_front: {
     width: "200px",
     height: "140px",
     // overflow: "hidden",
     position: "relative",
     marginBottom: 10
   },
-  cmnd_front_upload:{
+  cmnd_front_upload: {
     position: "absolute",
     bottom: 0,
     right: 0,
   },
-  cmnd_front_image:{
+  cmnd_front_image: {
     width: "100%",
     height: "100%",
     objectFit: "cover"
   },
-  cmnd_textStrong:{
+  cmnd_textStrong: {
     fontWeight: "bold"
   },
-  input_cmnd_number:{
+  input_cmnd_number: {
     width: 550,
     marginBottom: 10
   },
-  cmnd_icon_upload:{
+  cmnd_icon_upload: {
     border: "2px solid white",
     color: "white",
   },
-  confirmAccount:{
+  confirmAccount: {
     marginTop: 20
   },
-  state0:{
+  state0: {
     color: "#ff7200",
     fontSize: 17
   },
-  state1:{
+  state1: {
     color: "#61c38e",
     fontSize: 17
   },
-  state2:{
+  state2: {
     color: "#ff0000",
     fontSize: 17
+  },
+  fullField: {
+    width: "100%",
+    marginBlock: 10
+  },
+  halfFeild: {
+    width: "50%",
+    marginBlock: 10
+  },
+  error: {
+    fontSize: "15px",
+    color: "red",
+    marginInline: "20px",
+    marginTop: "10px"
+  },
+  btnWrap: {
+    display: 'flex',
+    justifyContent: 'right'
+  },
+  updateBtn: {
+    margin: 20
   }
 }));
 

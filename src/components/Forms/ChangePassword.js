@@ -127,7 +127,7 @@ export default function ChangePassword(props) {
                         label="Mật khẩu cũ"
                         variant="outlined"
                         name="oldPassword"
-                        className="form-input"
+                        className={classes.fullField}
                         required
                         onChange={handleInput}
                         helperText={errors?.oldPassword}
@@ -154,7 +154,7 @@ export default function ChangePassword(props) {
                         label="Mật khẩu mới"
                         variant="outlined"
                         name="newPassword"
-                        className="form-input"
+                        className={classes.fullField}
                         required
                         onChange={handleInput}
                         helperText={errors?.newPassword}
@@ -181,7 +181,7 @@ export default function ChangePassword(props) {
                         label="Xác nhận mật khẩu"
                         variant="outlined"
                         name="confirmPassword"
-                        className="form-input"
+                        className={classes.fullField}
                         required
                         onChange={handleInput}
                         helperText={errors?.confirmPassword}
@@ -204,14 +204,14 @@ export default function ChangePassword(props) {
                     >
                     </TextField>
 
-                    <span style={{ fontSize: "15px", color: "red", marginInline: "20px", marginTop: "10px" }}>{errorServer}</span>
+                    <span className={classes.error}>{errorServer}</span>
 
-                    <div className="login-group">
+                    <div className={classes.btnWrap}>
                         <Button
                             variant="contained"
                             type="submit"
-                            className="login-button"
-
+                            className={classes.updateBtn}
+                            color="primary"
                         >
                             {
                                 loading ?

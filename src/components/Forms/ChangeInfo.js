@@ -218,7 +218,7 @@ export default function ChangeInfo(props) {
                             label="Tên tài khoản"
                             variant="outlined"
                             name="username"
-                            className="form-input"
+                            className={classes.fullField}
                             required
                             error={Boolean(errors?.username)}
                             helperText={errors?.username}
@@ -229,7 +229,7 @@ export default function ChangeInfo(props) {
                             label="Họ và Tên"
                             variant="outlined"
                             name="fullname"
-                            className="form-input"
+                            className={classes.fullField}
                             required
                             error={Boolean(errors?.fullname)}
                             helperText={errors?.fullname}
@@ -240,7 +240,7 @@ export default function ChangeInfo(props) {
                             label="Email"
                             variant="outlined"
                             name="email"
-                            className="form-input"
+                            className={classes.fullField}
                             required
                             error={Boolean(errors?.email)}
                             helperText={errors?.email}
@@ -251,7 +251,7 @@ export default function ChangeInfo(props) {
                             label="Số điện thoại"
                             variant="outlined"
                             name="phone"
-                            className="form-input"
+                            className={classes.fullField}
                             error={Boolean(errors?.phone)}
                             helperText={errors?.phone}
                             onChange={handleInput}
@@ -272,22 +272,22 @@ export default function ChangeInfo(props) {
                                 error={Boolean(errors?.birthday)}
                                 helperText={errors?.birthday}
                                 value={context.birthday}
-                                className={classes.inputfield}
+                            // className={classes.fullField}
                             />
                         </MuiPickersUtilsProvider>
-                        <RadioGroup id="gender" className={classes.inputfield} row aria-label="gender" name="gender" value={context?.gender} onChange={handleInput}>
+                        <RadioGroup id="gender" className={classes.fullField} row aria-label="gender" name="gender" value={context?.gender} onChange={handleInput}>
                             <FormControlLabel value="male" control={<Radio color="primary" />} label="Nam" />
                             <FormControlLabel value="female" control={<Radio color="primary" />} label="Nữ" />
                             <FormControlLabel value="other" control={<Radio color="primary" />} label="Khác" />
                         </RadioGroup>
 
-                        <span style={{ fontSize: "15px", color: "red", marginInline: "20px", marginTop: "10px" }}>{errorServer}</span>
-                        <div className="login-group">
+                        <span className={classes.error}>{errorServer}</span>
+                        <div className={classes.btnWrap}>
                             <Button
                                 variant="contained"
-                                // color="primary"
+                                color="primary"
                                 type="submit"
-                                className="login-button"
+                                className={classes.updateBtn}
                             >
                                 {
                                     loading ?

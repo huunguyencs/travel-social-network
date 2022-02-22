@@ -255,12 +255,12 @@ export default function ConfirmAccount(props) {
 
                         }
                     </div>
-                    <div className="login-group">
+                    <div className={classes.btnWrap}>
                         <Button
                             variant="contained"
-                            // color="primary"
+                            color="primary"
                             type="submit"
-                            className="login-button"
+                            className={classes.updateBtn}
                             onClick={handleSubmit}
                             disabled={user.confirmAccount.confirmId}
                         >
