@@ -207,6 +207,29 @@ export default function AddTour(props) {
         setShowChangeInfo(true);
     }
 
+    const refInfo = React.createRef();
+    const refUdDate = React.createRef();
+    const refAddLoc = React.createRef();
+    const refAddSv = React.createRef();
+
+    const UpdateTourInfoRef = React.forwardRef((props, ref) =>
+        <UpdateTourInfo {...props} innerRef={ref} />
+    )
+
+    const UpdateDateRef = React.forwardRef((props, ref) =>
+        <UpdateDateForm {...props} innerRef={ref} />
+    )
+
+    const AddLocationRef = React.forwardRef((props, ref) =>
+        <AddLocationForm {...props} innerRef={ref} />
+    )
+
+    const AddServiceRef = React.forwardRef((props, ref) =>
+        <Paper {...props} innerRef={ref}>
+            {props.children}
+        </Paper>
+    )
+
 
     const classes = tourdetailStyles();
 
@@ -253,7 +276,7 @@ export default function AddTour(props) {
                                     }}
                                 >
                                     <Fade in={showChangeInfo}>
-                                        <UpdateTourInfo name={createTour.name} content={createTour.content} hashtags={createTour.hashtags} image={createTour.image} handleClose={handleCloseUpdateInfo} cost={createTour.cost} />
+                                        <UpdateTourInfoRef ref={refInfo} name={createTour.name} content={createTour.content} hashtags={createTour.hashtags} image={createTour.image} handleClose={handleCloseUpdateInfo} cost={createTour.cost} />
                                     </Fade>
                                 </Modal>
                             </Grid>
@@ -350,7 +373,7 @@ export default function AddTour(props) {
                                     }}
                                 >
                                     <Fade in={showUpdateDate}>
-                                        <UpdateDateForm handleClose={handleCloseUpdate} indexDate={idx} currentDate={createTour.tour[idx].date} />
+                                        <UpdateDateRef ref={refUdDate} handleClose={handleCloseUpdate} indexDate={idx} currentDate={createTour.tour[idx].date} />
                                     </Fade>
                                 </Modal>
                             </div>
@@ -386,7 +409,8 @@ export default function AddTour(props) {
                                         }}
                                     >
                                         <Fade in={showAddLoc}>
-                                            <AddLocationForm
+                                            <AddLocationRef
+                                                ref={refAddLoc}
                                                 handleClose={handleCloseAddLoc}
                                                 indexDate={idx}
                                                 currentProvince={currentProvince}
@@ -412,7 +436,7 @@ export default function AddTour(props) {
                                         }}
                                     >
                                         <Fade in={showAddService}>
-                                            <Paper className={classes.paperAddService}>
+                                            <AddServiceRef ref={refAddSv} className={classes.paperAddService}>
                                                 <div className={classes.headerService}>
                                                     <IconButton onClick={handleCloseAddService} size="small">
                                                         <Close />
@@ -421,7 +445,7 @@ export default function AddTour(props) {
                                                 <div className={classes.addServiceContent}>
                                                     <AddService />
                                                 </div>
-                                            </Paper>
+                                            </AddServiceRef>
                                         </Fade>
                                     </Modal>
                                 </>

@@ -41,6 +41,12 @@ function CreatePostIcon(props) {
         setShow(false);
     }
 
+    const ref = React.createRef();
+
+    const CreatePostRef = React.forwardRef((props, ref) =>
+        <CreatePostForm {...props} innerRef={ref} />
+    )
+
 
     return (
         <>
@@ -58,7 +64,7 @@ function CreatePostIcon(props) {
                 }}
             >
                 <Fade in={show}>
-                    <CreatePostForm handleClose={handleClose} />
+                    <CreatePostRef ref={ref} handleClose={handleClose} />
                 </Fade>
             </Modal>
         </>
@@ -87,6 +93,12 @@ function CreateTourIcon(props) {
         setShow(false);
     }
 
+    const ref = React.createRef();
+
+    const CreateTourRef = React.forwardRef((props, ref) =>
+        <CreateTourForm {...props} innerRef={ref} />
+    )
+
 
     return (
         <>
@@ -104,7 +116,7 @@ function CreateTourIcon(props) {
                 }}
             >
                 <Fade in={show}>
-                    <CreateTourForm />
+                    <CreateTourRef ref={ref} />
                 </Fade>
             </Modal>
         </>

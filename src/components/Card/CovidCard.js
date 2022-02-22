@@ -41,6 +41,12 @@ export default function CovidCard(props) {
 
     }, [name])
 
+    const ref = React.createRef();
+
+    const CovidRef = React.forwardRef((props, ref) =>
+        <CovidModal {...props} innerRef={ref} />
+    )
+
 
     return (
         <Card className={classes.covidCardContainer}>
@@ -92,7 +98,7 @@ export default function CovidCard(props) {
                                 }}
                             >
                                 <Fade in={show}>
-                                    <CovidModal covid={covid} handleClose={handleClose} updateDate={updateDate} />
+                                    <CovidRef ref={ref} covid={covid} handleClose={handleClose} updateDate={updateDate} />
                                 </Fade>
                             </Modal>
                         </div> :

@@ -1,4 +1,4 @@
-import { Avatar, Backdrop, Box, Button, CardContent, CardHeader, CardMedia, CircularProgress, ClickAwayListener, Dialog, DialogActions, DialogContent, DialogTitle, Grow, IconButton, MenuItem, MenuList, Modal, Paper, Popper, Typography } from '@material-ui/core';
+import { Avatar, Backdrop, Box, Button, CardContent, CardHeader, CardMedia, CircularProgress, ClickAwayListener, Dialog, DialogActions, DialogContent, DialogTitle, IconButton, MenuItem, MenuList, Modal, Paper, Popper, Typography } from '@material-ui/core';
 import { MoreVert } from '@material-ui/icons';
 import { Rating } from '@material-ui/lab';
 import React, { useState } from 'react'
@@ -80,12 +80,15 @@ function Header(props) {
 
     const classes = postStyles();
 
+    const refPost = React.createRef();
+    const refTour = React.createRef();
+
     const UpdatePostRef = React.forwardRef((props, ref) => (
-        <UpdatePostForm {...props} ref={ref} />
+        <UpdatePostForm {...props} innerRef={ref} />
     ))
 
     const UpdateReviewRef = React.forwardRef((props, ref) => (
-        <UpdateReviewForm {...props} ref={ref} />
+        <UpdateReviewForm {...props} innerRef={ref} />
     ))
 
     return (
@@ -112,56 +115,56 @@ function Header(props) {
                                 onClose={handleCloseMenu}
                                 disablePortal
                             >
-                                <Grow
+                                {/* <Grow
                                     style={{ transformOrigin: "center bottom" }}
-                                >
+                                > */}
 
-                                    <ClickAwayListener onClickAway={handleCloseMenu}>
-                                        <Paper>
-                                            <MenuList>
-                                                <MenuItem onClick={handleShowEdit}>Chỉnh sửa bài viết</MenuItem>
-                                                <Modal
-                                                    aria-labelledby="transition-modal-edit"
-                                                    aria-describedby="transition-modal-edit-description"
-                                                    open={showEdit}
-                                                    className={classes.modal}
-                                                    onClose={handleCloseEdit}
-                                                    BackdropComponent={Backdrop}
-                                                    BackdropProps={{
-                                                        timeout: 500,
-                                                    }}
-                                                >
-                                                    {post.isPostReview ?
-                                                        <UpdateReviewRef review={post} handleClose={handleCloseEdit} /> :
-                                                        <UpdatePostRef post={post} handleClose={handleCloseEdit} />
-                                                    }
-                                                </Modal>
-                                                <MenuItem onClick={handleShowDelete}>Xóa bài viết</MenuItem>
-                                                <Dialog
-                                                    open={showDelete}
-                                                    onClose={handleCloseDelete}
-                                                    aria-labelledby="show-delete-dialog"
-                                                    aria-describedby="show-delete-dialog-description"
-                                                >
-                                                    <DialogTitle id="alert-dialog-title">{"Bạn có chắc chắn muốn xóa?"}</DialogTitle>
-                                                    <DialogContent>Bạn sẽ không thể khôi phục lại dữ liệu sau khi xóa!</DialogContent>
-                                                    <DialogActions>
-                                                        <Button onClick={handleCloseDelete}>
-                                                            Hủy
-                                                        </Button>
-                                                        <Button onClick={handleDeletePost} className={classes.delete}>
-                                                            {
-                                                                state.loading ?
-                                                                    <CircularProgress size={15} color='inherit' /> : "Xóa"
-                                                            }
-                                                        </Button>
-                                                    </DialogActions>
-                                                </Dialog>
-                                            </MenuList>
-                                        </Paper>
-                                    </ClickAwayListener>
+                                <ClickAwayListener onClickAway={handleCloseMenu}>
+                                    <Paper>
+                                        <MenuList>
+                                            <MenuItem onClick={handleShowEdit}>Chỉnh sửa bài viết</MenuItem>
+                                            <Modal
+                                                aria-labelledby="transition-modal-edit"
+                                                aria-describedby="transition-modal-edit-description"
+                                                open={showEdit}
+                                                className={classes.modal}
+                                                onClose={handleCloseEdit}
+                                                BackdropComponent={Backdrop}
+                                                BackdropProps={{
+                                                    timeout: 500,
+                                                }}
+                                            >
+                                                {post.isPostReview ?
+                                                    <UpdateReviewRef ref={refPost} review={post} handleClose={handleCloseEdit} /> :
+                                                    <UpdatePostRef ref={refTour} post={post} handleClose={handleCloseEdit} />
+                                                }
+                                            </Modal>
+                                            <MenuItem onClick={handleShowDelete}>Xóa bài viết</MenuItem>
+                                            <Dialog
+                                                open={showDelete}
+                                                onClose={handleCloseDelete}
+                                                aria-labelledby="show-delete-dialog"
+                                                aria-describedby="show-delete-dialog-description"
+                                            >
+                                                <DialogTitle id="alert-dialog-title">{"Bạn có chắc chắn muốn xóa?"}</DialogTitle>
+                                                <DialogContent>Bạn sẽ không thể khôi phục lại dữ liệu sau khi xóa!</DialogContent>
+                                                <DialogActions>
+                                                    <Button onClick={handleCloseDelete}>
+                                                        Hủy
+                                                    </Button>
+                                                    <Button onClick={handleDeletePost} className={classes.delete}>
+                                                        {
+                                                            state.loading ?
+                                                                <CircularProgress size={15} color='inherit' /> : "Xóa"
+                                                        }
+                                                    </Button>
+                                                </DialogActions>
+                                            </Dialog>
+                                        </MenuList>
+                                    </Paper>
+                                </ClickAwayListener>
 
-                                </Grow>
+                                {/* </Grow> */}
                             </Popper>
                         </>
                     }

@@ -144,6 +144,13 @@ export default function ChangeInfo(props) {
         }
     }, [submit, errors, context, dispatch, token])
 
+    const refBg = React.createRef();
+    const refAv = React.createRef();
+
+    const ChangeImageRef = React.forwardRef((props, ref) =>
+        <ChangeImage innerRef={ref} {...props} />
+    )
+
 
     return (
         <div className={classes.change_info}>
@@ -170,7 +177,7 @@ export default function ChangeInfo(props) {
                         }}
                     >
                         <Fade in={showChangeBg}>
-                            <ChangeImage title={"Thay đổi ảnh bìa"} img={user?.background} handleClose={handleCloseChangeBg} type='background' />
+                            <ChangeImageRef ref={refBg} title={"Thay đổi ảnh bìa"} img={user?.background} handleClose={handleCloseChangeBg} type='background' />
                         </Fade>
                     </Modal>
 
@@ -196,7 +203,7 @@ export default function ChangeInfo(props) {
                             }}
                         >
                             <Fade in={showChangeAvatar}>
-                                <ChangeImage title={"Thay đổi đại diện"} img={user?.avatar} handleClose={handleCloseChangeAvatar} type='avatar' />
+                                <ChangeImageRef ref={refAv} title={"Thay đổi đại diện"} img={user?.avatar} handleClose={handleCloseChangeAvatar} type='avatar' />
                             </Fade>
                         </Modal>
                     </div>

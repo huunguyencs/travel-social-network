@@ -132,16 +132,20 @@ export default function Tour(props) {
         setShowCmt(state => !state);
     }
 
+    const refLogin = React.createRef();
+    const refUser = React.createRef();
+    const refShare = React.createRef();
+
     const LoginRef = React.forwardRef((props, ref) => (
-        <LoginModal {...props} ref={ref} />
+        <LoginModal {...props} innerRef={ref} />
     ))
 
     const UserListRef = React.forwardRef((props, ref) => (
-        <UserList {...props} ref={ref} />
+        <UserList {...props} innerRef={ref} />
     ))
 
     const ShareRef = React.forwardRef((props, ref) => (
-        <SharePost {...props} ref={ref} />
+        <SharePost {...props} innerRef={ref} />
     ))
 
     return (
@@ -166,7 +170,7 @@ export default function Tour(props) {
                                 timeout: 500,
                             }}
                         >
-                            <LoginRef />
+                            <LoginRef ref={refLogin} />
                         </Modal>
 
                         <Typography className={classes.numLike} onClick={handleOpen}>
@@ -184,7 +188,7 @@ export default function Tour(props) {
                                 timeout: 500,
                             }}
                         >
-                            <UserListRef listUser={tour.likes} title={"Đã thích"} handleClose={handleClose} />
+                            <UserListRef ref={refUser} listUser={tour.likes} title={"Đã thích"} handleClose={handleClose} />
                         </Modal>
                         <QuestionAnswer onClick={handleCommentPress} className={classes.iconButton} />
                         <Typography className={classes.numCmt}>
@@ -203,7 +207,7 @@ export default function Tour(props) {
                                 timeout: 500,
                             }}
                         >
-                            <ShareRef object={tour.shareId ? tour.shareId : tour} type="tour" handleClose={handleCloseShare} />
+                            <ShareRef ref={refShare} object={tour.shareId ? tour.shareId : tour} type="tour" handleClose={handleCloseShare} />
                         </Modal>
                     </CardActions>
 

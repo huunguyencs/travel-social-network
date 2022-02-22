@@ -296,8 +296,10 @@ export default function Calendar() {
     const classes = calendarStyles();
 
     const DetailContent = React.forwardRef((props, ref) =>
-        <ShowDetail {...props} ref={ref} />
+        <ShowDetail {...props} innerRef={ref} />
     )
+
+    const ref = React.createRef();
 
     return (
         <div>
@@ -317,7 +319,7 @@ export default function Calendar() {
                     timeout: 500,
                 }}
             >
-                <DetailContent content={content} setDetail={setDetail} setContent={setContent} />
+                <DetailContent ref={ref} content={content} setDetail={setDetail} setContent={setContent} />
             </Modal>
         </div>
     )

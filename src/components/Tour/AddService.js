@@ -1,4 +1,4 @@
-import { Backdrop, Button, Card, ClickAwayListener, Collapse, Dialog, DialogActions, DialogTitle, Fade, Grow, IconButton, MenuItem, MenuList, Modal, Paper, Popper, TextField, Typography } from '@material-ui/core';
+import { Backdrop, Button, Card, ClickAwayListener, Collapse, Dialog, DialogActions, DialogTitle, Fade, IconButton, MenuItem, MenuList, Modal, Paper, Popper, TextField, Typography } from '@material-ui/core';
 import React, { useEffect, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux';
 import customAxios from '../../utils/fetchData';
@@ -193,35 +193,35 @@ export function ServiceCard(props) {
                                             onClose={handleCloseMenu}
                                             disablePortal
                                         >
-                                            <Grow
+                                            {/* <Grow
                                                 style={{ transformOrigin: "center bottom" }}
-                                            >
-                                                <ClickAwayListener onClickAway={handleCloseMenu}>
-                                                    <Paper>
-                                                        <MenuList>
-                                                            <MenuItem onClick={handleShowDelete}>
-                                                                Xóa
-                                                            </MenuItem>
-                                                            <Dialog
-                                                                open={showDelete}
-                                                                onClose={handleCloseDelete}
-                                                                aria-labelledby="alert-dialog-title"
-                                                                aria-describedby="alert-dialog-description"
-                                                            >
-                                                                <DialogTitle id="alert-dialog-title">{"Bạn có chắc chắn muốn xóa?"}</DialogTitle>
-                                                                <DialogActions>
-                                                                    <Button onClick={handleCloseDelete}>
-                                                                        Hủy
-                                                                    </Button>
-                                                                    <Button onClick={handleDelete} className={classes.delete}>
-                                                                        Xóa
-                                                                    </Button>
-                                                                </DialogActions>
-                                                            </Dialog>
-                                                        </MenuList>
-                                                    </Paper>
-                                                </ClickAwayListener>
-                                            </Grow>
+                                            > */}
+                                            <ClickAwayListener onClickAway={handleCloseMenu}>
+                                                <Paper>
+                                                    <MenuList>
+                                                        <MenuItem onClick={handleShowDelete}>
+                                                            Xóa
+                                                        </MenuItem>
+                                                        <Dialog
+                                                            open={showDelete}
+                                                            onClose={handleCloseDelete}
+                                                            aria-labelledby="alert-dialog-title"
+                                                            aria-describedby="alert-dialog-description"
+                                                        >
+                                                            <DialogTitle id="alert-dialog-title">{"Bạn có chắc chắn muốn xóa?"}</DialogTitle>
+                                                            <DialogActions>
+                                                                <Button onClick={handleCloseDelete}>
+                                                                    Hủy
+                                                                </Button>
+                                                                <Button onClick={handleDelete} className={classes.delete}>
+                                                                    Xóa
+                                                                </Button>
+                                                            </DialogActions>
+                                                        </Dialog>
+                                                    </MenuList>
+                                                </Paper>
+                                            </ClickAwayListener>
+                                            {/* </Grow> */}
                                         </Popper>
                                     </div>
                                 }
@@ -264,6 +264,11 @@ export default function AddService(props) {
     const [serviceCache, setServiceCache] = useState([]);
     const [provinceCache, setProvinceCache] = useState(null);
 
+    const ref = React.createRef();
+
+    const ServiceItemAddRef = React.forwardRef((props, ref) =>
+        <ServiceItemAddForm innerRef={ref} {...props} />
+    )
 
     return (
         <>
@@ -296,7 +301,8 @@ export default function AddService(props) {
                     }}
                 >
                     <Fade in={showForm}>
-                        <ServiceItemAddForm
+                        <ServiceItemAddRef
+                            ref={ref}
                             provinceCache={provinceCache}
                             setProvinceCache={setProvinceCache}
                             serviceCache={serviceCache}

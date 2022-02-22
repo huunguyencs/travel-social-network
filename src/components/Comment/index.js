@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { Avatar, Button, CircularProgress, ClickAwayListener, Dialog, DialogActions, DialogContent, DialogTitle, Grow, IconButton, MenuItem, MenuList, Paper, Popper, Typography } from "@material-ui/core";
+import { Avatar, Button, CircularProgress, ClickAwayListener, Dialog, DialogActions, DialogContent, DialogTitle, IconButton, MenuItem, MenuList, Paper, Popper, Typography } from "@material-ui/core";
 
 import { commentStyles } from "../../style";
 import { SeeMoreText } from "../SeeMoreText";
@@ -147,42 +147,42 @@ export default function Comment(props) {
                                         onClose={handleCloseMenu}
                                         disablePortal
                                     >
-                                        <Grow
+                                        {/* <Grow
                                             style={{ transformOrigin: 'center bottom' }}
-                                        >
-                                            <ClickAwayListener onClickAway={handleCloseMenu}>
-                                                <Paper>
-                                                    <MenuList>
-                                                        <MenuItem className={classes.menuItem} onClick={handleEdit}>
-                                                            Chỉnh sửa bình luận
-                                                        </MenuItem>
-                                                        <MenuItem className={classes.menuItem} onClick={handleShowDelete}>
-                                                            Xóa bình luận
-                                                        </MenuItem>
-                                                        <Dialog
-                                                            open={showDelete}
-                                                            onClose={handleCloseDelete}
-                                                            aria-labelledby="show-delete-dialog"
-                                                            aria-describedby="show-delete-dialog-description"
-                                                        >
-                                                            <DialogTitle id="alert-dialog-title">{"Bạn có chắc chắn muốn xóa?"}</DialogTitle>
+                                        > */}
+                                        <ClickAwayListener onClickAway={handleCloseMenu}>
+                                            <Paper>
+                                                <MenuList>
+                                                    <MenuItem className={classes.menuItem} onClick={handleEdit}>
+                                                        Chỉnh sửa bình luận
+                                                    </MenuItem>
+                                                    <MenuItem className={classes.menuItem} onClick={handleShowDelete}>
+                                                        Xóa bình luận
+                                                    </MenuItem>
+                                                    <Dialog
+                                                        open={showDelete}
+                                                        onClose={handleCloseDelete}
+                                                        aria-labelledby="show-delete-dialog"
+                                                        aria-describedby="show-delete-dialog-description"
+                                                    >
+                                                        <DialogTitle id="alert-dialog-title">{"Bạn có chắc chắn muốn xóa?"}</DialogTitle>
 
-                                                            <DialogContent>Bạn sẽ không thể khôi phục lại dữ liệu sau khi xóa!</DialogContent>
-                                                            <DialogActions>
-                                                                <Button onClick={handleCloseDelete}>
-                                                                    Hủy
-                                                                </Button>
-                                                                <Button onClick={handleDelete} className={classes.delete}>
-                                                                    {
-                                                                        loadingDelete ? <CircularProgress size={15} color='inherit' /> : "Xóa"
-                                                                    }
-                                                                </Button>
-                                                            </DialogActions>
-                                                        </Dialog>
-                                                    </MenuList>
-                                                </Paper>
-                                            </ClickAwayListener>
-                                        </Grow>
+                                                        <DialogContent>Bạn sẽ không thể khôi phục lại dữ liệu sau khi xóa!</DialogContent>
+                                                        <DialogActions>
+                                                            <Button onClick={handleCloseDelete}>
+                                                                Hủy
+                                                            </Button>
+                                                            <Button onClick={handleDelete} className={classes.delete}>
+                                                                {
+                                                                    loadingDelete ? <CircularProgress size={15} color='inherit' /> : "Xóa"
+                                                                }
+                                                            </Button>
+                                                        </DialogActions>
+                                                    </Dialog>
+                                                </MenuList>
+                                            </Paper>
+                                        </ClickAwayListener>
+                                        {/* </Grow> */}
                                     </Popper>
                                 </div>
                             }

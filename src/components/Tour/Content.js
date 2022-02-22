@@ -1,4 +1,4 @@
-import { Avatar, Backdrop, Button, CardContent, CardHeader, CardMedia, CircularProgress, ClickAwayListener, Dialog, DialogActions, DialogContent, DialogTitle, Grow, IconButton, MenuItem, MenuList, Modal, Paper, Popper, Typography } from '@material-ui/core'
+import { Avatar, Backdrop, Button, CardContent, CardHeader, CardMedia, CircularProgress, ClickAwayListener, Dialog, DialogActions, DialogContent, DialogTitle, IconButton, MenuItem, MenuList, Modal, Paper, Popper, Typography } from '@material-ui/core'
 import { Bookmark, BookmarkBorder, MoreVert } from '@material-ui/icons'
 import React, { useEffect, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
@@ -78,8 +78,10 @@ function ShareContent({ tour }) {
         setShowDelete(true);
     }
 
+    const ref = React.createRef();
+
     const ShareRef = React.forwardRef((props, ref) => (
-        <ShareUpdateForm {...props} ref={ref} />
+        <ShareUpdateForm {...props} innerRef={ref} />
     ))
 
     const classes = postStyles();
@@ -102,51 +104,51 @@ function ShareContent({ tour }) {
                                     onClose={handleCloseMenu}
                                     disablePortal
                                 >
-                                    <Grow
+                                    {/* <Grow
                                         style={{ transformOrigin: "center bottom" }}
-                                    >
-                                        <ClickAwayListener onClickAway={handleCloseMenu}>
-                                            <Paper>
-                                                <MenuList>
-                                                    <MenuItem onClick={handleShowEdit}>Chỉnh sửa bài viết</MenuItem>
-                                                    <Modal
-                                                        aria-labelledby="transition-modal-edit"
-                                                        aria-describedby="transition-modal-edit-description"
-                                                        open={showEdit}
-                                                        className={classes.modal}
-                                                        onClose={handleCloseEdit}
-                                                        BackdropComponent={Backdrop}
-                                                        BackdropProps={{
-                                                            timeout: 500,
-                                                        }}
-                                                    >
-                                                        <ShareRef object={tour} type={"tour"} handleClose={handleCloseEdit} />
-                                                    </Modal>
-                                                    <MenuItem onClick={handleShowDelete}>Xóa bài viết</MenuItem>
-                                                    <Dialog
-                                                        open={showDelete}
-                                                        onClose={handleCloseDelete}
-                                                        aria-labelledby="show-delete-dialog"
-                                                        aria-describedby="show-delete-dialog-description"
-                                                    >
-                                                        <DialogTitle id="alert-dialog-title">{"Bạn có chắc chắn muốn xóa?"}</DialogTitle>
+                                    > */}
+                                    <ClickAwayListener onClickAway={handleCloseMenu}>
+                                        <Paper>
+                                            <MenuList>
+                                                <MenuItem onClick={handleShowEdit}>Chỉnh sửa bài viết</MenuItem>
+                                                <Modal
+                                                    aria-labelledby="transition-modal-edit"
+                                                    aria-describedby="transition-modal-edit-description"
+                                                    open={showEdit}
+                                                    className={classes.modal}
+                                                    onClose={handleCloseEdit}
+                                                    BackdropComponent={Backdrop}
+                                                    BackdropProps={{
+                                                        timeout: 500,
+                                                    }}
+                                                >
+                                                    <ShareRef ref={ref} object={tour} type={"tour"} handleClose={handleCloseEdit} />
+                                                </Modal>
+                                                <MenuItem onClick={handleShowDelete}>Xóa bài viết</MenuItem>
+                                                <Dialog
+                                                    open={showDelete}
+                                                    onClose={handleCloseDelete}
+                                                    aria-labelledby="show-delete-dialog"
+                                                    aria-describedby="show-delete-dialog-description"
+                                                >
+                                                    <DialogTitle id="alert-dialog-title">{"Bạn có chắc chắn muốn xóa?"}</DialogTitle>
 
-                                                        <DialogContent>Bạn sẽ không thể khôi phục lại dữ liệu sau khi xóa!</DialogContent>
-                                                        <DialogActions>
-                                                            <Button onClick={handleCloseDelete}>
-                                                                Hủy
-                                                            </Button>
-                                                            <Button onClick={handleDeleteTour} className={classes.delete}>
-                                                                {
-                                                                    state.loading ? <CircularProgress size={15} color='inherit' /> : "Xóa"
-                                                                }
-                                                            </Button>
-                                                        </DialogActions>
-                                                    </Dialog>
-                                                </MenuList>
-                                            </Paper>
-                                        </ClickAwayListener>
-                                    </Grow>
+                                                    <DialogContent>Bạn sẽ không thể khôi phục lại dữ liệu sau khi xóa!</DialogContent>
+                                                    <DialogActions>
+                                                        <Button onClick={handleCloseDelete}>
+                                                            Hủy
+                                                        </Button>
+                                                        <Button onClick={handleDeleteTour} className={classes.delete}>
+                                                            {
+                                                                state.loading ? <CircularProgress size={15} color='inherit' /> : "Xóa"
+                                                            }
+                                                        </Button>
+                                                    </DialogActions>
+                                                </Dialog>
+                                            </MenuList>
+                                        </Paper>
+                                    </ClickAwayListener>
+                                    {/* </Grow> */}
                                 </Popper>
                             </>
                         }
@@ -345,12 +347,15 @@ function BaseContent(props) {
         handleCloseMenu();
     }
 
+    const refMg = React.createRef();
+    const refUser = React.createRef();
+
     const ManageUserRef = React.forwardRef((props, ref) => (
-        <ManageUserJoin {...props} ref={ref} />
+        <ManageUserJoin {...props} innerRef={ref} />
     ))
 
     const UserListRef = React.forwardRef((props, ref) => (
-        <UserList {...props} ref={ref} />
+        <UserList {...props} innerRef={ref} />
     ))
 
     const [open, setOpen] = useState(false);
@@ -371,64 +376,64 @@ function BaseContent(props) {
                             onClose={handleCloseMenu}
                             disablePortal
                         >
-                            <Grow
+                            {/* <Grow
                                 style={{ transformOrigin: "center bottom" }}
-                            >
-                                <ClickAwayListener onClickAway={handleCloseMenu}>
-                                    <Paper>
-                                        <>
-                                            {
-                                                auth.user && auth.user._id === tour.userId._id && !share ?
-                                                    <MenuList>
-                                                        <MenuItem component={Link} to={`/tour/${tour._id}?edit=true`}>Chỉnh sửa hành trình</MenuItem>
-                                                        <MenuItem onClick={handleShowDelete}>Xóa hành trình</MenuItem>
-                                                        <Dialog
-                                                            open={showDelete}
-                                                            onClose={handleCloseDelete}
-                                                            aria-labelledby="show-delete-dialog"
-                                                            aria-describedby="show-delete-dialog-description"
-                                                        >
-                                                            <DialogTitle id="alert-dialog-title">{"Bạn có chắc chắn muốn xóa?"}</DialogTitle>
-                                                            <DialogContent>Bạn sẽ không thể khôi phục lại dữ liệu sau khi xóa!</DialogContent>
-                                                            <DialogActions>
-                                                                <Button onClick={handleCloseDelete}>
-                                                                    Hủy
-                                                                </Button>
-                                                                <Button onClick={handleDeleteTour} className={classes.delete}>
-                                                                    {
-                                                                        state.loadingDelete ? <CircularProgress color='inherit' size={15} /> : "Xóa"
-                                                                    }
-                                                                </Button>
-                                                            </DialogActions>
-                                                        </Dialog>
-                                                    </MenuList> :
-                                                    <>
-                                                        {
-                                                            isSaved() ?
-                                                                <MenuList>
-                                                                    <MenuItem onClick={handleUnSaveTour}>
-                                                                        <Bookmark fontSize="small" />
-                                                                        Hành trình đã lưu
-                                                                    </MenuItem>
-                                                                </MenuList>
-                                                                :
-                                                                <MenuList>
-                                                                    <MenuItem onClick={handleSaveTour}>
-                                                                        <BookmarkBorder fontSize="small" />
-                                                                        Lưu hành trình
-                                                                    </MenuItem>
-                                                                </MenuList>
+                            > */}
+                            <ClickAwayListener onClickAway={handleCloseMenu}>
+                                <Paper>
+                                    <>
+                                        {
+                                            auth.user && auth.user._id === tour.userId._id && !share ?
+                                                <MenuList>
+                                                    <MenuItem component={Link} to={`/tour/${tour._id}?edit=true`}>Chỉnh sửa hành trình</MenuItem>
+                                                    <MenuItem onClick={handleShowDelete}>Xóa hành trình</MenuItem>
+                                                    <Dialog
+                                                        open={showDelete}
+                                                        onClose={handleCloseDelete}
+                                                        aria-labelledby="show-delete-dialog"
+                                                        aria-describedby="show-delete-dialog-description"
+                                                    >
+                                                        <DialogTitle id="alert-dialog-title">{"Bạn có chắc chắn muốn xóa?"}</DialogTitle>
+                                                        <DialogContent>Bạn sẽ không thể khôi phục lại dữ liệu sau khi xóa!</DialogContent>
+                                                        <DialogActions>
+                                                            <Button onClick={handleCloseDelete}>
+                                                                Hủy
+                                                            </Button>
+                                                            <Button onClick={handleDeleteTour} className={classes.delete}>
+                                                                {
+                                                                    state.loadingDelete ? <CircularProgress color='inherit' size={15} /> : "Xóa"
+                                                                }
+                                                            </Button>
+                                                        </DialogActions>
+                                                    </Dialog>
+                                                </MenuList> :
+                                                <>
+                                                    {
+                                                        isSaved() ?
+                                                            <MenuList>
+                                                                <MenuItem onClick={handleUnSaveTour}>
+                                                                    <Bookmark fontSize="small" />
+                                                                    Hành trình đã lưu
+                                                                </MenuItem>
+                                                            </MenuList>
+                                                            :
+                                                            <MenuList>
+                                                                <MenuItem onClick={handleSaveTour}>
+                                                                    <BookmarkBorder fontSize="small" />
+                                                                    Lưu hành trình
+                                                                </MenuItem>
+                                                            </MenuList>
 
-                                                        }
+                                                    }
 
-                                                    </>
-                                            }
+                                                </>
+                                        }
 
-                                        </>
+                                    </>
 
-                                    </Paper>
-                                </ClickAwayListener>
-                            </Grow>
+                                </Paper>
+                            </ClickAwayListener>
+                            {/* </Grow> */}
                         </Popper>
                     </>
 
@@ -501,8 +506,8 @@ function BaseContent(props) {
                         }}
                     >
                         {auth.user && auth.user._id === tour.userId._id ?
-                            <ManageUserRef listUser={[tour.userId, ...tour.joinIds]} updateJoin={updateJoin} tourId={tour._id} title={"Thành viên tham gia"} handleClose={handleCloseJoin} /> :
-                            <UserListRef listUser={[tour.userId, ...tour.joinIds]} title={"Thành viên tham gia"} handleClose={handleCloseJoin} />
+                            <ManageUserRef ref={refMg} listUser={[tour.userId, ...tour.joinIds]} updateJoin={updateJoin} tourId={tour._id} title={"Thành viên tham gia"} handleClose={handleCloseJoin} /> :
+                            <UserListRef ref={refUser} listUser={[tour.userId, ...tour.joinIds]} title={"Thành viên tham gia"} handleClose={handleCloseJoin} />
                         }
 
                     </Modal>

@@ -66,6 +66,13 @@ export default function TourDetail(props) {
         history.push('/createtour');
     }
 
+    const ref = React.createRef();
+
+    const DetailService = React.forwardRef((props, ref) =>
+        <Paper innerRef={ref} {...props}>
+            {props.children}
+        </Paper>
+    )
 
     return (
         <>
@@ -99,14 +106,14 @@ export default function TourDetail(props) {
                                 }}
                             >
                                 <Fade in={showService}>
-                                    <Paper className={classes.servicePaper}>
+                                    <DetailService ref={ref} className={classes.servicePaper}>
                                         <div className={classes.center}>
                                             <Typography variant="h5">Dịch vụ trong tour</Typography>
                                         </div>
                                         {tour.services.map((item, index) => (
                                             <ServiceCard service={item} key={index} review={isOwn} />
                                         ))}
-                                    </Paper>
+                                    </DetailService>
                                 </Fade>
                             </Modal>
                             <div className={classes.hashtagWrap}>

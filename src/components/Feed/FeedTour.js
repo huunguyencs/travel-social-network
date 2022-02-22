@@ -30,6 +30,12 @@ export default function FeedTour(props) {
         dispatch(getTours());
     }
 
+    const ref = React.createRef();
+
+    const CreateTourRef = React.forwardRef((props, ref) =>
+        <CreateTourForm innerRef={ref} {...props} />
+    )
+
     return (
         <div className={classes.container}>
             <div className={classes.content}>
@@ -50,7 +56,7 @@ export default function FeedTour(props) {
                         }}
                     >
                         <Fade in={show}>
-                            <CreateTourForm handleClose={handleClose} />
+                            <CreateTourRef ref={ref} handleClose={handleClose} />
                         </Fade>
                     </Modal>
                 </div>

@@ -118,18 +118,15 @@ export default function VolunteerDetail(props) {
                                     <Typography>Lịch trình ngày: {idx}</Typography>
                                     {
                                         volunteer.date[idx].activities.map((item, index) => (
-                                            <>
-
-                                                <List component="nav" aria-label="main folders">
-                                                    <ListItem button className={classes.scheduleItem}>
-                                                        <ListItemIcon>
-                                                            <RadioButtonUnchecked style={{ color: "#A5DEC8" }} />
-                                                        </ListItemIcon>
-                                                        <ListItemText primary={item.time} style={{ minWidth: "80px" }} />
-                                                        <ListItemText primary={item.activity} />
-                                                    </ListItem>
-                                                </List>
-                                            </>
+                                            <List key={index} component="nav" aria-label="main folders">
+                                                <ListItem button className={classes.scheduleItem}>
+                                                    <ListItemIcon>
+                                                        <RadioButtonUnchecked style={{ color: "#A5DEC8" }} />
+                                                    </ListItemIcon>
+                                                    <ListItemText primary={item.time} style={{ minWidth: "80px" }} />
+                                                    <ListItemText primary={item.activity} />
+                                                </ListItem>
+                                            </List>
                                         ))
                                     }
                                 </Grid>

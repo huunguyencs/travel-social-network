@@ -130,8 +130,11 @@ export default function ProfileAvatar(props) {
     }
   }, [user])
 
+  const refFollowing = React.createRef();
+  const refFollower = React.createRef();
+
   const UserListRef = React.forwardRef((props, ref) => (
-    <UserList {...props} ref={ref} />
+    <UserList {...props} innerRef={ref} />
   ))
 
 
@@ -181,7 +184,7 @@ export default function ProfileAvatar(props) {
                     timeout: 500,
                   }}
                 >
-                  <UserListRef listUser={user?.followings} title={"Đang theo dõi"} handleClose={handleCloseFollowing} />
+                  <UserListRef ref={refFollowing} listUser={user?.followings} title={"Đang theo dõi"} handleClose={handleCloseFollowing} />
                 </Modal>
                 <Typography className={classes.followInfo} onClick={handleOpenFollower} >{user.followers.length} người theo dõi</Typography>
                 <Modal
@@ -196,7 +199,7 @@ export default function ProfileAvatar(props) {
                     timeout: 500,
                   }}
                 >
-                  <UserListRef listUser={user?.followers} title={"Người theo dõi"} handleClose={handleCloseFollower} />
+                  <UserListRef ref={refFollower} listUser={user?.followers} title={"Người theo dõi"} handleClose={handleCloseFollower} />
                 </Modal>
               </div>
             </div>

@@ -1,4 +1,4 @@
-import { Button, Card, CardContent, CardMedia, Grid, IconButton, Modal, Typography, Backdrop, Fade, MenuItem, Dialog, DialogTitle, DialogActions, Collapse, CircularProgress, CardActions, Popper, Grow, ClickAwayListener, Paper, MenuList } from "@material-ui/core";
+import { Button, Card, CardContent, CardMedia, Grid, IconButton, Modal, Typography, Backdrop, Fade, MenuItem, Dialog, DialogTitle, DialogActions, Collapse, CircularProgress, CardActions, Popper, ClickAwayListener, Paper, MenuList } from "@material-ui/core";
 import React, { useState } from "react";
 import { Rating } from '@material-ui/lab'
 import { MoreVert } from "@material-ui/icons";
@@ -94,6 +94,17 @@ export default function Location(props) {
 
     }
 
+    const refEdit = React.createRef();
+    const refCr = React.createRef();
+
+    const EditLocationRef = React.forwardRef((props, ref) =>
+        <EditLocationForm {...props} innerRef={ref} />
+    )
+
+    const CreateReviewRef = React.forwardRef((props, ref) =>
+        <CreateReviewForm {...props} innerRef={ref} />
+    )
+
     return (
         <Card className={classes.cardContainer}>
 
@@ -135,59 +146,60 @@ export default function Location(props) {
                                         onClose={handleCloseMenu}
                                         disablePortal
                                     >
-                                        <Grow
+                                        {/* <Grow
                                             style={{ transformOrigin: "center bottom" }}
-                                        >
-                                            <ClickAwayListener onClickAway={handleCloseMenu}>
-                                                <Paper>
-                                                    <MenuList>
-                                                        <MenuItem onClick={handleShowEdit}>
-                                                            Chỉnh sửa
-                                                        </MenuItem>
-                                                        <Modal
-                                                            aria-labelledby="transition-modal-edit"
-                                                            aria-describedby="transition-modal-edit-description"
-                                                            open={editLoc}
-                                                            className={classes.modal}
-                                                            onClose={handleCloseEdit}
-                                                            BackdropComponent={Backdrop}
-                                                            BackdropProps={{
-                                                                timeout: 500,
-                                                            }}
-                                                        >
-                                                            <Fade in={editLoc}>
-                                                                <EditLocationForm
-                                                                    handleCloseParent={handleCloseMenu}
-                                                                    handleClose={handleCloseEdit}
-                                                                    indexDate={indexDate}
-                                                                    indexLocation={indexLocation}
-                                                                    location={location}
-                                                                />
-                                                            </Fade>
-                                                        </Modal>
-                                                        <MenuItem onClick={handleShowDelete}>
-                                                            Xóa
-                                                        </MenuItem>
-                                                        <Dialog
-                                                            open={showDeleteLocation}
-                                                            onClose={handleCloseDelete}
-                                                            aria-labelledby="alert-dialog-title"
-                                                            aria-describedby="alert-dialog-description"
-                                                        >
-                                                            <DialogTitle id="alert-dialog-title">{"Bạn có chắc chắn muốn xóa?"}</DialogTitle>
-                                                            <DialogActions>
-                                                                <Button onClick={handleCloseDelete}>
-                                                                    Hủy
-                                                                </Button>
-                                                                <Button onClick={handleDeleteLocation} className={classes.delete}>
-                                                                    Xóa
-                                                                </Button>
-                                                            </DialogActions>
-                                                        </Dialog>
-                                                    </MenuList>
-                                                </Paper>
-                                            </ClickAwayListener>
-                                        </Grow>
+                                        > */}
+                                        <ClickAwayListener onClickAway={handleCloseMenu}>
+                                            <Paper>
+                                                <MenuList>
+                                                    <MenuItem onClick={handleShowEdit}>
+                                                        Chỉnh sửa
+                                                    </MenuItem>
+                                                    <Modal
+                                                        aria-labelledby="transition-modal-edit"
+                                                        aria-describedby="transition-modal-edit-description"
+                                                        open={editLoc}
+                                                        className={classes.modal}
+                                                        onClose={handleCloseEdit}
+                                                        BackdropComponent={Backdrop}
+                                                        BackdropProps={{
+                                                            timeout: 500,
+                                                        }}
+                                                    >
+                                                        <Fade in={editLoc}>
+                                                            <EditLocationRef
+                                                                ref={refEdit}
+                                                                handleCloseParent={handleCloseMenu}
+                                                                handleClose={handleCloseEdit}
+                                                                indexDate={indexDate}
+                                                                indexLocation={indexLocation}
+                                                                location={location}
+                                                            />
+                                                        </Fade>
+                                                    </Modal>
+                                                    <MenuItem onClick={handleShowDelete}>
+                                                        Xóa
+                                                    </MenuItem>
+                                                    <Dialog
+                                                        open={showDeleteLocation}
+                                                        onClose={handleCloseDelete}
+                                                        aria-labelledby="alert-dialog-title"
+                                                        aria-describedby="alert-dialog-description"
+                                                    >
+                                                        <DialogTitle id="alert-dialog-title">{"Bạn có chắc chắn muốn xóa?"}</DialogTitle>
+                                                        <DialogActions>
+                                                            <Button onClick={handleCloseDelete}>
+                                                                Hủy
+                                                            </Button>
+                                                            <Button onClick={handleDeleteLocation} className={classes.delete}>
+                                                                Xóa
+                                                            </Button>
+                                                        </DialogActions>
+                                                    </Dialog>
+                                                </MenuList>
+                                            </Paper>
+                                        </ClickAwayListener>
+                                        {/* </Grow> */}
                                     </Popper>
                                 </div>
                             }
@@ -207,7 +219,8 @@ export default function Location(props) {
                             }}
                         >
                             <Fade in={showCreateRv}>
-                                <CreateReviewForm
+                                <CreateReviewRef
+                                    ref={refCr}
                                     location={location.location}
                                     cost={location.cost}
                                     handleClose={handleClose}

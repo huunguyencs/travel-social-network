@@ -93,7 +93,7 @@ export default function UserList(props) {
             <div style={{ position: "relative", overflowY: "auto" }}>
                 <ul>
                     {listUser.map((user) => (
-                        <li button className={classes.modal_body_user} key={user._id}>
+                        <li className={classes.modal_body_user} key={user._id}>
                             <div className={classes.userWrap}>
                                 <Avatar alt="avatar" src={user.avatar} className={classes.avatar} />
                                 <div className={classes.fullnameWrap}>
@@ -104,7 +104,7 @@ export default function UserList(props) {
                                 {
                                     auth.user && user._id !== auth.user._id &&
                                     <Button variant="outlined" className={classes.modal_body_user_button} onClick={() => handleFollow(user._id)}>
-                                        {stateFollow.loading && stateFollow.id === user._id ? <CircularProgress size={16} color='inherit' /> : isFollowed(user._id) ? "Hủy theo dõi" : "Theo dõi"}
+                                        {(stateFollow.loading && stateFollow.id === user._id) ? <CircularProgress size={16} color='inherit' /> : (isFollowed(user._id) ? "Hủy theo dõi" : "Theo dõi")}
                                     </Button>
                                 }
                             </div>

@@ -32,6 +32,10 @@ export default function FeedPost(props) {
         dispatch(getPosts(auth.token));
     }
 
+    const CreatePostRef = React.forwardRef((props, ref) => (
+        <CreatePostForm {...props} innerRef={ref} />
+    ))
+    const ref = React.createRef();
 
 
     return (
@@ -61,7 +65,7 @@ export default function FeedPost(props) {
                         }}
                     >
                         <Fade in={show}>
-                            <CreatePostForm handleClose={handleClose} />
+                            <CreatePostRef ref={ref} handleClose={handleClose} />
                         </Fade>
                     </Modal>
 

@@ -178,6 +178,12 @@ export default function WeatherCardGeneral(props) {
         });
     }, [position, setWeather])
 
+    const ref = React.createRef();
+
+    const WeatherFocastRef = React.forwardRef((props, ref) =>
+        <WeatherFocast innerRef={ref} {...props} />
+    )
+
 
     return (
         <Card className={classes.weatherCardContainer}>
@@ -205,7 +211,7 @@ export default function WeatherCardGeneral(props) {
                         }}
                     >
                         <Fade in={show}>
-                            <WeatherFocast weather={weather.daily} handleClose={handleClose} nameShow={nameShow} alert={weather.alert} />
+                            <WeatherFocastRef ref={ref} weather={weather.daily} handleClose={handleClose} nameShow={nameShow} alert={weather.alert} />
                         </Fade>
                     </Modal>
                 </> :

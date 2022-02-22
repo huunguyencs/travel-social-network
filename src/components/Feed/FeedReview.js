@@ -32,6 +32,12 @@ export default function FeedReview(props) {
         }
     }
 
+    const ref = React.createRef();
+
+    const CreateReviewRef = React.forwardRef((props, ref) =>
+        <CreateReview innerRef={ref} {...props} />
+    )
+
 
     return (
         <Container>
@@ -60,7 +66,7 @@ export default function FeedReview(props) {
                         }}
                     >
                         <Fade in={open}>
-                            <CreateReview handleClose={handleClose} location={location} />
+                            <CreateReviewRef ref={ref} handleClose={handleClose} location={location} />
                         </Fade>
                     </Modal>
 

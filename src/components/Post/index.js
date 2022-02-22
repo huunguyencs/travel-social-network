@@ -122,16 +122,20 @@ export default function Post(props) {
         }
     }, [post, auth.user]);
 
+    const refLogin = React.createRef();
+    const refUser = React.createRef();
+    const refShare = React.createRef();
+
     const Login = React.forwardRef((props, ref) => (
-        <LoginModal {...props} ref={ref} />
+        <LoginModal {...props} innerRef={ref} />
     ))
 
     const User = React.forwardRef((props, ref) => (
-        <UserList {...props} ref={ref} />
+        <UserList {...props} innerRef={ref} />
     ))
 
     const ShareRef = React.forwardRef((props, ref) => (
-        <SharePost {...props} ref={ref} />
+        <SharePost {...props} innerRef={ref} />
     ))
 
     return (
@@ -155,7 +159,7 @@ export default function Post(props) {
                             timeout: 500,
                         }}
                     >
-                        <Login />
+                        <Login ref={refLogin} />
                     </Modal>
                     <Typography className={classes.numLike} onClick={handleOpen}>
                         {post.likes.length}
@@ -172,7 +176,7 @@ export default function Post(props) {
                             timeout: 500,
                         }}
                     >
-                        <User listUser={post?.likes} title={"Đã thích"} handleClose={handleClose} />
+                        <User ref={refUser} listUser={post?.likes} title={"Đã thích"} handleClose={handleClose} />
                     </Modal>
                     <QuestionAnswer onClick={handleShowCmt} className={classes.iconButton} />
                     <Typography className={classes.numCmt}>
@@ -191,7 +195,7 @@ export default function Post(props) {
                             timeout: 500,
                         }}
                     >
-                        <ShareRef object={post.shareId ? post.shareId : post} type="post" handleClose={handleCloseShare} />
+                        <ShareRef ref={refShare} object={post.shareId ? post.shareId : post} type="post" handleClose={handleCloseShare} />
                     </Modal>
                 </CardActions>
 
