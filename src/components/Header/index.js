@@ -123,8 +123,8 @@ export default function Header(props) {
                     {
                         user ? (
                             <>
-                                <div className={classes.user} title={user.fullname}>
-                                    <Button className={classes.button} onClick={handleToggleUser} controls={toggleMenuUser ? "user-menu" : undefined}>
+                                <div className={classes.user} >
+                                    <Button className={classes.button} onClick={handleToggleUser} controls={toggleMenuUser ? "user-menu" : undefined} title={user.fullname}>
                                         <Avatar component="span" className={classes.avatar} alt="avatar" src={user.avatar} />
                                         <Typography noWrap={false} className={classes.userName}>{user.fullname}</Typography>
                                     </Button>

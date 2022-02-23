@@ -245,7 +245,6 @@ export const removeReview = (tourDateId, token, locationId) => async (dispatch) 
 
 export const getTourSaved = (token) => async (dispatch) => {
     try {
-        console.log(token);
         const res = await customAxios(token).get(`/user/get_tour_saved`);
         var tours = res.data.tours.map(item => sortTourDate(item))
         // console.log(res.data.tours);

@@ -246,9 +246,6 @@ export default function Location(props) {
                                     />
                                     <Typography>{review.content}</Typography>
                                 </CardContent>
-                                <CardMedia>
-
-                                </CardMedia>
                                 <CardActions>
                                     <Button component={Link} to={`/post/${review._id}`} className={classes.seeDetail}>Xem chi tiết</Button>
                                 </CardActions>

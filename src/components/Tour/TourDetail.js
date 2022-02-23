@@ -110,9 +110,15 @@ export default function TourDetail(props) {
                                         <div className={classes.center}>
                                             <Typography variant="h5">Dịch vụ trong tour</Typography>
                                         </div>
-                                        {tour.services.map((item, index) => (
-                                            <ServiceCard service={item} key={index} review={isOwn} />
-                                        ))}
+                                        <div className={classes.serviceList}>
+                                            {tour.services.map((item, index) => (
+                                                <ServiceCard service={item} key={index} review={isOwn} />
+                                            ))}
+                                        </div>
+                                        {
+                                            tour.services.length === 0 &&
+                                            <Typography className={classes.center} style={{ marginBlock: 20 }}>Không có dịch vụ</Typography>
+                                        }
                                     </DetailService>
                                 </Fade>
                             </Modal>

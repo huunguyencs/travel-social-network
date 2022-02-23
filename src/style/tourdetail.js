@@ -257,7 +257,10 @@ const tourdetailStyles = makeStyles((theme) => ({
     },
     servicePaper: {
         padding: 10,
-        height: 500,
+        width: 400,
+    },
+    serviceList: {
+        maxHeight: 500,
         overflow: "hidden",
         overflowY: "scroll",
     },
