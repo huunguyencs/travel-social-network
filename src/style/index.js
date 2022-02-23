@@ -34,7 +34,7 @@ import authStyles from "./auth";
 import adminStyles from "./adminStyles";
 import volunteerStyles from "./volunteer";
 import tableStyles from "./table";
-
+import addVolunteerStyles from "./addVolunteer";
 
 
 const useStyles = makeStyles((theme) => ({
@@ -91,4 +91,5 @@ export {
     adminStyles,
     volunteerStyles,
     tableStyles,
+    addVolunteerStyles,
 };

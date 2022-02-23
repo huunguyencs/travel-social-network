@@ -8,72 +8,23 @@ import SpeedDialButton from '../components/SpeedDialBtn';
 import { homeMenu } from '../constant/menu';
 
 
-import { useSelector } from "react-redux";
-import { useParams } from "react-router-dom";
-import customAxios from "../utils/fetchData";
-import Volunteer from "../components/Volunteer/VolunteerDetail";
 
+import AddVolunteer from '../components/Volunteer/AddVolunteer';
 
-export default function VolunteerDetail() {
+export default function CreateVolunteer() {
 
-
-    const { auth } = useSelector(state => state);
-
-    const { id } = useParams();
-    const [volunteer, setVolunteer] = useState();
     const [state, setState] = useState({
         loading: false,
         notFound: false,
         error: false
     })
 
-    const [isOwn, setIsOwn] = useState(false);
-    const getVolunteerDetail = async (id) => {
-        setState({
-            loading: true,
-            error: false,
-            notFound: false,
-        })
-        await customAxios().get(`/volunteer/${id}`).then(res => {
-            setVolunteer(res.data.volunteer)
-            setState({
-                loading: false,
-                error: false,
-                notFound: false,
-            })
-        }).catch(err => {
-            if (err?.response.status === 404)
-                setState({
-                    loading: false,
-                    error: true,
-                    notFound: true,
-                })
-            else setState({
-                loading: false,
-                error: true,
-                notFound: false,
-            })
-
-        })
-    }
     useEffect(() => {
-        getVolunteerDetail(id);
-    }, [id])
-
-    useEffect(() => {
-        if (volunteer && volunteer.name) {
-            document.title = volunteer.name;
-        }
-    }, [volunteer])
-
-    useEffect(() => {
-        if (auth.user && volunteer) {
-            setIsOwn(volunteer.userId._id === auth.user._id);
-        }
-    }, [setIsOwn, volunteer, auth]);
+        document.title = "Tạo hoạt động tình nguyện";
+    }, [])
 
     const tryAgain = () => {
-        getVolunteerDetail(id);
+        
     }
 
     return (
@@ -97,8 +48,7 @@ export default function VolunteerDetail() {
                                         <Button onClick={tryAgain}>Thử lại</Button>
                                     </>
                                 </div> :
-
-                                volunteer && <Volunteer volunteer={volunteer} isOwn={isOwn} />
+                                <AddVolunteer/>
                 }
             </Grid>
         </Grid>
