@@ -18,8 +18,6 @@ import {
 } from "@material-ui/core";
 import {
     Search,
-    Notifications,
-    WhatsApp,
     Cancel,
     AccountCircle,
     Update,
@@ -35,6 +33,8 @@ import { headerStyles } from "../../style";
 import { logout } from "../../redux/callApi/authCall";
 import { timeAgo } from '../../utils/date';
 import { isSeenNotify, markAllRead } from '../../redux/callApi/notifyCall';
+import NotificationIcon from "../Icons/Notification";
+import ChatIcon from "../Icons/Chat";
 
 
 export default function Header(props) {
@@ -202,7 +202,7 @@ export default function Header(props) {
                                 </div>
                                 <IconButton className={classes.badge} aria-label="notifications" onClick={handleToggleNoti} title="Thông báo">
                                     <Badge badgeContent={calculateUnSeen(notify.data)} color="secondary">
-                                        <Notifications />
+                                        <NotificationIcon />
                                     </Badge>
                                 </IconButton>
                                 <Popper
@@ -260,7 +260,7 @@ export default function Header(props) {
                                 </Popper>
                                 <IconButton className={classes.badge} aria-label="messages" component={Link} to="/message" title="Tin nhắn">
                                     <Badge>
-                                        <WhatsApp />
+                                        <ChatIcon />
                                     </Badge>
                                 </IconButton>
                             </>

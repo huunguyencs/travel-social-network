@@ -8,7 +8,7 @@ import { BasicServiceInfo, DetailServiceInfo } from '../components/Service/AddSe
 import { getProvinces } from '../redux/callApi/locationCall';
 import { createService } from '../redux/callApi/serviceCall';
 import { addServiceStyles } from '../style';
-import NotFound from './404';
+import Blank from './blank';
 
 function getStep() {
     return ["Thông tin cơ bản", "Thông tin chi tiết", "Hoàn thành"]
@@ -170,7 +170,7 @@ export default function AddServicePage() {
                         </div>
                     </div>
                 </Container>
-                : <NotFound />
+                : <Blank />
             }
 
         </>
