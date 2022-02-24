@@ -128,6 +128,7 @@ const formStyles = makeStyles((theme) => ({
     },
     bodyChangeImage: {
         padding: 10,
+        position: 'relative'
     },
     imageChange: {
         height: "350px",
@@ -138,25 +139,15 @@ const formStyles = makeStyles((theme) => ({
     },
     borderDash: {
         border: '2px dashed #000',
-        height: "350px",
-        width: "500px",
         display: 'flex',
         justifyContent: 'center',
-        [theme.breakpoints.down("sm")]: {
-            height: "200px",
-            width: "300px"
-        }
+        position: 'relative'
     },
     borderDashHover: {
         border: "3px dashed #aaa",
-        height: "350px",
-        width: "500px",
         display: 'flex',
         justifyContent: 'center',
-        [theme.breakpoints.down("sm")]: {
-            height: "200px",
-            width: "300px"
-        }
+        position: 'relative'
     },
     imageChageInput: {
 
@@ -164,10 +155,15 @@ const formStyles = makeStyles((theme) => ({
     buttonWrap: {
         margin: 20,
         display: 'flex',
-        justifyContent: 'space-between'
+        justifyContent: 'right'
     },
     uploadWrap: {
-        marginTop: "100px",
+        // alignContent: 'center'
+        margin: 0,
+        position: 'absolute',
+        top: '50%',
+        left: '50%',
+        transform: 'translate(-50%, -50%)'
     },
     imageChangeContent: {
         display: 'block'
@@ -200,6 +196,22 @@ const formStyles = makeStyles((theme) => ({
     serviceInfo: {
         marginLeft: 15,
         width: "100%"
+    },
+    changeContainer: {
+        position: 'relative'
+    },
+    removeButton: {
+        position: 'absolute',
+        top: 0,
+        right: 0,
+    },
+    sizeImageAvatar: {
+        width: '300px',
+        height: '300px'
+    },
+    sizeImageBg: {
+        width: '500px',
+        height: '250px'
     }
 }))
 
