@@ -1,5 +1,5 @@
 import { Button } from '@material-ui/core';
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import GoogleMapPicker from 'react-google-map-picker'
 // import KEY from "../../key/googlemap";
 
@@ -8,7 +8,7 @@ const DefaultZoom = 8;
 
 export default function MapPicker(props) {
 
-    const { position, setPosition } = props;
+    const { position, setPosition, height } = props;
 
     const defaultLocation = position || DefaultLocation;
 
@@ -29,18 +29,33 @@ export default function MapPicker(props) {
         setPosition({ ...location })
     }
 
+    const [show, setShow] = useState(false);
+
+    useEffect(() => {
+        let timer = setTimeout(() => setShow(true), 1000);
+        return () => {
+            clearTimeout(timer);
+        }
+    }, []);
+
+    if (!show) {
+        return "Loading map...";
+    }
+
     return (
         <>
             <GoogleMapPicker
                 defaultLocation={defaultLocation}
                 zoom={zoom}
                 mapTypeId="roadmap"
-                style={{ height: 450 }}
+                style={{ height: height || 450 }}
                 onChangeLocation={handleChangeLocation}
                 onChangeZoom={handleChangeZoom}
                 apiKey={'AIzaSyD07E1VvpsN_0FvsmKAj4nK9GnLq-9jtj8'}
             />
-            <Button onClick={handleSubmit}>Xác nhận vị trí</Button>
+            <div style={{ display: 'flex', justifyContent: 'right' }}>
+                <Button style={{ margin: 20 }} variant="contained" color="primary" onClick={handleSubmit}>Xác nhận vị trí</Button>
+            </div>
         </>
     )
 }

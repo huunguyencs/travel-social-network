@@ -10,6 +10,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { getProvinces } from '../../../redux/callApi/locationCall';
 import customAxios from '../../../utils/fetchData';
 import { error, success } from '../../../redux/actions/alertAction';
+import MapPicker from '../../Input/MapPicker';
 
 
 export default function FormLocationAdmin(props) {
@@ -33,12 +34,12 @@ export default function FormLocationAdmin(props) {
         }))
     }
 
-    const changePosition = (e) => {
+    const changePosition = (position) => {
         setLocation(state => ({
             ...state,
             position: {
-                ...state.position,
-                [e.target.name]: e.target.value
+                lat: position.lat,
+                lon: position.lng
             }
         }))
     }
@@ -209,6 +210,16 @@ export default function FormLocationAdmin(props) {
                         />
                     </div>
 
+                </div>
+                <div>
+                    <MapPicker
+                        position={{
+                            lat: location.position.lat,
+                            lng: location.position.lon
+                        }}
+                        setPosition={changePosition}
+                        height={400}
+                    />
                 </div>
                 <Autocomplete
                     id='set-province'
