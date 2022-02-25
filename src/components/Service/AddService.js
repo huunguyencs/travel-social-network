@@ -69,9 +69,13 @@ export function BasicServiceInfo(props) {
     }
 
     const setPosition = (position) => {
+        // console.log(position)
         setContext({
             ...context,
-            position: position
+            position: {
+                lat: position.lat,
+                lon: position.lng
+            }
         })
     }
 
@@ -154,7 +158,7 @@ export function BasicServiceInfo(props) {
                 value={context.andress}
 
             />
-            <div style={{ height: 400 }}>
+            <div style={{ height: 500 }}>
                 <MapPicker setPosition={setPosition} />
             </div>
             <Autocomplete
