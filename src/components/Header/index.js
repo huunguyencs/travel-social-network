@@ -90,7 +90,7 @@ export default function Header(props) {
     }
 
     const markAllReadClick = () => {
-        console.log("remove");
+        // console.log("remove");
         dispatch(markAllRead(auth.token, auth.user._id));
     }
 

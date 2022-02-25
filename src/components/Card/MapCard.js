@@ -1,11 +1,12 @@
 import React, { useState } from "react";
 import GoogleMapReact from 'google-map-react';
 import { Card, CircularProgress, ClickAwayListener, Paper, Popper, Typography } from "@material-ui/core";
-import { GpsFixed, LocationOn } from '@material-ui/icons'
+import { GpsFixed } from '@material-ui/icons'
 
 import KEY from "../../key/googlemap";
 import { Link } from "react-router-dom";
 import { cardStyles } from "../../style";
+import LocationPinIcon from "../Icons/LocationPin";
 
 function MapLocation(props) {
 
@@ -64,7 +65,8 @@ function Position(props) {
     return (
         <>
             <div className={classes.positionContainer}>
-                <LocationOn className={classes.locationIcon} />
+                {/* <MapPinIcon className={classes.locationIcon} /> */}
+                <LocationPinIcon className={classes.locationIcon} />
                 <Typography>{name}</Typography>
             </div>
         </>

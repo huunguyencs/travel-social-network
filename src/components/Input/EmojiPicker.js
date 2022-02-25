@@ -1,4 +1,4 @@
-import { IconButton, Paper, Popover } from "@material-ui/core";
+import { IconButton, Popover } from "@material-ui/core";
 import { InsertEmoticon } from "@material-ui/icons";
 import React, { useState } from "react";
 import { useSelector } from "react-redux";
@@ -56,13 +56,13 @@ export default function EmojiPicker(props) {
                     horizontal: "center"
                 }}
             >
-                <Paper className={classes.iconWrap}>
+                <div className={classes.iconWrap}>
                     {emojiList.map((item, index) => (
                         <div key={index} className={classes.iconItem} onClick={() => addIcon(item)}>
                             {item}
                         </div>
                     ))}
-                </Paper>
+                </div>
             </Popover>
         </>
     )

@@ -1,7 +1,8 @@
 import React, { useState } from 'react';
 import GoogleMapReact from 'google-map-react';
 import KEY from "../../key/googlemap";
-import { LocationOn } from '@material-ui/icons';
+// import { LocationOn } from '@material-ui/icons';
+import MapPickerIcon from '../Icons/MapPicker';
 
 export default function MapPicker(props) {
 
@@ -37,7 +38,7 @@ export default function MapPicker(props) {
             zoom={state.zoom}
             onClick={changePosition}
         >
-            <LocationOn lat={state.center.lat} lng={state.center.lng} />
+            <MapPickerIcon lat={state.center.lat} lng={state.center.lng} />
         </GoogleMapReact>
     );
 }

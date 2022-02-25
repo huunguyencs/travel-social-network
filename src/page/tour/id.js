@@ -85,9 +85,9 @@ export default function TourDetail(props) {
         getTourDetail(id);
     }
 
-    useEffect(() => {
-        console.log(tour)
-    }, [tour])
+    // useEffect(() => {
+    //     console.log(tour)
+    // }, [tour])
 
 
     return (
