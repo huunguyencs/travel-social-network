@@ -9,7 +9,6 @@ import ChangeInfo from "../components/Forms/ChangeInfo";
 import ConfirmAccount from "../components/Forms/ConfirmAccount";
 
 
-
 function TabPanel(props) {
     const { children, value, index, ...other } = props;
 
@@ -77,9 +76,9 @@ export default function Change_info(props) {
                                 <Tab className={classes.tab} label="Xác nhận tài khoản" {...a11yProps(2)} />
                                 <Tab className={classes.tab} label="Bảo mật và riêng tư" {...a11yProps(3)} />
 
-                            </Tabs>
-                        </div>
-                    </Grid>
+                            </Tabs >
+                        </div >
+                    </Grid >
                     <Grid item md={9} sm={12} xs={12}>
                         <TabPanel value={value} index={0} className={classes.tabPanel}>
                             {token && <ChangeInfo />}
@@ -89,16 +88,16 @@ export default function Change_info(props) {
                         </TabPanel>
                         <TabPanel value={value} index={2} className={classes.tabPanel}>
                             <ConfirmAccount />
-                        </TabPanel>
+                        </TabPanel >
                         <TabPanel value={value} index={3} className={classes.tabPanel}>
                             404
                         </TabPanel>
-                    </Grid>
-                </Grid>
+                    </Grid >
+                </Grid >
 
 
 
-            </Container>
-        </div>
+            </Container >
+        </div >
     )
 }
