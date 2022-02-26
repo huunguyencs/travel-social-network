@@ -8,7 +8,8 @@ import { error as errorAlert, success } from '../../../redux/actions/alertAction
 import { adminStyles } from '../../../style';
 import customAxios from '../../../utils/fetchData';
 import { checkImage, uploadImages } from '../../../utils/uploadImage';
-import Validator, { isFloat, nameid } from '../../../utils/validator';
+import Validator, { nameid } from '../../../utils/validator';
+import MapPicker from '../../Input/MapPicker';
 
 
 
@@ -79,21 +80,14 @@ export default function DetailProvinceAdmin() {
         }))
     }
 
-    const changePosition = (e) => {
+    const changePosition = (position) => {
         setProvince(province => ({
             ...province,
             position: {
-                ...province.position,
-                [e.target.name]: e.target.value
+                lat: position.lat,
+                lon: position.lng
             }
         }));
-        setErrors(state => ({
-            ...state,
-            position: {
-                ...state.position,
-                [e.target.name]: null
-            }
-        }))
     }
 
     const handleAddFood = (e) => {
@@ -197,37 +191,17 @@ export default function DetailProvinceAdmin() {
             message: 'Tên không hợp lệ',
         }
     ];
-    const rulesPosition = [
-        {
-            field: 'lat',
-            method: isFloat,
-            validWhen: true,
-            message: 'Vị trí không hợp lệ!',
-        },
-        {
-            field: 'lon',
-            method: isFloat,
-            validWhen: true,
-            message: 'Vị trí không hợp lệ!',
-        },
-    ]
     const validator = new Validator(rules);
-    const validatorPos = new Validator(rulesPosition);
 
     const handleUpdate = async () => {
         setLoading(true);
         const err = validator.validate(province);
-        const errPos = validatorPos.validate(province.position);
-        const totalErr = {
-            ...err,
-            position: errPos
-        }
 
-        setErrors(totalErr);
+        setErrors(err);
 
         const image = await uploadImages([src]);
 
-        if (Object.keys(err).length === 0 && Object.keys(errPos).length === 0) {
+        if (Object.keys(err).length === 0) {
             await customAxios(token).patch(`/province/${province._id}`, {
                 ...province,
                 image: image[0]
@@ -309,13 +283,11 @@ export default function DetailProvinceAdmin() {
                                             label="Vĩ độ"
                                             variant='outlined'
                                             name='lat'
-                                            multiline
-                                            onChange={changePosition}
                                             value={province.position.lat}
                                             className={classes.fullField}
-                                            required
-                                            error={Boolean(errors?.position?.lat)}
-                                            helperText={errors?.position?.lat}
+                                            InputProps={{
+                                                readOnly: true,
+                                            }}
                                         />
                                     </div>
                                     <div style={{ width: '50%', marginLeft: 20 }}>
@@ -323,15 +295,23 @@ export default function DetailProvinceAdmin() {
                                             label="Kinh độ"
                                             variant='outlined'
                                             name='lon'
-                                            multiline
-                                            onChange={changePosition}
                                             value={province.position.lon}
                                             className={classes.fullField}
-                                            required
-                                            error={Boolean(errors?.position?.lon)}
-                                            helperText={errors?.position?.lon}
+                                            InputProps={{
+                                                readOnly: true,
+                                            }}
                                         />
                                     </div>
+                                </div>
+                                <div style={{ marginBlock: 10, marginInline: 20 }}>
+                                    <MapPicker
+                                        position={{
+                                            lat: province.position.lat,
+                                            lng: province.position.lon
+                                        }}
+                                        setPosition={changePosition}
+                                        height={400}
+                                    />
                                 </div>
                                 <TextField
                                     label="Thông tin"
@@ -344,6 +324,7 @@ export default function DetailProvinceAdmin() {
                                     required
                                     error={Boolean(errors?.information)}
                                     helperText={errors?.information}
+
                                 />
 
                                 <div className={classes.imageItem}>

@@ -67,7 +67,7 @@ export const saveTour = (tour, image, token, socket, next, error) => async (disp
             image: res.data.newTour.image,
             url: `/tour/${res.data.newTour._id}`,
         }
-        console.log(dataNotify);
+        // console.log(dataNotify);
         dispatch(createNotify(dataNotify, token, socket));
         dispatch(alertAction.success({ message: "Lưu lịch trình thành công!" }))
         dispatch(resetTour());
@@ -145,7 +145,7 @@ export const likeTour = (id, auth, socket, next) => async (dispatch) => {
         // console.log(res.data.likes);
         socket.emit('like', { type: 'tour', id: id, likes: res.data.likes });
 
-        console.log(res.data.tour);
+        // console.log(res.data.tour);
         //notify
         const dataNotify = {
             id: auth.user._id,
@@ -245,7 +245,6 @@ export const removeReview = (tourDateId, token, locationId) => async (dispatch) 
 
 export const getTourSaved = (token) => async (dispatch) => {
     try {
-        console.log(token);
         const res = await customAxios(token).get(`/user/get_tour_saved`);
         var tours = res.data.tours.map(item => sortTourDate(item))
         // console.log(res.data.tours);

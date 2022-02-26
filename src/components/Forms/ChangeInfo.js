@@ -9,7 +9,7 @@ import { KeyboardDatePicker, MuiPickersUtilsProvider } from "@material-ui/picker
 import { useDispatch, useSelector } from "react-redux";
 import { profileStyles } from "../../style";
 import { changeInfo } from "../../redux/callApi/authCall";
-import ChangeImage from "./ChangeImage";
+import UpdateAvatarBg from "./UpdateAvatarBg";
 
 
 export default function ChangeInfo(props) {
@@ -148,7 +148,7 @@ export default function ChangeInfo(props) {
     const refAv = React.createRef();
 
     const ChangeImageRef = React.forwardRef((props, ref) =>
-        <ChangeImage innerRef={ref} {...props} />
+        <UpdateAvatarBg innerRef={ref} {...props} />
     )
 
 

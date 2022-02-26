@@ -76,8 +76,8 @@ export default function Location(props) {
             if (err.response.status === 404) {
                 setNotFoundRv(true);
                 dispatch(removeReview(tourDateId, token, location._id))
-                console.log(tourDateId)
-                console.log(location._id)
+                // console.log(tourDateId)
+                // console.log(location._id)
             }
         });
 
@@ -246,9 +246,6 @@ export default function Location(props) {
                                     />
                                     <Typography>{review.content}</Typography>
                                 </CardContent>
-                                <CardMedia>
-
-                                </CardMedia>
                                 <CardActions>
                                     <Button component={Link} to={`/post/${review._id}`} className={classes.seeDetail}>Xem chi tiết</Button>
                                 </CardActions>

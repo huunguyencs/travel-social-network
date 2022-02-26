@@ -27,6 +27,7 @@ export default function Comment(props) {
     }
 
     const handleEdit = () => {
+        handleCloseMenu();
         setEdit(true);
     }
 
@@ -105,89 +106,87 @@ export default function Comment(props) {
                             <InputComment isUpdate={true} type={type} id={id} handleClose={editDone} commentId={comment._id} comment={comment.content} />
                             <Typography noWrap={true} className={classes.cancelBtn} onClick={editDone}>Hủy</Typography>
                         </div> :
-
-                        <>
-                            <div className={classes.cmtInfo}>
-                                <Typography noWrap={false} variant="subtitle2" className={classes.userName} component={Link} to={`/u/${comment.userId?._id}`}>
-                                    {comment.userId?.fullname}
-                                </Typography>
-                                <div className={classes.content} style={{ overflow: 'auto', maxWidth: '100%', display: 'block' }}>
-                                    <SeeMoreText
-                                        variant="body2"
-                                        maxText={100}
-                                        text={comment.content}
-                                    />
+                        <div className={classes.cmtInfo}>
+                            <Typography noWrap={false} variant="subtitle2" className={classes.userName} component={Link} to={`/u/${comment.userId?._id}`}>
+                                {comment.userId?.fullname}
+                            </Typography>
+                            <div className={classes.content} style={{ overflow: 'auto', maxWidth: '100%', display: 'block' }}>
+                                <SeeMoreText
+                                    variant="body2"
+                                    maxText={100}
+                                    text={comment.content}
+                                />
+                            </div>
+                            <div className={classes.cmtSubinfo}>
+                                <div className={classes.like}>
+                                    <Typography className={classes.smallText}>
+                                        {numLike}
+                                    </Typography>
+                                    <Typography className={`${classes.smallText} ${classes.likeBtn}`} onClick={likePress}>Like</Typography>
                                 </div>
-                                <div className={classes.cmtSubinfo}>
-                                    <div className={classes.like}>
-                                        <Typography className={classes.smallText}>
-                                            {numLike}
-                                        </Typography>
-                                        <Typography className={`${classes.smallText} ${classes.likeBtn}`} onClick={likePress}>Like</Typography>
-                                    </div>
-                                    <div className={classes.time}>
-                                        <Typography className={classes.dateComment}>
-                                            {timeAgo(new Date(comment.createdAt))}
-                                        </Typography>
-                                        <Typography className={classes.dateCommentShort}>
-                                            {timeAgoShort(new Date(comment.createdAt))}
-                                        </Typography>
-                                    </div>
+                                <div className={classes.time}>
+                                    <Typography className={classes.dateComment}>
+                                        {timeAgo(new Date(comment.createdAt))}
+                                    </Typography>
+                                    <Typography className={classes.dateCommentShort}>
+                                        {timeAgoShort(new Date(comment.createdAt))}
+                                    </Typography>
                                 </div>
                             </div>
-                            {
-                                auth.user && auth.user._id === comment.userId._id &&
-                                <div>
-                                    <IconButton onClick={handleShowMenu} size="small">
-                                        <MoreVert />
-                                    </IconButton>
-                                    <Popper
-                                        open={Boolean(anchorEl)}
-                                        anchorEl={anchorEl}
-                                        onClose={handleCloseMenu}
-                                        disablePortal
-                                    >
-                                        {/* <Grow
+                        </div>
+
+                }
+
+                {
+                    auth.user && auth.user._id === comment.userId._id &&
+                    <div>
+                        <IconButton onClick={handleShowMenu} size="small">
+                            <MoreVert />
+                        </IconButton>
+                        <Popper
+                            open={Boolean(anchorEl)}
+                            anchorEl={anchorEl}
+                            onClose={handleCloseMenu}
+                            disablePortal
+                        >
+                            {/* <Grow
                                             style={{ transformOrigin: 'center bottom' }}
                                         > */}
-                                        <ClickAwayListener onClickAway={handleCloseMenu}>
-                                            <Paper>
-                                                <MenuList>
-                                                    <MenuItem className={classes.menuItem} onClick={handleEdit}>
-                                                        Chỉnh sửa bình luận
-                                                    </MenuItem>
-                                                    <MenuItem className={classes.menuItem} onClick={handleShowDelete}>
-                                                        Xóa bình luận
-                                                    </MenuItem>
-                                                    <Dialog
-                                                        open={showDelete}
-                                                        onClose={handleCloseDelete}
-                                                        aria-labelledby="show-delete-dialog"
-                                                        aria-describedby="show-delete-dialog-description"
-                                                    >
-                                                        <DialogTitle id="alert-dialog-title">{"Bạn có chắc chắn muốn xóa?"}</DialogTitle>
+                            <ClickAwayListener onClickAway={handleCloseMenu}>
+                                <Paper>
+                                    <MenuList>
+                                        <MenuItem className={classes.menuItem} onClick={handleEdit}>
+                                            Chỉnh sửa bình luận
+                                        </MenuItem>
+                                        <MenuItem className={classes.menuItem} onClick={handleShowDelete}>
+                                            Xóa bình luận
+                                        </MenuItem>
+                                        <Dialog
+                                            open={showDelete}
+                                            onClose={handleCloseDelete}
+                                            aria-labelledby="show-delete-dialog"
+                                            aria-describedby="show-delete-dialog-description"
+                                        >
+                                            <DialogTitle id="alert-dialog-title">{"Bạn có chắc chắn muốn xóa?"}</DialogTitle>
 
-                                                        <DialogContent>Bạn sẽ không thể khôi phục lại dữ liệu sau khi xóa!</DialogContent>
-                                                        <DialogActions>
-                                                            <Button onClick={handleCloseDelete}>
-                                                                Hủy
-                                                            </Button>
-                                                            <Button onClick={handleDelete} className={classes.delete}>
-                                                                {
-                                                                    loadingDelete ? <CircularProgress size={15} color='inherit' /> : "Xóa"
-                                                                }
-                                                            </Button>
-                                                        </DialogActions>
-                                                    </Dialog>
-                                                </MenuList>
-                                            </Paper>
-                                        </ClickAwayListener>
-                                        {/* </Grow> */}
-                                    </Popper>
-                                </div>
-                            }
-
-                        </>
+                                            <DialogContent>Bạn sẽ không thể khôi phục lại dữ liệu sau khi xóa!</DialogContent>
+                                            <DialogActions>
+                                                <Button onClick={handleCloseDelete}>
+                                                    Hủy
+                                                </Button>
+                                                <Button onClick={handleDelete} className={classes.delete}>
+                                                    {
+                                                        loadingDelete ? <CircularProgress size={15} color='inherit' /> : "Xóa"
+                                                    }
+                                                </Button>
+                                            </DialogActions>
+                                        </Dialog>
+                                    </MenuList>
+                                </Paper>
+                            </ClickAwayListener>
+                            {/* </Grow> */}
+                        </Popper>
+                    </div>
                 }
 
             </div>

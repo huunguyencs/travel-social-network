@@ -7,12 +7,7 @@ import {
     Modal,
     Typography
 } from "@material-ui/core";
-import {
-    Favorite,
-    FavoriteBorderOutlined,
-    QuestionAnswer,
-    Share
-} from "@material-ui/icons";
+
 import { useDispatch, useSelector } from "react-redux";
 
 
@@ -25,6 +20,10 @@ import SharePost from "../Forms/Share";
 import TourContent from "./Content";
 import { likeTour, unlikeTour } from "../../redux/callApi/tourCall";
 import LoginModal from "../Modal/Login";
+import HeartFillIcon from "../Icons/HeartFill";
+import HeartIcon from "../Icons/Heart";
+import CommentIcon from "../Icons/Comment";
+import ShareIcon from "../Icons/Share";
 
 
 export default function Tour(props) {
@@ -155,9 +154,11 @@ export default function Tour(props) {
                     <TourContent tour={tour} setTour={setTour} />
 
                     <CardActions>
-                        {
-                            like ? <Favorite className={classes.likedIcon} onClick={likePress} /> : <FavoriteBorderOutlined className={classes.iconButton} onClick={likePress} />
-                        }
+                        <div className={classes.iconWrap}>
+                            {
+                                like ? <HeartFillIcon className={classes.likedIcon} onClick={likePress} /> : <HeartIcon className={classes.iconButton} onClick={likePress} />
+                            }
+                        </div>
                         <Modal
                             aria-labelledby="login"
                             aria-describedby="must-login"
@@ -190,11 +191,17 @@ export default function Tour(props) {
                         >
                             <UserListRef ref={refUser} listUser={tour.likes} title={"Đã thích"} handleClose={handleClose} />
                         </Modal>
-                        <QuestionAnswer onClick={handleCommentPress} className={classes.iconButton} />
+                        <div className={classes.iconWrap}>
+                            <CommentIcon onClick={handleCommentPress} className={classes.iconButton} />
+                        </div>
+
                         <Typography className={classes.numCmt}>
                             {tour.comments.length}
                         </Typography>
-                        <Share onClick={handleShowShare} className={classes.iconButton} />
+                        <div className={classes.iconWrap}>
+                            <ShareIcon onClick={handleShowShare} className={classes.iconButton} />
+                        </div>
+
                         <Modal
                             aria-labelledby="share"
                             aria-describedby="share-this-tour"

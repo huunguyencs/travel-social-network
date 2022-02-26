@@ -18,8 +18,6 @@ import {
 } from "@material-ui/core";
 import {
     Search,
-    Notifications,
-    WhatsApp,
     Cancel,
     AccountCircle,
     Update,
@@ -35,6 +33,8 @@ import { headerStyles } from "../../style";
 import { logout } from "../../redux/callApi/authCall";
 import { timeAgo } from '../../utils/date';
 import { isSeenNotify, markAllRead } from '../../redux/callApi/notifyCall';
+import NotificationIcon from "../Icons/Notification";
+import ChatIcon from "../Icons/Chat";
 
 
 export default function Header(props) {
@@ -90,7 +90,7 @@ export default function Header(props) {
     }
 
     const markAllReadClick = () => {
-        console.log("remove");
+        // console.log("remove");
         dispatch(markAllRead(auth.token, auth.user._id));
     }
 
@@ -123,8 +123,8 @@ export default function Header(props) {
                     {
                         user ? (
                             <>
-                                <div className={classes.user} title={user.fullname}>
-                                    <Button className={classes.button} onClick={handleToggleUser} controls={toggleMenuUser ? "user-menu" : undefined}>
+                                <div className={classes.user} >
+                                    <Button className={classes.button} onClick={handleToggleUser} controls={toggleMenuUser ? "user-menu" : undefined} title={user.fullname}>
                                         <Avatar component="span" className={classes.avatar} alt="avatar" src={user.avatar} />
                                         <Typography noWrap={false} className={classes.userName}>{user.fullname}</Typography>
                                     </Button>
@@ -202,7 +202,7 @@ export default function Header(props) {
                                 </div>
                                 <IconButton className={classes.badge} aria-label="notifications" onClick={handleToggleNoti} title="Thông báo">
                                     <Badge badgeContent={calculateUnSeen(notify.data)} color="secondary">
-                                        <Notifications />
+                                        <NotificationIcon />
                                     </Badge>
                                 </IconButton>
                                 <Popper
@@ -260,7 +260,7 @@ export default function Header(props) {
                                 </Popper>
                                 <IconButton className={classes.badge} aria-label="messages" component={Link} to="/message" title="Tin nhắn">
                                     <Badge>
-                                        <WhatsApp />
+                                        <ChatIcon />
                                     </Badge>
                                 </IconButton>
                             </>

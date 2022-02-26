@@ -213,8 +213,8 @@ const profileStyles = makeStyles((theme) => ({
     margin: 30
   },
   cmnd_front: {
-    width: "200px",
-    height: "140px",
+    // width: "200px",
+    // height: "140px",
     // overflow: "hidden",
     position: "relative",
     marginBottom: 10
@@ -275,6 +275,10 @@ const profileStyles = makeStyles((theme) => ({
   },
   updateBtn: {
     margin: 20
+  },
+  sizeImageChange: {
+    width: 300,
+    height: 200
   }
 }));
 

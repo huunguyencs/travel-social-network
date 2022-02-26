@@ -18,7 +18,7 @@ export const uploadImages = async (images) => {
             imageArr.push(image);
         }
         else {
-            console.log(image);
+            // console.log(image);
             const formData = new FormData();
             formData.append("file", image);
             formData.append("upload_preset", env.CLOUDINARY_UPLOAD_PRESET);

@@ -199,7 +199,8 @@ const cardStyles = makeStyles((theme) => ({
     },
     locationIcon: {
         fontSize: 24,
-        color: 'red'
+        color: color.red,
+        // fill: '#ED4956'
     },
     weatherFocastCard: {
         width: 500,

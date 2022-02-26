@@ -32,7 +32,6 @@ export default function TourSavedPage() {
 
     useEffect(() => {
         if (token) {
-            console.log(token);
             dispatch(getTourSaved(token));
         }
     }, [dispatch, token, history])

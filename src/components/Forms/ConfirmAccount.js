@@ -1,11 +1,11 @@
 import React, { useState } from "react";
-import { TextField, Button, CircularProgress, IconButton, Typography } from "@material-ui/core";
-import { PhotoCamera } from "@material-ui/icons";
+import { TextField, Button, CircularProgress, Typography } from "@material-ui/core";
 
 import { useDispatch, useSelector } from "react-redux";
 import { profileStyles } from "../../style";
 import { confirmAccount } from "../../redux/callApi/authCall";
-import { checkImage, uploadImages } from "../../utils/uploadImage";
+import { uploadImages } from "../../utils/uploadImage";
+import ChangeImage from "./ChangeImage";
 
 export default function ConfirmAccount(props) {
 
@@ -29,80 +29,7 @@ export default function ConfirmAccount(props) {
             setText(e.target.value);
         }
     }
-    const handleChangeImageFront = (e) => {
-        let error = "";
-        const check = checkImage(e.target.files[0]);
-        if (check !== "") {
-            error = check;
-        }
-        if (error === "") {
-            setState({
-                ...state,
-                error: null
-            })
-            setImageFront(e.target.files[0])
-        }
-        else
-            setState({
-                ...state,
-                error: error
-            })
-    }
-    const handleChangeImageBack = (e) => {
-        let error = "";
-        const check = checkImage(e.target.files[0]);
-        if (check !== "") {
-            error = check;
-        }
-        console.log("error", error)
-        if (error === "") {
-            setState({
-                ...state,
-                error: null
-            })
-            setImageBack(e.target.files[0])
-        }
-        else
-            setState({
-                ...state,
-                error: error
-            })
-    }
-    const handleChangeImageFace = (e) => {
-        let error = "";
 
-        const check = checkImage(e.target.files[0]);
-        if (check !== "") {
-            error = check;
-        }
-        if (error === "") {
-            setState({
-                ...state,
-                error: null
-            })
-            setImageFace(e.target.files[0])
-        }
-        else
-            setState({
-                ...state,
-                error: error
-            })
-    }
-    const removeImageFront = () => {
-        if (!user.confirmAccount.confirmId) {
-            setImageFront()
-        }
-    }
-    const removeImageBack = () => {
-        if (!user.confirmAccount.confirmId) {
-            setImageBack()
-        }
-    }
-    const removeImageFace = () => {
-        if (!user.confirmAccount.confirmId) {
-            setImageFace()
-        }
-    }
     const handleSubmit = async (e) => {
         e.preventDefault();
         const cmndFront = await uploadImages([imageFront])
@@ -164,97 +91,22 @@ export default function ConfirmAccount(props) {
                     <Typography>Ảnh chụp phải rõ nét, không bị mờ</Typography>
                     <Typography >CMND/CCCD/Hộ chiếu <span className={classes.cmnd_textStrong}>mặt trước</span>: </Typography>
                     <div className={classes.cmnd_front}>
-                        <input
-                            accept="image/*"
-                            className={classes.input}
-                            style={{ display: 'none' }}
-                            id="image-front"
-                            name="image_front"
-                            type="file"
-                            onChange={handleChangeImageFront}
-                        />
-                        {
-                            !user.confirmAccount.confirmId &&
-                            <label htmlFor="image-front" className={classes.cmnd_front_upload}>
-                                <IconButton variant="raised" component="span">
-                                    <PhotoCamera titleAccess="Thêm ảnh" />
-                                </IconButton>
-                            </label>
-                        }
-                        {
-                            imageFront && <img
-                                className={classes.cmnd_front_image}
-                                src={typeof imageFront === 'string' ? imageFront : URL.createObjectURL(imageFront)}
-                                title="Xóa"
-                                onClick={() => removeImageFront()}
-                                alt='imageFront'
-                            />
-                        }
+                        <ChangeImage src={imageFront} setSrc={setImageFront} className={classes.sizeImageChange} textSize={14} />
                     </div>
 
                     <Typography >CMND/CCCD/Hộ chiếu <span className={classes.cmnd_textStrong}>mặt sau</span>: </Typography>
                     <div className={classes.cmnd_front}>
-                        <input
-                            accept="image/*"
-                            className={classes.input}
-                            style={{ display: 'none' }}
-                            id="image-back"
-                            name="image_back"
-                            type="file"
-                            onChange={handleChangeImageBack}
-                        />
-                        {
-                            !user.confirmAccount.confirmId &&
-                            <label htmlFor="image-back" className={classes.cmnd_front_upload}>
-                                <IconButton variant="raised" component="span">
-                                    <PhotoCamera titleAccess="Thêm ảnh" />
-                                </IconButton>
-                            </label>
-                        }
-                        {
-                            imageBack && <img
-                                className={classes.cmnd_front_image}
-                                src={typeof imageBack === 'string' ? imageBack : URL.createObjectURL(imageBack)}
-                                title="Xóa"
-                                onClick={() => removeImageBack()}
-                                alt='imageBack'
-                            />
-                        }
+                        <ChangeImage src={imageBack} setSrc={setImageBack} className={classes.sizeImageChange} textSize={14} />
                     </div>
                     <Typography >Chụp ảnh cùng CMND/CCCD/Hộ chiếu: </Typography>
                     <div className={classes.cmnd_front}>
-                        <input
-                            accept="image/*"
-                            className={classes.input}
-                            style={{ display: 'none' }}
-                            id="image-face"
-                            name="image_face"
-                            type="file"
-                            onChange={handleChangeImageFace}
-                        />
-                        {
-                            !user.confirmAccount.confirmId &&
-                            <label htmlFor="image-face" className={classes.cmnd_front_upload}>
-                                <IconButton variant="raised" component="span">
-                                    <PhotoCamera titleAccess="Thêm ảnh" />
-                                </IconButton>
-                            </label>
-                        }
-                        {
-                            imageFace && <img
-                                className={classes.cmnd_front_image}
-                                src={typeof imageFace === 'string' ? imageFace : URL.createObjectURL(imageFace)}
-                                title="Xóa"
-                                onClick={() => removeImageFace()}
-                                alt='imageFace'
-                            />
-                        }
+                        <ChangeImage src={imageFace} setSrc={setImageFace} className={classes.sizeImageChange} textSize={14} />
                     </div>
-                    <div>
+                    {/* <div>
                         {
 
                         }
-                    </div>
+                    </div> */}
                     <div className={classes.btnWrap}>
                         <Button
                             variant="contained"

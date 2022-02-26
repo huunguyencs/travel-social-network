@@ -72,15 +72,6 @@ function AdminUserDetail(props) {
     e.preventDefault();
   }
 
-  const onChangeConfirm = (e) => {
-    setUser(oldState => ({
-      ...oldState,
-      confirmAccount: {
-        ...oldState.confirmAccount,
-        state: e.target.value
-      }
-    }))
-  }
 
   const history = useHistory();
 
@@ -162,18 +153,14 @@ function AdminUserDetail(props) {
                   </Select>
                 </FormControl>
 
-                <FormControl variant="outlined" className={classes.fullField}>
-                  <InputLabel id="confirm-user-change-label">Trạng thái</InputLabel>
-                  <Select
-                    labelId="confirm-user-change-label"
-                    label='confirm-user-change'
-                    value={user.confirmAccount.state}
-                    onChange={onChangeConfirm}
-                  >
-                    <MenuItem value={false}>Chưa xác thực</MenuItem>
-                    <MenuItem value={true}>Đã xác thực</MenuItem>
-                  </Select>
-                </FormControl>
+                {
+                  user.confirmAccount.confirmId &&
+                  <div>
+                    <img height={200} width={300} src={user.confirmAccount.confirmId.cmndFront} alt='front' />
+                    <img height={200} width={300} src={user.confirmAccount.confirmId.cmndBack} alt='back' />
+                    <img height={200} width={300} src={user.confirmAccount.confirmId.cmndFace} alt='face' />
+                  </div>
+                }
 
                 <div className={classes.login_group}>
                   <Button

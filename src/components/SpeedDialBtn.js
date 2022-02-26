@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { SpeedDial, SpeedDialAction, SpeedDialIcon } from "@material-ui/lab";
-import { Create, Explore, WhatsApp } from "@material-ui/icons";
+import { Create, Explore } from "@material-ui/icons";
 import { useHistory } from "react-router-dom";
 import { Fade, Modal, Backdrop } from "@material-ui/core";
 import { useSelector } from "react-redux";
@@ -8,6 +8,7 @@ import { useSelector } from "react-redux";
 import CreatePostForm from "./Forms/CreatePost";
 import CreateTourForm from "./Forms/CreateTour";
 import { speedDialStyles } from "../style";
+import ChatIcon from "./Icons/Chat";
 
 const actions = [
     { icon: < CreatePostIcon />, name: "Tạo bài viết" },
@@ -24,7 +25,7 @@ function MessageIcon(props) {
     }
 
     return (
-        <WhatsApp onClick={toMessage} />
+        <ChatIcon onClick={toMessage} />
     )
 }
 

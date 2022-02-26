@@ -115,6 +115,11 @@ const postStyles = makeStyles((theme) => ({
         "&:hover": {
             backgroundColor: color.darkred,
         }
+    },
+    iconWrap: {
+        width: 50,
+        display: 'flex',
+        justifyContent: 'center'
     }
 }))
 

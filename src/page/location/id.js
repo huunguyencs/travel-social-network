@@ -1,5 +1,5 @@
 import { Button, Card, CircularProgress, Grid, Typography } from "@material-ui/core";
-import { LocationOn } from "@material-ui/icons";
+// import { LocationOn } from "@material-ui/icons";
 import React, { useEffect, useState } from "react";
 import { Link, useParams } from "react-router-dom";
 import { useDispatch } from "react-redux";
@@ -15,6 +15,7 @@ import { locationStyles } from "../../style";
 import customAxios from "../../utils/fetchData";
 import { NotFound } from "../404";
 import { getPostsLocation } from "../../redux/callApi/postCall";
+import MapPinIcon from "../../components/Icons/MapPin";
 
 
 export default function Location(props) {
@@ -125,7 +126,8 @@ export default function Location(props) {
                                             </div>
                                             <div className={classes.provinceWrap}>
                                                 <>
-                                                    <LocationOn className={classes.iconProvince} />
+                                                    {/* <LocationOn className={classes.iconProvince} /> */}
+                                                    <MapPinIcon className={classes.iconProvince} />
                                                     <Typography className={classes.provinceName} variant="h4" component={Link} to={`/province/${location.province.name}`}>
                                                         {location.province.fullname}
                                                     </Typography>

@@ -118,7 +118,9 @@ export default function SharePost(props) {
                                 </form>
                             </div>
                             <div className={classes.formAction}>
-                                <EmojiPicker content={text} setContent={setText} />
+                                <div>
+                                    <EmojiPicker content={text} setContent={setText} />
+                                </div>
                                 <div>
                                     <Button className={classes.button} onClick={handleShare}>
                                         {

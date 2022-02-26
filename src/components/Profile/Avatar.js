@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { WhatsApp, RssFeed, Update, VerifiedUser } from "@material-ui/icons";
+import { RssFeed, Update, VerifiedUser } from "@material-ui/icons";
 import { Avatar, Button, Container, Typography, Modal, Backdrop, CircularProgress, Tooltip } from "@material-ui/core";
 
 import { profileStyles } from "../../style";
@@ -8,6 +8,7 @@ import ImageModal from "../Modal/Image";
 import { useSelector, useDispatch } from "react-redux";
 import { useParams, useHistory, Link } from "react-router-dom";
 import { follow, unfollow } from "../../redux/callApi/userCall";
+import ChatIcon from "../Icons/Chat";
 
 
 
@@ -210,7 +211,7 @@ export default function ProfileAvatar(props) {
                     <Button startIcon={< RssFeed />} className={classes.button} onClick={handleFollow} disabled={!auth.token}>
                       {stateFollow.loading ? <CircularProgress size={16} color='inherit' /> : followed ? "Hủy theo dõi" : "Theo dõi"}
                     </Button>
-                    <Button startIcon={<WhatsApp />} className={classes.button} disabled={!auth.token} component={Link} to={`/message/${user._id}`}>
+                    <Button startIcon={<ChatIcon />} className={classes.button} disabled={!auth.token} component={Link} to={`/message/${user._id}`}>
                       Nhắn tin
                     </Button>
                   </> :

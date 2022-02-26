@@ -28,7 +28,7 @@ const locationStyles = makeStyles((theme) => ({
         }
     },
     iconProvince: {
-        fontSize: "40px",
+        fontSize: 40,
         marginRight: "10px",
         color: "black",
         [theme.breakpoints.down("sm")]: {

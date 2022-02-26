@@ -3,7 +3,7 @@ import { Container, IconButton, Tooltip } from "@material-ui/core";
 
 import { Typography, Paper, Avatar } from '@material-ui/core';
 import { Link, useHistory } from "react-router-dom";
-import { CheckCircle, Remove, Edit } from "@material-ui/icons";
+import { CheckCircle, Remove, Edit, Cancel, HourglassFull } from "@material-ui/icons";
 import { DataGrid, GridToolbarContainer, GridToolbarExport } from "@mui/x-data-grid";
 import customAxios from "../../../utils/fetchData";
 import { useSelector } from "react-redux";
@@ -20,12 +20,6 @@ function ExportToolbar() {
 
 
 const columns = [
-    // {
-    //     field: '_id',
-    //     headerName: 'ID',
-    //     width: 200,
-    //     sortable: false,
-    // },
     {
         field: 'avatar',
         headerName: 'Avatar',
@@ -65,13 +59,23 @@ const columns = [
         headerName: 'Trạng thái',
         width: 150,
         sortable: false,
-        renderCell: (user) => user.row.confirmAccount.state ? (
-            <Tooltip title='Đã xác thực'>
-                <CheckCircle style={{ color: '#357a38' }} />
+        renderCell: (user) => user.row.confirmAccount?.confirmId ?
+            user.row.confirmAccount.confirmId.state === 0 ? (
+                <Tooltip title='Đang đợi xác thực'>
+                    <HourglassFull style={{ color: '#ffc107' }} />
+                </Tooltip>
+            ) : user.row.confirmAccount.confirmId.state === 1 ? (
+                <Tooltip title='Đã xác thực'>
+                    <CheckCircle style={{ color: '#357a38' }} />
+                </Tooltip>
+            ) : (
+                <Tooltip title='Đã từ chối'>
+                    <Cancel style={{ color: '#ba000d' }} />
+                </Tooltip>
+            )
+            : <Tooltip title='Chưa xác thực'>
+                <Remove />
             </Tooltip>
-        ) : <Tooltip title='Chưa xác thực'>
-            <Remove />
-        </Tooltip>
     },
     {
         field: 'action',
