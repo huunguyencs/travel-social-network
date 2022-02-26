@@ -1,14 +1,16 @@
 import React, { useEffect, useState } from 'react';
-import { Button, Grid, IconButton, Radio, RadioGroup, TextField, Typography } from '@material-ui/core';
+import { Button, Grid, IconButton, Radio, RadioGroup, TextField, Typography,Modal,Backdrop, Fade} from '@material-ui/core';
 import { addVolunteerStyles } from '../../style';
 import { useDispatch, useSelector } from 'react-redux';
 import { useHistory } from 'react-router-dom';
 import AddImageHorizontal from '../Input/AddImageHorizontal';
-import { Close,AddCircle } from '@material-ui/icons';
+import { Close,AddCircle, Clear } from '@material-ui/icons';
 import { Timeline, TimelineItem, TimelineSeparator, TimelineConnector, TimelineContent, TimelineDot } from '@material-ui/lab'
 import { convertDateToStr } from "../../utils/date";
 import {  List, ListItem, ListItemIcon, ListItemText, FormControlLabel } from '@material-ui/core';
 import { DoneOutline, RadioButtonUnchecked, AssistantPhoto, Event, Schedule } from '@material-ui/icons';
+import AddLocationForm from "../Forms/AddLocationVolunteer";
+import { createVolunteer } from '../../redux/callApi/volunteerCall';
 
 function Item(props) {
 
@@ -33,9 +35,13 @@ export default function AddVolunteer(props) {
     const { auth, location } = useSelector(state => state);
     const dispatch = useDispatch();
     const history = useHistory();
-
+    const [idx, setIdx] = useState(0);
+    const [idxLocation, setIdxLocation] = useState(0);
     const [images, setImages] = useState([]);
     const [tempDescription, setTempDescription] = useState("");
+    const [tempTime, setTempTime] = useState("");
+    const [tempActivity, setTempActivity] = useState("");
+    const [tempLocation, setTempLocation] = useState(null);  
     const [context, setContext] = useState({
         name: "",
         descriptions: [],
@@ -46,6 +52,7 @@ export default function AddVolunteer(props) {
         accommodation: "",
         date: null
     }]);
+    const [locationVolunteer, setLocationVolunteer] = useState([]);
     const handleAddDescription = (e) => {
         e.preventDefault();
         setContext({
@@ -71,10 +78,15 @@ export default function AddVolunteer(props) {
         })
     }
 
-    const [idx, setIdx] = useState(0);
+    
     const handleAddDay = () => {
         setDateVolunteer([
-            ...dateVolunteer,dateVolunteer[0]
+            ...dateVolunteer,
+            {
+                activities: [],
+                accommodation: "",
+                date: null
+            }
         ])
     }
     const handleDeleteDay =() =>{
@@ -82,6 +94,145 @@ export default function AddVolunteer(props) {
             ...dateVolunteer.slice(0,idx),
             ...dateVolunteer.slice(idx+1)
         ])
+    }
+    
+    const handleAddActivity = (e) =>{
+        e.preventDefault();
+        setDateVolunteer([
+            ...dateVolunteer.slice(0,idx),
+            {
+                ...dateVolunteer[idx],
+                activities: [...dateVolunteer[idx].activities,{time:tempTime, activity:tempActivity}]
+            },
+            ...dateVolunteer.slice(idx+1)
+        ]);
+        if(tempLocation != null){
+            setLocationVolunteer([
+                ...locationVolunteer,
+                {
+                    timeStart:"",
+                    maxUsers:"",
+                    description:[],
+                    activities: [],
+                    ageUser: "",
+                    location:tempLocation,
+                    accommodation: ""
+                }
+            ]);
+            setTempLocation(null);
+        }
+        setTempTime("");
+        setTempActivity("");
+    }
+    const handleDeleteActivity = (index) =>{
+        setDateVolunteer([
+            ...dateVolunteer.slice(0,idx),
+            {
+                ...dateVolunteer[idx],
+                activities: [
+                    ...dateVolunteer[idx].activities.slice(0,index),
+                    ...dateVolunteer[idx].activities.slice(index+1)
+                ]
+            },
+            ...dateVolunteer.slice(idx+1)
+        ])
+    }
+    const [showAddLoc, setShowAddLoc] = useState(false);
+    const handleShowAddLoc = () => {
+        setShowAddLoc(true);
+    }
+    const handleCloseAddLoc = () => {
+        setShowAddLoc(false);
+    }
+
+    const handleDeleteLocation=()=>{
+        setLocationVolunteer([
+            ...locationVolunteer.slice(0,idxLocation),
+            ...locationVolunteer.slice(idxLocation+1)
+        ])
+    }
+
+    //location
+    const [tempLocationDescription, setTempLocationDescription] = useState("");
+    const handleAddLocationDescription = (e) => {
+        e.preventDefault();
+        setLocationVolunteer([
+            ...locationVolunteer.slice(0,idxLocation),
+            {
+                ...locationVolunteer[idxLocation],
+                description: [...locationVolunteer[idxLocation].description,tempLocationDescription]
+            },
+            ...locationVolunteer.slice(idxLocation+1)
+        ]);
+        setTempLocationDescription("")
+    }
+    const handleDeleteLocationDescription = (index) =>{
+        setLocationVolunteer([
+            ...locationVolunteer.slice(0,idxLocation),
+            {
+                ...locationVolunteer[idxLocation],
+                description: [
+                    ...locationVolunteer[idxLocation].description.slice(0,index),
+                    ...locationVolunteer[idxLocation].description.slice(index+1)
+                ]
+            },
+            ...locationVolunteer.slice(idxLocation+1)
+        ]);
+    }
+    const handleChangeLocation = (e) => {
+        setLocationVolunteer([
+            ...locationVolunteer.slice(0,idxLocation),
+            {
+                ...locationVolunteer[idxLocation],
+                [e.target.name]: e.target.value
+            },
+            ...locationVolunteer.slice(idxLocation+1)
+        ]);
+    }
+
+    const [tempLocationActivity, setTempLocationActivity] = useState("");
+    const handleAddLocationActivity = (e) => {
+        e.preventDefault();
+        setLocationVolunteer([
+            ...locationVolunteer.slice(0,idxLocation),
+            {
+                ...locationVolunteer[idxLocation],
+                activities: [...locationVolunteer[idxLocation].activities,tempLocationActivity]
+            },
+            ...locationVolunteer.slice(idxLocation+1)
+        ]);
+        setTempLocationActivity("")
+    }
+    const handleDeleteLocationActivity = (index) =>{
+        setLocationVolunteer([
+            ...locationVolunteer.slice(0,idxLocation),
+            {
+                ...locationVolunteer[idxLocation],
+                activities: [
+                    ...locationVolunteer[idxLocation].activities.slice(0,index),
+                    ...locationVolunteer[idxLocation].activities.slice(index+1)
+                ]
+            },
+            ...locationVolunteer.slice(idxLocation+1)
+        ]);
+    }
+
+    const handleSubmit = () => {
+        if (images.length === 0) {
+            setError("Cần thêm ít nhất 1 ảnh");
+            return;
+        }
+        setLoading(true);
+        dispatch(createVolunteer(auth.token, auth.user._id, {
+            ...context,
+            date: dateVolunteer,
+            location: locationVolunteer
+        }, images, () => {
+            history.push(`/volunteer`);
+            setLoading(false);
+        }, () => {
+            setLoading(false)
+        }))
     }
     return(
         <div className={classes.formContainer}>
@@ -158,6 +309,15 @@ export default function AddVolunteer(props) {
                                 ))}
                             </Timeline>
                         </div>
+                        <div className={classes.smallTimeline}>
+                            <div className={classes.timelineWrap}>
+                                {dateVolunteer.map((item, index) => (
+                                    <Button key={index} className={index === idx ? classes.activeTimeline : classes.unactiveTimeline} onClick={() => setIdx(index)}>
+                                        {convertDateToStr(item.date)}
+                                    </Button>
+                                ))}
+                            </div>
+                        </div>
                         <div className={classes.addDayWrap}>
                         <IconButton size="small" onClick={() => handleAddDay()}>
                             <AddCircle />
@@ -165,7 +325,61 @@ export default function AddVolunteer(props) {
                         </div>
                     </Grid>
                     <Grid item md={9} sm={12} xs={12}>
-                        <Typography>Lịch trình ngày: {idx}</Typography>
+                        <form
+                            onSubmit={handleAddActivity}
+                            className={classes.formAdd}
+                        >
+                            <TextField
+                                label="Khoảng thời gian"
+                                variant="outlined"
+                                name="time"
+                                className={classes.halfFeild}
+                                onChange={(e) => setTempTime(e.target.value)}
+                                value={tempTime}
+                                required
+                            />
+                            <TextField
+                                label="Hoạt động"
+                                variant="outlined"
+                                name="activity"
+                                className={classes.halfFeild}
+                                onChange={(e) => setTempActivity(e.target.value)}
+                                value={tempActivity}
+                                required
+                            /> 
+                            <Button variant='contained' onClick={handleShowAddLoc}>
+                                Thêm địa điểm
+                            </Button>
+                                <Modal
+                                    aria-labelledby="modal-add-location"
+                                    aria-describedby="modal-add-location-description"
+                                    open={showAddLoc}
+                                    className={classes.modal}
+                                    onClose={handleCloseAddLoc}
+                                    closeAfterTransition
+                                    BackdropComponent={Backdrop}
+                                    BackdropProps={{
+                                        timeout: 500,
+                                    }}
+                                >
+                                    <Fade in={showAddLoc}>
+                                        <AddLocationForm
+                                            handleClose={handleCloseAddLoc}
+                                            tempLocation={tempLocation}
+                                            setTempLocation={setTempLocation}
+                                        />
+                                    </Fade>
+                                </Modal>
+                            <Button
+                                type="submit"
+                                disabled={!(tempActivity && tempTime)}
+                                variant='contained'
+                                color="primary"
+                            >
+                                Thêm
+                            </Button>
+                        </form>
+                        <Typography>Lịch trình ngày: {idx + 1}</Typography>
                         {
                             dateVolunteer[idx].activities.map((item, index) => (
                                     <List key={index} component="nav" aria-label="main folders">
@@ -175,11 +389,164 @@ export default function AddVolunteer(props) {
                                             </ListItemIcon>
                                             <ListItemText primary={item.time} style={{ minWidth: "80px" }} />
                                             <ListItemText primary={item.activity} />
+                                            <ListItemIcon>
+                                                <IconButton size="small" onClick={() => handleDeleteActivity(index)}>
+                                                    <Close />
+                                                </IconButton>
+                                            </ListItemIcon>
                                         </ListItem>
                                     </List>
                             ))
                         }
                     </Grid>
+                </Grid>
+            </div>
+            <div>
+                <Typography variant="h5">
+                    Hoạt động chi tiết cho từng địa điểm
+                </Typography>
+                <Grid container>
+                    <Grid item md={3} sm={12} xs={12}>
+                        <div className={classes.timeline}>
+                            <Timeline align="right" >
+                                {locationVolunteer.length !== 0 &&  locationVolunteer.map((item, index) => (
+                                    <TimelineItem key={index}>
+                                        <TimelineSeparator>
+                                            <TimelineDot className={index === idxLocation ? classes.activeDot : classes.unactiveDot} />
+                                            <TimelineConnector />
+                                        </TimelineSeparator>
+                                        <TimelineContent>
+                                            <div style={{display:"flex"}}>
+                                                <IconButton size="small" onClick={() => handleDeleteLocation()}>
+                                                    <Close />
+                                                </IconButton>
+                                                <Button className={index === idxLocation ? classes.activeTimeline : classes.unactiveTimeline} onClick={() => setIdxLocation(index)}>
+                                                    {item.location.fullname}
+                                                </Button>
+                                            </div>
+                                        </TimelineContent>
+                                    </TimelineItem>
+                                ))}
+                            </Timeline>
+                        </div>
+                        <div className={classes.smallTimeline}>
+                            <div className={classes.timelineWrap}>
+                                {locationVolunteer.map((item, index) => (
+                                    <Button key={index} className={index === idxLocation ? classes.activeTimeline : classes.unactiveTimeline} onClick={() => setIdxLocation(index)}>
+                                        {item.location.fullname}
+                                    </Button>
+                                ))}
+                            </div>
+                        </div>
+                    </Grid>
+                    <Grid item md={9} sm={12} xs={12}>
+                        <TextField
+                            label="Khoảng tuổi"
+                            variant="outlined"
+                            name="ageUser"
+                            className={classes.halfFeild}
+                            onChange={handleChangeLocation}
+                            value={locationVolunteer[idxLocation] && locationVolunteer[idxLocation].ageUser}
+                        />
+                        <TextField
+                            label="Số người tham gia tối đa"
+                            variant="outlined"
+                            name="maxUser"
+                            className={classes.halfFeild}
+                            onChange={handleChangeLocation}
+                            value={locationVolunteer[idxLocation] && locationVolunteer[idxLocation].maxUser}
+                        />
+
+                        <form
+                            onSubmit={handleAddLocationDescription}
+                            className={classes.formAdd}
+                        >
+                            <TextField
+                                label="Thông tin địa điểm"
+                                variant="outlined"
+                                name="location_description"
+                                className={classes.fullField}
+                                onChange={(e) => setTempLocationDescription(e.target.value)}
+                                value={tempLocationDescription}
+                                required
+                            />
+                            <Button
+                                type="submit"
+                                disabled={!tempLocationDescription}
+                                variant='contained'
+                                color="primary"
+                            >
+                                Thêm
+                            </Button>
+                        </form>
+                        <Typography>Thông tin :</Typography>
+                        {
+                          locationVolunteer[idxLocation] &&  locationVolunteer[idxLocation].description.map((item, index) => (
+                                    <List key={index} component="nav" aria-label="main folders">
+                                        <ListItem button className={classes.scheduleItem}>
+                                            <ListItemIcon>
+                                                <RadioButtonUnchecked style={{ color: "#A5DEC8" }} />
+                                            </ListItemIcon>
+                                            <ListItemText primary={item} style={{ minWidth: "80px" }} />
+                                            <ListItemIcon>
+                                                <IconButton size="small" onClick={() => handleDeleteLocationDescription(index)}>
+                                                    <Close />
+                                                </IconButton>
+                                            </ListItemIcon>
+                                        </ListItem>
+                                    </List>
+                            ))
+                        }
+
+                        <form
+                            onSubmit={handleAddLocationActivity}
+                            className={classes.formAdd}
+                        >
+                            <TextField
+                                label="Hoạt động cụ thể"
+                                variant="outlined"
+                                name="location_activity"
+                                className={classes.fullField}
+                                onChange={(e) => setTempLocationActivity(e.target.value)}
+                                value={tempLocationActivity}
+                                required
+                            />
+                            <Button
+                                type="submit"
+                                disabled={!tempLocationActivity}
+                                variant='contained'
+                                color="primary"
+                            >
+                                Thêm
+                            </Button>
+                        </form>
+                        <Typography>Các hoạt động cụ thể:</Typography>
+                        {
+                          locationVolunteer[idxLocation] &&  locationVolunteer[idxLocation].activities.map((item, index) => (
+                                    <List key={index} component="nav" aria-label="main folders">
+                                        <ListItem button className={classes.scheduleItem}>
+                                            <ListItemIcon>
+                                                <RadioButtonUnchecked style={{ color: "#A5DEC8" }} />
+                                            </ListItemIcon>
+                                            <ListItemText primary={item} style={{ minWidth: "80px" }} />
+                                            <ListItemIcon>
+                                                <IconButton size="small" onClick={() => handleDeleteLocationActivity(index)}>
+                                                    <Close />
+                                                </IconButton>
+                                            </ListItemIcon>
+                                        </ListItem>
+                                    </List>
+                            ))
+                        }
+                    </Grid>
+                    <Button
+                        onClick={() => handleSubmit()}
+                        // disabled={!tempLocationActivity}
+                        variant='contained'
+                        color="primary"
+                    >
+                        Thêm hoạt động
+                    </Button>
                 </Grid>
             </div>
         </div>

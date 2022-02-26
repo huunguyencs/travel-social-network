@@ -17,8 +17,9 @@ const addVolunteerStyles = makeStyles((theme) => ({
         marginBlock: 10
     },
     halfFeild: {
-        width: "50%",
-        marginBlock: 10
+        width: "45%",
+        marginBlock: 10,
+        marginRight: 10
     },
     buttonContainer: {
         display: 'flex',
@@ -39,6 +40,51 @@ const addVolunteerStyles = makeStyles((theme) => ({
         width: "100%",
         marginBlock: 5,
         paddingBottom: 10
+    },
+    timeline: {
+        [theme.breakpoints.down("sm")]: {
+            display: 'none',
+        }
+    },
+    smallTimeline: {
+        display: 'none',
+        [theme.breakpoints.down("sm")]: {
+            display: 'flex',
+            justifyContent: 'center',
+            marginBottom: 20,
+
+        }
+    },
+    timelineWrap: {
+        display: 'flex',
+        overflow: 'auto',
+    },
+    activeTimeline: {
+        backgroundColor: "#52BEDB",
+        color: "black",
+        textTransform: 'none',
+        [theme.breakpoints.down("sm")]: {
+            marginInline: 20,
+            paddingInline: 10
+        }
+    },
+    unactiveTimeline: {
+        color: "black",
+        textTransform: 'none',
+        [theme.breakpoints.down("sm")]: {
+            marginInline: 20
+        }
+    },
+    activeDot: {
+        backgroundColor: "#52BEDB !important",
+    },
+    unactiveDot: {
+        color: "gray"
+    },
+    modal:{
+        display: 'flex',
+        alignItems: 'center',
+        justifyContent: 'center',
     }
 }))
 
