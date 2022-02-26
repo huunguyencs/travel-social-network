@@ -17,7 +17,6 @@ export default function MapPicker(props) {
 
     function handleChangeLocation(lat, lng) {
         setLocation({ lat: lat, lng: lng });
-        // setPosition({ lat: lat, lng: lng })
     }
 
     function handleChangeZoom(newZoom) {
