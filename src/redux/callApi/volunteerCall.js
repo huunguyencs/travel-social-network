@@ -18,8 +18,8 @@ export const getVolunteers = (data) => async (dispatch) => {
 export const createVolunteer = (token, userId, data, images_data, next, error) => async (dispatch) => {
     try {
         let images = await imageUtils.uploadImages(images_data);
-        console.log("data",data);
-        const res = await customAxios(token).post('/volunteer/create_volunteer', {
+        console.log("data", data);
+        await customAxios(token).post('/volunteer/create_volunteer', {
             ...data,
             image: images[0]
         })

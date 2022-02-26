@@ -14,8 +14,8 @@ function AdminAddLocation(props) {
     fullname: '',
     province: null,
     position: {
-      lon: '',
-      lat: ''
+      lon: 108,
+      lat: 16
     },
     information: ''
   })

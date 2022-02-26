@@ -1,14 +1,14 @@
-import React, { useEffect, useState } from 'react';
-import { Button, Grid, IconButton, Radio, RadioGroup, TextField, Typography,Modal,Backdrop, Fade} from '@material-ui/core';
+import React, { useState } from 'react';
+import { Button, Grid, IconButton, TextField, Typography, Modal, Backdrop, Fade } from '@material-ui/core';
 import { addVolunteerStyles } from '../../style';
 import { useDispatch, useSelector } from 'react-redux';
 import { useHistory } from 'react-router-dom';
 import AddImageHorizontal from '../Input/AddImageHorizontal';
-import { Close,AddCircle, Clear } from '@material-ui/icons';
+import { Close, AddCircle } from '@material-ui/icons';
 import { Timeline, TimelineItem, TimelineSeparator, TimelineConnector, TimelineContent, TimelineDot } from '@material-ui/lab'
 import { convertDateToStr } from "../../utils/date";
-import {  List, ListItem, ListItemIcon, ListItemText, FormControlLabel } from '@material-ui/core';
-import { DoneOutline, RadioButtonUnchecked, AssistantPhoto, Event, Schedule } from '@material-ui/icons';
+import { List, ListItem, ListItemIcon, ListItemText } from '@material-ui/core';
+import { RadioButtonUnchecked } from '@material-ui/icons';
 import AddLocationForm from "../Forms/AddLocationVolunteer";
 import { createVolunteer } from '../../redux/callApi/volunteerCall';
 
@@ -41,7 +41,7 @@ export default function AddVolunteer(props) {
     const [tempDescription, setTempDescription] = useState("");
     const [tempTime, setTempTime] = useState("");
     const [tempActivity, setTempActivity] = useState("");
-    const [tempLocation, setTempLocation] = useState(null);  
+    const [tempLocation, setTempLocation] = useState(null);
     const [context, setContext] = useState({
         name: "",
         descriptions: [],
@@ -78,7 +78,7 @@ export default function AddVolunteer(props) {
         })
     }
 
-    
+
     const handleAddDay = () => {
         setDateVolunteer([
             ...dateVolunteer,
@@ -89,33 +89,33 @@ export default function AddVolunteer(props) {
             }
         ])
     }
-    const handleDeleteDay =() =>{
+    const handleDeleteDay = () => {
         setDateVolunteer([
-            ...dateVolunteer.slice(0,idx),
-            ...dateVolunteer.slice(idx+1)
+            ...dateVolunteer.slice(0, idx),
+            ...dateVolunteer.slice(idx + 1)
         ])
     }
-    
-    const handleAddActivity = (e) =>{
+
+    const handleAddActivity = (e) => {
         e.preventDefault();
         setDateVolunteer([
-            ...dateVolunteer.slice(0,idx),
+            ...dateVolunteer.slice(0, idx),
             {
                 ...dateVolunteer[idx],
-                activities: [...dateVolunteer[idx].activities,{time:tempTime, activity:tempActivity}]
+                activities: [...dateVolunteer[idx].activities, { time: tempTime, activity: tempActivity }]
             },
-            ...dateVolunteer.slice(idx+1)
+            ...dateVolunteer.slice(idx + 1)
         ]);
-        if(tempLocation != null){
+        if (tempLocation != null) {
             setLocationVolunteer([
                 ...locationVolunteer,
                 {
-                    timeStart:"",
-                    maxUsers:"",
-                    description:[],
+                    timeStart: "",
+                    maxUsers: "",
+                    description: [],
                     activities: [],
                     ageUser: "",
-                    location:tempLocation,
+                    location: tempLocation,
                     accommodation: ""
                 }
             ]);
@@ -124,17 +124,17 @@ export default function AddVolunteer(props) {
         setTempTime("");
         setTempActivity("");
     }
-    const handleDeleteActivity = (index) =>{
+    const handleDeleteActivity = (index) => {
         setDateVolunteer([
-            ...dateVolunteer.slice(0,idx),
+            ...dateVolunteer.slice(0, idx),
             {
                 ...dateVolunteer[idx],
                 activities: [
-                    ...dateVolunteer[idx].activities.slice(0,index),
-                    ...dateVolunteer[idx].activities.slice(index+1)
+                    ...dateVolunteer[idx].activities.slice(0, index),
+                    ...dateVolunteer[idx].activities.slice(index + 1)
                 ]
             },
-            ...dateVolunteer.slice(idx+1)
+            ...dateVolunteer.slice(idx + 1)
         ])
     }
     const [showAddLoc, setShowAddLoc] = useState(false);
@@ -145,10 +145,10 @@ export default function AddVolunteer(props) {
         setShowAddLoc(false);
     }
 
-    const handleDeleteLocation=()=>{
+    const handleDeleteLocation = () => {
         setLocationVolunteer([
-            ...locationVolunteer.slice(0,idxLocation),
-            ...locationVolunteer.slice(idxLocation+1)
+            ...locationVolunteer.slice(0, idxLocation),
+            ...locationVolunteer.slice(idxLocation + 1)
         ])
     }
 
@@ -157,36 +157,36 @@ export default function AddVolunteer(props) {
     const handleAddLocationDescription = (e) => {
         e.preventDefault();
         setLocationVolunteer([
-            ...locationVolunteer.slice(0,idxLocation),
+            ...locationVolunteer.slice(0, idxLocation),
             {
                 ...locationVolunteer[idxLocation],
-                description: [...locationVolunteer[idxLocation].description,tempLocationDescription]
+                description: [...locationVolunteer[idxLocation].description, tempLocationDescription]
             },
-            ...locationVolunteer.slice(idxLocation+1)
+            ...locationVolunteer.slice(idxLocation + 1)
         ]);
         setTempLocationDescription("")
     }
-    const handleDeleteLocationDescription = (index) =>{
+    const handleDeleteLocationDescription = (index) => {
         setLocationVolunteer([
-            ...locationVolunteer.slice(0,idxLocation),
+            ...locationVolunteer.slice(0, idxLocation),
             {
                 ...locationVolunteer[idxLocation],
                 description: [
-                    ...locationVolunteer[idxLocation].description.slice(0,index),
-                    ...locationVolunteer[idxLocation].description.slice(index+1)
+                    ...locationVolunteer[idxLocation].description.slice(0, index),
+                    ...locationVolunteer[idxLocation].description.slice(index + 1)
                 ]
             },
-            ...locationVolunteer.slice(idxLocation+1)
+            ...locationVolunteer.slice(idxLocation + 1)
         ]);
     }
     const handleChangeLocation = (e) => {
         setLocationVolunteer([
-            ...locationVolunteer.slice(0,idxLocation),
+            ...locationVolunteer.slice(0, idxLocation),
             {
                 ...locationVolunteer[idxLocation],
                 [e.target.name]: e.target.value
             },
-            ...locationVolunteer.slice(idxLocation+1)
+            ...locationVolunteer.slice(idxLocation + 1)
         ]);
     }
 
@@ -194,26 +194,26 @@ export default function AddVolunteer(props) {
     const handleAddLocationActivity = (e) => {
         e.preventDefault();
         setLocationVolunteer([
-            ...locationVolunteer.slice(0,idxLocation),
+            ...locationVolunteer.slice(0, idxLocation),
             {
                 ...locationVolunteer[idxLocation],
-                activities: [...locationVolunteer[idxLocation].activities,tempLocationActivity]
+                activities: [...locationVolunteer[idxLocation].activities, tempLocationActivity]
             },
-            ...locationVolunteer.slice(idxLocation+1)
+            ...locationVolunteer.slice(idxLocation + 1)
         ]);
         setTempLocationActivity("")
     }
-    const handleDeleteLocationActivity = (index) =>{
+    const handleDeleteLocationActivity = (index) => {
         setLocationVolunteer([
-            ...locationVolunteer.slice(0,idxLocation),
+            ...locationVolunteer.slice(0, idxLocation),
             {
                 ...locationVolunteer[idxLocation],
                 activities: [
-                    ...locationVolunteer[idxLocation].activities.slice(0,index),
-                    ...locationVolunteer[idxLocation].activities.slice(index+1)
+                    ...locationVolunteer[idxLocation].activities.slice(0, index),
+                    ...locationVolunteer[idxLocation].activities.slice(index + 1)
                 ]
             },
-            ...locationVolunteer.slice(idxLocation+1)
+            ...locationVolunteer.slice(idxLocation + 1)
         ]);
     }
 
@@ -234,9 +234,9 @@ export default function AddVolunteer(props) {
             setLoading(false)
         }))
     }
-    return(
+    return (
         <div className={classes.formContainer}>
-            <Typography variant='h5' style={{marginTop: 50}}>Tạo hoạt động tình nguyện của bạn</Typography>
+            <Typography variant='h5' style={{ marginTop: 50 }}>Tạo hoạt động tình nguyện của bạn</Typography>
             <TextField
                 label="Tên hoạt động"
                 variant="outlined"
@@ -296,7 +296,7 @@ export default function AddVolunteer(props) {
                                             <TimelineConnector />
                                         </TimelineSeparator>
                                         <TimelineContent>
-                                            <div style={{display:"flex"}}>
+                                            <div style={{ display: "flex" }}>
                                                 <IconButton size="small" onClick={() => handleDeleteDay()}>
                                                     <Close />
                                                 </IconButton>
@@ -319,9 +319,9 @@ export default function AddVolunteer(props) {
                             </div>
                         </div>
                         <div className={classes.addDayWrap}>
-                        <IconButton size="small" onClick={() => handleAddDay()}>
-                            <AddCircle />
-                        </IconButton>
+                            <IconButton size="small" onClick={() => handleAddDay()}>
+                                <AddCircle />
+                            </IconButton>
                         </div>
                     </Grid>
                     <Grid item md={9} sm={12} xs={12}>
@@ -346,30 +346,30 @@ export default function AddVolunteer(props) {
                                 onChange={(e) => setTempActivity(e.target.value)}
                                 value={tempActivity}
                                 required
-                            /> 
+                            />
                             <Button variant='contained' onClick={handleShowAddLoc}>
                                 Thêm địa điểm
                             </Button>
-                                <Modal
-                                    aria-labelledby="modal-add-location"
-                                    aria-describedby="modal-add-location-description"
-                                    open={showAddLoc}
-                                    className={classes.modal}
-                                    onClose={handleCloseAddLoc}
-                                    closeAfterTransition
-                                    BackdropComponent={Backdrop}
-                                    BackdropProps={{
-                                        timeout: 500,
-                                    }}
-                                >
-                                    <Fade in={showAddLoc}>
-                                        <AddLocationForm
-                                            handleClose={handleCloseAddLoc}
-                                            tempLocation={tempLocation}
-                                            setTempLocation={setTempLocation}
-                                        />
-                                    </Fade>
-                                </Modal>
+                            <Modal
+                                aria-labelledby="modal-add-location"
+                                aria-describedby="modal-add-location-description"
+                                open={showAddLoc}
+                                className={classes.modal}
+                                onClose={handleCloseAddLoc}
+                                closeAfterTransition
+                                BackdropComponent={Backdrop}
+                                BackdropProps={{
+                                    timeout: 500,
+                                }}
+                            >
+                                <Fade in={showAddLoc}>
+                                    <AddLocationForm
+                                        handleClose={handleCloseAddLoc}
+                                        tempLocation={tempLocation}
+                                        setTempLocation={setTempLocation}
+                                    />
+                                </Fade>
+                            </Modal>
                             <Button
                                 type="submit"
                                 disabled={!(tempActivity && tempTime)}
@@ -382,20 +382,20 @@ export default function AddVolunteer(props) {
                         <Typography>Lịch trình ngày: {idx + 1}</Typography>
                         {
                             dateVolunteer[idx].activities.map((item, index) => (
-                                    <List key={index} component="nav" aria-label="main folders">
-                                        <ListItem button className={classes.scheduleItem}>
-                                            <ListItemIcon>
-                                                <RadioButtonUnchecked style={{ color: "#A5DEC8" }} />
-                                            </ListItemIcon>
-                                            <ListItemText primary={item.time} style={{ minWidth: "80px" }} />
-                                            <ListItemText primary={item.activity} />
-                                            <ListItemIcon>
-                                                <IconButton size="small" onClick={() => handleDeleteActivity(index)}>
-                                                    <Close />
-                                                </IconButton>
-                                            </ListItemIcon>
-                                        </ListItem>
-                                    </List>
+                                <List key={index} component="nav" aria-label="main folders">
+                                    <ListItem button className={classes.scheduleItem}>
+                                        <ListItemIcon>
+                                            <RadioButtonUnchecked style={{ color: "#A5DEC8" }} />
+                                        </ListItemIcon>
+                                        <ListItemText primary={item.time} style={{ minWidth: "80px" }} />
+                                        <ListItemText primary={item.activity} />
+                                        <ListItemIcon>
+                                            <IconButton size="small" onClick={() => handleDeleteActivity(index)}>
+                                                <Close />
+                                            </IconButton>
+                                        </ListItemIcon>
+                                    </ListItem>
+                                </List>
                             ))
                         }
                     </Grid>
@@ -409,14 +409,14 @@ export default function AddVolunteer(props) {
                     <Grid item md={3} sm={12} xs={12}>
                         <div className={classes.timeline}>
                             <Timeline align="right" >
-                                {locationVolunteer.length !== 0 &&  locationVolunteer.map((item, index) => (
+                                {locationVolunteer.length !== 0 && locationVolunteer.map((item, index) => (
                                     <TimelineItem key={index}>
                                         <TimelineSeparator>
                                             <TimelineDot className={index === idxLocation ? classes.activeDot : classes.unactiveDot} />
                                             <TimelineConnector />
                                         </TimelineSeparator>
                                         <TimelineContent>
-                                            <div style={{display:"flex"}}>
+                                            <div style={{ display: "flex" }}>
                                                 <IconButton size="small" onClick={() => handleDeleteLocation()}>
                                                     <Close />
                                                 </IconButton>
@@ -481,20 +481,20 @@ export default function AddVolunteer(props) {
                         </form>
                         <Typography>Thông tin :</Typography>
                         {
-                          locationVolunteer[idxLocation] &&  locationVolunteer[idxLocation].description.map((item, index) => (
-                                    <List key={index} component="nav" aria-label="main folders">
-                                        <ListItem button className={classes.scheduleItem}>
-                                            <ListItemIcon>
-                                                <RadioButtonUnchecked style={{ color: "#A5DEC8" }} />
-                                            </ListItemIcon>
-                                            <ListItemText primary={item} style={{ minWidth: "80px" }} />
-                                            <ListItemIcon>
-                                                <IconButton size="small" onClick={() => handleDeleteLocationDescription(index)}>
-                                                    <Close />
-                                                </IconButton>
-                                            </ListItemIcon>
-                                        </ListItem>
-                                    </List>
+                            locationVolunteer[idxLocation] && locationVolunteer[idxLocation].description.map((item, index) => (
+                                <List key={index} component="nav" aria-label="main folders">
+                                    <ListItem button className={classes.scheduleItem}>
+                                        <ListItemIcon>
+                                            <RadioButtonUnchecked style={{ color: "#A5DEC8" }} />
+                                        </ListItemIcon>
+                                        <ListItemText primary={item} style={{ minWidth: "80px" }} />
+                                        <ListItemIcon>
+                                            <IconButton size="small" onClick={() => handleDeleteLocationDescription(index)}>
+                                                <Close />
+                                            </IconButton>
+                                        </ListItemIcon>
+                                    </ListItem>
+                                </List>
                             ))
                         }
 
@@ -522,20 +522,20 @@ export default function AddVolunteer(props) {
                         </form>
                         <Typography>Các hoạt động cụ thể:</Typography>
                         {
-                          locationVolunteer[idxLocation] &&  locationVolunteer[idxLocation].activities.map((item, index) => (
-                                    <List key={index} component="nav" aria-label="main folders">
-                                        <ListItem button className={classes.scheduleItem}>
-                                            <ListItemIcon>
-                                                <RadioButtonUnchecked style={{ color: "#A5DEC8" }} />
-                                            </ListItemIcon>
-                                            <ListItemText primary={item} style={{ minWidth: "80px" }} />
-                                            <ListItemIcon>
-                                                <IconButton size="small" onClick={() => handleDeleteLocationActivity(index)}>
-                                                    <Close />
-                                                </IconButton>
-                                            </ListItemIcon>
-                                        </ListItem>
-                                    </List>
+                            locationVolunteer[idxLocation] && locationVolunteer[idxLocation].activities.map((item, index) => (
+                                <List key={index} component="nav" aria-label="main folders">
+                                    <ListItem button className={classes.scheduleItem}>
+                                        <ListItemIcon>
+                                            <RadioButtonUnchecked style={{ color: "#A5DEC8" }} />
+                                        </ListItemIcon>
+                                        <ListItemText primary={item} style={{ minWidth: "80px" }} />
+                                        <ListItemIcon>
+                                            <IconButton size="small" onClick={() => handleDeleteLocationActivity(index)}>
+                                                <Close />
+                                            </IconButton>
+                                        </ListItemIcon>
+                                    </ListItem>
+                                </List>
                             ))
                         }
                     </Grid>

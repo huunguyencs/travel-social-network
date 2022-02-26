@@ -4,7 +4,6 @@ import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 
 import { formStyles } from '../../style';
-import * as tourAction from '../../redux/actions/createTourAction';
 import customAxios from "../../utils/fetchData";
 import { AddCircle } from "@material-ui/icons";
 import { getProvinces } from '../../redux/callApi/locationCall';
@@ -18,7 +17,7 @@ export default function AddLocationForm(props) {
     const [currentProvince, setCurrentProvince] = useState(null);
     const dispatch = useDispatch();
     const { location } = useSelector(state => state);
-    const {tempLocation, setTempLocation , handleClose } = props;
+    const { setTempLocation, handleClose } = props;
     const [loading, setLoading] = useState(false);
     const [locations, setLocations] = useState([]);
     useEffect(() => {
