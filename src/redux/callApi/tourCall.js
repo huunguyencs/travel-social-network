@@ -6,18 +6,27 @@ import * as alertAction from '../actions/alertAction'
 import { extractProvinceTour, sortTourDate } from '../../utils/utils';
 import { resetTour } from '../actions/createTourAction';
 
-export const getTours = (data) => async (dispatch) => {
+export const getTours = () => async (dispatch) => {
     dispatch(tourAction.loading());
     // console.log(dispatch)
     try {
-
-        const res = await customAxios().get("/tour/tours");
-        // console.log(res.data.tours)
+        const res = await customAxios().get(`/tour/tours?offset=0`);
         var tours = res.data.tours.map(item => sortTourDate(item));
         dispatch(tourAction.getTours({ tours: tours }));
     }
     catch (err) {
         // console.log(err);
+        dispatch(tourAction.error({ error: "Có lỗi xảy ra" }))
+    }
+}
+
+export const getMoreTours = (page) => async (dispatch) => {
+    dispatch(tourAction.loading());
+    try {
+        const res = await customAxios().get(`/tour/tours?offset=${page}`);
+        var tours = res.data.tours.map(item => sortTourDate(item));
+        dispatch(tourAction.getMoreTour({ tours: tours }));
+    } catch (err) {
         dispatch(tourAction.error({ error: "Có lỗi xảy ra" }))
     }
 }

@@ -223,7 +223,8 @@ class TourController {
 
     async getTours(req, res) {
         try {
-            const tours = await Tours.find({}).sort("-createdAt")
+            const { offset } = req.query;
+            const tours = await Tours.find({}).sort("-createdAt").skip(parseInt(offset) * 5).limit(5)
                 .populate("userId joinIds likes", "username fullname avatar")
                 .populate("tour", "date")
                 .populate({

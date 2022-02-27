@@ -4,7 +4,8 @@ const INIT_STATE = {
     tours: [],
     loading: false,
     error: null,
-    page: 1
+    page: 0,
+    hasMore: true,
 }
 
 const tourReducer = (state = INIT_STATE, action) => {
@@ -16,22 +17,23 @@ const tourReducer = (state = INIT_STATE, action) => {
                 page: 1,
                 loading: false,
                 error: null,
+                hasMore: action.payload.tours.length >= 5
+            }
+        }
+        case TOUR_TYPES.GET_MORE_TOUR: {
+            return {
+                ...state,
+                tours: [...state.tours, ...action.payload.tours],
+                page: state.page + 1,
+                loading: false,
+                error: null,
+                hasMore: action.payload.tours.length >= 5
             }
         }
         case TOUR_TYPES.ADD_TOUR: {
             return {
                 ...state,
                 tours: [...state.tours, action.payload.tour],
-                loading: false,
-                error: null
-            }
-        }
-
-        case TOUR_TYPES.GET_MORE_TOUR: {
-            return {
-                ...state,
-                tours: [...state.tours, ...action.payload.tours],
-                page: state.page + 1,
                 loading: false,
                 error: null
             }

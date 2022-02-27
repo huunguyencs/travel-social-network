@@ -24,7 +24,11 @@ export default function CreateVolunteer() {
     }, [])
 
     const tryAgain = () => {
-        
+        setState({
+            loading: false,
+            notFound: false,
+            error: false
+        })
     }
 
     return (
@@ -48,7 +52,7 @@ export default function CreateVolunteer() {
                                         <Button onClick={tryAgain}>Thử lại</Button>
                                     </>
                                 </div> :
-                                <AddVolunteer/>
+                                <AddVolunteer />
                 }
             </Grid>
         </Grid>

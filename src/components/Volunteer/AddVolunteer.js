@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Button, Grid, IconButton, TextField, Typography, Modal, Backdrop, Fade } from '@material-ui/core';
+import { Button, Grid, IconButton, TextField, Typography, Modal, Backdrop, Fade, CircularProgress } from '@material-ui/core';
 import { addVolunteerStyles } from '../../style';
 import { useDispatch, useSelector } from 'react-redux';
 import { useHistory } from 'react-router-dom';
@@ -32,7 +32,7 @@ export default function AddVolunteer(props) {
     const [error, setError] = useState('');
     const [loading, setLoading] = useState(false);
 
-    const { auth, location } = useSelector(state => state);
+    const { auth } = useSelector(state => state);
     const dispatch = useDispatch();
     const history = useHistory();
     const [idx, setIdx] = useState(0);
@@ -252,6 +252,7 @@ export default function AddVolunteer(props) {
                 className={classes.fullField}
                 maxImage={10}
             />
+            <span>{error}</span>
             <Typography>Các thông tin chung</Typography>
             <Grid container>
                 {context.descriptions.map((item, index) => (
@@ -545,7 +546,9 @@ export default function AddVolunteer(props) {
                         variant='contained'
                         color="primary"
                     >
-                        Thêm hoạt động
+                        {loading ?
+                            <CircularProgress /> : 'Thêm hoạt động'}
+
                     </Button>
                 </Grid>
             </div>
