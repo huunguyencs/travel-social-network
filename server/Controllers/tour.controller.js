@@ -228,20 +228,11 @@ class TourController {
             maxCost = maxCost ? parseInt(maxCost) : null;
             minCost = minCost ? parseInt(minCost) : null;
             var query = {}
-            if (q && q !== '') {
-                query = {
-                    $or: [
-                        { name: { $regex: q } },
-                        { content: { $regex: q } },
-                        { provinces: { $elemMatch: { $regex: q } } },
-                        { hashtags: { $elemMatch: { $regex: q } } }
-                    ]
+            var sort = "-createdAt"
 
-                }
-            }
             if (maxCost && maxCost !== 1000) {
                 query = {
-                    ...query,
+
                     cost: {
                         $lte: maxCost
                     }
@@ -256,11 +247,21 @@ class TourController {
                     }
                 }
             }
+            if (q && q !== '') {
+                query = {
+                    ...query,
+                    $text: {
+                        $search: q
+                    }
+                }
+                sort = { score: { $meta: "textScore" } }
+            }
+
 
             // Tours.createIndexes()
             // Tours.createIndexes({'$**': 'text'});
 
-            const tours = await Tours.find(query).sort("-createdAt").skip(offset * 5).limit(5)
+            const tours = await Tours.find(query, { 'score': { $meta: 'textScore' } }).sort(sort).skip(offset * 5).limit(5)
                 .populate("userId joinIds likes", "username fullname avatar")
                 .populate("tour", "date")
                 .populate({
