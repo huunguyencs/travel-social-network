@@ -6,11 +6,23 @@ import * as alertAction from '../actions/alertAction'
 import { extractProvinceTour, sortTourDate } from '../../utils/utils';
 import { resetTour } from '../actions/createTourAction';
 
-export const getTours = () => async (dispatch) => {
+export const getTours = (query) => async (dispatch) => {
     dispatch(tourAction.loading());
     // console.log(dispatch)
     try {
-        const res = await customAxios().get(`/tour/tours?offset=0`);
+        var res;
+        if (query) {
+            const { maxCost, minCost, q } = query;
+            var que = '';
+            if (maxCost && maxCost !== 100) que += `maxCost=${maxCost}&`;
+            if (minCost && minCost !== 0) que += `minCost=${minCost}&`;
+            if (q && q !== '') que += `q=${q}`;
+            res = await customAxios().get(`/tour/tours?${que}`)
+        }
+        else {
+            res = await customAxios().get(`/tour/tours`);
+        }
+
         var tours = res.data.tours.map(item => sortTourDate(item));
         dispatch(tourAction.getTours({ tours: tours }));
     }

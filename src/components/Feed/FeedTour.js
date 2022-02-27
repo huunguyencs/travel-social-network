@@ -5,7 +5,7 @@ import Tour from "../Tour";
 import { feedStyles } from "../../style";
 import CreateTourForm from "../Forms/CreateTour";
 import { useSelector, useDispatch } from "react-redux";
-import { getMoreTours } from "../../redux/callApi/tourCall"
+import { getMoreTours, getTours } from "../../redux/callApi/tourCall"
 import FilterTour from "../Forms/FilterTour";
 import { Tune } from "@material-ui/icons";
 import SuccessIcon from "../Icons/Success";
@@ -17,8 +17,9 @@ export default function FeedTour(props) {
     const { auth, tour } = useSelector(state => state);
     const [fetch, setFetch] = useState(false);
 
-    const [cost, setCost] = useState([10, 20]);
+    const [cost, setCost] = useState([0, 100]);
     const [text, setText] = useState('');
+    const [isFiltering, setIsFiltering] = useState(false);
 
     const classes = feedStyles();
 
@@ -39,6 +40,13 @@ export default function FeedTour(props) {
 
     const handleCloseFilter = () => {
         setShowFilter(false);
+    }
+
+    const removeFilter = () => {
+        setCost([0, 100]);
+        setText('');
+        dispatch(getTours());
+        setIsFiltering(false);
     }
 
     const loadTour = (page, dispatch, hasMore) => {
@@ -108,7 +116,7 @@ export default function FeedTour(props) {
 
 
                 <div className={classes.feedContent}>
-                    <div style={{ display: 'flex', justifyContent: 'right' }}>
+                    <div style={{ display: 'flex', justifyContent: 'right', margin: 10 }}>
                         <Button
                             onClick={handleShowFilter}
                             startIcon={<Tune />}
@@ -116,6 +124,7 @@ export default function FeedTour(props) {
                             Lọc
                         </Button>
                     </div>
+
                     <Modal
                         aria-labelledby="transition-modal-title"
                         aria-describedby="transition-modal-description"
@@ -136,9 +145,23 @@ export default function FeedTour(props) {
                                 setCostParent={setCost}
                                 textParent={text}
                                 setTextParent={setText}
+                                setFilter={setIsFiltering}
                             />
                         </Fade>
                     </Modal>
+                    {
+                        isFiltering &&
+                        <div>
+                            <Typography>
+                                Đang lọc:
+                            </Typography>
+                            <ul>
+                                <li>Chi phí: {cost[0] === 0 ? 'Tối thiểu' : (new Intl.NumberFormat().format(cost[0] * 10000) + ' VND')}  - {cost[1] === 100 ? 'Tối đa' : (new Intl.NumberFormat().format(cost[1] * 10000) + ' VND')} </li>
+                                <li>Từ khóa: {text}</li>
+                            </ul>
+                            <Button onClick={removeFilter}>Xoá bộ lọc</Button>
+                        </div>
+                    }
 
                     <div>
                         {

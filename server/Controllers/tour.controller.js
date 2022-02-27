@@ -223,8 +223,41 @@ class TourController {
 
     async getTours(req, res) {
         try {
-            const { offset } = req.query;
-            const tours = await Tours.find({}).sort("-createdAt").skip(parseInt(offset) * 5).limit(5)
+            var { offset, maxCost, minCost, q } = req.query;
+            offset = offset ? parseInt(offset) : 0;
+            maxCost = maxCost ? parseInt(maxCost) : null;
+            minCost = minCost ? parseInt(minCost) : null;
+            var query = {}
+            if (q && q !== '') {
+                query = {
+                    $or: [
+                        { name: { $regex: q } },
+                        { content: { $regex: q } },
+                        { provinces: { $elemMatch: { $regex: q } } },
+                        { hashtags: { $elemMatch: { $regex: q } } }
+                    ]
+
+                }
+            }
+            if (maxCost && maxCost !== 1000) {
+                query = {
+                    ...query,
+                    cost: {
+                        $lte: maxCost
+                    }
+                }
+            }
+            if (minCost && minCost !== 0) {
+                query = {
+                    ...query,
+                    cost: {
+                        ...query.cost,
+                        $gte: minCost
+                    }
+                }
+            }
+
+            const tours = await Tours.find(query).sort("-createdAt").skip(offset * 5).limit(5)
                 .populate("userId joinIds likes", "username fullname avatar")
                 .populate("tour", "date")
                 .populate({

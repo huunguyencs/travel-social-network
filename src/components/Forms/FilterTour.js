@@ -1,20 +1,23 @@
 import { Button, Paper, Slider, TextField, Typography } from '@material-ui/core'
 import React, { useState } from 'react'
+import { useDispatch } from 'react-redux';
+import { getTours } from '../../redux/callApi/tourCall';
 import { formStyles } from '../../style'
 
 function formatCost(cost) {
     if (parseInt(cost) === 0) return 'Min';
     if (parseInt(cost) === 100) return 'Max';
-    return cost;
+    return cost * 10;
 }
 
 function valueText(value) {
-    return `${value}`;
+    return `${10 * value}`;
 }
 
 export default function FilterTour(props) {
 
-    const { costParent, setCostParent, textParent, setTextParent, handleClose } = props;
+    const { costParent, setCostParent, textParent, setTextParent, handleClose, setFilter } = props;
+    const dispatch = useDispatch();
 
     const [cost, setCost] = useState(costParent);
     const [text, setText] = useState(textParent);
@@ -33,7 +36,20 @@ export default function FilterTour(props) {
         e.preventDefault();
         setCostParent(cost);
         setTextParent(text);
+        var maxCost = cost[1], minCost = cost[0];
+        if (minCost > maxCost) {
+            minCost += maxCost;
+            maxCost = minCost - maxCost;
+            minCost -= maxCost;
+        }
+        dispatch(getTours({
+            maxCost: maxCost * 10,
+            minCost: minCost * 10,
+            q: text
+        }))
+        setFilter(true);
         handleClose();
+
     }
 
 
@@ -69,8 +85,8 @@ export default function FilterTour(props) {
                     value={text}
                     onChange={handleChangeText}
                 />
-                <div>
-                    <Button onClick={handleSubmit}>Xong</Button>
+                <div style={{ display: 'flex', justifyContent: 'right', margin: 10 }}>
+                    <Button variant='outlined' color='primary' onClick={handleSubmit}>Xong</Button>
                 </div>
             </div>
         </Paper>
