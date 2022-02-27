@@ -257,6 +257,9 @@ class TourController {
                 }
             }
 
+            // Tours.createIndexes()
+            // Tours.createIndexes({'$**': 'text'});
+
             const tours = await Tours.find(query).sort("-createdAt").skip(offset * 5).limit(5)
                 .populate("userId joinIds likes", "username fullname avatar")
                 .populate("tour", "date")
