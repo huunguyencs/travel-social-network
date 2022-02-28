@@ -110,7 +110,7 @@ export default function Comment(props) {
                             <Typography noWrap={false} variant="subtitle2" className={classes.userName} component={Link} to={`/u/${comment.userId?._id}`}>
                                 {comment.userId?.fullname}
                             </Typography>
-                            <div className={classes.content} style={{ overflow: 'auto', maxWidth: '100%', display: 'block' }}>
+                            <div className={classes.content}>
                                 <SeeMoreText
                                     variant="body2"
                                     maxText={100}

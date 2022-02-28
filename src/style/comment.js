@@ -5,7 +5,6 @@ import color from "./color";
 const commentStyles = makeStyles((theme) => ({
     comment: {
         display: 'flex',
-        width: "100%",
         marginTop: 10,
         marginBottom: 20,
         marginInline: 30,
@@ -13,17 +12,24 @@ const commentStyles = makeStyles((theme) => ({
     avatar: {
         marginRight: 10,
     },
-    cmtInfo: {
-        maxWidth: "70%",
-        [theme.breakpoints.down("sm")]: {
-            maxWidth: 300,
-        }
-    },
+    // cmtInfo: {
+    //     maxWidth: "70%",
+    //     [theme.breakpoints.down("md")]: {
+    //         maxWidth: 500,
+    //     },
+    //     [theme.breakpoints.down("sm")]: {
+    //         maxWidth: 300,
+    //     }
+    // },
     content: {
         backgroundColor: color.background,
         padding: 10,
         borderRadius: 10,
-        marginRight: 10
+        marginRight: 10,
+        overflow: 'auto', 
+        maxWidth: '100%', 
+        display: 'block',
+        minWidth: "50%"
     },
     cmtSubinfo: {
         display: "flex",
