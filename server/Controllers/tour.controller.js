@@ -229,6 +229,7 @@ class TourController {
             minCost = minCost ? parseInt(minCost) : null;
             var query = {}
             var sort = "-createdAt"
+            var score = {}
 
             if (maxCost && maxCost !== 1000) {
                 query = {
@@ -255,13 +256,14 @@ class TourController {
                     }
                 }
                 sort = { score: { $meta: "textScore" } }
+                score = sort
             }
 
 
             // Tours.createIndexes()
             // Tours.createIndexes({'$**': 'text'});
 
-            const tours = await Tours.find(query, { 'score': { $meta: 'textScore' } }).sort(sort).skip(offset * 5).limit(5)
+            const tours = await Tours.find(query, score).sort(sort).skip(offset * 5).limit(5)
                 .populate("userId joinIds likes", "username fullname avatar")
                 .populate("tour", "date")
                 .populate({
@@ -297,7 +299,9 @@ class TourController {
     //lấy tours của 1 user cụ thể (params.id)
     async getUserTour(req, res) {
         try {
-            const tours = await Tours.find({ userId: req.params.id }).sort("-createdAt")
+            var { offset } = req.query;
+            offset = offset || 0;
+            const tours = await Tours.find({ userId: req.params.id }).sort("-createdAt").skip(offset * 5).limit(5)
                 .populate("userId joinIds likes", "username fullname avatar")
                 .populate("tour", "date")
                 .populate({

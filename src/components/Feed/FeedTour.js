@@ -165,6 +165,7 @@ export default function FeedTour(props) {
 
                     <div>
                         {
+                            !tour.loading && !tour.error &&
                             tour.tours.map((tour) => (
                                 <Tour
                                     tour={tour}
@@ -189,7 +190,7 @@ export default function FeedTour(props) {
                             </div>
                         }
                         {
-                            !tour.hasMore &&
+                            !tour.loading && !tour.error && !tour.hasMore &&
                             <div style={{ textAlign: 'center', marginBlock: 30 }}>
                                 <SuccessIcon style={{ margin: 'auto', fontSize: 50 }} />
                                 <Typography style={{ margin: 'auto', fontSize: 24 }}>Bạn đã xem hết hành trình</Typography>

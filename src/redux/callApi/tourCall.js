@@ -32,10 +32,22 @@ export const getTours = (query) => async (dispatch) => {
     }
 }
 
-export const getMoreTours = (page) => async (dispatch) => {
+export const getMoreTours = (page, query) => async (dispatch) => {
     dispatch(tourAction.loading());
     try {
-        const res = await customAxios().get(`/tour/tours?offset=${page}`);
+        var res;
+        if (query) {
+            const { maxCost, minCost, q } = query;
+            var que = '';
+            if (maxCost && maxCost !== 100) que += `maxCost=${maxCost}&`;
+            if (minCost && minCost !== 0) que += `minCost=${minCost}&`;
+            if (q && q !== '') que += `q=${q}&`;
+            res = await customAxios().get(`/tour/tours?${que}offset=${page}`)
+        }
+        else {
+            res = await customAxios().get(`/tour/tours?offset=${page}`);
+        }
+
         var tours = res.data.tours.map(item => sortTourDate(item));
         dispatch(tourAction.getMoreTour({ tours: tours }));
     } catch (err) {
@@ -43,14 +55,23 @@ export const getMoreTours = (page) => async (dispatch) => {
     }
 }
 
-export const getUserTour = (id, token) => async (dispatch) => {
+export const getUserTour = (id, token, page) => async (dispatch) => {
     // dispatch(tourAction.getTours({ tour: [] }));
     dispatch(tourAction.loading())
     try {
-        const res = await customAxios(token).get(`/tour/user_tours/${id}`);
-        var tours = res.data.tours.map(item => sortTourDate(item))
-        // console.log(res.data.tours);
-        dispatch(tourAction.getTours({ tours: tours }))
+        var res;
+        if (page && page > 0) {
+            res = await customAxios(token).get(`/tour/user_tours/${id}?offset=${page}`);
+            let tours = res.data.tours.map(item => sortTourDate(item))
+            // console.log(res.data.tours);
+            dispatch(tourAction.getMoreTour({ tours: tours }))
+        }
+        else {
+            res = await customAxios(token).get(`/tour/user_tours/${id}`);
+            let tours = res.data.tours.map(item => sortTourDate(item))
+            // console.log(res.data.tours);
+            dispatch(tourAction.getTours({ tours: tours }))
+        }
     }
     catch (err) {
         dispatch(tourAction.error({ error: "Có lỗi xảy ra" }))

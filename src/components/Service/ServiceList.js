@@ -13,7 +13,7 @@ export default function ServiceList() {
 
     return (
         <div>
-            <div className={classes.centerMarginTop}>
+            <div className={classes.titleService}>
                 <Typography variant='h4'>Danh sách dịch vụ</Typography>
             </div>
             <div className={classes.listContainer}>

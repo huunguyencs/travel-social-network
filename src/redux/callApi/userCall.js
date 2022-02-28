@@ -10,7 +10,7 @@ export const getUser = (id, callback) => async (dispatch) => {
 
         dispatch(userAction.getUserInfo({ user: res.data.user }))
 
-        console.log(res)
+        // console.log(res)
 
         if (res.data.user.role === 1) {
             const res = await customAxios().get(`/service/get_by_coop/${id}`);

@@ -11,10 +11,16 @@ const serviceStyles = makeStyles((theme) => ({
     },
     listContainer: {
         marginInline: 20,
-        marginBlock: 50
+        marginBlock: 50,
+        [theme.breakpoints.down("sm")]: {
+            marginInline: 0
+        }
     },
     container: {
-        margin: 50
+        margin: 50,
+        [theme.breakpoints.down("sm")]: {
+            margin: 10
+        }
     },
     image: {
 
@@ -108,6 +114,17 @@ const serviceStyles = makeStyles((theme) => ({
         [theme.breakpoints.down("sm")]: {
             display: 'flex',
             justifyContent: 'right',
+        }
+    },
+    titleService: {
+        display: 'flex',
+        justifyContent: 'center',
+        marginTop: 20,
+        [theme.breakpoints.down("md")]: {
+            marginTop: 50
+        },
+        [theme.breakpoints.down("sm")]: {
+            marginTop: 80
         }
     }
 }))

@@ -43,6 +43,7 @@ const tourReducer = (state = INIT_STATE, action) => {
                 ...state,
                 loading: true,
                 error: null,
+                hasMore: true
             }
         }
         case TOUR_TYPES.DELETE_TOUR: {
