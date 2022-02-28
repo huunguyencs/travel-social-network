@@ -1,4 +1,4 @@
-import { Backdrop, Button, Card, ClickAwayListener, Collapse, Dialog, DialogActions, DialogTitle, Fade, IconButton, MenuItem, MenuList, Modal, Paper, Popper, TextField, Typography } from '@material-ui/core';
+import { Button, Card, ClickAwayListener, Collapse, Dialog, DialogActions, DialogTitle, IconButton, MenuItem, MenuList, Paper, Popper, TextField, Typography } from '@material-ui/core';
 import React, { useEffect, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux';
 import customAxios from '../../utils/fetchData';
@@ -6,61 +6,50 @@ import * as tourAction from '../../redux/actions/createTourAction';
 import { Autocomplete } from '@material-ui/lab';
 import { formStyles } from '../../style';
 import { Link } from 'react-router-dom';
-import { MoreVert } from '@material-ui/icons';
+import { AddCircle, MoreVert } from '@material-ui/icons';
 import { ReviewArea } from '../Service/ServiceItem';
 
 function ServiceItemAddForm(props) {
 
     const dispatch = useDispatch();
-    const [isFetch, setIsFetch] = useState(false);
 
     const { location } = useSelector(state => state);
 
-    const { provinceCache, setProvinceCache, serviceCache, setServiceCache, handleClose } = props;
+    const { currentProvince, setCurrentProvince, services, setServices } = props;
 
-    const [province, setProvince] = useState(provinceCache);
     const [service, setService] = useState(null);
-    const [services, setServices] = useState(serviceCache);
     const [cost, setCost] = useState(0);
     const [loading, setLoading] = useState(false);
 
-    const getServicesInit = async (province, setServices, setServiceCache) => {
+    const getServicesInit = async (province, setServices) => {
         setLoading(true);
         await customAxios().get(`/province/service/${province._id}`).then(res => {
             setServices(res.data.services);
-            setServiceCache(res.data.services);
-            setLoading(false);
-        }).catch(err => setLoading(false))
+            setLoading(false)
+        })
+    }
+
+    const getServices = async (province) => {
+        if (province && (!currentProvince || province._id !== currentProvince._id)) {
+            setLoading(true);
+            setService(null);
+            await customAxios().get(`/province/service/${province._id}`).then(res => {
+                setServices(res.data.services);
+                setLoading(false)
+            }).catch(err => {
+                setService([]);
+                setLoading(false)
+            })
+            setCurrentProvince(province);
+        }
     }
 
     useEffect(() => {
-        if (provinceCache && services.length === 0 && !isFetch) {
-            getServicesInit(provinceCache, setServices, setServiceCache);
-            setIsFetch(true);
+        // console.log(props);
+        if (currentProvince && !services) {
+            getServicesInit(currentProvince, setServices);
         }
-    }, [provinceCache, setServices, setServiceCache, isFetch, setIsFetch, services])
-
-    const getServices = async (value) => {
-        setProvince(value);
-        if (value) {
-            if (!provinceCache || value._id !== provinceCache._id) {
-                setProvinceCache(value);
-                setLoading(true);
-                await customAxios().get(`/province/service/${value._id}`).then(res => {
-                    setServices(res.data.services);
-                    setServiceCache(res.data.services);
-                    setLoading(false)
-                })
-            }
-            else {
-                setServices(serviceCache);
-            }
-        }
-        else {
-            setService(null);
-            setServices([]);
-        }
-    }
+    }, [currentProvince, services, setServices])
 
     const handleChangeCost = (e) => {
         setCost(e.target.value)
@@ -74,14 +63,13 @@ function ServiceItemAddForm(props) {
                     cost: parseInt(cost),
                 }
             }))
-            handleClose();
         }
     }
 
     const classes = formStyles();
 
     return (
-        <Paper className={classes.paperContainer}>
+        <div>
             <div className={classes.center}>
                 <Typography variant='h6'>Thêm dịch vụ</Typography>
             </div>
@@ -93,14 +81,14 @@ function ServiceItemAddForm(props) {
                     getOptionLabel={(option) => option?.fullname}
                     className={classes.autocomplete}
                     onChange={(e, value) => getServices(value)}
-                    value={province}
+                    value={currentProvince}
                     renderInput={(params) => <TextField {...params} name="provinces" label="Chọn tỉnh thành" variant="outlined" />}
                 />
             </div>
-            <div style={{ display: 'flex', justifyContent: 'center' }}>
+            <div className={classes.center}>
                 <Autocomplete
                     id="choose-province"
-                    options={services}
+                    options={services || []}
                     loading={loading}
                     getOptionLabel={(option) => `${option?.name}`}
                     className={classes.autocomplete}
@@ -128,9 +116,17 @@ function ServiceItemAddForm(props) {
                 />
             </div>
             <div style={{ marginTop: 10 }} className={classes.center}>
-                <Button onClick={handleSubmit}>Xong</Button>
+                <Button
+                    className={classes.button}
+                    type="submit"
+                    onClick={handleSubmit}
+                    startIcon={(<AddCircle />)}
+                    disabled={!service}
+                >
+                    Thêm
+                </Button>
             </div>
-        </Paper>
+        </div>
     )
 }
 
@@ -251,18 +247,6 @@ export default function AddService(props) {
 
     const classes = formStyles();
 
-    const [showForm, setShowForm] = useState(false);
-
-    const handleShowForm = () => {
-        setShowForm(true);
-    }
-
-    const handleCloseForm = () => {
-        setShowForm(false);
-    }
-
-    const [serviceCache, setServiceCache] = useState([]);
-    const [provinceCache, setProvinceCache] = useState(null);
 
     const ref = React.createRef();
 
@@ -271,23 +255,13 @@ export default function AddService(props) {
     )
 
     return (
-        <>
-            <div className={classes.textTitle}>
-                <Typography variant="h5">
-                    Chọn dịch vụ
-                </Typography>
-            </div>
-            <div style={{ display: 'flex', justifyContent: 'center' }}>
-                <>
-                    {
-                        services && services.map((item, index) => (
-                            <ServiceCard service={item} key={index} index={index} isEdit={true} />
-                        ))
-                    }
-                </>
-            </div>
+        <Paper className={classes.paperContainer}>
             <div style={{ marginTop: 20 }} className={classes.center}>
-                <Button onClick={handleShowForm}>Thêm dịch vụ</Button>
+                <ServiceItemAddRef
+                    ref={ref}
+                    {...props}
+                />
+                {/* <Button onClick={handleShowForm}>Thêm dịch vụ</Button>
                 <Modal
                     aria-labelledby="transition-modal-title"
                     aria-describedby="transition-modal-description"
@@ -301,17 +275,20 @@ export default function AddService(props) {
                     }}
                 >
                     <Fade in={showForm}>
-                        <ServiceItemAddRef
-                            ref={ref}
-                            provinceCache={provinceCache}
-                            setProvinceCache={setProvinceCache}
-                            serviceCache={serviceCache}
-                            setServiceCache={setServiceCache}
-                            handleClose={handleCloseForm}
-                        />
+                        
                     </Fade>
-                </Modal>
+                </Modal> */}
             </div>
-        </>
+            <div style={{ display: 'flex', justifyContent: 'center' }}>
+                <div>
+                    {
+                        services && services.map((item, index) => (
+                            <ServiceCard key={index} service={item} index={index} isEdit={true} />
+                        ))
+                    }
+                </div>
+            </div>
+
+        </Paper>
     )
 }

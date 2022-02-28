@@ -1,4 +1,4 @@
-import { Button, TextField, Typography } from '@material-ui/core';
+import { Button, Paper, TextField, Typography } from '@material-ui/core';
 import { Autocomplete } from '@material-ui/lab';
 import React, { useEffect, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux';
@@ -13,7 +13,6 @@ export default function AddLocation(props) {
 
     const classes = formStyles();
 
-    const [isFetch, setIsFetch] = useState(false);
 
     const dispatch = useDispatch();
     const { location } = useSelector(state => state);
@@ -42,8 +41,8 @@ export default function AddLocation(props) {
     const getLocInit = async (province, setLocations, setState) => {
         setLoading(true)
         await customAxios().get(`/location/locations/${province._id}`)
-            .then((req) => {
-                setLocations(req.data.locations);
+            .then((res) => {
+                setLocations(res.data.locations);
                 setLoading(false);
             }).catch(err => {
                 setLocations([]);
@@ -59,19 +58,18 @@ export default function AddLocation(props) {
     }
 
     useEffect(() => {
-        if (currentProvince && locations.length === 0 && isFetch) {
+        if (currentProvince && !locations) {
             getLocInit(currentProvince, setLocations, setState)
-            setIsFetch(true)
         }
-    }, [currentProvince, locations, setState, setLocations, isFetch, setIsFetch])
+    }, [currentProvince, locations, setState, setLocations])
 
     const getLoc = async (province) => {
-        if (province && province._id !== currentProvince) {
+        if (province && (!currentProvince || province._id !== currentProvince._id)) {
             setLoading(true);
             setLoc(null);
             await customAxios().get(`/location/locations/${province._id}`)
-                .then((req) => {
-                    setLocations(req.data.locations);
+                .then((res) => {
+                    setLocations(res.data.locations);
                     setLoading(false);
                 }).catch(err => {
                     setLocations([]);
@@ -89,8 +87,6 @@ export default function AddLocation(props) {
     }
 
 
-
-
     const handleSubmit = (e) => {
         e.preventDefault();
         if (loc)
@@ -98,13 +94,13 @@ export default function AddLocation(props) {
     }
 
     return (
-        <>
+        <Paper className={classes.paperContainer}>
             <div className={classes.textTitle}>
                 <Typography variant="h5">
                     Thêm địa điểm
                 </Typography>
             </div>
-            <form
+            <div
                 className={classes.addLocationForm}
             >
                 <div className={classes.center}>
@@ -145,14 +141,12 @@ export default function AddLocation(props) {
                 <AddLocMap
                     setLoc={setLoc}
                     currentProvince={currentProvince}
-                    setCurrentProvince={setCurrentProvince}
                     locations={locations}
-                    provinces={locations.provinces}
                     state={state}
                     setState={setState}
                     indexDate={props.indexDate}
                 />
-            </form>
-        </>
+            </div>
+        </Paper>
     )
 }

@@ -193,6 +193,9 @@ export default function FormLocationAdmin(props) {
                             required
                             error={Boolean(errors?.position?.lat)}
                             helperText={errors?.position?.lat}
+                            InputProps={{
+                                readOnly: true,
+                            }}
                         />
                     </div>
                     <div style={{ width: '50%', marginLeft: 20 }}>
@@ -207,6 +210,9 @@ export default function FormLocationAdmin(props) {
                             required
                             error={Boolean(errors?.position?.lon)}
                             helperText={errors?.position?.lon}
+                            InputProps={{
+                                readOnly: true,
+                            }}
                         />
                     </div>
 

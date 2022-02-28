@@ -23,23 +23,18 @@ export default function CreateTourForm(props) {
 
     const [name, setName] = useState("");
     const [selectedDate, setSelectedDate] = useState(new Date());
-    const [error, setError] = useState(false);
 
     const handleDateChange = (date) => {
         setSelectedDate(date);
     };
-    const handleTextChange = (text) => {
-        if (error) setError(false);
-        setName(text.target.value);
+    const handleTextChange = (e) => {
+        setName(e.target.value);
     }
 
-    const handleClick = (e) => {
+    const handleSubmit = (e) => {
         e.preventDefault();
-        if (name !== "") {
-            dispatch(createTour({ name: name, date: selectedDate }));
-            history.push("/createtour");
-        }
-        else setError(true);
+        dispatch(createTour({ name: name, date: selectedDate }));
+        history.push("/createtour");
     }
 
     return (
@@ -47,24 +42,23 @@ export default function CreateTourForm(props) {
             {auth.token ?
                 <Paper className={classes.paperContainer}>
                     <div className={classes.textTitle}>
-                        <Typography variant="h5">
+                        <Typography variant="h5" style={{ marginBottom: 30 }}>
                             Tạo tour du lịch
                         </Typography>
                     </div>
-                    <div>
-                        <div className={classes.nameTourInput}>
-                            <TextField
-                                label="Tên tour"
-                                variant="outlined"
-                                name="tourname"
-                                required
-                                style={{ width: "100%" }}
-                                value={name}
-                                onChange={handleTextChange}
-                                error={error}
-                                helperText={error ? 'Vui lòng điền tên tour' : ''}
-                            />
-                        </div>
+                    <form
+                        onSubmit={handleSubmit}
+                    >
+
+                        <TextField
+                            label="Tên tour"
+                            variant="outlined"
+                            name="tourname"
+                            required
+                            className={classes.tourNameInput}
+                            value={name}
+                            onChange={handleTextChange}
+                        />
                         <div className={classes.datepicker}>
                             <MuiPickersUtilsProvider utils={DateFnsUtils}>
                                 <KeyboardDatePicker
@@ -84,11 +78,11 @@ export default function CreateTourForm(props) {
                             </MuiPickersUtilsProvider>
                         </div>
                         <div className={classes.center}>
-                            <Button className={classes.button} onClick={handleClick}>
+                            <Button type="submit" className={classes.button}>
                                 Tạo
                             </Button>
                         </div>
-                    </div>
+                    </form>
                 </Paper>
                 : <LoginModal />
             }
