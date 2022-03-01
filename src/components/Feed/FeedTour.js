@@ -165,7 +165,7 @@ export default function FeedTour(props) {
 
                     <div>
                         {
-                            !tour.loading && !tour.error &&
+                            !tour.error &&
                             tour.tours.map((tour) => (
                                 <Tour
                                     tour={tour}
