@@ -1,4 +1,4 @@
-import { Button, Card, CardContent, CardMedia, Grid, IconButton, Modal, Typography, Backdrop, Fade, MenuItem, Dialog, DialogTitle, DialogActions, Collapse, CircularProgress, CardActions, Popper, ClickAwayListener, Paper, MenuList } from "@material-ui/core";
+import { Button, Card, CardContent, CardMedia, Grid, IconButton, Modal, Typography, Backdrop, Fade, MenuItem, Dialog, DialogTitle, DialogActions, Collapse, CardActions, Popper, ClickAwayListener, Paper, MenuList } from "@material-ui/core";
 import React, { useState } from "react";
 import { Rating } from '@material-ui/lab'
 import { MoreVert } from "@material-ui/icons";
@@ -250,7 +250,7 @@ export default function Location(props) {
                                     <Button component={Link} to={`/post/${review._id}`} className={classes.seeDetail}>Xem chi tiết</Button>
                                 </CardActions>
                             </Grid>
-                            : <CircularProgress color="inherit" />
+                            : "Loading..."
                         : <Typography>Nội dung không tồn tại</Typography>}
                 </Collapse>
 
