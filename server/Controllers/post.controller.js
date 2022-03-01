@@ -140,13 +140,6 @@ class PostController {
                 .populate("userId likes", "username fullname avatar")
                 .populate("locationId", "name fullname")
                 .populate({
-                    path: "comments",
-                    populate: {
-                        path: "userId likes",
-                        select: "username fullname avatar"
-                    }
-                })
-                .populate({
                     path: "shareId",
                     populate: {
                         path: "userId",
@@ -233,13 +226,6 @@ class PostController {
                 .populate("userId likes", "username fullname avatar")
                 .populate("locationId", "name fullname")
                 .populate({
-                    path: "comments",
-                    populate: {
-                        path: "userId likes",
-                        select: "username fullname avatar"
-                    }
-                })
-                .populate({
                     path: "shareId",
                     populate: {
                         path: "userId",
@@ -268,13 +254,6 @@ class PostController {
         try {
             const posts = await Posts.find({}).limit(8)
                 .populate("userId likes", "username fullname avatar")
-                .populate({
-                    path: "comments",
-                    populate: {
-                        path: "userId likes",
-                        select: "username fullname avatar"
-                    }
-                })
                 .populate("locationId", "name fullname")
                 .populate({
                     path: "shareId",
@@ -305,13 +284,6 @@ class PostController {
         try {
             const post = await Posts.findById(req.params.id)
                 .populate("userId likes", "username fullname avatar")
-                .populate({
-                    path: "comments",
-                    populate: {
-                        path: "userId likes",
-                        select: "username fullname avatar"
-                    },
-                })
                 .populate("locationId", "name fullname")
                 .populate({
                     path: "shareId",

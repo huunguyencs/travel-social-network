@@ -46,7 +46,7 @@ function MapLocation(props) {
             >
                 <ClickAwayListener onClickAway={handlePopoverClose}>
                     <Paper className={classes.locationPopper}>
-                        <img src={location.images[0]} alt={"Loading..."} height={200} width="100%" title={location.fullname} />
+                        <img src={location.images[0]} alt={"Đang tải..."} height={200} width="100%" title={location.fullname} />
                         <div className={classes.center}>
                             <Typography title={location.fullname} component={Link} to={`/location/${location.name}`}>{location.fullname.length > 28 ? location.fullname.slice(0, 28) + "..." : location.fullname}</Typography>
                         </div>

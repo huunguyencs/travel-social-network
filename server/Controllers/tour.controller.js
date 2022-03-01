@@ -233,7 +233,6 @@ class TourController {
 
             if (maxCost && maxCost !== 1000) {
                 query = {
-
                     cost: {
                         $lte: maxCost
                     }

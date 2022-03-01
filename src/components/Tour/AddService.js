@@ -171,7 +171,7 @@ export function ServiceCard(props) {
                     <>
                         <div style={{ display: 'flex' }}>
                             <div>
-                                <img src={service.service.images[0]} alt="Loading..." className={classes.imageService} />
+                                <img src={service.service.images[0]} alt="Đang tải..." className={classes.imageService} />
                             </div>
                             <div className={classes.serviceInfo}>
                                 {isEdit &&

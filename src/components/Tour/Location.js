@@ -111,7 +111,7 @@ export default function Location(props) {
             <Grid container>
                 <Grid item md={5} sm={3} className={classes.imageLocation}>
                     <CardMedia className={classes.imgContainer}>
-                        <img src={location.location.images[0]} alt="Loading..." className={classes.img} />
+                        <img src={location.location.images[0]} alt="Đang tải..." className={classes.img} />
                     </CardMedia>
 
                 </Grid>
@@ -250,7 +250,7 @@ export default function Location(props) {
                                     <Button component={Link} to={`/post/${review._id}`} className={classes.seeDetail}>Xem chi tiết</Button>
                                 </CardActions>
                             </Grid>
-                            : "Loading..."
+                            : "Đang tải..."
                         : <Typography>Nội dung không tồn tại</Typography>}
                 </Collapse>
 

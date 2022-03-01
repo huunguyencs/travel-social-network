@@ -34,8 +34,8 @@ export const createComment = (id, comment, auth, type, socket) => async (dispatc
                 text: ' đã bình luận vào bài viết của bạn',
                 recipients: [resPost.data.post.userId._id],
                 url: `/post/${id}`,
-                content: resPost.data.post.content,
-                image: resPost.data.post.images.length > 0 ? resPost.data.post.images[0] : "empty"
+                content: resPost.data.post.content || '',
+                image: resPost.data.post.images.length > 0 ? resPost.data.post.images[0] : ""
             }
 
             dispatch(createNotify(dataNotify, auth.token, socket))
@@ -52,8 +52,8 @@ export const createComment = (id, comment, auth, type, socket) => async (dispatc
                 text: ' đã bình luận vào hành trình của bạn',
                 recipients: [resTour.data.tour.userId._id],
                 url: `/post/${id}`,
-                content: resTour.data.tour.content,
-                image: resTour.data.tour.image || "empty"
+                content: resTour.data.tour.content || '',
+                image: resTour.data.tour.image || ""
             }
 
             dispatch(createNotify(dataNotify, auth.token, socket))
@@ -176,5 +176,19 @@ export const deleteComment = (id, auth, type, postId, socket, next) => async (di
     }
     catch (err) {
         dispatch(alertAction.error({ message: "Có lỗi xảy ra!" }))
+    }
+}
+
+export const loadComment = (id, type, next, error, page) => async (dispatch) => {
+    try {
+        const res = await customAxios().get(`/comment/${type}/${id}?offset=${page}`);
+        if (type === "post")
+            dispatch(commentAction.loadCommentPost({ comments: res.data.comments, id: id }));
+        else if (type === "tour")
+            dispatch(commentAction.loadCommentTour({ comments: res.data.comments, id: id }));
+        next()
+    }
+    catch (err) {
+        error();
     }
 }

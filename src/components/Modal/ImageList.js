@@ -51,7 +51,7 @@ export default function ImageList(props) {
                     className={classes.imageItem}
                     onClick={() => handleClick(0)}
                 >
-                    <img src={imageList[0]} alt={"Loading..."} />
+                    <img src={imageList[0]} alt={"Đang tải..."} />
                 </ImageListItem>
                 {imageList.length > 1 && twoImage && (
                     <ImageListItem
@@ -59,7 +59,7 @@ export default function ImageList(props) {
                         className={imageList.length > 2 ? classes.more : classes.imageItem}
                         onClick={() => handleClick(1)}
                     >
-                        <img src={imageList[1]} alt={"Loading..."} />
+                        <img src={imageList[1]} alt={"Đang tải..."} />
                         {(imageList.length > 2) && <Typography variant="h2" className={classes.textCenter}>{imageList.length - 1}+</Typography>}
                     </ImageListItem>
                 )}
