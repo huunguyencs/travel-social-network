@@ -26,8 +26,8 @@ export function ReviewArea(props) {
         e.preventDefault();
         if (rate && rate !== 0) {
             setRate(0);
-            setText('');
             dispatch(reviewService(id, auth, rate, text))
+            setText('');
         }
     }
 
@@ -114,7 +114,9 @@ function ReviewService(props) {
                 <div className={classes.rate}>
                     <Rating name="read-only" value={review.rate} readOnly size="small" />
                 </div>
-                <Typography className={classes.reviewContent}>{review.content}</Typography>
+                {
+                    review.content !== '' && <Typography className={classes.reviewContent}>{review.content}</Typography>
+                }
             </div>
         </div >
     )

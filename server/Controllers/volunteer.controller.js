@@ -8,7 +8,7 @@ class VolunteerController {
             const { name, image, cost, descriptions, date, location } = req.body
 
             const newVolunteer = new Volunteers({
-                userId: req.user._id, name,image, descriptions, cost, date: [], location: []
+                userId: req.user._id, name, image, descriptions, cost, date: [], location: []
             })
 
             await newVolunteer.save()
@@ -30,9 +30,9 @@ class VolunteerController {
             if (location.length > 0) {
                 location.forEach(async function (element) {
                     const newVolunteerLocation = new VolunteerLocations({
-                        users: [], timeStart:element.timeStart, maxUsers: element.maxUsers,description:element.description, 
+                        users: [], timeStart: element.timeStart, maxUsers: element.maxUsers, description: element.description,
                         activities: element.activities,
-                        ageUser: element.ageUser, images: element.images, location:element.location
+                        ageUser: element.ageUser, images: element.images, location: element.location
                     })
                     await newVolunteerLocation.save();
                     await Volunteers.findOneAndUpdate({ _id: newVolunteer._id }, {
@@ -64,7 +64,7 @@ class VolunteerController {
         }
     }
 
-    
+
 
     async getVolunteers(req, res) {
         try {
@@ -87,14 +87,14 @@ class VolunteerController {
         }
     }
 
-    
+
 
     // lấy thông tin 1 volunteer theo params.id
     async getVolunteer(req, res) {
         try {
             // console.log(req.params.id)
             let volunteer = await Volunteers.findById(req.params.id);
-            
+
             if (!volunteer) {
                 res.status(404).json({ success: false, message: "not found" });
                 return;
@@ -110,7 +110,7 @@ class VolunteerController {
                         select: "fullname position"
                     }
                 })
-                
+
 
             res.json({
                 success: true, message: "get info 1 volunteer success", volunteer
@@ -147,7 +147,7 @@ class VolunteerController {
 
     async joinVolunteerAll(req, res) {
         try {
-            var volunteer = await Volunteers.find({ _id: req.params.id});
+            var volunteer = await Volunteers.find({ _id: req.params.id });
             volunteer = await Volunteers.findOneAndUpdate({ _id: req.params.id }, {
                 $push: {
                     users: req.user._id
@@ -157,6 +157,27 @@ class VolunteerController {
                 success: true, message: "join volunteer success",
                 joinIds: volunteer.joinIds
             });
+        } catch (err) {
+            res.status(500).json({ success: false, message: err.message })
+        }
+    }
+
+    async search(req, res) {
+        try {
+            var { q, offset } = req.query;
+            offset = offset || 0;
+            var volunteers = await Volunteers.find({ $text: { $search: q } }, { score: { $meta: "textScore" } })
+                .sort({ score: { $meta: "textScore" } })
+                .skip(offset * 10)
+                .limit(10)
+            volunteers = volunteers.map((item) => ({
+                _id: item._id,
+                fullname: item.name,
+                link: `/volunteer/${item._id}`,
+                description: item.descriptions[0],
+                image: item.image
+            }))
+            res.json({ success: true, results: volunteers, query: q })
         } catch (err) {
             res.status(500).json({ success: false, message: err.message })
         }

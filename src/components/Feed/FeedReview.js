@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { Backdrop, Button, CircularProgress, Container, Fade, InputBase, Modal, Typography } from "@material-ui/core";
 
 import Post from '../Post';
@@ -6,6 +6,7 @@ import { feedStyles } from "../../style";
 import { useDispatch, useSelector } from "react-redux";
 import { getPostsLocation } from "../../redux/callApi/postCall";
 import CreateReview from '../Forms/CreateReview'
+import SuccessIcon from "../Icons/Success";
 
 
 export default function FeedReview(props) {
@@ -15,6 +16,7 @@ export default function FeedReview(props) {
     const { post, auth } = useSelector(state => state);
     const dispatch = useDispatch();
     const [open, setOpen] = useState(false);
+    const [fetch, setFetch] = useState(false);
 
     const handleShow = () => {
         setOpen(true);
@@ -26,9 +28,32 @@ export default function FeedReview(props) {
 
     const classes = feedStyles();
 
+    const loadMorePost = (id, page, dispatch, hasMore) => {
+        if (hasMore) {
+            dispatch(getPostsLocation(id, page));
+        }
+    }
+
+    function handleScroll() {
+        if (window.innerHeight + document.documentElement.scrollTop === document.documentElement.offsetHeight) {
+            setFetch(true);
+        }
+    }
+
+    useEffect(() => {
+        window.addEventListener('scroll', handleScroll);
+        return () => window.removeEventListener('scroll', handleScroll)
+    }, []);
+
+    useEffect(() => {
+        if (fetch) {
+            loadMorePost(location._id, post.page, dispatch, post.hasMore);
+        }
+    }, [fetch, post.page, dispatch, post.hasMore, location._id])
+
     const tryAgain = () => {
         if (location) {
-            dispatch(getPostsLocation(location._id))
+            dispatch(getPostsLocation(location._id, 0))
         }
     }
 
@@ -73,27 +98,44 @@ export default function FeedReview(props) {
                 </div>
                 <div className={classes.feedContent}>
                     {
-                        post.loading ?
-                            <div className={classes.centerMarginTop}>
-                                <CircularProgress color={"inherit"} /> </div> :
-                            post.error ?
-                                <div className={classes.centerMarginTop}>
-                                    <div>
-                                        <Typography>Có lỗi xảy ra</Typography>
-                                        <Button onClick={tryAgain}>Thử lại</Button>
-                                    </div>
-                                </div>
-                                : post.posts.length === 0 ?
-                                    <div className={classes.centerMarginTop} style={{ marginTop: 100 }}>
-                                        <Typography>Chưa có review cho địa điểm này</Typography>
-                                    </div> :
-                                    post.posts.map((post) => (
-                                        <Post
-                                            post={post}
-                                            key={post._id}
-                                        />
-                                    ))
+
+                        !post.error && (
+                            post.posts.length === 0 ?
+                                <div className={classes.centerMarginTop} style={{ marginTop: 100 }}>
+                                    <Typography>Chưa có review cho địa điểm này</Typography>
+                                </div> :
+                                post.posts.map((post) => (
+                                    <Post
+                                        post={post}
+                                        key={post._id}
+                                    />
+                                ))
+                        )
                     }
+                    {
+                        post.loading &&
+                        <div className={classes.centerMarginTop}>
+                            <CircularProgress color={"inherit"} />
+                        </div>
+                    }
+                    {
+                        post.error &&
+                        <div className={classes.centerMarginTop}>
+                            <div>
+                                <Typography>Có lỗi xảy ra</Typography>
+                                <Button onClick={tryAgain}>Thử lại</Button>
+                            </div>
+                        </div>
+                    }
+
+                    {
+                        !post.loading && !post.error && !post.hasMore &&
+                        <div style={{ textAlign: 'center', marginBlock: 30 }}>
+                            <SuccessIcon style={{ margin: 'auto', fontSize: 50 }} />
+                            <Typography style={{ margin: 'auto', fontSize: 24 }}>Bạn đã xem hết hành trình</Typography>
+                        </div>
+                    }
+
                 </div>
             </div>
         </Container>

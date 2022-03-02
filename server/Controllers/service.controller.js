@@ -158,6 +158,27 @@ class ServiceController {
             res.status(500).json({ success: false, message: err.message })
         }
     }
+
+    async search(req, res) {
+        try {
+            var { q, offset } = req.query;
+            offset = offset || 0;
+            var services = await Services.find({ $text: { $search: q } }, { score: { $meta: "textScore" } })
+                .sort({ score: { $meta: "textScore" } })
+                .skip(offset * 10)
+                .limit(10)
+            services = services.map((item) => ({
+                _id: item._id,
+                fullname: item.name,
+                link: `/u/${item.cooperator}`,
+                description: item.description,
+                image: item.images[0]
+            }))
+            res.json({ success: true, results: services, query: q })
+        } catch (err) {
+            res.status(500).json({ success: false, message: err.message })
+        }
+    }
 }
 
 module.exports = new ServiceController;

@@ -138,6 +138,25 @@ class ProvinceController {
         }
     }
 
+    async search(req, res) {
+        try {
+            var { q } = req.query;
+            var provinces = await Provinces.find({ $text: { $search: q } }, { score: { $meta: "textScore" } })
+                .sort({ score: { $meta: "textScore" } })
+            provinces = provinces.map((item) => ({
+                _id: item._id,
+                fullname: item.fullname,
+                link: `/province/${item.name}`,
+                description: item.information,
+                image: item.image
+            }))
+            res.json({ success: true, results: provinces, query: q })
+        }
+        catch (err) {
+            res.status(500).json({ success: false, message: err.message })
+        }
+    }
+
 }
 
 module.exports = new ProvinceController;

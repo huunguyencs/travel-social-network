@@ -83,7 +83,7 @@ export default function Location(props) {
 
     useEffect(() => {
         if (location) {
-            dispatch(getPostsLocation(location._id));
+            dispatch(getPostsLocation(location._id, 0));
         }
     }, [location, dispatch])
 

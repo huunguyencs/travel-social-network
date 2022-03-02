@@ -17,6 +17,7 @@ const postRecuder = (state = INIT_STATE, action) => {
                 page: 1,
                 loading: false,
                 error: null,
+                hasMore: action.payload.posts.length >= 5
             }
         }
         case POST_TYPES.ADD_POST: {
@@ -34,6 +35,7 @@ const postRecuder = (state = INIT_STATE, action) => {
                 page: state.page + 1,
                 loading: false,
                 error: null,
+                hasMore: action.payload.posts.length >= 5
             }
         }
         case POST_TYPES.LOADING_POST: { // dang tai danh sach
