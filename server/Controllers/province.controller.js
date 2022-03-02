@@ -141,7 +141,7 @@ class ProvinceController {
     async search(req, res) {
         try {
             var { q } = req.query;
-            var provinces = await Provinces.find({ $text: { $search: q } }, { score: { $meta: "textScore" } })
+            var provinces = await Provinces.find({ $text: { $search: q } }, { score: { $meta: "textScore" } }).limit(3)
                 .sort({ score: { $meta: "textScore" } })
             provinces = provinces.map((item) => ({
                 _id: item._id,

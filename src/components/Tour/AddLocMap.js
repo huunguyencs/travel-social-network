@@ -4,9 +4,10 @@ import KEY from "../../key/googlemap";
 import { Button, ClickAwayListener, Paper, Popper, Typography } from "@material-ui/core";
 import { Link } from 'react-router-dom';
 import { useDispatch } from 'react-redux';
+
 import * as tourAction from '../../redux/actions/createTourAction';
-import { GpsFixed } from '@material-ui/icons';
 import { cardStyles } from '../../style';
+import GpsFixedIcon from '../Icons/GpsFixed';
 
 
 function Location(props) {
@@ -35,11 +36,11 @@ function Location(props) {
 
     return (
         <>
-            <GpsFixed
+            <GpsFixedIcon
 
                 onClick={handlePopoverOpen}
                 style={{
-                    color: open ? 'blue' : 'red',
+                    color: open ? '#3f50b5' : '#ff7961',
                     cursor: 'pointer',
                 }}
             />

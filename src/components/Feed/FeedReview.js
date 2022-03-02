@@ -132,7 +132,7 @@ export default function FeedReview(props) {
                         !post.loading && !post.error && !post.hasMore &&
                         <div style={{ textAlign: 'center', marginBlock: 30 }}>
                             <SuccessIcon style={{ margin: 'auto', fontSize: 50 }} />
-                            <Typography style={{ margin: 'auto', fontSize: 24 }}>Bạn đã xem hết hành trình</Typography>
+                            <Typography style={{ margin: 'auto', fontSize: 24 }}>Bạn đã xem hết tin</Typography>
                         </div>
                     }
 

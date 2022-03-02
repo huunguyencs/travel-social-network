@@ -1,12 +1,12 @@
 import React, { useState } from "react";
 import GoogleMapReact from 'google-map-react';
 import { Card, CircularProgress, ClickAwayListener, Paper, Popper, Typography } from "@material-ui/core";
-import { GpsFixed } from '@material-ui/icons'
 
 import KEY from "../../key/googlemap";
 import { Link } from "react-router-dom";
 import { cardStyles } from "../../style";
 import LocationPinIcon from "../Icons/LocationPin";
+import GpsFixedIcon from "../Icons/GpsFixed";
 
 function MapLocation(props) {
 
@@ -27,11 +27,11 @@ function MapLocation(props) {
     };
     return (
         <>
-            <GpsFixed
+            <GpsFixedIcon
 
                 onClick={handlePopoverOpen}
                 style={{
-                    color: open ? 'blue' : 'red',
+                    color: open ? '#3f50b5' : '#ff7961',
                     cursor: 'pointer',
                 }}
             />

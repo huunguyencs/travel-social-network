@@ -40,11 +40,10 @@ export default function TabPanel(props) {
                     if (location.data.results.length < 10) {
                         setHasMore(false);
                     }
-
-
                 }
                 else {
                     const res = await customAxios().get(`/${item}/search?q=${query}&offset=${page}`);
+                    // console.log(res);
                     if (page === 0) {
                         setResult({
                             query: res.data.query,
@@ -123,7 +122,7 @@ export default function TabPanel(props) {
                                         <Typography variant="h6">{item.fullname}</Typography>
                                     }
                                     secondary={
-                                        <Typography variant="body" color="textPrimary">{item?.description || ''}</Typography>
+                                        <Typography variant="body1" color="textPrimary">{item.description ? item.description.length > 150 ? item.description.slice(0, 150) + ' ...' : item.description : ''}</Typography>
                                     }
                                 />
                             </ListItem>
