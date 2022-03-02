@@ -1,33 +1,33 @@
 import { makeStyles } from "@material-ui/core";
+import { CallReceived } from "@material-ui/icons";
 
 
 const messageStyles = makeStyles((theme) => ({
     message_conversations: {
         borderRight: "1px solid #d2d0d0",
-        borderLeft: "1px solid #d2d0d0",
-        minHeight: "92vh",
-        height: "auto",
-        paddingTop: "70px",
-        width: "100%"
+        height: "80vh",
+        paddingTop: "75px"  
     },
     message_header: {
-        position: "fixed",
-        display: "flex",
-        alignItems: "center",
         height: "50px",
         borderBottom: "1px solid #d2d0d0",
-        minWidth: "25%"
+        width: "100%"
     },
     message_header_title: {
         marginLeft: "20px",
         fontSize: "17px",
         fontWeight: 800,
-        color: "#0f1419"
+        color: "#0f1419",
+        lineHeight: "50px",
+        [theme.breakpoints.down("sm")]: {
+            marginLeft: "10px",
+        },
+        [theme.breakpoints.down("xs")]: {
+            marginLeft: "5px",
+        }
     },
     message_search: {
-        position: "fixed",
-        width: "25%",
-        marginTop: "50px",
+        width: "100%",
         height: "50px"
     },
     message_search_form: {
@@ -58,26 +58,26 @@ const messageStyles = makeStyles((theme) => ({
         marginRight: "20px"
     },
     message_users_list: {
-        position: "absolute",
-        top: "100%",
-        left: "0",
         width: "100%",
-        maxHeight: "80vh",
+        maxHeight: "70vh",
         overflowY: "auto",
         zIndex: 20,
-        // display: "none"
     },
     message_card_list: {
-        maxHeight: "80vh",
+        maxHeight: "70vh",
         overflowY: "auto",
     },
+
 
 
     message_conversation: {
         width: "90%",
-        minHeight: "92vh",
+        minHeight: "90vh",
         borderRight: "1px solid #d2d0d0",
-        paddingTop: "70px"
+        paddingTop: "75px",
+        [theme.breakpoints.down("sm")]: {
+            width: "100%",
+        }
     },
     message_box: {
         display: "flex",
@@ -97,7 +97,10 @@ const messageStyles = makeStyles((theme) => ({
         display: "flex",
         alignItems: "center"
     },
-
+    message_box_header_text:{
+        marginLeft: "10px",
+        fontSize: "18px"
+    },
     message_container: {
         position: "relative",
         height: "76vh",
@@ -119,7 +122,7 @@ const messageStyles = makeStyles((theme) => ({
         justifyContent: "flex-end"
     },
     message_display: {
-        maxWidth: "70%"
+        maxWidth: "80%"
     },
     message_content_my: {
         display: "flex",
@@ -133,23 +136,38 @@ const messageStyles = makeStyles((theme) => ({
         width: "100%",
         alignItems: "flex-start"
     },
-    chat_content: {
+    chat_my_content: {
         backgroundColor: "#A5DEC8",
         color: "white",
         fontSize: "15px",
         fontWeight: 500,
         borderRadius: "10px",
-        padding: "8px"
+        padding: "8px",
+        wordBreak: "break-word"
+    },
+    chat_your_content: {
+        backgroundColor: "#e4e6eb",
+        color: "black",
+        fontSize: "15px",
+        fontWeight: 500,
+        borderRadius: "10px",
+        padding: "8px",
+        wordBreak: "break-word"
     },
     chat_date: {
         fontSize: "13px",
         color: "black",
         marginTop: "3px"
     },
-    chat_user: {
-        width: "30px",
-        height: "30px",
-        marginBottom: "3px"
+    chat_my_user: {
+        width: "35px",
+        height: "35px",
+        marginLeft: "3px"
+    },
+    chat_your_user: {
+        width: "35px",
+        height: "35px",
+        marginRight: "3px"
     },
     message_yourchat: {
         display: "flex",
@@ -157,7 +175,7 @@ const messageStyles = makeStyles((theme) => ({
         margin: "10px 0 20px"
     },
     chat_input: {
-        height: "6vh",
+        height: "50px",
         display: "flex",
         width: "100%",
         border: "1px solid  #d2d0d0",
@@ -169,11 +187,21 @@ const messageStyles = makeStyles((theme) => ({
         backgroundColor: "rgb(238, 246, 243)",
         border: "none",
         outline: "none",
+        marginLeft: 20
     },
     startChat: {
         display: "flex",
         justifyContent: "center",
         marginTop: 300
+    },
+    iconSend:{
+        marginRight: "10px",
+        color: "#A5DEC8"
+    },
+    message_card_text:{
+        [theme.breakpoints.down("sm")]: {
+            display: "none"
+        }
     }
 }));
 

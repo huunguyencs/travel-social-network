@@ -53,17 +53,17 @@ export default function Chat() {
 
     return (
         <>
-            <Grid item sm={8}>
+            <Grid item md={9} sm={10} xs={10}>
                 <div className={classes.message_conversation}>
                     <div className={classes.message_box}>
                         <div className={classes.message_box_header}>
                             <div className={classes.message_box_header_left}>
                                 <Avatar alt="avatar" src={user.avatar}> </Avatar>
-                                <Typography style={{ marginLeft: "10px", }}>{user.fullname}</Typography>
+                                <Typography className={classes.message_box_header_text}>{user.fullname}</Typography>
                             </div>
                             <div className={classes.message_box_header_right}>
                                 <Call style={{ marginRight: "20px", cursor: "pointer" }} />
-                                <Delete style={{ color: "red", cursor: "pointer" }} />
+                                <Delete style={{ color: "red", cursor: "pointer" }}/>
                             </div>
                         </div>
                         <div className={classes.message_container}>
@@ -76,8 +76,10 @@ export default function Chat() {
                                                     <div className={classes.message_yourchat}>
                                                         <div className={classes.message_display}>
                                                             <div className={classes.message_content_your}>
-                                                                <Avatar className={classes.chat_user}></Avatar>
-                                                                <Typography className={classes.chat_content}>{item.text}</Typography>
+                                                                <div style={{display:"flex"}}>
+                                                                    <Avatar className={classes.chat_your_user}></Avatar>
+                                                                    <Typography className={classes.chat_your_content}>{item.text}</Typography>
+                                                                </div>
                                                                 <div className={classes.chat_date}>{timeAgo(new Date(item.createdAt))}</div>
                                                             </div>
                                                         </div>
@@ -86,8 +88,10 @@ export default function Chat() {
                                                     <div className={classes.message_mychat}>
                                                         <div className={classes.message_display}>
                                                             <div className={classes.message_content_my}>
-                                                                <Avatar className={classes.chat_user}></Avatar>
-                                                                <Typography className={classes.chat_content}>{item.text}</Typography>
+                                                                <div style={{display:"flex"}}>
+                                                                    <Typography className={classes.chat_my_content}>{item.text}</Typography>
+                                                                    <Avatar className={classes.chat_my_user}></Avatar>
+                                                                </div>
                                                                 <div className={classes.chat_date}>{timeAgo(new Date(item.createdAt))}</div>
                                                             </div>
                                                         </div>
@@ -100,11 +104,11 @@ export default function Chat() {
                             </div>
                         </div>
                         <div className={classes.chat_input}>
-                            <form style={{ display: "flex" }} onSubmit={handleSubmit}>
+                            <form style={{ display: "flex", width:"100%" }} onSubmit={handleSubmit}>
                                 <input placeholder="Nhập tin nhắn..." type="text" className={classes.chat_input_form} value={text} onChange={e => setText(e.target.value)}></input>
                                 {
                                     text ? <>
-                                        <Send style={{ marginLeft: "30px" }}></Send>
+                                        <Send className={classes.iconSend}></Send>
                                     </> : <></>
                                 }
                             </form>

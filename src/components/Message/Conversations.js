@@ -1,4 +1,4 @@
-import { Avatar, Grid, List, ListItem, ListItemText, ListItemAvatar, ListItemIcon } from "@material-ui/core";
+import { Avatar, Grid, List, ListItem, ListItemText, ListItemAvatar, ListItemIcon, Typography, IconButton } from "@material-ui/core";
 import { FiberManualRecord } from "@material-ui/icons";
 import React, { useEffect, useState } from "react";
 import { Search, Cancel } from "@material-ui/icons";
@@ -47,18 +47,20 @@ export default function Conversations() {
 
     return (
         <>
-            <Grid item sm={3}>
+            <Grid item md={3} sm={2} xs={2}>
                 <div className={classes.message_conversations}>
                     <div className={classes.message_header}>
-                        <div className={classes.message_header_right}>
-                            <h2 className={classes.message_header_title}>TIN NHẮN</h2>
-                        </div>
+                        <Typography className={classes.message_header_title}>TIN NHẮN</Typography>
                     </div>
                     <div className={classes.message_search}>
                         <form className={classes.message_search_form} onSubmit={handleSearch}>
                             <Search className={classes.message_searchIcon} />
                             <input placeholder="Tìm bạn bè..." type="text" name="search" className={classes.message_input} value={search} onChange={e => setSearch(e.target.value)} />
-                            {search !== '' && <Cancel className={classes.message_closeIcon} onClick={() => handleClose()} />}
+                            {search !== '' && 
+                                <IconButton>
+                                     <Cancel className={classes.message_closeIcon} onClick={() => handleClose()} />
+                                </IconButton>
+                            }
                         </form>
                         <List className={classes.message_users_list}>
                             {
@@ -86,8 +88,8 @@ export default function Conversations() {
                                                     <Avatar alt="avatar" src={user.avatar}>
                                                     </Avatar>
                                                 </ListItemAvatar>
-                                                <ListItemText primary={user.fullname} secondary={
-                                                    user.text ? user.text : user.fullname
+                                                <ListItemText className={classes.message_card_text} primary={user.fullname} secondary={
+                                                    user.text ? (user.text.length > 20 ? user.text.slice(0,20):user.text) : user.fullname
                                                 } />
                                                 <ListItemIcon>
                                                     {!user.seen && <FiberManualRecord style={{ color: "#a5dec8" }} />}
