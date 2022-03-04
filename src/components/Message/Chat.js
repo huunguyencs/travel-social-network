@@ -1,11 +1,12 @@
-import { Typography, Avatar, Grid } from "@material-ui/core";
+import { Typography, Avatar, Grid, IconButton,Dialog, DialogActions, DialogContent, DialogTitle,CircularProgress,Button } from "@material-ui/core";
 import React, { useEffect, useState, useRef } from "react";
 import { Call, Delete, Send } from "@material-ui/icons";
 import { messageStyles } from "../../style";
 import { useDispatch, useSelector } from "react-redux";
-import { useParams } from "react-router-dom";
-import { addMessage, getMessages } from '../../redux/callApi/messageCall';
+import { useParams ,useHistory} from "react-router-dom";
+import { addMessage, getMessages,deleteConversation } from '../../redux/callApi/messageCall';
 import { timeAgo } from "../../utils/date";
+import EmojiPicker from "../Input/EmojiPicker";
 
 export default function Chat() {
     const classes = messageStyles();
@@ -16,7 +17,11 @@ export default function Chat() {
     const [text, setText] = useState('');
     const { id } = useParams();
     const refDisplay = useRef();
-
+    const history = useHistory();
+    const [state, setState] = useState({
+        loading: false,
+        error: false
+    })
     const handleSubmit = async (e) => {
         e.preventDefault();
         if (!text.trim()) return;
@@ -50,7 +55,27 @@ export default function Chat() {
     useEffect(() => {
         document.title = "Tin nhắn";
     }, [])
-
+    const handleDelete = ()=>{
+        setState({
+            loading: true,
+            error: false,
+        })
+        dispatch(deleteConversation(user,auth,() => {
+            setState({
+                loading: false,
+                error: false
+            })
+            handleCloseDelete();
+        }));
+        history.push('/message')
+    }
+    const [showDelete, setShowDelete] = useState(false);
+    const handleCloseDelete = () => {
+        setShowDelete(false);
+    }
+    const handleShowDelete = () => {
+        setShowDelete(true);
+    }
     return (
         <>
             <Grid item md={9} sm={10} xs={10}>
@@ -63,7 +88,28 @@ export default function Chat() {
                             </div>
                             <div className={classes.message_box_header_right}>
                                 <Call style={{ marginRight: "20px", cursor: "pointer" }} />
-                                <Delete style={{ color: "red", cursor: "pointer" }}/>
+                                <IconButton onClick={handleShowDelete}>
+                                    <Delete style={{ color: "red"}}/>
+                                </IconButton>
+                                <Dialog
+                                    open={showDelete}
+                                    onClose={handleCloseDelete}
+                                    aria-labelledby="show-delete-dialog"
+                                    aria-describedby="show-delete-dialog-description"
+                                >
+                                    <DialogTitle id="alert-dialog-title">{"Bạn có chắc chắn muốn xóa?"}</DialogTitle>
+                                    <DialogContent>Bạn sẽ không thể khôi phục lại dữ liệu sau khi xóa!</DialogContent>
+                                    <DialogActions>
+                                        <Button onClick={handleCloseDelete}>
+                                            Hủy
+                                        </Button>
+                                        <Button onClick={handleDelete} style={{color:"red"}}>
+                                            {
+                                                state.loading ?
+                                                    <CircularProgress size={15} color='inherit' /> : "Xóa"
+                                            }                                        </Button>
+                                    </DialogActions>
+                                </Dialog>
                             </div>
                         </div>
                         <div className={classes.message_container}>
@@ -104,13 +150,12 @@ export default function Chat() {
                             </div>
                         </div>
                         <div className={classes.chat_input}>
-                            <form style={{ display: "flex", width:"100%" }} onSubmit={handleSubmit}>
-                                <input placeholder="Nhập tin nhắn..." type="text" className={classes.chat_input_form} value={text} onChange={e => setText(e.target.value)}></input>
-                                {
-                                    text ? <>
-                                        <Send className={classes.iconSend}></Send>
-                                    </> : <></>
-                                }
+                            <form style={{ display: "flex", width:"100%",justifyContent: "space-between" }} onSubmit={handleSubmit}>
+                                <input placeholder="Nhập tin nhắn..." type="text" aria-multiline className={classes.chat_input_form} value={text} onChange={e => setText(e.target.value)}></input>
+                                <EmojiPicker content={text} setContent={setText} />
+                                <IconButton disabled={!text || text.trim() === ""} type="submit">
+                                    <Send className={classes.iconSend}/>
+                                </IconButton>
                             </form>
                         </div>
                     </div>

@@ -7,13 +7,16 @@ import { useDispatch, useSelector } from "react-redux";
 import customAxios from '../../utils/fetchData';
 import { useHistory } from "react-router-dom";
 import { addUser, getConversations } from '../../redux/callApi/messageCall';
+// import { useParams } from "react-router-dom";
 
 export default function Conversations() {
     const classes = messageStyles();
 
     const { auth, message, socket } = useSelector(state => state);
+    // const { id } = useParams();
     const dispatch = useDispatch();
     const history = useHistory();
+
     const [search, setSearch] = useState('');
     const [searchUsers, setSearchUsers] = useState('');
     const handleSearch = async (e) => {
@@ -44,6 +47,7 @@ export default function Conversations() {
         if (message.firstLoad) return;
         dispatch(getConversations(auth, socket));
     }, [message.firstLoad, dispatch, auth, socket])
+
 
     return (
         <>

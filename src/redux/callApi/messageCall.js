@@ -1,5 +1,6 @@
 import customAxios from "../../utils/fetchData";
 import* as messageAction from "../actions/messageAction";
+import * as alertAction from '../actions/alertAction';
 
 
 export const addUser = (user, message, socket) => async (dispatch) => {
@@ -54,13 +55,13 @@ export const getMessages = (id,auth, socket) => async(dispatch)=>{
     }
 }
 
-export const deleteConversation = (data, auth, socket) => async(dispatch) =>{ 
+export const deleteConversation = (data, auth, next, error) => async(dispatch) =>{ 
     try {
-        const res = await customAxios(auth.token).delete(`/message/delete_conversation/${data.id}`);
-        // console.log(res.data);
-        dispatch(messageAction.deleteConversation(res.data.messages))
-
+        await customAxios(auth.token).delete(`/message/delete_conversation/${data._id}`);
+        dispatch(messageAction.deleteConversation(data))
+        dispatch(alertAction.success({ message: "Xóa cuộc trò chuyện thành công!" }))
+        next();
     } catch (err) {
-        console.log(err);
+        error();
     }
 }

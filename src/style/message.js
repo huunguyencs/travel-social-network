@@ -1,5 +1,5 @@
 import { makeStyles } from "@material-ui/core";
-import { CallReceived } from "@material-ui/icons";
+
 
 
 const messageStyles = makeStyles((theme) => ({
@@ -50,12 +50,18 @@ const messageStyles = makeStyles((theme) => ({
     message_searchIcon: {
         marginLeft: "20px",
         color: "#d2d0d0",
-        fontSize: "30px"
+        fontSize: "30px",
+        [theme.breakpoints.down("sm")]: {
+            fontSize: "20px",
+            marginLeft: "5px"
+        }
     },
     message_closeIcon: {
         color: "#A5DEC8",
         fontSize: "30px",
-        marginRight: "20px"
+        [theme.breakpoints.down("sm")]: {
+            fontSize: "25px",
+        }
     },
     message_users_list: {
         width: "100%",
@@ -76,7 +82,7 @@ const messageStyles = makeStyles((theme) => ({
         borderRight: "1px solid #d2d0d0",
         paddingTop: "75px",
         [theme.breakpoints.down("sm")]: {
-            width: "100%",
+            width: "98%",
         }
     },
     message_box: {
@@ -182,12 +188,11 @@ const messageStyles = makeStyles((theme) => ({
         alignItems: "center"
     },
     chat_input_form: {
-        width: "90%",
-        height: "90%",
         backgroundColor: "rgb(238, 246, 243)",
         border: "none",
         outline: "none",
-        marginLeft: 20
+        paddingInline: 5,
+        width: "100%",
     },
     startChat: {
         display: "flex",
@@ -195,7 +200,6 @@ const messageStyles = makeStyles((theme) => ({
         marginTop: 300
     },
     iconSend:{
-        marginRight: "10px",
         color: "#A5DEC8"
     },
     message_card_text:{

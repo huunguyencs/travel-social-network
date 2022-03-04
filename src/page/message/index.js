@@ -23,7 +23,7 @@ export default function Message(props) {
             {token &&
                 <Grid container style={{ margin: 0, padding: 0 }}>
                     <Conversations />
-                    <Grid item md={9} sm={12} xs={12}>
+                    <Grid item md={9} sm={10} xs={10}>
                         <div className={classes.startChat}>
                             <Typography variant="h5">
                                 Bắt đầu trò chuyện

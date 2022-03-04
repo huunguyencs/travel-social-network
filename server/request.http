@@ -230,16 +230,17 @@
 #     "password": "Huytran0207"
 # }
 
-POST http://localhost:5000/user/confirm_account
+# POST http://localhost:5000/user/confirm_account
+# Content-Type: application/json
+# Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjYxY2U3NzM0YmI5ZmIxNTIwZjQxNTcyYyIsImlhdCI6MTY0NTI3OTQ4MH0.7Q1w8TZZgvdRxXajWqE98K1OS2KycWTQ0rFsvudiasI
+
+# {
+#     "cmnd": "09191536",
+#     "cmndFront": "https://res.cloudinary.com/huunguyencs/image/upload/v1638075905/background_wwpwxy.jpg",
+#     "cmndBack": "https://res.cloudinary.com/huunguyencs/image/upload/v1638075905/background_wwpwxy.jpg",
+#     "cmndFace": "https://res.cloudinary.com/huunguyencs/image/upload/v1638075905/background_wwpwxy.jpg"
+# }
+
+DELETE http://localhost:5000/message/delete_conversation/61e220d8c273b3fa6610381d
 Content-Type: application/json
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjYxY2U3NzM0YmI5ZmIxNTIwZjQxNTcyYyIsImlhdCI6MTY0NTI3OTQ4MH0.7Q1w8TZZgvdRxXajWqE98K1OS2KycWTQ0rFsvudiasI
-
-{
-    "cmnd": "09191536",
-    "cmndFront": "https://res.cloudinary.com/huunguyencs/image/upload/v1638075905/background_wwpwxy.jpg",
-    "cmndBack": "https://res.cloudinary.com/huunguyencs/image/upload/v1638075905/background_wwpwxy.jpg",
-    "cmndFace": "https://res.cloudinary.com/huunguyencs/image/upload/v1638075905/background_wwpwxy.jpg"
-}
-
-# GET http://localhost:5000/user/61ce7734bb9fb1520f41572c
-# Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjYxY2U3NzM0YmI5ZmIxNTIwZjQxNTcyYyIsImlhdCI6MTY0NTM0MTMwOX0.C4p5cpsI90Z01fI3bQX-44pJJCfrrkLUkG1j_5B-jYM
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjYxY2U3NzM0YmI5ZmIxNTIwZjQxNTcyYyIsImlhdCI6MTY0NTM0MTMwOX0.C4p5cpsI90Z01fI3bQX-44pJJCfrrkLUkG1j_5B-jYM
