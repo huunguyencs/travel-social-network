@@ -120,6 +120,21 @@ const postStyles = makeStyles((theme) => ({
         width: 50,
         display: 'flex',
         justifyContent: 'center'
+    },
+    loadMoreComment: {
+        marginInline: 20,
+        color: color.blue,
+        cursor: 'pointer',
+        '&:hover': {
+            textDecoration: 'underline',
+        }
+    },
+    loadingComment: {
+        marginInline: 20,
+        cursor: 'wait'
+    },
+    errorComment: {
+        marginInline: 20
     }
 }))
 

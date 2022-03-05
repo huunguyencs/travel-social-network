@@ -240,10 +240,10 @@ export default function Post(props) {
                             <Comment comment={cmt} key={cmt._id} id={post._id} type="post" />
                         ))}
                     </div>
-                    {loadingComment && <Typography>Đang tải...</Typography>}
-                    {errorComment && <Typography>Có lỗi xảy ra</Typography>}
+                    {loadingComment && <Typography className={classes.loadingComment}>Đang tải...</Typography>}
+                    {errorComment && <Typography className={classes.errorComment}>Có lỗi xảy ra</Typography>}
                     {post.commentDetail && !loadingComment && post.commentDetail?.length < post.comments?.length &&
-                        <Typography onClick={loadMoreComment}>Xem thêm bình luận</Typography>
+                        <Typography className={classes.loadMoreComment} onClick={loadMoreComment}>Xem thêm bình luận</Typography>
                     }
                 </Collapse>
 

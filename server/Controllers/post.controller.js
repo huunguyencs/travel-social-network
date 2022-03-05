@@ -221,8 +221,9 @@ class PostController {
     //lấy pots của 1 user cụ thể (params.id)
     async getUserPost(req, res) {
         try {
-            const { offset } = req.body;
-            const posts = await Posts.find({ userId: req.params.id }).skip(offset).limit(5).sort("-createdAt")
+            const { offset } = req.query;
+            // console.log(offset);
+            const posts = await Posts.find({ userId: req.params.id }).skip(offset * 5).limit(5).sort("-createdAt")
                 .populate("userId likes", "username fullname avatar")
                 .populate("locationId", "name fullname")
                 .populate({

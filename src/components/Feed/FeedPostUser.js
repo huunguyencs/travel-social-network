@@ -1,5 +1,5 @@
-import React from "react";
-import { CircularProgress, Typography, Button } from "@material-ui/core";
+import React, { useEffect, useState } from "react";
+import { CircularProgress, Button } from "@material-ui/core";
 
 
 import Post from '../Post';
@@ -14,19 +14,41 @@ export default function FeedPostUser(props) {
     const { id } = props;
     const dispatch = useDispatch();
 
-    const { auth, post } = useSelector(state => state);
+    const { post } = useSelector(state => state);
+
+    const [fetch, setFetch] = useState(false);
 
     const classes = feedStyles();
 
     const tryAgain = () => {
-        if (id && auth.token) {
-            dispatch(getUserPost(id, auth.token, 0))
+        if (id) {
+            dispatch(getUserPost(id, 0))
         }
     }
 
-    // const loadMorePost = () => {
-    //     dispatch(getUserPost(id, auth.token, post.posts.length))
-    // }
+    const loadPost = (id, page, hasMore, dispatch) => {
+        if (hasMore) {
+            dispatch(getUserPost(id, page))
+        }
+        setFetch(false);
+    }
+
+    useEffect(() => {
+        if (fetch) {
+            loadPost(id, post.page, post.hasMore, dispatch)
+        }
+    }, [id, fetch, post.page, post.hasMore, dispatch])
+
+    useEffect(() => {
+        window.addEventListener('scroll', handleScroll);
+        return () => window.removeEventListener('scroll', handleScroll)
+    }, []);
+
+    function handleScroll() {
+        if (window.innerHeight + document.documentElement.scrollTop === document.documentElement.offsetHeight) {
+            setFetch(true);
+        }
+    }
 
 
     return (
@@ -34,23 +56,27 @@ export default function FeedPostUser(props) {
             <div className={classes.content}>
                 <div className={classes.feedContent}>
                     {
-                        post.loading ?
-                            <div className={classes.centerMarginTop}>
-                                <CircularProgress color={"inherit"} />
-                            </div>
-                            : post.error ?
-                                <div className={classes.centerMarginTop}>
-                                    <div>
-                                        <Typography>Có lỗi xảy ra</Typography>
-                                        <Button onClick={tryAgain}>Thử lại</Button>
-                                    </div>
-                                </div> :
-                                post.posts.map((post) => (
-                                    <Post
-                                        post={post}
-                                        key={post._id}
-                                    />
-                                ))
+
+                        !post.error && (
+                            post.posts.map((post) => (
+                                <Post
+                                    post={post}
+                                    key={post._id}
+                                />
+                            ))
+                        )
+                    }
+                    {
+                        post.loading &&
+                        <div className={classes.centerMarginTop}>
+                            <CircularProgress color={"inherit"} />
+                        </div>
+                    }
+                    {
+                        post.error &&
+                        <div className={classes.centerMarginTop}>
+                            <Button onClick={tryAgain}>Thử lại</Button>
+                        </div>
                     }
                 </div>
             </div>

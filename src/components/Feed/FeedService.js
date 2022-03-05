@@ -11,13 +11,6 @@ export default function FeedService(props) {
 
     const classes = feedStyles();
 
-    // const dispatch = useDispatch();
-    // const { post } = useSelector(state => state);
-
-    // useEffect(() => {
-    //     dispatch(getPosts());
-    // }, [dispatch])
-
     return (
         <Container className={classes.container}>
             <div className={classes.content}>

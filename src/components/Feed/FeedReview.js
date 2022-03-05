@@ -32,6 +32,7 @@ export default function FeedReview(props) {
         if (hasMore) {
             dispatch(getPostsLocation(id, page));
         }
+        setFetch(false);
     }
 
     function handleScroll() {
@@ -121,10 +122,7 @@ export default function FeedReview(props) {
                     {
                         post.error &&
                         <div className={classes.centerMarginTop}>
-                            <div>
-                                <Typography>Có lỗi xảy ra</Typography>
-                                <Button onClick={tryAgain}>Thử lại</Button>
-                            </div>
+                            <Button onClick={tryAgain}>Thử lại</Button>
                         </div>
                     }
 

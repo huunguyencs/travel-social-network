@@ -48,12 +48,12 @@ export const getPostsLocation = (id, page) => async (dispatch) => {
     }
 }
 
-export const getUserPost = (id, token, offset) => async (dispatch) => {
+export const getUserPost = (id, offset) => async (dispatch) => {
     // dispatch(postAction.getPosts({ posts: [] }));
     dispatch(postAction.loading());
 
     try {
-        const res = await customAxios(token).get(`/post/user_posts/${id}`);
+        const res = await customAxios().get(`/post/user_posts/${id}?offset=${offset}`);
 
         // console.log(res.data.posts);
         if (offset > 0) {
