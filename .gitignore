@@ -17,7 +17,6 @@
 .env.development.local
 .env.test.local
 .env.production.local
-server/.env
 
 npm-debug.log*
 yarn-debug.log*
@@ -29,3 +28,4 @@ yarn-error.log*
 # src/key/*
 
 server/node_modules
+server/.env
