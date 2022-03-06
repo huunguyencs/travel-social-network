@@ -54,7 +54,7 @@ export default function FeedReview(props) {
 
     const tryAgain = () => {
         if (location) {
-            dispatch(getPostsLocation(location._id, 0))
+            dispatch(getPostsLocation(location._id, post.page))
         }
     }
 

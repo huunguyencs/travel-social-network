@@ -22,7 +22,7 @@ export default function FeedPostUser(props) {
 
     const tryAgain = () => {
         if (id) {
-            dispatch(getUserPost(id, 0))
+            dispatch(getUserPost(id, post.page))
         }
     }
 
