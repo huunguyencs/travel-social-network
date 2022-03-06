@@ -79,9 +79,13 @@ class ServiceController {
     //Get all Service
     async getServices(req, res) {
         try {
-            const service = await Services.find()
-                .populate("cooperator")
-            res.json({ success: true, message: "get info all Service success", service });
+            var { offset } = req.query;
+            offset = offset || 0;
+            // console.log(offset);
+            const services = await Services.find({}, "-rate -attribute").skip(offset * 5).limit(5)
+                // .populate("cooperator")
+                .populate("province", "name fullname");
+            res.json({ success: true, message: "get info all Service success", services });
         } catch (err) {
             console.log(err)
             res.status(500).json({ success: false, message: err.message })

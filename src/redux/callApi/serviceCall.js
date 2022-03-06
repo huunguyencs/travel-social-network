@@ -1,13 +1,36 @@
 import customAxios from '../../utils/fetchData';
 import * as serviceAction from '../actions/serviceAction';
 import * as alertAction from '../actions/alertAction';
-import * as imageUtils from '../../utils/uploadImage'
+import * as imageUtils from '../../utils/uploadImage';
+
+export const getServices = (id, page) => async (dispatch) => {
+    dispatch(serviceAction.loading());
+    try {
+        var res;
+        if (id) {
+            res = await customAxios().get(`/service/get_by_coop/${id}?offset=${page}`);
+        }
+        else {
+            res = await customAxios().get(`/service/services?offset=${page}`)
+        }
+        if (page === 0) {
+            dispatch(serviceAction.getServices({ services: res.data.services }))
+        }
+        else {
+            dispatch(serviceAction.getMoreServices({ services: res.data.services }))
+        }
+    } catch (error) {
+        // console.log(error);
+        dispatch(serviceAction.error())
+    }
+}
 
 export const getDetail = (id, next, error) => async (dispatch) => {
     try {
         const res = await customAxios().get(`/service/get_detail/${id}`);
-        console.log(res);
+        // console.log(res);
         dispatch(serviceAction.getDetail({ rate: res.data.rate, attribute: res.data.attribute, id: id }))
+        // console.log(res.data.rate);
         next();
     } catch (err) {
         error();

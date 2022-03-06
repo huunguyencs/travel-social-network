@@ -1,5 +1,6 @@
 import { Grid } from "@material-ui/core";
 import React, { createRef, useEffect } from "react";
+import { useDispatch } from 'react-redux'
 
 import Calendar from '../components/Calendar';
 import FriendRecommendCard from "../components/Card/FriendRecommend";
@@ -9,12 +10,19 @@ import RightBar from "../components/Rightbar";
 import SpeedDialButton from "../components/SpeedDialBtn";
 import { homeMenu } from "../constant/menu";
 import useStyles from "../style";
+import { getServices } from '../redux/callApi/serviceCall';
 
 export default function ServicePage(props) {
 
     const ref = createRef();
 
     const classes = useStyles();
+    const dispatch = useDispatch();
+
+
+    useEffect(() => {
+        dispatch(getServices(null, 0));
+    }, [dispatch]);
 
     useEffect(() => {
         document.title = "Dịch vụ | GOGO";

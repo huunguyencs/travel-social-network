@@ -15,6 +15,7 @@ import { getUser } from "../../../redux/callApi/userCall";
 import { NotFound } from "../../404";
 import useStyles from "../../../style";
 import ServiceList from "../../../components/Service/ServiceList";
+import { getServices } from "../../../redux/callApi/serviceCall";
 
 
 
@@ -33,6 +34,7 @@ function InfoProfile() {
             dispatch(getUser(id, () => {
                 setNotFound(true);
             }));
+            dispatch(getServices(id, 0));
         }
     }, [user.user, id, dispatch, setNotFound])
 
