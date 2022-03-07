@@ -34,3 +34,28 @@ export const createVolunteer = (token, userId, data, images_data, next, error) =
         dispatch(alertAction.error({ message: "Có lỗi xảy ra!" }))
     }
 }
+
+export const deleteVolunteer = (volunteer, token, socket, next, error) => async (dispatch) => {
+    try {
+        // Notify
+        // const dataNotify = {
+        //     id: tour._id,
+        //     url: `/tour/${tour._id}`,
+        //     type: 'deleteTour'
+        // }
+        // dispatch(deleteNotify(dataNotify, token, socket));
+
+        await customAxios(token).delete(`/volunteer/${volunteer._id}`)
+        next();
+        dispatch(volunteerAction.deleteVolunteer({ id: volunteer._id }));
+        dispatch(alertAction.success({ message: "Xóa thành công!" }))
+    }
+    catch (err) {
+        // dispatch(tourAction.error({ error: err.response.data.message }));
+        error();
+        if (err.response && err.response.data && err.response.data.message)
+            dispatch(alertAction.error({ message: err.response.data.message }))
+        else
+            dispatch(alertAction.error({ message: "Có lỗi xảy ra" }));
+    }
+}
