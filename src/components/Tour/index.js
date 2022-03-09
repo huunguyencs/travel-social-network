@@ -262,7 +262,7 @@ export default function Tour(props) {
                         {loadingComment && <Typography>Đang tải...</Typography>}
                         {errorComment && <Typography>Có lỗi xảy ra</Typography>}
                         {tour.commentDetail && !loadingComment && tour.commentDetail?.length < tour.comments?.length &&
-                            <Typography onClick={loadMoreComment}>Xem thêm bình luận</Typography>
+                            <Typography variant="body2" onClick={loadMoreComment}>Xem thêm bình luận</Typography>
                         }
                     </Collapse>
 

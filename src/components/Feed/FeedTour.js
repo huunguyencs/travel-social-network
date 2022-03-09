@@ -1,21 +1,20 @@
-import React, { useEffect, useState } from "react";
-import { Backdrop, Button, CircularProgress, Fade, Modal, Typography } from "@material-ui/core";
+import React, { useState } from "react";
+import { Backdrop, Button, Fade, Modal, Typography } from "@material-ui/core";
 
 import Tour from "../Tour";
+import Feed from './index';
 import { feedStyles } from "../../style";
 import CreateTourForm from "../Forms/CreateTour";
 import { useSelector, useDispatch } from "react-redux";
 import { getMoreTours, getTours } from "../../redux/callApi/tourCall"
 import FilterTour from "../Forms/FilterTour";
 import { Tune } from "@material-ui/icons";
-import SuccessIcon from "../Icons/Success";
 
 
 export default function FeedTour(props) {
 
     const dispatch = useDispatch();
     const { auth, tour } = useSelector(state => state);
-    const [fetch, setFetch] = useState(false);
 
     const [cost, setCost] = useState([0, 100]);
     const [text, setText] = useState('');
@@ -49,34 +48,16 @@ export default function FeedTour(props) {
         setIsFiltering(false);
     }
 
-    const loadTour = (page, dispatch, hasMore) => {
-        if (hasMore) {
-            dispatch(getMoreTours(page));
-        }
-        setFetch(false);
-    }
-
-    function handleScroll() {
-        if (window.innerHeight + document.documentElement.scrollTop === document.documentElement.offsetHeight) {
-            setFetch(true);
+    const loadTour = () => {
+        if (tour.hasMore) {
+            dispatch(getMoreTours(tour.page));
         }
     }
-
-    useEffect(() => {
-        window.addEventListener('scroll', handleScroll);
-        return () => window.removeEventListener('scroll', handleScroll)
-    }, []);
 
     const tryAgain = () => {
         loadTour(tour.page, dispatch, tour.hasMore)
     }
 
-
-    useEffect(() => {
-        if (fetch) {
-            loadTour(tour.page, dispatch, tour.hasMore);
-        }
-    }, [fetch, tour.page, dispatch, tour.hasMore])
 
     const ref = React.createRef();
     const refFilter = React.createRef();
@@ -162,42 +143,20 @@ export default function FeedTour(props) {
                             <Button onClick={removeFilter}>Xoá bộ lọc</Button>
                         </div>
                     }
-
-                    <div>
-                        {
-                            !tour.error &&
-                            tour.tours.map((tour) => (
-                                <Tour
-                                    tour={tour}
-                                    key={tour._id}
-                                />
-                            ))
-                        }
-                        {
-                            tour.loading &&
-                            <div className={classes.centerMarginTop}>
-                                <CircularProgress color={"inherit"} />
-                            </div>
-                        }
-
-                        {
-                            tour.error &&
-                            <div className={classes.centerMarginTop}>
-                                <div>
-                                    <Typography>Có lỗi xảy ra</Typography>
-                                    <Button onClick={tryAgain}>Thử lại</Button>
-                                </div>
-                            </div>
-                        }
-                        {
-                            !tour.loading && !tour.error && !tour.hasMore &&
-                            <div style={{ textAlign: 'center', marginBlock: 30 }}>
-                                <SuccessIcon style={{ margin: 'auto', fontSize: 50 }} />
-                                <Typography style={{ margin: 'auto', fontSize: 24 }}>Bạn đã xem hết hành trình</Typography>
-                            </div>
-                        }
-
-                    </div>
+                    <Feed
+                        loadMore={loadTour}
+                        tryAgain={tryAgain}
+                        loading={tour.loading}
+                        error={tour.error}
+                        hasMore={tour.hasMore}
+                    >
+                        {tour.tours.map((tour) => (
+                            <Tour
+                                tour={tour}
+                                key={tour._id}
+                            />
+                        ))}
+                    </Feed>
                 </div>
 
             </div>

@@ -1,12 +1,13 @@
-import React, { useEffect, useState } from "react";
-import { Backdrop, Button, CircularProgress, Container, Fade, InputBase, Modal, Typography } from "@material-ui/core";
+import React, { useState } from "react";
+import { Backdrop, Container, Fade, InputBase, Modal } from "@material-ui/core";
 
 import Post from '../Post';
+import Feed from './index';
 import { feedStyles } from "../../style";
 import { useDispatch, useSelector } from "react-redux";
 import { getPostsLocation } from "../../redux/callApi/postCall";
 import CreateReview from '../Forms/CreateReview'
-import SuccessIcon from "../Icons/Success";
+// import SuccessIcon from "../Icons/Success";
 
 
 export default function FeedReview(props) {
@@ -16,7 +17,7 @@ export default function FeedReview(props) {
     const { post, auth } = useSelector(state => state);
     const dispatch = useDispatch();
     const [open, setOpen] = useState(false);
-    const [fetch, setFetch] = useState(false);
+    // const [fetch, setFetch] = useState(false);
 
     const handleShow = () => {
         setOpen(true);
@@ -28,29 +29,28 @@ export default function FeedReview(props) {
 
     const classes = feedStyles();
 
-    const loadMorePost = (id, page, dispatch, hasMore) => {
-        if (hasMore) {
-            dispatch(getPostsLocation(id, page));
-        }
-        setFetch(false);
-    }
-
-    function handleScroll() {
-        if (window.innerHeight + document.documentElement.scrollTop === document.documentElement.offsetHeight) {
-            setFetch(true);
+    const loadMoreReview = () => {
+        if (post.hasMore) {
+            dispatch(getPostsLocation(location._id, post.page));
         }
     }
 
-    useEffect(() => {
-        window.addEventListener('scroll', handleScroll);
-        return () => window.removeEventListener('scroll', handleScroll)
-    }, []);
+    // function handleScroll() {
+    //     if (window.innerHeight + document.documentElement.scrollTop === document.documentElement.offsetHeight) {
+    //         setFetch(true);
+    //     }
+    // }
 
-    useEffect(() => {
-        if (fetch) {
-            loadMorePost(location._id, post.page, dispatch, post.hasMore);
-        }
-    }, [fetch, post.page, dispatch, post.hasMore, location._id])
+    // useEffect(() => {
+    //     window.addEventListener('scroll', handleScroll);
+    //     return () => window.removeEventListener('scroll', handleScroll)
+    // }, []);
+
+    // useEffect(() => {
+    //     if (fetch) {
+    //         loadMorePost(location._id, post.page, dispatch, post.hasMore);
+    //     }
+    // }, [fetch, post.page, dispatch, post.hasMore, location._id])
 
     const tryAgain = () => {
         if (location) {
@@ -97,7 +97,23 @@ export default function FeedReview(props) {
                     </Modal>
 
                 </div>
-                <div className={classes.feedContent}>
+                <Feed
+                    loadMore={loadMoreReview}
+                    loading={post.loading}
+                    error={post.error}
+                    hasMore={post.hasMore}
+                    tryAgain={tryAgain}
+                >
+                    {
+                        post.posts.map((post) => (
+                            <Post
+                                post={post}
+                                key={post._id}
+                            />
+                        ))
+                    }
+                </Feed>
+                {/* <div className={classes.feedContent}>
                     {
 
                         !post.error && (
@@ -134,7 +150,7 @@ export default function FeedReview(props) {
                         </div>
                     }
 
-                </div>
+                </div> */}
             </div>
         </Container>
     )
