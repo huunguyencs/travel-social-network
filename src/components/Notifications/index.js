@@ -13,24 +13,27 @@ export default function NotificationItem(props) {
 
     const { noti } = props;
 
-    const { token } = useSelector(state => state.auth)
+    const { auth } = useSelector(state => state)
 
     const dispatch = useDispatch();
 
     const classes = notificationStyles();
 
     const handleIsRead = (msg) => {
-        dispatch(isSeenNotify(msg, token))
+        dispatch(isSeenNotify(msg, auth.token))
     }
 
     const notiClick = () => {
         history.push(`${noti.url}`)
         handleIsRead(noti)
     }
+    const isSeen = (notify) => {
+        return notify.seen.find(item => item.id_recipient === auth.user._id)?.isSeen;
+    }
 
     return (
 
-        <ListItem className={noti.seen ? classes.itemContainer : classes.unSeen} onClick={notiClick}>
+        <ListItem className={isSeen(noti) ? classes.itemContainer : classes.unSeen} onClick={notiClick}>
             <ListItemAvatar>
                 <Avatar className={classes.avatar} alt="avatar" src={noti.user.avatar} />
             </ListItemAvatar>

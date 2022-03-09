@@ -1,8 +1,8 @@
 import React, { useState } from 'react';
-import { Button, Grid, IconButton, TextField, Typography, Modal, Backdrop, Fade } from '@material-ui/core';
+import { Button, Grid, IconButton, TextField, Typography, Modal, Backdrop, Fade,CircularProgress } from '@material-ui/core';
 import { addVolunteerStyles } from '../../style';
 import { useDispatch, useSelector } from 'react-redux';
-import { useHistory } from 'react-router-dom';
+import { useHistory} from 'react-router-dom';
 import AddImageHorizontal from '../Input/AddImageHorizontal';
 import { Close, AddCircle } from '@material-ui/icons';
 import { Timeline, TimelineItem, TimelineSeparator, TimelineConnector, TimelineContent, TimelineDot } from '@material-ui/lab'
@@ -10,7 +10,8 @@ import { convertDateToStr } from "../../utils/date";
 import { List, ListItem, ListItemIcon, ListItemText } from '@material-ui/core';
 import { RadioButtonUnchecked } from '@material-ui/icons';
 import AddLocationForm from "../Forms/AddLocationVolunteer";
-import { createVolunteer } from '../../redux/callApi/volunteerCall';
+import { createVolunteer, updateVolunteer } from '../../redux/callApi/volunteerCall';
+
 
 function Item(props) {
 
@@ -29,30 +30,43 @@ function Item(props) {
 }
 export default function AddVolunteer(props) {
     const classes = addVolunteerStyles();
-    const [error, setError] = useState('');
-    const [loading, setLoading] = useState(false);
-
-    const { auth, location } = useSelector(state => state);
+    const { auth, socket } = useSelector(state => state);
+    const { volunteer, isUpdate } = props;
+    const [state, setState] = useState({
+        loading: false,
+        notFound: false,
+        error: false
+    })
     const dispatch = useDispatch();
     const history = useHistory();
+    
     const [idx, setIdx] = useState(0);
     const [idxLocation, setIdxLocation] = useState(0);
-    const [images, setImages] = useState([]);
+    
     const [tempDescription, setTempDescription] = useState("");
     const [tempTime, setTempTime] = useState("");
     const [tempActivity, setTempActivity] = useState("");
     const [tempLocation, setTempLocation] = useState(null);
-    const [context, setContext] = useState({
+
+    //data save
+    const [images, setImages] = useState(volunteer?[volunteer.image]:[]);
+    const [context, setContext] = useState(volunteer?{
+        name: volunteer.name,
+        descriptions: volunteer.descriptions,
+        cost: volunteer.cost
+    }:
+    {
         name: "",
         descriptions: [],
         cost: ""
     });
-    const [dateVolunteer, setDateVolunteer] = useState([{
+    const [dateVolunteer, setDateVolunteer] = useState(volunteer?volunteer.date:[{
         activities: [],
         accommodation: "",
         date: null
     }]);
-    const [locationVolunteer, setLocationVolunteer] = useState([]);
+
+    const [locationVolunteer, setLocationVolunteer] = useState(volunteer?volunteer.location:[]);
     const handleAddDescription = (e) => {
         e.preventDefault();
         setContext({
@@ -219,21 +233,59 @@ export default function AddVolunteer(props) {
 
     const handleSubmit = () => {
         if (images.length === 0) {
-            setError("Cần thêm ít nhất 1 ảnh");
+            setState({
+                loading: false,
+                error: true,
+                notFound: false,
+            })
             return;
         }
-        setLoading(true);
-        dispatch(createVolunteer(auth.token, auth.user._id, {
-            ...context,
-            date: dateVolunteer,
-            location: locationVolunteer
-        }, images, () => {
-            history.push(`/volunteer`);
-            setLoading(false);
-        }, () => {
-            setLoading(false)
-        }))
+        setState({
+            loading: true,
+            error: false,
+            notFound: false,
+        })
+        if(isUpdate){
+            dispatch(updateVolunteer(volunteer._id,auth.token, socket, {
+                ...context,
+                date: dateVolunteer,
+                location: locationVolunteer
+            }, images, () => {
+                history.push(`/volunteer/${volunteer._id}`);
+                setState({
+                    loading: false,
+                    error: false,
+                    notFound: false,
+                })
+            }, () => {
+                setState({
+                    loading: false,
+                    error: true,
+                    notFound: false,
+                })
+            }))
+        }else{
+            dispatch(createVolunteer(auth.token, socket, {
+                ...context,
+                date: dateVolunteer,
+                location: locationVolunteer
+            }, images, () => {
+                history.push(`/volunteer`);
+                setState({
+                    loading: false,
+                    error: false,
+                    notFound: false,
+                })
+            }, () => {
+                setState({
+                    loading: false,
+                    error: true,
+                    notFound: false,
+                })
+            }))
+        }
     }
+    
     return (
         <div className={classes.formContainer}>
             <Typography variant='h5' style={{ marginTop: 50 }}>Tạo hoạt động tình nguyện của bạn</Typography>
@@ -381,7 +433,7 @@ export default function AddVolunteer(props) {
                         </form>
                         <Typography>Lịch trình ngày: {idx + 1}</Typography>
                         {
-                            dateVolunteer[idx].activities.map((item, index) => (
+                            dateVolunteer[idx] && dateVolunteer[idx].activities.map((item, index) => (
                                 <List key={index} component="nav" aria-label="main folders">
                                     <ListItem button className={classes.scheduleItem}>
                                         <ListItemIcon>
@@ -541,11 +593,14 @@ export default function AddVolunteer(props) {
                     </Grid>
                     <Button
                         onClick={() => handleSubmit()}
-                        // disabled={!tempLocationActivity}
+                        disabled={!(context && dateVolunteer && locationVolunteer)}
                         variant='contained'
                         color="primary"
                     >
-                        Thêm hoạt động
+                        {state.loading ?
+                            <CircularProgress size="25px" color="inherit" />
+                            : isUpdate? "Lưu lại" : "Thêm hoạt động"
+                        }
                     </Button>
                 </Grid>
             </div>

@@ -144,7 +144,7 @@ export default function ProfileAvatar(props) {
     if (!message.firstLoad){
       dispatch(getConversations(auth, socket));
     }
-  }, [message.firstLoad,auth,socket,user])
+  }, [dispatch,message.firstLoad,auth,socket,user])
 
   const refFollowing = React.createRef();
   const refFollower = React.createRef();

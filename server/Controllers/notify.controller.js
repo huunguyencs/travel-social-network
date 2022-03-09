@@ -43,7 +43,7 @@ class NotifyController {
         try {
             const notify = await Notifies.findOneAndDelete({ id: req.params.id, url: req.query.url });
 
-            if (req.query.type === 'deletePost' || req.query.type === 'deleteTour') {
+            if (req.query.type === 'deletePost' || req.query.type === 'deleteTour' || req.query.type === 'deleteVolunteer') {
                 await Notifies.deleteMany({ url: req.query.url });
             }
 

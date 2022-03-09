@@ -1,4 +1,4 @@
-import { Avatar, Card, CardContent, CardHeader, CardMedia, IconButton, Typography, Popper, ClickAwayListener,MenuList, Modal, Paper,Button,Dialog, DialogActions, DialogContent, DialogTitle,CircularProgress,MenuItem,Backdrop } from '@material-ui/core'
+import { Avatar, Card, CardContent, CardHeader, CardMedia, IconButton, Typography, Popper, ClickAwayListener,MenuList,Paper,Button,Dialog, DialogActions, DialogContent, DialogTitle,CircularProgress,MenuItem} from '@material-ui/core'
 import { MoreVert } from '@material-ui/icons';
 import React, { useState } from 'react'
 import { Link } from 'react-router-dom';
@@ -14,7 +14,7 @@ export default function VolunteerCard(props) {
     const classes = volunteerStyles();
     const dispatch = useDispatch();
     const [anchorEl, setAnchorEl] = useState(null);
-    const [showEdit, setShowEdit] = useState(false);
+    // const [showEdit, setShowEdit] = useState(false);
     const [showDelete, setShowDelete] = useState(false);
     const [state, setState] = useState({
         loading: false,
@@ -28,10 +28,10 @@ export default function VolunteerCard(props) {
         setAnchorEl(null);
     }
 
-    const handleCloseEdit = () => {
-        setShowEdit(false);
-        handleCloseMenu();
-    }
+    // const handleCloseEdit = () => {
+    //     setShowEdit(false);
+    //     handleCloseMenu();
+    // }
 
     const handleShowDelete = () => {
         setShowDelete(true);
@@ -63,9 +63,9 @@ export default function VolunteerCard(props) {
 
     }
 
-    const handleShowEdit = () => {
-        setShowEdit(true)
-    }
+    // const handleShowEdit = () => {
+    //     setShowEdit(true)
+    // }
    
     return (
         <Card className={classes.root}>
@@ -101,30 +101,10 @@ export default function VolunteerCard(props) {
                                     onClose={handleCloseMenu}
                                     disablePortal
                                 >
-                                    {/* <Grow
-                                        style={{ transformOrigin: "center bottom" }}
-                                    > */}
-
                                     <ClickAwayListener onClickAway={handleCloseMenu}>
                                         <Paper>
                                             <MenuList>
-                                                <MenuItem onClick={handleShowEdit}>Chỉnh sửa bài viết</MenuItem>
-                                                <Modal
-                                                    aria-labelledby="transition-modal-edit"
-                                                    aria-describedby="transition-modal-edit-description"
-                                                    open={showEdit}
-                                                    className={classes.modal}
-                                                    onClose={handleCloseEdit}
-                                                    BackdropComponent={Backdrop}
-                                                    BackdropProps={{
-                                                        timeout: 500,
-                                                    }}
-                                                >
-                                                    {/* {post.isPostReview ?
-                                                        <UpdateReviewRef ref={refPost} review={post} handleClose={handleCloseEdit} /> :
-                                                        <UpdatePostRef ref={refTour} post={post} handleClose={handleCloseEdit} />
-                                                    } */}
-                                                </Modal>
+                                                <MenuItem component={Link} to={`/createvolunteer?id=${volunteer._id}`}>Chỉnh sửa bài viết</MenuItem>
                                                 <MenuItem onClick={handleShowDelete}>Xóa bài viết</MenuItem>
                                                 <Dialog
                                                     open={showDelete}
