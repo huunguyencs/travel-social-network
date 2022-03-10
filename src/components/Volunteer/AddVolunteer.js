@@ -304,7 +304,7 @@ export default function AddVolunteer(props) {
                 className={classes.fullField}
                 maxImage={10}
             />
-            <span>{error}</span>
+            <span>{state.error}</span>
             <Typography>Các thông tin chung</Typography>
             <Grid container>
                 {context.descriptions.map((item, index) => (

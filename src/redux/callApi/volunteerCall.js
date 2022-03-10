@@ -19,7 +19,7 @@ export const getVolunteers = (data) => async (dispatch) => {
 export const createVolunteer = (token, socket, data, images_data, next, error) => async (dispatch) => {
     try {
         let images = await imageUtils.uploadImages(images_data);
-        
+
         const res = await customAxios(token).post('/volunteer/create_volunteer', {
             ...data,
             image: images[0]
@@ -44,11 +44,11 @@ export const createVolunteer = (token, socket, data, images_data, next, error) =
     }
 }
 
-export const updateVolunteer = (id,token, socket, data, images_data, next, error) => async (dispatch) => {
+export const updateVolunteer = (id, token, socket, data, images_data, next, error) => async (dispatch) => {
     try {
         let images = await imageUtils.uploadImages(images_data);
-        console.log("data",data)
-        const res = await customAxios(token).patch(`/volunteer/${id}`, {
+        console.log("data", data)
+        await customAxios(token).patch(`/volunteer/${id}`, {
             ...data,
             image: images[0]
         })
