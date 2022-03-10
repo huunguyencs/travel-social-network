@@ -44,10 +44,19 @@ function TabPanel(props) {
 }
 
 function extractService(services) {
-    return services.map((item) => ({
-        service: item.service._id,
-        cost: item.cost
-    }))
+    return services.map((service) =>
+        service.map((item) => {
+            if (item?.service) {
+                return {
+                    ...item,
+                    service: item.service._id,
+                }
+            }
+            else {
+                return item;
+            }
+        })
+    )
 }
 
 export default function AddTour(props) {
@@ -108,6 +117,8 @@ export default function AddTour(props) {
             })
             return;
         }
+
+
         dispatch(saveTour({
             name: createTour.name,
             content: createTour.content,
@@ -490,25 +501,51 @@ export default function AddTour(props) {
                                             <Tab label="Di chuyển" {...a11yProps(0)} />
                                             <Tab label="Ăn uống" {...a11yProps(1)} />
                                             <Tab label="Khách sạn" {...a11yProps(2)} />
+                                            <Tab label="Khác" {...a11yProps(3)} />
                                         </Tabs>
                                     </div>
                                     <TabPanel value={tabService} index={0}>
                                         <div style={{ display: 'flex', justifyContent: 'center' }}>
-                                            {
-                                                createTour.services.map((item, index) => (
-                                                    <ServiceCard key={index} service={item} index={index} isEdit={true} />
-                                                ))
-                                            }
+                                            <div>
+                                                {
+                                                    createTour.services[0].map((item, index) => (
+                                                        <ServiceCard isOwn={false} type={0} key={index} service={item} index={index} isEdit={true} />
+                                                    ))
+                                                }
+                                            </div>
                                         </div>
                                     </TabPanel>
                                     <TabPanel value={tabService} index={1}>
                                         <div style={{ display: 'flex', justifyContent: 'center' }}>
-
+                                            <div>
+                                                {
+                                                    createTour.services[1].map((item, index) => (
+                                                        <ServiceCard isOwn={false} type={1} key={index} service={item} index={index} isEdit={true} />
+                                                    ))
+                                                }
+                                            </div>
                                         </div>
                                     </TabPanel>
                                     <TabPanel value={tabService} index={2}>
                                         <div style={{ display: 'flex', justifyContent: 'center' }}>
-
+                                            <div>
+                                                {
+                                                    createTour.services[2].map((item, index) => (
+                                                        <ServiceCard isOwn={false} type={2} key={index} service={item} index={index} isEdit={true} />
+                                                    ))
+                                                }
+                                            </div>
+                                        </div>
+                                    </TabPanel>
+                                    <TabPanel value={tabService} index={3}>
+                                        <div style={{ display: 'flex', justifyContent: 'center' }}>
+                                            <div>
+                                                {
+                                                    createTour.services[3].map((item, index) => (
+                                                        <ServiceCard isOwn={false} type={3} key={index} service={item} index={index} isEdit={true} />
+                                                    ))
+                                                }
+                                            </div>
                                         </div>
                                     </TabPanel>
                                 </Grid>

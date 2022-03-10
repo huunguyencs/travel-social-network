@@ -12,6 +12,9 @@ const feedStyles = makeStyles((theme) => ({
     content: {
         marginTop: theme.spacing(10),
         marginInline: 50,
+        [theme.breakpoints.down("lg")]: {
+            marginInline: 20,
+        },
         [theme.breakpoints.down("md")]: {
             marginInline: 10,
         }
@@ -76,6 +79,9 @@ const feedStyles = makeStyles((theme) => ({
     },
     feedContent: {
         marginInline: 30,
+        [theme.breakpoints.down("lg")]: {
+            marginInline: 10,
+        },
         [theme.breakpoints.down("md")]: {
             marginInline: 5,
         }

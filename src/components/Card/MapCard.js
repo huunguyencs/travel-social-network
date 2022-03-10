@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import GoogleMapReact from 'google-map-react';
 import { Card, CircularProgress, ClickAwayListener, Paper, Popper, Typography } from "@material-ui/core";
 
@@ -88,6 +88,12 @@ export default function MapCard(props) {
             lng: position.lon
         })
     }
+
+    useEffect(() => {
+        if (position) {
+            changeCenter(position);
+        }
+    }, [position])
 
 
     return (

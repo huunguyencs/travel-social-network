@@ -1,4 +1,4 @@
-import { Button, Container, Grid, Typography, CircularProgress, Modal, Fade, Paper, Backdrop } from "@material-ui/core";
+import { Button, Container, Grid, Typography, CircularProgress, Tabs, Tab } from "@material-ui/core";
 import React, { useEffect, useState } from "react";
 import { Timeline, TimelineItem, TimelineSeparator, TimelineConnector, TimelineContent, TimelineDot } from '@material-ui/lab'
 
@@ -13,6 +13,29 @@ import { FileCopy, Update } from "@material-ui/icons";
 import { loadTour } from "../../redux/actions/createTourAction";
 import { useDispatch } from "react-redux";
 
+function a11yProps(index) {
+    return {
+        id: `tab-${index}`,
+        'aria-controls': `tabpanel-${index}`,
+    }
+}
+
+function TabPanel(props) {
+    const { children, value, index, ...other } = props;
+
+    return (
+        <div
+            role="tabpanel"
+            hidden={value !== index}
+            id={`tabpanel-${index}`}
+            aria-labelledby={`tab-${index}`}
+            {...other}
+        >
+            {value === index && children}
+        </div>
+    )
+}
+
 
 export default function TourDetail(props) {
 
@@ -22,17 +45,28 @@ export default function TourDetail(props) {
     const dispatch = useDispatch();
 
     const [idx, setIdx] = useState(0);
+    const [tab, setTab] = useState(0);
+    const [tabService, setTabService] = useState(0);
     const [position, setPosition] = useState(null);
     const [locations, setLocations] = useState([]);
 
-    const [showService, setShowService] = useState(false);
-    const handleShowService = () => {
-        setShowService(true);
+    const handleChangeTab = (e, value) => {
+        setTab(value);
     }
 
-    const handleCloseService = () => {
-        setShowService(false);
+    const handleChangeTabService = (e, value) => {
+        setTabService(value);
     }
+
+
+    // const [showService, setShowService] = useState(false);
+    // const handleShowService = () => {
+    //     setShowService(true);
+    // }
+
+    // const handleCloseService = () => {
+    //     setShowService(false);
+    // }
 
     const { tour, isOwn, setTour } = props;
 
@@ -66,13 +100,6 @@ export default function TourDetail(props) {
         history.push('/createtour');
     }
 
-    const ref = React.createRef();
-
-    const DetailService = React.forwardRef((props, ref) =>
-        <Paper innerRef={ref} {...props}>
-            {props.children}
-        </Paper>
-    )
 
     return (
         <>
@@ -83,128 +110,173 @@ export default function TourDetail(props) {
                             <Typography variant="h3" className={classes.title}>{tour.name}</Typography>
                         </div>
                         <div className={classes.info}>
-                            <div className={classes.itemInfo}>
-                                <Typography variant="body1" className={classes.content}>
-                                    {tour.content}
-                                </Typography>
-                            </div>
-                            <div className={classes.itemInfo}>
-                                <Typography variant="body1" className={classes.cost} onClick={handleShowService}>
-                                    Chi phí: {tour.cost ? new Intl.NumberFormat().format(tour.cost * 1000) : 0} VND
-                                </Typography>
-                            </div>
-                            <Modal
-                                aria-labelledby="transition-modal-title"
-                                aria-describedby="transition-modal-description"
-                                className={classes.modal}
-                                open={showService}
-                                onClose={handleCloseService}
-                                closeAfterTransition
-                                BackdropComponent={Backdrop}
-                                BackdropProps={{
-                                    timeout: 500,
-                                }}
-                            >
-                                <Fade in={showService}>
-                                    <DetailService ref={ref} className={classes.servicePaper}>
-                                        <div className={classes.center}>
-                                            <Typography variant="h5">Dịch vụ trong tour</Typography>
+                            <Container>
+                                <Grid container>
+                                    <Grid item md={4} sm={12} xs={12}>
+                                        <div className={classes.itemInfo}>
+                                            <Typography variant="body1" className={classes.content}>
+                                                {tour.content}
+                                            </Typography>
                                         </div>
-                                        <div className={classes.serviceList}>
-                                            {tour.services.map((item, index) => (
-                                                <ServiceCard service={item} key={index} review={isOwn} />
+                                        <div className={classes.hashtagWrap}>
+                                            {tour.hashtags.map((hashtag, index) => (
+                                                <Typography className={classes.hashtag} key={index}>#{hashtag}</Typography>
                                             ))}
                                         </div>
+                                        <div className={classes.itemInfo}>
+                                            <Typography variant="body1" className={classes.content}>
+                                                Chi phí: {new Intl.NumberFormat().format(tour.cost * 1000)} VND
+                                            </Typography>
+                                        </div>
+                                    </Grid>
+                                    <Grid item md={4} sm={12} xs={12}>
+                                        <div style={{ display: 'flex', justifyContent: 'center' }}>
+                                            <img src={tour.image} alt='Loading...' width={350} height={300} />
+                                        </div>
+                                    </Grid>
+                                    <div>
                                         {
-                                            tour.services.length === 0 &&
-                                            <Typography className={classes.center} style={{ marginBlock: 20 }}>Không có dịch vụ</Typography>
-                                        }
-                                    </DetailService>
-                                </Fade>
-                            </Modal>
-                            <div className={classes.hashtagWrap}>
-                                {tour.hashtags.map((hashtag, index) => (
-                                    <Typography className={classes.hashtag} key={index}>{hashtag}</Typography>
-                                ))}
-                            </div>
-                        </div>
-                        {
-                            isOwn ?
-                                <div className={classes.center}>
-                                    <Button startIcon={<Update />} className={classes.editButton} component={Link} to={`?edit=true`}>Chỉnh sửa hành trình</Button>
-                                </div> :
-                                <div className={classes.center}>
-                                    <Button
-                                        startIcon={<FileCopy />}
-                                        onClick={handleCopyAndEdit}
-                                        className={classes.editButton}
-                                    >
-                                        Sao chép và chỉnh sửa
-                                    </Button>
-                                </div>
-                        }
-
-
-                        <Grid container className={classes.container}>
-                            <Grid item md={2} sm={12} xs={12}>
-                                <Container className={classes.timeline}>
-                                    <Timeline align="right">
-                                        {tour.tour.map((item, index) => (
-                                            <TimelineItem key={index}>
-                                                <TimelineSeparator>
-                                                    <TimelineDot className={index === idx ? classes.activeDot : classes.unactiveDot} />
-                                                    <TimelineConnector />
-                                                </TimelineSeparator>
-                                                <TimelineContent>
-                                                    <Button className={index === idx ? classes.activeTimeline : classes.unactiveTimeline} onClick={() => setIdx(index)}>
-                                                        {convertDateToStr(new Date(item.date))}
+                                            isOwn ?
+                                                <div className={classes.center}>
+                                                    <Button startIcon={<Update />} className={classes.editButton} component={Link} to={`?edit=true`}>Chỉnh sửa hành trình</Button>
+                                                </div> :
+                                                <div className={classes.center}>
+                                                    <Button
+                                                        startIcon={<FileCopy />}
+                                                        onClick={handleCopyAndEdit}
+                                                        className={classes.editButton}
+                                                    >
+                                                        Sao chép và chỉnh sửa
                                                     </Button>
-                                                </TimelineContent>
-                                            </TimelineItem>
-                                        ))}
-                                    </Timeline>
-                                </Container>
-                                <div className={classes.smallTimeline}>
-                                    <div className={classes.timelineWrap}>
-                                        {tour.tour.map((item, index) => (
-                                            <Button key={index} className={index === idx ? classes.activeTimeline : classes.unactiveTimeline} onClick={() => setIdx(index)}>
-                                                {convertDateToStrShort(new Date(item.date))}
-                                            </Button>
-                                        ))}
+                                                </div>
+                                        }
                                     </div>
-                                </div>
+                                </Grid>
+                            </Container>
+                        </div>
+
+                        <div className={classes.center}>
+                            <Tabs value={tab} onChange={handleChangeTab} aria-label="tabs tour">
+                                <Tab label="Địa điểm" {...a11yProps(0)} />
+                                <Tab label="Dịch vụ" {...a11yProps(1)} />
+                            </Tabs>
+                        </div>
+
+                        <TabPanel value={tab} index={0}>
+                            <Container className={classes.container}>
+                                <Grid container >
+                                    <Grid item md={2} sm={12} xs={12}>
+                                        <Container className={classes.timeline}>
+                                            <Timeline align="right">
+                                                {tour.tour.map((item, index) => (
+                                                    <TimelineItem key={index}>
+                                                        <TimelineSeparator>
+                                                            <TimelineDot className={index === idx ? classes.activeDot : classes.unactiveDot} />
+                                                            <TimelineConnector />
+                                                        </TimelineSeparator>
+                                                        <TimelineContent>
+                                                            <Button className={index === idx ? classes.activeTimeline : classes.unactiveTimeline} onClick={() => setIdx(index)}>
+                                                                {convertDateToStr(item.date)}
+                                                            </Button>
+                                                        </TimelineContent>
+                                                    </TimelineItem>
+                                                ))}
+                                            </Timeline>
+
+                                        </Container>
+                                        <div className={classes.smallTimeline}>
+                                            <div className={classes.timelineWrap}>
+                                                {tour.tour.map((item, index) => (
+                                                    <Button key={index} className={index === idx ? classes.activeTimeline : classes.unactiveTimeline} onClick={() => setIdx(index)}>
+                                                        {convertDateToStrShort(new Date(item.date))}
+                                                    </Button>
+                                                ))}
+                                            </div>
+                                        </div>
+                                    </Grid>
+                                    <Grid item md={4} sm={12} xs={12} className={classes.feedTour}>
+                                        {
+                                            tour.tour[idx].locations.map((item, index) => (
+                                                <Location
+                                                    location={item}
+                                                    index={index}
+                                                    edit={false}
+                                                    key={item._id}
+                                                    isOwn={isOwn}
+                                                    isSave={true}
+                                                    tourDateId={tour.tour[idx]._id}
+                                                    indexDate={idx}
+                                                    indexLocation={index}
+                                                    isEdit={false}
+                                                    addReview={createReview}
+                                                />
+                                            ))
+                                        }
+                                    </Grid>
+                                    <Grid item md={6} className={classes.addContainerLarge}>
+                                        <Container style={{ marginLeft: 30 }}>
+                                            {position ? <MapCard position={position} zoom={12} locations={locations} /> : null}
+                                        </Container>
+                                    </Grid>
+                                </Grid>
+                            </Container>
+
+                        </TabPanel>
+                        <TabPanel value={tab} index={1}>
+                            <Container style={{ marginTop: 20 }}>
+                                <Grid container>
+                                    <Grid item md={6} sm={12} xs={12}>
+                                        <div className={classes.center}>
+                                            <Tabs value={tabService} onChange={handleChangeTabService} aria-label="tabs tour service" >
+                                                <Tab label="Di chuyển" {...a11yProps(0)} />
+                                                <Tab label="Ăn uống" {...a11yProps(1)} />
+                                                <Tab label="Khách sạn" {...a11yProps(2)} />
+                                                <Tab label="Khác" {...a11yProps(3)} />
+                                            </Tabs>
+                                        </div>
+                                        <TabPanel value={tabService} index={0}>
+                                            <div style={{ display: 'flex', justifyContent: 'center' }}>
+                                                {
+                                                    tour.services[0].map((item, index) => (
+                                                        <ServiceCard isOwn={isOwn} type={0} key={index} service={item} index={index} isEdit={false} />
+                                                    ))
+                                                }
+                                            </div>
+                                        </TabPanel>
+                                        <TabPanel value={tabService} index={1}>
+                                            <div style={{ display: 'flex', justifyContent: 'center' }}>
+                                                {
+                                                    tour.services[1].map((item, index) => (
+                                                        <ServiceCard isOwn={isOwn} type={1} key={index} service={item} index={index} isEdit={false} />
+                                                    ))
+                                                }
+                                            </div>
+                                        </TabPanel>
+                                        <TabPanel value={tabService} index={2}>
+                                            <div style={{ display: 'flex', justifyContent: 'center' }}>
+                                                {
+                                                    tour.services[2].map((item, index) => (
+                                                        <ServiceCard isOwn={isOwn} type={2} key={index} service={item} index={index} isEdit={false} />
+                                                    ))
+                                                }
+                                            </div>
+                                        </TabPanel>
+                                        <TabPanel value={tabService} index={3}>
+                                            <div style={{ display: 'flex', justifyContent: 'center' }}>
+                                                {
+                                                    tour.services[3].map((item, index) => (
+                                                        <ServiceCard isOwn={isOwn} type={3} key={index} service={item} index={index} isEdit={false} />
+                                                    ))
+                                                }
+                                            </div>
+                                        </TabPanel>
+                                    </Grid>
+                                </Grid>
+                            </Container>
+                        </TabPanel>
 
 
-                            </Grid>
-                            <Grid item md={4} sm={12} xs={12} className={classes.feedTour}>
 
-                                {
-                                    tour.tour[idx].locations.map((item, index) => (
-                                        <Location
-                                            location={item}
-                                            index={index}
-                                            edit={false}
-                                            key={item._id}
-                                            isOwn={isOwn}
-                                            isSave={true}
-                                            tourDateId={tour.tour[idx]._id}
-                                            indexDate={idx}
-                                            indexLocation={index}
-                                            isEdit={false}
-                                            addReview={createReview}
-                                        />
-                                    ))
-                                }
-
-                            </Grid>
-                            <Grid item md={6}>
-                                <Container className={classes.mapRight}>
-                                    <>
-                                        {position && <MapCard position={position} zoom={12} locations={locations} />}
-                                    </>
-                                </Container>
-                            </Grid>
-                        </Grid>
                     </div >
                     :
                     <CircularProgress color={"inherit"} />

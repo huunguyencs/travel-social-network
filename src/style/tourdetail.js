@@ -89,7 +89,7 @@ const tourdetailStyles = makeStyles((theme) => ({
         marginBottom: 5,
     },
     locationName: {
-        marginTop: 40,
+        marginTop: 10,
     },
     activeTimeline: {
         backgroundColor: "#52BEDB",
