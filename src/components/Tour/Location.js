@@ -91,13 +91,13 @@ function Detail(props) {
                                     </div>
                                 </div> :
                                 <div>
-                                    <Typography>{location.description}</Typography>
-                                    <Typography>{location.cost}</Typography>
-                                    <Typography>{location.time}</Typography>
+                                    <Typography>Chi phí: {new Intl.NumberFormat().format(location.cost * 1000)} VND</Typography>
+                                    <Typography>Thời gian: {location.time}</Typography>
+                                    <Typography>Mô tả: {location.description}</Typography>
                                 </div>
                         }
                         {
-                            isSave && location.postId && <div> <Button className={classes.reviewBtn} onClick={handleShowReview}>Xem Review</Button> </div>
+                            isSave && location.postId?.length > 0 && <div> <Button className={classes.reviewBtn} onClick={handleShowReview}>Xem Review</Button> </div>
                         }
                     </div>
                 </Grid>

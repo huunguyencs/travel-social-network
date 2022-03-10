@@ -338,7 +338,7 @@ export default function AddTour(props) {
                         </Container>
                     </div>
 
-                    <div className={classes.center}>
+                    <div className={classes.tabsMenu}>
                         <Tabs value={tab} onChange={handleChangeTab} aria-label="tabs tour">
                             <Tab label="Địa điểm" {...a11yProps(0)} />
                             <Tab label="Dịch vụ" {...a11yProps(1)} />
@@ -495,7 +495,7 @@ export default function AddTour(props) {
                     <TabPanel value={tab} index={1}>
                         <Container style={{ marginTop: 20 }}>
                             <Grid container>
-                                <Grid item md={6} sm={12} xs={12}>
+                                <Grid item md={8} sm={12} xs={12}>
                                     <div className={classes.center}>
                                         <Tabs value={tabService} onChange={handleChangeTabService} aria-label="tabs tour service" >
                                             <Tab label="Di chuyển" {...a11yProps(0)} />
@@ -549,7 +549,7 @@ export default function AddTour(props) {
                                         </div>
                                     </TabPanel>
                                 </Grid>
-                                <Grid item md={6} className={classes.addContainerLarge}>
+                                <Grid item md={4} className={classes.addContainerLarge}>
                                     <AddService
                                         currentProvince={currentProvinceService}
                                         setCurrentProvince={setCurrentProvinceService}

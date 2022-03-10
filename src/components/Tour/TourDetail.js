@@ -12,6 +12,7 @@ import { ServiceCard } from "./AddService";
 import { FileCopy, Update } from "@material-ui/icons";
 import { loadTour } from "../../redux/actions/createTourAction";
 import { useDispatch } from "react-redux";
+import ImageModal from "../Modal/Image";
 
 function a11yProps(index) {
     return {
@@ -49,6 +50,15 @@ export default function TourDetail(props) {
     const [tabService, setTabService] = useState(0);
     const [position, setPosition] = useState(null);
     const [locations, setLocations] = useState([]);
+    const [showImage, setShowImage] = useState(false);
+
+    const handleShowImage = () => {
+        setShowImage(true);
+    }
+
+    const handleCloseImage = () => {
+        setShowImage(false);
+    }
 
     const handleChangeTab = (e, value) => {
         setTab(value);
@@ -131,7 +141,12 @@ export default function TourDetail(props) {
                                     </Grid>
                                     <Grid item md={4} sm={12} xs={12}>
                                         <div style={{ display: 'flex', justifyContent: 'center' }}>
-                                            <img src={tour.image} alt='Loading...' width={350} height={300} />
+                                            <img src={tour.image} className={classes.image} width={350} height={300} alt="Can not load" onClick={handleShowImage} />
+                                            <ImageModal
+                                                open={showImage}
+                                                handleClose={handleCloseImage}
+                                                img={tour.image}
+                                            />
                                         </div>
                                     </Grid>
                                     <div>
@@ -155,7 +170,7 @@ export default function TourDetail(props) {
                             </Container>
                         </div>
 
-                        <div className={classes.center}>
+                        <div className={classes.tabsMenu}>
                             <Tabs value={tab} onChange={handleChangeTab} aria-label="tabs tour">
                                 <Tab label="Địa điểm" {...a11yProps(0)} />
                                 <Tab label="Dịch vụ" {...a11yProps(1)} />

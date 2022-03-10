@@ -1,10 +1,10 @@
-import { Backdrop, Button, Card, ClickAwayListener, Dialog, DialogActions, DialogTitle, Fade, Grid, IconButton, InputBase, MenuItem, MenuList, Modal, Paper, Popper, TextField, Typography } from '@material-ui/core';
+import { Backdrop, Button, Card, CardContent, CardMedia, ClickAwayListener, Dialog, DialogActions, DialogTitle, Fade, Grid, IconButton, InputBase, MenuItem, MenuList, Modal, Paper, Popper, TextField, Typography } from '@material-ui/core';
 import React, { useEffect, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux';
 
 import * as tourAction from '../../redux/actions/createTourAction';
 import Autocomplete, { createFilterOptions } from '@material-ui/lab/Autocomplete';
-import { formStyles } from '../../style';
+import { formStyles, tourdetailStyles } from '../../style';
 import { Link } from 'react-router-dom';
 import { AddCircle, MoreVert } from '@material-ui/icons';
 import { ReviewArea } from '../Service/ServiceItem';
@@ -168,6 +168,8 @@ function DetailService(props) {
         dispatch(tourAction.updateService({ cost: parseInt(cost), description: description, type: type, indexService: indexService }))
     }
 
+    const classes = tourdetailStyles();
+
     return (
         <Paper style={{ width: 800 }}>
             <Grid container>
@@ -177,15 +179,16 @@ function DetailService(props) {
                     </div>
                 </Grid>
                 <Grid item md={6} sm={12} xs={12}>
-                    {service.serviceName ?
-                        <Typography>{service.serviceName}</Typography> :
-                        <Typography component={Link} to={`/u/${service.service.cooperator}`}>{service.service.name}</Typography>
+                    <div className={classes.detailInfo}>
+                        {service.serviceName ?
+                            <Typography variant='h4'>{service.serviceName}</Typography> :
+                            <Typography variant='h4' component={Link} to={`/u/${service.service.cooperator}`}>{service.service.name}</Typography>
 
-                    }
+                        }
+                    </div>
                     {
                         isEdit ?
                             <div>
-
                                 <InputBase
                                     placeholder="Thông tin"
                                     title="Thông tin"
@@ -213,9 +216,8 @@ function DetailService(props) {
                                 </Button>
                             </div> :
                             <div>
-
-                                <Typography>{cost}</Typography>
-                                <Typography>{description}</Typography>
+                                <Typography>Chi phí: {new Intl.NumberFormat().format(cost * 1000)} VND</Typography>
+                                <Typography>Mô tả: {description}</Typography>
                             </div>
                     }
                     {!isEdit && isOwn && service?.service &&
@@ -230,7 +232,7 @@ function DetailService(props) {
 export function ServiceCard(props) {
     const { service, index, isEdit, review, isOwn, type } = props;
 
-    const classes = formStyles();
+    const classes = tourdetailStyles();
     const [anchorEl, setAnchorEl] = useState(null);
     const [showDelete, setShowDelete] = useState(false);
     const [showDetail, setShowDetail] = useState(false);
@@ -274,18 +276,25 @@ export function ServiceCard(props) {
     )
 
     return (
-        <Card className={classes.serviceCard}>
+        <Card className={classes.cardContainer} >
 
-            <div style={{ display: 'flex' }}>
-                <div>
-                    <img src={service.service ? service.service.images[0] : 'https://skillz4kidzmartialarts.com/wp-content/uploads/2017/04/default-image-620x600.jpg'} alt="Service" style={{ width: 200, height: 200 }} />
-                </div>
-                <div className={classes.serviceInfo}>
-
-                    <div style={{ display: 'flex', justifyContent: 'space-between' }}>
-                        <div>
-                            <Typography onClick={handleShowDetail}>{service.serviceName ? service.serviceName : service.service.name}</Typography>
-                            <Typography>Chi phí: {new Intl.NumberFormat().format(service.cost * 1000)} VND</Typography>
+            <Grid container>
+                <Grid item md={5} sm={3} className={classes.imageLocation}>
+                    <CardMedia className={classes.imgContainer}>
+                        <img src={service.service ? service.service.images[0] : 'https://skillz4kidzmartialarts.com/wp-content/uploads/2017/04/default-image-620x600.jpg'} alt="Service" className={classes.img} />
+                    </CardMedia>
+                </Grid>
+                <Grid item md={7} sm={9} xs={12}>
+                    <CardContent className={classes.contentContainer}>
+                        <div className={classes.locationContentContainer}>
+                            <div>
+                                <div>
+                                    <Typography variant='h5' className={classes.locationName} onClick={handleShowDetail}>{service.serviceName ? service.serviceName : service.service.name}</Typography>
+                                </div>
+                                <div>
+                                    <Typography>Chi phí: {new Intl.NumberFormat().format(service.cost * 1000)} VND</Typography>
+                                </div>
+                            </div>
                         </div>
                         <div>
                             {isEdit &&
@@ -336,11 +345,11 @@ export function ServiceCard(props) {
                                 </div>
                             }
                         </div>
-                    </div>
+                    </CardContent>
 
 
-                </div>
-            </div>
+                </Grid>
+            </Grid>
             <Modal
                 aria-labelledby="modal-detail-service"
                 aria-describedby="modal-detail-service-description"
@@ -373,7 +382,7 @@ export function ServiceCard(props) {
 
 export default function AddService(props) {
 
-    const classes = formStyles();
+    const classes = tourdetailStyles();
 
 
     const ref = React.createRef();

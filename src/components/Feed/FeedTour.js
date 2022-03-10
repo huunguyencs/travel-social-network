@@ -19,6 +19,7 @@ export default function FeedTour(props) {
     const [cost, setCost] = useState([0, 100]);
     const [text, setText] = useState('');
     const [isFiltering, setIsFiltering] = useState(false);
+    // const [filter, setFilter] = useState()
 
     const classes = feedStyles();
 
@@ -50,7 +51,17 @@ export default function FeedTour(props) {
 
     const loadTour = () => {
         if (tour.hasMore) {
-            dispatch(getMoreTours(tour.page));
+            var maxCost = cost[1], minCost = cost[0];
+            if (minCost > maxCost) {
+                minCost += maxCost;
+                maxCost = minCost - maxCost;
+                minCost -= maxCost;
+            }
+            dispatch(getMoreTours(tour.page, {
+                maxCost: maxCost * 10,
+                minCost: minCost * 10,
+                q: text
+            }));
         }
     }
 
