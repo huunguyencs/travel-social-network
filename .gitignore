@@ -28,3 +28,4 @@ yarn-error.log*
 # src/key/*
 
 server/node_modules
+server/.env
