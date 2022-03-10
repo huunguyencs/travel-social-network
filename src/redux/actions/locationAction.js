@@ -7,15 +7,34 @@ export const getProvinces = (props) => {
     }
 }
 
-export const loading = (props) => {
+export const getLocations = (props) => {
     return {
-        type: LOC_TYPES.LOADING_LOCATION,
+        type: LOC_TYPES.GET_LOCATION_LIST,
+        payload: props
     }
 }
 
-export const error = (props) => {
+export const getServices = (props) => {
     return {
-        type: LOC_TYPES.ERROR_LOCATION,
+        type: LOC_TYPES.GET_SERVICE_LIST,
         payload: props
+    }
+}
+
+export const loadingProvinces = (props) => {
+    return {
+        type: LOC_TYPES.LOADING_PROVINCES,
+    }
+}
+
+export const loadingLocations = (props) => {
+    return {
+        type: LOC_TYPES.LOADING_LOCATIONS,
+    }
+}
+
+export const loadingServices = (props) => {
+    return {
+        type: LOC_TYPES.LOADING_SERVICES,
     }
 }

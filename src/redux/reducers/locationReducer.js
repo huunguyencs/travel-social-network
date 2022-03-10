@@ -3,8 +3,11 @@ import * as LOC_TYPES from '../constants/locationConstant';
 const INIT_STATE = {
     locations: [],
     provinces: [],
+    services: [],
     hot: [],
-    loading: false,
+    loadingProvinces: false,
+    loadingLocations: false,
+    loadingServices: false,
     error: null,
 }
 
@@ -14,21 +17,40 @@ const locationReducer = (state = INIT_STATE, action) => {
         case LOC_TYPES.GET_PROVINCE_LIST: {
             return {
                 ...state,
-                provinces: action.payload.provinces
+                provinces: action.payload.provinces,
+                loadingProvinces: false,
             }
         }
-        case LOC_TYPES.LOADING_LOCATION: { // loading danh sach dia diem hot
+        case LOC_TYPES.GET_LOCATION_LIST: {
             return {
                 ...state,
-                loading: true,
-                error: null,
+                locations: action.payload.locations,
+                loadingLocations: false,
             }
         }
-        case LOC_TYPES.ERROR_LOCATION: { // loi trong load danh sach dia diem hot
+        case LOC_TYPES.GET_SERVICE_LIST: {
             return {
                 ...state,
-                loading: false,
-                error: action.payload.error
+                services: action.payload.services,
+                loadingServices: false
+            }
+        }
+        case LOC_TYPES.LOADING_LOCATIONS: { // loading danh sach dia diem hot
+            return {
+                ...state,
+                loadingLocations: true,
+            }
+        }
+        case LOC_TYPES.LOADING_PROVINCES: { // loading danh sach dia diem hot
+            return {
+                ...state,
+                loadingProvinces: true,
+            }
+        }
+        case LOC_TYPES.LOADING_SERVICES: {
+            return {
+                ...state,
+                loadingServices: true
             }
         }
         default:

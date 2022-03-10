@@ -76,7 +76,18 @@ class ServiceController {
         }
     }
 
-    //Get all Service
+    async getAll(req, res) {
+        try {
+            const services = await Services.find({}, "name description images")
+                // .populate("cooperator")
+                .populate("province", "fullname");
+            res.json({ success: true, message: "get info all Service success", services });
+        } catch (error) {
+            console.log(err)
+            res.status(500).json({ success: false, message: err.message })
+        }
+    }
+
     async getServices(req, res) {
         try {
             var { offset } = req.query;

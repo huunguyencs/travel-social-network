@@ -17,12 +17,13 @@ const tourdetailStyles = makeStyles((theme) => ({
         paddingInline: 20,
     },
     container: {
-        maxWidth: "90%",
-        marginInline: 80,
+        // maxWidth: "90%",
+        maxWidth: "100%",
+        paddingInline: 80,
         marginTop: 20,
         marginBottom: 0,
         [theme.breakpoints.down("md")]: {
-            marginInline: 20
+            paddingRight: 0
         }
     },
     timeline: {

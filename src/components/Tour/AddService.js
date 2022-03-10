@@ -1,7 +1,7 @@
 import { Button, Card, ClickAwayListener, Collapse, Dialog, DialogActions, DialogTitle, IconButton, MenuItem, MenuList, Paper, Popper, TextField, Typography } from '@material-ui/core';
 import React, { useEffect, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux';
-import customAxios from '../../utils/fetchData';
+
 import * as tourAction from '../../redux/actions/createTourAction';
 import { Autocomplete } from '@material-ui/lab';
 import { formStyles } from '../../style';
@@ -15,41 +15,26 @@ function ServiceItemAddForm(props) {
 
     const { location } = useSelector(state => state);
 
-    const { currentProvince, setCurrentProvince, services, setServices } = props;
-
+    const { currentProvince, setCurrentProvince, type } = props;
+    const [services, setServices] = useState([]);
     const [service, setService] = useState(null);
     const [cost, setCost] = useState(0);
-    const [loading, setLoading] = useState(false);
+    const [loading, setLoading] = useState(location.loadingServices);
 
-    const getServicesInit = async (province, setServices) => {
-        setLoading(true);
-        await customAxios().get(`/province/service/${province._id}`).then(res => {
-            setServices(res.data.services);
-            setLoading(false)
-        })
-    }
 
-    const getServices = async (province) => {
-        if (province && (!currentProvince || province._id !== currentProvince._id)) {
-            setLoading(true);
-            setService(null);
-            await customAxios().get(`/province/service/${province._id}`).then(res => {
-                setServices(res.data.services);
-                setLoading(false)
-            }).catch(err => {
-                setService([]);
-                setLoading(false)
-            })
-            setCurrentProvince(province);
-        }
-    }
 
     useEffect(() => {
-        // console.log(props);
-        if (currentProvince && !services) {
-            getServicesInit(currentProvince, setServices);
+        setLoading(true);
+        if (currentProvince) {
+            // console.log(location.services);
+            setServices(location.services.filter(item => item.province._id === currentProvince._id))
         }
-    }, [currentProvince, services, setServices])
+        setLoading(false);
+    }, [currentProvince, location.services])
+
+    const setProvince = (province) => {
+        setCurrentProvince(province);
+    }
 
     const handleChangeCost = (e) => {
         setCost(e.target.value)
@@ -61,7 +46,8 @@ function ServiceItemAddForm(props) {
                 service: {
                     service: service,
                     cost: parseInt(cost),
-                }
+                },
+                type: type
             }))
         }
     }
@@ -80,7 +66,7 @@ function ServiceItemAddForm(props) {
                     loading={location.loading}
                     getOptionLabel={(option) => option?.fullname}
                     className={classes.autocomplete}
-                    onChange={(e, value) => getServices(value)}
+                    onChange={(e, value) => setProvince(value)}
                     value={currentProvince}
                     renderInput={(params) => <TextField {...params} name="provinces" label="Chọn tỉnh thành" variant="outlined" />}
                 />
@@ -243,8 +229,6 @@ export function ServiceCard(props) {
 
 export default function AddService(props) {
 
-    const { services } = useSelector(state => state.createTour);
-
     const classes = formStyles();
 
 
@@ -261,34 +245,7 @@ export default function AddService(props) {
                     ref={ref}
                     {...props}
                 />
-                {/* <Button onClick={handleShowForm}>Thêm dịch vụ</Button>
-                <Modal
-                    aria-labelledby="transition-modal-title"
-                    aria-describedby="transition-modal-description"
-                    className={classes.modal}
-                    open={showForm}
-                    onClose={handleCloseForm}
-                    closeAfterTransition
-                    BackdropComponent={Backdrop}
-                    BackdropProps={{
-                        timeout: 500,
-                    }}
-                >
-                    <Fade in={showForm}>
-                        
-                    </Fade>
-                </Modal> */}
             </div>
-            <div style={{ display: 'flex', justifyContent: 'center' }}>
-                <div>
-                    {
-                        services && services.map((item, index) => (
-                            <ServiceCard key={index} service={item} index={index} isEdit={true} />
-                        ))
-                    }
-                </div>
-            </div>
-
         </Paper>
     )
 }
