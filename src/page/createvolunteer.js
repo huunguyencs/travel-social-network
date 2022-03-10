@@ -4,7 +4,7 @@ import { NotFound } from './404'
 import { Grid, Button, CircularProgress, Typography } from '@material-ui/core';
 import SpeedDialButton from '../components/SpeedDialBtn';
 import { homeMenu } from '../constant/menu';
-import { useLocation} from 'react-router-dom';
+import { useLocation } from 'react-router-dom';
 import customAxios from "../utils/fetchData";
 import { useSelector } from "react-redux";
 import AddVolunteer from '../components/Volunteer/AddVolunteer';
@@ -52,7 +52,7 @@ export default function CreateVolunteer() {
         })
     }
     useEffect(() => {
-        if(id != null) getVolunteerDetail(id);
+        if (id != null) getVolunteerDetail(id);
     }, [id])
 
     useEffect(() => {
@@ -66,7 +66,7 @@ export default function CreateVolunteer() {
     }, [])
 
     const tryAgain = () => {
-        if(id != null) getVolunteerDetail(id);
+        if (id != null) getVolunteerDetail(id);
     }
 
     return (
@@ -90,8 +90,8 @@ export default function CreateVolunteer() {
                                         <Button onClick={tryAgain}>Thử lại</Button>
                                     </>
                                 </div> :
-                                (edit && isOwn)? volunteer && <AddVolunteer isUpdate={edit} volunteer={volunteer}/>
-                                : <AddVolunteer isUpdate={false} volunteer={null}/>
+                                (edit && isOwn) ? volunteer && <AddVolunteer isUpdate={edit} volunteer={volunteer} />
+                                    : <AddVolunteer isUpdate={false} volunteer={null} />
                 }
             </Grid>
         </Grid>

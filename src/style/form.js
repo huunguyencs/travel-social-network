@@ -6,9 +6,10 @@ import color from "./color";
 const formStyles = makeStyles((theme) => ({
     paperContainer: {
         padding: 20,
+        margin: 20,
         borderRadius: attr.borderRadius.md,
         [theme.breakpoints.down("sm")]: {
-            padding: 10
+            padding: 10,
         }
     },
     formContainer: {
@@ -59,6 +60,7 @@ const formStyles = makeStyles((theme) => ({
     },
     addLocationForm: {
         textAlign: "center",
+        padding: 20
     },
     addFormContainer: {
         paddingBottom: 30,
@@ -179,7 +181,7 @@ const formStyles = makeStyles((theme) => ({
         margin: 10
     },
     serviceCard: {
-        marginTop: 20,
+        marginBlock: 20,
         paddingBlock: 10,
         paddingInline: 20,
         marginInline: 30,

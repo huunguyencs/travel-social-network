@@ -17,12 +17,13 @@ const tourdetailStyles = makeStyles((theme) => ({
         paddingInline: 20,
     },
     container: {
-        maxWidth: "90%",
-        marginInline: 80,
+        // maxWidth: "90%",
+        maxWidth: "100%",
+        paddingInline: 80,
         marginTop: 20,
         marginBottom: 0,
         [theme.breakpoints.down("md")]: {
-            marginInline: 20
+            paddingRight: 0
         }
     },
     timeline: {
@@ -49,6 +50,7 @@ const tourdetailStyles = makeStyles((theme) => ({
     },
     cardContainer: {
         marginTop: 30,
+        width: '100%',
         borderRadius: attr.borderRadius.sm,
         [theme.breakpoints.down("md")]: {
             marginInline: 3,
@@ -59,6 +61,9 @@ const tourdetailStyles = makeStyles((theme) => ({
         [theme.breakpoints.down("xs")]: {
             marginInline: 10,
         }
+    },
+    detailInfo: {
+        marginTop: 30
     },
     imgContainer: {
         padding: 20,
@@ -88,7 +93,8 @@ const tourdetailStyles = makeStyles((theme) => ({
         marginBottom: 5,
     },
     locationName: {
-        marginTop: 40,
+        marginTop: 10,
+        cursor: 'pointer'
     },
     activeTimeline: {
         backgroundColor: "#52BEDB",
@@ -190,6 +196,14 @@ const tourdetailStyles = makeStyles((theme) => ({
         [theme.breakpoints.down("xs")]: {
             display: 'none',
         }
+    },
+    image: {
+        cursor: 'pointer'
+    },
+    tabsMenu: {
+        display: 'flex',
+        justifyContent: 'center',
+        marginTop: 20
     },
     addHeader: {
         display: 'flex',

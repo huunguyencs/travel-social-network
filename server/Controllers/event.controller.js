@@ -138,6 +138,27 @@ class EventController {
             })
         }
     }
+
+    async search(req, res) {
+        try {
+            var { q, offset } = req.query;
+            offset = offset || 0;
+            var events = await Events.find({ $text: { $search: q } }, { score: { $meta: "textScore" } })
+                .sort({ score: { $meta: "textScore" } })
+                .skip(offset * 10)
+                .limit(10);
+            events = events.map((item) => ({
+                _id: item._id,
+                fullname: item.fullname,
+                link: `/event/${item.name}`,
+                description: 'Thời gian: ' + item.timedes,
+                image: item.images[0]
+            }))
+            res.json({ success: true, results: events, query: q })
+        } catch (error) {
+
+        }
+    }
 }
 
 module.exports = new EventController;

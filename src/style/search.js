@@ -36,6 +36,11 @@ const searchStyles = makeStyles((theme) => ({
     query: {
         marginLeft: 20,
     },
+    avatarItem: {
+        width: theme.spacing(10),
+        height: theme.spacing(10),
+        marginRight: 20
+    }
 }));
 
 

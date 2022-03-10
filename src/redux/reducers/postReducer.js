@@ -17,6 +17,7 @@ const postRecuder = (state = INIT_STATE, action) => {
                 page: 1,
                 loading: false,
                 error: null,
+                hasMore: action.payload.posts.length >= 5
             }
         }
         case POST_TYPES.ADD_POST: {
@@ -34,6 +35,7 @@ const postRecuder = (state = INIT_STATE, action) => {
                 page: state.page + 1,
                 loading: false,
                 error: null,
+                hasMore: action.payload.posts.length >= 5
             }
         }
         case POST_TYPES.LOADING_POST: { // dang tai danh sach
@@ -68,12 +70,24 @@ const postRecuder = (state = INIT_STATE, action) => {
                 } : item)
             }
         }
-        case POST_TYPES.ADD_COMMENT_POST: {
+        case POST_TYPES.LOAD_COMMENT_POST: {
+            let comment = state.posts.find(item => item._id === action.payload.id)?.commentDetail || [];
             return {
                 ...state,
                 posts: state.posts.map(item => item._id === action.payload.id ? {
                     ...item,
-                    comments: [...item.comments, action.payload.comment]
+                    commentDetail: [...comment, ...action.payload.comments]
+                } : item)
+            }
+        }
+        case POST_TYPES.ADD_COMMENT_POST: {
+            let comment = state.posts.find(item => item._id === action.payload.id)?.commentDetail || [];
+            return {
+                ...state,
+                posts: state.posts.map(item => item._id === action.payload.id ? {
+                    ...item,
+                    commentDetail: [...comment, action.payload.comment],
+                    comments: [...item.comments, action.payload.comment._id]
                 } : item)
             }
         }
@@ -82,7 +96,7 @@ const postRecuder = (state = INIT_STATE, action) => {
                 ...state,
                 posts: state.posts.map(item => item._id === action.payload.postId ? {
                     ...item,
-                    comments: item.comments.map(comment => comment._id === action.payload.comment._id ? action.payload.comment : comment)
+                    commentDetail: item.commentDetail.map(comment => comment._id === action.payload.comment._id ? action.payload.comment : comment)
                 } : item)
             }
         }
@@ -91,7 +105,8 @@ const postRecuder = (state = INIT_STATE, action) => {
                 ...state,
                 posts: state.posts.map(item => item._id === action.payload.postId ? {
                     ...item,
-                    comments: item.comments.filter(comment => comment._id !== action.payload.id)
+                    commentDetail: item.commentDetail.filter(comment => comment._id !== action.payload.id),
+                    comments: item.comments.filter(comment => comment !== action.payload.id)
                 } : item)
             }
         }

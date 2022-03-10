@@ -46,7 +46,7 @@ function WeatherCard(props) {
             <div className={classes.weatherTitle}>
                 <Typography variant="h5">{nameShow}</Typography>
                 <Typography>{convertDateToStr(weather.dt * 1000)}</Typography>
-                <img src={`http://openweathermap.org/img/wn/${weather.weather[0].icon}@2x.png`} alt={"Loading..."} className={classes.icon} />
+                <img src={`http://openweathermap.org/img/wn/${weather.weather[0].icon}@2x.png`} alt={"Đang tải..."} className={classes.icon} />
             </div>
 
             <div className={classes.temp}>
@@ -105,7 +105,7 @@ export function WeatherFocastItem(props) {
             <CardContent className={classes.content}>
                 <div className={classes.weatherTitle}>
                     <Typography variant="h6">{convertDateToStr(weather.dt * 1000)}</Typography>
-                    <img src={`http://openweathermap.org/img/wn/${weather.weather[0].icon}@2x.png`} alt={"Loading..."} className={classes.icon} />
+                    <img src={`http://openweathermap.org/img/wn/${weather.weather[0].icon}@2x.png`} alt={"Đang tải..."} className={classes.icon} />
                 </div>
 
                 <div className={classes.temp}>

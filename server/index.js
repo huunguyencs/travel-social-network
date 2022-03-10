@@ -18,15 +18,15 @@ const http = require('http').createServer(app);
 const io = require('socket.io')(http);
 
 
-io.on('connection', (socket)=>{
+io.on('connection', (socket) => {
     SocketServer(socket);
 });
 
 // Port
-const PORT = process.env.port || 5000;
+const PORT = process.env.PORT;
 
 // Mongo
-const MONGO_URL = process.env.MONGO_URL || "mongodb+srv://admin:RvZetzfl04aNUtRf@travel-social-network.sweoh.mongodb.net/travel-social-network?retryWrites=true&w=majority";
+const MONGO_URL = process.env.MONGO_URL;
 
 
 
@@ -41,9 +41,9 @@ app.use('/location', require('./Routers/location.router'));
 app.use('/province', require('./Routers/province.router'));
 app.use('/service', require('./Routers/service.router'));
 app.use('/event', require('./Routers/event.router'));
-app.use('/notify',require('./Routers/notify.router'));
+app.use('/notify', require('./Routers/notify.router'));
 app.use('/message', require('./Routers/message.router'));
-app.use('/volunteer',require('./Routers/volunteer.router'));
+app.use('/volunteer', require('./Routers/volunteer.router'));
 //connect MongoDB
 mongoose.connect(MONGO_URL, {
     // useCreateIndex: true,

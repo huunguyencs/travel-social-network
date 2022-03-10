@@ -140,13 +140,6 @@ class PostController {
                 .populate("userId likes", "username fullname avatar")
                 .populate("locationId", "name fullname")
                 .populate({
-                    path: "comments",
-                    populate: {
-                        path: "userId likes",
-                        select: "username fullname avatar"
-                    }
-                })
-                .populate({
                     path: "shareId",
                     populate: {
                         path: "userId",
@@ -228,17 +221,11 @@ class PostController {
     //lấy pots của 1 user cụ thể (params.id)
     async getUserPost(req, res) {
         try {
-            const { offset } = req.body;
-            const posts = await Posts.find({ userId: req.params.id }).skip(offset).limit(5).sort("-createdAt")
+            const { offset } = req.query;
+            // console.log(offset);
+            const posts = await Posts.find({ userId: req.params.id }).skip(offset * 5).limit(5).sort("-createdAt")
                 .populate("userId likes", "username fullname avatar")
                 .populate("locationId", "name fullname")
-                .populate({
-                    path: "comments",
-                    populate: {
-                        path: "userId likes",
-                        select: "username fullname avatar"
-                    }
-                })
                 .populate({
                     path: "shareId",
                     populate: {
@@ -268,13 +255,6 @@ class PostController {
         try {
             const posts = await Posts.find({}).limit(8)
                 .populate("userId likes", "username fullname avatar")
-                .populate({
-                    path: "comments",
-                    populate: {
-                        path: "userId likes",
-                        select: "username fullname avatar"
-                    }
-                })
                 .populate("locationId", "name fullname")
                 .populate({
                     path: "shareId",
@@ -305,13 +285,6 @@ class PostController {
         try {
             const post = await Posts.findById(req.params.id)
                 .populate("userId likes", "username fullname avatar")
-                .populate({
-                    path: "comments",
-                    populate: {
-                        path: "userId likes",
-                        select: "username fullname avatar"
-                    },
-                })
                 .populate("locationId", "name fullname")
                 .populate({
                     path: "shareId",
@@ -429,6 +402,28 @@ class PostController {
             });
         } catch (err) {
             console.log(err)
+            res.status(500).json({ success: false, message: err.message })
+        }
+    }
+
+    async search(req, res) {
+        try {
+            var { q, offset } = req.query;
+            offset = offset || 0;
+            var posts = await Posts.find({ $text: { $search: q } }, { score: { $meta: "textScore" } })
+                .sort({ score: { $meta: "textScore" } })
+                .skip(offset * 10)
+                .limit(10)
+                .populate("userId", "avatar fullname");
+            posts = posts.map((item) => ({
+                _id: item._id,
+                fullname: `Bài viết của ${item.userId.fullname}`,
+                link: `/post/${item._id}`,
+                description: item.content,
+                image: item.userId.avatar
+            }))
+            res.json({ success: true, results: posts, query: q })
+        } catch (err) {
             res.status(500).json({ success: false, message: err.message })
         }
     }

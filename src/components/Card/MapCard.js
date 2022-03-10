@@ -1,12 +1,12 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import GoogleMapReact from 'google-map-react';
 import { Card, CircularProgress, ClickAwayListener, Paper, Popper, Typography } from "@material-ui/core";
-import { GpsFixed } from '@material-ui/icons'
 
 import KEY from "../../key/googlemap";
 import { Link } from "react-router-dom";
 import { cardStyles } from "../../style";
 import LocationPinIcon from "../Icons/LocationPin";
+import GpsFixedIcon from "../Icons/GpsFixed";
 
 function MapLocation(props) {
 
@@ -27,11 +27,11 @@ function MapLocation(props) {
     };
     return (
         <>
-            <GpsFixed
+            <GpsFixedIcon
 
                 onClick={handlePopoverOpen}
                 style={{
-                    color: open ? 'blue' : 'red',
+                    color: open ? '#3f50b5' : '#ff7961',
                     cursor: 'pointer',
                 }}
             />
@@ -46,7 +46,7 @@ function MapLocation(props) {
             >
                 <ClickAwayListener onClickAway={handlePopoverClose}>
                     <Paper className={classes.locationPopper}>
-                        <img src={location.images[0]} alt={"Loading..."} height={200} width="100%" title={location.fullname} />
+                        <img src={location.images[0]} alt={"Đang tải..."} height={200} width="100%" title={location.fullname} />
                         <div className={classes.center}>
                             <Typography title={location.fullname} component={Link} to={`/location/${location.name}`}>{location.fullname.length > 28 ? location.fullname.slice(0, 28) + "..." : location.fullname}</Typography>
                         </div>
@@ -88,6 +88,12 @@ export default function MapCard(props) {
             lng: position.lon
         })
     }
+
+    useEffect(() => {
+        if (position) {
+            changeCenter(position);
+        }
+    }, [position])
 
 
     return (

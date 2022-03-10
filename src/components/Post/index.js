@@ -21,6 +21,7 @@ import HeartIcon from "../Icons/Heart";
 import HeartFillIcon from "../Icons/HeartFill";
 import CommentIcon from "../Icons/Comment";
 import ShareIcon from "../Icons/Share";
+import { loadComment } from "../../redux/callApi/commentCall";
 
 
 export default function Post(props) {
@@ -33,6 +34,9 @@ export default function Post(props) {
     const [post, setPost] = useState(null);
     const [share, setShare] = useState(false);
     const [login, setLogin] = useState(false);
+    const [loadingComment, setLoadingComment] = useState(false);
+    const [errorComment, setErrorComment] = useState(false);
+    const [pageComment, setPageComment] = useState(0);
 
     const classes = postStyles({ showCmt });
 
@@ -91,8 +95,34 @@ export default function Post(props) {
         setShowLike(false);
     };
 
+    const loadMoreComment = () => {
+        setLoadingComment(true);
+        dispatch(loadComment(post._id, "post", () => {
+            setLoadingComment(false);
+            setPageComment(state => state + 1);
+        }, () => {
+            setLoadingComment(false);
+            setErrorComment(true);
+        }, pageComment))
+
+    }
+
 
     const handleShowCmt = () => {
+        if (!showCmt) {
+            if (!post.commentDetail) {
+                setLoadingComment(true);
+                dispatch(loadComment(post._id, "post", () => {
+                    setLoadingComment(false);
+                    setPageComment(1);
+                }, () => {
+                    setLoadingComment(false);
+                    setErrorComment(true);
+                }, 0))
+
+            }
+
+        }
         setShowCmt(!showCmt)
     }
 
@@ -206,10 +236,15 @@ export default function Post(props) {
                 <Collapse className={classes.cmt} in={showCmt}>
                     <hr className={classes.line} />
                     <div className={classes.listCmt}>
-                        {post.comments.map((cmt) => (
+                        {post.commentDetail && post.commentDetail.map((cmt) => (
                             <Comment comment={cmt} key={cmt._id} id={post._id} type="post" />
                         ))}
                     </div>
+                    {loadingComment && <Typography className={classes.loadingComment}>Đang tải...</Typography>}
+                    {errorComment && <Typography className={classes.errorComment}>Có lỗi xảy ra</Typography>}
+                    {post.commentDetail && !loadingComment && post.commentDetail?.length < post.comments?.length &&
+                        <Typography variant="body2" className={classes.loadMoreComment} onClick={loadMoreComment}>Xem thêm bình luận</Typography>
+                    }
                 </Collapse>
 
                 <InputComment type="post" id={post._id} />

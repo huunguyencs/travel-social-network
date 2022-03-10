@@ -61,6 +61,54 @@ class CommentController {
         }
     }
 
+    async getCommentPost(req, res) {
+        try {
+            const { id } = req.params;
+            const { offset } = req.query;
+            const post = await Posts.findById(id, "comments").populate({
+                path: "comments",
+                options: {
+                    limit: 3,
+                    sort: { created: -1 },
+                    skip: offset * 3,
+                },
+                populate: {
+                    path: "userId likes",
+                    select: "username fullname avatar"
+                }
+            })
+            res.json({ success: true, comments: post.comments })
+        }
+        catch (err) {
+            res.status(500).json({ success: false, message: err.message })
+        }
+    }
+
+    async getCommentTour(req, res) {
+        try {
+            const { id } = req.params;
+            const { offset } = req.query;
+
+            const tour = await Tours.findById(id, "comments").populate({
+                path: "comments",
+                options: {
+                    limit: 3,
+                    sort: { created: -1 },
+                    skip: offset * 3,
+
+                },
+                populate: {
+                    path: "userId likes",
+                    select: "username fullname avatar"
+                }
+            })
+            res.json({ success: true, comments: tour.comments })
+        }
+        catch (err) {
+            res.status(500).json({ success: false, message: err.message })
+        }
+    }
+
     async updateComment(req, res) {
         try {
             const { content } = req.body;

@@ -83,7 +83,7 @@ export default function Location(props) {
 
     useEffect(() => {
         if (location) {
-            dispatch(getPostsLocation(location._id));
+            dispatch(getPostsLocation(location._id, 0));
         }
     }, [location, dispatch])
 
@@ -157,7 +157,7 @@ export default function Location(props) {
                                         </Grid>
                                         <Grid item md={3} sm={12} xs={12}>
                                             <Card className={classes.imageList}>
-                                                <img src={location.images[0]} alt="Loading..." className={classes.image} onClick={handleShowImage} />
+                                                <img src={location.images[0]} alt="Đang tải..." className={classes.image} onClick={handleShowImage} />
                                                 {showImg && (
                                                     <Lightbox
                                                         mainSrc={location.images[imgIdx]}

@@ -1,12 +1,14 @@
 import React, { useState } from "react";
-import { Backdrop, Button, CircularProgress, Fade, Modal, Typography } from "@material-ui/core";
+import { Backdrop, Button, Fade, Modal, Typography } from "@material-ui/core";
 
 import Tour from "../Tour";
+import Feed from './index';
 import { feedStyles } from "../../style";
 import CreateTourForm from "../Forms/CreateTour";
 import { useSelector, useDispatch } from "react-redux";
-import { getTours } from "../../redux/callApi/tourCall"
-
+import { getMoreTours, getTours } from "../../redux/callApi/tourCall"
+import FilterTour from "../Forms/FilterTour";
+import { Tune } from "@material-ui/icons";
 
 
 export default function FeedTour(props) {
@@ -14,9 +16,15 @@ export default function FeedTour(props) {
     const dispatch = useDispatch();
     const { auth, tour } = useSelector(state => state);
 
+    const [cost, setCost] = useState([0, 100]);
+    const [text, setText] = useState('');
+    const [isFiltering, setIsFiltering] = useState(false);
+    // const [filter, setFilter] = useState()
+
     const classes = feedStyles();
 
     const [show, setShow] = useState(false);
+    const [showFilter, setShowFilter] = useState(false);
 
     const handleShow = () => {
         setShow(true)
@@ -26,14 +34,51 @@ export default function FeedTour(props) {
         setShow(false);
     }
 
-    const tryAgain = () => {
-        dispatch(getTours());
+    const handleShowFilter = () => {
+        setShowFilter(true);
     }
 
+    const handleCloseFilter = () => {
+        setShowFilter(false);
+    }
+
+    const removeFilter = () => {
+        setCost([0, 100]);
+        setText('');
+        dispatch(getTours());
+        setIsFiltering(false);
+    }
+
+    const loadTour = () => {
+        if (tour.hasMore) {
+            var maxCost = cost[1], minCost = cost[0];
+            if (minCost > maxCost) {
+                minCost += maxCost;
+                maxCost = minCost - maxCost;
+                minCost -= maxCost;
+            }
+            dispatch(getMoreTours(tour.page, {
+                maxCost: maxCost * 10,
+                minCost: minCost * 10,
+                q: text
+            }));
+        }
+    }
+
+    const tryAgain = () => {
+        loadTour(tour.page, dispatch, tour.hasMore)
+    }
+
+
     const ref = React.createRef();
+    const refFilter = React.createRef();
 
     const CreateTourRef = React.forwardRef((props, ref) =>
         <CreateTourForm innerRef={ref} {...props} />
+    )
+
+    const FilterTourRef = React.forwardRef((props, ref) =>
+        <FilterTour innerRef={ref} {...props} />
     )
 
     return (
@@ -63,25 +108,66 @@ export default function FeedTour(props) {
 
 
                 <div className={classes.feedContent}>
+                    <div style={{ display: 'flex', justifyContent: 'right', margin: 10 }}>
+                        <Button
+                            onClick={handleShowFilter}
+                            startIcon={<Tune />}
+                        >
+                            Lọc
+                        </Button>
+                    </div>
+
+                    <Modal
+                        aria-labelledby="transition-modal-title"
+                        aria-describedby="transition-modal-description"
+                        className={classes.modal}
+                        open={showFilter}
+                        onClose={handleCloseFilter}
+                        closeAfterTransition
+                        BackdropComponent={Backdrop}
+                        BackdropProps={{
+                            timeout: 500,
+                        }}
+                    >
+                        <Fade in={showFilter}>
+                            <FilterTourRef
+                                ref={refFilter}
+                                handleClose={handleCloseFilter}
+                                costParent={cost}
+                                setCostParent={setCost}
+                                textParent={text}
+                                setTextParent={setText}
+                                setFilter={setIsFiltering}
+                            />
+                        </Fade>
+                    </Modal>
                     {
-                        tour.loading ?
-                            <div className={classes.centerMarginTop}>
-                                <CircularProgress color={"inherit"} />
-                            </div> :
-                            tour.error ?
-                                <div className={classes.centerMarginTop}>
-                                    <div>
-                                        <Typography>Có lỗi xảy ra</Typography>
-                                        <Button onClick={tryAgain}>Thử lại</Button>
-                                    </div>
-                                </div> :
-                                tour.tours.map((tour) => (
-                                    <Tour
-                                        tour={tour}
-                                        key={tour._id}
-                                    />
-                                ))
+                        isFiltering &&
+                        <div>
+                            <Typography>
+                                Đang lọc:
+                            </Typography>
+                            <ul>
+                                <li>Chi phí: {cost[0] === 0 ? 'Tối thiểu' : (new Intl.NumberFormat().format(cost[0] * 10000) + ' VND')}  - {cost[1] === 100 ? 'Tối đa' : (new Intl.NumberFormat().format(cost[1] * 10000) + ' VND')} </li>
+                                <li>Từ khóa: {text}</li>
+                            </ul>
+                            <Button onClick={removeFilter}>Xoá bộ lọc</Button>
+                        </div>
                     }
+                    <Feed
+                        loadMore={loadTour}
+                        tryAgain={tryAgain}
+                        loading={tour.loading}
+                        error={tour.error}
+                        hasMore={tour.hasMore}
+                    >
+                        {tour.tours.map((tour) => (
+                            <Tour
+                                tour={tour}
+                                key={tour._id}
+                            />
+                        ))}
+                    </Feed>
                 </div>
 
             </div>

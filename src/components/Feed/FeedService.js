@@ -1,38 +1,82 @@
-import { Container } from "@material-ui/core";
 import React from "react";
-// import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
+import { getServices } from "../../redux/callApi/serviceCall";
 
-import { feedStyles } from "../../style";
-// import Post from "../post/Post";
-
-
+import Feed from './index';
+import ServiceItem from '../Service/ServiceItem';
 
 export default function FeedService(props) {
 
-    const classes = feedStyles();
+    // const classes = feedStyles();
+    const { service } = useSelector(state => state);
 
-    // const dispatch = useDispatch();
-    // const { post } = useSelector(state => state);
+    // const [fetch, setFetch] = useState(false);
+    const dispatch = useDispatch();
+
+    const tryAgain = () => {
+        dispatch(getServices(null, service.page))
+    }
+
+    const loadMore = () => {
+        if (service.hasMore) {
+            dispatch(getServices(null, service.page))
+        }
+    }
 
     // useEffect(() => {
-    //     dispatch(getPosts());
-    // }, [dispatch])
+    //     if (fetch) {
+    //         loadPost(service.page, service.hasMore, dispatch)
+    //     }
+    // }, [fetch, service.page, service.hasMore, dispatch])
+
+    // useEffect(() => {
+    //     window.addEventListener('scroll', handleScroll);
+    //     return () => window.removeEventListener('scroll', handleScroll)
+    // }, []);
+
+    // function handleScroll() {
+    //     if (window.innerHeight + document.documentElement.scrollTop === document.documentElement.offsetHeight) {
+    //         setFetch(true);
+    //     }
+    // }
 
     return (
-        <Container className={classes.container}>
-            <div className={classes.content}>
-                {/* 
-                <div>
-                    {
-                        post.posts.map((service) => (
-                            <Post
-                                post={service}
-                                key={service._id}
-                            />
-                        ))
-                    }
-                </div> */}
-            </div>
-        </Container>
+        <Feed
+            loadMore={loadMore}
+            tryAgain={tryAgain}
+            loading={service.loading}
+            error={service.error}
+            hasMore={service.hasMore}
+        >
+            {
+                service.services.map((item) => (
+                    <ServiceItem key={item._id} service={item} />
+                ))
+            }
+        </Feed>
+        // <Container className={classes.container}>
+        //     <div className={classes.content}>
+
+        //         <div>
+        //             {
+        //                 service.services.map((item) => (
+        //                     <ServiceItem key={item._id} service={item} />
+        //                 ))
+        //             }
+        //             {
+        //                 service.loading &&
+        //                 <div className={classes.centerMarginTop}>
+        //                     <CircularProgress />
+        //                 </div>
+        //             }
+        //             {
+        //                 service.error &&
+        //                 <div className={classes.centerMarginTop}>
+        //                     <Button onClick={tryAgain}>Thử lại</Button>
+        //                 </div>
+        //             }
+        //         </div>
+        //     </div>
+        // </Container>
     )
 }

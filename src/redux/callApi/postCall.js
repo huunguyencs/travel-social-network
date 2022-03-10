@@ -27,28 +27,33 @@ export const getPosts = (token) => async (dispatch) => {
 
 }
 
-export const getPostsLocation = (id) => async (dispatch) => {
-    dispatch(postAction.getPosts({ posts: [] }));
+export const getPostsLocation = (id, page) => async (dispatch) => {
+    if (page === 0) {
+        dispatch(postAction.getPosts({ posts: [] }));
+    }
     dispatch(postAction.loading());
 
     try {
-        const res = await customAxios().get(`/location/${id}/posts`);
+        const res = await customAxios().get(`/location/${id}/posts?offset=${page}`);
+        if (page === 0) {
+            dispatch(postAction.getPosts({ posts: res.data.posts }));
+        }
+        else {
+            dispatch(postAction.getMorePost({ posts: res.data.posts }));
+        }
 
-        dispatch(postAction.getPosts({ posts: res.data.posts }));
     }
     catch (err) {
         dispatch(postAction.error({ error: "Có lỗi xảy ra" }))
     }
 }
 
-export const getUserPost = (id, token, offset) => async (dispatch) => {
+export const getUserPost = (id, offset) => async (dispatch) => {
     // dispatch(postAction.getPosts({ posts: [] }));
     dispatch(postAction.loading());
 
     try {
-        const res = await customAxios(token).get(`/post/user_posts/${id}`, {
-            offset: offset
-        });
+        const res = await customAxios().get(`/post/user_posts/${id}?offset=${offset}`);
 
         // console.log(res.data.posts);
         if (offset > 0) {
@@ -84,6 +89,7 @@ export const getMorePost = (data) => async (dispatch) => {
         dispatch(postAction.error({ error: "Có lỗi xảy ra" }));
     }
 }
+
 
 export const getPostById = (id, next) => async (dispatch) => {
     dispatch(postAction.getPosts({ posts: [] }));

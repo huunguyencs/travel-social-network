@@ -75,7 +75,11 @@ class LocationController {
 
     async getPosts(req, res) {
         try {
+            const { offset } = req.query;
             const posts = await Posts.find({ isPostReview: true, locationId: req.params.id })
+                .sort({ created: -1 })
+                .limit(5)
+                .skip(offset)
                 .populate("userId likes", "username fullname avatar")
                 .populate({
                     path: "comments",
@@ -119,6 +123,20 @@ class LocationController {
         }
     }
 
+    async getAll(req, res) {
+        try {
+            const locations = await Locations.find({}).select("fullname name province position images")
+                .populate("province", "fullname")
+            res.json({
+                success: true,
+                message: "Lấy tất cả địa điểm thành công",
+                locations
+            })
+        } catch (err) {
+            res.status(500).json({ success: false, message: err.message })
+        }
+    }
+
     async getAllLocations(req, res) {
         try {
             const locations = await Locations.find({}).select("fullname name province star")
@@ -129,6 +147,32 @@ class LocationController {
                 locations
             })
         } catch (err) {
+            res.status(500).json({ success: false, message: err.message })
+        }
+    }
+
+    async search(req, res) {
+        try {
+            var { q, offset } = req.query;
+            offset = offset || 0;
+            var locations = await Locations.find({ $text: { $search: q } }, { score: { $meta: "textScore" } })
+                .sort({ score: { $meta: "textScore" } })
+                .limit(10)
+                .skip(offset * 10)
+
+            locations = locations.map((item) => ({
+                _id: item._id,
+                fullname: item.fullname,
+                link: `/location/${item.name}`,
+                description: item.information,
+                image: item.images[0]
+            }))
+
+            res.json({ success: true, results: locations, query: q });
+
+
+        }
+        catch (err) {
             res.status(500).json({ success: false, message: err.message })
         }
     }

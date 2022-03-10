@@ -56,10 +56,10 @@ class UserController {
 
             //all Good
             //Return Token
-            const accessToken = jwt.sign({ id: user._id }, process.env.ACCESS_TOKEN_SECRET || "abcdefghiklmn")
+            const accessToken = jwt.sign({ id: user._id }, process.env.ACCESS_TOKEN_SECRET)
             //trả về dữ liệu user khi login thành công
 
-            const refreshToken = jwt.sign({ id: user._id }, process.env.REFRESH_TOKEN_SECRET || "REFRESH_TOKEN_SECRET")
+            const refreshToken = jwt.sign({ id: user._id }, process.env.REFRESH_TOKEN_SECRET)
 
             res.cookie('refreshtoken', refreshToken, {
                 httpOnly: true,
@@ -101,7 +101,7 @@ class UserController {
                     })
                 if (!user) return res.status(400).json("No token");
 
-                const accessToken = jwt.sign({ id: user._id }, process.env.ACCESS_TOKEN_SECRET || "abcdefghiklmn")
+                const accessToken = jwt.sign({ id: user._id }, process.env.ACCESS_TOKEN_SECRET)
 
                 res.json({
                     success: true,
@@ -452,6 +452,27 @@ class UserController {
             res.json({ success: true, message: "Lấy tour đã lưu thành công", tours })
         }
         catch (err) {
+            res.status(500).json({ success: false, message: err.message })
+        }
+    }
+
+    async search(req, res) {
+        try {
+            var { q, offset } = req.query;
+            offset = offset || 0;
+            var users = await Users.find({ $text: { $search: q } }, { score: { $meta: "textScore" } })
+                .sort({ score: { $meta: "textScore" } })
+                .skip(offset * 10)
+                .limit(10)
+            users = users.map((item) => ({
+                _id: item._id,
+                fullname: item.fullname,
+                link: `/u/${item._id}`,
+                description: '',
+                image: item.avatar
+            }))
+            res.json({ success: true, results: users, query: q })
+        } catch (err) {
             res.status(500).json({ success: false, message: err.message })
         }
     }

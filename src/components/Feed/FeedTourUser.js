@@ -1,8 +1,7 @@
 import React from "react";
-import { Button, CircularProgress, Typography } from "@material-ui/core";
 
 import Tour from "../Tour";
-import { feedStyles } from "../../style";
+import Feed from './index';
 import { useSelector, useDispatch } from "react-redux";
 import { getUserTour } from "../../redux/callApi/tourCall"
 
@@ -14,43 +13,35 @@ export default function FeedUserTour(props) {
     const dispatch = useDispatch();
     const { auth, tour } = useSelector(state => state);
 
-    const classes = feedStyles();
-
+    const loadTour = () => {
+        if (tour.hasMore) {
+            dispatch(getUserTour(id, auth.token, tour.page))
+        }
+    }
 
     const tryAgain = () => {
         if (id) {
-            dispatch(getUserTour(id, auth.token))
+            loadTour(id, auth.token, tour.page, dispatch, tour.hasMore);
         }
-
     }
 
     return (
-        <div className={classes.container}>
-            <div className={classes.content}>
-                <div className={classes.feedContent}>
-                    {
-                        tour.loading ?
-                            tour.error ?
-                                <div className={classes.centerMarginTop}>
-                                    <div>
-                                        <Typography>Có lỗi xảy ra</Typography>
-                                        <Button onClick={tryAgain}>Thử lại</Button>
-                                    </div>
-                                </div> :
-                                <div className={classes.centerMarginTop}>
-                                    <CircularProgress color={"inherit"} />
-                                </div> :
-                            tour.tours.map((tour) => (
-                                <Tour
-                                    tour={tour}
-                                    key={tour._id}
-                                />
-                            ))
-                    }
-                </div>
+        <Feed
+            loadMore={loadTour}
+            loading={tour.loading}
+            error={tour.error}
+            tryAgain={tryAgain}
+            hasMore={tour.hasMore}
+        >
+            {
+                tour.tours.map((tour) => (
+                    <Tour
+                        tour={tour}
+                        key={tour._id}
+                    />
+                ))
+            }
 
-            </div>
-
-        </div>
+        </Feed>
     )
 }

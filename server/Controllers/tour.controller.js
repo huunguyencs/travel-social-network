@@ -223,7 +223,46 @@ class TourController {
 
     async getTours(req, res) {
         try {
-            const tours = await Tours.find({}).sort("-createdAt")
+            var { offset, maxCost, minCost, q } = req.query;
+            offset = offset ? parseInt(offset) : 0;
+            maxCost = maxCost ? parseInt(maxCost) : null;
+            minCost = minCost ? parseInt(minCost) : null;
+            var query = {}
+            var sort = "-createdAt"
+            var score = {}
+
+            if (maxCost && maxCost !== 1000) {
+                query = {
+                    cost: {
+                        $lte: maxCost
+                    }
+                }
+            }
+            if (minCost && minCost !== 0) {
+                query = {
+                    ...query,
+                    cost: {
+                        ...query.cost,
+                        $gte: minCost
+                    }
+                }
+            }
+            if (q && q !== '') {
+                query = {
+                    ...query,
+                    $text: {
+                        $search: q
+                    }
+                }
+                sort = { score: { $meta: "textScore" } }
+                score = sort
+            }
+
+
+            // Tours.createIndexes()
+            // Tours.createIndexes({'$**': 'text'});
+
+            const tours = await Tours.find(query, score).sort(sort).skip(offset * 5).limit(5)
                 .populate("userId joinIds likes", "username fullname avatar")
                 .populate("tour", "date")
                 .populate({
@@ -259,7 +298,9 @@ class TourController {
     //lấy tours của 1 user cụ thể (params.id)
     async getUserTour(req, res) {
         try {
-            const tours = await Tours.find({ userId: req.params.id }).sort("-createdAt")
+            var { offset } = req.query;
+            offset = offset || 0;
+            const tours = await Tours.find({ userId: req.params.id }).sort("-createdAt").skip(offset * 5).limit(5)
                 .populate("userId joinIds likes", "username fullname avatar")
                 .populate("tour", "date")
                 .populate({
@@ -423,6 +464,28 @@ class TourController {
         }
         catch (err) {
             console.log(err);
+            res.status(500).json({ success: false, message: err.message })
+        }
+    }
+
+    async search(req, res) {
+        try {
+            var { q, offset } = req.query;
+            offset = offset || 0;
+            var tours = await Tours.find({ $text: { $search: q } }, { score: { $meta: "textScore" } })
+                .sort({ score: { $meta: "textScore" } })
+                .skip(offset * 10)
+                .limit(10)
+                .populate("userId", "avatar fullname");
+            tours = tours.map((item) => ({
+                _id: item._id,
+                fullname: `Hành trình của ${item.userId.fullname}`,
+                link: `/tour/${item._id}`,
+                description: item.name,
+                image: item.userId.avatar
+            }))
+            res.json({ success: true, results: tours, query: q })
+        } catch (err) {
             res.status(500).json({ success: false, message: err.message })
         }
     }

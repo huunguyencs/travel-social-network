@@ -6,13 +6,23 @@ import * as alertAction from '../actions/alertAction'
 import { extractProvinceTour, sortTourDate } from '../../utils/utils';
 import { resetTour } from '../actions/createTourAction';
 
-export const getTours = (data) => async (dispatch) => {
+export const getTours = (query) => async (dispatch) => {
     dispatch(tourAction.loading());
     // console.log(dispatch)
     try {
+        var res;
+        if (query) {
+            const { maxCost, minCost, q } = query;
+            var que = '';
+            if (maxCost && maxCost !== 100) que += `maxCost=${maxCost}&`;
+            if (minCost && minCost !== 0) que += `minCost=${minCost}&`;
+            if (q && q !== '') que += `q=${q}`;
+            res = await customAxios().get(`/tour/tours?${que}`)
+        }
+        else {
+            res = await customAxios().get(`/tour/tours`);
+        }
 
-        const res = await customAxios().get("/tour/tours");
-        // console.log(res.data.tours)
         var tours = res.data.tours.map(item => sortTourDate(item));
         dispatch(tourAction.getTours({ tours: tours }));
     }
@@ -22,14 +32,46 @@ export const getTours = (data) => async (dispatch) => {
     }
 }
 
-export const getUserTour = (id, token) => async (dispatch) => {
+export const getMoreTours = (page, query) => async (dispatch) => {
+    dispatch(tourAction.loading());
+    try {
+        var res;
+        if (query) {
+            const { maxCost, minCost, q } = query;
+            var que = '';
+            if (maxCost && maxCost !== 100) que += `maxCost=${maxCost}&`;
+            if (minCost && minCost !== 0) que += `minCost=${minCost}&`;
+            if (q && q !== '') que += `q=${q}&`;
+            res = await customAxios().get(`/tour/tours?${que}offset=${page}`)
+        }
+        else {
+            res = await customAxios().get(`/tour/tours?offset=${page}`);
+        }
+
+        var tours = res.data.tours.map(item => sortTourDate(item));
+        dispatch(tourAction.getMoreTour({ tours: tours }));
+    } catch (err) {
+        dispatch(tourAction.error({ error: "Có lỗi xảy ra" }))
+    }
+}
+
+export const getUserTour = (id, token, page) => async (dispatch) => {
     // dispatch(tourAction.getTours({ tour: [] }));
     dispatch(tourAction.loading())
     try {
-        const res = await customAxios(token).get(`/tour/user_tours/${id}`);
-        var tours = res.data.tours.map(item => sortTourDate(item))
-        // console.log(res.data.tours);
-        dispatch(tourAction.getTours({ tours: tours }))
+        var res;
+        if (page && page > 0) {
+            res = await customAxios(token).get(`/tour/user_tours/${id}?offset=${page}`);
+            let tours = res.data.tours.map(item => sortTourDate(item))
+            // console.log(res.data.tours);
+            dispatch(tourAction.getMoreTour({ tours: tours }))
+        }
+        else {
+            res = await customAxios(token).get(`/tour/user_tours/${id}`);
+            let tours = res.data.tours.map(item => sortTourDate(item))
+            // console.log(res.data.tours);
+            dispatch(tourAction.getTours({ tours: tours }))
+        }
     }
     catch (err) {
         dispatch(tourAction.error({ error: "Có lỗi xảy ra" }))
@@ -49,12 +91,15 @@ export const saveTour = (tour, image, token, socket, next, error) => async (disp
             tour: tour.tour.map(item => ({
                 ...item,
                 locations: item.locations.map(location => ({
+                    ...location,
                     location: location.location._id,
                 })),
             })),
             provinces: Array.from(extractProvinceTour(tour.tour)),
             image: image ? imageUpload[0] : ""
         }
+
+        console.log(data);
 
         const res = await customAxios(token).post('/tour/create_tour', data);
 

@@ -5,8 +5,10 @@ const auth = require('../Middlewares/auth')
 
 router.post('/create_location', auth, LocationController.createLocation);
 router.get('/locations/:province', LocationController.getLocations);
+router.get('/locations', LocationController.getAll)
 router.get('/get_all', auth, LocationController.getAllLocations)
 router.get('/hot_locations', LocationController.getHotLocations);
+router.get('/search', LocationController.search)
 
 
 router.get('/:name', LocationController.getLocation);

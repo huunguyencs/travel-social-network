@@ -76,12 +76,27 @@ class ServiceController {
         }
     }
 
-    //Get all Service
+    async getAll(req, res) {
+        try {
+            const services = await Services.find({}, "name description images")
+                // .populate("cooperator")
+                .populate("province", "fullname");
+            res.json({ success: true, message: "get info all Service success", services });
+        } catch (error) {
+            console.log(err)
+            res.status(500).json({ success: false, message: err.message })
+        }
+    }
+
     async getServices(req, res) {
         try {
-            const service = await Services.find()
-                .populate("cooperator")
-            res.json({ success: true, message: "get info all Service success", service });
+            var { offset } = req.query;
+            offset = offset || 0;
+            // console.log(offset);
+            const services = await Services.find({}, "-rate -attribute").skip(offset * 5).limit(5)
+                // .populate("cooperator")
+                .populate("province", "name fullname");
+            res.json({ success: true, message: "get info all Service success", services });
         } catch (err) {
             console.log(err)
             res.status(500).json({ success: false, message: err.message })
@@ -154,6 +169,27 @@ class ServiceController {
             }
 
             res.json({ success: true, message: "", star: service.star })
+        } catch (err) {
+            res.status(500).json({ success: false, message: err.message })
+        }
+    }
+
+    async search(req, res) {
+        try {
+            var { q, offset } = req.query;
+            offset = offset || 0;
+            var services = await Services.find({ $text: { $search: q } }, { score: { $meta: "textScore" } })
+                .sort({ score: { $meta: "textScore" } })
+                .skip(offset * 10)
+                .limit(10)
+            services = services.map((item) => ({
+                _id: item._id,
+                fullname: item.name,
+                link: `/u/${item.cooperator}`,
+                description: item.description,
+                image: item.images[0]
+            }))
+            res.json({ success: true, results: services, query: q })
         } catch (err) {
             res.status(500).json({ success: false, message: err.message })
         }

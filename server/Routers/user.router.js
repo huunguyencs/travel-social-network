@@ -15,6 +15,7 @@ router.patch("/change_info", auth, UserController.editProfile);
 router.patch("/change_password", auth, UserController.changePassword)
 
 router.get("/get_all", auth, UserController.getAll)
+router.get('/search', UserController.search)
 
 router.post("/confirm_account", auth, UserController.confirmAccount)
 router.get('/get_friend_recommend', auth, UserController.getFriendRecommend)

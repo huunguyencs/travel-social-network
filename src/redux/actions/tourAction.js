@@ -7,6 +7,13 @@ export const getTours = (props) => {
     }
 }
 
+export const getMoreTour = (props) => {
+    return {
+        type: TOUR_TYPES.GET_MORE_TOUR,
+        payload: props,
+    }
+}
+
 export const addTour = (props) => {
     return {
         type: TOUR_TYPES.ADD_TOUR,

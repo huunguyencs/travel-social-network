@@ -6,6 +6,7 @@ const auth = require('../Middlewares/auth')
 router.post('/create_volunteer', auth, VolunteerController.createVolunteer);
 // router.post('/share', auth, VolunteerController.shareTour);
 router.get('/volunteers', VolunteerController.getVolunteers);
+router.get('/search', VolunteerController.search);
 
 
 router.get('/:id', VolunteerController.getVolunteer);

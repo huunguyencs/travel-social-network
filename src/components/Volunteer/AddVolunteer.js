@@ -1,8 +1,8 @@
 import React, { useState } from 'react';
-import { Button, Grid, IconButton, TextField, Typography, Modal, Backdrop, Fade,CircularProgress } from '@material-ui/core';
+import { Button, Grid, IconButton, TextField, Typography, Modal, Backdrop, Fade, CircularProgress } from '@material-ui/core';
 import { addVolunteerStyles } from '../../style';
 import { useDispatch, useSelector } from 'react-redux';
-import { useHistory} from 'react-router-dom';
+import { useHistory } from 'react-router-dom';
 import AddImageHorizontal from '../Input/AddImageHorizontal';
 import { Close, AddCircle } from '@material-ui/icons';
 import { Timeline, TimelineItem, TimelineSeparator, TimelineConnector, TimelineContent, TimelineDot } from '@material-ui/lab'
@@ -39,34 +39,34 @@ export default function AddVolunteer(props) {
     })
     const dispatch = useDispatch();
     const history = useHistory();
-    
+
     const [idx, setIdx] = useState(0);
     const [idxLocation, setIdxLocation] = useState(0);
-    
+
     const [tempDescription, setTempDescription] = useState("");
     const [tempTime, setTempTime] = useState("");
     const [tempActivity, setTempActivity] = useState("");
     const [tempLocation, setTempLocation] = useState(null);
 
     //data save
-    const [images, setImages] = useState(volunteer?[volunteer.image]:[]);
-    const [context, setContext] = useState(volunteer?{
+    const [images, setImages] = useState(volunteer ? [volunteer.image] : []);
+    const [context, setContext] = useState(volunteer ? {
         name: volunteer.name,
         descriptions: volunteer.descriptions,
         cost: volunteer.cost
-    }:
-    {
-        name: "",
-        descriptions: [],
-        cost: ""
-    });
-    const [dateVolunteer, setDateVolunteer] = useState(volunteer?volunteer.date:[{
+    } :
+        {
+            name: "",
+            descriptions: [],
+            cost: ""
+        });
+    const [dateVolunteer, setDateVolunteer] = useState(volunteer ? volunteer.date : [{
         activities: [],
         accommodation: "",
         date: null
     }]);
 
-    const [locationVolunteer, setLocationVolunteer] = useState(volunteer?volunteer.location:[]);
+    const [locationVolunteer, setLocationVolunteer] = useState(volunteer ? volunteer.location : []);
     const handleAddDescription = (e) => {
         e.preventDefault();
         setContext({
@@ -245,8 +245,8 @@ export default function AddVolunteer(props) {
             error: false,
             notFound: false,
         })
-        if(isUpdate){
-            dispatch(updateVolunteer(volunteer._id,auth.token, socket, {
+        if (isUpdate) {
+            dispatch(updateVolunteer(volunteer._id, auth.token, socket, {
                 ...context,
                 date: dateVolunteer,
                 location: locationVolunteer
@@ -264,7 +264,7 @@ export default function AddVolunteer(props) {
                     notFound: false,
                 })
             }))
-        }else{
+        } else {
             dispatch(createVolunteer(auth.token, socket, {
                 ...context,
                 date: dateVolunteer,
@@ -285,7 +285,7 @@ export default function AddVolunteer(props) {
             }))
         }
     }
-    
+
     return (
         <div className={classes.formContainer}>
             <Typography variant='h5' style={{ marginTop: 50 }}>Tạo hoạt động tình nguyện của bạn</Typography>
@@ -304,6 +304,7 @@ export default function AddVolunteer(props) {
                 className={classes.fullField}
                 maxImage={10}
             />
+            <span>{error}</span>
             <Typography>Các thông tin chung</Typography>
             <Grid container>
                 {context.descriptions.map((item, index) => (
@@ -597,13 +598,14 @@ export default function AddVolunteer(props) {
                         variant='contained'
                         color="primary"
                     >
-                        {state.loading ?
-                            <CircularProgress size="25px" color="inherit" />
-                            : isUpdate? "Lưu lại" : "Thêm hoạt động"
+                        {
+                            state.loading ?
+                                <CircularProgress size="25px" color="inherit" />
+                                : isUpdate ? "Lưu lại" : "Thêm hoạt động"
                         }
-                    </Button>
-                </Grid>
-            </div>
-        </div>
+                    </Button >
+                </Grid >
+            </div >
+        </div >
     )
 }

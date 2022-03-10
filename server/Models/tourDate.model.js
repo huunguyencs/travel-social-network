@@ -5,7 +5,10 @@ const tourDateSchema = new mongoose.Schema({
     locations: [
         {
             location: { type: mongoose.Types.ObjectId, ref: 'locations' },
-            postId: { type: mongoose.Types.ObjectId, ref: 'posts' }
+            postId: [{ type: mongoose.Types.ObjectId, ref: 'posts' }],
+            description: String,
+            cost: Number,
+            time: String
         }
     ]
 }, {

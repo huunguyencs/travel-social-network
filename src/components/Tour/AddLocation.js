@@ -1,10 +1,9 @@
-import { Button, TextField, Typography } from '@material-ui/core';
+import { Button, Paper, TextField, Typography } from '@material-ui/core';
 import { Autocomplete } from '@material-ui/lab';
 import React, { useEffect, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux';
 
 import { formStyles } from '../../style';
-import customAxios from '../../utils/fetchData';
 import AddLocMap from './AddLocMap';
 import * as tourAction from '../../redux/actions/createTourAction';
 import { AddCircle } from '@material-ui/icons';
@@ -13,12 +12,12 @@ export default function AddLocation(props) {
 
     const classes = formStyles();
 
-    const [isFetch, setIsFetch] = useState(false);
 
     const dispatch = useDispatch();
     const { location } = useSelector(state => state);
-    const { currentProvince, setCurrentProvince, loc, setLoc, locations, setLocations, indexDate } = props;
-    const [loading, setLoading] = useState(false);
+    const { currentProvince, setCurrentProvince, loc, setLoc, indexDate } = props;
+    const [loading, setLoading] = useState(location.loadingLocations);
+    const [locations, setLocations] = useState([]);
 
     const [state, setState] = useState({
         zoom: 8,
@@ -36,59 +35,26 @@ export default function AddLocation(props) {
                 }
             })
         }
-
-    }
-
-    const getLocInit = async (province, setLocations, setState) => {
-        setLoading(true)
-        await customAxios().get(`/location/locations/${province._id}`)
-            .then((req) => {
-                setLocations(req.data.locations);
-                setLoading(false);
-            }).catch(err => {
-                setLocations([]);
-                setLoading(false);
-            })
-        setState({
-            zoom: 11,
-            center: {
-                lat: province.position.lat,
-                lng: province.position.lon
-            }
-        })
     }
 
     useEffect(() => {
-        if (currentProvince && locations.length === 0 && isFetch) {
-            getLocInit(currentProvince, setLocations, setState)
-            setIsFetch(true)
-        }
-    }, [currentProvince, locations, setState, setLocations, isFetch, setIsFetch])
-
-    const getLoc = async (province) => {
-        if (province && province._id !== currentProvince) {
-            setLoading(true);
-            setLoc(null);
-            await customAxios().get(`/location/locations/${province._id}`)
-                .then((req) => {
-                    setLocations(req.data.locations);
-                    setLoading(false);
-                }).catch(err => {
-                    setLocations([]);
-                    setLoading(false);
-                })
-            setCurrentProvince(province);
+        setLoading(true);
+        if (currentProvince) {
+            setLocations(location.locations.filter(item => item.province._id === currentProvince._id));
             setState({
                 zoom: 11,
                 center: {
-                    lat: province.position.lat,
-                    lng: province.position.lon
+                    lat: currentProvince.position.lat,
+                    lng: currentProvince.position.lon
                 }
             })
         }
+        setLoading(false);
+    }, [currentProvince, location.locations]);
+
+    const setProvince = (province) => {
+        setCurrentProvince(province)
     }
-
-
 
 
     const handleSubmit = (e) => {
@@ -98,13 +64,13 @@ export default function AddLocation(props) {
     }
 
     return (
-        <>
+        <Paper className={classes.paperContainer}>
             <div className={classes.textTitle}>
                 <Typography variant="h5">
                     Thêm địa điểm
                 </Typography>
             </div>
-            <form
+            <div
                 className={classes.addLocationForm}
             >
                 <div className={classes.center}>
@@ -114,7 +80,7 @@ export default function AddLocation(props) {
                         loading={location.loading}
                         getOptionLabel={(option) => option?.fullname}
                         className={classes.autocomplete}
-                        onChange={(e, value) => getLoc(value)}
+                        onChange={(e, value) => setProvince(value)}
                         value={currentProvince}
                         renderInput={(params) => <TextField {...params} name="provinces" label="Chọn tỉnh thành" variant="outlined" />}
                     />
@@ -145,14 +111,12 @@ export default function AddLocation(props) {
                 <AddLocMap
                     setLoc={setLoc}
                     currentProvince={currentProvince}
-                    setCurrentProvince={setCurrentProvince}
                     locations={locations}
-                    provinces={locations.provinces}
                     state={state}
                     setState={setState}
                     indexDate={props.indexDate}
                 />
-            </form>
-        </>
+            </div>
+        </Paper>
     )
 }
