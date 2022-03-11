@@ -8,15 +8,37 @@ import ImageList from '../Modal/ImageList';
 import { getDetail, reviewService } from '../../redux/callApi/serviceCall';
 import { useDispatch, useSelector } from 'react-redux';
 import EmojiPicker from '../Input/EmojiPicker';
-import { Close, Send } from '@material-ui/icons';
+import { AddAPhoto, Close, Send } from '@material-ui/icons';
 import { Link } from 'react-router-dom';
 import MapCard from '../Card/MapCard';
+import { checkImage } from '../../utils/uploadImage';
+import Lightbox from 'react-image-lightbox';
+
+function Image(props) {
+    const { image, index, handleRemove } = props;
+
+    const remove = () => {
+        // console.log(index);
+        handleRemove(index)
+    }
+
+    return (
+        <div>
+            <img src={URL.createObjectURL(image)} alt="Error" width={80} height={80} />
+            <IconButton size='small' onClick={remove}>
+                <Close />
+            </IconButton>
+        </div>
+    )
+}
 
 export function ReviewArea(props) {
     const { id } = props;
     const [text, setText] = useState('')
     const { auth } = useSelector(state => state);
     const [rate, setRate] = useState(0);
+    const [images, setImages] = useState([]);
+    const [error, setError] = useState('');
 
 
     const classes = serviceStyles();
@@ -25,10 +47,37 @@ export function ReviewArea(props) {
     const handleSubmit = (e) => {
         e.preventDefault();
         if (rate && rate !== 0) {
-            setRate(0);
-            dispatch(reviewService(id, auth, rate, text))
+            setError('');
+            dispatch(reviewService(id, auth, rate, text, images))
             setText('');
+            setRate(0);
+            setImages([]);
         }
+        else setError('Cần thêm đánh giá!')
+    }
+
+    const addOneImage = (img) => {
+        setImages(state => ([...state, img]))
+    }
+
+    const addImage = (e) => {
+        if (images.length + e.target.files.length > 5) {
+            setError('Không được quá 5 ảnh!')
+            return;
+        }
+        const files = e.target.files;
+        for (var img of files) {
+            let check = checkImage(img)
+            if (check === "")
+                addOneImage(img);
+        }
+    }
+
+    const handleRemove = (index) => {
+        setImages(state => ([
+            ...state.slice(0, index),
+            ...state.slice(index + 1)
+        ]))
     }
 
 
@@ -41,9 +90,30 @@ export function ReviewArea(props) {
                 <div style={{ display: 'flex', justifyContent: 'center', marginBottom: 10 }}>
                     <Rating size='small' name="rate" value={rate} onChange={e => setRate(parseInt(e.target.value))} disabled={!auth.token} />
                 </div>
-
+                <div style={{ display: 'flex', marginInline: 10, overflowY: 'auto' }}>
+                    {images.map((item, index) =>
+                        <Image key={index} image={item} index={index} handleRemove={handleRemove} />
+                    )}
+                </div>
+                <span style={{ color: 'red', fontSize: 12 }}>{error}</span>
                 <div className={classes.contentWrap}>
-                    <EmojiPicker content={text} setContent={setText} />
+                    <div style={{ display: 'flex' }}>
+                        <input
+                            accept="image/*"
+                            style={{ display: 'none' }}
+                            id="input-image"
+                            name="images"
+                            multiple
+                            type="file"
+                            onChange={addImage}
+                        />
+                        <label htmlFor='input-image'>
+                            <IconButton variant="raised" component="span" title="Thêm ảnh">
+                                <AddAPhoto style={{ color: 'inherit' }} />
+                            </IconButton>
+                        </label>
+                        <EmojiPicker content={text} setContent={setText} />
+                    </div>
                     <InputBase
                         name="content"
                         placeholder='Viết review...'
@@ -103,20 +173,66 @@ function DetailService(props) {
 function ReviewService(props) {
 
     const { review } = props;
+    const [open, setOpen] = useState(false);
+    const [pictureIndex, setPictureIndex] = useState(0);
+
+    const imageList = review?.images || null;
 
     const classes = serviceStyles();
+
+    const handleClick = (index) => {
+        setOpen(true);
+        setPictureIndex(index);
+    }
+
+    const closePress = () => {
+        setOpen(false);
+    }
+
+    const next = () => {
+        setPictureIndex((pictureIndex + 1) % imageList.length)
+    }
+
+    const prev = () => {
+        setPictureIndex((pictureIndex + imageList.length - 1) % imageList.length)
+    }
 
     return (
         <div className={classes.reviewItemContainer}>
             <Avatar alt="avatar" src={review.userId.avatar} className={classes.avatar} />
             <div className={classes.reviewContentContainer}>
-                <strong className={classes.reviewerName} component={Link} to={`/u/${review.userId._id}`}>{review.userId.fullname}</strong>
+                <Typography className={classes.reviewerName} component={Link} to={`/u/${review.userId._id}`}>{review.userId.fullname}</Typography>
                 <div className={classes.rate}>
                     <Rating name="read-only" value={review.rate} readOnly size="small" />
                 </div>
                 {
                     review.content !== '' && <Typography className={classes.reviewContent}>{review.content}</Typography>
                 }
+                {
+                    imageList &&
+                    <>
+                        <div>
+                            {imageList.slice(0, 2).map((item, index) =>
+                                <img src={item} key={index} alt='Loading...' width={100} height={100} onClick={() => handleClick(index)} className={classes.imageReview} />
+                            )}
+                        </div>
+                        {open && (
+                            <Lightbox
+                                mainSrc={imageList[pictureIndex]}
+                                nextSrc={imageList[(pictureIndex + 1) % imageList.length]}
+                                prevSrc={imageList[(pictureIndex + imageList.length - 1) % imageList.length]}
+                                mainSrcThumbnail={imageList[pictureIndex]}
+                                imageCaption={imageList[pictureIndex]}
+                                nextSrcThumbnail={imageList[(pictureIndex + 1) % imageList.length]}
+                                prevSrcThumbnail={imageList[(pictureIndex + imageList.length - 1) % imageList.length]}
+                                onCloseRequest={closePress}
+                                onMoveNextRequest={next}
+                                onMovePrevRequest={prev}
+                            />
+                        )}
+                    </>
+                }
+
             </div>
         </div >
     )
@@ -172,25 +288,30 @@ function ServiceDetail(props) {
 
                 <div className={classes.contentReview}>
                     {
-                        state.loading ?
-                            <div className={classes.centerMarginTop}>
-                                <CircularProgress color='inherit' />
-                            </div> :
-                            state.error ?
+                        service.rate && (
+                            service.rate.length === 0 ?
                                 <div className={classes.centerMarginTop}>
-                                    <Button onClick={getServiceDetail(service)}>Thử lại</Button>
+                                    <Typography><i>Chưa có review cho dịch vụ này</i></Typography>
                                 </div> :
-                                service.rate && (
-                                    service.rate.length === 0 ?
-                                        <div className={classes.centerMarginTop}>
-                                            <Typography><i>Chưa có review cho dịch vụ này</i></Typography>
-                                        </div> :
-                                        <div>
-                                            {service.rate.map((item, index) => (
-                                                <ReviewService key={index} review={item} />
-                                            ))}
-                                        </div>
-                                )
+                                <div>
+                                    {service.rate.map((item, index) => (
+                                        <ReviewService key={index} review={item} />
+                                    ))}
+                                </div>
+                        )
+                    }
+                    {
+                        state.loading &&
+                        <div className={classes.centerMarginTop}>
+                            <CircularProgress color='inherit' />
+                        </div>
+                    }
+                    {
+                        state.error &&
+                        <div className={classes.centerMarginTop}>
+                            <Button onClick={getServiceDetail(service)}>Thử lại</Button>
+                        </div>
+
                     }
                 </div>
             </div>
@@ -222,34 +343,35 @@ export default function ServiceItem(props) {
     const toggleDrawer = (open) => (event) => {
         if (event && event.type === 'keydown' && (event.key === 'Tab' || event.key === 'Shift'))
             return;
-
         setOpen(open);
     }
 
-    const getServiceDetail = (service, dispatch) => {
-        setState({
-            loading: true,
-            error: false
-        })
-        dispatch(getDetail(service._id, () => {
-            setState({
-                loading: false,
-                error: false
-            })
-        }, () => {
-            setState({
-                loading: false,
-                error: true
-            })
-        }))
-    }
-
-
     useEffect(() => {
         if (open && !service.rate) {
-            getServiceDetail(service, dispatch);
+            getServiceDetail(service, dispatch)
         }
     }, [open, service, dispatch])
+
+    const getServiceDetail = (service, dispatch) => {
+        if (!service.rate) {
+            setState({
+                loading: true,
+                error: false
+            })
+            dispatch(getDetail(service._id, () => {
+                setState({
+                    loading: false,
+                    error: false
+                })
+            }, () => {
+                setState({
+                    loading: false,
+                    error: true
+                })
+            }))
+        }
+
+    }
 
 
     const classes = serviceStyles();
@@ -262,7 +384,7 @@ export default function ServiceItem(props) {
                 </CardMedia>
                 <div>
                     <CardContent>
-                        <Typography variant='h5' className={classes.serviceName}>
+                        <Typography variant='h5' className={classes.serviceName} onClick={toggleDrawer(true)}>
                             {service.name}
                         </Typography>
                         <Typography>{service.andress}</Typography>
@@ -286,6 +408,7 @@ export default function ServiceItem(props) {
                 anchor={'right'}
                 open={open}
                 onClose={toggleDrawer(false)}
+                style={{ zIndex: 10 }}
             >
                 <ServiceDetail service={service} state={state} getServiceDetail={getServiceDetail} handleClose={toggleDrawer} />
             </Drawer>

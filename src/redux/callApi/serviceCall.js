@@ -37,11 +37,22 @@ export const getDetail = (id, next, error) => async (dispatch) => {
     }
 }
 
-export const reviewService = (id, auth, rate, content) => async (dispatch) => {
+export const reviewService = (id, auth, rate, content, images) => async (dispatch) => {
     try {
+        let arrImage = [];
+
+        if (images && images.length > 0) {
+            arrImage = await imageUtils.uploadImages(images);
+        }
+
+        // console.log(arrImage);
+
         const res = await customAxios(auth.token).post(`/service/review/${id}`, {
-            rate, content
-        })
+            rate, content,
+            images: arrImage
+        });
+
+
 
         const newReview = {
             userId: {
@@ -50,8 +61,10 @@ export const reviewService = (id, auth, rate, content) => async (dispatch) => {
                 avatar: auth.user.avatar
             },
             content: content,
-            rate: rate
+            rate: rate,
+            images: arrImage
         }
+
         dispatch(serviceAction.reviewService({ id: id, review: newReview, star: res.data.star }))
 
     } catch (err) {

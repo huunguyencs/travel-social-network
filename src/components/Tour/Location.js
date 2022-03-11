@@ -1,6 +1,6 @@
-import { Button, Card, CardContent, CardMedia, Grid, IconButton, InputBase, Modal, Typography, Backdrop, Fade, MenuItem, Dialog, DialogTitle, DialogActions, Popper, ClickAwayListener, Paper, MenuList } from "@material-ui/core";
+import { Button, Card, CardContent, CardMedia, Grid, IconButton, InputBase, Modal, Typography, Backdrop, Fade, MenuItem, Dialog, DialogTitle, DialogActions, Popper, ClickAwayListener, Paper, MenuList, TextField } from "@material-ui/core";
 import React, { useState } from "react";
-import { MoreVert } from "@material-ui/icons";
+import { Close, MoreVert } from "@material-ui/icons";
 import { useDispatch } from "react-redux";
 import { Link } from "react-router-dom";
 
@@ -16,7 +16,7 @@ function Detail(props) {
     const classes = tourdetailStyles();
     const dispatch = useDispatch();
 
-    const { location, isEdit, isSave, indexDate, indexLocation } = props;
+    const { location, isEdit, isSave, indexDate, indexLocation, handleClose } = props;
 
     const [description, setDescription] = useState(location.description);
     const [time, setTime] = useState(location.time);
@@ -38,56 +38,60 @@ function Detail(props) {
 
 
     return (
-        <Paper style={{ width: 1000 }}>
+        <Paper className={classes.paperDetail}>
             <Grid container>
-                <Grid item md={6} sm={12} xs={12}>
+                <Grid item md={6} className={classes.imageDetail}>
                     <div style={{ padding: 30 }}>
                         <img src={location.location.images[0]} alt="Location" style={{ width: "100%", height: 400 }} />
                     </div>
                 </Grid>
                 <Grid item md={6} sm={12} xs={12}>
-                    <div style={{ padding: 30 }}>
-                        <Typography variant="h4" component={Link} to={"/location/" + location.location.name}>{location.location.fullname}</Typography>
+                    <div className={classes.closeBtn}>
+                        <IconButton onClick={handleClose} size='small'>
+                            <Close />
+                        </IconButton>
+                    </div>
+                    <div style={{ padding: 30, paddingTop: 0 }}>
+                        <Typography variant="h5" component={Link} to={"/location/" + location.location.name}>{location.location.fullname}</Typography>
                         {
                             isEdit ?
                                 <div>
                                     <InputBase
-                                        placeholder="Thông tin"
+                                        placeholder="Mô tả"
                                         title="Thông tin"
                                         variant="outlined"
                                         name="description"
                                         id="description"
-                                        style={{ width: "100%" }}
-                                        // className={classes.hashtag}
+                                        className={classes.descriptionInput}
                                         multiline
+                                        rows={5}
                                         value={description}
                                         onChange={e => setDescription(e.target.value)}
                                     />
-                                    <InputBase
-                                        placeholder="Thời gian"
+                                    <TextField
+                                        label="Thời gian"
                                         title="Thời gian"
                                         variant="outlined"
                                         name="time"
                                         id="time"
-                                        style={{ width: "100%" }}
-                                        // className={classes.hashtag}
+                                        className={classes.fullField}
                                         value={time}
                                         onChange={e => setTime(e.target.value)}
                                     />
-                                    <InputBase
-                                        placeholder="Chi phí"
+                                    <TextField
+                                        label="Chi phí"
                                         title="Chi phí"
                                         variant="outlined"
                                         name="cost"
                                         id="cost"
                                         type="number"
-                                        style={{ width: "100%" }}
+                                        className={classes.fullField}
                                         // className={classes.hashtag}
                                         value={cost}
                                         onChange={e => setCost(e.target.value)}
                                     />
-                                    <div>
-                                        <Button onClick={handleUpdateInfo}>Cập nhật</Button>
+                                    <div className={classes.btnWrap}>
+                                        <Button onClick={handleUpdateInfo} variant="contained" color="primary">Cập nhật</Button>
                                     </div>
                                 </div> :
                                 <div>
@@ -260,6 +264,7 @@ export default function Location(props) {
                                     <Fade in={showDetail}>
                                         <DetailRef
                                             ref={refDetail}
+                                            handleClose={handleCloseDetail}
                                             {...props}
                                         />
                                     </Fade>

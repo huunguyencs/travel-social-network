@@ -62,8 +62,22 @@ const tourdetailStyles = makeStyles((theme) => ({
             marginInline: 10,
         }
     },
+    serviceContainer: {
+        marginTop: 30,
+        width: 500,
+        borderRadius: attr.borderRadius.sm,
+        [theme.breakpoints.down("md")]: {
+            width: 400
+        },
+        [theme.breakpoints.down("sm")]: {
+            width: 500
+        },
+        [theme.breakpoints.down("xs")]: {
+            width: 400,
+        }
+    },
     detailInfo: {
-        marginTop: 30
+        // marginTop: 30
     },
     imgContainer: {
         padding: 20,
@@ -280,6 +294,39 @@ const tourdetailStyles = makeStyles((theme) => ({
     },
     line: {
         width: "80%"
+    },
+    fullField: {
+        width: "100%",
+        marginBlock: 10
+    },
+    btnWrap: {
+        display: 'flex',
+        justifyContent: 'right'
+    },
+    descriptionInput: {
+        width: "100%",
+        marginBlock: 10,
+        backgroundColor: '#ddd',
+        padding: 10,
+        borderRadius: attr.borderRadius.xs,
+    },
+    imageDetail: {
+        [theme.breakpoints.down(1050)]: {
+            display: 'none'
+        }
+    },
+    paperDetail: {
+        width: 1000,
+        [theme.breakpoints.down(1050)]: {
+            width: 600
+        },
+        [theme.breakpoints.down("xs")]: {
+            width: 400
+        }
+    },
+    closeBtn: {
+        display: 'flex',
+        justifyContent: 'right',
     }
 }))
 

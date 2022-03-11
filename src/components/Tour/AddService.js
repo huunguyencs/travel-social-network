@@ -6,7 +6,7 @@ import * as tourAction from '../../redux/actions/createTourAction';
 import Autocomplete, { createFilterOptions } from '@material-ui/lab/Autocomplete';
 import { formStyles, tourdetailStyles } from '../../style';
 import { Link } from 'react-router-dom';
-import { AddCircle, MoreVert } from '@material-ui/icons';
+import { AddCircle, Close, MoreVert } from '@material-ui/icons';
 import { ReviewArea } from '../Service/ServiceItem';
 
 
@@ -156,7 +156,7 @@ function ServiceItemAddForm(props) {
 }
 
 function DetailService(props) {
-    const { service, isEdit, type, indexService, isOwn } = props;
+    const { service, isEdit, type, indexService, isOwn, handleClose } = props;
 
     const [cost, setCost] = useState(service.cost);
     const [description, setDescription] = useState(service.description);
@@ -171,63 +171,73 @@ function DetailService(props) {
     const classes = tourdetailStyles();
 
     return (
-        <Paper style={{ width: 800 }}>
+        <Paper className={classes.paperDetail}>
             <Grid container>
-                <Grid item md={6} sm={12} xs={12}>
+                <Grid item md={6} className={classes.imageDetail}>
                     <div style={{ padding: 30 }}>
-                        <img src={service.service ? service.service.images[0] : 'https://skillz4kidzmartialarts.com/wp-content/uploads/2017/04/default-image-620x600.jpg'} alt="Service" style={{ width: '100%', height: 200 }} />
+                        <img src={service.service ? service.service.images[0] : 'https://skillz4kidzmartialarts.com/wp-content/uploads/2017/04/default-image-620x600.jpg'} alt="Service" style={{ width: '100%', height: 400 }} />
                     </div>
                 </Grid>
                 <Grid item md={6} sm={12} xs={12}>
-                    <div className={classes.detailInfo}>
+                    <div className={classes.closeBtn}>
+                        <IconButton onClick={handleClose} size='small'>
+                            <Close />
+                        </IconButton>
+                    </div>
+                    <div style={{ padding: 30, paddingTop: 0 }}>
                         {service.serviceName ?
-                            <Typography variant='h4'>{service.serviceName}</Typography> :
-                            <Typography variant='h4' component={Link} to={`/u/${service.service.cooperator}`}>{service.service.name}</Typography>
+                            <Typography variant='h5'>{service.serviceName}</Typography> :
+                            <Typography variant='h5' component={Link} to={`/u/${service.service.cooperator}`}>{service.service.name}</Typography>
 
                         }
+                        {
+                            isEdit ?
+                                <div >
+                                    <InputBase
+                                        placeholder="Mô tả"
+                                        title="Thông tin"
+                                        variant="outlined"
+                                        name="description"
+                                        id="description"
+                                        rows={5}
+                                        className={classes.descriptionInput}
+                                        // className={classes.hashtag}
+                                        multiline
+                                        value={description}
+                                        onChange={e => setDescription(e.target.value)}
+                                    />
+                                    <TextField
+                                        label="Chi phí (nghìn VND)"
+                                        variant="outlined"
+                                        name="cost"
+                                        id="cost"
+                                        className={classes.fullField}
+                                        type={"number"}
+                                        value={cost}
+                                        onChange={(e) => setCost(e.target.value)}
+                                    />
+                                    <div className={classes.btnWrap}>
+                                        <Button onClick={handleUpdate} variant="contained" color="primary">
+                                            Cập nhật
+                                        </Button>
+                                    </div>
+                                </div> :
+                                <div>
+                                    <Typography>Chi phí: {new Intl.NumberFormat().format(cost * 1000)} VND</Typography>
+                                    <Typography>Mô tả: {description}</Typography>
+                                </div>
+                        }
+                        {!isEdit && isOwn && service?.service &&
+                            <ReviewArea id={service.service._id} />
+                        }
                     </div>
-                    {
-                        isEdit ?
-                            <div>
-                                <InputBase
-                                    placeholder="Thông tin"
-                                    title="Thông tin"
-                                    variant="outlined"
-                                    name="description"
-                                    id="description"
-                                    style={{ width: "100%" }}
-                                    // className={classes.hashtag}
-                                    multiline
-                                    value={description}
-                                    onChange={e => setDescription(e.target.value)}
-                                />
-                                <TextField
-                                    label="Chi phí (nghìn VND)"
-                                    variant="outlined"
-                                    name="cost"
-                                    id="cost"
-                                    style={{ width: "100%" }}
-                                    type={"number"}
-                                    value={cost}
-                                    onChange={(e) => setCost(e.target.value)}
-                                />
-                                <Button onClick={handleUpdate}>
-                                    Cập nhật
-                                </Button>
-                            </div> :
-                            <div>
-                                <Typography>Chi phí: {new Intl.NumberFormat().format(cost * 1000)} VND</Typography>
-                                <Typography>Mô tả: {description}</Typography>
-                            </div>
-                    }
-                    {!isEdit && isOwn && service?.service &&
-                        <ReviewArea id={service.service._id} />
-                    }
+
                 </Grid>
             </Grid>
         </Paper>
     )
 }
+
 
 export function ServiceCard(props) {
     const { service, index, isEdit, review, isOwn, type } = props;
@@ -276,8 +286,7 @@ export function ServiceCard(props) {
     )
 
     return (
-        <Card className={classes.cardContainer} >
-
+        <Card className={classes.serviceContainer} >
             <Grid container>
                 <Grid item md={5} sm={3} className={classes.imageLocation}>
                     <CardMedia className={classes.imgContainer}>
@@ -286,6 +295,7 @@ export function ServiceCard(props) {
                 </Grid>
                 <Grid item md={7} sm={9} xs={12}>
                     <CardContent className={classes.contentContainer}>
+
                         <div className={classes.locationContentContainer}>
                             <div>
                                 <div>
@@ -295,56 +305,57 @@ export function ServiceCard(props) {
                                     <Typography>Chi phí: {new Intl.NumberFormat().format(service.cost * 1000)} VND</Typography>
                                 </div>
                             </div>
-                        </div>
-                        <div>
-                            {isEdit &&
-                                <div style={{ display: 'flex', justifyContent: 'right' }}>
-                                    <IconButton
-                                        size="small"
-                                        onClick={handleShowMenu}
-                                        controls={anchorEl ? "service-item-menu" : undefined}
-                                    >
-                                        <MoreVert />
-                                    </IconButton>
-                                    <Popper
-                                        open={Boolean(anchorEl)}
-                                        anchorEl={anchorEl}
-                                        onClose={handleCloseMenu}
-                                        disablePortal
-                                    >
-                                        {/* <Grow
+                            <div>
+                                {isEdit &&
+                                    <div style={{ display: 'flex', justifyContent: 'right' }}>
+                                        <IconButton
+                                            size="small"
+                                            onClick={handleShowMenu}
+                                            controls={anchorEl ? "service-item-menu" : undefined}
+                                        >
+                                            <MoreVert />
+                                        </IconButton>
+                                        <Popper
+                                            open={Boolean(anchorEl)}
+                                            anchorEl={anchorEl}
+                                            onClose={handleCloseMenu}
+                                            disablePortal
+                                        >
+                                            {/* <Grow
                                                 style={{ transformOrigin: "center bottom" }}
                                             > */}
-                                        <ClickAwayListener onClickAway={handleCloseMenu}>
-                                            <Paper>
-                                                <MenuList>
-                                                    <MenuItem onClick={handleShowDelete}>
-                                                        Xóa
-                                                    </MenuItem>
-                                                    <Dialog
-                                                        open={showDelete}
-                                                        onClose={handleCloseDelete}
-                                                        aria-labelledby="alert-dialog-title"
-                                                        aria-describedby="alert-dialog-description"
-                                                    >
-                                                        <DialogTitle id="alert-dialog-title">{"Bạn có chắc chắn muốn xóa?"}</DialogTitle>
-                                                        <DialogActions>
-                                                            <Button onClick={handleCloseDelete}>
-                                                                Hủy
-                                                            </Button>
-                                                            <Button onClick={handleDelete} className={classes.delete}>
-                                                                Xóa
-                                                            </Button>
-                                                        </DialogActions>
-                                                    </Dialog>
-                                                </MenuList>
-                                            </Paper>
-                                        </ClickAwayListener>
-                                        {/* </Grow> */}
-                                    </Popper>
-                                </div>
-                            }
+                                            <ClickAwayListener onClickAway={handleCloseMenu}>
+                                                <Paper>
+                                                    <MenuList>
+                                                        <MenuItem onClick={handleShowDelete}>
+                                                            Xóa
+                                                        </MenuItem>
+                                                        <Dialog
+                                                            open={showDelete}
+                                                            onClose={handleCloseDelete}
+                                                            aria-labelledby="alert-dialog-title"
+                                                            aria-describedby="alert-dialog-description"
+                                                        >
+                                                            <DialogTitle id="alert-dialog-title">{"Bạn có chắc chắn muốn xóa?"}</DialogTitle>
+                                                            <DialogActions>
+                                                                <Button onClick={handleCloseDelete}>
+                                                                    Hủy
+                                                                </Button>
+                                                                <Button onClick={handleDelete} className={classes.delete}>
+                                                                    Xóa
+                                                                </Button>
+                                                            </DialogActions>
+                                                        </Dialog>
+                                                    </MenuList>
+                                                </Paper>
+                                            </ClickAwayListener>
+                                            {/* </Grow> */}
+                                        </Popper>
+                                    </div>
+                                }
+                            </div>
                         </div>
+
                     </CardContent>
 
 

@@ -135,7 +135,7 @@ export default function TourDetail(props) {
                                         </div>
                                         <div className={classes.itemInfo}>
                                             <Typography variant="body1" className={classes.content}>
-                                                Chi phí: {new Intl.NumberFormat().format(tour.cost * 1000)} VND
+                                                Tổng chi phí: {new Intl.NumberFormat().format(tour.cost * 1000)} VND
                                             </Typography>
                                         </div>
                                     </Grid>
@@ -149,7 +149,7 @@ export default function TourDetail(props) {
                                             />
                                         </div>
                                     </Grid>
-                                    <div>
+                                    <Grid item md={4} sm={12} xs={12}>
                                         {
                                             isOwn ?
                                                 <div className={classes.center}>
@@ -165,7 +165,7 @@ export default function TourDetail(props) {
                                                     </Button>
                                                 </div>
                                         }
-                                    </div>
+                                    </Grid>
                                 </Grid>
                             </Container>
                         </div>
@@ -229,7 +229,7 @@ export default function TourDetail(props) {
                                         }
                                     </Grid>
                                     <Grid item md={6} className={classes.addContainerLarge}>
-                                        <Container style={{ marginLeft: 30 }}>
+                                        <Container style={{ margin: 30 }}>
                                             {position ? <MapCard position={position} zoom={12} locations={locations} /> : null}
                                         </Container>
                                     </Grid>
@@ -285,6 +285,9 @@ export default function TourDetail(props) {
                                                 }
                                             </div>
                                         </TabPanel>
+                                    </Grid>
+                                    <Grid item md={6}>
+
                                     </Grid>
                                 </Grid>
                             </Container>
