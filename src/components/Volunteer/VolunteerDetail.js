@@ -1,22 +1,54 @@
-import { Avatar, Grid, CardHeader, List, Radio, ListItem, ListItemIcon, ListItemText, RadioGroup, FormControlLabel } from '@material-ui/core';
+import { Avatar, Grid, CardHeader, List, Radio, ListItem, ListItemIcon, ListItemText, RadioGroup, FormControlLabel, CircularProgress, DialogActions, DialogContent, Dialog, DialogTitle } from '@material-ui/core';
 import { Timeline, TimelineItem, TimelineSeparator, TimelineConnector, TimelineContent, TimelineDot } from '@material-ui/lab'
 import { DoneOutline, RadioButtonUnchecked, AssistantPhoto, Event, Schedule } from '@material-ui/icons';
 import React, { useState } from "react";
 import { Button, Typography } from '@material-ui/core';
 import { volunteerDetailStyles } from '../../style';
 import ImageList from '../Modal/ImageList';
-
+import {joinVolunteerAll} from '../../redux/callApi/volunteerCall';
 import { convertDateToStr } from "../../utils/date";
 import { Link } from 'react-router-dom';
+import { useDispatch, useSelector } from 'react-redux';
 
 export default function VolunteerDetail(props) {
 
     const [idx, setIdx] = useState(0);
     const [idxLocation, setIdxLocation] = useState(0);
     const classes = volunteerDetailStyles();
-
+    const dispatch = useDispatch();
     const { volunteer } = props;
-    // console.log("data", volunteer)
+    const { auth } = useSelector(state => state);
+    
+    const [showJoin, setShowJoin] = useState(false);
+    const [loadingJoinALl, setLoadingJoinAll] = useState(false);
+    const handleShowJoin = () => {
+        setShowJoin(true);
+    }
+    const handleCloseJoin = () => {
+        setShowJoin(false);
+    }
+
+    const handleJoinAll = () =>{
+        setLoadingJoinAll(true);
+        dispatch(joinVolunteerAll(volunteer._id, auth.token, () => {
+            setLoadingJoinAll(false);
+        }, () => {
+            setLoadingJoinAll(false);
+        }))
+        handleCloseJoin();
+    }
+    const checkIsJoinAll = () =>{
+        if(volunteer.users.length > 0){
+            volunteer.users.forEach(element => {
+                if(element._id === auth.user._id) return true;
+            });
+        }
+        else{
+            return false;
+        }
+        
+    }
+
     return (
         <>
             {
@@ -25,7 +57,7 @@ export default function VolunteerDetail(props) {
                         <Typography variant='h4' className={classes.volunteerDetailTitle}>{volunteer.name}</Typography>
                         <Grid container>
                             <Grid item md={5}>
-                                <ImageList imageList={[volunteer.image]} show2Image={false} defaultHeight={300} />
+                                <ImageList imageList={volunteer.images} show2Image={true} defaultHeight={300} />
                             </Grid>
                             <Grid item md={5} style={{ margin: "0 auto", padding: 15 }}>
                                 <CardHeader
@@ -161,9 +193,29 @@ export default function VolunteerDetail(props) {
                                             </td>
                                             <td className={classes.registerTableData}>
                                                 <div style={{ display: 'flex', justifyContent: 'center' }}>
-                                                    <Button className={classes.registerTableBookingButton}>
+                                                    <Button className={classes.registerTableBookingButton} disabled={!checkIsJoinAll()} onClick={handleShowJoin}>
                                                         Đăng ký ngay
                                                     </Button>
+                                                    <Dialog
+                                                        open={showJoin}
+                                                        onClose={handleCloseJoin}
+                                                        aria-labelledby="show-delete-dialog"
+                                                        aria-describedby="show-delete-dialog-description"
+                                                    >
+                                                        <DialogTitle id="alert-dialog-title">{"Bạn muốn đăng ký tham gia hoạt động?"}</DialogTitle>
+
+                                                        <DialogContent>Hãy đọc kỹ chi tiết hoạt động</DialogContent>
+                                                        <DialogActions>
+                                                            <Button onClick={handleCloseJoin}>
+                                                                Hủy
+                                                            </Button>
+                                                            <Button onClick={handleJoinAll} className={classes.delete}>
+                                                                {
+                                                                    loadingJoinALl ? <CircularProgress size={15} color='inherit' /> : "Đăng ký"
+                                                                }
+                                                            </Button>
+                                                        </DialogActions>
+                                                    </Dialog>
                                                 </div>
                                             </td>
                                         </tr>
@@ -231,7 +283,7 @@ export default function VolunteerDetail(props) {
                                                 </RadioGroup>
                                             </div>
                                             <div>
-                                                <Button className={classes.registerItemBookingButton}>
+                                                <Button className={classes.registerItemBookingButton} disabled={!checkIsJoinAll()}>
                                                     Đăng ký ngay
                                                 </Button>
                                             </div>

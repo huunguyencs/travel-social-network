@@ -22,7 +22,7 @@ export const createVolunteer = (token, socket, data, images_data, next, error) =
 
         const res = await customAxios(token).post('/volunteer/create_volunteer', {
             ...data,
-            image: images[0]
+            images: images
         })
         next();
         //notify
@@ -47,24 +47,13 @@ export const createVolunteer = (token, socket, data, images_data, next, error) =
 export const updateVolunteer = (id, token, socket, data, images_data, next, error) => async (dispatch) => {
     try {
         let images = await imageUtils.uploadImages(images_data);
-        console.log("data", data)
+        // console.log("data", data)
         await customAxios(token).patch(`/volunteer/${id}`, {
             ...data,
-            image: images[0]
+            images: images
         })
         next();
-        //notify
-        // const dataNotify = {
-        //     id: res.data.newVolunteer._id,
-        //     text: " thêm hoạt động tình nguyện mới",
-        //     recipients: res.data.newVolunteer.userId.followers,
-        //     content: res.data.newVolunteer.name,
-        //     image: res.data.newVolunteer.image,
-        //     url: `/volunteer/${res.data.newVolunteer._id}`,
-        // }
-        // // console.log(dataNotify);
-        // dispatch(createNotify(dataNotify, token, socket));
-        // dispatch(alertAction.success({ message: "Đã gửi thông tin thành công!" }));
+        dispatch(alertAction.success({ message: "Cập nhập thông tin thành công!" }));
     }
     catch (err) {
         error();
@@ -89,6 +78,23 @@ export const deleteVolunteer = (volunteer, token, socket, next, error) => async 
     }
     catch (err) {
         // dispatch(tourAction.error({ error: err.response.data.message }));
+        error();
+        if (err.response && err.response.data && err.response.data.message)
+            dispatch(alertAction.error({ message: err.response.data.message }))
+        else
+            dispatch(alertAction.error({ message: "Có lỗi xảy ra" }));
+    }
+}
+
+export const joinVolunteerAll = (id, token, next, error) => async (dispatch) => {
+    try {
+        await customAxios(token).patch(`/volunteer/${id}/joinAll`);
+
+        // dispatch(tourAction.updateJoin({ id: id, joinIds: res.data.joinIds }));
+        dispatch(alertAction.success({ message: "Đăng ký tham gia hoạt động thành công!" }));
+        next();
+    }
+    catch (err) {
         error();
         if (err.response && err.response.data && err.response.data.message)
             dispatch(alertAction.error({ message: err.response.data.message }))

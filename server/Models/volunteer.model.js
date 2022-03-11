@@ -10,8 +10,10 @@ const volunteerSchema = new mongoose.Schema({
     descriptions: [{ type: String }],
     date: [{ type: mongoose.Types.ObjectId, ref: 'volunteer_dates' }],
     location: [{ type: mongoose.Types.ObjectId, ref: 'volunteer_locations' }],
-    image: String,
+    images: [{ type: String }],
     cost: String,
+    type: String,
+    users: [{ type: mongoose.Types.ObjectId, ref: 'users' }]
 }, {
     timestamps: true
 })

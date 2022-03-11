@@ -13,4 +13,7 @@ router.get('/:id', VolunteerController.getVolunteer);
 router.patch('/:id', auth, VolunteerController.updateVolunteer);
 router.delete('/:id', auth, VolunteerController.deleteVolunteer);
 
+router.patch('/:id/joinAll', auth, VolunteerController.joinVolunteerAll);
+router.patch('/:id/unjoinAll', auth, VolunteerController.unJoinVolunteerAll);
+
 module.exports = router;

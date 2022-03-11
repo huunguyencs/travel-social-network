@@ -7,7 +7,6 @@ const volunteerLocationSchema = new mongoose.Schema({
     description: [{type:String}],
     activities: [{ type: String }],
     ageUser: String,
-    images: [{type:String}],
     location: { type: mongoose.Types.ObjectId, ref: 'locations' },
     accommodation: String
 }, {

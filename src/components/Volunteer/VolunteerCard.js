@@ -70,7 +70,7 @@ export default function VolunteerCard(props) {
     return (
         <Card className={classes.root}>
             <CardMedia
-                image={volunteer.image}
+                image={volunteer.images[0]}
                 title={volunteer.name}
                 className={classes.media}
             />
@@ -153,7 +153,7 @@ export default function VolunteerCard(props) {
                 </Typography>
                 <Typography>Thời gian: {convertDateToStr(volunteer.date[0].date)}</Typography>
                 <Typography>Địa điểm xuất phát: {volunteer.location[0].location.fullname}</Typography>
-                <Typography>Thể loại: Giáo dục</Typography>
+                <Typography>Thể loại: {volunteer.type}</Typography>
             </CardContent>
         </Card>
     )

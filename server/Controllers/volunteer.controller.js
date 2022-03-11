@@ -5,10 +5,10 @@ const Comments = require('../Models/comment.model')
 class VolunteerController {
     async createVolunteer(req, res) {
         try {
-            const { name, image, cost, descriptions, date, location } = req.body
+            const { name, images, cost, type, descriptions, date, location } = req.body
 
             const newVolunteer = new Volunteers({
-                userId: req.user._id, name, image, descriptions, cost, date: [], location: []
+                userId: req.user._id, name, type, images, descriptions, cost, date: [], location: [], users: []
             })
 
             await newVolunteer.save()
@@ -32,7 +32,7 @@ class VolunteerController {
                     const newVolunteerLocation = new VolunteerLocations({
                         users: [], timeStart: element.timeStart, maxUsers: element.maxUsers, description: element.description,
                         activities: element.activities,
-                        ageUser: element.ageUser, images: element.images, location: element.location
+                        ageUser: element.ageUser, location: element.location
                     })
                     await newVolunteerLocation.save();
                     await Volunteers.findOneAndUpdate({ _id: newVolunteer._id }, {
@@ -63,10 +63,10 @@ class VolunteerController {
 
     async updateVolunteer(req, res) {
         try {
-            const { name, image, cost, descriptions, date, location } = req.body;
+            const { name, images, type, cost, descriptions, date, location } = req.body;
 
             const newVolunteer = await Volunteers.findOneAndUpdate({ _id: req.params.id, userId: req.user._id }, {
-                name, image, cost, descriptions
+                name, images, type, cost, descriptions
             }, { new: true })
                 .populate("userId", "username fullname avatar")
                 .populate("date", "accommodation date activities")
@@ -211,6 +211,7 @@ class VolunteerController {
                         select: "fullname position"
                     }
                 })
+                .populate("users", "avatar fullname _id")
 
 
             res.json({
@@ -253,10 +254,26 @@ class VolunteerController {
                 $push: {
                     users: req.user._id
                 }
-            }, { new: true }).populate("joinIds", "avatar fullname username")
+            }, { new: true }).populate("users", "avatar fullname username")
             res.json({
                 success: true, message: "join volunteer success",
-                joinIds: volunteer.joinIds
+                users: volunteer.users
+            });
+        } catch (err) {
+            res.status(500).json({ success: false, message: err.message })
+        }
+    }
+    async unJoinVolunteerAll(req, res) {
+        try {
+            const volunteer = await Volunteers.findByIdAndUpdate(req.params.id, {
+                $pull: {
+                    users: req.user._id
+                }
+            }, { new: true }).populate("users", "avatar fullname username")
+
+            res.json({
+                success: true, message: "unjoin volunteer success",
+                joinIds: volunteer.users
             });
         } catch (err) {
             res.status(500).json({ success: false, message: err.message })

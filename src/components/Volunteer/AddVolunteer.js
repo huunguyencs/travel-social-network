@@ -49,21 +49,23 @@ export default function AddVolunteer(props) {
     const [tempLocation, setTempLocation] = useState(null);
 
     //data save
-    const [images, setImages] = useState(volunteer ? [volunteer.image] : []);
+    const [images, setImages] = useState(volunteer ? volunteer.images : []);
     const [context, setContext] = useState(volunteer ? {
         name: volunteer.name,
         descriptions: volunteer.descriptions,
-        cost: volunteer.cost
+        cost: volunteer.cost,
+        type: volunteer.type
     } :
         {
             name: "",
             descriptions: [],
-            cost: ""
+            cost: "",
+            type:""
         });
     const [dateVolunteer, setDateVolunteer] = useState(volunteer ? volunteer.date : [{
         activities: [],
         accommodation: "",
-        date: null
+        date: new Date()
     }]);
 
     const [locationVolunteer, setLocationVolunteer] = useState(volunteer ? volunteer.location : []);
@@ -94,12 +96,14 @@ export default function AddVolunteer(props) {
 
 
     const handleAddDay = () => {
+        var newDate = new Date(dateVolunteer[dateVolunteer.length -1].date);
+        newDate.setDate(newDate.getDate() + 1);
         setDateVolunteer([
             ...dateVolunteer,
             {
                 activities: [],
                 accommodation: "",
-                date: null
+                date: newDate
             }
         ])
     }
@@ -285,6 +289,7 @@ export default function AddVolunteer(props) {
             }))
         }
     }
+    
 
     return (
         <div className={classes.formContainer}>
@@ -298,6 +303,31 @@ export default function AddVolunteer(props) {
                 onChange={handleChange}
                 value={context.name}
             />
+            <Grid container>
+                <Grid item md={6} sm={12} xs={12}>
+                    <TextField
+                        label="Giá tiêu chuẩn"
+                        variant="outlined"
+                        name="cost"
+                        required
+                        className={classes.fullField}
+                        onChange={handleChange}
+                        value={context.cost}
+                    />
+                </Grid>
+                <Grid item md={6} sm={12} xs={12}>
+                    <TextField
+                        label="Thể loại"
+                        variant="outlined"
+                        name="type"
+                        required
+                        className={classes.fullField}
+                        onChange={handleChange}
+                        value={context.type}
+                    />
+                </Grid>
+            </Grid>
+            
             <AddImageHorizontal
                 images={images}
                 onChange={setImages}
@@ -458,11 +488,13 @@ export default function AddVolunteer(props) {
                 <Typography variant="h5">
                     Hoạt động chi tiết cho từng địa điểm
                 </Typography>
+            {
+                locationVolunteer.length !== 0 && 
                 <Grid container>
                     <Grid item md={3} sm={12} xs={12}>
                         <div className={classes.timeline}>
                             <Timeline align="right" >
-                                {locationVolunteer.length !== 0 && locationVolunteer.map((item, index) => (
+                                {locationVolunteer.length !== 0 ? locationVolunteer.map((item, index) => (
                                     <TimelineItem key={index}>
                                         <TimelineSeparator>
                                             <TimelineDot className={index === idxLocation ? classes.activeDot : classes.unactiveDot} />
@@ -479,7 +511,7 @@ export default function AddVolunteer(props) {
                                             </div>
                                         </TimelineContent>
                                     </TimelineItem>
-                                ))}
+                                )):<></>}
                             </Timeline>
                         </div>
                         <div className={classes.smallTimeline}>
@@ -605,6 +637,7 @@ export default function AddVolunteer(props) {
                         }
                     </Button >
                 </Grid >
+            }
             </div >
         </div >
     )
