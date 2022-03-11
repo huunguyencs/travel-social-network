@@ -131,10 +131,10 @@ class ServiceController {
 
     async reviewService(req, res) {
         try {
-            const { rate, content } = req.body;
+            const { rate, content, images } = req.body;
             await Services.findByIdAndUpdate(req.params.id, {
                 $push: {
-                    rate: { rate, content, userId: req.user._id }
+                    rate: { rate, content, userId: req.user._id, images }
                 }
             }, { new: true })
 
@@ -170,6 +170,7 @@ class ServiceController {
 
             res.json({ success: true, message: "", star: service.star })
         } catch (err) {
+            console.log(err);
             res.status(500).json({ success: false, message: err.message })
         }
     }

@@ -292,7 +292,7 @@ export default function AddTour(props) {
                                     </div>
                                     <div className={classes.itemInfo}>
                                         <Typography variant="body1" className={classes.content}>
-                                            Chi phí: {new Intl.NumberFormat().format(createTour.cost * 1000)} VND
+                                            Tổng chi phí: {new Intl.NumberFormat().format(createTour.cost * 1000)} VND
                                         </Typography>
                                     </div>
                                     <div className={classes.itemInfo}>

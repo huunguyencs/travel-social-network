@@ -26,7 +26,14 @@ const serviceStyles = makeStyles((theme) => ({
 
     },
     serviceName: {
-        marginBottom: 10
+        marginBottom: 10,
+        cursor: 'pointer',
+        '&:hover': {
+            textDecoration: 'underline'
+        }
+    },
+    imageReview: {
+        cursor: 'pointer'
     },
     rate: {
         marginTop: 5
@@ -63,7 +70,11 @@ const serviceStyles = makeStyles((theme) => ({
         marginInline: 30
     },
     reviewerName: {
-        fontSize: 16
+        fontSize: 16,
+        fontWeight: 500,
+        '&:hover': {
+            textDecoration: 'underline',
+        }
     },
     reviewContent: {
         fontSize: 14
