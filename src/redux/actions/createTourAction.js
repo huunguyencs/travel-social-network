@@ -99,3 +99,10 @@ export const changeImage = (props) => {
         payload: props
     }
 }
+
+export const updateDesciptionDate = (props) => {
+    return {
+        type: CREATE_TOUR_TYPES.UPDATE_DESCRIPTION_DATE,
+        payload: props
+    }
+}

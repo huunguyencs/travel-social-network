@@ -34,6 +34,7 @@ const createTourReducer = (state = INIT_STATE, action) => {
                 tour: [...state.tour, {
                     date: newDate,
                     locations: [],
+                    description: ''
                 }]
             }
         }
@@ -87,6 +88,15 @@ const createTourReducer = (state = INIT_STATE, action) => {
                 tour: state.tour.map((date, i) => i === action.payload.indexDate ? {
                     ...date,
                     date: action.payload.newDate
+                } : date)
+            }
+        }
+        case TOUR_TYPES.UPDATE_DESCRIPTION_DATE: {
+            return {
+                ...state,
+                tour: state.tour.map((date, i) => i === action.payload.indexDate ? {
+                    ...date,
+                    description: action.payload.description
                 } : date)
             }
         }

@@ -1,4 +1,4 @@
-import { Button, Container, Grid, Modal, Typography, Backdrop, Fade, Dialog, DialogActions, DialogTitle, CircularProgress, Tab, Tabs, Paper, IconButton } from "@material-ui/core";
+import { Button, Container, Grid, Modal, Typography, Backdrop, Fade, Dialog, DialogActions, DialogTitle, CircularProgress, Tab, Tabs, Paper, IconButton, TextField } from "@material-ui/core";
 import React, { useEffect, useState } from "react";
 import { Timeline, TimelineItem, TimelineSeparator, TimelineConnector, TimelineContent, TimelineDot } from '@material-ui/lab'
 import { useDispatch, useSelector } from "react-redux";
@@ -56,6 +56,62 @@ function extractService(services) {
                 return item;
             }
         })
+    )
+}
+
+function EditDescriptionDate(props) {
+    const { date, description } = props;
+
+    const [text, setText] = useState(description);
+    const [change, setChange] = useState(false);
+
+    const dispatch = useDispatch();
+
+    const handleChange = (e) => {
+        setChange(true);
+        setText(e.target.value);
+    }
+
+    const handleSubmit = (e) => {
+        if (text && text !== '') {
+            dispatch(tourAction.updateDesciptionDate({ indexDate: date, description: text }))
+            setChange(false);
+        }
+
+    }
+
+    const handleCancel = () => {
+        setText(description);
+        setChange(false);
+    }
+
+    return (
+        <div>
+            <TextField
+                label="Mô tả"
+                variant='outlined'
+                name='description'
+                onChange={handleChange}
+                value={text}
+                // className={classes.fullField}
+                style={{
+                    width: '100%',
+                    margin: 10
+                }}
+                multiline
+            />
+            {
+                change &&
+                <div style={{ display: 'flex', justifyContent: 'right' }}>
+                    <Button onClick={handleCancel}>
+                        Hủy
+                    </Button>
+                    <Button variant="contained" color="primary" onClick={handleSubmit}>
+                        Cập nhật
+                    </Button>
+                </div>
+            }
+        </div>
     )
 }
 
@@ -433,6 +489,7 @@ export default function AddTour(props) {
 
                                 </Grid>
                                 <Grid item md={4} sm={12} xs={12} className={classes.feedTour}>
+                                    <EditDescriptionDate date={idx} description={createTour.tour[idx].description} />
                                     {
                                         createTour.tour[idx].locations.map((item, index) => (
                                             <Location

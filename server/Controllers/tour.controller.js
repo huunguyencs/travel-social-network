@@ -16,7 +16,7 @@ class TourController {
             if (tour.length > 0) {
                 tour.forEach(async function (element) {
                     const newTourDate = new TourDates({
-                        date: element.date, locations: element.locations
+                        date: element.date, locations: element.locations, description: element.description
                     })
                     await newTourDate.save();
                     await Tours.findOneAndUpdate({ _id: newTour._id }, {

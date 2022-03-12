@@ -210,6 +210,7 @@ export default function TourDetail(props) {
                                         </div>
                                     </Grid>
                                     <Grid item md={4} sm={12} xs={12} className={classes.feedTour}>
+                                        <Typography>{tour.tour[idx].description}</Typography>
                                         {
                                             tour.tour[idx].locations.map((item, index) => (
                                                 <Location
@@ -239,57 +240,51 @@ export default function TourDetail(props) {
                         </TabPanel>
                         <TabPanel value={tab} index={1}>
                             <Container style={{ marginTop: 20 }}>
-                                <Grid container>
-                                    <Grid item md={6} sm={12} xs={12}>
-                                        <div className={classes.center}>
-                                            <Tabs value={tabService} onChange={handleChangeTabService} aria-label="tabs tour service" >
-                                                <Tab label="Di chuyển" {...a11yProps(0)} />
-                                                <Tab label="Ăn uống" {...a11yProps(1)} />
-                                                <Tab label="Khách sạn" {...a11yProps(2)} />
-                                                <Tab label="Khác" {...a11yProps(3)} />
-                                            </Tabs>
-                                        </div>
-                                        <TabPanel value={tabService} index={0}>
-                                            <div style={{ display: 'flex', justifyContent: 'center' }}>
-                                                {
-                                                    tour.services[0].map((item, index) => (
-                                                        <ServiceCard isOwn={isOwn} type={0} key={index} service={item} index={index} isEdit={false} />
-                                                    ))
-                                                }
-                                            </div>
-                                        </TabPanel>
-                                        <TabPanel value={tabService} index={1}>
-                                            <div style={{ display: 'flex', justifyContent: 'center' }}>
-                                                {
-                                                    tour.services[1].map((item, index) => (
-                                                        <ServiceCard isOwn={isOwn} type={1} key={index} service={item} index={index} isEdit={false} />
-                                                    ))
-                                                }
-                                            </div>
-                                        </TabPanel>
-                                        <TabPanel value={tabService} index={2}>
-                                            <div style={{ display: 'flex', justifyContent: 'center' }}>
-                                                {
-                                                    tour.services[2].map((item, index) => (
-                                                        <ServiceCard isOwn={isOwn} type={2} key={index} service={item} index={index} isEdit={false} />
-                                                    ))
-                                                }
-                                            </div>
-                                        </TabPanel>
-                                        <TabPanel value={tabService} index={3}>
-                                            <div style={{ display: 'flex', justifyContent: 'center' }}>
-                                                {
-                                                    tour.services[3].map((item, index) => (
-                                                        <ServiceCard isOwn={isOwn} type={3} key={index} service={item} index={index} isEdit={false} />
-                                                    ))
-                                                }
-                                            </div>
-                                        </TabPanel>
-                                    </Grid>
-                                    <Grid item md={6}>
+                                <div className={classes.center}>
+                                    <Tabs value={tabService} onChange={handleChangeTabService} aria-label="tabs tour service" >
+                                        <Tab label="Di chuyển" {...a11yProps(0)} />
+                                        <Tab label="Ăn uống" {...a11yProps(1)} />
+                                        <Tab label="Khách sạn" {...a11yProps(2)} />
+                                        <Tab label="Khác" {...a11yProps(3)} />
+                                    </Tabs>
+                                </div>
+                                <TabPanel value={tabService} index={0}>
+                                    <div style={{ display: 'flex', justifyContent: 'center' }}>
+                                        {
+                                            tour.services[0].map((item, index) => (
+                                                <ServiceCard isOwn={isOwn} type={0} key={index} service={item} index={index} isEdit={false} />
+                                            ))
+                                        }
+                                    </div>
+                                </TabPanel>
+                                <TabPanel value={tabService} index={1}>
+                                    <div style={{ display: 'flex', justifyContent: 'center' }}>
+                                        {
+                                            tour.services[1].map((item, index) => (
+                                                <ServiceCard isOwn={isOwn} type={1} key={index} service={item} index={index} isEdit={false} />
+                                            ))
+                                        }
+                                    </div>
+                                </TabPanel>
+                                <TabPanel value={tabService} index={2}>
+                                    <div style={{ display: 'flex', justifyContent: 'center' }}>
+                                        {
+                                            tour.services[2].map((item, index) => (
+                                                <ServiceCard isOwn={isOwn} type={2} key={index} service={item} index={index} isEdit={false} />
+                                            ))
+                                        }
+                                    </div>
+                                </TabPanel>
+                                <TabPanel value={tabService} index={3}>
+                                    <div style={{ display: 'flex', justifyContent: 'center' }}>
+                                        {
+                                            tour.services[3].map((item, index) => (
+                                                <ServiceCard isOwn={isOwn} type={3} key={index} service={item} index={index} isEdit={false} />
+                                            ))
+                                        }
+                                    </div>
+                                </TabPanel>
 
-                                    </Grid>
-                                </Grid>
                             </Container>
                         </TabPanel>
 

@@ -2,6 +2,7 @@ const mongoose = require('mongoose');
 
 const tourDateSchema = new mongoose.Schema({
     date: Date,
+    description: String,
     locations: [
         {
             location: { type: mongoose.Types.ObjectId, ref: 'locations' },
