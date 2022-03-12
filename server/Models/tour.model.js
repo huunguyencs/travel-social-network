@@ -26,7 +26,8 @@ const tourSchema = new mongoose.Schema({
             description: String
         }]
     ],
-    provinces: [{ type: String }]
+    provinces: [{ type: String }],
+    locations: [{ type: String }],
 }, {
     timestamps: true
 })

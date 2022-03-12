@@ -166,8 +166,11 @@ export default function Register(props) {
                 <div className={classes.imageCover} />
             </Grid>
             <Grid item md={6} sm={12} xs={12} className={classes.formLogin}>
-                {/* <h3 className="form-login-title">GOGO</h3> */}
+                {/* <h3 className="form-login-title">Triple H</h3> */}
                 <div className={classes.center} style={{ marginBottom: 50 }}>
+                    <img src='/tripleH_full-black.png' alt='Logo' width={100} height={100} />
+                </div>
+                <div className={classes.center} style={{ marginBottom: 20 }}>
                     <Typography variant="h4">Đăng ký tài khoản</Typography>
                 </div>
                 <form

@@ -76,7 +76,7 @@ const provinceStyles = makeStyles((theme) => ({
     },
     subsubtitleDes: {
         marginLeft: 30,
-        // whiteSpace: 'pre'
+        whiteSpace: 'pre-line'
     },
     source: {
         display: 'flex',

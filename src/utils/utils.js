@@ -25,7 +25,16 @@ export function extractProvinceTour(tour) {
     var province = [];
     tour.map(item => {
         item.locations.map(location => province.push(location.location.province.fullname))
-        return false;
+        return true;
     })
     return new Set(province);
+}
+
+export function extractLocationTour(location) {
+    var locations = [];
+    tour.map(item => {
+        item.locations.map(location => locations.push(location.location.fullname))
+        return true;
+    })
+    return new Set(locations);
 }

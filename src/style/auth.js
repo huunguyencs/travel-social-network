@@ -22,7 +22,7 @@ const authStyles = makeStyles((theme) => ({
 
     },
     formLogin: {
-        marginTop: 150
+        marginTop: 80
     },
     buttonActiveLogin: {
         color: color.white,

@@ -17,7 +17,7 @@ export default function Volunteer() {
     }, [dispatch])
 
     useEffect(() => {
-        document.title = "Du lịch tình nguyện | GOGO";
+        document.title = "Du lịch tình nguyện | Triple H";
     }, [])
 
     const { volunteer } = useSelector(state => state);

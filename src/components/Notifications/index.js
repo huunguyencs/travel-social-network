@@ -40,8 +40,7 @@ export default function NotificationItem(props) {
             <ListItemText>
                 <div>
                     <div style={{ display: "flex", alignItems: "center" }}>
-                        <strong className={classes.fullname}>{noti.user.fullname}</strong>
-                        <p className={classes.content}>{noti.text} : {noti.content.length > 20 ? noti.content.slice(0, 20) : noti.content} </p>
+                        <p className={classes.content}><strong className={classes.fullname}>{noti.user.fullname}</strong>{noti.text} : {noti.content.length > 20 ? noti.content.slice(0, 20) : noti.content} </p>
                     </div>
                     <div>
                         <span className={classes.timeAgo}>{timeAgo(new Date(noti.createdAt))}</span>

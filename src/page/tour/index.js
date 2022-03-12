@@ -24,7 +24,7 @@ export default function TourPage(props) {
     }, [dispatch])
 
     useEffect(() => {
-        document.title = "Hành trình | GOGO";
+        document.title = "Hành trình | Triple H";
     }, [])
 
     const ref = createRef();

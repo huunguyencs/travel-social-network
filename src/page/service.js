@@ -25,7 +25,7 @@ export default function ServicePage(props) {
     }, [dispatch]);
 
     useEffect(() => {
-        document.title = "Dịch vụ | GOGO";
+        document.title = "Dịch vụ | Triple H";
     }, [])
 
     return (

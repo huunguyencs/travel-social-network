@@ -105,8 +105,12 @@ export default function Header(props) {
         <AppBar style={{ zIndex: 2 }}>
             <Toolbar className={classes.toolbar}>
                 <Link to="/">
-                    <Typography variant="h6" className={classes.logo}>
-                        GOGO
+                    {/* <Typography variant="h6" className={classes.logo}>
+                        Triple H
+                    </Typography> */}
+                    {/* <img src='/tripleH-white.png' alt='Logo' width={110} height={35} /> */}
+                    <Typography variant="h5" style={{ fontFamily: 'Leckerli One', color: 'white' }}>
+                        Triple H
                     </Typography>
                 </Link>
 
@@ -220,8 +224,7 @@ export default function Header(props) {
 
                                                         <div>
                                                             <div style={{ display: "flex", alignItems: "center" }}>
-                                                                <strong style={{ marginRight: "5px" }}>{item.user.fullname}</strong>
-                                                                <p>{item.text} : {item.content.length > 20 ? item.content.slice(0, 20) : item.content} </p>
+                                                                <p style={{ whiteSpace: 'pre-line' }}><strong style={{ marginRight: "5px" }}>{item.user.fullname}</strong> {item.text} : {item.content.length > 20 ? item.content.slice(0, 20) : item.content} </p>
                                                             </div>
                                                             <div>
                                                                 <span style={{ color: "#34495e" }}>{timeAgo(new Date(item.createdAt))}</span>

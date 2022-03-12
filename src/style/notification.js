@@ -83,6 +83,7 @@ const notificationStyles = makeStyles((theme) => ({
         }
     },
     content: {
+        whiteSpace: 'pre-line',
         [theme.breakpoints.down("sm")]: {
             fontSize: 14
         }

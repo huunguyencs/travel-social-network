@@ -28,7 +28,7 @@ function HomePage() {
   }, [dispatch])
 
   useEffect(() => {
-    document.title = "GOGO";
+    document.title = "Triple H";
   }, [])
 
 

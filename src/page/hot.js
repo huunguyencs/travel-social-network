@@ -20,7 +20,7 @@ export default function HotPage(props) {
 
 
     useEffect(() => {
-        document.title = "Hot | GOGO";
+        document.title = "Hot | Triple H";
     }, [])
 
     return (

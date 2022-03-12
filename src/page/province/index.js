@@ -48,7 +48,7 @@ export default function ProvincePage() {
     }
 
     useEffect(() => {
-        document.title = "Tỉnh thành | GOGO"
+        document.title = "Tỉnh thành | Triple H"
     }, [])
 
     return (

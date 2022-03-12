@@ -3,7 +3,7 @@ import customAxios from '../../utils/fetchData';
 import * as imageUtils from '../../utils/uploadImage'
 import { createNotify, deleteNotify } from './notifyCall';
 import * as alertAction from '../actions/alertAction'
-import { extractProvinceTour, sortTourDate } from '../../utils/utils';
+import { extractLocationTour, extractProvinceTour, sortTourDate } from '../../utils/utils';
 import { resetTour } from '../actions/createTourAction';
 
 export const getTours = (query) => async (dispatch) => {
@@ -96,10 +96,11 @@ export const saveTour = (tour, image, token, socket, next, error) => async (disp
                 })),
             })),
             provinces: Array.from(extractProvinceTour(tour.tour)),
+            locations: Array.from(extractLocationTour(tour.tour)),
             image: image ? imageUpload[0] : ""
         }
 
-        console.log(data);
+        // console.log(data);
 
         const res = await customAxios(token).post('/tour/create_tour', data);
 
@@ -140,6 +141,7 @@ export const updateTour = (id, tour, image, token, next, error) => async (dispat
             })),
             image: image ? imageUpload[0] : "",
             provinces: Array.from(extractProvinceTour(tour.tour)),
+            locations: Array.from(extractLocationTour(tour.tour)),
         }
         const res = await customAxios(token).patch(`/tour/${id}`, data);
         next();

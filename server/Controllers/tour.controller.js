@@ -5,12 +5,12 @@ const Comments = require('../Models/comment.model')
 class TourController {
     async createTour(req, res) {
         try {
-            const { content, name, taggedIds, image, hashtags, tour, services, cost, provinces } = req.body;
+            const { content, name, taggedIds, image, hashtags, tour, services, cost, provinces, locations } = req.body;
 
             const joinIds = [req.user._id];
 
             const newTour = new Tours({
-                userId: req.user._id, content, image, name, taggedIds, hashtags, services, cost, provinces, joinIds, tour: []
+                userId: req.user._id, content, image, name, taggedIds, hashtags, services, cost, provinces, joinIds, tour: [], locations
             })
 
             await newTour.save()
@@ -86,10 +86,10 @@ class TourController {
     ///
     async updateTour(req, res) {
         try {
-            const { content, name, isPublic, image, hashtags, services, tour, cost } = req.body;
+            const { content, name, isPublic, image, hashtags, services, tour, cost, provinces, locations } = req.body;
 
             const newTour = await Tours.findOneAndUpdate({ _id: req.params.id, userId: req.user._id }, {
-                content, image, name, hashtags, isPublic, services, cost
+                content, image, name, hashtags, isPublic, services, cost, provinces, locations
             }, { new: true }).populate("userId joinIds likes", "username fullname avatar")
                 .populate("tour", "date")
                 .populate({

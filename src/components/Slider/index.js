@@ -11,7 +11,7 @@ const AutoPlaySwipeableViews = autoPlay(SwipeableViews);
 const data = [
     {
         label: "one",
-        title: "Welcome to GOGO",
+        title: "Welcome to Triple H",
         subtitle: "It's time to travel",
         imgPath: "https://i.ytimg.com/vi/NqMS9nldyP4/maxresdefault.jpg",
         color: "white",
