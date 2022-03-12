@@ -10,7 +10,7 @@ import CovidCard from "../../components/Card/CovidCard";
 import SpeedDialButton from "../../components/SpeedDialBtn";
 import ServiceCard from "../../components/Card/ServiceCard";
 import customAxios from "../../utils/fetchData";
-import MapCard from "../../components/Card/MapCard";
+import MapCard from "../../components/Map/MapCard";
 import { NotFound } from "../404";
 import EventCard from "../../components/Card/EventCard";
 

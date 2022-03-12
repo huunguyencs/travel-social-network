@@ -39,13 +39,13 @@ const columns = [
   {
     field: 'star',
     headerName: 'Đánh giá (/5)',
-    width: 150,
+    width: 175,
     valueGetter: (location) => getStar(location.row.star)
   },
   {
     field: 'numRate',
     headerName: 'Lượt đánh giá',
-    width: 200,
+    width: 175,
     valueGetter: (location) => totalNumRate(location.row.star)
   },
   {

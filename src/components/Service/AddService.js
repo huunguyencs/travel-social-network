@@ -5,7 +5,7 @@ import React, { useState } from 'react';
 import { useSelector } from 'react-redux';
 import { addServiceStyles } from '../../style';
 import AddImageHorizontal from '../Input/AddImageHorizontal';
-import MapPicker from '../Input/MapPicker';
+import MapPicker from '../Map/MapPicker';
 
 
 function Item(props) {

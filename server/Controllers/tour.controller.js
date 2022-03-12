@@ -5,10 +5,12 @@ const Comments = require('../Models/comment.model')
 class TourController {
     async createTour(req, res) {
         try {
-            const { content, name, taggedIds, image, hashtags, tour, services, cost, provinces } = req.body
+            const { content, name, taggedIds, image, hashtags, tour, services, cost, provinces } = req.body;
+
+            const joinIds = [req.user._id];
 
             const newTour = new Tours({
-                userId: req.user._id, content, image, name, taggedIds, hashtags, services, cost, provinces, tour: []
+                userId: req.user._id, content, image, name, taggedIds, hashtags, services, cost, provinces, joinIds, tour: []
             })
 
             await newTour.save()
@@ -131,7 +133,7 @@ class TourController {
                 })
                 tour.forEach(async function (element) {
                     if (element._id)
-                        await TourDates.findByIdAndUpdate(element._id, { date: element.date, locations: element.locations }, { new: true })
+                        await TourDates.findByIdAndUpdate(element._id, { date: element.date, locations: element.locations, description: element.description }, { new: true })
                     else {
                         let newTourDate = new TourDates({
                             date: element.date, locations: element.locations
@@ -450,10 +452,11 @@ class TourController {
     async removeReview(req, res) {
         try {
             const { locationId } = req.body;
+            const { reviewId } = req.query;
 
             await TourDates.findOneAndUpdate({ _id: req.params.id, locations: { $elemMatch: { _id: locationId } } }, {
-                $set: {
-                    'locations.$.postId': null
+                $pull: {
+                    'locations.$.postId': []
                 }
             }, { new: true, safe: true, upsert: true })
 

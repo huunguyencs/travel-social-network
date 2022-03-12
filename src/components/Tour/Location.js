@@ -1,6 +1,6 @@
-import { Button, Card, CardContent, CardMedia, Grid, IconButton, InputBase, Modal, Typography, Backdrop, Fade, MenuItem, Dialog, DialogTitle, DialogActions, Popper, ClickAwayListener, Paper, MenuList, TextField, Collapse } from "@material-ui/core";
-import React, { useState } from "react";
-import { MoreVert } from "@material-ui/icons";
+import { Button, Card, CardContent, CardMedia, Grid, IconButton, InputBase, Modal, Typography, Backdrop, Fade, MenuItem, Dialog, DialogTitle, DialogActions, Popper, ClickAwayListener, Paper, MenuList, TextField, Collapse, CircularProgress, CardHeader, Avatar } from "@material-ui/core";
+import React, { useEffect, useState } from "react";
+import { Close, MoreVert } from "@material-ui/icons";
 import { useDispatch } from "react-redux";
 import { Link } from "react-router-dom";
 
@@ -9,26 +9,124 @@ import CreateReviewForm from "../Forms/CreateReview";
 import EditLocationForm from "../Forms/EditLocation";
 import * as tourAction from '../../redux/actions/createTourAction';
 import { success } from "../../redux/actions/alertAction";
-// import customAxios from "../../utils/fetchData";
-// import { removeReview } from "../../redux/callApi/tourCall";
+import customAxios from "../../utils/fetchData";
+import { timeAgo } from "../../utils/date";
+import { Rating } from "@material-ui/lab";
+import { SeeMoreText } from "../SeeMoreText";
+import ImageList from "../Modal/ImageList";
+
+
+function ReviewList(props) {
+    const { reviews, handleClose } = props;
+    const [posts, setPosts] = useState([]);
+    const [loading, setLoading] = useState(false);
+    const [error, setError] = useState(false);
+
+    const getReview = async (reviews) => {
+        setLoading(true);
+        setError(false);
+        try {
+            await customAxios().post(`/post/post_list`, {
+                list: reviews
+            }).then(res => {
+                setPosts(res.data.posts);
+                setLoading(false);
+            })
+        } catch (error) {
+            setLoading(false);
+            setError(false);
+        }
+    }
+
+    useEffect(() => {
+        getReview(reviews)
+    }, [reviews])
+
+    return (
+        <Paper style={{ width: 700 }}>
+            <div style={{ display: 'flex', justifyContent: 'right' }}>
+                <IconButton size="small" onClick={handleClose}>
+                    <Close />
+                </IconButton>
+            </div>
+            <div style={{ display: 'flex', justifyContent: 'center' }}>
+                <Typography variant='h5' style={{ marginBottom: 20 }}>Review</Typography>
+            </div>
+            <div style={{ display: 'flex', justifyContent: 'center' }}>
+                <div
+                    style={{
+                        height: '60vh',
+                        overflowY: 'auto',
+                    }}
+                >
+                    {
+                        loading &&
+                        <div style={{ display: 'flex', justifyContent: 'center', marginTop: 100 }}>
+                            <CircularProgress />
+                        </div>
+                    }
+                    {
+                        error &&
+                        <div style={{ display: 'flex', justifyContent: 'center', marginTop: 100 }}>
+                            <Typography>Có lỗi xảy ra</Typography>
+                        </div>
+                    }
+                    {!error && posts.map(post =>
+                        <Card style={{ width: 600, borderRadius: 10, border: '1px solid #ddd' }} key={post._id}>
+                            <CardHeader
+                                avatar={
+                                    <Avatar alt='avatar' src={post.userId.avatar} />
+                                }
+                                title={
+                                    <Typography style={{ fontWeight: 500 }} component={Link} to={`/u/${post.userId._id}`}>{post.userId.fullname}</Typography>
+                                }
+                                subheader={
+                                    <Link to={`/post/${post._id}`}>
+                                        {timeAgo(new Date(post.createdAt))}
+                                    </Link>
+                                }
+                            />
+                            {
+                                post.images.length > 0 &&
+                                <CardMedia>
+                                    <ImageList imageList={post.images} show2Image={true} defaultHeight={300} />
+                                </CardMedia>
+                            }
+                            <Rating name="location-rating" value={post.rate} readOnly style={{ marginBottom: 10, marginInline: 20 }} />
+                            <CardContent style={{ marginInline: 10 }}>
+                                <SeeMoreText
+                                    variant="body1"
+                                    maxText={100}
+                                    text={post.content}
+                                />
+                            </CardContent>
+                        </Card>
+                    )}
+                </div>
+            </div>
+
+        </Paper>
+    )
+}
+
 
 function Detail(props) {
 
     const classes = tourdetailStyles();
     const dispatch = useDispatch();
 
-    const { location, isEdit, isSave, indexDate, indexLocation } = props;
+    const { location, isEdit, indexDate, indexLocation } = props;
 
     const [description, setDescription] = useState(location.description);
     const [time, setTime] = useState(location.time);
     const [cost, setCost] = useState(location.cost);
 
 
+
     const handleUpdateInfo = () => {
         dispatch(tourAction.updateLocation({ cost: parseInt(cost), description: description, indexDate: indexDate, indexLocation: indexLocation, time: time }))
         dispatch(success({ message: 'Cập nhật thành công!' }))
     }
-
 
     return (
         <div style={{ padding: 15, paddingTop: 0 }}>
@@ -79,9 +177,6 @@ function Detail(props) {
                         <Typography>Mô tả: {location.description}</Typography>
                     </div>
             }
-            {
-                isSave && location.postId?.length > 0 && <div>Xem review</div>
-            }
         </div>
     )
 }
@@ -101,9 +196,7 @@ export default function Location(props) {
     const [anchorEl, setAnchorEl] = useState(null);
     const [editLoc, setEditLoc] = useState(false);
     const [showDeleteLocation, setShowDeleteLocation] = useState(false);
-    // const [review, setReview] = useState(null);
-    // const [notFoundRv, setNotFoundRv] = useState(false);
-    // const [showInfo, setShowInfo] = useState(false);
+    const [showReview, setShowReview] = useState(false);
 
     const handleShowMenu = (e) => {
         setAnchorEl(e.currentTarget);
@@ -147,8 +240,21 @@ export default function Location(props) {
         setShowDetail(state => !state);
     }
 
+
+
+
+
+    const handleShowReview = () => {
+        setShowReview(true);
+    }
+
+    const handleCloseReview = () => {
+        setShowReview(false);
+    }
+
     const refEdit = React.createRef();
     const refCr = React.createRef();
+    const ref = React.createRef();
 
     const EditLocationRef = React.forwardRef((props, ref) =>
         <EditLocationForm {...props} innerRef={ref} />
@@ -156,6 +262,10 @@ export default function Location(props) {
 
     const CreateReviewRef = React.forwardRef((props, ref) =>
         <CreateReviewForm {...props} innerRef={ref} />
+    )
+
+    const ReviewRef = React.forwardRef((props, ref) =>
+        <ReviewList {...props} innerRef={ref} />
     )
 
     return (
@@ -181,6 +291,9 @@ export default function Location(props) {
                                 </div>
                                 {
                                     isSave && isOwn && <div> <Button className={classes.reviewBtn} onClick={handleShow}>Tạo Review</Button> </div>
+                                }
+                                {
+                                    isSave && location.postId?.length > 0 && <Button onClick={handleShowReview}>Xem review</Button>
                                 }
                                 <Button onClick={handleShowDetail}>Chi tiết</Button>
                             </div>
@@ -281,6 +394,25 @@ export default function Location(props) {
                                 />
                             </Fade>
                         </Modal>
+                        <Modal
+                            aria-labelledby="transition-modal-review"
+                            aria-describedby="transition-modal-review-description"
+                            open={showReview}
+                            className={classes.modal}
+                            onClose={handleCloseReview}
+                            BackdropComponent={Backdrop}
+                            BackdropProps={{
+                                timeout: 500,
+                            }}
+                        >
+                            <Fade in={showReview}>
+                                <ReviewRef
+                                    ref={ref}
+                                    reviews={location.postId}
+                                    handleClose={handleCloseReview}
+                                />
+                            </Fade>
+                        </Modal>
                     </CardContent>
                 </Grid>
 
@@ -289,7 +421,6 @@ export default function Location(props) {
                         <Detail
                             location={location}
                             isEdit={isEdit}
-                            isSave={isSave}
                             indexDate={indexDate}
                             indexLocation={indexLocation}
                         />

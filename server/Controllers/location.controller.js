@@ -126,7 +126,7 @@ class LocationController {
     async getAll(req, res) {
         try {
             const locations = await Locations.find({}).select("fullname name province position images")
-                .populate("province", "fullname")
+                .populate("province", "fullname name")
             res.json({
                 success: true,
                 message: "Lấy tất cả địa điểm thành công",

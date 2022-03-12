@@ -10,6 +10,7 @@ router.post('/share', auth, PostController.sharePost);
 router.post('/create_review', auth, PostController.createReview);
 router.get('/posts', PostController.getPosts);
 router.get('/search', PostController.search);
+router.post('/post_list', PostController.postList)
 
 router.get('/:id', PostController.getPost);
 router.patch('/:id', auth, PostController.updatePost);

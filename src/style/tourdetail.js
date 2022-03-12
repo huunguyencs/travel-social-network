@@ -49,7 +49,7 @@ const tourdetailStyles = makeStyles((theme) => ({
         overflow: 'auto',
     },
     cardContainer: {
-        marginTop: 30,
+        marginBlock: 15,
         width: '100%',
         borderRadius: attr.borderRadius.sm,
         [theme.breakpoints.down("md")]: {

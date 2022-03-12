@@ -428,6 +428,57 @@ class PostController {
         }
     }
 
+    async postList(req, res) {
+        try {
+            const { list } = req.body;
+            var { offset, detail } = req.query;
+            offset = offset || 0;
+            detail = detail || false;
+
+            var posts;
+
+            if (detail) {
+                posts = await Posts.find({
+                    _id: {
+                        $in: list
+                    }
+                }).skip(offset).limit(5)
+                    .populate("userId likes", "username fullname avatar")
+                    .populate("locationId", "name fullname")
+                    .populate({
+                        path: "shareId",
+                        populate: {
+                            path: "userId",
+                            select: "username fullname avatar"
+                        }
+                    })
+                    .populate({
+                        path: "shareId",
+                        populate: {
+                            path: "locationId",
+                            select: "name fullname"
+                        }
+                    })
+                    .sort({ "createdAt": -1 });
+            }
+            else {
+                posts = await Posts.find({
+                    _id: {
+                        $in: list
+                    }
+                }, "-comments -likes")
+                    .populate("userId", "username fullname avatar")
+                    .sort({ "createdAt": -1 });
+            }
+
+            res.json({ success: true, posts })
+
+
+        } catch (err) {
+            res.status(500).json({ success: false, message: err.message })
+        }
+    }
+
 }
 
 module.exports = new PostController;

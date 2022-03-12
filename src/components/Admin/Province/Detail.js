@@ -9,7 +9,7 @@ import { adminStyles } from '../../../style';
 import customAxios from '../../../utils/fetchData';
 import { checkImage, uploadImages } from '../../../utils/uploadImage';
 import Validator, { nameid } from '../../../utils/validator';
-import MapPicker from '../../Input/MapPicker';
+import MapPicker from '../../Map/MapPicker';
 
 
 

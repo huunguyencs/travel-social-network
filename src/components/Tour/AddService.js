@@ -9,6 +9,7 @@ import { formStyles, tourdetailStyles } from '../../style';
 import { AddCircle, MoreVert } from '@material-ui/icons';
 import { ReviewArea } from '../Service/ServiceItem';
 import { success } from '../../redux/actions/alertAction';
+import { Link } from 'react-router-dom';
 
 
 const filter = createFilterOptions();
@@ -270,7 +271,10 @@ export function ServiceCard(props) {
                         <div className={classes.locationContentContainer}>
                             <div>
                                 <div>
-                                    <Typography variant='h5' className={classes.locationName}>{service.serviceName ? service.serviceName : service.service.name}</Typography>
+                                    {service.serviceName ?
+                                        <Typography variant='h5' className={classes.locationName}>{service.serviceName}</Typography>
+                                        : <Typography variant='h5' className={classes.locationName} component={Link} to={`/u/${service.service.cooperator}`}>{service.service.name}</Typography>
+                                    }
                                 </div>
                                 <div>
                                     <Typography>Chi phí: {new Intl.NumberFormat().format(service.cost * 1000)} VND</Typography>

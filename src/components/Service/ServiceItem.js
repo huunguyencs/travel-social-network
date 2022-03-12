@@ -10,7 +10,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import EmojiPicker from '../Input/EmojiPicker';
 import { AddAPhoto, Close, Send } from '@material-ui/icons';
 import { Link } from 'react-router-dom';
-import MapCard from '../Card/MapCard';
+import MapCard from '../Map/MapCard';
 import { checkImage } from '../../utils/uploadImage';
 import Lightbox from 'react-image-lightbox';
 

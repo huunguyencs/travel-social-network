@@ -10,7 +10,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { getProvinces } from '../../../redux/callApi/locationCall';
 import customAxios from '../../../utils/fetchData';
 import { error, success } from '../../../redux/actions/alertAction';
-import MapPicker from '../../Input/MapPicker';
+import MapPicker from '../../Map/MapPicker';
 
 
 export default function FormLocationAdmin(props) {

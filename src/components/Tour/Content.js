@@ -474,7 +474,7 @@ function BaseContent(props) {
                     maxText={100}
                     text={tour.content}
                 />
-                <Typography style={{ marginTop: 5 }}>Địa điểm: {tour.provinces.join(", ")}</Typography>
+                <Typography style={{ marginTop: 5 }}>Tỉnh: {tour.provinces.join(", ")}</Typography>
 
                 {tour.tour.length > 1 ?
                     <Typography style={{ marginTop: 5 }}>
@@ -490,7 +490,7 @@ function BaseContent(props) {
                 <div>
                     <Typography>Thành viên tham gia:
                         <span className={classes.numLike} onClick={handleShowJoin} style={{ marginInline: 10 }}>
-                            {tour.joinIds.length + 1}
+                            {tour.joinIds.length}
                         </span>
                     </Typography>
                     <Modal
@@ -506,8 +506,8 @@ function BaseContent(props) {
                         }}
                     >
                         {auth.user && auth.user._id === tour.userId._id ?
-                            <ManageUserRef ref={refMg} listUser={[tour.userId, ...tour.joinIds]} updateJoin={updateJoin} tourId={tour._id} title={"Thành viên tham gia"} handleClose={handleCloseJoin} /> :
-                            <UserListRef ref={refUser} listUser={[tour.userId, ...tour.joinIds]} title={"Thành viên tham gia"} handleClose={handleCloseJoin} />
+                            <ManageUserRef ref={refMg} listUser={tour.joinIds} updateJoin={updateJoin} tourId={tour._id} title={"Thành viên tham gia"} handleClose={handleCloseJoin} /> :
+                            <UserListRef ref={refUser} listUser={tour.joinIds} title={"Thành viên tham gia"} handleClose={handleCloseJoin} />
                         }
 
                     </Modal>

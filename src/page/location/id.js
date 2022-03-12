@@ -5,7 +5,7 @@ import { Link, useParams } from "react-router-dom";
 import { useDispatch } from "react-redux";
 import Lightbox from "react-image-lightbox";
 
-import MapCard from "../../components/Card/MapCard";
+import MapCard from "../../components/Map/MapCard";
 import RatingChart from "../../components/Card/RatingChart";
 import WeatherCardGeneral from "../../components/Card/WeatherCard";
 import FeedReview from "../../components/Feed/FeedReview";

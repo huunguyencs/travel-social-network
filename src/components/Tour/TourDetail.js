@@ -6,7 +6,7 @@ import { tourdetailStyles } from "../../style";
 import Location from './Location';
 import { convertDateToStr, convertDateToStrShort } from "../../utils/date";
 // import { useSelector } from "react-redux";
-import MapCard from "../Card/MapCard";
+import MapCard from "../Map/MapCard";
 import { Link, useHistory } from "react-router-dom";
 import { ServiceCard } from "./AddService";
 import { FileCopy, Update } from "@material-ui/icons";
@@ -87,7 +87,7 @@ export default function TourDetail(props) {
                 ...item,
                 locations: item.locations.map((location, index) => index === index_loc ? {
                     ...location,
-                    postId: id
+                    postId: [...location.postId, id]
                 } : location)
             } : item)
         }))
@@ -231,7 +231,7 @@ export default function TourDetail(props) {
                                     </Grid>
                                     <Grid item md={6} className={classes.addContainerLarge}>
                                         <Container style={{ margin: 30 }}>
-                                            {position ? <MapCard position={position} zoom={12} locations={locations} /> : null}
+                                            {position ? <MapCard position={position} zoom={12} locations={locations} /> : <div></div>}
                                         </Container>
                                     </Grid>
                                 </Grid>
