@@ -71,7 +71,7 @@ export default function SharePost(props) {
     return (
         <>
             {auth.token ?
-                <Paper className={classes.paperContainer} style={{ width: 500 }}>
+                <Paper className={classes.paperContainer}>
                     <div className={classes.textTitle}>
                         <Typography variant="h5">
                             Chia sẻ {type === "post" ? "bài viết" : "lịch trình"} của {object.userId.fullname}

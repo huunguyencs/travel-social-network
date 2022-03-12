@@ -65,6 +65,10 @@ function EditDescriptionDate(props) {
     const [text, setText] = useState(description);
     const [change, setChange] = useState(false);
 
+    useEffect(() => {
+        setText(description);
+    }, [description])
+
     const dispatch = useDispatch();
 
     const handleChange = (e) => {

@@ -63,7 +63,7 @@ const tourdetailStyles = makeStyles((theme) => ({
         }
     },
     serviceContainer: {
-        marginTop: 30,
+        margin: 30,
         width: 500,
         borderRadius: attr.borderRadius.sm,
         [theme.breakpoints.down("md")]: {
@@ -99,12 +99,12 @@ const tourdetailStyles = makeStyles((theme) => ({
         justifyContent: 'space-between'
     },
     reviewBtn: {
-        backgroundColor: "#ECCC68",
-        borderRadius: attr.borderRadius.md,
-        padding: 8,
-        paddingInline: 15,
-        marginTop: 15,
-        marginBottom: 5,
+        // backgroundColor: "#ECCC68",
+        // borderRadius: attr.borderRadius.md,
+        // padding: 8,
+        // paddingInline: 15,
+        // marginTop: 15,
+        // marginBottom: 5,
     },
     locationName: {
         marginTop: 10,

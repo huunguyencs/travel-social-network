@@ -7,9 +7,11 @@ const formStyles = makeStyles((theme) => ({
     paperContainer: {
         padding: 20,
         margin: 20,
+        width: 500,
         borderRadius: attr.borderRadius.md,
         [theme.breakpoints.down("sm")]: {
             padding: 10,
+            width: 400
         }
     },
     formContainer: {
@@ -71,7 +73,9 @@ const formStyles = makeStyles((theme) => ({
         backgroundColor: color.turquoise,
     },
     datepicker: {
-        marginInline: 50,
+        display: 'flex',
+        justifyContent: 'center',
+        // marginInline: 50,
         marginBottom: 30,
     },
     tourNameInput: {

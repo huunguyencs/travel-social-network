@@ -1,13 +1,14 @@
-import { Backdrop, Button, Card, CardContent, CardMedia, ClickAwayListener, Dialog, DialogActions, DialogTitle, Fade, Grid, IconButton, InputBase, MenuItem, MenuList, Modal, Paper, Popper, TextField, Typography } from '@material-ui/core';
+import { Button, Card, CardContent, CardMedia, ClickAwayListener, Collapse, Dialog, DialogActions, DialogTitle, Grid, IconButton, InputBase, MenuItem, MenuList, Paper, Popper, TextField, Typography } from '@material-ui/core';
 import React, { useEffect, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux';
 
 import * as tourAction from '../../redux/actions/createTourAction';
 import Autocomplete, { createFilterOptions } from '@material-ui/lab/Autocomplete';
 import { formStyles, tourdetailStyles } from '../../style';
-import { Link } from 'react-router-dom';
-import { AddCircle, Close, MoreVert } from '@material-ui/icons';
+// import { Link } from 'react-router-dom';
+import { AddCircle, MoreVert } from '@material-ui/icons';
 import { ReviewArea } from '../Service/ServiceItem';
+import { success } from '../../redux/actions/alertAction';
 
 
 const filter = createFilterOptions();
@@ -156,7 +157,7 @@ function ServiceItemAddForm(props) {
 }
 
 function DetailService(props) {
-    const { service, isEdit, type, indexService, isOwn, handleClose } = props;
+    const { service, isEdit, type, indexService, isOwn } = props;
 
     const [cost, setCost] = useState(service.cost);
     const [description, setDescription] = useState(service.description);
@@ -166,81 +167,60 @@ function DetailService(props) {
     const handleUpdate = () => {
         // console.log(cost);
         dispatch(tourAction.updateService({ cost: parseInt(cost), description: description, type: type, indexService: indexService }))
+        dispatch(success({ message: 'Cập nhật thành công!' }))
     }
 
     const classes = tourdetailStyles();
 
     return (
-        <Paper className={classes.paperDetail}>
-            <Grid container>
-                <Grid item md={6} className={classes.imageDetail}>
-                    <div style={{ padding: 30 }}>
-                        <img src={service.service ? service.service.images[0] : 'https://skillz4kidzmartialarts.com/wp-content/uploads/2017/04/default-image-620x600.jpg'} alt="Service" style={{ width: '100%', height: 400 }} />
+        <div style={{ padding: 15, paddingTop: 0 }}>
+            {
+                isEdit ?
+                    <div >
+                        <InputBase
+                            placeholder="Mô tả"
+                            title="Thông tin"
+                            variant="outlined"
+                            name="description"
+                            id="description"
+                            rows={5}
+                            className={classes.descriptionInput}
+                            // className={classes.hashtag}
+                            multiline
+                            value={description}
+                            onChange={e => setDescription(e.target.value)}
+                        />
+                        <TextField
+                            label="Chi phí (nghìn VND)"
+                            variant="outlined"
+                            name="cost"
+                            id="cost"
+                            className={classes.fullField}
+                            type={"number"}
+                            value={cost}
+                            onChange={(e) => setCost(e.target.value)}
+                        />
+                        <div className={classes.btnWrap}>
+                            <Button onClick={handleUpdate} variant="contained" color="primary">
+                                Cập nhật
+                            </Button>
+                        </div>
+                    </div> :
+                    <div>
+                        <Typography>Chi phí: {new Intl.NumberFormat().format(cost * 1000)} VND</Typography>
+                        <Typography>Mô tả: {description}</Typography>
                     </div>
-                </Grid>
-                <Grid item md={6} sm={12} xs={12}>
-                    <div className={classes.closeBtn}>
-                        <IconButton onClick={handleClose} size='small'>
-                            <Close />
-                        </IconButton>
-                    </div>
-                    <div style={{ padding: 30, paddingTop: 0 }}>
-                        {service.serviceName ?
-                            <Typography variant='h5'>{service.serviceName}</Typography> :
-                            <Typography variant='h5' component={Link} to={`/u/${service.service.cooperator}`}>{service.service.name}</Typography>
-
-                        }
-                        {
-                            isEdit ?
-                                <div >
-                                    <InputBase
-                                        placeholder="Mô tả"
-                                        title="Thông tin"
-                                        variant="outlined"
-                                        name="description"
-                                        id="description"
-                                        rows={5}
-                                        className={classes.descriptionInput}
-                                        // className={classes.hashtag}
-                                        multiline
-                                        value={description}
-                                        onChange={e => setDescription(e.target.value)}
-                                    />
-                                    <TextField
-                                        label="Chi phí (nghìn VND)"
-                                        variant="outlined"
-                                        name="cost"
-                                        id="cost"
-                                        className={classes.fullField}
-                                        type={"number"}
-                                        value={cost}
-                                        onChange={(e) => setCost(e.target.value)}
-                                    />
-                                    <div className={classes.btnWrap}>
-                                        <Button onClick={handleUpdate} variant="contained" color="primary">
-                                            Cập nhật
-                                        </Button>
-                                    </div>
-                                </div> :
-                                <div>
-                                    <Typography>Chi phí: {new Intl.NumberFormat().format(cost * 1000)} VND</Typography>
-                                    <Typography>Mô tả: {description}</Typography>
-                                </div>
-                        }
-                        {!isEdit && isOwn && service?.service &&
-                            <ReviewArea id={service.service._id} />
-                        }
-                    </div>
-
-                </Grid>
-            </Grid>
-        </Paper>
+            }
+            {!isEdit && isOwn && service?.service &&
+                <ReviewArea id={service.service._id} />
+            }
+        </div>
     )
 }
 
 
 export function ServiceCard(props) {
-    const { service, index, isEdit, review, isOwn, type } = props;
+    const { service, index, isEdit, isOwn, type } = props;
 
     const classes = tourdetailStyles();
     const [anchorEl, setAnchorEl] = useState(null);
@@ -248,12 +228,9 @@ export function ServiceCard(props) {
     const [showDetail, setShowDetail] = useState(false);
 
     const handleShowDetail = () => {
-        setShowDetail(true);
+        setShowDetail(state => !state);
     }
 
-    const handleCloseDetail = () => {
-        setShowDetail(false);
-    }
 
     const dispatch = useDispatch();
 
@@ -279,12 +256,6 @@ export function ServiceCard(props) {
 
 
 
-    const refDetail = React.createRef();
-
-    const DetailRef = React.forwardRef((props, ref) =>
-        <DetailService innerRef={ref} {...props} />
-    )
-
     return (
         <Card className={classes.serviceContainer} >
             <Grid container>
@@ -299,11 +270,12 @@ export function ServiceCard(props) {
                         <div className={classes.locationContentContainer}>
                             <div>
                                 <div>
-                                    <Typography variant='h5' className={classes.locationName} onClick={handleShowDetail}>{service.serviceName ? service.serviceName : service.service.name}</Typography>
+                                    <Typography variant='h5' className={classes.locationName}>{service.serviceName ? service.serviceName : service.service.name}</Typography>
                                 </div>
                                 <div>
                                     <Typography>Chi phí: {new Intl.NumberFormat().format(service.cost * 1000)} VND</Typography>
                                 </div>
+                                <Button onClick={handleShowDetail}>Chi tiết</Button>
                             </div>
                             <div>
                                 {isEdit &&
@@ -360,32 +332,18 @@ export function ServiceCard(props) {
 
 
                 </Grid>
+                <Grid item md={12} sm={12} xs={12}>
+                    <Collapse in={showDetail} style={{ width: "100%" }}>
+                        <DetailService
+                            service={service}
+                            isEdit={isEdit}
+                            type={type}
+                            indexService={index}
+                            isOwn={isOwn}
+                        />
+                    </Collapse>
+                </Grid>
             </Grid>
-            <Modal
-                aria-labelledby="modal-detail-service"
-                aria-describedby="modal-detail-service-description"
-                open={showDetail}
-                className={classes.modal}
-                onClose={handleCloseDetail}
-                closeAfterTransition
-                BackdropComponent={Backdrop}
-                BackdropProps={{
-                    timeout: 500,
-                }}
-            >
-                <Fade in={showDetail}>
-                    <DetailRef
-                        ref={refDetail}
-                        handleClose={handleCloseDetail}
-                        service={service}
-                        isEdit={isEdit}
-                        isOwn={isOwn}
-                        review={review}
-                        indexService={index}
-                        type={type}
-                    />
-                </Fade>
-            </Modal>
         </Card>
 
     )

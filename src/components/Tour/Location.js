@@ -1,6 +1,6 @@
-import { Button, Card, CardContent, CardMedia, Grid, IconButton, InputBase, Modal, Typography, Backdrop, Fade, MenuItem, Dialog, DialogTitle, DialogActions, Popper, ClickAwayListener, Paper, MenuList, TextField } from "@material-ui/core";
+import { Button, Card, CardContent, CardMedia, Grid, IconButton, InputBase, Modal, Typography, Backdrop, Fade, MenuItem, Dialog, DialogTitle, DialogActions, Popper, ClickAwayListener, Paper, MenuList, TextField, Collapse } from "@material-ui/core";
 import React, { useState } from "react";
-import { Close, MoreVert } from "@material-ui/icons";
+import { MoreVert } from "@material-ui/icons";
 import { useDispatch } from "react-redux";
 import { Link } from "react-router-dom";
 
@@ -8,6 +8,7 @@ import { tourdetailStyles } from "../../style";
 import CreateReviewForm from "../Forms/CreateReview";
 import EditLocationForm from "../Forms/EditLocation";
 import * as tourAction from '../../redux/actions/createTourAction';
+import { success } from "../../redux/actions/alertAction";
 // import customAxios from "../../utils/fetchData";
 // import { removeReview } from "../../redux/callApi/tourCall";
 
@@ -16,104 +17,72 @@ function Detail(props) {
     const classes = tourdetailStyles();
     const dispatch = useDispatch();
 
-    const { location, isEdit, isSave, indexDate, indexLocation, handleClose } = props;
+    const { location, isEdit, isSave, indexDate, indexLocation } = props;
 
     const [description, setDescription] = useState(location.description);
     const [time, setTime] = useState(location.time);
     const [cost, setCost] = useState(location.cost);
 
 
-    const [showRv, setShowRv] = useState(false);
-
-    const handleShowReview = () => {
-        setShowRv(true);
-        // if (location.postId) {
-        //     getReviewPost();
-        // }
-    }
-
     const handleUpdateInfo = () => {
         dispatch(tourAction.updateLocation({ cost: parseInt(cost), description: description, indexDate: indexDate, indexLocation: indexLocation, time: time }))
+        dispatch(success({ message: 'Cập nhật thành công!' }))
     }
 
 
     return (
-        <Paper className={classes.paperDetail}>
-            <Grid container>
-                <Grid item md={6} className={classes.imageDetail}>
-                    <div style={{ padding: 30 }}>
-                        <img src={location.location.images[0]} alt="Location" style={{ width: "100%", height: 400 }} />
+        <div style={{ padding: 15, paddingTop: 0 }}>
+            {
+                isEdit ?
+                    <div>
+                        <InputBase
+                            placeholder="Mô tả"
+                            title="Thông tin"
+                            variant="outlined"
+                            name="description"
+                            id="description"
+                            className={classes.descriptionInput}
+                            multiline
+                            rows={5}
+                            value={description}
+                            onChange={e => setDescription(e.target.value)}
+                        />
+                        <TextField
+                            label="Thời gian"
+                            title="Thời gian"
+                            variant="outlined"
+                            name="time"
+                            id="time"
+                            className={classes.fullField}
+                            value={time}
+                            onChange={e => setTime(e.target.value)}
+                        />
+                        <TextField
+                            label="Chi phí"
+                            title="Chi phí"
+                            variant="outlined"
+                            name="cost"
+                            id="cost"
+                            type="number"
+                            className={classes.fullField}
+                            // className={classes.hashtag}
+                            value={cost}
+                            onChange={e => setCost(e.target.value)}
+                        />
+                        <div className={classes.btnWrap}>
+                            <Button onClick={handleUpdateInfo} variant="contained" color="primary">Cập nhật</Button>
+                        </div>
+                    </div> :
+                    <div>
+                        <Typography>Chi phí: {new Intl.NumberFormat().format(location.cost * 1000)} VND</Typography>
+                        <Typography>Thời gian: {location.time}</Typography>
+                        <Typography>Mô tả: {location.description}</Typography>
                     </div>
-                </Grid>
-                <Grid item md={6} sm={12} xs={12}>
-                    <div className={classes.closeBtn}>
-                        <IconButton onClick={handleClose} size='small'>
-                            <Close />
-                        </IconButton>
-                    </div>
-                    <div style={{ padding: 30, paddingTop: 0 }}>
-                        <Typography variant="h5" component={Link} to={"/location/" + location.location.name}>{location.location.fullname}</Typography>
-                        {
-                            isEdit ?
-                                <div>
-                                    <InputBase
-                                        placeholder="Mô tả"
-                                        title="Thông tin"
-                                        variant="outlined"
-                                        name="description"
-                                        id="description"
-                                        className={classes.descriptionInput}
-                                        multiline
-                                        rows={5}
-                                        value={description}
-                                        onChange={e => setDescription(e.target.value)}
-                                    />
-                                    <TextField
-                                        label="Thời gian"
-                                        title="Thời gian"
-                                        variant="outlined"
-                                        name="time"
-                                        id="time"
-                                        className={classes.fullField}
-                                        value={time}
-                                        onChange={e => setTime(e.target.value)}
-                                    />
-                                    <TextField
-                                        label="Chi phí"
-                                        title="Chi phí"
-                                        variant="outlined"
-                                        name="cost"
-                                        id="cost"
-                                        type="number"
-                                        className={classes.fullField}
-                                        // className={classes.hashtag}
-                                        value={cost}
-                                        onChange={e => setCost(e.target.value)}
-                                    />
-                                    <div className={classes.btnWrap}>
-                                        <Button onClick={handleUpdateInfo} variant="contained" color="primary">Cập nhật</Button>
-                                    </div>
-                                </div> :
-                                <div>
-                                    <Typography>Chi phí: {new Intl.NumberFormat().format(location.cost * 1000)} VND</Typography>
-                                    <Typography>Thời gian: {location.time}</Typography>
-                                    <Typography>Mô tả: {location.description}</Typography>
-                                </div>
-                        }
-                        {
-                            isSave && location.postId?.length > 0 && <div> <Button className={classes.reviewBtn} onClick={handleShowReview}>Xem Review</Button> </div>
-                        }
-                    </div>
-                </Grid>
-                {
-                    showRv &&
-                    <Grid item md={12} sm={12} xs={12}>
-
-                    </Grid>
-                }
-            </Grid>
-
-        </Paper>
+            }
+            {
+                isSave && location.postId?.length > 0 && <div>Xem review</div>
+            }
+        </div>
     )
 }
 
@@ -174,43 +143,12 @@ export default function Location(props) {
         handleCloseMenu();
     }
 
-    // const getReviewPost = async () => {
-    //     await customAxios().get(`/post/${location.postId}`).then(res => {
-    //         setReview(res.data.post);
-    //     }).catch(err => {
-    //         if (err.response.status === 404) {
-    //             setNotFoundRv(true);
-    //             dispatch(removeReview(tourDateId, token, location._id))
-    //             // console.log(tourDateId)
-    //             // console.log(location._id)
-    //         }
-    //     });
-    // }
-
-    // const handleShowReview = () => {
-    //     setShowRv(true);
-    //     if (location.postId) {
-    //         getReviewPost();
-    //     }
-    // }
-
-    // const handleCloseReview = () => {
-    //     setShowRv(false);
-    // }
-
-
-
     const handleShowDetail = () => {
-        setShowDetail(true);
-    }
-
-    const handleCloseDetail = () => {
-        setShowDetail(false);
+        setShowDetail(state => !state);
     }
 
     const refEdit = React.createRef();
     const refCr = React.createRef();
-    const refDetail = React.createRef();
 
     const EditLocationRef = React.forwardRef((props, ref) =>
         <EditLocationForm {...props} innerRef={ref} />
@@ -218,10 +156,6 @@ export default function Location(props) {
 
     const CreateReviewRef = React.forwardRef((props, ref) =>
         <CreateReviewForm {...props} innerRef={ref} />
-    )
-
-    const DetailRef = React.forwardRef((props, ref) =>
-        <Detail {...props} innerRef={ref} />
     )
 
     return (
@@ -240,35 +174,15 @@ export default function Location(props) {
                         <div className={classes.locationContentContainer}>
                             <div>
                                 <div>
-                                    <Typography variant="h5" className={classes.locationName} onClick={handleShowDetail}>{location.location.fullname}</Typography>
+                                    <Typography variant="h5" className={classes.locationName} component={Link} to={`/location/${location.location.name}`}>{location.location.fullname}</Typography>
                                 </div>
                                 <div>
                                     <Typography variant="h6" component={Link} to={"/province/" + location.location.province.name}>{location.location.province.fullname}</Typography>
                                 </div>
                                 {
-                                    isSave && isOwn && !location.postId && <div> <Button className={classes.reviewBtn} onClick={handleShow}>Tạo Review</Button> </div>
+                                    isSave && isOwn && <div> <Button className={classes.reviewBtn} onClick={handleShow}>Tạo Review</Button> </div>
                                 }
                                 <Button onClick={handleShowDetail}>Chi tiết</Button>
-                                <Modal
-                                    aria-labelledby="transition-modal-service"
-                                    aria-describedby="transition-modal-service-description"
-                                    open={showDetail}
-                                    className={classes.modal}
-                                    onClose={handleCloseDetail}
-                                    closeAfterTransition
-                                    BackdropComponent={Backdrop}
-                                    BackdropProps={{
-                                        timeout: 500,
-                                    }}
-                                >
-                                    <Fade in={showDetail}>
-                                        <DetailRef
-                                            ref={refDetail}
-                                            handleClose={handleCloseDetail}
-                                            {...props}
-                                        />
-                                    </Fade>
-                                </Modal>
                             </div>
                             {isEdit &&
                                 <div>
@@ -370,27 +284,17 @@ export default function Location(props) {
                     </CardContent>
                 </Grid>
 
-                {/* <Collapse in={showInfo} style={{ width: "100%" }}>
+                <Collapse in={showDetail} style={{ width: "100%" }}>
                     <Grid item md={12} sm={12} xs={12}>
-                        {
-                            isEdit ?
-                                <InputBase
-                                    placeholder="Hashtag"
-                                    title="Hashtag"
-                                    variant="outlined"
-                                    name="hashtag"
-                                    id="hashtag"
-                                // className={classes.hashtag}
-                                // value={hashtag}
-                                // onChange={e => setHashtag(e.target.value)}
-                                /> :
-                                <CardContent className={classes.review}>
-                                    <Typography>Thông tin</Typography>
-                                </CardContent>
-                        }
-
+                        <Detail
+                            location={location}
+                            isEdit={isEdit}
+                            isSave={isSave}
+                            indexDate={indexDate}
+                            indexLocation={indexLocation}
+                        />
                     </Grid>
-                </Collapse> */}
+                </Collapse>
 
             </Grid>
         </Card>
