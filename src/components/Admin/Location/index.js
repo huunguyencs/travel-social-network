@@ -9,14 +9,10 @@ import { Link, useHistory } from "react-router-dom";
 import { AddCircle, Edit } from "@material-ui/icons";
 import { DataGrid, GridToolbarContainer, GridToolbarExport } from "@mui/x-data-grid";
 import customAxios from "../../../utils/fetchData";
-import { getStar } from "../../../utils/utils";
+import { getStar, totalNumRate } from "../../../utils/utils";
 import { tableStyles } from "../../../style";
 
 
-
-function totalNumRate(star) {
-  return star.reduce((a, b) => a + b, 0)
-}
 
 const columns = [
   {

@@ -31,7 +31,7 @@ export const getLocations = (data) => async (dispatch) => {
 export const getServices = (data) => async (dispatch) => {
     dispatch(locationActions.loadingServices());
     try {
-        const res = await customAxios().get('/service/get_all');
+        const res = await customAxios().get('/service/all');
         dispatch(locationActions.getServices({ services: res.data.services }));
     }
     catch (err) {

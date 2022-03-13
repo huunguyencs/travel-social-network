@@ -1,4 +1,4 @@
-import { Container, Grid, Tab, Tabs, Typography } from "@material-ui/core";
+import { Container, Grid, Tab, Tabs, Typography, useMediaQuery, useTheme } from "@material-ui/core";
 import React, { useEffect, useState } from "react";
 import PropTypes from 'prop-types';
 import { useLocation } from "react-router-dom";
@@ -37,6 +37,8 @@ function listSearch() {
 
 export default function SearchPage(props) {
 
+    const theme = useTheme();
+    const matches = useMediaQuery(theme.breakpoints.up("md"));
 
     const classes = searchStyles();
     const [value, setValue] = useState(0);
@@ -63,9 +65,9 @@ export default function SearchPage(props) {
                 <div className={classes.appBarSpacer} />
                 <div className={classes.appBarSpacer} />
                 <Grid container>
-                    <Grid item md={3}>
+                    <Grid item md={3} sm={12} xs={12}>
                         <Tabs
-                            orientation="vertical"
+                            orientation={matches ? "vertical" : "horizontal"}
                             variant="scrollable"
                             value={value}
                             onChange={handleChange}
@@ -81,7 +83,7 @@ export default function SearchPage(props) {
                             <Tab label="Dịch vụ" {...a11yProps(6)} className={value === 6 ? clsx(classes.tab, classes.active) : classes.tab} />
                         </Tabs>
                     </Grid>
-                    <Grid item md={9}>
+                    <Grid item md={9} sm={12} xs={12}>
                         <Typography className={classes.query}>Hiển thị kết quả tìm kiếm cho "{query}"</Typography>
                         {list.map((item, index) =>
                             <TabPanel key={index} value={value} index={index} item={item} q={query} />

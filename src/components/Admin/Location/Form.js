@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react'
-import { Button, CircularProgress, TextField, Typography } from '@material-ui/core';
+import { Button, CircularProgress, FormControlLabel, Switch, TextField, Typography } from '@material-ui/core';
 import { Autocomplete } from '@material-ui/lab';
 
 import { adminStyles } from '../../../style';
@@ -26,11 +26,26 @@ export default function FormLocationAdmin(props) {
     const [imgs, setImgs] = useState(location?.images || []);
     const [loading, setLoading] = useState(false);
     const [provinceOpt, setProvinceOpt] = useState(null);
+    const [picker, setPicker] = useState(false);
 
     const handleChange = (e) => {
         setLocation(state => ({
             ...state,
             [e.target.name]: e.target.value
+        }))
+    }
+
+    const handleChangePicker = (e) => {
+        setPicker(state => !state);
+    }
+
+    const changePositionText = (e) => {
+        setLocation(state => ({
+            ...state,
+            position: {
+                ...state.position,
+                [e.target.name]: e.target.value
+            }
         }))
     }
 
@@ -186,15 +201,14 @@ export default function FormLocationAdmin(props) {
                             label="Vĩ độ"
                             variant='outlined'
                             name='lat'
-                            multiline
-                            onChange={changePosition}
+                            onChange={changePositionText}
                             value={location.position.lat}
                             className={classes.fullField}
                             required
                             error={Boolean(errors?.position?.lat)}
                             helperText={errors?.position?.lat}
                             InputProps={{
-                                readOnly: true,
+                                readOnly: picker,
                             }}
                         />
                     </div>
@@ -203,30 +217,45 @@ export default function FormLocationAdmin(props) {
                             label="Kinh độ"
                             variant='outlined'
                             name='lon'
-                            multiline
-                            onChange={changePosition}
+                            onChange={changePositionText}
                             value={location.position.lon}
                             className={classes.fullField}
                             required
                             error={Boolean(errors?.position?.lon)}
                             helperText={errors?.position?.lon}
                             InputProps={{
-                                readOnly: true,
+                                readOnly: picker,
                             }}
                         />
                     </div>
 
                 </div>
-                <div>
-                    <MapPicker
-                        position={{
-                            lat: location.position.lat,
-                            lng: location.position.lon
-                        }}
-                        setPosition={changePosition}
-                        height={400}
-                    />
-                </div>
+                <FormControlLabel
+                    control={
+                        <Switch
+                            checked={picker}
+                            onChange={handleChangePicker}
+                            name="picker-checker"
+                            color="primary"
+                        />
+                    }
+                    label="Chọn vị trí trên bản đồ"
+                />
+                {
+                    picker && (
+                        <div>
+                            <MapPicker
+                                position={{
+                                    lat: parseFloat(location.position.lat),
+                                    lng: parseFloat(location.position.lon)
+                                }}
+                                setPosition={changePosition}
+                                height={400}
+                            />
+                        </div>
+                    )
+                }
+
                 <Autocomplete
                     id='set-province'
                     options={provinces}

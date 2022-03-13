@@ -11,7 +11,7 @@ const searchStyles = makeStyles((theme) => ({
     tabs: {
         borderRight: `1px solid ${theme.palette.divider}`,
         maxWidth: "100%",
-        marginBottom: 400,
+        marginBottom: 20,
     },
     appBarSpacer: theme.mixins.toolbar,
     tab: {

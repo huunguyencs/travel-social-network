@@ -14,6 +14,10 @@ export function getStar(stars) {
 
 }
 
+export function totalNumRate(star) {
+    return star.reduce((a, b) => a + b, 0)
+}
+
 export function sortTourDate(tour) {
     return {
         ...tour,

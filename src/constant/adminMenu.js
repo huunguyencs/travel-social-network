@@ -1,5 +1,5 @@
 
-import { Accessibility, Dashboard, Event, LocationCity, LocationOn, Person, PostAdd, RateReview } from '@material-ui/icons';
+import { Accessibility, Dashboard, Event, Explore, LocationCity, LocationOn, Person, PostAdd } from '@material-ui/icons';
 
 
 export const adminListMenu = {
@@ -37,13 +37,13 @@ export const adminListMenu = {
         },
         {
             icon: PostAdd,
-            name: "Bài viết",
+            name: "Bài viết/ review",
             link: "/admin/post",
         },
         {
-            icon: RateReview,
-            name: "Review",
-            link: "/admin/review",
+            icon: Explore,
+            name: "Tour",
+            link: "/admin/tour",
         },
     ]
 }

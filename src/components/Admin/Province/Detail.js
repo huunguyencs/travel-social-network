@@ -1,4 +1,4 @@
-import { Button, Chip, CircularProgress, IconButton, Paper, TextField, Typography } from '@material-ui/core';
+import { Button, Chip, CircularProgress, IconButton, Paper, FormControlLabel, Switch, TextField, Typography } from '@material-ui/core';
 import { ArrowBack, HighlightOff, Update } from '@material-ui/icons';
 import React, { useEffect, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux';
@@ -31,6 +31,21 @@ export default function DetailProvinceAdmin() {
     const [errors, setErrors] = useState({});
     const [src, setSrc] = useState(null);
     const [loading, setLoading] = useState(false);
+    const [picker, setPicker] = useState(false);
+
+    const handleChangePicker = (e) => {
+        setPicker(state => !state);
+    }
+
+    const changePositionText = (e) => {
+        setProvince(province => ({
+            ...province,
+            position: {
+                ...province.position,
+                [e.target.name]: e.target.value
+            }
+        }));
+    }
 
 
     const getProvince = async (id) => {
@@ -283,10 +298,11 @@ export default function DetailProvinceAdmin() {
                                             label="Vĩ độ"
                                             variant='outlined'
                                             name='lat'
+                                            handleChange={changePositionText}
                                             value={province.position.lat}
                                             className={classes.fullField}
                                             InputProps={{
-                                                readOnly: true,
+                                                readOnly: picker,
                                             }}
                                         />
                                     </div>
@@ -295,24 +311,40 @@ export default function DetailProvinceAdmin() {
                                             label="Kinh độ"
                                             variant='outlined'
                                             name='lon'
+                                            handleChange={changePositionText}
                                             value={province.position.lon}
                                             className={classes.fullField}
                                             InputProps={{
-                                                readOnly: true,
+                                                readOnly: picker,
                                             }}
                                         />
                                     </div>
                                 </div>
-                                <div style={{ marginBlock: 10, marginInline: 20 }}>
-                                    <MapPicker
-                                        position={{
-                                            lat: province.position.lat,
-                                            lng: province.position.lon
-                                        }}
-                                        setPosition={changePosition}
-                                        height={400}
-                                    />
-                                </div>
+                                <FormControlLabel
+                                    control={
+                                        <Switch
+                                            checked={picker}
+                                            onChange={handleChangePicker}
+                                            name="picker-checker"
+                                            color="primary"
+                                        />
+                                    }
+                                    label="Chọn vị trí trên bản đồ"
+                                />
+                                {
+                                    picker &&
+                                    <div style={{ marginBlock: 10, marginInline: 20 }}>
+                                        <MapPicker
+                                            position={{
+                                                lat: parseFloat(province.position.lat),
+                                                lng: parseFloat(province.position.lon)
+                                            }}
+                                            setPosition={changePosition}
+                                            height={400}
+                                        />
+                                    </div>
+                                }
+
                                 <TextField
                                     label="Thông tin"
                                     variant='outlined'

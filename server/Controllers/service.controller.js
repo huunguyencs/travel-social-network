@@ -78,9 +78,10 @@ class ServiceController {
 
     async getAll(req, res) {
         try {
-            const services = await Services.find({}, "name description images")
+            const services = await Services.find({}, "name description images star type")
                 // .populate("cooperator")
-                .populate("province", "fullname");
+                .populate("cooperator", "fullname")
+                .populate("province", "fullname")
             res.json({ success: true, message: "get info all Service success", services });
         } catch (error) {
             console.log(err)
