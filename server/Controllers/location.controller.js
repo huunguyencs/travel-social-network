@@ -157,15 +157,16 @@ class LocationController {
             offset = offset || 0;
             var locations = await Locations.find({ $text: { $search: q } }, { score: { $meta: "textScore" } })
                 .sort({ score: { $meta: "textScore" } })
-                .limit(10)
-                .skip(offset * 10)
+                .limit(20)
+                .skip(offset * 20)
 
             locations = locations.map((item) => ({
                 _id: item._id,
                 fullname: item.fullname,
                 link: `/location/${item.name}`,
                 description: item.information,
-                image: item.images[0]
+                image: item.images[0],
+                score: item._doc.score
             }))
 
             res.json({ success: true, results: locations, query: q });

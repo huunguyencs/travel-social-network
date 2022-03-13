@@ -32,8 +32,8 @@ export function extractProvinceTour(tour) {
 
 export function extractLocationTour(location) {
     var locations = [];
-    tour.map(item => {
-        item.locations.map(location => locations.push(location.location.fullname))
+    location.map(item => {
+        item.locations.map(loc => locations.push(loc.location.fullname))
         return true;
     })
     return new Set(locations);

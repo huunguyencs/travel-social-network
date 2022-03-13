@@ -7,11 +7,11 @@ import { formStyles } from '../../style'
 function formatCost(cost) {
     if (parseInt(cost) === 0) return 'Min';
     if (parseInt(cost) === 100) return 'Max';
-    return cost * 10;
+    return cost * 100;
 }
 
 function valueText(value) {
-    return `${10 * value}`;
+    return `${100 * value} k`;
 }
 
 export default function FilterTour(props) {
@@ -43,8 +43,8 @@ export default function FilterTour(props) {
             minCost -= maxCost;
         }
         dispatch(getTours({
-            maxCost: maxCost * 10,
-            minCost: minCost * 10,
+            maxCost: maxCost * 100,
+            minCost: minCost * 100,
             q: text
         }))
         setFilter(true);
@@ -62,29 +62,33 @@ export default function FilterTour(props) {
             <div>
                 <div style={{ marginBlock: 20 }}>
                     <Typography gutterBottom>
-                        Chọn khoảng chi phí
+                        Chọn khoảng chi phí (nghìn VND)
                     </Typography>
-                    <Slider
-                        value={cost}
-                        onChange={handleChangeCost}
-                        valueLabelDisplay='auto'
-                        valueLabelFormat={formatCost}
-                        aria-labelledby='range-cost-slider'
-                        getAriaValueText={valueText}
-                        style={{ width: 400 }}
+                    <div className={classes.center}>
+                        <Slider
+                            value={cost}
+                            onChange={handleChangeCost}
+                            valueLabelDisplay='auto'
+                            valueLabelFormat={formatCost}
+                            aria-labelledby='range-cost-slider'
+                            getAriaValueText={valueText}
+                            style={{ width: 400 }}
+                        />
+                    </div>
+                </div>
+                <div className={classes.center}>
+                    <TextField
+                        label="Từ khóa"
+                        placeholder="Vd: Hà Nội..."
+                        variant="outlined"
+                        name="hashtag"
+                        id="hashtag"
+                        // className={classes.hashtag}
+                        style={{ width: 400, marginBlock: 20 }}
+                        value={text}
+                        onChange={handleChangeText}
                     />
                 </div>
-                <TextField
-                    label="Từ khóa"
-                    placeholder="Vd: Hà Nội..."
-                    variant="outlined"
-                    name="hashtag"
-                    id="hashtag"
-                    // className={classes.hashtag}
-                    style={{ width: 400, marginBlock: 20 }}
-                    value={text}
-                    onChange={handleChangeText}
-                />
                 <div style={{ display: 'flex', justifyContent: 'right', margin: 10 }}>
                     <Button variant='outlined' color='primary' onClick={handleSubmit}>Xong</Button>
                 </div>

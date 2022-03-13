@@ -22,11 +22,12 @@ export default function TabPanel(props) {
             try {
                 if (item === 'location') {
                     var province = page === 0 ? await customAxios().get(`/province/search?q=${query}`) : [];
-                    var location = await customAxios().get(`/location/search?q=${query}&offset=${page}`)
+                    var location = await customAxios().get(`/location/search?q=${query}&offset=${page}`);
+                    var results = page === 0 ? [...province.data.results, ...location.data.results].sort((a, b) => b.score - a.score) : location;
                     if (page === 0) {
                         setResult({
                             query: province.data.query,
-                            data: [...province.data.results, ...location.data.results]
+                            data: results
                         });
 
                     }

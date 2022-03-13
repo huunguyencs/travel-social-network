@@ -148,7 +148,8 @@ class ProvinceController {
                 fullname: item.fullname,
                 link: `/province/${item.name}`,
                 description: item.information,
-                image: item.image
+                image: item.image,
+                score: item._doc.score
             }))
             res.json({ success: true, results: provinces, query: q })
         }
