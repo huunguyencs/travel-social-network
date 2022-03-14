@@ -123,7 +123,12 @@ export default function Login(props) {
             <Grid item md={6} sm={12} xs={12} className={classes.formLogin}>
                 {/* <h3 className="form-login-title">Triple H</h3> */}
                 <div className={classes.center} style={{ marginBottom: 50 }}>
-                    <img src='/tripleH_full-black.png' alt='Logo' width={150} height={150} />
+                    <div style={{ display: 'flex', alignItems: 'center' }}>
+                        <img src='/Logo.png' alt='Logo' height={80} />
+                        <Typography variant="h4" style={{ fontFamily: 'Leckerli One', color: 'black', marginLeft: 10 }}>
+                            Triple H
+                        </Typography>
+                    </div>
                 </div>
                 <div className={classes.center} style={{ marginBottom: 20 }}>
                     <Typography variant="h4">Đăng nhập</Typography>

@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { Container, Button, IconButton, CircularProgress } from "@material-ui/core";
+import { Container, Button, IconButton } from "@material-ui/core";
 import { useSelector } from 'react-redux';
 
 import Typography from '@material-ui/core/Typography';
@@ -11,7 +11,7 @@ import { DataGrid, GridToolbarContainer, GridToolbarExport } from "@mui/x-data-g
 import customAxios from "../../../utils/fetchData";
 import { tableStyles } from "../../../style";
 
-import Event from "../Event";
+// import Event from "../Event";
 
 
 const columns = [
@@ -75,29 +75,29 @@ export default function AdminEvent() {
     const [error, setError] = useState(null);
     const [pageSize, setPageSize] = useState(10);
 
-    const [stateEvent, setStateEvent] = useState({
-        loading: false,
-        error: false
-    })
+    // const [stateEvent, setStateEvent] = useState({
+    //     loading: false,
+    //     error: false
+    // })
 
-    const getCurrentEvent = async () => {
-        setStateEvent({
-            loading: true,
-            error: false
-        })
-        await customAxios().get('/event/get_events').then(res => {
-            setEvents(res.data.events);
-            setStateEvent({
-                loading: false,
-                error: false
-            })
-        }).catch(err => {
-            setStateEvent({
-                loading: false,
-                error: true
-            })
-        })
-    }
+    // const getCurrentEvent = async () => {
+    //     setStateEvent({
+    //         loading: true,
+    //         error: false
+    //     })
+    //     await customAxios().get('/event/get_events').then(res => {
+    //         setEvents(res.data.events);
+    //         setStateEvent({
+    //             loading: false,
+    //             error: false
+    //         })
+    //     }).catch(err => {
+    //         setStateEvent({
+    //             loading: false,
+    //             error: true
+    //         })
+    //     })
+    // }
 
     const getAllEvents = async (token) => {
         setLoading(true);

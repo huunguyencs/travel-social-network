@@ -104,12 +104,12 @@ export default function Header(props) {
     return (
         <AppBar style={{ zIndex: 2 }}>
             <Toolbar className={classes.toolbar}>
-                <Link to="/">
+                <Link to="/" style={{ display: 'flex', alignItems: 'center' }}>
                     {/* <Typography variant="h6" className={classes.logo}>
                         Triple H
                     </Typography> */}
-                    {/* <img src='/tripleH-white.png' alt='Logo' width={110} height={35} /> */}
-                    <Typography variant="h5" style={{ fontFamily: 'Leckerli One', color: 'white' }}>
+                    <img src='Logo.png' alt='Logo' width={40} height={40} />
+                    <Typography variant="h6" style={{ fontFamily: 'Leckerli One', color: 'white', marginLeft: 10 }}>
                         Triple H
                     </Typography>
                 </Link>
