@@ -24,18 +24,18 @@ const useStyles = makeStyles((theme) => ({
 }))
 
 const data = [
-    { month: "Jan", user: 100, group: 2, post: 300 },
-    { month: "Feb", user: 120, group: 3, post: 400 },
-    { month: "Mar", user: 140, group: 4, post: 450 },
-    { month: "Apr", user: 150, group: 5, post: 490 },
-    { month: "May", user: 170, group: 8, post: 500 },
-    { month: "Jun", user: 200, group: 10, post: 700 },
-    { month: "Jul", user: 210, group: 15, post: 740 },
-    { month: "Aug", user: 210, group: 15, post: 900 },
-    { month: "Sep", user: 180, group: 9, post: 600 },
-    { month: "Oct", user: 150, group: 5, post: 400 },
-    { month: "Nov", user: 130, group: 2, post: 300 },
-    { month: "Dec", user: 110, group: 2, post: 100 },
+    { month: "Jan", user: 100, tour: 2, post: 300 },
+    { month: "Feb", user: 120, tour: 3, post: 400 },
+    { month: "Mar", user: 140, tour: 4, post: 450 },
+    { month: "Apr", user: 150, tour: 5, post: 490 },
+    { month: "May", user: 170, tour: 8, post: 500 },
+    { month: "Jun", user: 200, tour: 10, post: 700 },
+    { month: "Jul", user: 210, tour: 15, post: 740 },
+    { month: "Aug", user: 210, tour: 15, post: 900 },
+    { month: "Sep", user: 180, tour: 9, post: 600 },
+    { month: "Oct", user: 150, tour: 5, post: 400 },
+    { month: "Nov", user: 130, tour: 2, post: 300 },
+    { month: "Dec", user: 110, tour: 2, post: 100 },
 ]
 
 export default function AdminHome(props) {
@@ -124,8 +124,8 @@ export default function AdminHome(props) {
                                             <Tooltip />
                                             <Legend />
                                             <Line type="monotone" dataKey="user" stroke="#8884d8" activeDot={{ r: 8 }} />
-                                            <Line type="monotone" dataKey="post" stroke="#82ca9d" />
-                                            <Line type="monotone" dataKey="group" stroke="#ECCC68" />
+                                            <Line type="monotone" dataKey="tour" stroke="#82ca9d" />
+                                            <Line type="monotone" dataKey="post" stroke="#ECCC68" />
                                         </LineChart>
                                     </ResponsiveContainer>
                                 </div>
