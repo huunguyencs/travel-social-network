@@ -1,69 +1,13 @@
-import { Avatar, Box, Container, Grid, List, ListItem, ListItemAvatar, ListItemText, Tab, Tabs, Typography } from "@material-ui/core";
+import { Container, Grid, Tab, Tabs, Typography } from "@material-ui/core";
 import React, { useEffect, useState } from "react";
 import PropTypes from 'prop-types';
-import { Link, useLocation } from "react-router-dom";
+import { useLocation } from "react-router-dom";
 import clsx from 'clsx';
 
 import { searchStyles } from "../style";
 import SpeedDialButton from "../components/SpeedDialBtn";
+import TabPanel from '../components/Search/TabPanel';
 
-
-function TabPanel(props) {
-    const { value, index, ...other } = props;
-
-    const classes = searchStyles();
-
-    return (
-        <div
-            role="tabpanel"
-            hidden={value !== index}
-            id={`vertical-tabpanel-${index}`}
-            aria-labelledby={`vertical-tab-${index}`}
-            {...other}
-        >
-            <SpeedDialButton />
-            {value === index && (
-                <Box p={3}>
-                    {value}
-                    <List className={classes.listSearch} component={Link} to="/u/4646">
-                        <ListItem className={classes.itemSearch}>
-                            <ListItemAvatar>
-                                <Avatar alt="avatar" />
-                            </ListItemAvatar>
-                            <ListItemText>
-                                Text
-                            </ListItemText>
-                        </ListItem>
-                        <ListItem className={classes.itemSearch}>
-                            <ListItemAvatar>
-                                <Avatar alt="avatar" />
-                            </ListItemAvatar>
-                            <ListItemText>
-                                Text
-                            </ListItemText>
-                        </ListItem>
-                        <ListItem className={classes.itemSearch}>
-                            <ListItemAvatar>
-                                <Avatar alt="avatar" />
-                            </ListItemAvatar>
-                            <ListItemText>
-                                Text
-                            </ListItemText>
-                        </ListItem>
-                        <ListItem className={classes.itemSearch}>
-                            <ListItemAvatar>
-                                <Avatar alt="avatar" />
-                            </ListItemAvatar>
-                            <ListItemText>
-                                Text
-                            </ListItemText>
-                        </ListItem>
-                    </List>
-                </Box>
-            )}
-        </div>
-    );
-}
 
 TabPanel.propTypes = {
     children: PropTypes.node,
@@ -79,6 +23,17 @@ function a11yProps(index) {
     };
 }
 
+function listSearch() {
+    return [
+        'location',
+        'user',
+        'tour',
+        'post',
+        'volunteer',
+        'event',
+        'service'
+    ]
+}
 
 export default function SearchPage(props) {
 
@@ -88,6 +43,9 @@ export default function SearchPage(props) {
     const location = useLocation();
 
     const query = (new URLSearchParams(location.search)).get("q");
+
+    const list = listSearch();
+
 
     const handleChange = (event, newValue) => {
         setValue(newValue);
@@ -99,37 +57,38 @@ export default function SearchPage(props) {
 
 
     return (
-        <Container>
-            <div className={classes.appBarSpacer} />
-            <div className={classes.appBarSpacer} />
-            <Grid container>
-                <Grid item md={3}>
-                    <Tabs
-                        orientation="vertical"
-                        variant="scrollable"
-                        value={value}
-                        onChange={handleChange}
-                        aria-label="Vertical tabs example"
-                        className={classes.tabs}
-                    >
-                        <Tab label="Tất cả" {...a11yProps(0)} className={value === 0 ? clsx(classes.tab, classes.active) : classes.tab} />
-                        <Tab label="Địa điểm" {...a11yProps(1)} className={value === 1 ? clsx(classes.tab, classes.active) : classes.tab} />
-                        <Tab label="Người dùng" {...a11yProps(2)} className={value === 2 ? clsx(classes.tab, classes.active) : classes.tab} />
-                        <Tab label="Dịch vụ" {...a11yProps(3)} className={value === 3 ? clsx(classes.tab, classes.active) : classes.tab} />
-                        <Tab label="Nhóm" {...a11yProps(4)} className={value === 4 ? clsx(classes.tab, classes.active) : classes.tab} />
-                        <Tab label="Sự kiện" {...a11yProps(5)} className={value === 5 ? clsx(classes.tab, classes.active) : classes.tab} />
-                    </Tabs>
+        <>
+            <SpeedDialButton />
+            <Container>
+                <div className={classes.appBarSpacer} />
+                <div className={classes.appBarSpacer} />
+                <Grid container>
+                    <Grid item md={3}>
+                        <Tabs
+                            orientation="vertical"
+                            variant="scrollable"
+                            value={value}
+                            onChange={handleChange}
+                            aria-label="Vertical tabs example"
+                            className={classes.tabs}
+                        >
+                            <Tab label="Địa điểm" {...a11yProps(0)} className={value === 0 ? clsx(classes.tab, classes.active) : classes.tab} />
+                            <Tab label="Người dùng" {...a11yProps(1)} className={value === 1 ? clsx(classes.tab, classes.active) : classes.tab} />
+                            <Tab label="Tour" {...a11yProps(2)} className={value === 2 ? clsx(classes.tab, classes.active) : classes.tab} />
+                            <Tab label="Bài viết" {...a11yProps(3)} className={value === 3 ? clsx(classes.tab, classes.active) : classes.tab} />
+                            <Tab label="Tình nguyện" {...a11yProps(4)} className={value === 4 ? clsx(classes.tab, classes.active) : classes.tab} />
+                            <Tab label="Sự kiện" {...a11yProps(5)} className={value === 5 ? clsx(classes.tab, classes.active) : classes.tab} />
+                            <Tab label="Dịch vụ" {...a11yProps(6)} className={value === 6 ? clsx(classes.tab, classes.active) : classes.tab} />
+                        </Tabs>
+                    </Grid>
+                    <Grid item md={9}>
+                        <Typography className={classes.query}>Hiển thị kết quả tìm kiếm cho "{query}"</Typography>
+                        {list.map((item, index) =>
+                            <TabPanel key={index} value={value} index={index} item={item} q={query} />
+                        )}
+                    </Grid>
                 </Grid>
-                <Grid item md={9}>
-                    <Typography className={classes.query}>Hiển thị kết quả tìm kiếm cho "{query}"</Typography>
-                    <TabPanel value={value} index={0} />
-                    <TabPanel value={value} index={1} />
-                    <TabPanel value={value} index={2} />
-                    <TabPanel value={value} index={3} />
-                    <TabPanel value={value} index={4} />
-                    <TabPanel value={value} index={5} />
-                </Grid>
-            </Grid>
-        </Container>
+            </Container>
+        </>
     )
 }

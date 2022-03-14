@@ -1,13 +1,16 @@
-import { Button, Card, ClickAwayListener, Collapse, Dialog, DialogActions, DialogTitle, IconButton, MenuItem, MenuList, Paper, Popper, TextField, Typography } from '@material-ui/core';
+import { Backdrop, Button, Card, CardContent, CardMedia, ClickAwayListener, Dialog, DialogActions, DialogTitle, Fade, Grid, IconButton, InputBase, MenuItem, MenuList, Modal, Paper, Popper, TextField, Typography } from '@material-ui/core';
 import React, { useEffect, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux';
-import customAxios from '../../utils/fetchData';
+
 import * as tourAction from '../../redux/actions/createTourAction';
-import { Autocomplete } from '@material-ui/lab';
-import { formStyles } from '../../style';
+import Autocomplete, { createFilterOptions } from '@material-ui/lab/Autocomplete';
+import { formStyles, tourdetailStyles } from '../../style';
 import { Link } from 'react-router-dom';
-import { AddCircle, MoreVert } from '@material-ui/icons';
+import { AddCircle, Close, MoreVert } from '@material-ui/icons';
 import { ReviewArea } from '../Service/ServiceItem';
+
+
+const filter = createFilterOptions();
 
 function ServiceItemAddForm(props) {
 
@@ -15,55 +18,45 @@ function ServiceItemAddForm(props) {
 
     const { location } = useSelector(state => state);
 
-    const { currentProvince, setCurrentProvince, services, setServices } = props;
-
+    const { currentProvince, setCurrentProvince, type } = props;
+    const [services, setServices] = useState([]);
     const [service, setService] = useState(null);
-    const [cost, setCost] = useState(0);
-    const [loading, setLoading] = useState(false);
-
-    const getServicesInit = async (province, setServices) => {
-        setLoading(true);
-        await customAxios().get(`/province/service/${province._id}`).then(res => {
-            setServices(res.data.services);
-            setLoading(false)
-        })
-    }
-
-    const getServices = async (province) => {
-        if (province && (!currentProvince || province._id !== currentProvince._id)) {
-            setLoading(true);
-            setService(null);
-            await customAxios().get(`/province/service/${province._id}`).then(res => {
-                setServices(res.data.services);
-                setLoading(false)
-            }).catch(err => {
-                setService([]);
-                setLoading(false)
-            })
-            setCurrentProvince(province);
-        }
-    }
+    const [loading, setLoading] = useState(location.loadingServices);
 
     useEffect(() => {
-        // console.log(props);
-        if (currentProvince && !services) {
-            getServicesInit(currentProvince, setServices);
+        setLoading(true);
+        if (currentProvince) {
+            // console.log(location.services);
+            setServices(location.services.filter(item => item.province._id === currentProvince._id))
         }
-    }, [currentProvince, services, setServices])
+        setLoading(false);
+    }, [currentProvince, location.services])
 
-    const handleChangeCost = (e) => {
-        setCost(e.target.value)
+    const setProvince = (province) => {
+        setCurrentProvince(province);
     }
 
+
+
     const handleSubmit = () => {
+
         if (service) {
+
+            let sv = service?._id ? {
+                service: service,
+                cost: 0,
+                description: ''
+            } : {
+                serviceName: service.name,
+                cost: 0,
+                description: ''
+            }
             dispatch(tourAction.addService({
-                service: {
-                    service: service,
-                    cost: parseInt(cost),
-                }
+                service: sv,
+                type: type,
             }))
         }
+        // console.log(service);
     }
 
     const classes = formStyles();
@@ -76,11 +69,12 @@ function ServiceItemAddForm(props) {
             <div className={classes.center}>
                 <Autocomplete
                     id="choose-province"
+                    freeSolo
                     options={location.provinces}
                     loading={location.loading}
                     getOptionLabel={(option) => option?.fullname}
                     className={classes.autocomplete}
-                    onChange={(e, value) => getServices(value)}
+                    onChange={(e, value) => setProvince(value)}
                     value={currentProvince}
                     renderInput={(params) => <TextField {...params} name="provinces" label="Chọn tỉnh thành" variant="outlined" />}
                 />
@@ -88,11 +82,54 @@ function ServiceItemAddForm(props) {
             <div className={classes.center}>
                 <Autocomplete
                     id="choose-province"
-                    options={services || []}
+                    freeSolo
+                    options={services}
+                    filterOptions={(options, params) => {
+                        const filtered = filter(options, params);
+
+                        if (params.inputValue !== '') {
+                            filtered.push({
+                                inputValue: params.inputValue,
+                                title: `Thêm ${params.inputValue}`
+                            })
+                        }
+                        return filtered;
+                    }}
                     loading={loading}
-                    getOptionLabel={(option) => `${option?.name}`}
+                    getOptionLabel={(option) => {
+                        if (typeof option === 'string') {
+                            return option;
+                        }
+                        if (option.inputValue) {
+                            return option.inputValue
+                        }
+
+                        return option.name;
+                    }}
+                    selectOnFocus
+                    clearOnBlur
+                    handleHomeEndKeys
+                    renderOption={(option) => option.name}
                     className={classes.autocomplete}
-                    onChange={(e, value) => setService(value)}
+                    onChange={(e, value) => {
+                        if (typeof value === 'string') {
+                            setService({
+                                name: value,
+                                description: '',
+                                images: ['https://skillz4kidzmartialarts.com/wp-content/uploads/2017/04/default-image-620x600.jpg'],
+                            })
+                        }
+                        else if (value && value.inputValue) {
+                            setService({
+                                name: value.inputValue,
+                                description: '',
+                                images: ['https://skillz4kidzmartialarts.com/wp-content/uploads/2017/04/default-image-620x600.jpg'],
+                            })
+                        }
+                        else {
+                            setService(value);
+                        }
+                    }}
                     value={service}
                     renderInput={(params) => <TextField {...params} name="provinces" label="Chọn dịch vụ" variant="outlined" />}
                 />
@@ -103,18 +140,6 @@ function ServiceItemAddForm(props) {
                     <Typography variant='body2'>{service.description}</Typography>
                 </div>
             }
-            <div style={{ display: 'flex', justifyContent: 'center', marginTop: 30 }}>
-                <TextField
-                    label="Chi phí (nghìn VND)"
-                    variant="outlined"
-                    name="cost"
-                    id="cost"
-                    style={{ width: "100%" }}
-                    type={"number"}
-                    value={cost}
-                    onChange={handleChangeCost}
-                />
-            </div>
             <div style={{ marginTop: 10 }} className={classes.center}>
                 <Button
                     className={classes.button}
@@ -130,13 +155,105 @@ function ServiceItemAddForm(props) {
     )
 }
 
-export function ServiceCard(props) {
-    const { service, index, isEdit, review } = props;
+function DetailService(props) {
+    const { service, isEdit, type, indexService, isOwn, handleClose } = props;
 
-    const classes = formStyles();
+    const [cost, setCost] = useState(service.cost);
+    const [description, setDescription] = useState(service.description);
+
+    const dispatch = useDispatch();
+
+    const handleUpdate = () => {
+        // console.log(cost);
+        dispatch(tourAction.updateService({ cost: parseInt(cost), description: description, type: type, indexService: indexService }))
+    }
+
+    const classes = tourdetailStyles();
+
+    return (
+        <Paper className={classes.paperDetail}>
+            <Grid container>
+                <Grid item md={6} className={classes.imageDetail}>
+                    <div style={{ padding: 30 }}>
+                        <img src={service.service ? service.service.images[0] : 'https://skillz4kidzmartialarts.com/wp-content/uploads/2017/04/default-image-620x600.jpg'} alt="Service" style={{ width: '100%', height: 400 }} />
+                    </div>
+                </Grid>
+                <Grid item md={6} sm={12} xs={12}>
+                    <div className={classes.closeBtn}>
+                        <IconButton onClick={handleClose} size='small'>
+                            <Close />
+                        </IconButton>
+                    </div>
+                    <div style={{ padding: 30, paddingTop: 0 }}>
+                        {service.serviceName ?
+                            <Typography variant='h5'>{service.serviceName}</Typography> :
+                            <Typography variant='h5' component={Link} to={`/u/${service.service.cooperator}`}>{service.service.name}</Typography>
+
+                        }
+                        {
+                            isEdit ?
+                                <div >
+                                    <InputBase
+                                        placeholder="Mô tả"
+                                        title="Thông tin"
+                                        variant="outlined"
+                                        name="description"
+                                        id="description"
+                                        rows={5}
+                                        className={classes.descriptionInput}
+                                        // className={classes.hashtag}
+                                        multiline
+                                        value={description}
+                                        onChange={e => setDescription(e.target.value)}
+                                    />
+                                    <TextField
+                                        label="Chi phí (nghìn VND)"
+                                        variant="outlined"
+                                        name="cost"
+                                        id="cost"
+                                        className={classes.fullField}
+                                        type={"number"}
+                                        value={cost}
+                                        onChange={(e) => setCost(e.target.value)}
+                                    />
+                                    <div className={classes.btnWrap}>
+                                        <Button onClick={handleUpdate} variant="contained" color="primary">
+                                            Cập nhật
+                                        </Button>
+                                    </div>
+                                </div> :
+                                <div>
+                                    <Typography>Chi phí: {new Intl.NumberFormat().format(cost * 1000)} VND</Typography>
+                                    <Typography>Mô tả: {description}</Typography>
+                                </div>
+                        }
+                        {!isEdit && isOwn && service?.service &&
+                            <ReviewArea id={service.service._id} />
+                        }
+                    </div>
+
+                </Grid>
+            </Grid>
+        </Paper>
+    )
+}
+
+
+export function ServiceCard(props) {
+    const { service, index, isEdit, review, isOwn, type } = props;
+
+    const classes = tourdetailStyles();
     const [anchorEl, setAnchorEl] = useState(null);
     const [showDelete, setShowDelete] = useState(false);
-    const [showReview, setShowReview] = useState(false);
+    const [showDetail, setShowDetail] = useState(false);
+
+    const handleShowDetail = () => {
+        setShowDetail(true);
+    }
+
+    const handleCloseDetail = () => {
+        setShowDetail(false);
+    }
 
     const dispatch = useDispatch();
 
@@ -160,20 +277,35 @@ export function ServiceCard(props) {
         dispatch(tourAction.deleteService({ index: index }))
     }
 
-    const handleShowReview = () => {
-        setShowReview(state => !state)
-    }
+
+
+    const refDetail = React.createRef();
+
+    const DetailRef = React.forwardRef((props, ref) =>
+        <DetailService innerRef={ref} {...props} />
+    )
 
     return (
-        <Card className={classes.serviceCard}>
-            <>
-                {service.service &&
-                    <>
-                        <div style={{ display: 'flex' }}>
+        <Card className={classes.serviceContainer} >
+            <Grid container>
+                <Grid item md={5} sm={3} className={classes.imageLocation}>
+                    <CardMedia className={classes.imgContainer}>
+                        <img src={service.service ? service.service.images[0] : 'https://skillz4kidzmartialarts.com/wp-content/uploads/2017/04/default-image-620x600.jpg'} alt="Service" className={classes.img} />
+                    </CardMedia>
+                </Grid>
+                <Grid item md={7} sm={9} xs={12}>
+                    <CardContent className={classes.contentContainer}>
+
+                        <div className={classes.locationContentContainer}>
                             <div>
-                                <img src={service.service.images[0]} alt="Loading..." className={classes.imageService} />
+                                <div>
+                                    <Typography variant='h5' className={classes.locationName} onClick={handleShowDetail}>{service.serviceName ? service.serviceName : service.service.name}</Typography>
+                                </div>
+                                <div>
+                                    <Typography>Chi phí: {new Intl.NumberFormat().format(service.cost * 1000)} VND</Typography>
+                                </div>
                             </div>
-                            <div className={classes.serviceInfo}>
+                            <div>
                                 {isEdit &&
                                     <div style={{ display: 'flex', justifyContent: 'right' }}>
                                         <IconButton
@@ -221,31 +353,47 @@ export function ServiceCard(props) {
                                         </Popper>
                                     </div>
                                 }
-
-                                <Typography variant='h6' component={Link} to={`/u/${service.service.cooperator}`}>{service.service.name.length > 30 ? service.service.name.slice(0, 30) : service.service.name}</Typography>
-                                <Typography>Chi phí: {new Intl.NumberFormat().format(service.cost * 1000)} VND</Typography>
-                                {review && (
-                                    <Button onClick={handleShowReview}>Đánh giá</Button>
-                                )}
                             </div>
                         </div>
-                        <div>
-                            <Collapse in={showReview}>
-                                <ReviewArea id={service.service._id} />
-                            </Collapse>
-                        </div>
-                    </>
-                }
-            </>
+
+                    </CardContent>
+
+
+                </Grid>
+            </Grid>
+            <Modal
+                aria-labelledby="modal-detail-service"
+                aria-describedby="modal-detail-service-description"
+                open={showDetail}
+                className={classes.modal}
+                onClose={handleCloseDetail}
+                closeAfterTransition
+                BackdropComponent={Backdrop}
+                BackdropProps={{
+                    timeout: 500,
+                }}
+            >
+                <Fade in={showDetail}>
+                    <DetailRef
+                        ref={refDetail}
+                        handleClose={handleCloseDetail}
+                        service={service}
+                        isEdit={isEdit}
+                        isOwn={isOwn}
+                        review={review}
+                        indexService={index}
+                        type={type}
+                    />
+                </Fade>
+            </Modal>
         </Card>
+
     )
 }
 
 export default function AddService(props) {
 
-    const { services } = useSelector(state => state.createTour);
-
-    const classes = formStyles();
+    const classes = tourdetailStyles();
 
 
     const ref = React.createRef();
@@ -261,34 +409,7 @@ export default function AddService(props) {
                     ref={ref}
                     {...props}
                 />
-                {/* <Button onClick={handleShowForm}>Thêm dịch vụ</Button>
-                <Modal
-                    aria-labelledby="transition-modal-title"
-                    aria-describedby="transition-modal-description"
-                    className={classes.modal}
-                    open={showForm}
-                    onClose={handleCloseForm}
-                    closeAfterTransition
-                    BackdropComponent={Backdrop}
-                    BackdropProps={{
-                        timeout: 500,
-                    }}
-                >
-                    <Fade in={showForm}>
-                        
-                    </Fade>
-                </Modal> */}
             </div>
-            <div style={{ display: 'flex', justifyContent: 'center' }}>
-                <div>
-                    {
-                        services && services.map((item, index) => (
-                            <ServiceCard key={index} service={item} index={index} isEdit={true} />
-                        ))
-                    }
-                </div>
-            </div>
-
         </Paper>
     )
 }

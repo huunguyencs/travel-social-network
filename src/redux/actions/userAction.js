@@ -14,10 +14,3 @@ export const updateFollower = (props) => {
     }
 }
 
-export const getServices = (props) => {
-    return {
-        type: USER_TYPES.GET_SERVICES,
-        payload: props
-    }
-}
-

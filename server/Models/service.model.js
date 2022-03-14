@@ -40,7 +40,8 @@ const serviceSchema = new mongoose.Schema({
         {
             userId: { type: mongoose.Types.ObjectId, ref: 'users' },
             rate: Number,
-            content: String
+            content: String,
+            images: [String],
         }
     ],
     cost: String,

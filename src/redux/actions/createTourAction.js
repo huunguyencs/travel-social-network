@@ -72,6 +72,13 @@ export const addService = (props) => {
     }
 }
 
+export const updateService = (props) => {
+    return {
+        type: CREATE_TOUR_TYPES.UPDATE_SERVICE,
+        payload: props
+    }
+}
+
 export const deleteService = (props) => {
     return {
         type: CREATE_TOUR_TYPES.DELETE_SERVICE,

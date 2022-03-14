@@ -9,6 +9,9 @@ const useStyles = makeStyles((theme) => ({
         "&:hover": {
             textDecorationLine: 'underline',
         }
+    },
+    text:{
+        wordBreak: "break-word"
     }
 }))
 
@@ -24,7 +27,7 @@ export function SeeMoreText(props) {
     const { maxText, text, variant } = props;
 
     return (
-        <Typography variant={variant} noWrap={false}>
+        <Typography className={classes.text} variant={variant} noWrap={false}>
             {text?.length < maxText ? text :
                 (
                     <>

@@ -5,7 +5,6 @@ import { useDispatch, useSelector } from "react-redux";
 
 import { formStyles } from '../../style';
 import * as tourAction from '../../redux/actions/createTourAction';
-import customAxios from "../../utils/fetchData";
 import { AddCircle } from "@material-ui/icons";
 
 
@@ -13,51 +12,23 @@ export default function AddLocationForm(props) {
 
     const classes = formStyles();
 
-    const [isFetch, setIsFetch] = useState(false);
     const [loc, setLoc] = useState(null);
 
     const dispatch = useDispatch();
     const { location } = useSelector(state => state);
-    const { currentProvince, setCurrentProvince, handleClose, locations, setLocations, indexDate } = props;
-    const [loading, setLoading] = useState(false);
+    const { currentProvince, setCurrentProvince, handleClose, indexDate } = props;
+    const [locations, setLocations] = useState([]);
+    const [loading, setLoading] = useState(location.loadingLocations);
 
-
-
-
-    const getLocInit = async (province, setLocations) => {
-        setLoading(true);
-        await customAxios().get(`/location/locations/${province._id}`)
-            .then((req) => {
-                setLocations(req.data.locations);
-                setLoading(false);
-            }).catch(err => {
-                setLocations([]);
-                setLoading(false);
-            })
-    }
 
     useEffect(() => {
-        if (currentProvince && locations.length === 0 && isFetch) {
-            getLocInit(currentProvince, setLocations)
-            setIsFetch(true)
+        setLoading(true);
+        if (currentProvince) {
+            setLocations(location.locations.filter((item) => item.province._id === currentProvince._id))
         }
-    }, [currentProvince, locations, setLocations, isFetch, setIsFetch])
+        setLoading(false);
+    }, [currentProvince, location.locations]);
 
-    const getLoc = async (province) => {
-        if (province && province._id !== currentProvince) {
-            setLoc(null);
-            setLoading(true);
-            await customAxios().get(`/location/locations/${province._id}`)
-                .then((req) => {
-                    setLocations(req.data.locations);
-                    setLoading(false);
-                }).catch(err => {
-                    setLocations([]);
-                    setLoading(false);
-                })
-            setCurrentProvince(province);
-        }
-    }
 
 
     const handleSubmit = (e) => {
@@ -65,6 +36,10 @@ export default function AddLocationForm(props) {
         if (loc)
             dispatch(tourAction.addLocation({ location: loc, indexDate: indexDate }))
         handleClose();
+    }
+
+    const setProvince = (province) => {
+        setCurrentProvince(province);
     }
 
 
@@ -83,10 +58,10 @@ export default function AddLocationForm(props) {
                         value={currentProvince}
                         id="choose-province"
                         options={location.provinces}
-                        loading={location.loading}
+                        loading={location.loadingProvinces}
                         getOptionLabel={(option) => option?.fullname}
                         className={classes.autocomplete}
-                        onChange={(e, value) => getLoc(value)}
+                        onChange={(e, value) => setProvince(value)}
                         defaultValue={props.provinceCache}
                         renderInput={(params) => <TextField {...params} name="provinces" label="Chọn tỉnh thành" variant="outlined" />}
                     />

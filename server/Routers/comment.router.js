@@ -3,6 +3,9 @@ const router = express.Router();
 const CommentController = require('../Controllers/comment.controller');
 const auth = require('../Middlewares/auth');
 
+router.get('/post/:id', CommentController.getCommentPost);
+router.get('/tour/:id', CommentController.getCommentTour);
+
 router.post('/create_comment', auth, CommentController.createComment);
 
 router.patch('/:id', auth, CommentController.updateComment)

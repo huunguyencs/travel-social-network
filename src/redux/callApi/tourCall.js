@@ -91,12 +91,15 @@ export const saveTour = (tour, image, token, socket, next, error) => async (disp
             tour: tour.tour.map(item => ({
                 ...item,
                 locations: item.locations.map(location => ({
+                    ...location,
                     location: location.location._id,
                 })),
             })),
             provinces: Array.from(extractProvinceTour(tour.tour)),
             image: image ? imageUpload[0] : ""
         }
+
+        console.log(data);
 
         const res = await customAxios(token).post('/tour/create_tour', data);
 

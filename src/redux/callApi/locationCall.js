@@ -4,7 +4,7 @@ import customAxios from '../../utils/fetchData';
 
 export const getProvinces = (data) => async (dispatch) => {
     // dispatch(alertActions.callStart());
-    dispatch(locationActions.loading())
+    dispatch(locationActions.loadingProvinces())
     try {
         const res = await customAxios().get('/province/provinces');
         dispatch(locationActions.getProvinces({ provinces: res.data.provinces }));
@@ -12,9 +12,29 @@ export const getProvinces = (data) => async (dispatch) => {
     }
     catch (err) {
         // dispatch(notifyActions.callFail({ error: err }))
-        if (err.response && err.response.data && err.response.data.message)
-            dispatch(alertAction.error({ message: err.response.data.message }))
-        else
-            dispatch(alertAction.error({ message: "Có lỗi xảy ra" }));
+        dispatch(alertAction.error({ message: "Có lỗi xảy ra" }));
+    }
+}
+
+
+export const getLocations = (data) => async (dispatch) => {
+    dispatch(locationActions.loadingLocations());
+    try {
+        const res = await customAxios().get('/location/locations');
+        dispatch(locationActions.getLocations({ locations: res.data.locations }))
+    }
+    catch (err) {
+        dispatch(alertAction.error({ message: "Có lỗi xảy ra" }));
+    }
+}
+
+export const getServices = (data) => async (dispatch) => {
+    dispatch(locationActions.loadingServices());
+    try {
+        const res = await customAxios().get('/service/get_all');
+        dispatch(locationActions.getServices({ services: res.data.services }));
+    }
+    catch (err) {
+        dispatch(alertAction.error({ message: "Có lỗi xảy ra" }));
     }
 }

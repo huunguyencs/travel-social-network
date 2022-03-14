@@ -9,7 +9,7 @@ import { useSelector, useDispatch } from "react-redux";
 import { useParams, useHistory, Link } from "react-router-dom";
 import { follow, unfollow } from "../../redux/callApi/userCall";
 import ChatIcon from "../Icons/Chat";
-
+import { addUser, getConversations } from '../../redux/callApi/messageCall';
 
 
 export default function ProfileAvatar(props) {
@@ -34,7 +34,19 @@ export default function ProfileAvatar(props) {
     loading: false,
     error: false,
   })
-
+  const {message} = useSelector(state => state);
+  const handleMessage = async () =>{
+    const dataUser = {
+      _id: user._id,
+      fullname: user.fullname,
+      username: user.username,
+      avatar: user.avatar,
+      role:user.role,
+      text: ""
+    };
+    console.log("message", message)
+    await dispatch(addUser(dataUser, message, socket));
+  }
 
   const handleOpenFollowing = () => {
     setOpenFollowing(true);
@@ -129,7 +141,10 @@ export default function ProfileAvatar(props) {
     if (user?.fullname) {
       document.title = user.fullname;
     }
-  }, [user])
+    if (!message.firstLoad){
+      dispatch(getConversations(auth, socket));
+    }
+  }, [dispatch,message.firstLoad,auth,socket,user])
 
   const refFollowing = React.createRef();
   const refFollower = React.createRef();
@@ -211,7 +226,7 @@ export default function ProfileAvatar(props) {
                     <Button startIcon={< RssFeed />} className={classes.button} onClick={handleFollow} disabled={!auth.token}>
                       {stateFollow.loading ? <CircularProgress size={16} color='inherit' /> : followed ? "Hủy theo dõi" : "Theo dõi"}
                     </Button>
-                    <Button startIcon={<ChatIcon />} className={classes.button} disabled={!auth.token} component={Link} to={`/message/${user._id}`}>
+                    <Button startIcon={<ChatIcon />} className={classes.button} disabled={!auth.token} component={Link} to={`/message/${user._id}`} onClick={handleMessage}>
                       Nhắn tin
                     </Button>
                   </> :

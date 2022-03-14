@@ -24,6 +24,7 @@ import HeartFillIcon from "../Icons/HeartFill";
 import HeartIcon from "../Icons/Heart";
 import CommentIcon from "../Icons/Comment";
 import ShareIcon from "../Icons/Share";
+import { loadComment } from "../../redux/callApi/commentCall";
 
 
 export default function Tour(props) {
@@ -36,6 +37,10 @@ export default function Tour(props) {
     const [tour, setTour] = useState(null);
     const [share, setShare] = useState(false);
     const [login, setLogin] = useState(false);
+
+    const [loadingComment, setLoadingComment] = useState(false);
+    const [errorComment, setErrorComment] = useState(false);
+    const [pageComment, setPageComment] = useState(0);
 
     const updateLike = (likes) => {
         setTour({
@@ -97,6 +102,37 @@ export default function Tour(props) {
         setShowLike(false);
     };
 
+    const loadMoreComment = () => {
+        setLoadingComment(true);
+        dispatch(loadComment(tour._id, "tour", () => {
+            setLoadingComment(false);
+            setPageComment(state => state + 1);
+        }, () => {
+            setLoadingComment(false);
+            setErrorComment(true);
+        }, pageComment))
+
+    }
+
+
+    const handleShowCmt = () => {
+        if (!showCmt) {
+            if (!tour.commentDetail) {
+                setLoadingComment(true);
+                dispatch(loadComment(tour._id, "tour", () => {
+                    setLoadingComment(false);
+                    setPageComment(1);
+                }, () => {
+                    setLoadingComment(false);
+                    setErrorComment(true);
+                }, 0))
+
+            }
+
+        }
+        setShowCmt(!showCmt)
+    }
+
     useEffect(() => {
         setTour(props.tour);
     }, [props.tour]);
@@ -127,9 +163,6 @@ export default function Tour(props) {
         setShare(false);
     }
 
-    const handleCommentPress = () => {
-        setShowCmt(state => !state);
-    }
 
     const refLogin = React.createRef();
     const refUser = React.createRef();
@@ -192,7 +225,7 @@ export default function Tour(props) {
                             <UserListRef ref={refUser} listUser={tour.likes} title={"Đã thích"} handleClose={handleClose} />
                         </Modal>
                         <div className={classes.iconWrap}>
-                            <CommentIcon onClick={handleCommentPress} className={classes.iconButton} />
+                            <CommentIcon onClick={handleShowCmt} className={classes.iconButton} />
                         </div>
 
                         <Typography className={classes.numCmt}>
@@ -222,10 +255,15 @@ export default function Tour(props) {
                     <Collapse className={classes.cmt} in={showCmt}>
                         <hr className={classes.line} />
                         <div className={classes.listCmt}>
-                            {tour.comments.map((cmt) => (
+                            {tour.commentDetail && tour.commentDetail.map((cmt) => (
                                 <Comment comment={cmt} key={cmt._id} id={tour._id} type="tour" />
                             ))}
                         </div>
+                        {loadingComment && <Typography>Đang tải...</Typography>}
+                        {errorComment && <Typography>Có lỗi xảy ra</Typography>}
+                        {tour.commentDetail && !loadingComment && tour.commentDetail?.length < tour.comments?.length &&
+                            <Typography variant="body2" onClick={loadMoreComment}>Xem thêm bình luận</Typography>
+                        }
                     </Collapse>
 
                     <InputComment type="tour" id={tour._id} />

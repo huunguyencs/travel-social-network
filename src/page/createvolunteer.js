@@ -1,14 +1,12 @@
-
 import React, { useEffect, useState } from "react";
-
 import LeftBar from '../components/Leftbar';
 import { NotFound } from './404'
 import { Grid, Button, CircularProgress, Typography } from '@material-ui/core';
 import SpeedDialButton from '../components/SpeedDialBtn';
 import { homeMenu } from '../constant/menu';
-
-
-
+import { useLocation } from 'react-router-dom';
+import customAxios from "../utils/fetchData";
+import { useSelector } from "react-redux";
 import AddVolunteer from '../components/Volunteer/AddVolunteer';
 
 export default function CreateVolunteer() {
@@ -18,17 +16,57 @@ export default function CreateVolunteer() {
         notFound: false,
         error: false
     })
+    const { auth } = useSelector(state => state);
+    const [isOwn, setIsOwn] = useState(false);
+    const location = useLocation();
+    const [volunteer, setVolunteer] = useState(null);
+    const id = (new URLSearchParams(location.search)).get("id");
+    const [edit, setEdit] = useState(false);
+    const getVolunteerDetail = async (id) => {
+        setState({
+            loading: true,
+            error: false,
+            notFound: false,
+        })
+        await customAxios().get(`/volunteer/${id}`).then(res => {
+            setVolunteer(res.data.volunteer)
+            setEdit(true)
+            setState({
+                loading: false,
+                error: false,
+                notFound: false,
+            })
+        }).catch(err => {
+            if (err?.response.status === 404)
+                setState({
+                    loading: false,
+                    error: true,
+                    notFound: true,
+                })
+            else setState({
+                loading: false,
+                error: true,
+                notFound: false,
+            })
+
+        })
+    }
+    useEffect(() => {
+        if (id != null) getVolunteerDetail(id);
+    }, [id])
+
+    useEffect(() => {
+        if (auth.user && volunteer) {
+            setIsOwn(volunteer.userId._id === auth.user._id);
+        }
+    }, [setIsOwn, volunteer, auth]);
 
     useEffect(() => {
         document.title = "Tạo hoạt động tình nguyện";
     }, [])
 
     const tryAgain = () => {
-        setState({
-            loading: false,
-            notFound: false,
-            error: false
-        })
+        if (id != null) getVolunteerDetail(id);
     }
 
     return (
@@ -52,7 +90,8 @@ export default function CreateVolunteer() {
                                         <Button onClick={tryAgain}>Thử lại</Button>
                                     </>
                                 </div> :
-                                <AddVolunteer />
+                                (edit && isOwn) ? volunteer && <AddVolunteer isUpdate={edit} volunteer={volunteer} />
+                                    : <AddVolunteer isUpdate={false} volunteer={null} />
                 }
             </Grid>
         </Grid>

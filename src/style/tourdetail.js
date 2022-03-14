@@ -17,12 +17,13 @@ const tourdetailStyles = makeStyles((theme) => ({
         paddingInline: 20,
     },
     container: {
-        maxWidth: "90%",
-        marginInline: 80,
+        // maxWidth: "90%",
+        maxWidth: "100%",
+        paddingInline: 80,
         marginTop: 20,
         marginBottom: 0,
         [theme.breakpoints.down("md")]: {
-            marginInline: 20
+            paddingRight: 0
         }
     },
     timeline: {
@@ -49,6 +50,7 @@ const tourdetailStyles = makeStyles((theme) => ({
     },
     cardContainer: {
         marginTop: 30,
+        width: '100%',
         borderRadius: attr.borderRadius.sm,
         [theme.breakpoints.down("md")]: {
             marginInline: 3,
@@ -59,6 +61,23 @@ const tourdetailStyles = makeStyles((theme) => ({
         [theme.breakpoints.down("xs")]: {
             marginInline: 10,
         }
+    },
+    serviceContainer: {
+        marginTop: 30,
+        width: 500,
+        borderRadius: attr.borderRadius.sm,
+        [theme.breakpoints.down("md")]: {
+            width: 400
+        },
+        [theme.breakpoints.down("sm")]: {
+            width: 500
+        },
+        [theme.breakpoints.down("xs")]: {
+            width: 400,
+        }
+    },
+    detailInfo: {
+        // marginTop: 30
     },
     imgContainer: {
         padding: 20,
@@ -88,7 +107,8 @@ const tourdetailStyles = makeStyles((theme) => ({
         marginBottom: 5,
     },
     locationName: {
-        marginTop: 40,
+        marginTop: 10,
+        cursor: 'pointer'
     },
     activeTimeline: {
         backgroundColor: "#52BEDB",
@@ -191,6 +211,14 @@ const tourdetailStyles = makeStyles((theme) => ({
             display: 'none',
         }
     },
+    image: {
+        cursor: 'pointer'
+    },
+    tabsMenu: {
+        display: 'flex',
+        justifyContent: 'center',
+        marginTop: 20
+    },
     addHeader: {
         display: 'flex',
         justifyContent: 'center',
@@ -266,6 +294,39 @@ const tourdetailStyles = makeStyles((theme) => ({
     },
     line: {
         width: "80%"
+    },
+    fullField: {
+        width: "100%",
+        marginBlock: 10
+    },
+    btnWrap: {
+        display: 'flex',
+        justifyContent: 'right'
+    },
+    descriptionInput: {
+        width: "100%",
+        marginBlock: 10,
+        backgroundColor: '#ddd',
+        padding: 10,
+        borderRadius: attr.borderRadius.xs,
+    },
+    imageDetail: {
+        [theme.breakpoints.down(1050)]: {
+            display: 'none'
+        }
+    },
+    paperDetail: {
+        width: 1000,
+        [theme.breakpoints.down(1050)]: {
+            width: 600
+        },
+        [theme.breakpoints.down("xs")]: {
+            width: 400
+        }
+    },
+    closeBtn: {
+        display: 'flex',
+        justifyContent: 'right',
     }
 }))
 

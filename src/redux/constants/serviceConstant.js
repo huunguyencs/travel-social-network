@@ -1,0 +1,7 @@
+export const GET_SERVICES = "GET_SERVICES"
+export const GET_DETAIL = "GET_DETAIL";
+export const REVIEW_SERVICE = "REVIEW_SERVICE";
+export const ADD_SERVICE = "ADD_SERVICE";
+export const LOADING_SERVICE = "LOADING_SERVICE"
+export const ERROR_SERVICE = "ERROR_SERVICE";
+export const LOAD_MORE_SERVICE = "LOAD_MORE_SERVICE";

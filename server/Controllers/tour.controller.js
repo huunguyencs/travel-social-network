@@ -233,7 +233,6 @@ class TourController {
 
             if (maxCost && maxCost !== 1000) {
                 query = {
-
                     cost: {
                         $lte: maxCost
                     }
@@ -465,6 +464,28 @@ class TourController {
         }
         catch (err) {
             console.log(err);
+            res.status(500).json({ success: false, message: err.message })
+        }
+    }
+
+    async search(req, res) {
+        try {
+            var { q, offset } = req.query;
+            offset = offset || 0;
+            var tours = await Tours.find({ $text: { $search: q } }, { score: { $meta: "textScore" } })
+                .sort({ score: { $meta: "textScore" } })
+                .skip(offset * 10)
+                .limit(10)
+                .populate("userId", "avatar fullname");
+            tours = tours.map((item) => ({
+                _id: item._id,
+                fullname: `Hành trình của ${item.userId.fullname}`,
+                link: `/tour/${item._id}`,
+                description: item.name,
+                image: item.userId.avatar
+            }))
+            res.json({ success: true, results: tours, query: q })
+        } catch (err) {
             res.status(500).json({ success: false, message: err.message })
         }
     }

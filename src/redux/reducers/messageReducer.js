@@ -40,8 +40,8 @@ const messageReducer = (state = INIT_STATE, action) => {
         case MESSAGE_TYPES.DELETE_CONVERSATION:
             return {
                 ...state,
-                users: state.users.filter(user => user.recipient !== action.payload._id),
-                data: state.data.filter(item => item._id !== action.payload.data._id)
+                users: state.users.filter(user => user._id !== action.payload._id),
+                data: []
             };
         default:
             return state;

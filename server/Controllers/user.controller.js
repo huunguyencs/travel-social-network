@@ -455,6 +455,27 @@ class UserController {
             res.status(500).json({ success: false, message: err.message })
         }
     }
+
+    async search(req, res) {
+        try {
+            var { q, offset } = req.query;
+            offset = offset || 0;
+            var users = await Users.find({ $text: { $search: q } }, { score: { $meta: "textScore" } })
+                .sort({ score: { $meta: "textScore" } })
+                .skip(offset * 10)
+                .limit(10)
+            users = users.map((item) => ({
+                _id: item._id,
+                fullname: item.fullname,
+                link: `/u/${item._id}`,
+                description: '',
+                image: item.avatar
+            }))
+            res.json({ success: true, results: users, query: q })
+        } catch (err) {
+            res.status(500).json({ success: false, message: err.message })
+        }
+    }
 }
 
 module.exports = new UserController

@@ -51,7 +51,8 @@ export default function Header(props) {
     const [search, setSearch] = useState("");
 
     const handleToggleUser = (e) => {
-        setToggleMenuUser(e.currentTarget);
+        if (toggleMenuUser) setToggleMenuUser(null);
+        else setToggleMenuUser(e.currentTarget);
     }
 
     const handleCloseUser = (e) => {
@@ -59,7 +60,9 @@ export default function Header(props) {
     }
 
     const handleToggleNoti = (e) => {
-        setToggleNoti(e.currentTarget);
+        if (toggleNoti) setToggleNoti(null);
+        else setToggleNoti(e.currentTarget);
+
     }
 
     const handleCloseNoti = (e) => {
@@ -124,7 +127,7 @@ export default function Header(props) {
                         user ? (
                             <>
                                 <div className={classes.user} >
-                                    <Button className={classes.button} onClick={handleToggleUser} controls={toggleMenuUser ? "user-menu" : undefined} title={user.fullname}>
+                                    <Button className={classes.button} onClick={handleToggleUser} title={user.fullname}>
                                         <Avatar component="span" className={classes.avatar} alt="avatar" src={user.avatar} />
                                         <Typography noWrap={false} className={classes.userName}>{user.fullname}</Typography>
                                     </Button>
@@ -134,24 +137,12 @@ export default function Header(props) {
                                         anchorEl={toggleMenuUser}
                                         onClose={handleCloseUser}
                                         disablePortal={true}
-                                    // transformOrigin={{
-                                    //     vertical: "top",
-                                    //     horizontal: "left"
-                                    // }}
-                                    // anchorOrigin={{
-                                    //     vertical: "bottom",
-                                    //     horizontal: "center",
-                                    // }}
                                     >
                                         <ClickAwayListener
                                             mouseEvent="onMouseDown"
                                             touchEvent="onTouchStart"
                                             onClickAway={handleCloseUser}
                                         >
-                                            {/* <Grow
-                                            // className={classes.grow}
-                                            > */}
-
                                             <Paper>
                                                 <MenuList autoFocusItem={Boolean(toggleMenuUser)} id="user-menu">
                                                     {user.role === 2 &&
@@ -196,7 +187,6 @@ export default function Header(props) {
                                                     </MenuItem>
                                                 </MenuList>
                                             </Paper>
-                                            {/* </Grow> */}
                                         </ClickAwayListener>
                                     </Popper>
                                 </div>

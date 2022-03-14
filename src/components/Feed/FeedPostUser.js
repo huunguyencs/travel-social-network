@@ -1,9 +1,8 @@
 import React from "react";
-import { CircularProgress, Typography, Button } from "@material-ui/core";
 
 
 import Post from '../Post';
-import { feedStyles } from "../../style";
+import Feed from './index';
 import { useDispatch, useSelector } from "react-redux";
 import { getUserPost } from "../../redux/callApi/postCall";
 
@@ -14,46 +13,35 @@ export default function FeedPostUser(props) {
     const { id } = props;
     const dispatch = useDispatch();
 
-    const { auth, post } = useSelector(state => state);
+    const { post } = useSelector(state => state);
 
-    const classes = feedStyles();
 
     const tryAgain = () => {
-        if (id && auth.token) {
-            dispatch(getUserPost(id, auth.token, 0))
+        if (id) {
+            dispatch(getUserPost(id, post.page))
         }
     }
 
-    // const loadMorePost = () => {
-    //     dispatch(getUserPost(id, auth.token, post.posts.length))
-    // }
-
+    const loadPost = () => {
+        if (post.hasMore) {
+            dispatch(getUserPost(id, post.page))
+        }
+    }
 
     return (
-        <div className={classes.container}>
-            <div className={classes.content}>
-                <div className={classes.feedContent}>
-                    {
-                        post.loading ?
-                            <div className={classes.centerMarginTop}>
-                                <CircularProgress color={"inherit"} />
-                            </div>
-                            : post.error ?
-                                <div className={classes.centerMarginTop}>
-                                    <div>
-                                        <Typography>Có lỗi xảy ra</Typography>
-                                        <Button onClick={tryAgain}>Thử lại</Button>
-                                    </div>
-                                </div> :
-                                post.posts.map((post) => (
-                                    <Post
-                                        post={post}
-                                        key={post._id}
-                                    />
-                                ))
-                    }
-                </div>
-            </div>
-        </div>
+        <Feed
+            loadMore={loadPost}
+            tryAgain={tryAgain}
+            loading={post.loading}
+            error={post.error}
+            hasMore={post.hasMore}
+        >
+            {post.posts.map((post) => (
+                <Post
+                    post={post}
+                    key={post._id}
+                />
+            ))}
+        </Feed>
     )
 }

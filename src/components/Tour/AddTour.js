@@ -13,8 +13,8 @@ import UpdateTourInfo from "../Forms/UpdateInfoCreateTour";
 import { convertDateToStr, convertDateToStrShort } from "../../utils/date";
 import { saveTour, updateTour } from "../../redux/callApi/tourCall";
 import AddLocation from "./AddLocation";
-import { getProvinces } from '../../redux/callApi/locationCall';
-import AddService from "./AddService";
+import { getLocations, getProvinces, getServices } from '../../redux/callApi/locationCall';
+import AddService, { ServiceCard } from "./AddService";
 import { AddCircle, Close, Save, Update } from "@material-ui/icons";
 import ChangeImageTour from "./ChangeImageTour";
 import { error } from "../../redux/actions/alertAction";
@@ -44,10 +44,19 @@ function TabPanel(props) {
 }
 
 function extractService(services) {
-    return services.map((item) => ({
-        service: item.service._id,
-        cost: item.cost
-    }))
+    return services.map((service) =>
+        service.map((item) => {
+            if (item?.service) {
+                return {
+                    ...item,
+                    service: item.service._id,
+                }
+            }
+            else {
+                return item;
+            }
+        })
+    )
 }
 
 export default function AddTour(props) {
@@ -62,12 +71,11 @@ export default function AddTour(props) {
 
     const dispatch = useDispatch();
     const { createTour, location, auth, socket } = useSelector(state => state);
-    const [tab, setTab] = useState(0)
+    const [tab, setTab] = useState(0);
+    const [tabService, setTabService] = useState(0);
     const [currentProvince, setCurrentProvince] = useState(null);
     const [currentProvinceService, setCurrentProvinceService] = useState(null);
     const [loc, setLoc] = useState(null);
-    const [locations, setLocations] = useState([]);
-    const [services, setServices] = useState(null);
 
     const [showAddLoc, setShowAddLoc] = useState(false);
     const handleShowAddLoc = () => {
@@ -109,6 +117,8 @@ export default function AddTour(props) {
             })
             return;
         }
+
+
         dispatch(saveTour({
             name: createTour.name,
             content: createTour.content,
@@ -205,11 +215,28 @@ export default function AddTour(props) {
         setTab(value);
     }
 
+    const handleChangeTabService = (e, value) => {
+        setTabService(value);
+    }
+
     useEffect(() => {
         if (location.provinces?.length === 0) {
             dispatch(getProvinces());
         }
     }, [dispatch, location.provinces])
+
+
+    useEffect(() => {
+        if (location.locations?.length === 0) {
+            dispatch(getLocations());
+        }
+    }, [dispatch, location.locations])
+
+    useEffect(() => {
+        if (location.services?.length === 0) {
+            dispatch(getServices());
+        }
+    }, [dispatch, location.services])
 
     const handleShowUpdateInfo = () => {
         setShowChangeInfo(true);
@@ -265,7 +292,7 @@ export default function AddTour(props) {
                                     </div>
                                     <div className={classes.itemInfo}>
                                         <Typography variant="body1" className={classes.content}>
-                                            Chi phí: {new Intl.NumberFormat().format(createTour.cost * 1000)} VND
+                                            Tổng chi phí: {new Intl.NumberFormat().format(createTour.cost * 1000)} VND
                                         </Typography>
                                     </div>
                                     <div className={classes.itemInfo}>
@@ -311,199 +338,265 @@ export default function AddTour(props) {
                         </Container>
                     </div>
 
-                    <Grid container className={classes.container}>
-                        <Grid item md={2} sm={12} xs={12}>
-                            <Container className={classes.timeline}>
+                    <div className={classes.tabsMenu}>
+                        <Tabs value={tab} onChange={handleChangeTab} aria-label="tabs tour">
+                            <Tab label="Địa điểm" {...a11yProps(0)} />
+                            <Tab label="Dịch vụ" {...a11yProps(1)} />
+                        </Tabs>
+                    </div>
 
-                                <Timeline align="right">
-                                    {createTour.tour.map((item, index) => (
-                                        <TimelineItem key={index}>
-                                            <TimelineSeparator>
-                                                <TimelineDot className={index === idx ? classes.activeDot : classes.unactiveDot} />
-                                                <TimelineConnector />
-                                            </TimelineSeparator>
-                                            <TimelineContent>
-                                                <div style={{ display: 'flex' }}>
-                                                    <IconButton size="small" onClick={() => handleShowDelete(index)}>
-                                                        <Close />
-                                                    </IconButton>
-                                                    <Button className={index === idx ? classes.activeTimeline : classes.unactiveTimeline} onClick={() => setIdx(index)}>
-                                                        {convertDateToStr(item.date)}
+                    <TabPanel value={tab} index={0}>
+                        <Container className={classes.container}>
+                            <Grid container >
+                                <Grid item md={2} sm={12} xs={12}>
+                                    <Container className={classes.timeline}>
+                                        <Timeline align="right">
+                                            {createTour.tour.map((item, index) => (
+                                                <TimelineItem key={index}>
+                                                    <TimelineSeparator>
+                                                        <TimelineDot className={index === idx ? classes.activeDot : classes.unactiveDot} />
+                                                        <TimelineConnector />
+                                                    </TimelineSeparator>
+                                                    <TimelineContent>
+                                                        <div style={{ display: 'flex' }}>
+                                                            <IconButton size="small" onClick={() => handleShowDelete(index)}>
+                                                                <Close />
+                                                            </IconButton>
+                                                            <Button className={index === idx ? classes.activeTimeline : classes.unactiveTimeline} onClick={() => setIdx(index)}>
+                                                                {convertDateToStr(item.date)}
+                                                            </Button>
+
+                                                        </div>
+                                                    </TimelineContent>
+                                                </TimelineItem>
+                                            ))}
+                                        </Timeline>
+                                        <div className={classes.center}>
+                                            <Dialog
+                                                open={showDeleteDate !== -1}
+                                                onClose={handleCloseDelete}
+                                                aria-labelledby="alert-dialog-title"
+                                                aria-describedby="alert-dialog-description"
+                                            >
+                                                <DialogTitle id="alert-dialog-title">{"Bạn có chắc chắn muốn xóa ngày?"}</DialogTitle>
+                                                <DialogActions>
+                                                    <Button onClick={handleCloseDelete}>
+                                                        Hủy
                                                     </Button>
+                                                    <Button onClick={() => handleDeleteDate(showDeleteDate)} className={classes.delete}>
+                                                        Xóa
+                                                    </Button>
+                                                </DialogActions>
+                                            </Dialog>
 
-                                                </div>
-                                            </TimelineContent>
-                                        </TimelineItem>
-                                    ))}
-                                </Timeline>
-                                <div className={classes.center}>
-                                    <Dialog
-                                        open={showDeleteDate !== -1}
-                                        onClose={handleCloseDelete}
-                                        aria-labelledby="alert-dialog-title"
-                                        aria-describedby="alert-dialog-description"
-                                    >
-                                        <DialogTitle id="alert-dialog-title">{"Bạn có chắc chắn muốn xóa?"}</DialogTitle>
-                                        <DialogActions>
-                                            <Button onClick={handleCloseDelete}>
-                                                Hủy
+                                        </div>
+                                    </Container>
+                                    <div className={classes.smallTimeline}>
+                                        <div className={classes.timelineWrap}>
+                                            {createTour.tour.map((item, index) => (
+                                                <Button key={index} className={index === idx ? classes.activeTimeline : classes.unactiveTimeline} onClick={() => setIdx(index)}>
+                                                    {convertDateToStrShort(new Date(item.date))}
+                                                </Button>
+                                            ))}
+                                        </div>
+                                    </div>
+
+                                    <div className={classes.addDayWrap}>
+                                        <div>
+                                            <Button className={classes.addDay} onClick={handleAddDay} startIcon={(<AddCircle />)}>
+                                                Thêm ngày
                                             </Button>
-                                            <Button onClick={() => handleDeleteDate(showDeleteDate)} className={classes.delete}>
-                                                Xóa
+                                        </div>
+                                        <div>
+                                            <Button onClick={handleShowUpdate} className={classes.addDay} startIcon={(<Update />)}>
+                                                Thay đổi ngày
                                             </Button>
-                                        </DialogActions>
-                                    </Dialog>
+                                            <Modal
+                                                aria-labelledby="transition-modal-title"
+                                                aria-describedby="transition-modal-description"
+                                                open={showUpdateDate}
+                                                className={classes.modal}
+                                                onClose={handleCloseUpdate}
+                                                closeAfterTransition
+                                                BackdropComponent={Backdrop}
+                                                BackdropProps={{
+                                                    timeout: 500,
+                                                }}
+                                            >
+                                                <Fade in={showUpdateDate}>
+                                                    <UpdateDateRef ref={refUdDate} handleClose={handleCloseUpdate} indexDate={idx} currentDate={createTour.tour[idx].date} />
+                                                </Fade>
+                                            </Modal>
+                                        </div>
 
-                                </div>
-                            </Container>
-                            <div className={classes.smallTimeline}>
-                                <div className={classes.timelineWrap}>
-                                    {createTour.tour.map((item, index) => (
-                                        <Button key={index} className={index === idx ? classes.activeTimeline : classes.unactiveTimeline} onClick={() => setIdx(index)}>
-                                            {convertDateToStrShort(new Date(item.date))}
-                                        </Button>
-                                    ))}
-                                </div>
-                            </div>
+                                    </div>
 
-                            <div className={classes.addDayWrap}>
-                                <div>
-                                    <Button className={classes.addDay} onClick={handleAddDay} startIcon={(<AddCircle />)}>
-                                        Thêm ngày
-                                    </Button>
-                                </div>
-                                <div>
-                                    <Button onClick={handleShowUpdate} className={classes.addDay} startIcon={(<Update />)}>
-                                        Thay đổi ngày
-                                    </Button>
-                                    <Modal
-                                        aria-labelledby="transition-modal-title"
-                                        aria-describedby="transition-modal-description"
-                                        open={showUpdateDate}
-                                        className={classes.modal}
-                                        onClose={handleCloseUpdate}
-                                        closeAfterTransition
-                                        BackdropComponent={Backdrop}
-                                        BackdropProps={{
-                                            timeout: 500,
-                                        }}
-                                    >
-                                        <Fade in={showUpdateDate}>
-                                            <UpdateDateRef ref={refUdDate} handleClose={handleCloseUpdate} indexDate={idx} currentDate={createTour.tour[idx].date} />
-                                        </Fade>
-                                    </Modal>
-                                </div>
-
-                            </div>
-
-                        </Grid>
-                        <Grid item md={4} sm={12} xs={12} className={classes.feedTour}>
-
-                            {
-                                createTour.tour[idx].locations.map((item, index) => (
-                                    <Location
-                                        location={item}
-                                        indexDate={idx}
-                                        indexLocation={index}
-                                        edit={true}
-                                        key={index}
-                                        isOwn={true}
-                                        isSave={false}
-                                        isEdit={true}
-                                    />
-                                ))
-                            }
-                            <div className={classes.addContainerSmall}>
-                                <>
-                                    <Button className={classes.addTour} onClick={handleShowAddLoc}>
-                                        Thêm địa điểm
-                                    </Button>
-                                    <Modal
-                                        aria-labelledby="modal-add-location"
-                                        aria-describedby="modal-add-location-description"
-                                        open={showAddLoc}
-                                        className={classes.modal}
-                                        onClose={handleCloseAddLoc}
-                                        closeAfterTransition
-                                        BackdropComponent={Backdrop}
-                                        BackdropProps={{
-                                            timeout: 500,
-                                        }}
-                                    >
-                                        <Fade in={showAddLoc}>
-                                            <AddLocationRef
-                                                ref={refAddLoc}
-                                                handleClose={handleCloseAddLoc}
+                                </Grid>
+                                <Grid item md={4} sm={12} xs={12} className={classes.feedTour}>
+                                    {
+                                        createTour.tour[idx].locations.map((item, index) => (
+                                            <Location
+                                                location={item}
                                                 indexDate={idx}
-                                                currentProvince={currentProvince}
-                                                setCurrentProvince={setCurrentProvince}
-                                                locations={locations}
-                                                setLocations={setLocations}
+                                                indexLocation={index}
+                                                edit={true}
+                                                key={index}
+                                                isOwn={true}
+                                                isSave={false}
+                                                isEdit={true}
                                             />
-                                        </Fade>
-                                    </Modal>
-                                    <Button className={classes.addTour} onClick={handleShowAddService}>
-                                        Thêm dịch vụ
-                                    </Button>
-                                    <Modal
-                                        aria-labelledby="modal-add-service"
-                                        aria-describedby="modal-add-service-description"
-                                        open={showAddService}
-                                        className={classes.modal}
-                                        onClose={handleCloseAddService}
-                                        closeAfterTransition
-                                        BackdropComponent={Backdrop}
-                                        BackdropProps={{
-                                            timeout: 500,
-                                        }}
-                                    >
-                                        <Fade in={showAddService}>
-                                            <AddServiceRef ref={refAddSv} className={classes.paperAddService}>
-                                                <div className={classes.headerService}>
-                                                    <IconButton onClick={handleCloseAddService} size="small">
-                                                        <Close />
-                                                    </IconButton>
-                                                </div>
-                                                <div className={classes.addServiceContent}>
-                                                    <AddService />
-                                                </div>
-                                            </AddServiceRef>
-                                        </Fade>
-                                    </Modal>
-                                </>
-                            </div>
+                                        ))
+                                    }
+                                    <div className={classes.addContainerSmall}>
+                                        <Button className={classes.addTour} onClick={handleShowAddLoc}>
+                                            Thêm địa điểm
+                                        </Button>
+                                        <Modal
+                                            aria-labelledby="modal-add-location"
+                                            aria-describedby="modal-add-location-description"
+                                            open={showAddLoc}
+                                            className={classes.modal}
+                                            onClose={handleCloseAddLoc}
+                                            closeAfterTransition
+                                            BackdropComponent={Backdrop}
+                                            BackdropProps={{
+                                                timeout: 500,
+                                            }}
+                                        >
+                                            <Fade in={showAddLoc}>
+                                                <AddLocationRef
+                                                    ref={refAddLoc}
+                                                    handleClose={handleCloseAddLoc}
+                                                    indexDate={idx}
+                                                    currentProvince={currentProvince}
+                                                    setCurrentProvince={setCurrentProvince}
+                                                />
+                                            </Fade>
+                                        </Modal>
 
-                        </Grid>
-                        <Grid item md={6} className={classes.addContainerLarge}>
-                            <Container style={{ marginLeft: 30 }}>
-                                <div className={classes.addHeader}>
-                                    <Tabs value={tab} onChange={handleChangeTab} aria-label="tabs tour">
-                                        <Tab label="Chọn địa điểm" {...a11yProps(0)} />
-                                        <Tab label="Chọn dịch vụ" {...a11yProps(1)} />
-                                    </Tabs>
-                                </div>
-                                <TabPanel value={tab} index={0}>
-                                    <AddLocation
-                                        indexDate={idx}
-                                        currentProvince={currentProvince}
-                                        setCurrentProvince={setCurrentProvince}
-                                        loc={loc}
-                                        setLoc={setLoc}
-                                        locations={locations}
-                                        setLocations={setLocations}
-                                    />
-                                </TabPanel>
-                                <TabPanel value={tab} index={1}>
+                                    </div>
+
+                                </Grid>
+                                <Grid item md={6} className={classes.addContainerLarge}>
+                                    <Container style={{ marginLeft: 30 }}>
+                                        <AddLocation
+                                            indexDate={idx}
+                                            currentProvince={currentProvince}
+                                            setCurrentProvince={setCurrentProvince}
+                                            loc={loc}
+                                            setLoc={setLoc}
+                                        />
+                                    </Container>
+                                </Grid>
+                            </Grid>
+                        </Container>
+
+                    </TabPanel>
+                    <TabPanel value={tab} index={1}>
+                        <Container style={{ marginTop: 20 }}>
+                            <Grid container>
+                                <Grid item md={8} sm={12} xs={12}>
+                                    <div className={classes.center}>
+                                        <Tabs value={tabService} onChange={handleChangeTabService} aria-label="tabs tour service" >
+                                            <Tab label="Di chuyển" {...a11yProps(0)} />
+                                            <Tab label="Ăn uống" {...a11yProps(1)} />
+                                            <Tab label="Khách sạn" {...a11yProps(2)} />
+                                            <Tab label="Khác" {...a11yProps(3)} />
+                                        </Tabs>
+                                    </div>
+                                    <TabPanel value={tabService} index={0}>
+                                        <div style={{ display: 'flex', justifyContent: 'center' }}>
+                                            <div>
+                                                {
+                                                    createTour.services[0].map((item, index) => (
+                                                        <ServiceCard isOwn={false} type={0} key={index} service={item} index={index} isEdit={true} />
+                                                    ))
+                                                }
+                                            </div>
+                                        </div>
+                                    </TabPanel>
+                                    <TabPanel value={tabService} index={1}>
+                                        <div style={{ display: 'flex', justifyContent: 'center' }}>
+                                            <div>
+                                                {
+                                                    createTour.services[1].map((item, index) => (
+                                                        <ServiceCard isOwn={false} type={1} key={index} service={item} index={index} isEdit={true} />
+                                                    ))
+                                                }
+                                            </div>
+                                        </div>
+                                    </TabPanel>
+                                    <TabPanel value={tabService} index={2}>
+                                        <div style={{ display: 'flex', justifyContent: 'center' }}>
+                                            <div>
+                                                {
+                                                    createTour.services[2].map((item, index) => (
+                                                        <ServiceCard isOwn={false} type={2} key={index} service={item} index={index} isEdit={true} />
+                                                    ))
+                                                }
+                                            </div>
+                                        </div>
+                                    </TabPanel>
+                                    <TabPanel value={tabService} index={3}>
+                                        <div style={{ display: 'flex', justifyContent: 'center' }}>
+                                            <div>
+                                                {
+                                                    createTour.services[3].map((item, index) => (
+                                                        <ServiceCard isOwn={false} type={3} key={index} service={item} index={index} isEdit={true} />
+                                                    ))
+                                                }
+                                            </div>
+                                        </div>
+                                    </TabPanel>
+                                </Grid>
+                                <Grid item md={4} className={classes.addContainerLarge}>
                                     <AddService
                                         currentProvince={currentProvinceService}
                                         setCurrentProvince={setCurrentProvinceService}
-                                        services={services}
-                                        setServices={setServices}
+                                        type={tabService}
                                     />
-                                </TabPanel>
-                            </Container>
-                        </Grid>
-                    </Grid>
+                                </Grid>
+                            </Grid>
+                        </Container>
+
+                        <div className={classes.addContainerSmall}>
+                            <Button className={classes.addTour} onClick={handleShowAddService}>
+                                Thêm dịch vụ
+                            </Button>
+                            <Modal
+                                aria-labelledby="modal-add-service"
+                                aria-describedby="modal-add-service-description"
+                                open={showAddService}
+                                className={classes.modal}
+                                onClose={handleCloseAddService}
+                                closeAfterTransition
+                                BackdropComponent={Backdrop}
+                                BackdropProps={{
+                                    timeout: 500,
+                                }}
+                            >
+                                <Fade in={showAddService}>
+                                    <AddServiceRef ref={refAddSv} className={classes.paperAddService}>
+                                        <div className={classes.headerService}>
+                                            <IconButton onClick={handleCloseAddService} size="small">
+                                                <Close />
+                                            </IconButton>
+                                        </div>
+                                        <div className={classes.addServiceContent}>
+                                            <AddService
+                                                currentProvince={currentProvinceService}
+                                                setCurrentProvince={setCurrentProvinceService}
+                                                type={tabService}
+                                            />
+                                        </div>
+                                    </AddServiceRef>
+                                </Fade>
+                            </Modal>
+                        </div>
+                    </TabPanel>
+
+
+
                 </div >}
         </>
     )
