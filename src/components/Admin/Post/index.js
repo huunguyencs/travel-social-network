@@ -31,6 +31,8 @@ import { Edit } from "@material-ui/icons";
 
 import TextField from '@material-ui/core/TextField';
 import Autocomplete, { createFilterOptions } from '@material-ui/lab/Autocomplete';
+import { ResponsiveContainer, LineChart, Line, XAxis, YAxis, CartesianGrid, Legend, PieChart, Pie, } from 'recharts';
+import { Card, Grid, Box, CardHeader } from "@material-ui/core";
 
 const filter = createFilterOptions();
 
@@ -292,7 +294,20 @@ EnhancedTableToolbar.propTypes = {
     numSelected: PropTypes.number.isRequired,
 };
 
-
+const data = [
+    { month: "Jan", post: 300 },
+    { month: "Feb", post: 400 },
+    { month: "Mar", post: 450 },
+    { month: "Apr", post: 490 },
+    { month: "May", post: 500 },
+    { month: "Jun", post: 700 },
+    { month: "Jul", post: 740 },
+    { month: "Aug", post: 900 },
+    { month: "Sep", post: 600 },
+    { month: "Oct", post: 400 },
+    { month: "Nov", post: 300 },
+    { month: "Dec", post: 100 },
+]
 
 function AdminPosts(props) {
     const classes = useStyles();
@@ -366,13 +381,57 @@ function AdminPosts(props) {
                 }}
             >
                 <Typography variant="h4" gutterBottom>
-                    100 Người dùng
+                    100 Bài viết
                 </Typography>
             </div>
-
             <div className={classes.admin_location_body}>
                 <div className={classes.tableContainer}>
                     <div className={classes.root}>
+                        <Grid>
+                            <Card>
+                                <CardHeader title="13 bài viết được đăng" subheader="(+43%) so với tháng trước" />
+                                <Box>
+                                    <div
+                                        style={{
+                                            display: "flex",
+                                            justifyContent: "center",
+                                            marginTop: "20px"
+                                        }}>
+
+                                        <div
+                                            style={{
+                                                backgroundColor: "#FFFFFF",
+                                                paddingTop: "20px",
+                                                borderRadius: "15px",
+                                                width: "90%",
+                                                justifyContent: "center",
+                                                display: "flex",
+                                            }}
+                                        >
+                                            <ResponsiveContainer className="chart" height={300}>
+                                                <LineChart
+                                                    width={400}
+                                                    height={300}
+                                                    data={data}
+                                                    margin={{ top: 5, right: 20, left: 10, bottom: 5 }}
+                                                >
+                                                    <XAxis dataKey="month" />
+                                                    <YAxis />
+                                                    <CartesianGrid strokeDasharray="3 3" />
+                                                    <Tooltip />
+                                                    <Legend />
+                                                    <Line type="monotone" dataKey="post" stroke="#8884d8" activeDot={{ r: 8 }} />
+                                                </LineChart>
+                                            </ResponsiveContainer>
+                                        </div>
+                                    </div>
+
+
+                                </Box>
+                            </Card>
+
+                        </Grid>
+
                         <Paper className={classes.paper}>
                             <EnhancedTableToolbar numSelected={selected.length} />
                             <TableContainer>

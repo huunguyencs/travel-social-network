@@ -1,14 +1,33 @@
 import React, { useEffect, useState } from "react";
 import { Container, IconButton, Tooltip } from "@material-ui/core";
-
-import { Typography, Paper, Avatar } from '@material-ui/core';
+import { Card, Grid, makeStyles, Typography, Box, CardHeader } from "@material-ui/core";
+import { Paper, Avatar } from '@material-ui/core';
 import { Link, useHistory } from "react-router-dom";
 import { CheckCircle, Remove, Edit, Cancel, HourglassFull } from "@material-ui/icons";
 import { DataGrid, GridToolbarContainer, GridToolbarExport } from "@mui/x-data-grid";
 import customAxios from "../../../utils/fetchData";
 import { useSelector } from "react-redux";
 import { tableStyles } from "../../../style";
+import { ResponsiveContainer, LineChart, Line, XAxis, YAxis, CartesianGrid, Legend, PieChart, Pie, } from 'recharts';
 
+
+const useStyles = makeStyles((theme) => ({
+    appBarSpacer: {
+        marginTop: 140,
+    },
+    cardInfo: {
+        margin: 20,
+        padding: 20,
+        borderRadius: 10,
+    },
+    cardValue: {
+        marginTop: 10,
+    },
+    cardIcon: {
+        fontSize: "37px",
+        marginRight: 30,
+    }
+}))
 
 function ExportToolbar() {
     return (
@@ -90,8 +109,20 @@ const columns = [
     }
 ];
 
-
-
+const data = [
+    { month: "Jan", newuser: 100, user: 300 },
+    { month: "Feb", newuser: 120, user: 400 },
+    { month: "Mar", newuser: 140, user: 450 },
+    { month: "Apr", newuser: 150, user: 490 },
+    { month: "May", newuser: 170, user: 500 },
+    { month: "Jun", newuser: 200, user: 700 },
+    { month: "Jul", newuser: 210, user: 740 },
+    { month: "Aug", newuser: 210, user: 900 },
+    { month: "Sep", newuser: 180, user: 600 },
+    { month: "Oct", newuser: 150, user: 400 },
+    { month: "Nov", newuser: 130, user: 300 },
+    { month: "Dec", newuser: 110, user: 100 },
+]
 
 
 function AdminUsers(props) {
@@ -138,6 +169,52 @@ function AdminUsers(props) {
                 </div>
             }
 
+            <Grid>
+                <Card>
+                    <CardHeader title="Người tham gia" subheader="(+43%) so với tháng trước" />
+                    <Box>
+                        <div
+                            style={{
+                                display: "flex",
+                                justifyContent: "center",
+                                marginTop: "20px"
+                            }}>
+
+                            <div
+                                style={{
+                                    backgroundColor: "#FFFFFF",
+                                    paddingTop: "20px",
+                                    borderRadius: "15px",
+                                    width: "90%",
+                                    justifyContent: "center",
+                                    display: "flex",
+                                }}
+                            >
+                                <ResponsiveContainer className="chart" height={300}>
+                                    <LineChart
+                                        width={400}
+                                        height={300}
+                                        data={data}
+                                        margin={{ top: 5, right: 20, left: 10, bottom: 5 }}
+                                    >
+                                        <XAxis dataKey="month" />
+                                        <YAxis />
+                                        <CartesianGrid strokeDasharray="3 3" />
+                                        <Tooltip />
+                                        <Legend />
+                                        <Line type="monotone" dataKey="newuser" stroke="#8884d8" activeDot={{ r: 8 }} />
+                                        <Line type="monotone" dataKey="user" stroke="#ECCC68" />
+                                    </LineChart>
+                                </ResponsiveContainer>
+                            </div>
+                        </div>
+
+
+                    </Box>
+                </Card>
+
+            </Grid>
+            
             <Paper className={classes.paper}>
                 <DataGrid
                     rows={users}
