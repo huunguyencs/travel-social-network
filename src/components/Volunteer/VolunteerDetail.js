@@ -1,7 +1,7 @@
-import { Avatar, Grid, CardHeader, List, Radio, ListItem, ListItemIcon, ListItemText, RadioGroup, FormControlLabel, CircularProgress, DialogActions, DialogContent, Dialog, DialogTitle } from '@material-ui/core';
+import { Avatar, Grid, CardHeader, List, Radio, ListItem, ListItemIcon, ListItemText, RadioGroup, FormControlLabel, CircularProgress, DialogActions, DialogContent, Dialog, DialogTitle, Collapse, IconButton } from '@material-ui/core';
 import { Timeline, TimelineItem, TimelineSeparator, TimelineConnector, TimelineContent, TimelineDot } from '@material-ui/lab'
-import { DoneOutline, RadioButtonUnchecked, AssistantPhoto, Event, Schedule } from '@material-ui/icons';
-import React, { useState } from "react";
+import { DoneOutline, RadioButtonUnchecked, AssistantPhoto, Event, Schedule, ArrowDropDown, ArrowDropUp } from '@material-ui/icons';
+import React, { useState, useEffect } from "react";
 import { Button, Typography } from '@material-ui/core';
 import { volunteerDetailStyles } from '../../style';
 import ImageList from '../Modal/ImageList';
@@ -9,6 +9,9 @@ import {joinVolunteerAll} from '../../redux/callApi/volunteerCall';
 import { convertDateToStr } from "../../utils/date";
 import { Link } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
+import InputComment from "../Input/Comment";
+import Comment from "../Comment";
+import { loadComment } from '../../redux/callApi/commentCall';
 
 export default function VolunteerDetail(props) {
 
@@ -16,11 +19,12 @@ export default function VolunteerDetail(props) {
     const [idxLocation, setIdxLocation] = useState(0);
     const classes = volunteerDetailStyles();
     const dispatch = useDispatch();
-    const { volunteer } = props;
+    const { volunteer} = props;
     const { auth } = useSelector(state => state);
     
     const [showJoin, setShowJoin] = useState(false);
     const [loadingJoinALl, setLoadingJoinAll] = useState(false);
+    const [isJoinAll, setIsJoinAll] = useState(false);
     const handleShowJoin = () => {
         setShowJoin(true);
     }
@@ -32,23 +36,58 @@ export default function VolunteerDetail(props) {
         setLoadingJoinAll(true);
         dispatch(joinVolunteerAll(volunteer._id, auth.token, () => {
             setLoadingJoinAll(false);
+            setIsJoinAll(true);
         }, () => {
             setLoadingJoinAll(false);
+            setIsJoinAll(false);
         }))
         handleCloseJoin();
     }
-    const checkIsJoinAll = () =>{
+    
+    useEffect(() => {
         if(volunteer.users.length > 0){
             volunteer.users.forEach(element => {
-                if(element._id === auth.user._id) return true;
+                if(element._id === auth.user._id) {
+                    setIsJoinAll(true);
+                    return;
+                };
             });
         }
         else{
-            return false;
+            setIsJoinAll(false);
         }
-        
-    }
+    },[volunteer,auth.user._id])
 
+    const [loadingComment, setLoadingComment] = useState(false);
+    const [showCmt, setShowCmt] = useState(false);
+    const [pageComment, setPageComment] = useState(0);
+    const [errorComment, setErrorComment] = useState(false);
+    const handleShowCmt = async () => {
+        if (!showCmt) {
+            if (!volunteer.comments) {
+                setLoadingComment(true);
+                dispatch(loadComment(volunteer._id, "volunteer", () => {
+                    setLoadingComment(false);
+                    setPageComment(1);
+                }, () => {
+                    setLoadingComment(false);
+                    setErrorComment(true);
+                }, 0))
+            }
+        }
+        setShowCmt(!showCmt)
+    }
+    const loadMoreComment = () => {
+        setLoadingComment(true);
+        dispatch(loadComment(volunteer._id, "volunteer", () => {
+            setLoadingComment(false);
+            setPageComment(state => state + 1);
+        }, () => {
+            setLoadingComment(false);
+            setErrorComment(true);
+        }, pageComment))
+
+    }
     return (
         <>
             {
@@ -56,10 +95,10 @@ export default function VolunteerDetail(props) {
                     <div style={{ marginTop: 80 }}>
                         <Typography variant='h4' className={classes.volunteerDetailTitle}>{volunteer.name}</Typography>
                         <Grid container>
-                            <Grid item md={5}>
+                            <Grid item md={6} sm={12} xs={12}>
                                 <ImageList imageList={volunteer.images} show2Image={true} defaultHeight={300} />
                             </Grid>
-                            <Grid item md={5} style={{ margin: "0 auto", padding: 15 }}>
+                            <Grid item md={4} sm={12} xs={12} className={classes.infoVolunteer}>
                                 <CardHeader
                                     avatar={
                                         <Avatar aria-label="recipe" src={volunteer.userId.avatar} />
@@ -193,7 +232,7 @@ export default function VolunteerDetail(props) {
                                             </td>
                                             <td className={classes.registerTableData}>
                                                 <div style={{ display: 'flex', justifyContent: 'center' }}>
-                                                    <Button className={classes.registerTableBookingButton} disabled={!checkIsJoinAll()} onClick={handleShowJoin}>
+                                                    <Button className={classes.registerTableBookingButton} disabled={isJoinAll} onClick={handleShowJoin}>
                                                         Đăng ký ngay
                                                     </Button>
                                                     <Dialog
@@ -283,7 +322,7 @@ export default function VolunteerDetail(props) {
                                                 </RadioGroup>
                                             </div>
                                             <div>
-                                                <Button className={classes.registerItemBookingButton} disabled={!checkIsJoinAll()}>
+                                                <Button className={classes.registerItemBookingButton} disabled={isJoinAll}>
                                                     Đăng ký ngay
                                                 </Button>
                                             </div>
@@ -293,50 +332,46 @@ export default function VolunteerDetail(props) {
                                 </Grid>
                             </div>
                         </div>
-                        {/* <div className={classes.volunteerOther}>
-                        <Typography variant="h5">
-                            Các hoạt động khác
-                        </Typography>
-                        {data.length > 0 ? <ScrollMenu
-                            LeftArrow={LeftArrow}
-                            RightArrow={RightArrow}
-                        >
-                            {data.map((item) =>
-                                <Card style={{width: 350,
-                                    margin: 10}}
-                                tabIndex={0}>
-                                    <CardActionArea>
-                                    <CardMedia
-                                        style={{height: 240}}
-                                        image={item.image}
-                                        title="Contemplative Reptile"
-                                    />
-                                    <CardContent>
-                                        <Typography gutterBottom variant="h7" component="h3">
-                                        {item.name}
-                                        </Typography>
-                                        <Typography variant="body2" color="textSecondary" component="p">
-                                        {item.description}
-                                        </Typography>
-                                    </CardContent>
-                                    </CardActionArea>
-                                    <CardActions>
-                                    <Button size="small" color="primary">
-                                        Xem chi tiết
-                                    </Button>
-                                    </CardActions>
-                                </Card>
-                            )}
-                        </ScrollMenu>
-                            :
-                            <div className={classes.center}>
-                                <Typography>Không tìm thấy sự kiện</Typography>
+                        <div className={classes.comments}>
+                            <Typography variant="h5">
+                                Bình luận
+                                {
+                                    showCmt ? 
+                                    <IconButton onClick={handleShowCmt} className={classes.buttonShowCmt}>
+                                        <ArrowDropUp/>
+                                    </IconButton>:
+                                    <IconButton onClick={handleShowCmt} className={classes.buttonShowCmt}>
+                                        <ArrowDropDown/>
+                                    </IconButton>
+
+                                }
+                                
+                            </Typography>
+                            <Collapse className={classes.cmt} in={showCmt}>
+                                <hr className={classes.line} />
+                                <div className={classes.listCmt}>
+                                    {volunteer.comments && volunteer.comments.map((cmt) => (
+                                        <Comment comment={cmt} key={cmt._id} id={volunteer._id} type="volunteer" />
+                                    ))}
+                                </div>
+                                {loadingComment && <Typography>Đang tải...</Typography>}
+                                {errorComment && <Typography>Có lỗi xảy ra</Typography>}
+                                {volunteer.comments && !loadingComment && volunteer.comments?.length < volunteer.comments?.length &&
+                                    <Typography variant="body2" onClick={loadMoreComment}>Xem thêm bình luận</Typography>
+                                }
+                            </Collapse>
+                            <div className={classes.wrapInput}>
+                                <InputComment type="volunteer" id={volunteer._id} />
                             </div>
-                        }
-                    </div> */}
+                        </div>
                     </div>
                     :
-                    <div></div>
+                    <div>
+                        <div style={{ display: 'flex', justifyContent: 'center', marginTop: 150 }}>
+                                <Typography>Có lỗi xảy ra</Typography>
+                                <Button >Thử lại</Button>
+                        </div>
+                    </div>
             }
         </>
     )

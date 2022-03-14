@@ -77,6 +77,9 @@ const SocketClient = () => {
                 case 'tour':
                     dispatch(commentAction.addCommentTour({ id: data.id, comment: data.comment }));
                     break;
+                case 'volunteer':
+                    dispatch(commentAction.addCommentVolunteer({ id: data.id, comment: data.comment }));
+                    break;
                 default:
                     break;
             }

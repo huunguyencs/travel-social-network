@@ -28,6 +28,13 @@ export const deleteVolunteer = (props) => {
     }
 }
 
+export const updateJoin = (props) => {
+    return {
+        type: VOLUNTEER_TYPES.UPDATE_JOIN,
+        payload: props,
+    }
+}
+
 export const loading = (props) => {
     return {
         type: VOLUNTEER_TYPES.LOADING_VOLUNTEER,

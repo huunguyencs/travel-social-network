@@ -179,6 +179,14 @@ class VolunteerController {
                         select: "fullname position"
                     }
                 })
+                .populate("users", "avatar fullname _id")
+                .populate({
+                    path: "comments",
+                    populate: {
+                        path: "userId likes",
+                        select: "fullname avatar"
+                    },
+                })
 
             res.json({ success: true, message: "get volunteers successful", volunteers })
         }
@@ -212,6 +220,13 @@ class VolunteerController {
                     }
                 })
                 .populate("users", "avatar fullname _id")
+                .populate({
+                    path: "comments",
+                    populate: {
+                        path: "userId likes",
+                        select: "fullname avatar"
+                    },
+                })
 
 
             res.json({

@@ -1,12 +1,11 @@
 const Comments = require('../Models/comment.model')
 const Posts = require('../Models/post.model')
 const Tours = require('../Models/tour.model')
-// const Activities = require('../Models/activity.model')
-
+const Volunteers = require('../Models/volunteer.model')
 class CommentController {
     async createComment(req, res) {
         try {
-            const { commentType, content, postId, tourId } = req.body;
+            const { commentType, content, postId, tourId, volunteerId } = req.body;
 
             const newComment = new Comments({
                 userId: req.user._id, content, commentType
@@ -41,18 +40,18 @@ class CommentController {
                     })
                     break;
 
-                // case "activity":
-                //     const activity = await Activities.findById(activityId);
-                //     if (!tour) {
-                //         return res.status(400).json({success:false, message: "This activity is not exist." })
-                //     }
+                case "volunteer":
+                    const volunteer = await Volunteers.findById(volunteerId);
+                    if (!volunteer) {
+                        return res.status(400).json({success:false, message: "This volunteer is not exist." })
+                    }
 
-                //     await Tours.findOneAndUpdate({ _id: activityId }, {
-                //         $push: {
-                //             comments: newComment._id
-                //         }
-                //     })
-                //     break;
+                    await Volunteers.findOneAndUpdate({ _id: volunteerId }, {
+                        $push: {
+                            comments: newComment._id
+                        }
+                    })
+                    break;
             }
             res.json({ success: true, message: "Create comment successful", newComment })
         } catch (err) {
@@ -103,6 +102,31 @@ class CommentController {
                 }
             })
             res.json({ success: true, comments: tour.comments })
+        }
+        catch (err) {
+            res.status(500).json({ success: false, message: err.message })
+        }
+    }
+
+    async getCommentVolunteer(req, res) {
+        try {
+            const { id } = req.params;
+            const { offset } = req.query;
+
+            const volunteer = await Volunteers.findById(id, "comments").populate({
+                path: "comments",
+                options: {
+                    limit: 3,
+                    sort: { created: -1 },
+                    skip: offset * 3,
+
+                },
+                populate: {
+                    path: "userId likes",
+                    select: "username fullname avatar"
+                }
+            })
+            res.json({ success: true, comments: volunteer.comments })
         }
         catch (err) {
             res.status(500).json({ success: false, message: err.message })
@@ -179,11 +203,11 @@ class CommentController {
                         $pull: { comments: req.params.id }
                     })
                     break;
-                // case "activity":
-                //     await Activities.findOneAndUpdate({ _id: comment.activityId }, {
-                //         $pull: { comments: req.params.id }
-                //     })
-                //     break;
+                case "volunteer":
+                    await Volunteers.findOneAndUpdate({ _id: comment.volunteerId }, {
+                        $pull: { comments: req.params.id }
+                    })
+                    break;
             }
             res.json({ success: true, message: "Delete comment" })
         } catch (err) {

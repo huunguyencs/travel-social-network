@@ -4,7 +4,7 @@ const INIT_STATE = {
     volunteers: [],
     loading: false,
     error: null,
-    page: 1
+    page: 0
 }
 
 const volunteerReducer = (state = INIT_STATE, action) => {
@@ -18,6 +18,7 @@ const volunteerReducer = (state = INIT_STATE, action) => {
                 error: null,
             }
         }
+
         case VOLUNTEER_TYPES.ADD_VOLUNTEER: {
             return {
                 ...state,
@@ -57,6 +58,53 @@ const volunteerReducer = (state = INIT_STATE, action) => {
                 volunteers: [],
                 page: 0,
                 error: action.payload.error,
+            }
+        }
+        case VOLUNTEER_TYPES.UPDATE_JOIN:{
+            return{
+                ...state,
+                volunteers: state.volunteers.map( item =>
+                    item._id === action.payload.id ? {
+                        ...item,
+                        users: action.payload.users
+                    } : item
+                )
+            }
+        }
+        case VOLUNTEER_TYPES.LOAD_COMMENT_VOLUNTEER: {
+            return {
+                ...state,
+                volunteers: state.volunteers.map(item => item._id === action.payload.id ? {
+                    ...item,
+                    comments: [...item.comments, ...action.payload.comments]
+                } : item)
+            }
+        }
+        case VOLUNTEER_TYPES.ADD_COMMENT_VOLUNTEER: {
+            return {
+                ...state,
+                volunteers: state.volunteers.map(item => item._id === action.payload.id ? {
+                    ...item,
+                    comments: [...item.comments, action.payload.comment]
+                } : item)
+            }
+        }
+        case VOLUNTEER_TYPES.UPDATE_COMMENT_VOLUNTEER: {
+            return {
+                ...state,
+                volunteers: state.volunteers.map(item => item._id === action.payload.volunteerId ? {
+                    ...item,
+                    comments: item.comments.map(comment => comment._id === action.payload.comment._id ? action.payload.comment : comment)
+                } : item)
+            }
+        }
+        case VOLUNTEER_TYPES.DELETE_COMMENT_VOLUNTEER: {
+            return {
+                ...state,
+                volunteers: state.volunteers.map(item => item._id === action.payload.volunteerId ? {
+                    ...item,
+                    comments: item.comments.filter(comment => comment._id !== action.payload.id),
+                } : item)
             }
         }
         default: {

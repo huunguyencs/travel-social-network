@@ -88,9 +88,9 @@ export const deleteVolunteer = (volunteer, token, socket, next, error) => async 
 
 export const joinVolunteerAll = (id, token, next, error) => async (dispatch) => {
     try {
-        await customAxios(token).patch(`/volunteer/${id}/joinAll`);
-
-        // dispatch(tourAction.updateJoin({ id: id, joinIds: res.data.joinIds }));
+        const res = await customAxios(token).patch(`/volunteer/${id}/joinAll`);
+        // console.log(res.data.users);
+        dispatch(volunteerAction.updateJoin({ id: id, users: res.data.users }));
         dispatch(alertAction.success({ message: "Đăng ký tham gia hoạt động thành công!" }));
         next();
     }
