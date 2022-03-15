@@ -1,14 +1,17 @@
-import { Avatar, Grid, CardHeader, List, Radio, ListItem, ListItemIcon, ListItemText, RadioGroup, FormControlLabel, CircularProgress, DialogActions, DialogContent, Dialog, DialogTitle } from '@material-ui/core';
+import { Avatar, Grid, CardHeader, List, Radio, ListItem, ListItemIcon, ListItemText, RadioGroup, FormControlLabel, CircularProgress, DialogActions, DialogContent, Dialog, DialogTitle, Collapse, IconButton } from '@material-ui/core';
 import { Timeline, TimelineItem, TimelineSeparator, TimelineConnector, TimelineContent, TimelineDot } from '@material-ui/lab'
-import { DoneOutline, RadioButtonUnchecked, AssistantPhoto, Event, Schedule } from '@material-ui/icons';
-import React, { useState } from "react";
+import { DoneOutline, RadioButtonUnchecked, AssistantPhoto, Event, Schedule, ArrowDropDown, ArrowDropUp } from '@material-ui/icons';
+import React, { useState, useEffect } from "react";
 import { Button, Typography } from '@material-ui/core';
 import { volunteerDetailStyles } from '../../style';
 import ImageList from '../Modal/ImageList';
-import {joinVolunteerAll} from '../../redux/callApi/volunteerCall';
+import {joinVolunteerAll, unJoinVolunteerAll, joinVolunteerOne, unJoinVolunteerOne} from '../../redux/callApi/volunteerCall';
 import { convertDateToStr } from "../../utils/date";
 import { Link } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
+import InputComment from "../Input/Comment";
+import Comment from "../Comment";
+import { loadComment } from '../../redux/callApi/commentCall';
 
 export default function VolunteerDetail(props) {
 
@@ -16,9 +19,10 @@ export default function VolunteerDetail(props) {
     const [idxLocation, setIdxLocation] = useState(0);
     const classes = volunteerDetailStyles();
     const dispatch = useDispatch();
-    const { volunteer } = props;
+    const { volunteer} = props;
     const { auth } = useSelector(state => state);
-    
+
+    const [isJoinAll, setIsJoinAll] = useState(false);
     const [showJoin, setShowJoin] = useState(false);
     const [loadingJoinALl, setLoadingJoinAll] = useState(false);
     const handleShowJoin = () => {
@@ -27,28 +31,124 @@ export default function VolunteerDetail(props) {
     const handleCloseJoin = () => {
         setShowJoin(false);
     }
-
     const handleJoinAll = () =>{
         setLoadingJoinAll(true);
-        dispatch(joinVolunteerAll(volunteer._id, auth.token, () => {
-            setLoadingJoinAll(false);
-        }, () => {
-            setLoadingJoinAll(false);
-        }))
+        if(isJoinAll){
+            dispatch(unJoinVolunteerAll(volunteer._id, auth.token, () => {
+                setLoadingJoinAll(false);
+                setIsJoinAll(false);
+            }, () => {
+                setLoadingJoinAll(false);
+                setIsJoinAll(true);
+            }))
+        }else{
+            dispatch(joinVolunteerAll(volunteer._id, auth.token, () => {
+                setLoadingJoinAll(false);
+                setIsJoinAll(true);
+            }, () => {
+                setLoadingJoinAll(false);
+                setIsJoinAll(false);
+            }))
+        }
         handleCloseJoin();
     }
-    const checkIsJoinAll = () =>{
+    useEffect(() => {
         if(volunteer.users.length > 0){
             volunteer.users.forEach(element => {
-                if(element._id === auth.user._id) return true;
+                if(element._id === auth.user._id) {
+                    setIsJoinAll(true);
+                    return;
+                };
             });
         }
         else{
-            return false;
+            setIsJoinAll(false);
         }
-        
-    }
+    },[volunteer,auth.user])
 
+    const [loadingComment, setLoadingComment] = useState(false);
+    const [showCmt, setShowCmt] = useState(false);
+    // const [pageComment, setPageComment] = useState(0);
+    const [errorComment, setErrorComment] = useState(false);
+    const handleShowCmt = async () => {
+        if (!showCmt) {
+            if (!volunteer.comments) {
+                setLoadingComment(true);
+                dispatch(loadComment(volunteer._id, "volunteer", () => {
+                    setLoadingComment(false);
+                    // setPageComment(1);
+                }, () => {
+                    setLoadingComment(false);
+                    setErrorComment(true);
+                }, 0))
+            }
+        }
+        setShowCmt(!showCmt)
+    }
+    // const loadMoreComment = () => {
+    //     setLoadingComment(true);
+    //     dispatch(loadComment(volunteer._id, "volunteer", () => {
+    //         setLoadingComment(false);
+    //         setPageComment(state => state + 1);
+    //     }, () => {
+    //         setLoadingComment(false);
+    //         setErrorComment(true);
+    //     }, pageComment))
+    // }
+
+
+    const [accommodation, setAccommodation] = useState(true);
+    const handleAccommodation = (e)=>{
+        setAccommodation(e.target.value)
+    }
+    const [isJoinOne, setIsJoinOne] = useState(false);
+    const [showJoinOne, setShowJoinOne] = useState(false);
+    const [loadingJoinOne, setLoadingJoinOne] = useState(false);
+    const handleShowJoinOne = () => {
+        setShowJoinOne(true);
+    }
+    const handleCloseJoinOne = () => {
+        setShowJoinOne(false);
+    }
+    const handleJoinOne = () =>{
+        setLoadingJoinOne(true);
+        if(isJoinOne){
+            dispatch(unJoinVolunteerOne(volunteer._id, volunteer.location[idxLocation]._id,{isAccommodation: accommodation},auth.token, () => {
+                setLoadingJoinOne(false);
+                setIsJoinOne(false);
+            }, () => {
+                setLoadingJoinOne(false);
+                setIsJoinOne(true);
+            }))
+        }else{
+            dispatch(joinVolunteerOne(volunteer._id, volunteer.location[idxLocation]._id,{isAccommodation: accommodation},auth.token, () => {
+                setLoadingJoinOne(false);
+                setIsJoinOne(true);
+            }, () => {
+                setLoadingJoinOne(false);
+                setIsJoinOne(false);
+            }))
+        }
+        handleCloseJoinOne();
+    }
+    
+    useEffect(() => {
+        if(volunteer.location[idxLocation] && volunteer.location[idxLocation].users.length > 0){
+            volunteer.location[idxLocation].users.forEach(element => {
+                if(element.user._id === auth.user._id) {
+                    setIsJoinOne(true);
+                    return;
+                };
+            });
+        }
+        else{
+            setIsJoinOne(false);
+        }
+    },[volunteer,auth.user, idxLocation])
+    
+    useEffect(()=>{
+        console.log(isJoinOne)
+    },[isJoinOne,idxLocation])
     return (
         <>
             {
@@ -56,10 +156,10 @@ export default function VolunteerDetail(props) {
                     <div style={{ marginTop: 80 }}>
                         <Typography variant='h4' className={classes.volunteerDetailTitle}>{volunteer.name}</Typography>
                         <Grid container>
-                            <Grid item md={5}>
+                            <Grid item md={6} sm={12} xs={12}>
                                 <ImageList imageList={volunteer.images} show2Image={true} defaultHeight={300} />
                             </Grid>
-                            <Grid item md={5} style={{ margin: "0 auto", padding: 15 }}>
+                            <Grid item md={4} sm={12} xs={12} className={classes.infoVolunteer}>
                                 <CardHeader
                                     avatar={
                                         <Avatar aria-label="recipe" src={volunteer.userId.avatar} />
@@ -193,28 +293,48 @@ export default function VolunteerDetail(props) {
                                             </td>
                                             <td className={classes.registerTableData}>
                                                 <div style={{ display: 'flex', justifyContent: 'center' }}>
-                                                    <Button className={classes.registerTableBookingButton} disabled={!checkIsJoinAll()} onClick={handleShowJoin}>
-                                                        Đăng ký ngay
-                                                    </Button>
+                                                    {
+                                                        !isJoinAll ? 
+                                                        <Button className={classes.registerTableBookingButton} onClick={handleShowJoin}>
+                                                            Đăng ký ngay
+                                                        </Button>:
+                                                        <Button className={classes.registerTableBookingButton} onClick={handleShowJoin}>
+                                                            Hủy đăng ký
+                                                        </Button>
+                                                    }
                                                     <Dialog
                                                         open={showJoin}
                                                         onClose={handleCloseJoin}
                                                         aria-labelledby="show-delete-dialog"
                                                         aria-describedby="show-delete-dialog-description"
                                                     >
-                                                        <DialogTitle id="alert-dialog-title">{"Bạn muốn đăng ký tham gia hoạt động?"}</DialogTitle>
-
-                                                        <DialogContent>Hãy đọc kỹ chi tiết hoạt động</DialogContent>
-                                                        <DialogActions>
-                                                            <Button onClick={handleCloseJoin}>
-                                                                Hủy
-                                                            </Button>
-                                                            <Button onClick={handleJoinAll} className={classes.delete}>
-                                                                {
-                                                                    loadingJoinALl ? <CircularProgress size={15} color='inherit' /> : "Đăng ký"
-                                                                }
-                                                            </Button>
-                                                        </DialogActions>
+                                                        {
+                                                            !isJoinAll ? <>
+                                                            <DialogTitle id="alert-dialog-title">{"Bạn muốn đăng ký tham gia hoạt động?"}</DialogTitle>
+                                                            <DialogContent>Hãy đọc kỹ chi tiết hoạt động</DialogContent>
+                                                            <DialogActions>
+                                                                <Button onClick={handleCloseJoin}>
+                                                                    Hủy
+                                                                </Button>
+                                                                <Button onClick={handleJoinAll} className={classes.delete}>
+                                                                    {
+                                                                        loadingJoinALl ? <CircularProgress size={15} color='inherit' /> : "Đăng ký"
+                                                                    }
+                                                                </Button>
+                                                            </DialogActions></>:
+                                                            <>
+                                                            <DialogTitle id="alert-dialog-title">{"Bạn muốn hủy tham gia hoạt động?"}</DialogTitle>
+                                                            <DialogActions>
+                                                                <Button onClick={handleCloseJoin}>
+                                                                    Hủy
+                                                                </Button>
+                                                                <Button onClick={handleJoinAll} className={classes.delete}>
+                                                                    {
+                                                                        loadingJoinALl ? <CircularProgress size={15} color='inherit' /> : "Hủy đăng ký"
+                                                                    }
+                                                                </Button>
+                                                            </DialogActions></>
+                                                        }
                                                     </Dialog>
                                                 </div>
                                             </td>
@@ -258,7 +378,7 @@ export default function VolunteerDetail(props) {
                                     <Grid item md={9}>
                                         <Typography>Thông tin: </Typography>
                                         {
-                                            volunteer.location[idxLocation].description.map((item, index) => (
+                                            volunteer.location[idxLocation] && volunteer.location[idxLocation].description.map((item, index) => (
 
                                                 <List key={index} component="nav" aria-label="main folders">
                                                     <ListItem button className={classes.scheduleItem}>
@@ -268,75 +388,114 @@ export default function VolunteerDetail(props) {
                                                         <ListItemText primary={item} />
                                                     </ListItem>
                                                 </List>
-
                                             ))
                                         }
-
-                                        <div className={classes.registerItemBooking}>
-                                            <div>
-                                                <Typography>
-                                                    Nơi ở do người tổ chức sắp xếp
-                                                </Typography>
-                                                <RadioGroup id="gender" row aria-label="gender" name="gender">
-                                                    <FormControlLabel value="No" control={<Radio color="primary" />} label="Có" />
-                                                    <FormControlLabel value="no" control={<Radio color="primary" />} label="Không" />
-                                                </RadioGroup>
+                                        {
+                                            !isJoinAll &&
+                                            <div className={classes.registerItemBooking}>
+                                                {
+                                                    !isJoinOne &&
+                                                    <div>
+                                                        <Typography>
+                                                            Nơi ở do người tổ chức sắp xếp
+                                                        </Typography>
+                                                        <RadioGroup  row aria-label="accommodation" value={accommodation} onChange={handleAccommodation}>
+                                                            <FormControlLabel value={true} control={<Radio color="primary" />} label="Có" />
+                                                            <FormControlLabel value={false} control={<Radio color="primary" />} label="Không" />
+                                                        </RadioGroup>
+                                                    </div>
+                                                }
+                                                <div>
+                                                    {
+                                                        !isJoinOne ? 
+                                                        <Button className={classes.registerTableBookingButton} onClick={handleShowJoinOne}>
+                                                            Đăng ký ngay
+                                                        </Button>:
+                                                        <Button className={classes.registerTableBookingButton} onClick={handleShowJoinOne}>
+                                                            Hủy đăng ký
+                                                        </Button>
+                                                    }
+                                                    <Dialog
+                                                            open={showJoinOne}
+                                                            onClose={handleCloseJoinOne}
+                                                            aria-labelledby="show-delete-dialog"
+                                                            aria-describedby="show-delete-dialog-description"
+                                                        >
+                                                            {
+                                                                !isJoinOne ? <>
+                                                                <DialogTitle id="alert-dialog-title">{"Bạn muốn đăng ký tham gia địa điểm này?"}</DialogTitle>
+                                                                <DialogContent>Hãy đọc kỹ chi tiết các hoạt động của địa điểm</DialogContent>
+                                                                <DialogActions>
+                                                                    <Button onClick={handleCloseJoinOne}>
+                                                                        Hủy
+                                                                    </Button>
+                                                                    <Button onClick={handleJoinOne} className={classes.delete}>
+                                                                        {
+                                                                            loadingJoinOne ? <CircularProgress size={15} color='inherit' /> : "Đăng ký"
+                                                                        }
+                                                                    </Button>
+                                                                </DialogActions></>:
+                                                                <>
+                                                                <DialogTitle id="alert-dialog-title">{"Bạn muốn hủy tham gia hoạt động?"}</DialogTitle>
+                                                                <DialogActions>
+                                                                    <Button onClick={handleCloseJoinOne}>
+                                                                        Hủy
+                                                                    </Button>
+                                                                    <Button onClick={handleJoinOne} className={classes.delete}>
+                                                                        {
+                                                                            loadingJoinOne ? <CircularProgress size={15} color='inherit' /> : "Hủy đăng ký"
+                                                                        }
+                                                                    </Button>
+                                                                </DialogActions></>
+                                                            }
+                                                        </Dialog>
+                                                </div>
                                             </div>
-                                            <div>
-                                                <Button className={classes.registerItemBookingButton} disabled={!checkIsJoinAll()}>
-                                                    Đăng ký ngay
-                                                </Button>
-                                            </div>
-
-                                        </div>
+                                        }
                                     </Grid>
                                 </Grid>
                             </div>
                         </div>
-                        {/* <div className={classes.volunteerOther}>
-                        <Typography variant="h5">
-                            Các hoạt động khác
-                        </Typography>
-                        {data.length > 0 ? <ScrollMenu
-                            LeftArrow={LeftArrow}
-                            RightArrow={RightArrow}
-                        >
-                            {data.map((item) =>
-                                <Card style={{width: 350,
-                                    margin: 10}}
-                                tabIndex={0}>
-                                    <CardActionArea>
-                                    <CardMedia
-                                        style={{height: 240}}
-                                        image={item.image}
-                                        title="Contemplative Reptile"
-                                    />
-                                    <CardContent>
-                                        <Typography gutterBottom variant="h7" component="h3">
-                                        {item.name}
-                                        </Typography>
-                                        <Typography variant="body2" color="textSecondary" component="p">
-                                        {item.description}
-                                        </Typography>
-                                    </CardContent>
-                                    </CardActionArea>
-                                    <CardActions>
-                                    <Button size="small" color="primary">
-                                        Xem chi tiết
-                                    </Button>
-                                    </CardActions>
-                                </Card>
-                            )}
-                        </ScrollMenu>
-                            :
-                            <div className={classes.center}>
-                                <Typography>Không tìm thấy sự kiện</Typography>
+                        <div className={classes.comments}>
+                            <Typography variant="h5">
+                                Bình luận
+                                {
+                                    showCmt ? 
+                                    <IconButton onClick={handleShowCmt} className={classes.buttonShowCmt}>
+                                        <ArrowDropUp/>
+                                    </IconButton>:
+                                    <IconButton onClick={handleShowCmt} className={classes.buttonShowCmt}>
+                                        <ArrowDropDown/>
+                                    </IconButton>
+
+                                }
+                                
+                            </Typography>
+                            <Collapse className={classes.cmt} in={showCmt}>
+                                <hr className={classes.line} />
+                                <div className={classes.listCmt}>
+                                    {volunteer.comments && volunteer.comments.map((cmt) => (
+                                        <Comment comment={cmt} key={cmt._id} id={volunteer._id} type="volunteer" />
+                                    ))}
+                                </div>
+                                {loadingComment && <Typography>Đang tải...</Typography>}
+                                {errorComment && <Typography>Có lỗi xảy ra</Typography>}
+                                {/* {volunteer.comments && !loadingComment && volunteer.comments?.length < volunteer.comments?.length &&
+                                    <Typography variant="body2" onClick={loadMoreComment}>Xem thêm bình luận</Typography>
+                                } */}
+                            </Collapse>
+                            <div className={classes.wrapInput}>
+                                <InputComment type="volunteer" id={volunteer._id} />
                             </div>
-                        }
-                    </div> */}
+                        </div>
                     </div>
                     :
-                    <div></div>
+                    <div>
+                        <div style={{ display: 'flex', justifyContent: 'center', marginTop: 150 }}>
+                                <Typography>Có lỗi xảy ra</Typography>
+                                <Button >Thử lại</Button>
+                        </div>
+                    </div>
             }
         </>
     )
