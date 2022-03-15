@@ -6,74 +6,74 @@ import { NotFound } from "../404";
 import { Grid, Button, CircularProgress, Typography } from '@material-ui/core';
 import SpeedDialButton from '../../components/SpeedDialBtn';
 import { homeMenu } from '../../constant/menu';
+import { getVolunteers } from "../../redux/callApi/volunteerCall";
 
-
-import { useSelector } from "react-redux";
+import { useSelector, useDispatch } from "react-redux";
 import { useParams } from "react-router-dom";
-import customAxios from "../../utils/fetchData";
+// import customAxios from "../../utils/fetchData";
 import Volunteer from "../../components/Volunteer/VolunteerDetail";
 
 
 export default function VolunteerDetail() {
 
 
-    const { auth } = useSelector(state => state);
+    const { auth, volunteer } = useSelector(state => state);
 
     const { id } = useParams();
-    const [volunteer, setVolunteer] = useState();
+    const [volunteerDetail, setVolunteerDetail] = useState();
     const [state, setState] = useState({
         loading: false,
         notFound: false,
         error: false
     })
+    const dispatch = useDispatch();
+    useEffect(() => {
+        dispatch(getVolunteers());
+    }, [dispatch])
 
     const [isOwn, setIsOwn] = useState(false);
-    const getVolunteerDetail = async (id) => {
+    useEffect(() => {
         setState({
             loading: true,
             error: false,
             notFound: false,
         })
-        await customAxios().get(`/volunteer/${id}`).then(res => {
-            setVolunteer(res.data.volunteer)
-            setState({
-                loading: false,
-                error: false,
-                notFound: false,
-            })
-        }).catch(err => {
-            if (err?.response.status === 404)
-                setState({
-                    loading: false,
-                    error: true,
-                    notFound: true,
-                })
-            else setState({
-                loading: false,
-                error: true,
-                notFound: false,
-            })
-
+        volunteer.volunteers.forEach(element => {
+            if(element._id === id) setVolunteerDetail(element)
         })
-    }
-    useEffect(() => {
-        getVolunteerDetail(id);
-    }, [id])
+        setState({
+            loading: false,
+            error: false,
+            notFound: false,
+        })
+    },[id, volunteer])
 
     useEffect(() => {
-        if (volunteer && volunteer.name) {
-            document.title = volunteer.name;
+        if (volunteerDetail && volunteerDetail.name) {
+            document.title = volunteerDetail.name;
         }
-    }, [volunteer])
+    }, [volunteerDetail])
 
     useEffect(() => {
-        if (auth.user && volunteer) {
-            setIsOwn(volunteer.userId._id === auth.user._id);
+        if (auth.user && volunteerDetail) {
+            setIsOwn(volunteerDetail.userId._id === auth.user._id);
         }
-    }, [setIsOwn, volunteer, auth]);
+    }, [setIsOwn, volunteerDetail, auth]);
 
     const tryAgain = () => {
-        getVolunteerDetail(id);
+        setState({
+            loading: true,
+            error: false,
+            notFound: false,
+        })
+        volunteer.volunteers.forEach(element => {
+            if(element._id === id) setVolunteerDetail(element)
+        })
+        setState({
+            loading: false,
+            error: false,
+            notFound: false,
+        })
     }
 
     return (
@@ -82,7 +82,7 @@ export default function VolunteerDetail() {
             <Grid item md={3} sm={2} xs={2}>
                 <LeftBar menuList={homeMenu} />
             </Grid>
-            <Grid item md={9} sm={10} xs={10} style={{ padding: 30 }}>
+            <Grid item md={9} sm={10} xs={10} style={{ padding: 30, backgroundColor: '#fafafa' }}>
                 {
                     state.notFound ?
                         <NotFound /> :
@@ -98,7 +98,7 @@ export default function VolunteerDetail() {
                                     </>
                                 </div> :
 
-                                volunteer && <Volunteer volunteer={volunteer} isOwn={isOwn} />
+                                volunteerDetail && <Volunteer volunteer={volunteerDetail} isOwn={isOwn} />
                 }
             </Grid>
         </Grid>

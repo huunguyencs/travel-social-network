@@ -127,6 +127,42 @@ const volunteerDetailStyles = makeStyles((theme) => ({
     },
     volunteerOther: {
         maxWidth: "80%"
+    },
+
+    comments:{
+        width: "75%",
+        boxShadow: "0 2px 8px #00000026",
+        backgroundColor: "#fff", 
+        borderRadius: 10,
+        padding: 20,
+        [theme.breakpoints.down("md")]: {
+            width: "90%"
+        },
+        [theme.breakpoints.down("sm")]: {
+            width: "100%"
+        }
+    },
+    line: {
+        width: "80%",
+        color:"black"
+    },
+    listCmt: {
+        marginTop: 30,
+    },
+    buttonShowCmt:{
+        fontSize: 20
+    },
+    wrapInput:{
+        width: "100%"
+    },
+    infoVolunteer: {
+        margin: "0 auto",
+        boxShadow: "0 2px 8px #00000026",
+        backgroundColor: "#fff", 
+        borderRadius: 10,
+        [theme.breakpoints.down("sm")]: {
+            marginTop: "20px"
+        }
     }
 }))
 

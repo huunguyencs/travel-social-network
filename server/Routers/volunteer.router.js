@@ -15,5 +15,6 @@ router.delete('/:id', auth, VolunteerController.deleteVolunteer);
 
 router.patch('/:id/joinAll', auth, VolunteerController.joinVolunteerAll);
 router.patch('/:id/unjoinAll', auth, VolunteerController.unJoinVolunteerAll);
-
+router.patch('/:id/joinOne', auth, VolunteerController.joinVolunteerOne);
+router.patch('/:id/unjoinOne', auth, VolunteerController.unJoinVolunteerOne);
 module.exports = router;
