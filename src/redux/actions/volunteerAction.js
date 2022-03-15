@@ -35,6 +35,13 @@ export const updateJoin = (props) => {
     }
 }
 
+export const updateJoinOne = (props) => {
+    return {
+        type: VOLUNTEER_TYPES.UPDATE_JOIN_ONE,
+        payload: props,
+    }
+}
+
 export const loading = (props) => {
     return {
         type: VOLUNTEER_TYPES.LOADING_VOLUNTEER,

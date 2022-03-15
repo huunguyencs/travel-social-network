@@ -71,6 +71,23 @@ const volunteerReducer = (state = INIT_STATE, action) => {
                 )
             }
         }
+        case VOLUNTEER_TYPES.UPDATE_JOIN_ONE:{
+            return{
+                ...state,
+                volunteers: state.volunteers.map( item =>
+                    item._id === action.payload.id ? {
+                        ...item,
+                        location: item.location.map(element =>
+                            element._id === action.payload.locationId ? {
+                                ...element,
+                                users: action.payload.users
+                            }:
+                            element
+                        )
+                    } : item
+                )
+            }
+        }
         case VOLUNTEER_TYPES.LOAD_COMMENT_VOLUNTEER: {
             return {
                 ...state,

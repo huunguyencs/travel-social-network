@@ -5,7 +5,7 @@ import React, { useState, useEffect } from "react";
 import { Button, Typography } from '@material-ui/core';
 import { volunteerDetailStyles } from '../../style';
 import ImageList from '../Modal/ImageList';
-import {joinVolunteerAll} from '../../redux/callApi/volunteerCall';
+import {joinVolunteerAll, unJoinVolunteerAll, joinVolunteerOne, unJoinVolunteerOne} from '../../redux/callApi/volunteerCall';
 import { convertDateToStr } from "../../utils/date";
 import { Link } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
@@ -21,29 +21,37 @@ export default function VolunteerDetail(props) {
     const dispatch = useDispatch();
     const { volunteer} = props;
     const { auth } = useSelector(state => state);
-    
+
+    const [isJoinAll, setIsJoinAll] = useState(false);
     const [showJoin, setShowJoin] = useState(false);
     const [loadingJoinALl, setLoadingJoinAll] = useState(false);
-    const [isJoinAll, setIsJoinAll] = useState(false);
     const handleShowJoin = () => {
         setShowJoin(true);
     }
     const handleCloseJoin = () => {
         setShowJoin(false);
     }
-
     const handleJoinAll = () =>{
         setLoadingJoinAll(true);
-        dispatch(joinVolunteerAll(volunteer._id, auth.token, () => {
-            setLoadingJoinAll(false);
-            setIsJoinAll(true);
-        }, () => {
-            setLoadingJoinAll(false);
-            setIsJoinAll(false);
-        }))
+        if(isJoinAll){
+            dispatch(unJoinVolunteerAll(volunteer._id, auth.token, () => {
+                setLoadingJoinAll(false);
+                setIsJoinAll(false);
+            }, () => {
+                setLoadingJoinAll(false);
+                setIsJoinAll(true);
+            }))
+        }else{
+            dispatch(joinVolunteerAll(volunteer._id, auth.token, () => {
+                setLoadingJoinAll(false);
+                setIsJoinAll(true);
+            }, () => {
+                setLoadingJoinAll(false);
+                setIsJoinAll(false);
+            }))
+        }
         handleCloseJoin();
     }
-    
     useEffect(() => {
         if(volunteer.users.length > 0){
             volunteer.users.forEach(element => {
@@ -56,11 +64,11 @@ export default function VolunteerDetail(props) {
         else{
             setIsJoinAll(false);
         }
-    },[volunteer,auth.user._id])
+    },[volunteer,auth.user])
 
     const [loadingComment, setLoadingComment] = useState(false);
     const [showCmt, setShowCmt] = useState(false);
-    const [pageComment, setPageComment] = useState(0);
+    // const [pageComment, setPageComment] = useState(0);
     const [errorComment, setErrorComment] = useState(false);
     const handleShowCmt = async () => {
         if (!showCmt) {
@@ -68,7 +76,7 @@ export default function VolunteerDetail(props) {
                 setLoadingComment(true);
                 dispatch(loadComment(volunteer._id, "volunteer", () => {
                     setLoadingComment(false);
-                    setPageComment(1);
+                    // setPageComment(1);
                 }, () => {
                     setLoadingComment(false);
                     setErrorComment(true);
@@ -77,17 +85,70 @@ export default function VolunteerDetail(props) {
         }
         setShowCmt(!showCmt)
     }
-    const loadMoreComment = () => {
-        setLoadingComment(true);
-        dispatch(loadComment(volunteer._id, "volunteer", () => {
-            setLoadingComment(false);
-            setPageComment(state => state + 1);
-        }, () => {
-            setLoadingComment(false);
-            setErrorComment(true);
-        }, pageComment))
+    // const loadMoreComment = () => {
+    //     setLoadingComment(true);
+    //     dispatch(loadComment(volunteer._id, "volunteer", () => {
+    //         setLoadingComment(false);
+    //         setPageComment(state => state + 1);
+    //     }, () => {
+    //         setLoadingComment(false);
+    //         setErrorComment(true);
+    //     }, pageComment))
+    // }
 
+
+    const [accommodation, setAccommodation] = useState(true);
+    const handleAccommodation = (e)=>{
+        setAccommodation(e.target.value)
     }
+    const [isJoinOne, setIsJoinOne] = useState(false);
+    const [showJoinOne, setShowJoinOne] = useState(false);
+    const [loadingJoinOne, setLoadingJoinOne] = useState(false);
+    const handleShowJoinOne = () => {
+        setShowJoinOne(true);
+    }
+    const handleCloseJoinOne = () => {
+        setShowJoinOne(false);
+    }
+    const handleJoinOne = () =>{
+        setLoadingJoinOne(true);
+        if(isJoinOne){
+            dispatch(unJoinVolunteerOne(volunteer._id, volunteer.location[idxLocation]._id,{isAccommodation: accommodation},auth.token, () => {
+                setLoadingJoinOne(false);
+                setIsJoinOne(false);
+            }, () => {
+                setLoadingJoinOne(false);
+                setIsJoinOne(true);
+            }))
+        }else{
+            dispatch(joinVolunteerOne(volunteer._id, volunteer.location[idxLocation]._id,{isAccommodation: accommodation},auth.token, () => {
+                setLoadingJoinOne(false);
+                setIsJoinOne(true);
+            }, () => {
+                setLoadingJoinOne(false);
+                setIsJoinOne(false);
+            }))
+        }
+        handleCloseJoinOne();
+    }
+    
+    useEffect(() => {
+        if(volunteer.location[idxLocation] && volunteer.location[idxLocation].users.length > 0){
+            volunteer.location[idxLocation].users.forEach(element => {
+                if(element.user._id === auth.user._id) {
+                    setIsJoinOne(true);
+                    return;
+                };
+            });
+        }
+        else{
+            setIsJoinOne(false);
+        }
+    },[volunteer,auth.user, idxLocation])
+    
+    useEffect(()=>{
+        console.log(isJoinOne)
+    },[isJoinOne,idxLocation])
     return (
         <>
             {
@@ -232,28 +293,48 @@ export default function VolunteerDetail(props) {
                                             </td>
                                             <td className={classes.registerTableData}>
                                                 <div style={{ display: 'flex', justifyContent: 'center' }}>
-                                                    <Button className={classes.registerTableBookingButton} disabled={isJoinAll} onClick={handleShowJoin}>
-                                                        Đăng ký ngay
-                                                    </Button>
+                                                    {
+                                                        !isJoinAll ? 
+                                                        <Button className={classes.registerTableBookingButton} onClick={handleShowJoin}>
+                                                            Đăng ký ngay
+                                                        </Button>:
+                                                        <Button className={classes.registerTableBookingButton} onClick={handleShowJoin}>
+                                                            Hủy đăng ký
+                                                        </Button>
+                                                    }
                                                     <Dialog
                                                         open={showJoin}
                                                         onClose={handleCloseJoin}
                                                         aria-labelledby="show-delete-dialog"
                                                         aria-describedby="show-delete-dialog-description"
                                                     >
-                                                        <DialogTitle id="alert-dialog-title">{"Bạn muốn đăng ký tham gia hoạt động?"}</DialogTitle>
-
-                                                        <DialogContent>Hãy đọc kỹ chi tiết hoạt động</DialogContent>
-                                                        <DialogActions>
-                                                            <Button onClick={handleCloseJoin}>
-                                                                Hủy
-                                                            </Button>
-                                                            <Button onClick={handleJoinAll} className={classes.delete}>
-                                                                {
-                                                                    loadingJoinALl ? <CircularProgress size={15} color='inherit' /> : "Đăng ký"
-                                                                }
-                                                            </Button>
-                                                        </DialogActions>
+                                                        {
+                                                            !isJoinAll ? <>
+                                                            <DialogTitle id="alert-dialog-title">{"Bạn muốn đăng ký tham gia hoạt động?"}</DialogTitle>
+                                                            <DialogContent>Hãy đọc kỹ chi tiết hoạt động</DialogContent>
+                                                            <DialogActions>
+                                                                <Button onClick={handleCloseJoin}>
+                                                                    Hủy
+                                                                </Button>
+                                                                <Button onClick={handleJoinAll} className={classes.delete}>
+                                                                    {
+                                                                        loadingJoinALl ? <CircularProgress size={15} color='inherit' /> : "Đăng ký"
+                                                                    }
+                                                                </Button>
+                                                            </DialogActions></>:
+                                                            <>
+                                                            <DialogTitle id="alert-dialog-title">{"Bạn muốn hủy tham gia hoạt động?"}</DialogTitle>
+                                                            <DialogActions>
+                                                                <Button onClick={handleCloseJoin}>
+                                                                    Hủy
+                                                                </Button>
+                                                                <Button onClick={handleJoinAll} className={classes.delete}>
+                                                                    {
+                                                                        loadingJoinALl ? <CircularProgress size={15} color='inherit' /> : "Hủy đăng ký"
+                                                                    }
+                                                                </Button>
+                                                            </DialogActions></>
+                                                        }
                                                     </Dialog>
                                                 </div>
                                             </td>
@@ -297,7 +378,7 @@ export default function VolunteerDetail(props) {
                                     <Grid item md={9}>
                                         <Typography>Thông tin: </Typography>
                                         {
-                                            volunteer.location[idxLocation].description.map((item, index) => (
+                                            volunteer.location[idxLocation] && volunteer.location[idxLocation].description.map((item, index) => (
 
                                                 <List key={index} component="nav" aria-label="main folders">
                                                     <ListItem button className={classes.scheduleItem}>
@@ -307,27 +388,70 @@ export default function VolunteerDetail(props) {
                                                         <ListItemText primary={item} />
                                                     </ListItem>
                                                 </List>
-
                                             ))
                                         }
-
-                                        <div className={classes.registerItemBooking}>
-                                            <div>
-                                                <Typography>
-                                                    Nơi ở do người tổ chức sắp xếp
-                                                </Typography>
-                                                <RadioGroup id="gender" row aria-label="gender" name="gender">
-                                                    <FormControlLabel value="No" control={<Radio color="primary" />} label="Có" />
-                                                    <FormControlLabel value="no" control={<Radio color="primary" />} label="Không" />
-                                                </RadioGroup>
+                                        {
+                                            !isJoinAll &&
+                                            <div className={classes.registerItemBooking}>
+                                                {
+                                                    !isJoinOne &&
+                                                    <div>
+                                                        <Typography>
+                                                            Nơi ở do người tổ chức sắp xếp
+                                                        </Typography>
+                                                        <RadioGroup  row aria-label="accommodation" value={accommodation} onChange={handleAccommodation}>
+                                                            <FormControlLabel value={true} control={<Radio color="primary" />} label="Có" />
+                                                            <FormControlLabel value={false} control={<Radio color="primary" />} label="Không" />
+                                                        </RadioGroup>
+                                                    </div>
+                                                }
+                                                <div>
+                                                    {
+                                                        !isJoinOne ? 
+                                                        <Button className={classes.registerTableBookingButton} onClick={handleShowJoinOne}>
+                                                            Đăng ký ngay
+                                                        </Button>:
+                                                        <Button className={classes.registerTableBookingButton} onClick={handleShowJoinOne}>
+                                                            Hủy đăng ký
+                                                        </Button>
+                                                    }
+                                                    <Dialog
+                                                            open={showJoinOne}
+                                                            onClose={handleCloseJoinOne}
+                                                            aria-labelledby="show-delete-dialog"
+                                                            aria-describedby="show-delete-dialog-description"
+                                                        >
+                                                            {
+                                                                !isJoinOne ? <>
+                                                                <DialogTitle id="alert-dialog-title">{"Bạn muốn đăng ký tham gia địa điểm này?"}</DialogTitle>
+                                                                <DialogContent>Hãy đọc kỹ chi tiết các hoạt động của địa điểm</DialogContent>
+                                                                <DialogActions>
+                                                                    <Button onClick={handleCloseJoinOne}>
+                                                                        Hủy
+                                                                    </Button>
+                                                                    <Button onClick={handleJoinOne} className={classes.delete}>
+                                                                        {
+                                                                            loadingJoinOne ? <CircularProgress size={15} color='inherit' /> : "Đăng ký"
+                                                                        }
+                                                                    </Button>
+                                                                </DialogActions></>:
+                                                                <>
+                                                                <DialogTitle id="alert-dialog-title">{"Bạn muốn hủy tham gia hoạt động?"}</DialogTitle>
+                                                                <DialogActions>
+                                                                    <Button onClick={handleCloseJoinOne}>
+                                                                        Hủy
+                                                                    </Button>
+                                                                    <Button onClick={handleJoinOne} className={classes.delete}>
+                                                                        {
+                                                                            loadingJoinOne ? <CircularProgress size={15} color='inherit' /> : "Hủy đăng ký"
+                                                                        }
+                                                                    </Button>
+                                                                </DialogActions></>
+                                                            }
+                                                        </Dialog>
+                                                </div>
                                             </div>
-                                            <div>
-                                                <Button className={classes.registerItemBookingButton} disabled={isJoinAll}>
-                                                    Đăng ký ngay
-                                                </Button>
-                                            </div>
-
-                                        </div>
+                                        }
                                     </Grid>
                                 </Grid>
                             </div>
@@ -356,9 +480,9 @@ export default function VolunteerDetail(props) {
                                 </div>
                                 {loadingComment && <Typography>Đang tải...</Typography>}
                                 {errorComment && <Typography>Có lỗi xảy ra</Typography>}
-                                {volunteer.comments && !loadingComment && volunteer.comments?.length < volunteer.comments?.length &&
+                                {/* {volunteer.comments && !loadingComment && volunteer.comments?.length < volunteer.comments?.length &&
                                     <Typography variant="body2" onClick={loadMoreComment}>Xem thêm bình luận</Typography>
-                                }
+                                } */}
                             </Collapse>
                             <div className={classes.wrapInput}>
                                 <InputComment type="volunteer" id={volunteer._id} />

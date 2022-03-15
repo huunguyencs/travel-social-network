@@ -261,10 +261,13 @@ class VolunteerController {
             res.status(500).json({ success: false, message: err.message })
         }
     }
-
+     //Tham gia hết volunteer, params.id là id của volunteer
     async joinVolunteerAll(req, res) {
         try {
-            var volunteer = await Volunteers.find({ _id: req.params.id });
+            var volunteer = await Volunteers.find({ _id: req.params.id, users: req.user._id });
+            if (volunteer.length > 0) {
+                return res.status(400).json({ success: false, message: "Bạn đã tham gia hoạt động này!" })
+            }
             volunteer = await Volunteers.findOneAndUpdate({ _id: req.params.id }, {
                 $push: {
                     users: req.user._id
@@ -288,13 +291,67 @@ class VolunteerController {
 
             res.json({
                 success: true, message: "unjoin volunteer success",
-                joinIds: volunteer.users
+                users: volunteer.users
             });
         } catch (err) {
             res.status(500).json({ success: false, message: err.message })
         }
     }
+    //Tham gia từng địa điểm, params.id là id của volunteerLocation
+    async joinVolunteerOne(req, res) {
+        try {
+            const { isAccommodation } = req.body;
+            
+            var volunteerLocation = await VolunteerLocations.find({ _id: req.params.id});
+            console.log("volunteerLocation",volunteerLocation);
+            if (volunteerLocation.length > 0) {
+                volunteerLocation[0].users.length > 0 && volunteerLocation[0].users.forEach(element => {
+                    if(element.user === req.user._id)
+                        return res.status(400).json({ success: false, message: "Bạn đã tham gia địa điểm này!" })
+                });
+            }
+            volunteerLocation = await VolunteerLocations.findOneAndUpdate({ _id: req.params.id }, {
+                $push: {
+                    users: {isAccommodation: isAccommodation, user: req.user._id}
+                }
+            }, { new: true }).populate({
+                                        path: "users",
+                                        populate: {
+                                            path: "user",
+                                            select: "_id fullname avatar"
+                                        },
+                                    })
+            res.json({
+                success: true, message: "join volunteer success",
+                users: volunteerLocation.users
+            });
+        } catch (err) {
+            res.status(500).json({ success: false, message: err.message })
+        }
+    }
+    async unJoinVolunteerOne(req, res) {
+        try {
+            const { isAccommodation } = req.body;
+            const volunteerLocation = await VolunteerLocations.findByIdAndUpdate(req.params.id, {
+                $pull: {
+                    users: {isAccommodation: isAccommodation, user: req.user._id}
+                }
+            }, { new: true }).populate({
+                                        path: "users",
+                                        populate: {
+                                            path: "user",
+                                            select: "_id fullname avatar"
+                                        },
+                                    })
 
+            res.json({
+                success: true, message: "unjoin volunteer success",
+                users: volunteerLocation.users
+            });
+        } catch (err) {
+            res.status(500).json({ success: false, message: err.message })
+        }
+    }
     async search(req, res) {
         try {
             var { q, offset } = req.query;
