@@ -50,7 +50,9 @@ export default function FeedService(props) {
         >
             {
                 service.services.map((item) => (
-                    <ServiceItem key={item._id} service={item} />
+                    item._id ?
+                        <ServiceItem key={item._id} service={item} />
+                        : <div></div>
                 ))
             }
         </Feed>
