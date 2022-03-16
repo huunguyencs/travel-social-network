@@ -176,7 +176,17 @@ class VolunteerController {
                     path: "location",
                     populate: {
                         path: "location",
-                        select: "fullname position"
+                        select: "fullname position",
+                    }
+                })
+                .populate({
+                    path:"location",
+                    populate:{
+                        path: "users",
+                        populate: {
+                            path: "user",
+                            select: "_id fullname avatar"
+                        },
                     }
                 })
                 .populate("users", "avatar fullname _id")
@@ -217,6 +227,16 @@ class VolunteerController {
                     populate: {
                         path: "location",
                         select: "fullname position"
+                    }
+                })
+                .populate({
+                    path:"location",
+                    populate:{
+                        path: "users",
+                        populate: {
+                            path: "user",
+                            select: "_id fullname avatar"
+                        },
                     }
                 })
                 .populate("users", "avatar fullname _id")
@@ -303,7 +323,7 @@ class VolunteerController {
             const { isAccommodation } = req.body;
             
             var volunteerLocation = await VolunteerLocations.find({ _id: req.params.id});
-            console.log("volunteerLocation",volunteerLocation);
+            // console.log("volunteerLocation",volunteerLocation);
             if (volunteerLocation.length > 0) {
                 volunteerLocation[0].users.length > 0 && volunteerLocation[0].users.forEach(element => {
                     if(element.user === req.user._id)

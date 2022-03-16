@@ -17,7 +17,7 @@ import Volunteer from "../../components/Volunteer/VolunteerDetail";
 export default function VolunteerDetail() {
 
 
-    const { auth, volunteer } = useSelector(state => state);
+    const {volunteer } = useSelector(state => state);
 
     const { id } = useParams();
     const [volunteerDetail, setVolunteerDetail] = useState();
@@ -31,7 +31,6 @@ export default function VolunteerDetail() {
         dispatch(getVolunteers());
     }, [dispatch])
 
-    const [isOwn, setIsOwn] = useState(false);
     useEffect(() => {
         setState({
             loading: true,
@@ -53,12 +52,6 @@ export default function VolunteerDetail() {
             document.title = volunteerDetail.name;
         }
     }, [volunteerDetail])
-
-    useEffect(() => {
-        if (auth.user && volunteerDetail) {
-            setIsOwn(volunteerDetail.userId._id === auth.user._id);
-        }
-    }, [setIsOwn, volunteerDetail, auth]);
 
     const tryAgain = () => {
         setState({
@@ -98,7 +91,7 @@ export default function VolunteerDetail() {
                                     </>
                                 </div> :
 
-                                volunteerDetail && <Volunteer volunteer={volunteerDetail} isOwn={isOwn} />
+                                volunteerDetail && <Volunteer volunteer={volunteerDetail} />
                 }
             </Grid>
         </Grid>

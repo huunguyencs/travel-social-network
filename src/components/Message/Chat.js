@@ -7,6 +7,7 @@ import { useParams ,useHistory} from "react-router-dom";
 import { addMessage, getMessages,deleteConversation } from '../../redux/callApi/messageCall';
 import { timeAgo } from "../../utils/date";
 import EmojiPicker from "../Input/EmojiPicker";
+import { Link } from "react-router-dom";
 
 export default function Chat() {
     const classes = messageStyles();
@@ -84,10 +85,12 @@ export default function Chat() {
                         <div className={classes.message_box_header}>
                             <div className={classes.message_box_header_left}>
                                 <Avatar alt="avatar" src={user.avatar}> </Avatar>
-                                <Typography className={classes.message_box_header_text}>{user.fullname}</Typography>
+                                <Typography className={classes.message_box_header_text} component={Link} to={`/u/${user._id}`}>{user.fullname}</Typography>
                             </div>
                             <div className={classes.message_box_header_right}>
-                                <Call style={{ marginRight: "20px", cursor: "pointer" }} />
+                                <IconButton >
+                                    <Call style={{ cursor: "pointer" }} />
+                                </IconButton>
                                 <IconButton onClick={handleShowDelete}>
                                     <Delete style={{ color: "red"}}/>
                                 </IconButton>
@@ -103,7 +106,7 @@ export default function Chat() {
                                         <Button onClick={handleCloseDelete}>
                                             Hủy
                                         </Button>
-                                        <Button onClick={handleDelete} style={{color:"red"}}>
+                                        <Button onClick={handleDelete} className={classes.buttonDelete}>
                                             {
                                                 state.loading ?
                                                     <CircularProgress size={15} color='inherit' /> : "Xóa"

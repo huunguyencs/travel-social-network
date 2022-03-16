@@ -105,7 +105,18 @@ const messageStyles = makeStyles((theme) => ({
     },
     message_box_header_text:{
         marginLeft: "10px",
-        fontSize: "18px"
+        fontSize: "18px",
+        cursor: "pointer",
+        "&:hover": {
+            textDecorationLine: 'underline',
+        }
+    },
+    buttonDelete:{
+        color: 'red',
+        "&:hover": {
+            backgroundColor: 'red',
+            color: 'white',
+        }
     },
     message_container: {
         position: "relative",

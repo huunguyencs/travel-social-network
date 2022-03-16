@@ -1,6 +1,7 @@
-import { Avatar, Grid, CardHeader, List, Radio, ListItem, ListItemIcon, ListItemText, RadioGroup, FormControlLabel, CircularProgress, DialogActions, DialogContent, Dialog, DialogTitle, Collapse, IconButton, FormControl } from '@material-ui/core';
+import { Box, Avatar, Grid, CardHeader, List, Radio, ListItem, ListItemIcon, ListItemText, RadioGroup, FormControlLabel, CircularProgress, DialogActions, DialogContent, Dialog, DialogTitle, Collapse, IconButton, FormControl, Modal, Backdrop, Tabs, Tab } from '@material-ui/core';
 import { Timeline, TimelineItem, TimelineSeparator, TimelineConnector, TimelineContent, TimelineDot } from '@material-ui/lab'
-import { DoneOutline, RadioButtonUnchecked, AssistantPhoto, Event, Schedule, ArrowDropDown, ArrowDropUp } from '@material-ui/icons';
+import PropTypes from 'prop-types';
+import { DoneOutline, RadioButtonUnchecked, AssistantPhoto, Event, Schedule, ArrowDropDown, ArrowDropUp, Close, CheckCircle } from '@material-ui/icons';
 import React, { useState, useEffect } from "react";
 import { Button, Typography } from '@material-ui/core';
 import { volunteerDetailStyles } from '../../style';
@@ -13,6 +14,39 @@ import InputComment from "../Input/Comment";
 import Comment from "../Comment";
 import { loadComment } from '../../redux/callApi/commentCall';
 
+function TabPanel(props) {
+    const { children, value, index, ...other } = props;
+
+    return (
+        <div
+            role="tabpanel"
+            hidden={value !== index}
+            id={`vertical-tabpanel-${index}`}
+            aria-labelledby={`vertical-tab-${index}`}
+            {...other}
+        >
+            {value === index && (
+                <Box>
+                    {children}
+                </Box>
+            )}
+        </div>
+    );
+}
+
+TabPanel.propTypes = {
+    children: PropTypes.node,
+    index: PropTypes.any.isRequired,
+    value: PropTypes.any.isRequired
+};
+
+function a11yProps(index) {
+    return {
+        id: `vertical-tab-${index}`,
+        "aria-controls": `vertical-tabpanel-${index}`
+    };
+}
+
 export default function VolunteerDetail(props) {
 
     const [idx, setIdx] = useState(0);
@@ -21,10 +55,15 @@ export default function VolunteerDetail(props) {
     const dispatch = useDispatch();
     const { volunteer } = props;
     const { auth } = useSelector(state => state);
-
     const [isJoinAll, setIsJoinAll] = useState(false);
     const [showJoin, setShowJoin] = useState(false);
     const [loadingJoinALl, setLoadingJoinAll] = useState(false);
+    const [isOwn, setIsOwn] = useState(false);
+    useEffect(() => {
+        if (auth.user && volunteer) {
+            setIsOwn(volunteer.userId._id === auth.user._id);
+        }
+    }, [isOwn, volunteer, auth]);
     const handleShowJoin = () => {
         setShowJoin(true);
     }
@@ -146,9 +185,19 @@ export default function VolunteerDetail(props) {
         }
     }, [volunteer, auth.user, idxLocation])
 
-    useEffect(() => {
-        console.log(isJoinOne)
-    }, [isJoinOne, idxLocation])
+    const [openDS, setOpenDS] = useState(false);
+    const handleOpenDS = () => {
+        setOpenDS(true);
+      };
+    
+    const handleCloseDS = () => {
+        setOpenDS(false);
+    };
+    const [value, setValue] = useState(0);
+
+    const handleChange = (event, newValue) => {
+        setValue(newValue);
+    };
     return (
         <>
             {
@@ -278,7 +327,11 @@ export default function VolunteerDetail(props) {
                                             <th className={classes.registerTableTitle}>Điểm khởi hành</th>
                                             <th className={classes.registerTableTitle}>Ngày khởi hành</th>
                                             <th className={classes.registerTableTitle}>Tổng chi phí tiêu chuẩn</th>
-                                            <th className={classes.registerTableTitle}>Đăng ký</th>
+                                            {
+                                                isOwn ? <th className={classes.registerTableTitle}>Danh sách đăng ký</th>
+                                                :<th className={classes.registerTableTitle}>Đăng ký</th>
+                                            }
+                                            
                                         </tr>
                                     </thead>
                                     <tbody>
@@ -288,56 +341,144 @@ export default function VolunteerDetail(props) {
                                             <td className={classes.registerTableData}>
                                                 <div className={classes.registerTableBooking}>
                                                     <p>{volunteer.cost}</p>
-
                                                 </div>
                                             </td>
-                                            <td className={classes.registerTableData}>
-                                                <div style={{ display: 'flex', justifyContent: 'center' }}>
-                                                    {
-                                                        !isJoinAll ?
-                                                            <Button className={classes.registerTableBookingButton} onClick={handleShowJoin}>
-                                                                Đăng ký ngay
-                                                            </Button> :
-                                                            <Button className={classes.registerTableBookingButton} onClick={handleShowJoin}>
-                                                                Hủy đăng ký
-                                                            </Button>
-                                                    }
-                                                    <Dialog
-                                                        open={showJoin}
-                                                        onClose={handleCloseJoin}
-                                                        aria-labelledby="show-delete-dialog"
-                                                        aria-describedby="show-delete-dialog-description"
-                                                    >
+                                            {
+                                                isOwn ? 
+                                                <td className={classes.registerTableData}>
+                                                    <div style={{ display: 'flex', justifyContent: 'center' }}>
+                                                        <Button className={classes.registerTableBookingButton} onClick={handleOpenDS}>
+                                                            Danh sách
+                                                        </Button>
+                                                        <Modal
+                                                            aria-labelledby="transition-modal-title"
+                                                            aria-describedby="transition-modal-description"
+                                                            className={classes.modal}
+                                                            open={openDS}
+                                                            onClose={handleCloseDS}
+                                                            closeAfterTransition
+                                                            BackdropComponent={Backdrop}
+                                                            BackdropProps={{
+                                                                timeout: 500,
+                                                            }}
+                                                            >
+                                                                
+                                                                <div className={classes.paper}>
+                                                                    <div className={classes.modal_header}>
+                                                                        <h2 className={classes.modal_header_left}>Danh sách người tham gia: </h2>
+                                                                        <div className={classes.modal_header_right}>
+                                                                            <IconButton onClick={handleCloseDS} size="small">
+                                                                                <Close className={classes.modal_header_closeIcon} />
+                                                                            </IconButton>
+                                                                        </div>
+                                                                    </div>
+                                                                    <Tabs
+                                                                        value={value}
+                                                                        onChange={handleChange}
+                                                                        indicatorColor="primary"
+                                                                        textColor="primary"
+                                                                        centered
+                                                                    >
+                                                                        <Tab label="Tham gia tất cả" {...a11yProps(0)}/>
+                                                                        <Tab label="Từng địa điểm" {...a11yProps(1)}/>
+                                                                    </Tabs>
+                                                                    <TabPanel value={value} index={0} className={classes.tabPanel}>
+                                                                        <div style={{ position: "relative", overflowY: "auto" }}>
+                                                                            <ul>
+                                                                                {volunteer.users.map((user) => (
+                                                                                    <li className={classes.modal_body_user} key={user._id}>
+                                                                                        <div className={classes.userWrap}>
+                                                                                            <Avatar alt="avatar" src={user.avatar} className={classes.avatar} />
+                                                                                            <div className={classes.fullnameWrap}>
+                                                                                                <Link to={`/u/${user._id}`} onClick={handleCloseDS} className={classes.fullname}>{user.fullname}</Link>
+                                                                                            </div>
+                                                                                        </div>
+                                                                                    </li>
+                                                                                ))}
+                                                                            </ul>
+                                                                        </div>
+                                                                    </TabPanel>
+                                                                    <TabPanel value={value} index={1} className={classes.tabPanel}>
+                                                                        <div style={{ position: "relative", overflowY: "auto" }}>
+                                                                            <ul>
+                                                                                {volunteer.location.map((element) => (
+                                                                                    element.users.map((item)=>(
+                                                                                        <li className={classes.modal_body_user} key={item.user._id}>
+                                                                                            <div className={classes.userWrap}>
+                                                                                                <Avatar alt="avatar" src={item.user.avatar} className={classes.avatar} />
+                                                                                                <div className={classes.fullnameWrap}>
+                                                                                                    <Link to={`/u/${item.user._id}`} onClick={handleCloseDS} className={classes.fullname}>{item.user.fullname}</Link>
+                                                                                                </div>
+                                                                                            </div>
+                                                                                            <div>
+                                                                                                <p style={{marginTop: 35}}>{element.location.fullname}</p>
+                                                                                            </div>
+                                                                                            <div>
+                                                                                                {
+                                                                                                    item.isAccommodation && <CheckCircle style={{color:"#a5dec8", marginTop: 35, marginRight: 20}}/>
+                                                                                                }
+                                                                                            </div>
+                                                                                        </li>
+                                                                                    ))
+                                                                                ))}
+                                                                            </ul>
+                                                                        </div>
+                                                                    </TabPanel>
+                                                                    
+                                                                </div>
+                                                        </Modal>
+                                                    </div>
+                                                </td>
+                                                :
+                                                <td className={classes.registerTableData}>
+                                                    <div style={{ display: 'flex', justifyContent: 'center' }}>
                                                         {
-                                                            !isJoinAll ? <>
-                                                                <DialogTitle id="alert-dialog-title">{"Bạn muốn đăng ký tham gia hoạt động?"}</DialogTitle>
-                                                                <DialogContent>Hãy đọc kỹ chi tiết hoạt động</DialogContent>
-                                                                <DialogActions>
-                                                                    <Button onClick={handleCloseJoin}>
-                                                                        Hủy
-                                                                    </Button>
-                                                                    <Button onClick={handleJoinAll} className={classes.delete}>
-                                                                        {
-                                                                            loadingJoinALl ? <CircularProgress size={15} color='inherit' /> : "Đăng ký"
-                                                                        }
-                                                                    </Button>
-                                                                </DialogActions></> :
-                                                                <>
-                                                                    <DialogTitle id="alert-dialog-title">{"Bạn muốn hủy tham gia hoạt động?"}</DialogTitle>
+                                                            !isJoinAll ?
+                                                                <Button className={classes.registerTableBookingButton} onClick={handleShowJoin}>
+                                                                    Đăng ký ngay
+                                                                </Button> :
+                                                                <Button className={classes.registerTableBookingButton} onClick={handleShowJoin}>
+                                                                    Hủy đăng ký
+                                                                </Button>
+                                                        }
+                                                        <Dialog
+                                                            open={showJoin}
+                                                            onClose={handleCloseJoin}
+                                                            aria-labelledby="show-delete-dialog"
+                                                            aria-describedby="show-delete-dialog-description"
+                                                        >
+                                                            {
+                                                                !isJoinAll ? <>
+                                                                    <DialogTitle id="alert-dialog-title">{"Bạn muốn đăng ký tham gia hoạt động?"}</DialogTitle>
+                                                                    <DialogContent>Hãy đọc kỹ chi tiết hoạt động</DialogContent>
                                                                     <DialogActions>
                                                                         <Button onClick={handleCloseJoin}>
                                                                             Hủy
                                                                         </Button>
                                                                         <Button onClick={handleJoinAll} className={classes.delete}>
                                                                             {
-                                                                                loadingJoinALl ? <CircularProgress size={15} color='inherit' /> : "Hủy đăng ký"
+                                                                                loadingJoinALl ? <CircularProgress size={15} color='inherit' /> : "Đăng ký"
                                                                             }
                                                                         </Button>
-                                                                    </DialogActions></>
-                                                        }
-                                                    </Dialog>
-                                                </div>
-                                            </td>
+                                                                    </DialogActions></> :
+                                                                    <>
+                                                                        <DialogTitle id="alert-dialog-title">{"Bạn muốn hủy tham gia hoạt động?"}</DialogTitle>
+                                                                        <DialogActions>
+                                                                            <Button onClick={handleCloseJoin}>
+                                                                                Hủy
+                                                                            </Button>
+                                                                            <Button onClick={handleJoinAll} className={classes.delete}>
+                                                                                {
+                                                                                    loadingJoinALl ? <CircularProgress size={15} color='inherit' /> : "Hủy đăng ký"
+                                                                                }
+                                                                            </Button>
+                                                                        </DialogActions></>
+                                                            }
+                                                        </Dialog>
+                                                    </div>
+                                                </td>
+                                            }
+                                            
                                         </tr>
                                     </tbody>
                                 </table>
@@ -391,7 +532,7 @@ export default function VolunteerDetail(props) {
                                             ))
                                         }
                                         {
-                                            !isJoinAll &&
+                                            (!isJoinAll && !isOwn) &&
                                             <div className={classes.registerItemBooking}>
                                                 {
                                                     !isJoinOne &&

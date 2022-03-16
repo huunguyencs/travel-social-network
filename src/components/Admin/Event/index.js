@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { Container, Button, IconButton, CircularProgress } from "@material-ui/core";
+import { Container, Button, IconButton } from "@material-ui/core";
 import { useSelector } from 'react-redux';
 
 import Typography from '@material-ui/core/Typography';
@@ -10,8 +10,6 @@ import { AddCircle, Edit } from "@material-ui/icons";
 import { DataGrid, GridToolbarContainer, GridToolbarExport } from "@mui/x-data-grid";
 import customAxios from "../../../utils/fetchData";
 import { tableStyles } from "../../../style";
-
-import Event from "../Event";
 
 
 const columns = [
