@@ -64,7 +64,7 @@ export default function AddLocation(props) {
     }
 
     return (
-        <Paper className={classes.paperContainer}>
+        <Paper className={classes.addLocationContainer}>
             <div className={classes.textTitle}>
                 <Typography variant="h5">
                     Thêm địa điểm

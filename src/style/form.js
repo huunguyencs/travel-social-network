@@ -4,6 +4,12 @@ import attr from "./attr";
 import color from "./color";
 
 const formStyles = makeStyles((theme) => ({
+    addLocationContainer: {
+        borderRadius: attr.borderRadius.md,
+        padding: 20,
+        margin: 20,
+        // width: '100%',
+    },
     paperContainer: {
         padding: 20,
         margin: 20,

@@ -150,7 +150,7 @@ export default function FormLocationAdmin(props) {
                     dispatch(error({ message: 'Có lỗi xảy ra' }))
                 })
             }
-            else {
+            else if (mode === 'add') {
                 await customAxios(token).post(`/location/create_location`, {
                     ...location,
                     province: provinceOpt._id
@@ -160,6 +160,9 @@ export default function FormLocationAdmin(props) {
 
                     dispatch(error({ message: 'Có lỗi xảy ra' }))
                 })
+            }
+            else if (mode === 'donggop') {
+
             }
         }
         setLoading(false);

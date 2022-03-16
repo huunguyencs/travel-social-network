@@ -117,10 +117,15 @@ function Detail(props) {
 
     const { location, isEdit, indexDate, indexLocation } = props;
 
-    const [description, setDescription] = useState(location.description);
+    const [description, setDescription] = useState();
     const [time, setTime] = useState(location.time);
     const [cost, setCost] = useState(location.cost);
 
+    useEffect(() => {
+        setDescription(location.description);
+        setTime(location.time);
+        setCost(location.cost);
+    }, [location])
 
 
     const handleUpdateInfo = () => {
@@ -198,6 +203,10 @@ export default function Location(props) {
     const [showDeleteLocation, setShowDeleteLocation] = useState(false);
     const [showReview, setShowReview] = useState(false);
 
+    useEffect(() => {
+        setShowDetail(false);
+    }, [indexDate])
+
     const handleShowMenu = (e) => {
         setAnchorEl(e.currentTarget);
     }
@@ -239,9 +248,6 @@ export default function Location(props) {
     const handleShowDetail = () => {
         setShowDetail(state => !state);
     }
-
-
-
 
 
     const handleShowReview = () => {

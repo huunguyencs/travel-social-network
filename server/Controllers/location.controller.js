@@ -77,7 +77,7 @@ class LocationController {
         try {
             const { offset } = req.query;
             const posts = await Posts.find({ isPostReview: true, locationId: req.params.id })
-                .sort({ created: -1 })
+                .sort({ createdAt: -1 })
                 .limit(5)
                 .skip(offset)
                 .populate("userId likes", "username fullname avatar")

@@ -42,10 +42,15 @@ export default function ProvincePage() {
             setProvinces(provincesCon);
             return;
         }
-        let pros = provincesCon.filter((item) => item.fullname.match(temp));
-        setProvinces(pros);
 
     }
+
+    useEffect(() => {
+        if (search !== '') {
+            let pros = provincesCon.filter((item) => item.fullname.toLowerCase().match(search.toLowerCase()));
+            setProvinces(pros);
+        }
+    }, [search, provincesCon])
 
     useEffect(() => {
         document.title = "Tỉnh thành | Triple H"

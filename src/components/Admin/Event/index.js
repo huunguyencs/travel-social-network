@@ -73,29 +73,29 @@ export default function AdminEvent() {
     const [error, setError] = useState(null);
     const [pageSize, setPageSize] = useState(10);
 
-    const [stateEvent, setStateEvent] = useState({
-        loading: false,
-        error: false
-    })
+    // const [stateEvent, setStateEvent] = useState({
+    //     loading: false,
+    //     error: false
+    // })
 
-    const getCurrentEvent = async () => {
-        setStateEvent({
-            loading: true,
-            error: false
-        })
-        await customAxios().get('/event/get_events').then(res => {
-            setEvents(res.data.events);
-            setStateEvent({
-                loading: false,
-                error: false
-            })
-        }).catch(err => {
-            setStateEvent({
-                loading: false,
-                error: true
-            })
-        })
-    }
+    // const getCurrentEvent = async () => {
+    //     setStateEvent({
+    //         loading: true,
+    //         error: false
+    //     })
+    //     await customAxios().get('/event/get_events').then(res => {
+    //         setEvents(res.data.events);
+    //         setStateEvent({
+    //             loading: false,
+    //             error: false
+    //         })
+    //     }).catch(err => {
+    //         setStateEvent({
+    //             loading: false,
+    //             error: true
+    //         })
+    //     })
+    // }
 
     const getAllEvents = async (token) => {
         setLoading(true);
