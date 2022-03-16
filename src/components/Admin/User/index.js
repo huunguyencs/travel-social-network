@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { Container, IconButton, Tooltip } from "@material-ui/core";
+import { Container, IconButton } from "@material-ui/core";
 import { Card, Grid, Typography, Box, CardHeader } from "@material-ui/core";
 import { Paper, Avatar } from '@material-ui/core';
 import { Link, useHistory } from "react-router-dom";
@@ -8,7 +8,7 @@ import { DataGrid, GridToolbarContainer, GridToolbarExport } from "@mui/x-data-g
 import customAxios from "../../../utils/fetchData";
 import { useSelector } from "react-redux";
 import { tableStyles } from "../../../style";
-import { ResponsiveContainer, LineChart, Line, XAxis, YAxis, CartesianGrid, Legend } from 'recharts';
+import { ResponsiveContainer, LineChart, Line, XAxis, YAxis, CartesianGrid, Legend, Tooltip } from 'recharts';
 
 
 // const useStyles = makeStyles((theme) => ({
