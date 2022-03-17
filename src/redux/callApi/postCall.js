@@ -281,6 +281,7 @@ export const share = (type, token, shareId, content, hashtags, next, error) => a
         dispatch(alertAction.success({ message: "Chia sẻ thành công!" }))
     }
     catch (err) {
+        console.log(err);
         error();
         if (err.response && err.response.data && err.response.data.message)
             dispatch(alertAction.error({ message: err.response.data.message }))

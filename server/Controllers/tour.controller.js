@@ -55,30 +55,30 @@ class TourController {
             const { content, hashtags, shareId } = req.body
             const newTour = new Tours({
                 userId: req.user._id, content, hashtags, shareId
-            }).populate("userId", "username fullname avatar")
-                .populate({
-                    path: "shareId",
-                    populate: {
-                        path: "userId",
-                        select: "username fullname avatar"
-                    }
-                })
-                .populate({
-                    path: "shareId",
-                    populate: {
-                        path: "tour",
-                        select: "date"
-                    }
-                })
+            })
+
             await newTour.save();
+
+            const share = await Tours.findById(shareId).populate("userId", "username fullname avatar")
+
 
             res.json({
                 success: true,
                 message: 'Chia sẻ thành công!',
-                newTour
+                newTour: {
+                    ...newTour._doc,
+                    userId: {
+                        _id: req.user._id,
+                        username: req.user.username,
+                        fullname: req.user.fullname,
+                        avatar: req.user.avatar
+                    },
+                    shareId: share
+                }
             })
         }
         catch (err) {
+            console.log(err);
             res.status(500).json({ success: false, message: err.message })
         }
     }
