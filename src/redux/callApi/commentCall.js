@@ -15,6 +15,7 @@ export const createComment = (id, comment, auth, type, socket) => async (dispatc
             content: comment,
             postId: id,
             tourId: id,
+            volunteerId: id 
         })
 
         const newComment = {
@@ -58,6 +59,24 @@ export const createComment = (id, comment, auth, type, socket) => async (dispatc
 
             dispatch(createNotify(dataNotify, auth.token, socket))
         }
+        else if (type === "volunteer") {
+            dispatch(commentAction.addCommentVolunteer({ id: id, comment: newComment }))
+            socket.emit('createComment', { type: type, id: id, comment: newComment });
+
+            //lấy thông tin  post
+            const resVolunteer = await customAxios(auth.token).get(`/volunteer/${id}`)
+            // Notify
+            const dataNotify = {
+                id: res.data.newComment._id,
+                text: ' đã bình luận vào hoạt động của bạn',
+                recipients: [resVolunteer.data.volunteer.userId._id],
+                url: `/volunteer/${id}`,
+                content: resVolunteer.data.volunteer.name || '',
+                image: ""
+            }
+
+            dispatch(createNotify(dataNotify, auth.token, socket))
+        }
 
     }
     catch (err) {
@@ -86,6 +105,9 @@ export const updateComment = (id, postId, comment, auth, type) => async (dispatc
         }
         else if (type === "tour") {
             dispatch(commentAction.updateCommentTour({ tourId: postId, comment: res.data.comment }))
+        }
+        else if (type === "volunteer") {
+            dispatch(commentAction.updateCommentVolunteer({ volunteerId: postId, comment: res.data.comment }))
         }
 
         dispatch(alertAction.success({ message: "Cập nhật thành công!" }))
@@ -158,18 +180,29 @@ export const deleteComment = (id, auth, type, postId, socket, next) => async (di
         if (type === "post") {
             dispatch(commentAction.deleteCommentPost({ id: id, postId: postId }))
 
-            //lấy thông tin  post
-            // const resPost = await customAxios(auth.token).get(`/post/${postId}`);
-            // Notify
             const dataNotify = {
                 id: postId,
                 url: `/post/${postId}`,
             }
             dispatch(deleteNotify(dataNotify, auth.token, socket));
-
         }
         else if (type === "tour") {
             dispatch(commentAction.deleteCommentTour({ id: id, tourId: postId }));
+
+            const dataNotify = {
+                id: postId,
+                url: `/tour/${postId}`,
+            }
+            dispatch(deleteNotify(dataNotify, auth.token, socket));
+        }
+        else if (type === "volunteer") {
+            dispatch(commentAction.deleteCommentVolunteer({ id: id, volunteerId: postId }));
+
+            const dataNotify = {
+                id: postId,
+                url: `/volunteer/${postId}`,
+            }
+            dispatch(deleteNotify(dataNotify, auth.token, socket));
         }
         next();
         dispatch(alertAction.success({ message: "Xóa bình luận thành công!" }))
@@ -186,6 +219,8 @@ export const loadComment = (id, type, next, error, page) => async (dispatch) => 
             dispatch(commentAction.loadCommentPost({ comments: res.data.comments, id: id }));
         else if (type === "tour")
             dispatch(commentAction.loadCommentTour({ comments: res.data.comments, id: id }));
+        else if (type === "volunteer")
+            dispatch(commentAction.loadCommentVolunteer({ comments: res.data.comments, id: id }));
         next()
     }
     catch (err) {

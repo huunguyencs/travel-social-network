@@ -88,10 +88,58 @@ export const deleteVolunteer = (volunteer, token, socket, next, error) => async 
 
 export const joinVolunteerAll = (id, token, next, error) => async (dispatch) => {
     try {
-        await customAxios(token).patch(`/volunteer/${id}/joinAll`);
-
-        // dispatch(tourAction.updateJoin({ id: id, joinIds: res.data.joinIds }));
+        const res = await customAxios(token).patch(`/volunteer/${id}/joinAll`);
+        // console.log(res.data.users);
+        dispatch(volunteerAction.updateJoin({ id: id, users: res.data.users }));
         dispatch(alertAction.success({ message: "Đăng ký tham gia hoạt động thành công!" }));
+        next();
+    }
+    catch (err) {
+        error();
+        if (err.response && err.response.data && err.response.data.message)
+            dispatch(alertAction.error({ message: err.response.data.message }))
+        else
+            dispatch(alertAction.error({ message: "Có lỗi xảy ra" }));
+    }
+}
+
+export const unJoinVolunteerAll = (id, token, next, error) => async (dispatch) => {
+    try {
+        const res = await customAxios(token).patch(`/volunteer/${id}/unjoinAll`);
+        dispatch(volunteerAction.updateJoin({ id: id, users: res.data.users }));
+        dispatch(alertAction.success({ message: "Hủy đăng ký tham gia hoạt động thành công!" }));
+        next();
+    }
+    catch (err) {
+        error();
+        if (err.response && err.response.data && err.response.data.message)
+            dispatch(alertAction.error({ message: err.response.data.message }))
+        else
+            dispatch(alertAction.error({ message: "Có lỗi xảy ra" }));
+    }
+}
+
+export const joinVolunteerOne = (id, locationId,data, token, next, error) => async (dispatch) => {
+    try {
+        const res = await customAxios(token).patch(`/volunteer/${locationId}/joinOne`, data);
+        dispatch(volunteerAction.updateJoinOne({ id: id, locationId: locationId, users: res.data.users }));
+        dispatch(alertAction.success({ message: "Đăng ký tham gia địa điểm thành công!" }));
+        next();
+    }
+    catch (err) {
+        error();
+        if (err.response && err.response.data && err.response.data.message)
+            dispatch(alertAction.error({ message: err.response.data.message }))
+        else
+            dispatch(alertAction.error({ message: "Có lỗi xảy ra" }));
+    }
+}
+
+export const unJoinVolunteerOne = (id, locationId, data, token, next, error) => async (dispatch) => {
+    try {
+        const res = await customAxios(token).patch(`/volunteer/${locationId}/unjoinOne`,data);
+        dispatch(volunteerAction.updateJoinOne({ id: id, locationId: locationId, users: res.data.users }));
+        dispatch(alertAction.success({ message: "Hủy đăng ký tham gia địa điểm thành công!" }));
         next();
     }
     catch (err) {

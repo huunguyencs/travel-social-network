@@ -213,9 +213,7 @@ const profileStyles = makeStyles((theme) => ({
     margin: 30
   },
   cmnd_front: {
-    // width: "200px",
-    // height: "140px",
-    // overflow: "hidden",
+    width: 300,
     position: "relative",
     marginBottom: 10
   },

@@ -74,7 +74,7 @@ export default function FeedHot(props) {
             <div className={classes.content}>
                 <div className={classes.event}>
                     <div className={classes.title}>
-                        <Typography variant="h4">Sự kiện sắp diễn ra</Typography>
+                        <Typography variant="h4">Sự kiện</Typography>
                     </div>
                     {
                         stateEvent.loading ?

@@ -47,7 +47,11 @@ const PageRender = () => {
                 pageName = `${page}/id/${subpage}`;
             }
             else {
-                pageName = `${page}/id`;
+                if (id === 'add') {
+                    pageName = `${page}/add`
+                }
+                else
+                    pageName = `${page}/id`;
             }
         }
         else {
