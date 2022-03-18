@@ -21,6 +21,22 @@ const tableStyles = makeStyles((theme) => ({
         backgroundColor: "#179250",
         borderRadius: "10px",
         textTransform: 'none'
+    },
+    appBarSpacer: {
+        marginTop: 140,
+    },
+    cardInfo: {
+        margin: 20,
+        padding: 20,
+        borderRadius: 10,
+        width: "300px"
+    },
+    cardValue: {
+        marginTop: 10,
+    },
+    cardIcon: {
+        fontSize: "37px",
+        marginRight: 30,
     }
 }))
 

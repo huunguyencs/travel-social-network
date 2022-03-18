@@ -1,5 +1,3 @@
-<<<<<<< HEAD
-=======
 import { Paper } from "@material-ui/core";
 
 import React, { useState } from "react";
@@ -30,4 +28,3 @@ function LocationAdd() {
 }
 
 export default LocationAdd;
->>>>>>> f8bf43794d134d4f1e74d690460bc5cd9d67bed3

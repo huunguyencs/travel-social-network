@@ -1,4 +1,4 @@
-import { Card, Grid, makeStyles, Typography, Box, CardHeader } from "@material-ui/core";
+import { Card, Grid, makeStyles, Typography, Box, CardHeader, Paper } from "@material-ui/core";
 import { Group, Person, PostAdd } from "@material-ui/icons";
 import React, { useEffect } from "react";
 import LeftBar from "../../components/Leftbar";
@@ -89,8 +89,7 @@ export default function AdminHome(props) {
                         </Card>
                     </Grid>
                 </Grid>
-
-                <Grid>
+                <Paper className={classes.paper}>
                     <Card>
                         <CardHeader title="Website Visits" subheader="(+43%) than last year" />
                         <Box>
@@ -132,8 +131,7 @@ export default function AdminHome(props) {
                             </div>
                         </Box>
                     </Card>
-
-                </Grid>
+                </Paper>
             </Grid>
         </Grid>
     )
