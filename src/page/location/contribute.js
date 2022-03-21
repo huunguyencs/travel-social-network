@@ -22,7 +22,7 @@ function LocationAdd() {
 
   return (
     <Paper style={{ marginTop: 120, marginInline: 50, marginBottom: 30, padding: 30 }}>
-      <FormLocationAdmin location={location} setLocation={setLocation} mode='donggop' />
+      <FormLocationAdmin location={location} setLocation={setLocation} mode='contribute' />
     </Paper>
   );
 }
