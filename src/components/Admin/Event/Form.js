@@ -136,7 +136,7 @@ export default function FormAddEvent(props) {
     return (
         <>
             <div style={{ display: 'flex', justifyContent: 'center', marginBottom: 30 }}>
-                <Typography variant='h4'>{mode === 'edit' ? 'Chỉnh sửa thông tin sự kiện' : 'Thêm sự kiện'}</Typography>
+                <Typography variant='h4'>{mode === 'edit' ? 'Chỉnh sửa thông tin sự kiện' : mode === 'add'?'Thêm sự kiện':'Đóng góp sự kiện'}</Typography>
             </div>
             <div>
                 <TextField
