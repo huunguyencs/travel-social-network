@@ -14,6 +14,7 @@ import MapCard from "../../components/Map/MapCard";
 import { NotFound } from "../404";
 import EventCard from "../../components/Card/EventCard";
 
+import { Link } from "react-router-dom";
 
 const ITEM_PER_PAGE = 6;
 
@@ -277,6 +278,9 @@ export default function Province(props) {
                                                     <div className={classes.title}>
                                                         <Typography variant="h6">Danh sách địa điểm</Typography>
                                                     </div>
+                                                    <div className={classes.contribute}>
+                                                        <Button component={Link} to ={'/location/contribute'}>Đóng góp Địa điểm</Button>
+                                                    </div>
                                                     {
                                                         stateLocation.loading ?
                                                             <div className={classes.centerMarginTop}>
@@ -305,6 +309,9 @@ export default function Province(props) {
                                                 <div className={classes.locationList}>
                                                     <div className={classes.title}>
                                                         <Typography variant="h6">Danh sách lễ hội</Typography>
+                                                    </div>
+                                                    <div className={classes.contribute}>
+                                                        <Button component={Link} to ={'/event/contribute'}>Đóng góp lễ hội</Button>
                                                     </div>
                                                     {
                                                         stateEvent.loading ?

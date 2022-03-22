@@ -95,6 +95,10 @@ const provinceStyles = makeStyles((theme) => ({
         [theme.breakpoints.down("sm")]: {
             display: 'none'
         }
+    },
+    contribute: {
+        display: 'flex',
+        justifyContent: 'right'
     }
 }))
 
