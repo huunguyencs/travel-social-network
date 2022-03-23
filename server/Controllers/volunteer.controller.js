@@ -42,7 +42,7 @@ class VolunteerController {
                     });
                 });
             }
-            res.json({
+            res.success({
                 success: true,
                 message: "Create Volunteer successful",
                 newVolunteer: {
@@ -57,7 +57,7 @@ class VolunteerController {
             })
         } catch (err) {
             console.log(err)
-            res.status(500).json({ success: false, message: err.message })
+            res.error(err);
         }
     }
 
@@ -154,7 +154,7 @@ class VolunteerController {
                     }
                 })
 
-                res.json({ success: true, message: "update tour successful", newVolunteer })
+                res.success({ success: true, message: "update tour successful", newVolunteer })
             }
             else {
                 res.status(404).json({ success: false, message: "Không tìm thấy tour" })
@@ -162,7 +162,7 @@ class VolunteerController {
 
         } catch (err) {
             console.log(err)
-            res.status(500).json({ success: false, message: err.message })
+            res.error(err);
         }
     }
 
@@ -180,8 +180,8 @@ class VolunteerController {
                     }
                 })
                 .populate({
-                    path:"location",
-                    populate:{
+                    path: "location",
+                    populate: {
                         path: "users",
                         populate: {
                             path: "user",
@@ -198,11 +198,11 @@ class VolunteerController {
                     },
                 })
 
-            res.json({ success: true, message: "get volunteers successful", volunteers })
+            res.success({ success: true, message: "get volunteers successful", volunteers })
         }
         catch (err) {
             console.log(err);
-            res.status(500).json({ success: false, message: err.message });
+            res.error(err);;
         }
     }
 
@@ -215,7 +215,7 @@ class VolunteerController {
             let volunteer = await Volunteers.findById(req.params.id);
 
             if (!volunteer) {
-                res.status(404).json({ success: false, message: "not found" });
+                res.notFound('Không tìm thấy hoạt động tình nguyện')
                 return;
             }
 
@@ -230,8 +230,8 @@ class VolunteerController {
                     }
                 })
                 .populate({
-                    path:"location",
-                    populate:{
+                    path: "location",
+                    populate: {
                         path: "users",
                         populate: {
                             path: "user",
@@ -249,14 +249,14 @@ class VolunteerController {
                 })
 
 
-            res.json({
+            res.success({
                 success: true, message: "get info 1 volunteer success", volunteer
             });
 
 
         } catch (err) {
             console.log(err)
-            res.status(500).json({ success: false, message: err.message })
+            res.error(err);
         }
     }
 
@@ -273,15 +273,15 @@ class VolunteerController {
                 res.status(404).json({ success: false, message: "Không tìm thấy Volunteer" })
             }
 
-            res.json({
+            res.success({
                 success: true, message: "Delete volunteer success"
             });
         } catch (err) {
             console.log(err)
-            res.status(500).json({ success: false, message: err.message })
+            res.error(err);
         }
     }
-     //Tham gia hết volunteer, params.id là id của volunteer
+    //Tham gia hết volunteer, params.id là id của volunteer
     async joinVolunteerAll(req, res) {
         try {
             var volunteer = await Volunteers.find({ _id: req.params.id, users: req.user._id });
@@ -293,12 +293,12 @@ class VolunteerController {
                     users: req.user._id
                 }
             }, { new: true }).populate("users", "avatar fullname username")
-            res.json({
+            res.success({
                 success: true, message: "join volunteer success",
                 users: volunteer.users
             });
         } catch (err) {
-            res.status(500).json({ success: false, message: err.message })
+            res.error(err);
         }
     }
     async unJoinVolunteerAll(req, res) {
@@ -309,44 +309,44 @@ class VolunteerController {
                 }
             }, { new: true }).populate("users", "avatar fullname username")
 
-            res.json({
+            res.success({
                 success: true, message: "unjoin volunteer success",
                 users: volunteer.users
             });
         } catch (err) {
-            res.status(500).json({ success: false, message: err.message })
+            res.error(err);
         }
     }
     //Tham gia từng địa điểm, params.id là id của volunteerLocation
     async joinVolunteerOne(req, res) {
         try {
             const { isAccommodation } = req.body;
-            
-            var volunteerLocation = await VolunteerLocations.find({ _id: req.params.id});
+
+            var volunteerLocation = await VolunteerLocations.find({ _id: req.params.id });
             // console.log("volunteerLocation",volunteerLocation);
             if (volunteerLocation.length > 0) {
                 volunteerLocation[0].users.length > 0 && volunteerLocation[0].users.forEach(element => {
-                    if(element.user === req.user._id)
+                    if (element.user === req.user._id)
                         return res.status(400).json({ success: false, message: "Bạn đã tham gia địa điểm này!" })
                 });
             }
             volunteerLocation = await VolunteerLocations.findOneAndUpdate({ _id: req.params.id }, {
                 $push: {
-                    users: {isAccommodation: isAccommodation, user: req.user._id}
+                    users: { isAccommodation: isAccommodation, user: req.user._id }
                 }
             }, { new: true }).populate({
-                                        path: "users",
-                                        populate: {
-                                            path: "user",
-                                            select: "_id fullname avatar"
-                                        },
-                                    })
-            res.json({
+                path: "users",
+                populate: {
+                    path: "user",
+                    select: "_id fullname avatar"
+                },
+            })
+            res.success({
                 success: true, message: "join volunteer success",
                 users: volunteerLocation.users
             });
         } catch (err) {
-            res.status(500).json({ success: false, message: err.message })
+            res.error(err);
         }
     }
     async unJoinVolunteerOne(req, res) {
@@ -354,22 +354,22 @@ class VolunteerController {
             const { isAccommodation } = req.body;
             const volunteerLocation = await VolunteerLocations.findByIdAndUpdate(req.params.id, {
                 $pull: {
-                    users: {isAccommodation: isAccommodation, user: req.user._id}
+                    users: { isAccommodation: isAccommodation, user: req.user._id }
                 }
             }, { new: true }).populate({
-                                        path: "users",
-                                        populate: {
-                                            path: "user",
-                                            select: "_id fullname avatar"
-                                        },
-                                    })
+                path: "users",
+                populate: {
+                    path: "user",
+                    select: "_id fullname avatar"
+                },
+            })
 
-            res.json({
+            res.success({
                 success: true, message: "unjoin volunteer success",
                 users: volunteerLocation.users
             });
         } catch (err) {
-            res.status(500).json({ success: false, message: err.message })
+            res.error(err);
         }
     }
     async search(req, res) {
@@ -387,9 +387,9 @@ class VolunteerController {
                 description: item.descriptions[0],
                 image: item.image
             }))
-            res.json({ success: true, results: volunteers, query: q })
+            res.success({ success: true, results: volunteers, query: q })
         } catch (err) {
-            res.status(500).json({ success: false, message: err.message })
+            res.error(err);
         }
     }
 

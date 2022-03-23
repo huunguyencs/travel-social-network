@@ -43,7 +43,7 @@ class CommentController {
                 case "volunteer":
                     const volunteer = await Volunteers.findById(volunteerId);
                     if (!volunteer) {
-                        return res.status(400).json({success:false, message: "This volunteer is not exist." })
+                        return res.status(400).json({ success: false, message: "This volunteer is not exist." })
                     }
 
                     await Volunteers.findOneAndUpdate({ _id: volunteerId }, {
@@ -53,10 +53,9 @@ class CommentController {
                     })
                     break;
             }
-            res.json({ success: true, message: "Create comment successful", newComment })
+            res.created({ success: true, message: "Create comment successful", newComment })
         } catch (err) {
-            console.log(err)
-            res.status(500).json({ success: false, message: err.message })
+            res.error(err);
         }
     }
 
@@ -76,10 +75,10 @@ class CommentController {
                     select: "username fullname avatar"
                 }
             })
-            res.json({ success: true, comments: post.comments })
+            res.success({ success: true, comments: post.comments })
         }
         catch (err) {
-            res.status(500).json({ success: false, message: err.message })
+            res.err(err)
         }
     }
 
@@ -101,10 +100,10 @@ class CommentController {
                     select: "username fullname avatar"
                 }
             })
-            res.json({ success: true, comments: tour.comments })
+            res.success({ success: true, comments: tour.comments })
         }
         catch (err) {
-            res.status(500).json({ success: false, message: err.message })
+            res.error(err)
         }
     }
 
@@ -126,10 +125,10 @@ class CommentController {
                     select: "username fullname avatar"
                 }
             })
-            res.json({ success: true, comments: volunteer.comments })
+            res.success({ success: true, comments: volunteer.comments })
         }
         catch (err) {
-            res.status(500).json({ success: false, message: err.message })
+            res.error(err)
         }
     }
 
@@ -139,10 +138,9 @@ class CommentController {
             const comment = await Comments.findOneAndUpdate({ _id: req.params.id, user: req.user._id }, { content }, { new: true })
                 .populate("userId", "avatar fullname username");
 
-            res.json({ success: true, message: "Update comment successful", comment })
+            res.success({ success: true, message: "Update comment successful", comment })
         } catch (err) {
-            console.log(err)
-            res.status(500).json({ success: false, message: err.message })
+            res.error(err)
         }
     }
 
@@ -160,10 +158,9 @@ class CommentController {
                     likes: req.user._id
                 }
             }, { new: true }).populate("userId", "avatar fullname username");
-            res.json({ success: true, message: "Like comment", newComment })
+            res.success({ success: true, message: "Like comment", newComment })
         } catch (err) {
-            console.log(err)
-            res.status(500).json({ success: false, message: err.message })
+            res.error(err)
         }
     }
 
@@ -175,10 +172,9 @@ class CommentController {
                     likes: req.user._id
                 }
             }, { new: true }).populate("userId", "avatar fullname username");
-            res.json({ success: true, message: "Unlike comment", newComment })
+            res.success({ success: true, message: "Unlike comment", newComment })
         } catch (err) {
-            console.log(err)
-            res.status(500).json({ success: false, message: err.message })
+            res.error(err)
         }
     }
 
@@ -209,10 +205,9 @@ class CommentController {
                     })
                     break;
             }
-            res.json({ success: true, message: "Delete comment" })
+            res.success({ success: true, message: "Delete comment" })
         } catch (err) {
-            console.log(err)
-            res.status(500).json({ success: false, message: err.message })
+            res.error(err)
         }
     }
 

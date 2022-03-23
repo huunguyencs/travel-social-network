@@ -27,7 +27,7 @@ class MessageController {
 
             await newMessage.save()
 
-            res.json({
+            res.created({
                 success: true,
                 message: "Create message successful",
                 newMessage: {
@@ -35,8 +35,7 @@ class MessageController {
                 }
             })
         } catch (err) {
-            console.log(err)
-            res.status(500).json({ success: false, message: err.message })
+            res.error(err);
         }
     }
 
@@ -46,14 +45,13 @@ class MessageController {
             const conversations = await Conversations.find({ members: req.user._id }).sort('-updatedAt')
                 .populate('members', 'avatar username fullname role')
 
-            res.json({
+            res.success({
                 success: true,
                 message: "Get conversations successful",
                 conversations
             })
         } catch (err) {
-            console.log(err)
-            res.status(500).json({ success: false, message: err.message })
+            res.error(err);
         }
     }
 
@@ -67,33 +65,31 @@ class MessageController {
                 ]
             }).sort('-createAt')
 
-            res.json({
+            res.success({
                 success: true,
                 message: "Get messages successful",
                 messages
             })
         } catch (err) {
-            console.log(err)
-            res.status(500).json({ success: false, message: err.message })
+            res.error(err);
         }
     }
     async deleteConversation(req, res) {
         try {
             const newConversation = await Conversations.findOneAndDelete({
                 $or: [
-                    {members: [req.user._id, req.params.id]},
-                    {members: [req.params.id, req.user._id]}
+                    { members: [req.user._id, req.params.id] },
+                    { members: [req.params.id, req.user._id] }
                 ]
             })
-            await Messages.deleteMany({conversation: newConversation._id})
-            
-            res.json({
+            await Messages.deleteMany({ conversation: newConversation._id })
+
+            res.success({
                 success: true,
                 message: "Delete conversation successful"
             })
         } catch (err) {
-            console.log(err)
-            res.status(500).json({ success: false, message: err.message })
+            res.error(err);
         }
     }
 

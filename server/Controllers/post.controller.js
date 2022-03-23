@@ -13,7 +13,7 @@ class PostController {
                 userId: req.user._id, content, images, hashtags
             })
             await newPost.save()
-            res.json({
+            res.created({
                 success: true,
                 message: "Tạo bài viết thành công",
                 newPost: {
@@ -28,7 +28,7 @@ class PostController {
             })
         } catch (err) {
             console.log(err)
-            res.status(500).json({ success: false, message: err.message })
+            res.error(err);
         }
     }
 
@@ -44,7 +44,7 @@ class PostController {
 
             const share = await Posts.findById(shareId).populate("userId", "username fullname avatar")
 
-            res.json({
+            res.created({
                 success: true,
                 message: 'Chia sẻ thành công!',
                 newPost: {
@@ -60,7 +60,7 @@ class PostController {
             })
         }
         catch (err) {
-            res.status(500).json({ success: false, message: err.message })
+            res.error(err);
         }
     }
 
@@ -81,7 +81,7 @@ class PostController {
                 }, { new: true, safe: true, upsert: true })
             }
 
-            res.json({
+            res.created({
                 success: true,
                 message: "Create review successful",
                 newPost: {
@@ -127,7 +127,7 @@ class PostController {
         }
         catch (err) {
             console.log(err)
-            res.status(500).json({ success: false, message: err.message })
+            res.error(err);
         }
     }
 
@@ -153,7 +153,7 @@ class PostController {
                         select: "name fullname"
                     }
                 })
-            res.json({ success: true, message: "update post successful", post })
+            res.success({ success: true, message: "update post successful", post })
 
             if (rate && parseInt(rate) !== parseInt(oldRate)) {
                 switch (parseInt(oldRate)) {
@@ -215,7 +215,7 @@ class PostController {
 
         } catch (err) {
             console.log(err)
-            res.status(500).json({ success: false, message: err.message })
+            res.error(err);
         }
     }
     //lấy pots của 1 user cụ thể (params.id)
@@ -241,11 +241,11 @@ class PostController {
                     }
                 })
 
-            res.json({ success: true, message: "get user post successful", posts })
+            res.success({ success: true, message: "get user post successful", posts })
 
         } catch (err) {
             console.log(err)
-            res.status(500).json({ success: false, message: err.message })
+            res.error(err);
         }
     }
 
@@ -271,12 +271,14 @@ class PostController {
                     }
                 })
                 .sort({ "createdAt": -1 });
-            res.json({
+            res.success({
+                success: true,
+                message: 'Lấy danh sách bài viết thành công',
                 posts,
             });
         } catch (err) {
             console.log(err)
-            res.status(500).json({ success: false, message: err.message })
+            res.error(err);
         }
     }
 
@@ -301,17 +303,17 @@ class PostController {
                     }
                 })
             if (post) {
-                res.json({
+                res.success({
                     success: true, message: "get info 1 post success", post
                 });
             }
             else {
-                res.status(404).json({ success: false, message: "Not found" })
+                res.notFound('Không tìm thấy bài viết')
             }
 
         } catch (err) {
             console.log(err)
-            res.status(500).json({ success: false, message: err.message })
+            res.error(err);
         }
     }
 
@@ -330,7 +332,7 @@ class PostController {
             }, { new: true }).populate("likes", "username fullname avatar")
 
 
-            res.json({
+            res.success({
                 success: true, message: "like post success",
                 likes: post.likes,
                 post
@@ -339,7 +341,7 @@ class PostController {
 
         } catch (err) {
             console.log(err)
-            res.status(500).json({ success: false, message: err.message })
+            res.error(err);
         }
     }
     //A(user._id) unlike post B(params.id)
@@ -351,13 +353,13 @@ class PostController {
                 }
             }, { new: true }).populate("likes", "username fullname avatar")
 
-            res.json({
+            res.success({
                 success: true, message: "unlike post success",
                 likes: post.likes,
             });
         } catch (err) {
             console.log(err)
-            res.status(500).json({ success: false, message: err.message })
+            res.error(err);
         }
     }
 
@@ -397,12 +399,10 @@ class PostController {
                 }
             }
 
-            res.json({
-                success: true, message: "Delete post success"
-            });
+            res.deleted('Xoá bài viết thành công');
         } catch (err) {
             console.log(err)
-            res.status(500).json({ success: false, message: err.message })
+            res.error(err);
         }
     }
 
@@ -422,9 +422,9 @@ class PostController {
                 description: item.content,
                 image: item.userId.avatar
             }))
-            res.json({ success: true, results: posts, query: q })
+            res.success({ success: true, results: posts, query: q })
         } catch (err) {
-            res.status(500).json({ success: false, message: err.message })
+            res.error(err);
         }
     }
 
@@ -471,11 +471,11 @@ class PostController {
                     .sort({ "createdAt": -1 });
             }
 
-            res.json({ success: true, posts })
+            res.success({ success: true, posts })
 
 
         } catch (err) {
-            res.status(500).json({ success: false, message: err.message })
+            res.error(err);
         }
     }
 

@@ -18,7 +18,7 @@ class EventController {
             }
             await newEvent.save();
 
-            res.json({
+            res.created({
                 success: true,
                 message: "Create event successful",
                 event: {
@@ -27,7 +27,7 @@ class EventController {
             })
         }
         catch (err) {
-            res.status(500).json({ success: false, message: err.message })
+            res.error(err);
         }
     }
 
@@ -39,16 +39,13 @@ class EventController {
             }, { new: true })
                 .populate("provinceId", "name fullname image");
 
-            res.json({
+            res.success({
                 success: true,
                 message: "get info 1 event successful",
                 event
             })
         } catch (err) {
-            res.status(500).json({
-                success: false,
-                message: err.message
-            })
+            res.error(err);
         }
     }
 
@@ -57,27 +54,31 @@ class EventController {
             const event = await Events.findOne({ name: req.params.name })
                 .populate("provinceId", "name fullname")
             if (event) {
-                res.json({
+                res.success({
                     success: true,
                     message: "get info 1 event successful",
                     event
                 })
             }
             else {
-                res.status(404).json({
-                    success: false,
-                    message: "Không tìm thấy sự kiện"
-                })
+                res.notFound("Không tìm thấy sự kiện")
             }
 
         }
         catch (err) {
-            res.status(500).json({
-                success: false,
-                message: err.message
-            })
+            res.error(err);
         }
+    }
 
+    async deleteEvent(req, res) {
+        try {
+            const { id } = req.params;
+            await Events.findByIdAndDelete(id)
+            res.deleted('Xóa sự kiện thành công')
+        }
+        catch (err) {
+            res.error(err);
+        }
     }
 
     async getCurrentEvent(req, res) {
@@ -87,55 +88,57 @@ class EventController {
             var gteLunar = (dateIntLunar + 351) % 355;
             var gteSolar = (dateIntSolar + 361) % 365;
 
-            const events1 = await Events.find({
+            const events = await Events.find({
                 $or: [
                     { calendarType: false, time: { $gte: gteLunar > 348 ? gteLunar : 365, $lte: 355, $ne: 0 } },
-                    { calendarType: true, time: { $gte: gteSolar > 358 ? gteSolar : 366, $lte: 365, $ne: 0 } }
-                ]
-            }, "timedes name fullname images provinceId").populate("provinceId", "fullname").sort('time')
-
-
-            const events2 = await Events.find({
-                $or: [
+                    { calendarType: true, time: { $gte: gteSolar > 358 ? gteSolar : 366, $lte: 365, $ne: 0 } },
                     { calendarType: false, time: { $gte: gteLunar > 348 ? 0 : gteLunar, $lte: (dateIntLunar + 10) % 355, $ne: 0 } },
                     { calendarType: true, time: { $gte: gteSolar > 358 ? 0 : gteSolar, $lte: (dateIntSolar + 10) % 365, $ne: 0 } },
                 ]
             }, "timedes name fullname images provinceId").populate("provinceId", "fullname").sort('time')
 
-            // console.log(events.length)
+            // const events1 = await Events.find({
+            //     $or: [
+            //         { calendarType: false, time: { $gte: gteLunar > 348 ? gteLunar : 365, $lte: 355, $ne: 0 } },
+            //         { calendarType: true, time: { $gte: gteSolar > 358 ? gteSolar : 366, $lte: 365, $ne: 0 } }
+            //     ]
+            // }, "timedes name fullname images provinceId").populate("provinceId", "fullname").sort('time')
 
-            const events = [
-                ...events1,
-                ...events2,
-            ]
 
-            res.json({
+            // const events2 = await Events.find({
+            //     $or: [
+            //         { calendarType: false, time: { $gte: gteLunar > 348 ? 0 : gteLunar, $lte: (dateIntLunar + 10) % 355, $ne: 0 } },
+            //         { calendarType: true, time: { $gte: gteSolar > 358 ? 0 : gteSolar, $lte: (dateIntSolar + 10) % 365, $ne: 0 } },
+            //     ]
+            // }, "timedes name fullname images provinceId").populate("provinceId", "fullname").sort('time')
+
+            // // console.log(events.length)
+
+            // const events = [
+            //     ...events1,
+            //     ...events2,
+            // ]
+            res.success({
                 success: true,
                 message: 'Thành công',
                 events
             })
         }
         catch (err) {
-            res.status(500).json({
-                success: false,
-                message: err.message
-            })
+            res.error(err);
         }
     }
     async getAll(req, res) {
         try {
             const events = await Events.find({}).select("name fullname time provinceId calendarType")
                 .populate("provinceId", "fullname")
-            res.json({
+            res.success({
                 success: true,
                 message: "Lấy tất cả các sự kiện thành công",
                 events
             })
         } catch (err) {
-            res.status(500).json({
-                success: false,
-                message: err.message
-            })
+            res.error(err);
         }
     }
 
@@ -154,9 +157,9 @@ class EventController {
                 description: 'Thời gian: ' + item.timedes,
                 image: item.images[0]
             }))
-            res.json({ success: true, results: events, query: q })
-        } catch (error) {
-
+            res.success({ success: true, results: events, query: q })
+        } catch (err) {
+            res.error(err)
         }
     }
 }

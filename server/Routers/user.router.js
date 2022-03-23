@@ -2,6 +2,7 @@ const express = require('express');
 const router = express.Router();
 const UserController = require('../Controllers/user.controller')
 const auth = require('../Middlewares/auth');
+const authRole = require('../Middlewares/authRole');
 // đã test
 router.post("/register", UserController.register);
 router.post("/login", UserController.login);
@@ -31,7 +32,8 @@ router.put('/:id/unfollow', auth, UserController.unfollow); // id là id của n
 router.put('/save_tour', auth, UserController.saveTour);
 router.put('/unsaved_tour', auth, UserController.unsaveTour);
 
-
+router.delete('/delete/:id', auth, authRole([2]), UserController.deleteUser)
+router.patch('/update_status', auth, authRole([2]), UserController.updateStatus)
 
 
 module.exports = router;

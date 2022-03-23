@@ -27,14 +27,14 @@ class UserController {
 
             await userNew.save();
 
-            res.json({
+            res.created({
                 success: true,
                 message: "Đăng ký thành công!",
                 // accessToken
             })
         } catch (err) {
             console.log(err)
-            res.status(500).json({ success: false, message: err.message })
+            res.error(err);
         }
     }
 
@@ -67,7 +67,7 @@ class UserController {
                 maxAge: 30 * 24 * 60 * 60 * 1000 // 30days
             })
 
-            res.json({
+            res.success({
                 success: true,
                 message: "Đăng nhập thành công!",
                 accessToken,
@@ -79,7 +79,7 @@ class UserController {
 
         } catch (err) {
             console.log(err)
-            res.status(500).json({ success: false, message: err.message })
+            res.error(err);
         }
     }
 
@@ -103,7 +103,7 @@ class UserController {
 
                 const accessToken = jwt.sign({ id: user._id }, process.env.ACCESS_TOKEN_SECRET)
 
-                res.json({
+                res.success({
                     success: true,
                     message: "Thành công!",
                     accessToken,
@@ -115,17 +115,17 @@ class UserController {
             })
         }
         catch (err) {
-            res.status(500).json({ success: false, message: err.message })
+            res.error(err);
         }
     }
 
     async logout(req, res) {
         try {
             res.clearCookie('refreshtoken', { path: '/' })
-            return res.json({ success: true, message: "Đăng xuất thành công!" })
+            return res.success({ success: true, message: "Đăng xuất thành công!" })
         } catch (err) {
             console.log(err)
-            res.status(500).json({ success: false, message: err.message })
+            res.error(err);
         }
     }
 
@@ -142,14 +142,14 @@ class UserController {
                 await Users.findByIdAndUpdate(user._id, {
                     password: passwordHash
                 })
-                res.json({ success: true, message: "Cập nhật mật khẩu thành công!" })
+                res.success({ success: true, message: "Cập nhật mật khẩu thành công!" })
             }
             else {
                 res.status(400).json({ success: false, message: "Sai mật khẩu cũ!" })
             }
         }
         catch (err) {
-            res.status(500).json({ success: false, message: err.message })
+            res.error(err);
         }
     }
 
@@ -159,10 +159,10 @@ class UserController {
             await Users.findByIdAndUpdate(req.user._id, {
                 avatar
             })
-            res.json({ success: true, message: "Cập nhật ảnh đại diện thành công!" })
+            res.success({ success: true, message: "Cập nhật ảnh đại diện thành công!" })
         } catch (err) {
             console.log(err)
-            res.status(500).json({ success: false, message: err.message })
+            res.error(err);
         }
     }
     async changeBackground(req, res) {
@@ -171,10 +171,10 @@ class UserController {
             await Users.findByIdAndUpdate(req.user._id, {
                 background
             })
-            res.json({ success: true, message: "Cập nhật ảnh bìa thành công!" })
+            res.success({ success: true, message: "Cập nhật ảnh bìa thành công!" })
         } catch (err) {
             console.log(err)
-            res.status(500).json({ success: false, message: err.message })
+            res.error(err);
         }
     }
     async editProfile(req, res) {
@@ -202,10 +202,10 @@ class UserController {
                 username, fullname, email, phone, birthday, gender
             }, { new: true })
 
-            res.json({ success: true, message: "Cập nhật thông tin tài khoản thành công!", newUser })
+            res.success({ success: true, message: "Cập nhật thông tin tài khoản thành công!", newUser })
         } catch (err) {
             console.log(err)
-            res.status(500).json({ success: false, message: err.message })
+            res.error(err);
         }
     }
 
@@ -222,7 +222,7 @@ class UserController {
                         }
                     })
                 if (!user) return res.status(404).json({ success: false, massage: "Người dùng không tồn tại" })
-                res.json({ success: true, user })
+                res.success({ success: true, user })
             }
             else {
                 res.status(404).json({ success: false, massage: "Người dùng không tồn tại" })
@@ -231,7 +231,7 @@ class UserController {
 
         } catch (err) {
             console.log(err)
-            res.status(500).json({ success: false, message: err.message })
+            res.error(err);
         }
     }
 
@@ -253,7 +253,7 @@ class UserController {
                 $push: { followings: req.params.id }
             }, { new: true }).populate("followings", "username fullname avatar followings followers")
 
-            res.json({
+            res.success({
                 success: true,
                 message: "Theo dõi thành công!",
                 followers: followers.followers,
@@ -261,7 +261,7 @@ class UserController {
             })
         } catch (err) {
             console.log(err)
-            res.status(500).json({ success: false, message: err.message })
+            res.error(err);
         }
 
     }
@@ -278,7 +278,7 @@ class UserController {
                 $pull: { followings: req.params.id }
             }, { new: true }).populate("followings", "username fullname avatar followings followers")
 
-            res.json({
+            res.success({
                 success: true,
                 message: "Hủy theo dõi thành công!",
                 followers: followers.followers,
@@ -286,7 +286,7 @@ class UserController {
             })
         } catch (err) {
             console.log(err)
-            res.status(500).json({ success: false, message: err.message })
+            res.error(err);
         }
 
     }
@@ -298,10 +298,10 @@ class UserController {
             const users = await Users.find({ fullname: { $regex: req.query.fullname } })
                 .limit(10).select("fullname avatar");
 
-            res.json({ success: true, users })
+            res.success({ success: true, users })
         } catch (err) {
             console.log(err)
-            res.status(500).json({ success: false, message: err.message })
+            res.error(err);
         }
     }
 
@@ -314,10 +314,10 @@ class UserController {
                 $addToSet: { tourSaved: tour }
             }, { new: true })
 
-            res.json({ success: true, message: "Lưu tour thành công", tourSaved: user.tourSaved })
+            res.success({ success: true, message: "Lưu tour thành công", tourSaved: user.tourSaved })
         }
         catch (err) {
-            res.status(500).json({ success: false, message: err.message })
+            res.error(err);
         }
     }
 
@@ -328,9 +328,9 @@ class UserController {
                 $pop: { tourSaved: tour }
             }, { new: true })
 
-            res.json({ success: true, message: 'Loại khỏi danh sách thành công', tourSaved: user.tourSaved })
+            res.success({ success: true, message: 'Loại khỏi danh sách thành công', tourSaved: user.tourSaved })
         } catch (err) {
-            res.status(500).json({ success: false, message: err.message })
+            res.error(err);
         }
     }
 
@@ -372,7 +372,7 @@ class UserController {
                     }
                 }, "username fullname avatar")
 
-                res.json({ success: true, message: `Lấy top ${limit} recommend`, recommend })
+                res.success({ success: true, message: `Lấy top ${limit} recommend`, recommend })
             }
             else {
                 sorted = sorted.slice(0, 50)
@@ -382,14 +382,14 @@ class UserController {
                     }
                 }, "username fullname avatar")
 
-                res.json({ success: true, message: `Lấy max 50 recommend`, recommend })
+                res.success({ success: true, message: `Lấy max 50 recommend`, recommend })
             }
 
 
         }
         catch (err) {
             console.log(err);
-            res.status(500).json({ success: false, message: err.massage })
+            res.error(err);
         }
     }
 
@@ -403,10 +403,10 @@ class UserController {
                         select: "state"
                     }
                 });
-            res.json({ success: true, message: "Lấy toàn bộ user thành công", users })
+            res.success({ success: true, message: "Lấy toàn bộ user thành công", users })
         } catch (err) {
             console.log(err);
-            res.status(500).json({ success: false, message: err.massage })
+            res.error(err);
         }
     }
     async confirmAccount(req, res) {
@@ -423,10 +423,10 @@ class UserController {
             const newUser = await Users.findByIdAndUpdate(req.user._id, {
                 confirmAccount: confirm
             }, { new: true })
-            res.json({ success: true, newUser })
+            res.success({ success: true, newUser })
         } catch (err) {
             console.log(err)
-            res.status(500).json({ success: false, message: err.message })
+            res.error(err);
         }
 
     }
@@ -449,10 +449,10 @@ class UserController {
                         select: "username fullname avatar"
                     }
                 });
-            res.json({ success: true, message: "Lấy tour đã lưu thành công", tours })
+            res.success({ success: true, message: "Lấy tour đã lưu thành công", tours })
         }
         catch (err) {
-            res.status(500).json({ success: false, message: err.message })
+            res.error(err);
         }
     }
 
@@ -471,9 +471,28 @@ class UserController {
                 description: '',
                 image: item.avatar
             }))
-            res.json({ success: true, results: users, query: q })
+            res.success({ success: true, results: users, query: q })
         } catch (err) {
-            res.status(500).json({ success: false, message: err.message })
+            res.error(err);
+        }
+    }
+
+    async deleteUser(req, res) {
+        try {
+            const { id } = req.params;
+            await Users.findByIdAndDelete(id);
+            res.deleted('Xóa user thành công')
+        }
+        catch (err) {
+            res.error(err);
+        }
+    }
+
+    async updateStatus(req, res) {
+        try {
+
+        } catch (err) {
+
         }
     }
 }

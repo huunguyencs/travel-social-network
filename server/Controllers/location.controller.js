@@ -10,7 +10,7 @@ class LocationController {
             })
             await newLocation.save()
 
-            res.json({
+            res.created({
                 success: true,
                 message: "Create Location successful",
                 newLocation: {
@@ -18,8 +18,7 @@ class LocationController {
                 }
             })
         } catch (err) {
-            console.log(err)
-            res.status(500).json({ success: false, message: err.message })
+            res.error(err)
         }
     }
 
@@ -32,10 +31,9 @@ class LocationController {
             }, { new: true })
                 .populate("province", "name fullname");
 
-            res.json({ success: true, message: "update Location successful", location })
+            res.success({ success: true, message: "update Location successful", location })
         } catch (err) {
-            console.log(err)
-            res.status(500).json({ success: false, message: err.message })
+            res.error(err)
         }
     }
 
@@ -44,12 +42,11 @@ class LocationController {
             const location = await Locations.findByIdAndDelete(req.params.id);
             if (location.posts != null) await Posts.deleteMany({ _id: { $in: location.posts } });
 
-            res.json({
+            res.success({
                 success: true, message: "Delete Location success"
             });
         } catch (err) {
-            console.log(err)
-            res.status(500).json({ success: false, message: err.message })
+            res.error(err);
         }
     }
 
@@ -59,17 +56,16 @@ class LocationController {
             const location = await Locations.findOne({ name: req.params.name })
                 .populate("province", "name fullname image");
             if (location) {
-                res.json({
+                res.success({
                     success: true, message: "get info 1 Location success", location
                 });
             }
             else {
-                res.status(404).json({ success: false, message: "Không tìm thấy địa điểm!" });
+                res.notFound("Không tìm thấy địa điểm!");
             }
 
         } catch (err) {
-            console.log(err)
-            res.status(500).json({ success: false, message: err.message })
+            res.error(err);
         }
     }
 
@@ -89,11 +85,10 @@ class LocationController {
                     }
                 })
                 .populate("locationId", "name fullname");
-            res.json({ success: true, message: "successful", posts })
+            res.success({ success: true, message: "successful", posts })
         }
         catch (err) {
-            console.log(err)
-            res.status(500).json({ success: false, message: err.message })
+            res.error(err);
         }
     }
 
@@ -102,24 +97,23 @@ class LocationController {
         try {
             const locations = await Locations.find({ province: req.params.province }, "images fullname name position")
                 .populate("province", "fullname name")
-            res.json({ success: true, message: "get locations success", locations });
+            res.success({ success: true, message: "get locations success", locations });
         } catch (err) {
-            console.log(err)
-            res.status(500).json({ success: false, message: err.message })
+            res.error(err);
         }
     }
 
     async getHotLocations(req, res) {
         try {
             const locations = await Locations.find({}).limit(5);
-            res.json({
+            res.success({
                 success: true,
                 message: 'success',
                 locations
             })
         }
         catch (err) {
-            res.status(500).json({ success: false, message: err.message })
+            res.error(err);
         }
     }
 
@@ -127,13 +121,13 @@ class LocationController {
         try {
             const locations = await Locations.find({}).select("fullname name province position images")
                 .populate("province", "fullname name")
-            res.json({
+            res.success({
                 success: true,
                 message: "Lấy tất cả địa điểm thành công",
                 locations
             })
         } catch (err) {
-            res.status(500).json({ success: false, message: err.message })
+            res.error(err);
         }
     }
 
@@ -141,13 +135,13 @@ class LocationController {
         try {
             const locations = await Locations.find({}).select("fullname name province star")
                 .populate("province", "fullname")
-            res.json({
+            res.success({
                 success: true,
                 message: "Lấy tất cả địa điểm thành công",
                 locations
             })
         } catch (err) {
-            res.status(500).json({ success: false, message: err.message })
+            res.error(err);
         }
     }
 
@@ -169,12 +163,10 @@ class LocationController {
                 score: item._doc.score
             }))
 
-            res.json({ success: true, results: locations, query: q });
-
-
+            res.success({ success: true, results: locations, query: q });
         }
         catch (err) {
-            res.status(500).json({ success: false, message: err.message })
+            res.error(err);
         }
     }
 

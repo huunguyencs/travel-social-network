@@ -20,7 +20,7 @@ class NotifyController {
             })
             await newNotify.save();
             const user = await Users.findById(req.user._id)
-            res.json({
+            res.created({
                 success: true,
                 message: "Create Notify successful",
                 newNotify: {
@@ -33,8 +33,7 @@ class NotifyController {
             })
 
         } catch (err) {
-            console.log(err)
-            res.status(500).json({ success: false, message: err.message })
+            res.error(err)
 
         }
     }
@@ -47,12 +46,9 @@ class NotifyController {
                 await Notifies.deleteMany({ url: req.query.url });
             }
 
-            res.json({
-                success: true, message: "Delete Notify success", notify
-            });
+            res.deleted('');
         } catch (err) {
-            console.log(err)
-            res.status(500).json({ success: false, message: err.message })
+            res.error(err);
         }
     }
     // lấy thông báo của 1 user(user._id)
@@ -68,14 +64,13 @@ class NotifyController {
                 .sort('-createdAt')
                 .populate("user", "fullname avatar")
 
-            res.json({
+            res.success({
                 success: true,
                 message: "Get notifies success",
                 notifies
             });
         } catch (err) {
-            console.log(err)
-            res.status(500).json({ success: false, message: err.message })
+            res.error(err);
         }
     }
 
@@ -87,14 +82,13 @@ class NotifyController {
                 }
             }, { new: true })
 
-            res.json({
+            res.success({
                 success: true,
                 message: "Is Seen notify success",
                 notify
             })
         } catch (err) {
-            console.log(err)
-            res.status(500).json({ success: false, message: err.message })
+            res.error(err);
         }
     }
 
@@ -105,14 +99,13 @@ class NotifyController {
                     'seen.$.isSeen': true
                 }
             })
-            res.json({
+            res.success({
                 success: true,
                 message: "seen all notify success",
             })
         }
         catch (err) {
-            console.log(err)
-            res.status(500).json({ success: false, message: err.message })
+            res.error(err);
         }
     }
 }

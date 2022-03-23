@@ -31,7 +31,7 @@ class TourController {
 
 
 
-            res.json({
+            res.created({
                 success: true,
                 message: "Create Tour successful",
                 newTour: {
@@ -46,7 +46,7 @@ class TourController {
             })
         } catch (err) {
             console.log(err)
-            res.status(500).json({ success: false, message: err.message })
+            res.error(err);
         }
     }
 
@@ -62,7 +62,7 @@ class TourController {
             const share = await Tours.findById(shareId).populate("userId", "username fullname avatar")
 
 
-            res.json({
+            res.created({
                 success: true,
                 message: 'Chia sẻ thành công!',
                 newTour: {
@@ -79,7 +79,7 @@ class TourController {
         }
         catch (err) {
             console.log(err);
-            res.status(500).json({ success: false, message: err.message })
+            res.error(err);
         }
     }
 
@@ -147,15 +147,15 @@ class TourController {
                     }
                 })
 
-                res.json({ success: true, message: "update tour successful", newTour })
+                res.success({ success: true, message: "update tour successful", newTour })
             }
             else {
-                res.status(404).json({ success: false, message: "Không tìm thấy tour" })
+                res.notFound("Không tìm thấy tour")
             }
 
         } catch (err) {
             console.log(err)
-            res.status(500).json({ success: false, message: err.message })
+            res.error(err);
         }
     }
 
@@ -172,14 +172,14 @@ class TourController {
                     likes: req.user._id
                 }
             }, { new: true }).populate("likes", "username fullname avatar")
-            res.json({
+            res.success({
                 success: true, message: "like tour success",
                 likes: tour.likes,
                 tour
             });
         } catch (err) {
             console.log(err)
-            res.status(500).json({ success: false, message: err.message })
+            res.error(err);
         }
     }
 
@@ -192,13 +192,13 @@ class TourController {
                 }
             }, { new: true }).populate("likes", "username fullname avatar")
 
-            res.json({
+            res.success({
                 success: true, message: "unlike tour success",
                 likes: tour.likes
             });
         } catch (err) {
             console.log(err)
-            res.status(500).json({ success: false, message: err.message })
+            res.error(err);
         }
     }
 
@@ -209,17 +209,16 @@ class TourController {
                 await Tours.findOneAndDelete({ _id: req.params.id, userId: req.user._id });
                 if (tour.comments) await Comments.deleteMany({ _id: { $in: tour.comments } });
                 if (tour.tour) await TourDates.deleteMany({ _id: { $in: tour.tour } });
+                res.deleted("Xóa tour thành công");
             }
             else {
-                res.status(404).json({ success: false, message: "Không tìm thấy tour" })
+                res.notFound("Không tìm thấy tour");
             }
 
-            res.json({
-                success: true, message: "Delete tour success"
-            });
+
         } catch (err) {
             console.log(err)
-            res.status(500).json({ success: false, message: err.message })
+            res.error(err);
         }
     }
 
@@ -289,11 +288,11 @@ class TourController {
                     }
                 })
 
-            res.json({ success: true, message: "get tours successful", tours })
+            res.success({ success: true, message: "get tours successful", tours })
         }
         catch (err) {
             console.log(err);
-            res.status(500).json({ success: false, message: err.message });
+            res.error(err);;
         }
     }
 
@@ -320,10 +319,10 @@ class TourController {
                     }
                 })
 
-            res.json({ success: true, message: "get user tour successful", tours })
+            res.success({ success: true, message: "get user tour successful", tours })
         } catch (err) {
             console.log(err)
-            res.status(500).json({ success: false, message: err.message })
+            res.error(err);
         }
     }
 
@@ -375,14 +374,14 @@ class TourController {
                     }
                 })
 
-            res.json({
+            res.success({
                 success: true, message: "get info 1 tour success", tour
             });
 
 
         } catch (err) {
             console.log(err)
-            res.status(500).json({ success: false, message: err.message })
+            res.error(err);
         }
     }
 
@@ -398,12 +397,12 @@ class TourController {
                     joinIds: req.user._id
                 }
             }, { new: true }).populate("joinIds", "avatar fullname username")
-            res.json({
+            res.success({
                 success: true, message: "join tour success",
                 joinIds: tour.joinIds
             });
         } catch (err) {
-            res.status(500).json({ success: false, message: err.message })
+            res.error(err);
         }
     }
 
@@ -415,12 +414,12 @@ class TourController {
                 }
             }, { new: true }).populate("joinIds", "avatar fullname username")
 
-            res.json({
+            res.success({
                 success: true, message: "unjoin tour success",
                 joinIds: tour.joinIds
             });
         } catch (err) {
-            res.status(500).json({ success: false, message: err.message })
+            res.error(err);
         }
     }
 
@@ -438,14 +437,14 @@ class TourController {
                 }
             }, { new: true }).populate("joinIds", "avatar fullname username")
 
-            res.json({
+            res.success({
                 success: true, message: "remove user success",
                 joinIds: tour.joinIds
             });
 
         }
         catch (err) {
-            res.status(500).json({ success: false, message: err.message })
+            res.error(err);
         }
     }
 
@@ -460,14 +459,14 @@ class TourController {
                 }
             }, { new: true, safe: true, upsert: true })
 
-            res.json({
+            res.success({
                 success: true,
                 message: "Xóa review thành công"
             })
         }
         catch (err) {
             console.log(err);
-            res.status(500).json({ success: false, message: err.message })
+            res.error(err);
         }
     }
 
@@ -487,9 +486,9 @@ class TourController {
                 description: item.name,
                 image: item.userId.avatar
             }))
-            res.json({ success: true, results: tours, query: q })
+            res.success({ success: true, results: tours, query: q })
         } catch (err) {
-            res.status(500).json({ success: false, message: err.message })
+            res.error(err);
         }
     }
 
