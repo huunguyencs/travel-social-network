@@ -79,10 +79,7 @@ export default function AddLocMap(props) {
             console.log("province");
             setState({
                 zoom: 10,
-                center: {
-                    lat: currentProvince.position.lat,
-                    lng: currentProvince.position.lon
-                }
+                center: currentProvince.position
             })
         }
     }, [currentProvince, setState]);
@@ -91,10 +88,7 @@ export default function AddLocMap(props) {
         if (item) {
             setState({
                 zoom: 12,
-                center: {
-                    lat: item.position.lat,
-                    lng: item.position.lon
-                }
+                center: item.position
             })
             setLoc(item)
         }
@@ -111,7 +105,7 @@ export default function AddLocMap(props) {
                 zoom={state.zoom}
             >
                 {currentProvince && locations ? locations.map((item) => (
-                    <Location location={item} key={item._id} lat={item.position.lat} lng={item.position.lon} onClick={() => locationClick(item)}
+                    <Location location={item} key={item._id} lat={item.position.lat} lng={item.position.lng} onClick={() => locationClick(item)}
                         indexDate={indexDate}
                     />
                 )) : null}

@@ -77,16 +77,10 @@ function Position(props) {
 export default function MapCard(props) {
 
     const { position, zoom, locations, height, name } = props;
-    const [center, setCenter] = useState({
-        lat: position.lat,
-        lng: position.lon
-    });
+    const [center, setCenter] = useState(position);
 
     const changeCenter = (position) => {
-        setCenter({
-            lat: position.lat,
-            lng: position.lon
-        })
+        setCenter(position)
     }
 
     useEffect(() => {
@@ -109,9 +103,9 @@ export default function MapCard(props) {
                     // onGoogleApiLoaded={({ map, maps }) => renderMarkers(map, maps)}
                     >
                         {locations && locations.map((item) => (
-                            <MapLocation location={item} key={item._id} lat={item.position.lat} lng={item.position.lon} onClick={() => changeCenter(item.position)} />
+                            <MapLocation location={item} key={item._id} lat={item.position.lat} lng={item.position.lng} onClick={() => changeCenter(item.position)} />
                         ))}
-                        {name && <Position name={name} lat={position.lat} lng={position.lon} />}
+                        {name && <Position name={name} lat={position.lat} lng={position.lng} />}
                     </GoogleMapReact>
                     : <CircularProgress color='inherit' />
             }

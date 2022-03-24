@@ -14,7 +14,7 @@ function LocationAdd() {
     fullname: '',
     province: null,
     position: {
-      lon: 108,
+      lng: 108,
       lat: 16
     },
     information: ''

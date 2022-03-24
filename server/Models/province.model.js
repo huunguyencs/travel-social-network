@@ -22,7 +22,7 @@ const provinceSchema = new mongoose.Schema({
     },
     image: { type: String },
     position: {
-        lon: Number,
+        lng: Number,
         lat: Number
     }
 }, {

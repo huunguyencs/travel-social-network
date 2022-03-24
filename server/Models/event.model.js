@@ -10,6 +10,7 @@ const eventSchema = new mongoose.Schema({
     },
     fullname: String,
     provinceId: { type: mongoose.Types.ObjectId, ref: 'provinces' },
+    province: String,
     images: [{ type: String }],
     time: Number,
     calendarType: Boolean // False: AL, True: DL

@@ -29,10 +29,7 @@ export default function AddLocation(props) {
             setLoc(loc);
             setState({
                 zoom: 12,
-                center: {
-                    lat: loc.position.lat,
-                    lng: loc.position.lon
-                }
+                center: loc.position
             })
         }
     }
@@ -43,10 +40,7 @@ export default function AddLocation(props) {
             setLocations(location.locations.filter(item => item.province._id === currentProvince._id));
             setState({
                 zoom: 11,
-                center: {
-                    lat: currentProvince.position.lat,
-                    lng: currentProvince.position.lon
-                }
+                center: currentProvince.position
             })
         }
         setLoading(false);
