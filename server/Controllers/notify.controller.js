@@ -46,7 +46,9 @@ class NotifyController {
                 await Notifies.deleteMany({ url: req.query.url });
             }
 
-            res.deleted('');
+            res.success({
+                success: true, message: "Delete Notify success", notify
+            });
         } catch (err) {
             res.error(err);
         }

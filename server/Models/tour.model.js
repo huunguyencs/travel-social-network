@@ -18,14 +18,6 @@ const tourSchema = new mongoose.Schema({
     image: String,
     shareId: { type: mongoose.Types.ObjectId, ref: 'tours' },
     cost: Number,
-    services: [
-        [{
-            service: { type: mongoose.Types.ObjectId, ref: 'services' },
-            serviceName: String,
-            cost: Number,
-            description: String
-        }]
-    ],
     provinces: [{ type: String }],
     locations: [{ type: String }],
 }, {

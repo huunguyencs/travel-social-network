@@ -1,4 +1,4 @@
-import { InputBase, Typography, Button, Paper, TextField, Chip } from "@material-ui/core";
+import { InputBase, Typography, Button, Paper, TextField, Chip, InputAdornment } from "@material-ui/core";
 
 import React, { useState } from "react";
 import { useDispatch } from "react-redux";
@@ -87,11 +87,14 @@ export default function UpdateTourInfo({ name, content, hashtags, handleClose, c
                         type={"number"}
                         name="cost"
                         id="cost"
-                        label="Chi phí (nghìn VND)"
+                        label="Chi phí"
                         variant="outlined"
                         value={state.cost}
                         className={classes.tourNameInput}
                         onChange={handleInput}
+                        InputProps={{
+                            endAdornment: <InputAdornment position="end">.000 VND</InputAdornment>,
+                        }}
                     />
                     <div className={classes.postContentInput}>
                         <InputBase

@@ -101,7 +101,7 @@ export default function TourDetail(props) {
     }, [tour, idx])
 
     useEffect(() => {
-        var locs = tour.tour[idx].locations.map(item => item.location);
+        var locs = tour.tour[idx].locations.filter(item => item.location).map(item => item.location);
         setLocations(locs);
     }, [tour, idx])
 

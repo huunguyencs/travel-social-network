@@ -1,4 +1,4 @@
-import { Button, Card, CardContent, CardMedia, Grid, IconButton, InputBase, Modal, Typography, Backdrop, Fade, MenuItem, Dialog, DialogTitle, DialogActions, Popper, ClickAwayListener, Paper, MenuList, TextField, Collapse, CircularProgress, CardHeader, Avatar } from "@material-ui/core";
+import { Button, Card, CardContent, CardMedia, Grid, IconButton, InputBase, Modal, Typography, Backdrop, Fade, MenuItem, Dialog, DialogTitle, DialogActions, Popper, ClickAwayListener, Paper, MenuList, TextField, Collapse, CircularProgress, CardHeader, Avatar, InputAdornment } from "@material-ui/core";
 import React, { useEffect, useState } from "react";
 import { Close, MoreVert } from "@material-ui/icons";
 import { useDispatch } from "react-redux";
@@ -171,6 +171,9 @@ function Detail(props) {
                             // className={classes.hashtag}
                             value={cost}
                             onChange={e => setCost(e.target.value)}
+                            InputProps={{
+                                endAdornment: <InputAdornment position="end">.000 VND</InputAdornment>,
+                            }}
                         />
                         <div className={classes.btnWrap}>
                             <Button onClick={handleUpdateInfo} variant="contained" color="primary">Cập nhật</Button>
@@ -278,23 +281,36 @@ export default function Location(props) {
         <Card className={classes.cardContainer}>
 
             <Grid container>
-                <Grid item md={5} sm={3} className={classes.imageLocation}>
-                    <CardMedia className={classes.imgContainer}>
-                        <img src={location.location.images[0]} alt="Đang tải..." className={classes.img} />
+                <Grid item md={4} sm={3} className={classes.imageLocation}>
+                    <CardMedia>
+                        {
+                            location.locationName ?
+                                <img src={location.image} alt="Đang tải..." className={classes.img} />
+                                : <img src={location.location.images[0]} alt="Đang tải..." className={classes.img} />
+                        }
+
                     </CardMedia>
 
                 </Grid>
-                <Grid item md={7} sm={9} xs={12}>
-                    <CardContent className={classes.contentContainer}>
-
+                <Grid item md={8} sm={9} xs={12}>
+                    <CardContent style={{ padding: 0 }}>
                         <div className={classes.locationContentContainer}>
-                            <div>
-                                <div>
-                                    <Typography variant="h5" className={classes.locationName} component={Link} to={`/location/${location.location.name}`}>{location.location.fullname}</Typography>
-                                </div>
-                                <div>
-                                    <Typography variant="h6" component={Link} to={"/province/" + location.location.province.name}>{location.location.province.fullname}</Typography>
-                                </div>
+                            <div style={{ margin: 20 }}>
+                                {
+                                    location.locationName ?
+                                        <Typography variant="h5" className={classes.locationName}>
+                                            {location.locationName}
+                                        </Typography> :
+                                        <>
+                                            <div>
+                                                <Typography variant="h5" className={classes.locationName} component={Link} to={`/location/${location.location.name}`}>{location.location.fullname}</Typography>
+                                            </div>
+                                            <div>
+                                                <Typography variant="h6" component={Link} to={"/province/" + location.location.province.name}>{location.location.province.fullname}</Typography>
+                                            </div>
+                                        </>
+                                }
+
                                 {
                                     isSave && isOwn && <div> <Button className={classes.reviewBtn} onClick={handleShow}>Tạo Review</Button> </div>
                                 }
@@ -434,6 +450,6 @@ export default function Location(props) {
                 </Collapse>
 
             </Grid>
-        </Card>
+        </Card >
     )
 }

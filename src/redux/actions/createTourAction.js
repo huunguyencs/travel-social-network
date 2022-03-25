@@ -65,23 +65,44 @@ export const updateInfo = (props) => {
     }
 }
 
-export const addService = (props) => {
+export const addServiceDate = (props) => {
     return {
-        type: CREATE_TOUR_TYPES.ADD_SERVICE,
+        type: CREATE_TOUR_TYPES.ADD_SERVICE_DATE,
         payload: props
     }
 }
 
-export const updateService = (props) => {
+export const updateServiceDate = (props) => {
     return {
-        type: CREATE_TOUR_TYPES.UPDATE_SERVICE,
+        type: CREATE_TOUR_TYPES.UPDATE_SERVICE_DATE,
         payload: props
     }
 }
 
-export const deleteService = (props) => {
+export const deleteServiceDate = (props) => {
     return {
-        type: CREATE_TOUR_TYPES.DELETE_SERVICE,
+        type: CREATE_TOUR_TYPES.DELETE_SERVICE_DATE,
+        payload: props
+    }
+}
+
+export const addServiceLocation = (props) => {
+    return {
+        type: CREATE_TOUR_TYPES.ADD_SERVICE_LOCATION,
+        payload: props
+    }
+}
+
+export const updateServiceLocation = (props) => {
+    return {
+        type: CREATE_TOUR_TYPES.UPDATE_SERVICE_LOCATION,
+        payload: props
+    }
+}
+
+export const deleteServiceLocation = (props) => {
+    return {
+        type: CREATE_TOUR_TYPES.DELETE_SERVICE_LOCATION,
         payload: props
     }
 }
