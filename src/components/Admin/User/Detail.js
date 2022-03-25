@@ -154,11 +154,11 @@ function AdminUserDetail(props) {
                 </FormControl>
 
                 {
-                  user.confirmAccount.confirmId &&
+                  user.confirmAccount &&
                   <div>
-                    <img height={200} width={300} src={user.confirmAccount.confirmId.cmndFront} alt='front' />
-                    <img height={200} width={300} src={user.confirmAccount.confirmId.cmndBack} alt='back' />
-                    <img height={200} width={300} src={user.confirmAccount.confirmId.cmndFace} alt='face' />
+                    <img height={200} width={300} src={user.confirmAccount.cmndFront} alt='front' />
+                    <img height={200} width={300} src={user.confirmAccount.cmndBack} alt='back' />
+                    <img height={200} width={300} src={user.confirmAccount.cmndFace} alt='face' />
                   </div>
                 }
 

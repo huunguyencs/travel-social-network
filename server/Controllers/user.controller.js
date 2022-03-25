@@ -45,10 +45,7 @@ class UserController {
             const user = await Users.findOne({ email }).populate("followers followings", "username avatar fullname followings")
                 .populate({
                     path: "confirmAccount",
-                    populate: {
-                        path: "confirmId",
-                        select: "cmnd cmndFront cmndBack cmndFace state"
-                    }
+                    select: "cmnd cmndFront cmndBack cmndFace state"
                 })
             if (!user) return res.status(400).json({ success: false, message: "Email không đúng!" })
             const passwordValid = await bcrypt.compare(password, user.password)
@@ -94,10 +91,7 @@ class UserController {
                 const user = await Users.findById(result.id).select("-password").populate("followers followings", "username avatar fullname followings")
                     .populate({
                         path: "confirmAccount",
-                        populate: {
-                            path: "confirmId",
-                            select: "cmnd cmndFront cmndBack cmndFace state"
-                        }
+                        select: "cmnd cmndFront cmndBack cmndFace state"
                     })
                 if (!user) return res.status(400).json("No token");
 
@@ -216,10 +210,7 @@ class UserController {
                     .populate("followers followings", "username fullname avatar followings followers")
                     .populate({
                         path: "confirmAccount",
-                        populate: {
-                            path: "confirmId",
-                            select: "cmnd cmndFront cmndBack cmndFace state"
-                        }
+                        select: "cmnd cmndFront cmndBack cmndFace state"
                     })
                 if (!user) return res.status(404).json({ success: false, massage: "Người dùng không tồn tại" })
                 res.json({ success: true, user })
@@ -395,13 +386,10 @@ class UserController {
 
     async getAll(req, res) {
         try {
-            const users = await Users.find({}).select("username fullname email role avatar confirmAccount createdAt confirmAccount")
+            const users = await Users.find({}).select("username fullname email role avatar confirmAccount createdAt ")
                 .populate({
                     path: "confirmAccount",
-                    populate: {
-                        path: "confirmId",
-                        select: "state"
-                    }
+                    select: "state"
                 });
             res.json({ success: true, message: "Lấy toàn bộ user thành công", users })
         } catch (err) {
@@ -416,12 +404,8 @@ class UserController {
                 cmnd, cmndFront, cmndBack, cmndFace
             })
             await newConfirm.save()
-            const confirm = {
-                state: false,
-                confirmId: newConfirm._id
-            }
             const newUser = await Users.findByIdAndUpdate(req.user._id, {
-                confirmAccount: confirm
+                confirmAccount: newConfirm._id
             }, { new: true })
             res.json({ success: true, newUser })
         } catch (err) {

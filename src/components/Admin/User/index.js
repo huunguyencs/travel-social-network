@@ -78,12 +78,12 @@ const columns = [
         headerName: 'Trạng thái',
         width: 150,
         sortable: false,
-        renderCell: (user) => user.row.confirmAccount?.confirmId ?
-            user.row.confirmAccount.confirmId.state === 0 ? (
+        renderCell: (user) => user.row.confirmAccount ?
+            user.row.confirmAccount.state === 0 ? (
                 <Tooltip title='Đang đợi xác thực'>
                     <HourglassFull style={{ color: '#ffc107' }} />
                 </Tooltip>
-            ) : user.row.confirmAccount.confirmId.state === 1 ? (
+            ) : user.row.confirmAccount.state === 1 ? (
                 <Tooltip title='Đã xác thực'>
                     <CheckCircle style={{ color: '#357a38' }} />
                 </Tooltip>

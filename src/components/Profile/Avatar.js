@@ -180,7 +180,7 @@ export default function ProfileAvatar(props) {
               <Typography variant="body1" className={classes.fullname}>
                 {user.fullname}
                 {
-                  user.confirmAccount.state &&
+                   user.confirmAccount && user.confirmAccount.state &&
                   <Tooltip title={'Tài khoản đã được xác thực'} aria-label='verified'>
                     <VerifiedUser color="primary" fontSize="small" />
                   </Tooltip>

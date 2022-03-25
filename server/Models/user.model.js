@@ -41,8 +41,7 @@ const userSchema = new mongoose.Schema({
     },
     birthday: Date,
     confirmAccount: {
-        state: { type: Boolean, default: false },
-        confirmId: { type: mongoose.Types.ObjectId, ref: 'confirms' }
+        type: mongoose.Types.ObjectId, ref: 'confirms'
     },
     hobbies: [{ type: String }],
     address: {

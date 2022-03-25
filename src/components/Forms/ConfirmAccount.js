@@ -14,10 +14,10 @@ export default function ConfirmAccount(props) {
 
     const dispatch = useDispatch();
     const { user, token } = useSelector(state => state.auth);
-    const [text, setText] = useState(user.confirmAccount.confirmId ? user.confirmAccount.confirmId.cmnd : "");
-    const [imageFront, setImageFront] = useState(user.confirmAccount.confirmId ? user.confirmAccount.confirmId.cmndFront : null);
-    const [imageBack, setImageBack] = useState(user.confirmAccount.confirmId ? user.confirmAccount.confirmId.cmndBack : null);
-    const [imageFace, setImageFace] = useState(user.confirmAccount.confirmId ? user.confirmAccount.confirmId.cmndFace : null);
+    const [text, setText] = useState(user.confirmAccount ? user.confirmAccount.cmnd : "");
+    const [imageFront, setImageFront] = useState(user.confirmAccount ? user.confirmAccount.cmndFront : null);
+    const [imageBack, setImageBack] = useState(user.confirmAccount ? user.confirmAccount.cmndBack : null);
+    const [imageFace, setImageFace] = useState(user.confirmAccount ? user.confirmAccount.cmndFace : null);
     const [state, setState] = useState({
         loading: false,
         error: null
@@ -25,7 +25,7 @@ export default function ConfirmAccount(props) {
 
 
     const handleChange = e => {
-        if (!user.confirmAccount.confirmId) {
+        if (!user.confirmAccount) {
             setText(e.target.value);
         }
     }
@@ -59,19 +59,19 @@ export default function ConfirmAccount(props) {
         <div className={classes.confirmAccount}>
             <Typography variant="h5">Xác minh tài khoản</Typography>
             {
-                user.confirmAccount.confirmId && user.confirmAccount.confirmId.state === 0 ?
+                user.confirmAccount && user.confirmAccount.state === 0 ?
                     <Typography className={classes.state0}>Bạn đã gửi thông tin xác nhận, cần chờ admin xác nhận</Typography>
                     :
                     <></>
             }
             {
-                user.confirmAccount.confirmId && user.confirmAccount.confirmId.state === 1 ?
+                user.confirmAccount && user.confirmAccount.state === 1 ?
                     <Typography className={classes.state1}>Tài khoản đã được xác minh</Typography>
                     :
                     <></>
             }
             {
-                user.confirmAccount.confirmId && user.confirmAccount.confirmId.state === 2 ?
+                user.confirmAccount && user.confirmAccount.state === 2 ?
                     <Typography className={classes.state2}>Thông tin chưa được xác minh, bạn cần gửi lại thông tin</Typography>
                     :
                     <></>
@@ -114,7 +114,7 @@ export default function ConfirmAccount(props) {
                             type="submit"
                             className={classes.updateBtn}
                             onClick={handleSubmit}
-                            disabled={user.confirmAccount.confirmId}
+                            disabled={user.confirmAccount}
                         >
                             {
                                 state.loading ?
