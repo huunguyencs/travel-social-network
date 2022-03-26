@@ -100,7 +100,7 @@ export default function AdminEvent() {
     const getAllEvents = async (token) => {
         setLoading(true);
         setError(null);
-        await customAxios(token).get('/event/get_all').then(res => {
+        await customAxios(token).get('/event/all').then(res => {
             setEvents(res.data.events);
             setLoading(false);
         }).catch(err => {

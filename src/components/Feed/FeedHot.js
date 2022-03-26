@@ -28,7 +28,7 @@ export default function FeedHot(props) {
             loading: true,
             error: false
         })
-        await customAxios().get('/event/get_events').then(res => {
+        await customAxios().get('/event/current').then(res => {
             setEvents(res.data.events);
             setStateEvent({
                 loading: false,
@@ -47,7 +47,7 @@ export default function FeedHot(props) {
             loading: true,
             error: false
         })
-        await customAxios().get('location/hot_locations').then(res => {
+        await customAxios().get('location/hot').then(res => {
             setLocations(res.data.locations);
             setStateLocation({
                 loading: false,

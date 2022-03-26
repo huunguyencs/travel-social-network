@@ -53,7 +53,7 @@ export const getUserPost = (id, offset) => async (dispatch) => {
     dispatch(postAction.loading());
 
     try {
-        const res = await customAxios().get(`/post/user_posts/${id}?offset=${offset}`);
+        const res = await customAxios().get(`/post/user/${id}?offset=${offset}`);
 
         // console.log(res.data.posts);
         if (offset > 0) {

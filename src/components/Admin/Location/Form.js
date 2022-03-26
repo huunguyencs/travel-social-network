@@ -148,7 +148,7 @@ export default function FormLocationAdmin(props) {
                 })
             }
             else if (mode === 'add') {
-                await customAxios(token).post(`/location/create_location`, {
+                await customAxios(token).post(`/location/create`, {
                     ...location,
                     province: provinceOpt._id
                 }).then(res => {

@@ -4,7 +4,7 @@ const ServiceController = require('../Controllers/service.controller');
 const auth = require('../Middlewares/auth');
 const authRole = require('../Middlewares/authRole');
 
-router.post('/create_service', auth, authRole([1]), ServiceController.createService);
+router.post('/create', auth, authRole([1]), ServiceController.createService);
 router.get('/services', ServiceController.getServices);
 router.get('/all', ServiceController.getAll);
 router.get('/get_by_coop/:id', ServiceController.getServiceByCoop)

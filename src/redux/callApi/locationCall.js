@@ -20,7 +20,7 @@ export const getProvinces = (data) => async (dispatch) => {
 export const getLocations = (data) => async (dispatch) => {
     dispatch(locationActions.loadingLocations());
     try {
-        const res = await customAxios().get('/location/locations');
+        const res = await customAxios().get('/location/all');
         dispatch(locationActions.getLocations({ locations: res.data.locations }))
     }
     catch (err) {

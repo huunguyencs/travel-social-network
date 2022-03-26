@@ -139,7 +139,7 @@ function AdminUsers(props) {
     const getAllUsers = async (token) => {
         setLoading(true);
         setError(null);
-        await customAxios(token).get(`/user/get_all`).then(res => {
+        await customAxios(token).get(`/user/all`).then(res => {
             setUsers(res.data.users);
             setLoading(false);
         }).catch(err => {

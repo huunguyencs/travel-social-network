@@ -3,12 +3,12 @@ const router = express.Router();
 const TourController = require('../Controllers/tour.controller');
 const auth = require('../Middlewares/auth')
 
-router.post('/create_tour', auth, TourController.createTour);
+router.post('/create', auth, TourController.createTour);
 router.post('/share', auth, TourController.shareTour);
 router.get('/tours', TourController.getTours);
 router.get('/search', TourController.search);
 
-router.get('/user_tours/:id', TourController.getUserTour);
+router.get('/user/:id', TourController.getUserTour);
 
 
 router.get('/:id', TourController.getTour);

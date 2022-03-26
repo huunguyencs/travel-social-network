@@ -119,22 +119,16 @@ class LocationController {
 
     async getAll(req, res) {
         try {
-            const locations = await Locations.find({}).select("fullname name province position images")
-                .populate("province", "fullname name")
-            res.success({
-                success: true,
-                message: "Lấy tất cả địa điểm thành công",
-                locations
-            })
-        } catch (err) {
-            res.error(err);
-        }
-    }
-
-    async getAllLocations(req, res) {
-        try {
-            const locations = await Locations.find({}).select("fullname name province star")
-                .populate("province", "fullname")
+            const { admin } = req.query;
+            var locations = [];
+            if (admin === 'true') {
+                locations = await Locations.find({}).select("fullname name province star")
+                    .populate("province", "fullname")
+            }
+            else {
+                locations = await Locations.find({}).select("fullname name province position images")
+                    .populate("province", "fullname name")
+            }
             res.success({
                 success: true,
                 message: "Lấy tất cả địa điểm thành công",

@@ -90,7 +90,7 @@ function AdminLocations(props) {
   const getAllLocations = async (token) => {
     setLoading(true);
     setError(null);
-    await customAxios(token).get('/location/get_all').then(res => {
+    await customAxios(token).get('/location/all?admin=true').then(res => {
       setLocations(res.data.locations);
       setLoading(false);
     }).catch(err => {

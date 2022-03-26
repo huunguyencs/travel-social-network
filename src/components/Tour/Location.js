@@ -26,7 +26,7 @@ function ReviewList(props) {
         setLoading(true);
         setError(false);
         try {
-            await customAxios().post(`/post/post_list`, {
+            await customAxios().post(`/post/list`, {
                 list: reviews
             }).then(res => {
                 setPosts(res.data.posts);

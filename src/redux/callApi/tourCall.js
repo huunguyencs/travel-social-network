@@ -61,13 +61,13 @@ export const getUserTour = (id, token, page) => async (dispatch) => {
     try {
         var res;
         if (page && page > 0) {
-            res = await customAxios(token).get(`/tour/user_tours/${id}?offset=${page}`);
+            res = await customAxios(token).get(`/tour/user/${id}?offset=${page}`);
             let tours = res.data.tours.map(item => sortTourDate(item))
             // console.log(res.data.tours);
             dispatch(tourAction.getMoreTour({ tours: tours }))
         }
         else {
-            res = await customAxios(token).get(`/tour/user_tours/${id}`);
+            res = await customAxios(token).get(`/tour/user/${id}`);
             let tours = res.data.tours.map(item => sortTourDate(item))
             // console.log(res.data.tours);
             dispatch(tourAction.getTours({ tours: tours }))
@@ -102,7 +102,7 @@ export const saveTour = (tour, image, token, socket, next, error) => async (disp
 
         // console.log(data);
 
-        const res = await customAxios(token).post('/tour/create_tour', data);
+        const res = await customAxios(token).post('/tour/create', data);
 
         //notify
         const dataNotify = {

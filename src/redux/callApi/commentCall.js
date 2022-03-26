@@ -10,12 +10,12 @@ export const createComment = (id, comment, auth, type, socket) => async (dispatc
     try {
         // call api to update comment
 
-        const res = await customAxios(auth.token).post("/comment/create_comment", {
+        const res = await customAxios(auth.token).post("/comment/create", {
             commentType: type,
             content: comment,
             postId: id,
             tourId: id,
-            volunteerId: id 
+            volunteerId: id
         })
 
         const newComment = {

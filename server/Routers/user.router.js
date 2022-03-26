@@ -15,7 +15,7 @@ router.patch("/change_background", auth, UserController.changeBackground);
 router.patch("/change_info", auth, UserController.editProfile);
 router.patch("/change_password", auth, UserController.changePassword)
 
-router.get("/get_all", auth, UserController.getAll)
+router.get("/all", auth, authRole([2]), UserController.getAll)
 router.get('/search', UserController.search)
 
 router.post("/confirm_account", auth, UserController.confirmAccount)
