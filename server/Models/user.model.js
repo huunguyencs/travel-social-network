@@ -22,11 +22,11 @@ const userSchema = new mongoose.Schema({
     },
     avatar: {
         type: String,
-        default: 'https://res.cloudinary.com/huunguyencs/image/upload/v1638075935/default-avatar_fxfl6s.png'
+        default: 'https://res.cloudinary.com/huunguyencs/image/upload/v1648397898/default-avatar_np2xqa.webp'
     },
     background: {
         type: String,
-        default: 'https://res.cloudinary.com/huunguyencs/image/upload/v1638075905/background_wwpwxy.jpg'
+        default: 'https://res.cloudinary.com/huunguyencs/image/upload/v1648397899/MF1esV_rzs9vx.webp'
     },
     phone: {
         type: String,
