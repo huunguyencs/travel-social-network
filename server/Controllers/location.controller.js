@@ -1,22 +1,31 @@
 const Locations = require('../Models/location.model')
 const Posts = require('../Models/post.model');
+const Provinces = require('../Models/province.model')
 
 class LocationController {
     async createLocation(req, res) {
         try {
             const { name, images, province, position, information, fullname } = req.body
-            const newLocation = new Locations({
-                name, images, province, position, information, fullname
-            })
-            await newLocation.save()
 
-            res.created({
-                success: true,
-                message: "Create Location successful",
-                newLocation: {
-                    ...newLocation._doc,
-                }
-            })
+            const pro = Provinces.findById(province).select("fullname");
+            if (pro) {
+                const province_name = pro.fullname;
+                const newLocation = new Locations({
+                    name, images, province, position, information, fullname, province_name
+                })
+                await newLocation.save()
+
+                res.created({
+                    success: true,
+                    message: "Create Location successful",
+                    newLocation: {
+                        ...newLocation._doc,
+                    }
+                })
+            }
+            else {
+                res.notFound('Không tìm thấy tỉnh!')
+            }
         } catch (err) {
             res.error(err)
         }

@@ -1,5 +1,6 @@
 const Events = require('../Models/event.model')
 const date = require('../utils/date');
+const Provinces = require('../Models/province.model')
 
 class EventController {
     async createEvent(req, res) {
@@ -7,9 +8,16 @@ class EventController {
             const { description, timedes, name, fullname, provinceId, images, time, calendarType } = req.body;
             var newEvent;
             if (provinceId) {
-                newEvent = new Events({
-                    description, timedes, name, fullname, provinceId, images, time, calendarType
-                })
+                const prov = Provinces.findById(provinceId).select('fullname');
+                if (prov) {
+                    const province = prov.fullname;
+                    newEvent = new Events({
+                        description, timedes, name, fullname, provinceId, images, time, calendarType, province
+                    })
+                }
+                else {
+                    res.notFound('Không tìm thấy tỉnh!')
+                }
             }
             else {
                 newEvent = new Events({
