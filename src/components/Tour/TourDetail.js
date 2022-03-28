@@ -24,12 +24,14 @@ function DetailDate(props) {
                 <Grid item md={6} sm={12} xs={12}>
                     <div style={{ overflowY: 'auto', height: '70vh' }}>
                         <Typography variant='h5' style={{ textAlign: 'center', marginTop: 10 }}>Chi tiết lịch trình ngày {convertDateToStr(tourDate.date)}</Typography>
-                        <Typography>
-                            Mô tả: {tourDate.description}
-                        </Typography>
-                        <Typography>
-                            Chi phí: {new Intl.NumberFormat().format(tourDate.cost * 1000)} VND
-                        </Typography>
+                        <div style={{ padding: 20 }}>
+                            <Typography>
+                                Mô tả: {tourDate.description}
+                            </Typography>
+                            <Typography>
+                                Chi phí: {new Intl.NumberFormat().format(tourDate.cost * 1000)} VND
+                            </Typography>
+                        </div>
                     </div>
 
                 </Grid>
@@ -190,7 +192,7 @@ export default function TourDetail(props) {
                                                 </>
                                             }
                                             <div>
-                                                <Typography>Danh sách tham gia</Typography>
+                                                <Typography>Danh sách tham gia toàn bộ tour:</Typography>
                                                 <AvatarGroup max={4} onClick={handleShowJoin} style={{ cursor: 'pointer' }}>
                                                     {tour.joinIds.map(user =>
                                                         <Avatar src={user.avatar} alt={'A'} key={user._id} style={{ height: 30, width: 30 }} />

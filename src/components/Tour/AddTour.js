@@ -17,6 +17,7 @@ import AddService, { ServiceCard } from "./AddService";
 import { AddCircle, Close, Save, Update } from "@material-ui/icons";
 import ChangeImageTour from "./ChangeImageTour";
 import { error } from "../../redux/actions/alertAction";
+import * as alertAction from '../../redux/actions/alertAction'
 
 
 
@@ -39,9 +40,9 @@ function EditDetailDate(props) {
 
 
     const handleSubmit = (e) => {
-        if (text && text !== '') {
-            dispatch(tourAction.updateDesciptionDate({ indexDate: date, description: text, cost: cost }))
-        }
+
+        dispatch(tourAction.updateDesciptionDate({ indexDate: date, description: text, cost: parseInt(cost) }))
+        dispatch(alertAction.success({ message: 'Cập nhật thành công!' }))
     }
 
     const classes = tourdetailStyles();
@@ -162,6 +163,15 @@ export default function AddTour(props) {
     const [showUpdateDate, setShowUpdateDate] = useState(false);
     const [showDeleteDate, setShowDeteleDate] = useState(-1);
     const [showChangeInfo, setShowChangeInfo] = useState(false);
+    const [showReset, setShowReset] = useState(false);
+
+    const handleShowReset = () => {
+        setShowReset(true);
+    }
+
+    const handleCloseReset = () => {
+        setShowReset(false);
+    }
 
 
     const handleAddDay = () => {
@@ -316,6 +326,11 @@ export default function AddTour(props) {
     // const AddLocationRef = React.forwardRef((props, ref) =>
     //     <AddLocationForm {...props} innerRef={ref} />
     // )
+
+    const handleReset = () => {
+        dispatch(tourAction.createTour({ name: createTour.name, date: createTour.tour[0].date }));
+        handleCloseReset();
+    }
 
 
     const classes = tourdetailStyles();
@@ -479,6 +494,27 @@ export default function AddTour(props) {
                     </Grid>
                     <Grid item md={6} sm={12} xs={12} className={classes.hiddenSmall}>
                         <div style={{ display: 'flex', justifyContent: 'right', marginRight: 100 }}>
+                            <Button onClick={handleShowReset} style={{ marginInline: 20 }}>
+                                Reset
+                            </Button>
+                            <div className={classes.center}>
+                                <Dialog
+                                    open={showReset}
+                                    onClose={handleCloseDelete}
+                                    aria-labelledby="alert-dialog-title"
+                                    aria-describedby="alert-dialog-description"
+                                >
+                                    <DialogTitle id="alert-dialog-title">{"Bạn có chắc chắn muốn reset tour?"}</DialogTitle>
+                                    <DialogActions>
+                                        <Button onClick={handleCloseReset}>
+                                            Hủy
+                                        </Button>
+                                        <Button onClick={handleReset} className={classes.delete}>
+                                            Reset
+                                        </Button>
+                                    </DialogActions>
+                                </Dialog>
+                            </div>
                             <Button onClick={isUpdate ? handleUpdate : handleSave} startIcon={(<Save />)}>
                                 {state.loading ?
                                     <CircularProgress size="25px" color="inherit" />

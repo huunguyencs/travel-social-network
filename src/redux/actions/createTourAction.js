@@ -60,7 +60,7 @@ export const resetTour = (props) => {
 
 export const updateInfo = (props) => {
     return {
-        type: CREATE_TOUR_TYPES.UPDATE_INFO,
+        type: CREATE_TOUR_TYPES.UPDATE_INFO_TOUR,
         payload: props,
     }
 }

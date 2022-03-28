@@ -12,6 +12,7 @@ export const checkImage = (file) => {
 }
 
 export const uploadImages = async (images) => {
+    var cloud = Math.floor(Math.random() * 2)
     var imageArr = [];
     for (const image of images) {
         if (typeof image === 'string') {
@@ -21,10 +22,10 @@ export const uploadImages = async (images) => {
             // console.log(image);
             const formData = new FormData();
             formData.append("file", image);
-            formData.append("upload_preset", env.CLOUDINARY_UPLOAD_PRESET);
+            formData.append("upload_preset", env.CLOUD[cloud].CLOUDINARY_UPLOAD_PRESET);
 
             try {
-                const data = await fetch(env.CLOUDINARY_UPLOAD_URL, {
+                const data = await fetch(env.CLOUD[cloud].CLOUDINARY_UPLOAD_URL, {
                     method: "POST",
                     body: formData
                 })
