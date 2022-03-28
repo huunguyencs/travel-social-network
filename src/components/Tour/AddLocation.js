@@ -61,7 +61,7 @@ export default function AddLocation(props) {
                 dispatch(tourAction.addLocation({ location: loc, indexDate: indexDate }))
             }
             else {
-                dispatch(tourAction.addLocation({ locationName: loc.locationName, indexDate: indexDate }))
+                dispatch(tourAction.addLocation({ locationName: loc.fullname, indexDate: indexDate }))
             }
         }
 
@@ -151,14 +151,14 @@ export default function AddLocation(props) {
                         Thêm
                     </Button>
                 </div>
-                {/* <AddLocMap
+                <AddLocMap
                     setLoc={setLoc}
                     currentProvince={currentProvince}
                     locations={locations}
                     state={state}
                     setState={setState}
                     indexDate={props.indexDate}
-                /> */}
+                />
             </div>
         </Paper>
     )

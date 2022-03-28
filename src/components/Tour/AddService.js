@@ -1,4 +1,4 @@
-import { Button, Card, CardContent, CardMedia, ClickAwayListener, Collapse, Dialog, DialogActions, DialogTitle, Grid, IconButton, InputAdornment, InputBase, MenuItem, MenuList, OutlinedInput, Paper, Popper, TextField, Typography } from '@material-ui/core';
+import { Button, Card, CardContent, CardMedia, ClickAwayListener, Collapse, Dialog, DialogActions, DialogTitle, Grid, IconButton, InputAdornment, InputBase, MenuItem, MenuList, Paper, Popper, TextField, Typography } from '@material-ui/core';
 import React, { useEffect, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux';
 
@@ -396,6 +396,8 @@ export function ServiceCard(props) {
                             type={type}
                             indexService={index}
                             isOwn={isOwn}
+                            indexDate={indexDate}
+                            indexLocation={indexLocation}
                         />
                     </Collapse>
                 </Grid>

@@ -1,9 +1,9 @@
-import { Button, Grid, Modal, Typography, Backdrop, Fade, Dialog, DialogActions, DialogTitle, CircularProgress, Paper, IconButton, TextField, InputBase } from "@material-ui/core";
+import { Button, Grid, Modal, Typography, Backdrop, Fade, Dialog, DialogActions, DialogTitle, CircularProgress, Paper, IconButton, TextField } from "@material-ui/core";
 import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 
 import { tourdetailStyles } from "../../style";
-import AddLocationForm from "../Forms/AddLocation";
+// import AddLocationForm from "../Forms/AddLocation";
 import Location from './Location';
 import * as tourAction from '../../redux/actions/createTourAction';
 import { useHistory } from "react-router-dom";
@@ -12,7 +12,7 @@ import UpdateTourInfo from "../Forms/UpdateInfoCreateTour";
 import { convertDateToStr } from "../../utils/date";
 import { saveTour, updateTour } from "../../redux/callApi/tourCall";
 import AddLocation from "./AddLocation";
-import { getLocations, getProvinces, getServices } from '../../redux/callApi/locationCall';
+import { getLocations, getProvinces } from '../../redux/callApi/locationCall';
 import AddService, { ServiceCard } from "./AddService";
 import { AddCircle, Close, Save, Update } from "@material-ui/icons";
 import ChangeImageTour from "./ChangeImageTour";
@@ -142,21 +142,21 @@ export default function AddTour(props) {
     const [currentProvince, setCurrentProvince] = useState(null);
     const [showDetailDate, setShowDetailDate] = useState(false);
 
-    const [showAddLoc, setShowAddLoc] = useState(false);
-    const handleShowAddLoc = () => {
-        setShowAddLoc(true);
-    }
-    const handleCloseAddLoc = () => {
-        setShowAddLoc(false);
-    }
+    // const [showAddLoc, setShowAddLoc] = useState(false);
+    // const handleShowAddLoc = () => {
+    //     setShowAddLoc(true);
+    // }
+    // const handleCloseAddLoc = () => {
+    //     setShowAddLoc(false);
+    // }
 
-    const [showAddService, setShowAddService] = useState(false);
-    const handleShowAddService = () => {
-        setShowAddService(true);
-    }
-    const handleCloseAddService = () => {
-        setShowAddService(false);
-    }
+    // const [showAddService, setShowAddService] = useState(false);
+    // const handleShowAddService = () => {
+    //     setShowAddService(true);
+    // }
+    // const handleCloseAddService = () => {
+    //     setShowAddService(false);
+    // }
 
     const handleShowDetailDate = () => {
         setShowDetailDate(true);
@@ -309,7 +309,7 @@ export default function AddTour(props) {
 
     const refInfo = React.createRef();
     const refUdDate = React.createRef();
-    const refAddLoc = React.createRef();
+    // const refAddLoc = React.createRef();
     const refEditDetailDate = React.createRef();
 
     const UpdateTourInfoRef = React.forwardRef((props, ref) =>
@@ -324,9 +324,9 @@ export default function AddTour(props) {
         <EditDetailDate {...props} innerRef={ref} />
     )
 
-    const AddLocationRef = React.forwardRef((props, ref) =>
-        <AddLocationForm {...props} innerRef={ref} />
-    )
+    // const AddLocationRef = React.forwardRef((props, ref) =>
+    //     <AddLocationForm {...props} innerRef={ref} />
+    // )
 
 
     const classes = tourdetailStyles();

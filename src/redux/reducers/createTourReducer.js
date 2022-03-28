@@ -52,6 +52,8 @@ const createTourReducer = (state = INIT_STATE, action) => {
                 new_loc.locationName = action.payload.locationName;
             }
 
+            console.log(new_loc);
+
             return {
                 ...state,
                 tour: state.tour.map((date, i) => i === action.payload.indexDate ? {
@@ -115,6 +117,7 @@ const createTourReducer = (state = INIT_STATE, action) => {
                 tour: state.tour.map((date, i) => i === action.payload.indexDate ? {
                     ...date,
                     locations: date.locations.map((loc, j) => j === action.payload.indexLocation ? {
+                        ...loc,
                         location: action.payload?.location || loc.location,
                         cost: action.payload?.cost || loc.cost,
                         description: action.payload?.description || loc.description,
