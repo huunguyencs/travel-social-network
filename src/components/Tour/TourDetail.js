@@ -1,39 +1,56 @@
-import { Button, Container, Grid, Typography, CircularProgress, Tabs, Tab } from "@material-ui/core";
+import { Button, Grid, Typography, CircularProgress, Backdrop, Paper, IconButton, Modal, Fade } from "@material-ui/core";
 import React, { useEffect, useState } from "react";
-import { Timeline, TimelineItem, TimelineSeparator, TimelineConnector, TimelineContent, TimelineDot } from '@material-ui/lab'
 
 import { tourdetailStyles } from "../../style";
 import Location from './Location';
-import { convertDateToStr, convertDateToStrShort } from "../../utils/date";
+import { convertDateToStr } from "../../utils/date";
 // import { useSelector } from "react-redux";
 import MapCard from "../Map/MapCard";
-import { Link, useHistory } from "react-router-dom";
-import { ServiceCard } from "./AddService";
-import { FileCopy, Update } from "@material-ui/icons";
-import { loadTour } from "../../redux/actions/createTourAction";
-import { useDispatch } from "react-redux";
 import ImageModal from "../Modal/Image";
+import { Close } from "@material-ui/icons";
+import { ServiceCard } from "./AddService";
 
-function a11yProps(index) {
-    return {
-        id: `tab-${index}`,
-        'aria-controls': `tabpanel-${index}`,
-    }
-}
+function DetailDate(props) {
+    const { tourDate, date, handleClose, isOwn } = props;
 
-function TabPanel(props) {
-    const { children, value, index, ...other } = props;
+    const classes = tourdetailStyles();
 
     return (
-        <div
-            role="tabpanel"
-            hidden={value !== index}
-            id={`tabpanel-${index}`}
-            aria-labelledby={`tab-${index}`}
-            {...other}
-        >
-            {value === index && children}
-        </div>
+        <Paper className={classes.paperDetailDate}>
+            <Grid container>
+                <Grid item md={6} sm={12} xs={12}>
+                    <div style={{ overflowY: 'auto', height: '70vh' }}>
+                        <Typography variant='h5' style={{ textAlign: 'center', marginTop: 10 }}>Chi tiết lịch trình ngày {convertDateToStr(tourDate.date)}</Typography>
+                        <Typography>
+                            Mô tả: {tourDate.description}
+                        </Typography>
+                        <Typography>
+                            Chi phí: {new Intl.NumberFormat().format(tourDate.cost * 1000)} VND
+                        </Typography>
+                    </div>
+
+                </Grid>
+                <Grid item md={6} sm={12} xs={12}>
+                    <div style={{ overflowY: 'auto', height: '70vh' }}>
+                        <div style={{ display: 'flex', justifyContent: 'space-between' }}>
+                            <div></div>
+                            <Typography variant='h5' style={{ textAlign: 'center', marginTop: 10 }}>Danh sách dịch vụ</Typography>
+                            <div>
+                                <IconButton size='small' onClick={handleClose}>
+                                    <Close />
+                                </IconButton>
+                            </div>
+                        </div>
+
+                        {
+                            tourDate.services.map(((item, index) =>
+                                <ServiceCard isOwn={isOwn} type='date' key={index} service={item} index={index} isEdit={false} indexDate={date} />
+                            ))
+                        }
+                    </div>
+                </Grid>
+            </Grid>
+        </Paper>
     )
 }
 
@@ -42,15 +59,22 @@ export default function TourDetail(props) {
 
     const classes = tourdetailStyles();
 
-    const history = useHistory();
-    const dispatch = useDispatch();
+    // const history = useHistory();
+    // const dispatch = useDispatch();
 
     const [idx, setIdx] = useState(0);
-    const [tab, setTab] = useState(0);
-    const [tabService, setTabService] = useState(0);
     const [position, setPosition] = useState(null);
     const [locations, setLocations] = useState([]);
     const [showImage, setShowImage] = useState(false);
+    const [detailDate, setDetailDate] = useState(false);
+
+    const handleShowDetailDate = () => {
+        setDetailDate(true);
+    }
+
+    const handleCloseDetailDate = () => {
+        setDetailDate(false);
+    }
 
     const handleShowImage = () => {
         setShowImage(true);
@@ -59,24 +83,6 @@ export default function TourDetail(props) {
     const handleCloseImage = () => {
         setShowImage(false);
     }
-
-    const handleChangeTab = (e, value) => {
-        setTab(value);
-    }
-
-    const handleChangeTabService = (e, value) => {
-        setTabService(value);
-    }
-
-
-    // const [showService, setShowService] = useState(false);
-    // const handleShowService = () => {
-    //     setShowService(true);
-    // }
-
-    // const handleCloseService = () => {
-    //     setShowService(false);
-    // }
 
     const { tour, isOwn, setTour } = props;
 
@@ -105,18 +111,110 @@ export default function TourDetail(props) {
         setLocations(locs);
     }, [tour, idx])
 
-    const handleCopyAndEdit = () => {
-        dispatch(loadTour({ tour: tour }));
-        history.push('/createtour');
-    }
+    const refDetail = React.createRef();
+
+    const DetailDateRef = React.forwardRef((props, ref) =>
+        <DetailDate {...props} innerRef={ref} />
+    )
 
 
     return (
         <>
             {
                 tour ?
-                    <div>
-                        <div className={classes.coverTitle}>
+                    <div style={{ marginTop: 100 }}>
+                        <Grid container>
+                            <Grid item md={6} sm={12} xs={12}>
+                                <div className={classes.infoTour}>
+                                    <div className={classes.coverTitle}>
+                                        <Typography variant="h4" className={classes.title}>{tour.name}</Typography>
+                                    </div>
+                                    <Grid container>
+                                        <Grid item md={8} sm={12} xs={12} style={{ paddingLeft: 30 }}>
+                                            <Typography variant="body1">
+                                                {tour.content}
+                                            </Typography>
+                                            <div className={classes.hashtagWrap}>
+                                                {tour.hashtags.map((hashtag, index) => (
+                                                    <Typography className={classes.hashtag} key={index}>#{hashtag}</Typography>
+                                                ))}
+                                            </div>
+                                            <Typography variant="body1">
+                                                Tổng chi phí: {new Intl.NumberFormat().format(tour.cost * 1000)} VND
+                                            </Typography>
+                                        </Grid>
+                                        <Grid item md={4} sm={12} xs={12}>
+                                            <div style={{ paddingRight: 40 }}>
+                                                <img src={tour.image} className={classes.image} width="100%" alt="Can not load" onClick={handleShowImage} />
+                                                <ImageModal
+                                                    open={showImage}
+                                                    handleClose={handleCloseImage}
+                                                    img={tour.image}
+                                                />
+                                            </div>
+                                        </Grid>
+                                    </Grid>
+                                </div>
+                                <Grid container >
+                                    <Grid item md={3} sm={12} xs={12}>
+                                        <div className={classes.timeline}>
+                                            {tour.tour.map((item, index) => (
+                                                <div key={index} className={classes.timelineItem}>
+                                                    <div style={{ display: 'flex' }}>
+                                                        <Button className={index === idx ? classes.activeTimeline : classes.unactiveTimeline} onClick={() => setIdx(index)}>
+                                                            {convertDateToStr(item.date)}
+                                                        </Button>
+                                                    </div>
+                                                </div>
+                                            ))}
+                                        </div>
+                                    </Grid>
+                                    <Grid item md={9} sm={12} xs={12}>
+                                        {/* <EditDescriptionDate date={idx} description={createTour.tour[idx].description} /> */}
+                                        <Button onClick={handleShowDetailDate}>Chi tiết ngày</Button>
+                                        <Modal
+                                            aria-labelledby="transition-modal-title"
+                                            aria-describedby="transition-modal-description"
+                                            open={detailDate}
+                                            className={classes.modal}
+                                            onClose={handleCloseDetailDate}
+                                            closeAfterTransition
+                                            BackdropComponent={Backdrop}
+                                            BackdropProps={{
+                                                timeout: 500,
+                                            }}
+                                        >
+                                            <Fade in={detailDate}>
+                                                <DetailDateRef ref={refDetail} date={idx} tourDate={tour.tour[idx]} handleClose={handleCloseDetailDate} isOwn={isOwn} />
+                                            </Fade>
+                                        </Modal>
+                                        <div style={{ paddingInline: 30 }}>
+                                            {
+                                                tour.tour[idx].locations.map((item, index) => (
+                                                    <Location
+                                                        location={item}
+                                                        indexDate={idx}
+                                                        indexLocation={index}
+                                                        edit={false}
+                                                        key={index}
+                                                        isOwn={isOwn}
+                                                        isSave={true}
+                                                        isEdit={false}
+                                                        addReview={createReview}
+                                                    />
+                                                ))
+                                            }
+                                        </div>
+                                    </Grid>
+                                </Grid>
+                            </Grid>
+                            <Grid item md={6} sm={12} xs={12} className={classes.hiddenSmall}>
+                                <div style={{ padding: 20 }}>
+                                    {position ? <MapCard position={position} zoom={12} locations={locations} /> : <div></div>}
+                                </div>
+                            </Grid>
+                        </Grid>
+                        {/* <div className={classes.coverTitle}>
                             <Typography variant="h3" className={classes.title}>{tour.name}</Typography>
                         </div>
                         <div className={classes.info}>
@@ -288,7 +386,7 @@ export default function TourDetail(props) {
                             </Container>
                         </TabPanel>
 
-
+ */}
 
                     </div >
                     :

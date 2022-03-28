@@ -1,4 +1,4 @@
-import { Button, Grid, Modal, Typography, Backdrop, Fade, Dialog, DialogActions, DialogTitle, CircularProgress, Paper, IconButton, TextField } from "@material-ui/core";
+import { Button, Grid, Modal, Typography, Backdrop, Fade, Dialog, DialogActions, DialogTitle, CircularProgress, Paper, IconButton, TextField, InputAdornment } from "@material-ui/core";
 import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 
@@ -39,29 +39,23 @@ function EditDetailDate(props) {
     const { tourDate, date, handleClose } = props;
 
     const [text, setText] = useState(tourDate.description || '');
-    const [change, setChange] = useState(false);
+    const [cost, setCost] = useState(tourDate.cost || 0);
 
-    useEffect(() => {
-        setText(tourDate.description);
-    }, [tourDate.description])
+    // useEffect(() => {
+    //     setText(tourDate.description);
+    // }, [tourDate.description])
+
+    const handleChange = (e) => {
+        setText(e.target.value)
+    }
 
     const dispatch = useDispatch();
 
-    const handleChange = (e) => {
-        setChange(true);
-        setText(e.target.value);
-    }
 
     const handleSubmit = (e) => {
         if (text && text !== '') {
-            dispatch(tourAction.updateDesciptionDate({ indexDate: date, description: text }))
-            setChange(false);
+            dispatch(tourAction.updateDesciptionDate({ indexDate: date, description: text, cost: cost }))
         }
-    }
-
-    const handleCancel = () => {
-        setText(tourDate.description);
-        setChange(false);
     }
 
     const classes = tourdetailStyles();
@@ -86,12 +80,23 @@ function EditDetailDate(props) {
                                 multiline
                                 rows={4}
                             />
+                            <TextField
+                                label="Chi phí"
+                                title="Chi phí"
+                                variant="outlined"
+                                name="cost"
+                                id="cost"
+                                type="number"
+                                className={classes.fullField}
+                                // className={classes.hashtag}
+                                value={cost}
+                                onChange={e => setCost(e.target.value)}
+                                InputProps={{
+                                    endAdornment: <InputAdornment position="end">.000 VND</InputAdornment>,
+                                }}
+                            />
                             {
-                                change &&
                                 <div style={{ display: 'flex', justifyContent: 'right', marginTop: 20 }}>
-                                    <Button onClick={handleCancel}>
-                                        Hủy
-                                    </Button>
                                     <Button variant="contained" color="primary" onClick={handleSubmit}>
                                         Cập nhật
                                     </Button>
@@ -196,9 +201,15 @@ export default function AddTour(props) {
             name: createTour.name,
             content: createTour.content,
             hashtags: createTour.hashtags,
-            tour: createTour.tour,
-            cost: createTour.cost,
-            services: extractService(createTour.services)
+            tour: createTour.tour.map(date => ({
+                ...date,
+                services: extractService(date.services),
+                locations: date.locations.map(location => ({
+                    ...location,
+                    services: extractService(location.services)
+                }))
+            })),
+            cost: createTour.cost
         }, createTour.image, auth.token, socket, () => {
             setState({
                 loading: false,

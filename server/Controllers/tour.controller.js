@@ -5,12 +5,12 @@ const Comments = require('../Models/comment.model')
 class TourController {
     async createTour(req, res) {
         try {
-            const { content, name, taggedIds, image, hashtags, tour, services, cost, provinces, locations } = req.body;
+            const { content, name, taggedIds, image, hashtags, tour, services, provinces, locations } = req.body;
 
             const joinIds = [req.user._id];
 
             const newTour = new Tours({
-                userId: req.user._id, content, image, name, taggedIds, hashtags, services, cost, provinces, joinIds, tour: [], locations
+                userId: req.user._id, content, image, name, taggedIds, hashtags, services, provinces, joinIds, tour: [], locations
             })
 
             await newTour.save()
@@ -18,7 +18,7 @@ class TourController {
             if (tour.length > 0) {
                 tour.forEach(async function (element) {
                     const newTourDate = new TourDates({
-                        date: element.date, locations: element.locations, description: element.description
+                        date: element.date, locations: element.locations, description: element.description, cost: element.cost
                     })
                     await newTourDate.save();
                     await Tours.findOneAndUpdate({ _id: newTour._id }, {
@@ -358,6 +358,30 @@ class TourController {
                         }
                     }
                 })
+                .populate({
+                    path: "tour",
+                    populate: {
+                        path: "services",
+                        populate: {
+                            path: "service",
+                            select: "name images"
+                        }
+
+                    }
+                })
+                .populate({
+                    path: "tour",
+                    populate: {
+                        path: "locations",
+                        populate: {
+                            path: "services",
+                            populate: {
+                                path: "service",
+                                select: "name images"
+                            }
+                        }
+                    }
+                })
                 .populate("userId likes", "fullname avatar")
                 .populate({
                     path: "comments",
@@ -365,13 +389,6 @@ class TourController {
                         path: "userId likes",
                         select: "fullname avatar"
                     },
-                })
-                .populate({
-                    path: "services",
-                    populate: {
-                        path: "service",
-                        select: "name images cooperator"
-                    }
                 })
 
             res.success({

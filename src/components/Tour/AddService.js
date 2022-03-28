@@ -9,7 +9,6 @@ import { formStyles, tourdetailStyles } from '../../style';
 import { AddCircle, MoreVert } from '@material-ui/icons';
 import { ReviewArea } from '../Service/ServiceItem';
 import { success } from '../../redux/actions/alertAction';
-import { Link } from 'react-router-dom';
 
 
 const filter = createFilterOptions();
@@ -325,7 +324,7 @@ export function ServiceCard(props) {
                                 <div>
                                     {service.serviceName ?
                                         <Typography variant='h5' className={classes.locationName}>{service.serviceName}</Typography>
-                                        : <Typography variant='h5' className={classes.locationName} component={Link} to={`/u/${service.service.cooperator}`}>{service.service.name}</Typography>
+                                        : <Typography variant='h5' className={classes.locationName}>{service.service.name}</Typography>
                                     }
                                 </div>
                                 <div>

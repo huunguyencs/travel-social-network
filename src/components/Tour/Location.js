@@ -191,6 +191,7 @@ function Detail(props) {
                                 <Typography>Chi phí: {new Intl.NumberFormat().format(location.cost * 1000)} VND</Typography>
                                 <Typography>Thời gian: {location.time}</Typography>
                                 <Typography>Mô tả: {location.description}</Typography>
+
                             </div>
                     }
                 </Grid>
@@ -215,58 +216,6 @@ function Detail(props) {
                 </Grid>
             </Grid>
         </Paper>
-        // <div style={{ padding: 15, paddingTop: 0 }}>
-        //     {
-        //         isEdit ?
-        //             <div>
-        //                 <InputBase
-        //                     placeholder="Mô tả"
-        //                     title="Thông tin"
-        //                     variant="outlined"
-        //                     name="description"
-        //                     id="description"
-        //                     className={classes.descriptionInput}
-        //                     multiline
-        //                     rows={5}
-        //                     value={description}
-        //                     onChange={e => setDescription(e.target.value)}
-        //                 />
-        //                 <TextField
-        //                     label="Thời gian"
-        //                     title="Thời gian"
-        //                     variant="outlined"
-        //                     name="time"
-        //                     id="time"
-        //                     className={classes.fullField}
-        //                     value={time}
-        //                     onChange={e => setTime(e.target.value)}
-        //                 />
-        //                 <TextField
-        //                     label="Chi phí"
-        //                     title="Chi phí"
-        //                     variant="outlined"
-        //                     name="cost"
-        //                     id="cost"
-        //                     type="number"
-        //                     className={classes.fullField}
-        //                     // className={classes.hashtag}
-        //                     value={cost}
-        //                     onChange={e => setCost(e.target.value)}
-        //                     InputProps={{
-        //                         endAdornment: <InputAdornment position="end">.000 VND</InputAdornment>,
-        //                     }}
-        //                 />
-        //                 <div className={classes.btnWrap}>
-        //                     <Button onClick={handleUpdateInfo} variant="contained" color="primary">Cập nhật</Button>
-        //                 </div>
-        //             </div> :
-        //             <div>
-        //                 <Typography>Chi phí: {new Intl.NumberFormat().format(location.cost * 1000)} VND</Typography>
-        //                 <Typography>Thời gian: {location.time}</Typography>
-        //                 <Typography>Mô tả: {location.description}</Typography>
-        //             </div>
-        //     }
-        // </div>
     )
 }
 
