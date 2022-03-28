@@ -17,6 +17,7 @@ router.patch("/change_password", auth, UserController.changePassword)
 
 router.get("/all", auth, authRole([2]), UserController.getAll)
 router.get('/search', UserController.search)
+router.post('/user_list', UserController.getUserByArray)
 
 router.post("/confirm_account", auth, UserController.confirmAccount)
 router.get('/get_friend_recommend', auth, UserController.getFriendRecommend)

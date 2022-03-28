@@ -4,12 +4,12 @@ const tourDateSchema = new mongoose.Schema({
     date: Date,
     description: String,
     services: [
-        [{
+        {
             service: { type: mongoose.Types.ObjectId, ref: 'services' },
             serviceName: String,
             cost: Number,
             description: String
-        }]
+        }
     ],
     cost: Number,
     locations: [
@@ -22,12 +22,12 @@ const tourDateSchema = new mongoose.Schema({
             time: String,
             joinIds: [{ type: mongoose.Types.ObjectId, ref: 'users' }],
             services: [
-                [{
+                {
                     service: { type: mongoose.Types.ObjectId, ref: 'services' },
                     serviceName: String,
                     cost: Number,
                     description: String
-                }]
+                }
             ]
         }
     ]

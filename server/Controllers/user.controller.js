@@ -495,6 +495,26 @@ class UserController {
 
         }
     }
+
+    async getUserByArray(req, res) {
+        try {
+            const { users } = req.body;
+            const listUser = Users.find({
+                _id: {
+                    $in: users
+                }
+            }).select("fullname avatar")
+
+            res.success({
+                success: true,
+                message: "Lấy danh sách người dùng thành công",
+                listUser
+            })
+        }
+        catch (err) {
+            res.error(err)
+        }
+    }
 }
 
 module.exports = new UserController

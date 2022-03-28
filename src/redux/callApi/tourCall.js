@@ -79,6 +79,37 @@ export const getUserTour = (id, token, page) => async (dispatch) => {
     }
 }
 
+function extractService(services) {
+    return services.map((service) => {
+        if (service?.service) {
+            return {
+                ...service,
+                service: service.service._id,
+            }
+        }
+        else {
+            return service;
+        }
+    })
+}
+
+function extractLocation(locations) {
+    return locations.map((location) => {
+        if (location?.location) {
+            return {
+                ...location,
+                location: location.location._id,
+                services: extractService(location.services)
+            }
+        }
+        else
+            return {
+                ...location,
+                services: extractService(location.services)
+            }
+    })
+}
+
 export const saveTour = (tour, image, token, socket, next, error) => async (dispatch) => {
 
     try {
@@ -90,10 +121,8 @@ export const saveTour = (tour, image, token, socket, next, error) => async (disp
             ...tour,
             tour: tour.tour.map(item => ({
                 ...item,
-                locations: item.locations.map(location => ({
-                    ...location,
-                    location: location.location._id,
-                })),
+                services: extractService(item.services),
+                locations: extractLocation(item.locations),
             })),
             provinces: Array.from(extractProvinceTour(tour.tour)),
             locations: Array.from(extractLocationTour(tour.tour)),
@@ -131,17 +160,17 @@ export const updateTour = (id, tour, image, token, next, error) => async (dispat
         if (image && typeof image !== "string") {
             imageUpload = await imageUtils.uploadImages([image]);
         }
+
         const data = {
             ...tour,
             tour: tour.tour.map(item => ({
                 ...item,
-                locations: item.locations.map(location => ({
-                    location: location.location._id,
-                }))
+                services: extractService(item.services),
+                locations: extractLocation(item.locations),
             })),
-            image: image ? imageUpload[0] : "",
             provinces: Array.from(extractProvinceTour(tour.tour)),
             locations: Array.from(extractLocationTour(tour.tour)),
+            image: image ? imageUpload[0] : ""
         }
         const res = await customAxios(token).patch(`/tour/${id}`, data);
         next();

@@ -187,7 +187,7 @@ function ServiceItemAddForm(props) {
 }
 
 function DetailService(props) {
-    const { service, isEdit, type, indexService, isOwn, indexDate, indexLocation } = props;
+    const { service, isEdit, type, indexService, indexDate, indexLocation, joined } = props;
 
     const [cost, setCost] = useState(service.cost);
     const [description, setDescription] = useState(service.description);
@@ -257,7 +257,7 @@ function DetailService(props) {
                         <Typography>Mô tả: {description}</Typography>
                     </div>
             }
-            {!isEdit && isOwn && service?.service &&
+            {!isEdit && joined && service?.service &&
                 <ReviewArea id={service.service._id} />
             }
         </div>
@@ -266,7 +266,7 @@ function DetailService(props) {
 
 
 export function ServiceCard(props) {
-    const { service, index, isEdit, isOwn, type, indexLocation, indexDate } = props;
+    const { service, index, isEdit, type, indexLocation, indexDate, joined } = props;
 
     const classes = tourdetailStyles();
     const [anchorEl, setAnchorEl] = useState(null);
@@ -394,9 +394,9 @@ export function ServiceCard(props) {
                             isEdit={isEdit}
                             type={type}
                             indexService={index}
-                            isOwn={isOwn}
                             indexDate={indexDate}
                             indexLocation={indexLocation}
+                            joined={joined}
                         />
                     </Collapse>
                 </Grid>

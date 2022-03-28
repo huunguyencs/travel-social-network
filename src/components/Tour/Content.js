@@ -1,5 +1,6 @@
 import { Avatar, Backdrop, Button, CardContent, CardHeader, CardMedia, CircularProgress, ClickAwayListener, Dialog, DialogActions, DialogContent, DialogTitle, IconButton, MenuItem, MenuList, Modal, Paper, Popper, Typography } from '@material-ui/core'
 import { Bookmark, BookmarkBorder, MoreVert } from '@material-ui/icons'
+import { AvatarGroup } from '@material-ui/lab'
 import React, { useEffect, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { Link } from 'react-router-dom'
@@ -488,11 +489,15 @@ function BaseContent(props) {
                     Chi phí: {new Intl.NumberFormat().format(tour.cost * 1000)} VND
                 </Typography>
                 <div>
-                    <Typography>Thành viên tham gia:
-                        <span className={classes.numLike} onClick={handleShowJoin} style={{ marginInline: 10 }}>
-                            {tour.joinIds.length}
-                        </span>
-                    </Typography>
+                    <div style={{ display: 'flex' }}>
+                        <Typography>Thành viên tham gia:</Typography>
+                        <AvatarGroup max={4} onClick={handleShowJoin} style={{ cursor: 'pointer' }}>
+                            {tour.joinIds.map(user =>
+                                <Avatar src={user.avatar} alt={'A'} key={user._id} style={{ height: 20, width: 20 }} />
+                            )}
+                        </AvatarGroup>
+                    </div>
+
                     <Modal
                         aria-labelledby="transition-modal-title"
                         aria-describedby="transition-modal-description"

@@ -19,21 +19,7 @@ import ChangeImageTour from "./ChangeImageTour";
 import { error } from "../../redux/actions/alertAction";
 
 
-function extractService(services) {
-    return services.map((service) =>
-        service.map((item) => {
-            if (item?.service) {
-                return {
-                    ...item,
-                    service: item.service._id,
-                }
-            }
-            else {
-                return item;
-            }
-        })
-    )
-}
+
 
 function EditDetailDate(props) {
     const { tourDate, date, handleClose } = props;
@@ -201,14 +187,7 @@ export default function AddTour(props) {
             name: createTour.name,
             content: createTour.content,
             hashtags: createTour.hashtags,
-            tour: createTour.tour.map(date => ({
-                ...date,
-                services: extractService(date.services),
-                locations: date.locations.map(location => ({
-                    ...location,
-                    services: extractService(location.services)
-                }))
-            })),
+            tour: createTour.tour,
             cost: createTour.cost
         }, createTour.image, auth.token, socket, () => {
             setState({
@@ -246,7 +225,6 @@ export default function AddTour(props) {
             hashtags: createTour.hashtags,
             tour: createTour.tour,
             cost: createTour.cost,
-            services: extractService(createTour.services)
         }, createTour.image, auth.token, () => {
             // console.log("done");
             setState({

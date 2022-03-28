@@ -5,12 +5,12 @@ const Comments = require('../Models/comment.model')
 class TourController {
     async createTour(req, res) {
         try {
-            const { content, name, taggedIds, image, hashtags, tour, services, provinces, locations } = req.body;
+            const { content, name, taggedIds, image, hashtags, tour, provinces, locations, cost } = req.body;
 
             const joinIds = [req.user._id];
 
             const newTour = new Tours({
-                userId: req.user._id, content, image, name, taggedIds, hashtags, services, provinces, joinIds, tour: [], locations
+                userId: req.user._id, content, image, name, taggedIds, hashtags, provinces, joinIds, tour: [], locations, cost
             })
 
             await newTour.save()
@@ -18,7 +18,7 @@ class TourController {
             if (tour.length > 0) {
                 tour.forEach(async function (element) {
                     const newTourDate = new TourDates({
-                        date: element.date, locations: element.locations, description: element.description, cost: element.cost
+                        date: element.date, locations: element.locations, description: element.description, cost: element.cost, services: element.services
                     })
                     await newTourDate.save();
                     await Tours.findOneAndUpdate({ _id: newTour._id }, {
@@ -382,13 +382,23 @@ class TourController {
                         }
                     }
                 })
-                .populate("userId likes", "fullname avatar")
+                .populate("userId likes joinIds", "fullname avatar")
                 .populate({
                     path: "comments",
                     populate: {
                         path: "userId likes",
                         select: "fullname avatar"
                     },
+                })
+                .populate({
+                    path: "tour",
+                    populate: {
+                        path: "locations",
+                        populate: {
+                            path: "joinIds",
+                            select: "fullname avatar"
+                        }
+                    }
                 })
 
             res.success({
@@ -444,7 +454,7 @@ class TourController {
         try {
             let tour = await Tours.findById(req.params.id);
             if (tour.userId.toString() !== req.user._id.toString()) {
-                res.status(500).json({ success: false, message: "Không được quyền" })
+                res.status(401).json({ success: false, message: "Không được quyền" })
                 return;
             }
             const { user } = req.body;
@@ -485,6 +495,18 @@ class TourController {
             console.log(err);
             res.error(err);
         }
+    }
+
+    async joinLocation(req, res) {
+
+    }
+
+    async unjoinLocation(req, res) {
+
+    }
+
+    async removeJoinLocation(req, res) {
+
     }
 
     async search(req, res) {

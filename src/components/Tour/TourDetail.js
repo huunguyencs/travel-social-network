@@ -1,4 +1,5 @@
-import { Button, Grid, Typography, CircularProgress, Backdrop, Paper, IconButton, Modal, Fade } from "@material-ui/core";
+import { Button, Grid, Typography, CircularProgress, Backdrop, Paper, IconButton, Modal, Fade, Avatar } from "@material-ui/core";
+import AvatarGroup from '@material-ui/lab/AvatarGroup';
 import React, { useEffect, useState } from "react";
 
 import { tourdetailStyles } from "../../style";
@@ -7,11 +8,13 @@ import { convertDateToStr } from "../../utils/date";
 // import { useSelector } from "react-redux";
 import MapCard from "../Map/MapCard";
 import ImageModal from "../Modal/Image";
-import { Close } from "@material-ui/icons";
+import { Close, Update } from "@material-ui/icons";
 import { ServiceCard } from "./AddService";
+import { Link } from "react-router-dom";
+import UserList from "../Modal/UserList";
 
 function DetailDate(props) {
-    const { tourDate, date, handleClose, isOwn } = props;
+    const { tourDate, date, handleClose, joined } = props;
 
     const classes = tourdetailStyles();
 
@@ -44,7 +47,7 @@ function DetailDate(props) {
 
                         {
                             tourDate.services.map(((item, index) =>
-                                <ServiceCard isOwn={isOwn} type='date' key={index} service={item} index={index} isEdit={false} indexDate={date} />
+                                <ServiceCard joined={joined} type='date' key={index} service={item} index={index} isEdit={false} indexDate={date} />
                             ))
                         }
                     </div>
@@ -57,6 +60,8 @@ function DetailDate(props) {
 
 export default function TourDetail(props) {
 
+    const { tour, isOwn, setTour, joined } = props;
+
     const classes = tourdetailStyles();
 
     // const history = useHistory();
@@ -67,6 +72,15 @@ export default function TourDetail(props) {
     const [locations, setLocations] = useState([]);
     const [showImage, setShowImage] = useState(false);
     const [detailDate, setDetailDate] = useState(false);
+    const [showUserJoin, setShowUserJoin] = useState(false);
+
+    const handleShowJoin = () => {
+        setShowUserJoin(true);
+    }
+
+    const handleCloseJoin = () => {
+        setShowUserJoin(false)
+    }
 
     const handleShowDetailDate = () => {
         setDetailDate(true);
@@ -84,8 +98,6 @@ export default function TourDetail(props) {
         setShowImage(false);
     }
 
-    const { tour, isOwn, setTour } = props;
-
     const createReview = (id, index_loc, tourdate_id) => {
         setTour(state => ({
             ...state,
@@ -99,6 +111,21 @@ export default function TourDetail(props) {
         }))
     }
 
+    const joinTour = () => {
+        console.log('join')
+    }
+
+    const unjoinTour = () => {
+        console.log('unjoin')
+    }
+
+    const joinLocation = (indexDate, indexLocation) => {
+        console.log('join-loc')
+    }
+
+    const unjoinLocation = (indexDate, indexLocation) => {
+        console.log('unjoin-loc')
+    }
 
     useEffect(() => {
         if (tour && tour.tour[idx].locations.length > 0) {
@@ -112,10 +139,16 @@ export default function TourDetail(props) {
     }, [tour, idx])
 
     const refDetail = React.createRef();
+    const refUser = React.createRef();
 
     const DetailDateRef = React.forwardRef((props, ref) =>
         <DetailDate {...props} innerRef={ref} />
     )
+
+    const UserListRef = React.forwardRef((props, ref) =>
+        <UserList {...props} innerRef={ref} />
+    )
+
 
 
     return (
@@ -142,6 +175,42 @@ export default function TourDetail(props) {
                                             <Typography variant="body1">
                                                 Tổng chi phí: {new Intl.NumberFormat().format(tour.cost * 1000)} VND
                                             </Typography>
+                                            {
+                                                !isOwn &&
+                                                <>
+                                                    {
+                                                        joined ?
+                                                            <Button onClick={joinTour}>
+                                                                Tham gia ngay
+                                                            </Button> :
+                                                            <Button onClick={unjoinTour}>
+                                                                Hủy tham gia
+                                                            </Button>
+                                                    }
+                                                </>
+                                            }
+                                            <div>
+                                                <Typography>Danh sách tham gia</Typography>
+                                                <AvatarGroup max={4} onClick={handleShowJoin} style={{ cursor: 'pointer' }}>
+                                                    {tour.joinIds.map(user =>
+                                                        <Avatar src={user.avatar} alt={'A'} key={user._id} style={{ height: 30, width: 30 }} />
+                                                    )}
+                                                </AvatarGroup>
+                                                <Modal
+                                                    aria-labelledby="like"
+                                                    aria-describedby="user-like-this-post"
+                                                    className={classes.modal}
+                                                    open={showUserJoin}
+                                                    onClose={handleCloseJoin}
+                                                    closeAfterTransition
+                                                    BackdropComponent={Backdrop}
+                                                    BackdropProps={{
+                                                        timeout: 500,
+                                                    }}
+                                                >
+                                                    <UserListRef ref={refUser} listUser={tour.joinIds} title={"Đã tham gia"} handleClose={handleCloseJoin} />
+                                                </Modal>
+                                            </div>
                                         </Grid>
                                         <Grid item md={4} sm={12} xs={12}>
                                             <div style={{ paddingRight: 40 }}>
@@ -185,7 +254,7 @@ export default function TourDetail(props) {
                                             }}
                                         >
                                             <Fade in={detailDate}>
-                                                <DetailDateRef ref={refDetail} date={idx} tourDate={tour.tour[idx]} handleClose={handleCloseDetailDate} isOwn={isOwn} />
+                                                <DetailDateRef ref={refDetail} date={idx} tourDate={tour.tour[idx]} handleClose={handleCloseDetailDate} joined={joined} />
                                             </Fade>
                                         </Modal>
                                         <div style={{ paddingInline: 30 }}>
@@ -197,10 +266,14 @@ export default function TourDetail(props) {
                                                         indexLocation={index}
                                                         edit={false}
                                                         key={index}
-                                                        isOwn={isOwn}
                                                         isSave={true}
                                                         isEdit={false}
                                                         addReview={createReview}
+                                                        joined={joined}
+                                                        join={joinLocation}
+                                                        unjoin={unjoinLocation}
+                                                        joinIds={tour.joinIds}
+                                                        isOwn={isOwn}
                                                     />
                                                 ))
                                             }
@@ -209,6 +282,14 @@ export default function TourDetail(props) {
                                 </Grid>
                             </Grid>
                             <Grid item md={6} sm={12} xs={12} className={classes.hiddenSmall}>
+                                {
+                                    isOwn &&
+                                    <div style={{ display: 'flex', justifyContent: 'right', marginRight: 100 }}>
+                                        <Button startIcon={(<Update />)} component={Link} to={'?edit=true'}>
+                                            Chỉnh sửa hành trình
+                                        </Button>
+                                    </div>
+                                }
                                 <div style={{ padding: 20 }}>
                                     {position ? <MapCard position={position} zoom={12} locations={locations} /> : <div></div>}
                                 </div>
