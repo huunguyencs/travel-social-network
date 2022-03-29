@@ -146,8 +146,8 @@ function Detail(props) {
                                 <>
                                     <div style={{ overflowY: 'auto', height: '70vh', padding: 20 }}>
                                         <InputBase
-                                            placeholder="Mô tả"
-                                            title="Thông tin"
+                                            placeholder="Ghi chú"
+                                            title="Ghi chú"
                                             variant="outlined"
                                             name="description"
                                             id="description"
@@ -254,7 +254,7 @@ export default function Location(props) {
 
     const checkJoinLocation = () => {
         let find = location.joinIds.findIndex(ele => ele._id === user._id)
-        return find && find >= 0;
+        return find >= 0;
     }
 
     useEffect(() => {
@@ -379,7 +379,7 @@ export default function Location(props) {
                                     isSave &&
                                     <>
                                         {
-                                            joined && <div> <Button className={classes.reviewBtn} onClick={handleShow}>Tạo Review</Button> </div>
+                                            location.location && (joined || checkJoinLocation()) && <div> <Button className={classes.reviewBtn} onClick={handleShow}>Tạo Review</Button> </div>
                                         }
                                         {
                                             location.postId?.length > 0 && <Button onClick={handleShowReview}>Xem review</Button>

@@ -55,7 +55,7 @@ function EditDetailDate(props) {
                         <Typography variant='h5' style={{ textAlign: 'center', marginTop: 10 }}>Chi tiết lịch trình ngày {convertDateToStr(tourDate.date)}</Typography>
                         <div style={{ margin: 20 }}>
                             <TextField
-                                label="Mô tả"
+                                label="Ghi chú"
                                 variant='outlined'
                                 name='description'
                                 onChange={handleChange}

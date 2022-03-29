@@ -47,7 +47,7 @@ export default function TourDetail(props) {
         if (auth.user && tour) {
             const find = tour.joinIds.findIndex(ele => ele._id === auth.user._id);
             console.log("Find", find);
-            if (find && find >= 0) setJoined(true);
+            if (find >= 0) setJoined(true);
             else setJoined(false)
         }
     }, [tour, auth.user])

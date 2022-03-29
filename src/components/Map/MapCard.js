@@ -5,8 +5,7 @@ import { Card, CircularProgress, ClickAwayListener, Paper, Popper, Typography } 
 import KEY from "../../key/googlemap";
 import { Link } from "react-router-dom";
 import { cardStyles } from "../../style";
-import LocationPinIcon from "../Icons/LocationPin";
-import GpsFixedIcon from "../Icons/GpsFixed";
+import LocationIcon from "../Icons/Location";
 
 function MapLocation(props) {
 
@@ -27,7 +26,7 @@ function MapLocation(props) {
     };
     return (
         <>
-            <GpsFixedIcon
+            <LocationIcon
 
                 onClick={handlePopoverOpen}
                 style={{
@@ -66,7 +65,7 @@ function Position(props) {
         <>
             <div className={classes.positionContainer}>
                 {/* <MapPinIcon className={classes.locationIcon} /> */}
-                <LocationPinIcon className={classes.locationIcon} />
+                <LocationIcon className={classes.locationIcon} />
                 <Typography>{name}</Typography>
             </div>
         </>

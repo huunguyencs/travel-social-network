@@ -7,7 +7,7 @@ import { useDispatch } from 'react-redux';
 
 import * as tourAction from '../../redux/actions/createTourAction';
 import { cardStyles } from '../../style';
-import GpsFixedIcon from '../Icons/GpsFixed';
+import LocationIcon from '../Icons/Location';
 
 
 function Location(props) {
@@ -36,7 +36,8 @@ function Location(props) {
 
     return (
         <>
-            <GpsFixedIcon
+
+            <LocationIcon
 
                 onClick={handlePopoverOpen}
                 style={{
