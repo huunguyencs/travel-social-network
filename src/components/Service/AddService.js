@@ -72,10 +72,7 @@ export function BasicServiceInfo(props) {
         // console.log(position)
         setContext({
             ...context,
-            position: {
-                lat: position.lat,
-                lon: position.lng
-            }
+            position: position
         })
     }
 

@@ -52,10 +52,7 @@ export default function FormLocationAdmin(props) {
     const changePosition = (position) => {
         setLocation(state => ({
             ...state,
-            position: {
-                lat: position.lat,
-                lon: position.lng
-            }
+            position: position
         }))
     }
 
@@ -106,7 +103,7 @@ export default function FormLocationAdmin(props) {
             message: 'Vị trí không hợp lệ!',
         },
         {
-            field: 'lon',
+            field: 'lng',
             method: isFloat,
             validWhen: true,
             message: 'Vị trí không hợp lệ!',
@@ -151,7 +148,7 @@ export default function FormLocationAdmin(props) {
                 })
             }
             else if (mode === 'add') {
-                await customAxios(token).post(`/location/create_location`, {
+                await customAxios(token).post(`/location/create`, {
                     ...location,
                     province: provinceOpt._id
                 }).then(res => {
@@ -219,13 +216,13 @@ export default function FormLocationAdmin(props) {
                         <TextField
                             label="Kinh độ"
                             variant='outlined'
-                            name='lon'
+                            name='lng'
                             onChange={changePositionText}
-                            value={location.position.lon}
+                            value={location.position.lng}
                             className={classes.fullField}
                             required
-                            error={Boolean(errors?.position?.lon)}
-                            helperText={errors?.position?.lon}
+                            error={Boolean(errors?.position?.lng)}
+                            helperText={errors?.position?.lng}
                             InputProps={{
                                 readOnly: picker,
                             }}
@@ -250,7 +247,7 @@ export default function FormLocationAdmin(props) {
                             <MapPicker
                                 position={{
                                     lat: parseFloat(location.position.lat),
-                                    lng: parseFloat(location.position.lon)
+                                    lng: parseFloat(location.position.lng)
                                 }}
                                 setPosition={changePosition}
                                 height={400}

@@ -5,8 +5,7 @@ import { Card, CircularProgress, ClickAwayListener, Paper, Popper, Typography } 
 import KEY from "../../key/googlemap";
 import { Link } from "react-router-dom";
 import { cardStyles } from "../../style";
-import LocationPinIcon from "../Icons/LocationPin";
-import GpsFixedIcon from "../Icons/GpsFixed";
+import LocationIcon from "../Icons/Location";
 
 function MapLocation(props) {
 
@@ -27,7 +26,7 @@ function MapLocation(props) {
     };
     return (
         <>
-            <GpsFixedIcon
+            <LocationIcon
 
                 onClick={handlePopoverOpen}
                 style={{
@@ -66,7 +65,7 @@ function Position(props) {
         <>
             <div className={classes.positionContainer}>
                 {/* <MapPinIcon className={classes.locationIcon} /> */}
-                <LocationPinIcon className={classes.locationIcon} />
+                <LocationIcon className={classes.locationIcon} />
                 <Typography>{name}</Typography>
             </div>
         </>
@@ -77,16 +76,10 @@ function Position(props) {
 export default function MapCard(props) {
 
     const { position, zoom, locations, height, name } = props;
-    const [center, setCenter] = useState({
-        lat: position.lat,
-        lng: position.lon
-    });
+    const [center, setCenter] = useState(position);
 
     const changeCenter = (position) => {
-        setCenter({
-            lat: position.lat,
-            lng: position.lon
-        })
+        setCenter(position)
     }
 
     useEffect(() => {
@@ -109,9 +102,9 @@ export default function MapCard(props) {
                     // onGoogleApiLoaded={({ map, maps }) => renderMarkers(map, maps)}
                     >
                         {locations && locations.map((item) => (
-                            <MapLocation location={item} key={item._id} lat={item.position.lat} lng={item.position.lon} onClick={() => changeCenter(item.position)} />
+                            <MapLocation location={item} key={item._id} lat={item.position.lat} lng={item.position.lng} onClick={() => changeCenter(item.position)} />
                         ))}
-                        {name && <Position name={name} lat={position.lat} lng={position.lon} />}
+                        {name && <Position name={name} lat={position.lat} lng={position.lng} />}
                     </GoogleMapReact>
                     : <CircularProgress color='inherit' />
             }

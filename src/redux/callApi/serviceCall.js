@@ -75,7 +75,7 @@ export const reviewService = (id, auth, rate, content, images) => async (dispatc
 export const createService = (token, userId, data, images_data, next, error) => async (dispatch) => {
     try {
         let images = await imageUtils.uploadImages(images_data);
-        const res = await customAxios(token).post('/service/create_service', {
+        const res = await customAxios(token).post('/service/create', {
             ...data,
             images: images
         })

@@ -47,7 +47,7 @@ export default function ManageUserJoin(props) {
                 <ul>
                     {
                         listUser.map((user) => (
-                            <li button className={classes.modal_body_user} key={user._id}>
+                            <li className={classes.modal_body_user} key={user._id}>
                                 <div className={classes.userWrap}>
                                     <Avatar alt="avatar" src={user.avatar} className={classes.avatar} />
 

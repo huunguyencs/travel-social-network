@@ -118,7 +118,7 @@ export default function FormAddEvent(props) {
                 })
             }
             else {
-                await customAxios(token).post(`/event/create_event`, {
+                await customAxios(token).post(`/event/create`, {
                     ...event,
                     provinceId: provinceOpt._id
                 }).then(res => {

@@ -5,10 +5,10 @@ import color from "./color";
 
 const formStyles = makeStyles((theme) => ({
     addLocationContainer: {
-        borderRadius: attr.borderRadius.md,
-        padding: 20,
-        margin: 20,
-        // width: '100%',
+        // borderRadius: attr.borderRadius.md,
+        // padding: 20,
+        // margin: 20,
+        width: '100%',
     },
     paperContainer: {
         padding: 20,
@@ -94,7 +94,8 @@ const formStyles = makeStyles((theme) => ({
     },
     autocomplete: {
         width: 400,
-        marginTop: 30
+        marginTop: 20,
+        marginInline: 20
     },
     imageInputContainer: {
         marginInline: "20px",

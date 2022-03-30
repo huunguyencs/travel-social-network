@@ -4,9 +4,9 @@ const NotifyController = require('../Controllers/notify.controller');
 const auth = require('../Middlewares/auth');
 
 
-router.post('/create_notify', auth, NotifyController.createNotify);
+router.post('/create', auth, NotifyController.createNotify);
 
-router.get('/get_notifies', auth, NotifyController.getNotifies);
+router.get('/notifies', auth, NotifyController.getNotifies);
 router.delete('/:id', auth, NotifyController.deleteNotify);
 
 router.patch('/is_seen_notify/:id', auth, NotifyController.isSeenNotify)

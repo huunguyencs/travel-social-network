@@ -33,7 +33,7 @@ export default function NotificationPage(props) {
             error: false,
             loading: true
         })
-        await customAxios(token).get('/notify/get_notifies?limit=10&offset=0').then(res => {
+        await customAxios(token).get('/notify/notifies?limit=10&offset=0').then(res => {
             if (res.data.notifies.length < 10) {
                 setEnd(true);
             }
@@ -56,7 +56,7 @@ export default function NotificationPage(props) {
             error: false,
         })
 
-        await customAxios(token).get(`/notify/get_notifies?limit=10&offset=${offset}`).then(res => {
+        await customAxios(token).get(`/notify/notifies?limit=10&offset=${offset}`).then(res => {
             if (res.data.notifies.length < 10) {
                 setEnd(true);
             }

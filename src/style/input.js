@@ -24,7 +24,8 @@ const inputStyles = makeStyles((theme) => ({
         margin: 20
     },
     addArea: {
-        width: 250,
+        // width: 250,
+        width: '100%',
         height: 200,
         margin: 20,
         border: '1px dashed #000',
@@ -35,7 +36,8 @@ const inputStyles = makeStyles((theme) => ({
         borderRadius: 5
     },
     addAreaHover: {
-        width: 250,
+        // width: 250,
+        width: '100%',
         height: 200,
         margin: 20,
         border: '2px dashed #555',

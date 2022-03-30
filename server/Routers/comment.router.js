@@ -5,9 +5,9 @@ const auth = require('../Middlewares/auth');
 
 router.get('/post/:id', CommentController.getCommentPost);
 router.get('/tour/:id', CommentController.getCommentTour);
-router.get('/volunteer/:id',CommentController.getCommentVolunteer);
+router.get('/volunteer/:id', CommentController.getCommentVolunteer);
 
-router.post('/create_comment', auth, CommentController.createComment);
+router.post('/create', auth, CommentController.createComment);
 
 router.patch('/:id', auth, CommentController.updateComment)
 router.delete('/:id', auth, CommentController.deleteComment)

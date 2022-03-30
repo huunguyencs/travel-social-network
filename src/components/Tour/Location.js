@@ -1,7 +1,7 @@
-import { Button, Card, CardContent, CardMedia, Grid, IconButton, InputBase, Modal, Typography, Backdrop, Fade, MenuItem, Dialog, DialogTitle, DialogActions, Popper, ClickAwayListener, Paper, MenuList, TextField, Collapse, CircularProgress, CardHeader, Avatar } from "@material-ui/core";
+import { Button, Card, CardContent, CardMedia, Grid, IconButton, InputBase, Modal, Typography, Backdrop, Fade, MenuItem, Dialog, DialogTitle, DialogActions, Popper, ClickAwayListener, Paper, MenuList, TextField, CircularProgress, CardHeader, Avatar, InputAdornment } from "@material-ui/core";
 import React, { useEffect, useState } from "react";
 import { Close, MoreVert } from "@material-ui/icons";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { Link } from "react-router-dom";
 
 import { tourdetailStyles } from "../../style";
@@ -11,9 +11,11 @@ import * as tourAction from '../../redux/actions/createTourAction';
 import { success } from "../../redux/actions/alertAction";
 import customAxios from "../../utils/fetchData";
 import { timeAgo } from "../../utils/date";
-import { Rating } from "@material-ui/lab";
+import { AvatarGroup, Rating } from "@material-ui/lab";
 import { SeeMoreText } from "../SeeMoreText";
 import ImageList from "../Modal/ImageList";
+import AddService, { ServiceCard } from './AddService'
+import UserList from "../Modal/UserList";
 
 
 function ReviewList(props) {
@@ -26,7 +28,7 @@ function ReviewList(props) {
         setLoading(true);
         setError(false);
         try {
-            await customAxios().post(`/post/post_list`, {
+            await customAxios().post(`/post/list`, {
                 list: reviews
             }).then(res => {
                 setPosts(res.data.posts);
@@ -115,7 +117,7 @@ function Detail(props) {
     const classes = tourdetailStyles();
     const dispatch = useDispatch();
 
-    const { location, isEdit, indexDate, indexLocation } = props;
+    const { location, isEdit, indexDate, indexLocation, handleClose, joined } = props;
 
     const [description, setDescription] = useState();
     const [time, setTime] = useState(location.time);
@@ -134,55 +136,93 @@ function Detail(props) {
     }
 
     return (
-        <div style={{ padding: 15, paddingTop: 0 }}>
-            {
-                isEdit ?
+        <Paper className={classes.paperDetailDate}>
+            <Grid container>
+                <Grid item md={6} sm={12} xs={12}>
                     <div>
-                        <InputBase
-                            placeholder="Mô tả"
-                            title="Thông tin"
-                            variant="outlined"
-                            name="description"
-                            id="description"
-                            className={classes.descriptionInput}
-                            multiline
-                            rows={5}
-                            value={description}
-                            onChange={e => setDescription(e.target.value)}
-                        />
-                        <TextField
-                            label="Thời gian"
-                            title="Thời gian"
-                            variant="outlined"
-                            name="time"
-                            id="time"
-                            className={classes.fullField}
-                            value={time}
-                            onChange={e => setTime(e.target.value)}
-                        />
-                        <TextField
-                            label="Chi phí"
-                            title="Chi phí"
-                            variant="outlined"
-                            name="cost"
-                            id="cost"
-                            type="number"
-                            className={classes.fullField}
-                            // className={classes.hashtag}
-                            value={cost}
-                            onChange={e => setCost(e.target.value)}
-                        />
-                        <div className={classes.btnWrap}>
-                            <Button onClick={handleUpdateInfo} variant="contained" color="primary">Cập nhật</Button>
-                        </div>
-                    </div> :
-                    <div>
-                        <Typography>Chi phí: {new Intl.NumberFormat().format(location.cost * 1000)} VND</Typography>
-                        <Typography>Thời gian: {location.time}</Typography>
-                        <Typography>Mô tả: {location.description}</Typography>
+                        <Typography variant='h5' style={{ textAlign: 'center', marginTop: 10 }}>{location.locationName ? location.locationName : location.location.fullname}</Typography>
+                        {
+                            isEdit ?
+                                <>
+                                    <div style={{ overflowY: 'auto', height: '70vh', padding: 20 }}>
+                                        <InputBase
+                                            placeholder="Ghi chú"
+                                            title="Ghi chú"
+                                            variant="outlined"
+                                            name="description"
+                                            id="description"
+                                            className={classes.descriptionInput}
+                                            multiline
+                                            rows={5}
+                                            value={description}
+                                            onChange={e => setDescription(e.target.value)}
+                                        />
+                                        <TextField
+                                            label="Thời gian"
+                                            title="Thời gian"
+                                            variant="outlined"
+                                            name="time"
+                                            id="time"
+                                            className={classes.fullField}
+                                            value={time}
+                                            onChange={e => setTime(e.target.value)}
+                                        />
+                                        <TextField
+                                            label="Chi phí"
+                                            title="Chi phí"
+                                            variant="outlined"
+                                            name="cost"
+                                            id="cost"
+                                            type="number"
+                                            className={classes.fullField}
+                                            // className={classes.hashtag}
+                                            value={cost}
+                                            onChange={e => setCost(e.target.value)}
+                                            InputProps={{
+                                                endAdornment: <InputAdornment position="end">.000 VND</InputAdornment>,
+                                            }}
+                                        />
+                                        <div className={classes.btnWrap}>
+                                            <Button onClick={handleUpdateInfo} variant="contained" color="primary">Cập nhật</Button>
+                                        </div>
+                                    </div>
+                                    <AddService type='location' indexDate={indexDate} indexLocation={indexLocation} />
+                                </>
+                                :
+                                <div style={{ overflowY: 'auto', height: '70vh' }}>
+                                    <div style={{ padding: 20 }}>
+                                        <Typography>Chi phí: {new Intl.NumberFormat().format(location.cost * 1000)} VND</Typography>
+                                        <Typography>Thời gian: {location.time}</Typography>
+                                        <Typography>Mô tả: {location.description}</Typography>
+                                    </div>
+                                </div>
+                        }
+
+
                     </div>
-            }
-        </div>
+
+                </Grid>
+                <Grid item md={6} sm={12} xs={12}>
+                    <div style={{ overflowY: 'auto', height: '70vh' }}>
+                        <div style={{ display: 'flex', justifyContent: 'space-between' }}>
+                            <div></div>
+                            <Typography variant='h5' style={{ textAlign: 'center', marginTop: 10 }}>Danh sách dịch vụ</Typography>
+                            <div>
+                                <IconButton size='small' onClick={handleClose}>
+                                    <Close />
+                                </IconButton>
+                            </div>
+                        </div>
+
+                        {
+                            location.services.map(((item, index) =>
+                                <ServiceCard joined={joined} type='location' key={index} service={item} index={index} isEdit={isEdit} indexDate={indexDate} indexLocation={indexLocation} />
+                            ))
+                        }
+                    </div>
+                </Grid>
+            </Grid>
+        </Paper>
     )
 }
 
@@ -190,11 +230,11 @@ export default function Location(props) {
 
     const classes = tourdetailStyles();
 
-    // const { token } = useSelector(state => state.auth)
+    const { user } = useSelector(state => state.auth)
 
     const dispatch = useDispatch();
 
-    const { location, isOwn, isEdit, isSave, tourDateId, indexDate, indexLocation, addReview } = props;
+    const { location, isEdit, isSave, tourDateId, indexDate, indexLocation, addReview, joined, join, unjoin, joinIds, isOwn } = props;
 
     const [showDetail, setShowDetail] = useState(false);
     const [showCreateRv, setShowCreateRv] = useState(false);
@@ -202,6 +242,20 @@ export default function Location(props) {
     const [editLoc, setEditLoc] = useState(false);
     const [showDeleteLocation, setShowDeleteLocation] = useState(false);
     const [showReview, setShowReview] = useState(false);
+    const [showJoin, setShowJoin] = useState(false);
+
+    const handleShowJoin = () => {
+        setShowJoin(true);
+    }
+
+    const handleCloseJoin = () => {
+        setShowJoin(false);
+    }
+
+    const checkJoinLocation = () => {
+        let find = location.joinIds.findIndex(ele => ele._id === user._id)
+        return find >= 0;
+    }
 
     useEffect(() => {
         setShowDetail(false);
@@ -246,7 +300,11 @@ export default function Location(props) {
     }
 
     const handleShowDetail = () => {
-        setShowDetail(state => !state);
+        setShowDetail(true);
+    }
+
+    const handleCloseDetail = () => {
+        setShowDetail(false);
     }
 
 
@@ -261,6 +319,8 @@ export default function Location(props) {
     const refEdit = React.createRef();
     const refCr = React.createRef();
     const ref = React.createRef();
+    const refDetail = React.createRef();
+    const refUser = React.createRef();
 
     const EditLocationRef = React.forwardRef((props, ref) =>
         <EditLocationForm {...props} innerRef={ref} />
@@ -274,32 +334,93 @@ export default function Location(props) {
         <ReviewList {...props} innerRef={ref} />
     )
 
+    const DetailRef = React.forwardRef((props, ref) =>
+        <Detail {...props} innerRef={ref} />
+    )
+
+    const UserListRef = React.forwardRef((props, ref) =>
+        <UserList {...props} innerRef={ref} />
+    )
+
     return (
         <Card className={classes.cardContainer}>
 
             <Grid container>
-                <Grid item md={5} sm={3} className={classes.imageLocation}>
-                    <CardMedia className={classes.imgContainer}>
-                        <img src={location.location.images[0]} alt="Đang tải..." className={classes.img} />
+                <Grid item md={4} sm={3} className={classes.imageLocation}>
+                    <CardMedia>
+                        {
+                            location.locationName ?
+                                <img src={"https://skillz4kidzmartialarts.com/wp-content/uploads/2017/04/default-image-620x600.jpg"} alt="Đang tải..." className={classes.img} />
+                                : <img src={location.location.images[0]} alt="Đang tải..." className={classes.img} />
+                        }
+
                     </CardMedia>
 
                 </Grid>
-                <Grid item md={7} sm={9} xs={12}>
-                    <CardContent className={classes.contentContainer}>
-
+                <Grid item md={8} sm={9} xs={12}>
+                    <CardContent style={{ padding: 0 }}>
                         <div className={classes.locationContentContainer}>
-                            <div>
-                                <div>
-                                    <Typography variant="h5" className={classes.locationName} component={Link} to={`/location/${location.location.name}`}>{location.location.fullname}</Typography>
-                                </div>
-                                <div>
-                                    <Typography variant="h6" component={Link} to={"/province/" + location.location.province.name}>{location.location.province.fullname}</Typography>
-                                </div>
+                            <div style={{ margin: 20 }}>
                                 {
-                                    isSave && isOwn && <div> <Button className={classes.reviewBtn} onClick={handleShow}>Tạo Review</Button> </div>
+                                    location.locationName ?
+                                        <Typography variant="h5" className={classes.locationName}>
+                                            {location.locationName}
+                                        </Typography> :
+                                        <>
+                                            <div>
+                                                <Typography variant="h5" className={classes.locationName} component={Link} to={`/location/${location.location.name}`}>{location.location.fullname}</Typography>
+                                            </div>
+                                            <div>
+                                                <Typography variant="h6" component={Link} to={"/province/" + location.location.province.name}>{location.location.province.fullname}</Typography>
+                                            </div>
+                                        </>
                                 }
                                 {
-                                    isSave && location.postId?.length > 0 && <Button onClick={handleShowReview}>Xem review</Button>
+                                    isSave &&
+                                    <>
+                                        {
+                                            location.location && (joined || checkJoinLocation()) && <div> <Button className={classes.reviewBtn} onClick={handleShow}>Tạo Review</Button> </div>
+                                        }
+                                        {
+                                            location.postId?.length > 0 && <Button onClick={handleShowReview}>Xem review</Button>
+                                        }
+                                        {
+                                            !joined && !isOwn &&
+                                            <>
+                                                {
+                                                    checkJoinLocation() ?
+                                                        <Button onClick={() => unjoin(indexDate, indexLocation)}>
+                                                            Hủy tham gia
+                                                        </Button>
+                                                        :
+                                                        <Button onClick={() => join(indexDate, indexLocation)}>
+                                                            Tham gia
+                                                        </Button>
+                                                }
+                                            </>
+
+                                        }
+                                        <Typography>Thành viên tham gia</Typography>
+                                        <AvatarGroup max={4} onClick={handleShowJoin} style={{ cursor: 'pointer' }}>
+                                            {joinIds.concat(location.joinIds).map(user =>
+                                                <Avatar src={user.avatar} alt={'A'} key={user._id} style={{ height: 20, width: 20 }} />
+                                            )}
+                                        </AvatarGroup>
+                                        <Modal
+                                            aria-labelledby="like"
+                                            aria-describedby="user-like-this-post"
+                                            className={classes.modal}
+                                            open={showJoin}
+                                            onClose={handleCloseJoin}
+                                            closeAfterTransition
+                                            BackdropComponent={Backdrop}
+                                            BackdropProps={{
+                                                timeout: 500,
+                                            }}
+                                        >
+                                            <UserListRef ref={refUser} listUser={joinIds.concat(location.joinIds)} title={"Đã tham gia"} handleClose={handleCloseJoin} />
+                                        </Modal>
+                                    </>
                                 }
                                 <Button onClick={handleShowDetail}>Chi tiết</Button>
                             </div>
@@ -322,31 +443,36 @@ export default function Location(props) {
                                         <ClickAwayListener onClickAway={handleCloseMenu}>
                                             <Paper>
                                                 <MenuList>
-                                                    <MenuItem onClick={handleShowEdit}>
-                                                        Chỉnh sửa
-                                                    </MenuItem>
-                                                    <Modal
-                                                        aria-labelledby="transition-modal-edit"
-                                                        aria-describedby="transition-modal-edit-description"
-                                                        open={editLoc}
-                                                        className={classes.modal}
-                                                        onClose={handleCloseEdit}
-                                                        BackdropComponent={Backdrop}
-                                                        BackdropProps={{
-                                                            timeout: 500,
-                                                        }}
-                                                    >
-                                                        <Fade in={editLoc}>
-                                                            <EditLocationRef
-                                                                ref={refEdit}
-                                                                handleCloseParent={handleCloseMenu}
-                                                                handleClose={handleCloseEdit}
-                                                                indexDate={indexDate}
-                                                                indexLocation={indexLocation}
-                                                                location={location}
-                                                            />
-                                                        </Fade>
-                                                    </Modal>
+                                                    {
+                                                        location.location &&
+                                                        <>
+                                                            <MenuItem onClick={handleShowEdit}>
+                                                                Chỉnh sửa
+                                                            </MenuItem>
+                                                            <Modal
+                                                                aria-labelledby="transition-modal-edit"
+                                                                aria-describedby="transition-modal-edit-description"
+                                                                open={editLoc}
+                                                                className={classes.modal}
+                                                                onClose={handleCloseEdit}
+                                                                BackdropComponent={Backdrop}
+                                                                BackdropProps={{
+                                                                    timeout: 500,
+                                                                }}
+                                                            >
+                                                                <Fade in={editLoc}>
+                                                                    <EditLocationRef
+                                                                        ref={refEdit}
+                                                                        handleCloseParent={handleCloseMenu}
+                                                                        handleClose={handleCloseEdit}
+                                                                        indexDate={indexDate}
+                                                                        indexLocation={indexLocation}
+                                                                        location={location}
+                                                                    />
+                                                                </Fade>
+                                                            </Modal>
+                                                        </>
+                                                    }
                                                     <MenuItem onClick={handleShowDelete}>
                                                         Xóa
                                                     </MenuItem>
@@ -422,7 +548,7 @@ export default function Location(props) {
                     </CardContent>
                 </Grid>
 
-                <Collapse in={showDetail} style={{ width: "100%" }}>
+                {/* <Collapse in={showDetail} style={{ width: "100%" }}>
                     <Grid item md={12} sm={12} xs={12}>
                         <Detail
                             location={location}
@@ -431,9 +557,32 @@ export default function Location(props) {
                             indexLocation={indexLocation}
                         />
                     </Grid>
-                </Collapse>
+                </Collapse> */}
+                <Modal
+                    aria-labelledby="transition-modal-detail"
+                    aria-describedby="transition-modal-detail-description"
+                    open={showDetail}
+                    className={classes.modal}
+                    onClose={handleCloseDetail}
+                    BackdropComponent={Backdrop}
+                    BackdropProps={{
+                        timeout: 500,
+                    }}
+                >
+                    <Fade in={showDetail}>
+                        <DetailRef
+                            ref={refDetail}
+                            location={location}
+                            isEdit={isEdit}
+                            indexDate={indexDate}
+                            indexLocation={indexLocation}
+                            handleClose={handleCloseDetail}
+                            joined={joined}
+                        />
+                    </Fade>
+                </Modal>
 
             </Grid>
-        </Card>
+        </Card >
     )
 }

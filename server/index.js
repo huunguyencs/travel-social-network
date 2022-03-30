@@ -6,12 +6,17 @@ const cors = require('cors');
 const cookieParser = require('cookie-parser');
 const SocketServer = require('./socketServer');
 const { request } = require('http');
+const appResponse = require('./utils/appResponse');
 
-
+// middleware
 const app = express();
 app.use(express.json());
+// accept cors
 app.use(cors());
 app.use(cookieParser());
+app.use(appResponse);
+
+
 
 //Socket
 const http = require('http').createServer(app);

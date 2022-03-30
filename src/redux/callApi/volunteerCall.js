@@ -20,7 +20,7 @@ export const createVolunteer = (token, socket, data, images_data, next, error) =
     try {
         let images = await imageUtils.uploadImages(images_data);
 
-        const res = await customAxios(token).post('/volunteer/create_volunteer', {
+        const res = await customAxios(token).post('/volunteer/create', {
             ...data,
             images: images
         })
@@ -119,7 +119,7 @@ export const unJoinVolunteerAll = (id, token, next, error) => async (dispatch) =
     }
 }
 
-export const joinVolunteerOne = (id, locationId,data, token, next, error) => async (dispatch) => {
+export const joinVolunteerOne = (id, locationId, data, token, next, error) => async (dispatch) => {
     try {
         const res = await customAxios(token).patch(`/volunteer/${locationId}/joinOne`, data);
         dispatch(volunteerAction.updateJoinOne({ id: id, locationId: locationId, users: res.data.users }));
@@ -137,7 +137,7 @@ export const joinVolunteerOne = (id, locationId,data, token, next, error) => asy
 
 export const unJoinVolunteerOne = (id, locationId, data, token, next, error) => async (dispatch) => {
     try {
-        const res = await customAxios(token).patch(`/volunteer/${locationId}/unjoinOne`,data);
+        const res = await customAxios(token).patch(`/volunteer/${locationId}/unjoinOne`, data);
         dispatch(volunteerAction.updateJoinOne({ id: id, locationId: locationId, users: res.data.users }));
         dispatch(alertAction.success({ message: "Hủy đăng ký tham gia địa điểm thành công!" }));
         next();

@@ -61,13 +61,13 @@ export const getUserTour = (id, token, page) => async (dispatch) => {
     try {
         var res;
         if (page && page > 0) {
-            res = await customAxios(token).get(`/tour/user_tours/${id}?offset=${page}`);
+            res = await customAxios(token).get(`/tour/user/${id}?offset=${page}`);
             let tours = res.data.tours.map(item => sortTourDate(item))
             // console.log(res.data.tours);
             dispatch(tourAction.getMoreTour({ tours: tours }))
         }
         else {
-            res = await customAxios(token).get(`/tour/user_tours/${id}`);
+            res = await customAxios(token).get(`/tour/user/${id}`);
             let tours = res.data.tours.map(item => sortTourDate(item))
             // console.log(res.data.tours);
             dispatch(tourAction.getTours({ tours: tours }))
@@ -77,6 +77,37 @@ export const getUserTour = (id, token, page) => async (dispatch) => {
         dispatch(tourAction.error({ error: "Có lỗi xảy ra" }))
         // console.log(err);
     }
+}
+
+function extractService(services) {
+    return services.map((service) => {
+        if (service?.service) {
+            return {
+                ...service,
+                service: service.service._id,
+            }
+        }
+        else {
+            return service;
+        }
+    })
+}
+
+function extractLocation(locations) {
+    return locations.map((location) => {
+        if (location?.location) {
+            return {
+                ...location,
+                location: location.location._id,
+                services: extractService(location.services)
+            }
+        }
+        else
+            return {
+                ...location,
+                services: extractService(location.services)
+            }
+    })
 }
 
 export const saveTour = (tour, image, token, socket, next, error) => async (dispatch) => {
@@ -90,10 +121,8 @@ export const saveTour = (tour, image, token, socket, next, error) => async (disp
             ...tour,
             tour: tour.tour.map(item => ({
                 ...item,
-                locations: item.locations.map(location => ({
-                    ...location,
-                    location: location.location._id,
-                })),
+                services: extractService(item.services),
+                locations: extractLocation(item.locations),
             })),
             provinces: Array.from(extractProvinceTour(tour.tour)),
             locations: Array.from(extractLocationTour(tour.tour)),
@@ -102,7 +131,7 @@ export const saveTour = (tour, image, token, socket, next, error) => async (disp
 
         // console.log(data);
 
-        const res = await customAxios(token).post('/tour/create_tour', data);
+        const res = await customAxios(token).post('/tour/create', data);
 
         //notify
         const dataNotify = {
@@ -131,17 +160,17 @@ export const updateTour = (id, tour, image, token, next, error) => async (dispat
         if (image && typeof image !== "string") {
             imageUpload = await imageUtils.uploadImages([image]);
         }
+
         const data = {
             ...tour,
             tour: tour.tour.map(item => ({
                 ...item,
-                locations: item.locations.map(location => ({
-                    location: location.location._id,
-                }))
+                services: extractService(item.services),
+                locations: extractLocation(item.locations),
             })),
-            image: image ? imageUpload[0] : "",
             provinces: Array.from(extractProvinceTour(tour.tour)),
             locations: Array.from(extractLocationTour(tour.tour)),
+            image: image ? imageUpload[0] : ""
         }
         const res = await customAxios(token).patch(`/tour/${id}`, data);
         next();

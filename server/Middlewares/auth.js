@@ -16,7 +16,7 @@ const auth = async (req, res, next) => {
         req.user = user
         next()
     } catch (err) {
-        return res.status(500).json({ success: false, message: err.message })
+        return res.error(err);
     }
 }
 

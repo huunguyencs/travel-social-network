@@ -13,7 +13,7 @@ class ProvinceController {
             })
             await newProvince.save()
 
-            res.json({
+            res.created({
                 success: true,
                 message: "Create province successful",
                 newProvince: {
@@ -22,7 +22,7 @@ class ProvinceController {
             })
         } catch (err) {
             console.log(err)
-            res.status(500).json({ success: false, message: err.message })
+            res.error(err);
         }
     }
 
@@ -34,25 +34,23 @@ class ProvinceController {
                 name, fullname, information, detail, image, position
             }, { new: true })
 
-            res.json({ success: true, message: "update province successful", province })
+            res.success({ success: true, message: "update province successful", province })
         } catch (err) {
             console.log(err)
-            res.status(500).json({ success: false, message: err.message })
+            res.error(err);
         }
     }
 
-    async deleteProvince(req, res) {
-        try {
-            await Provinces.findByIdAndDelete(req.params.id);
+    // async deleteProvince(req, res) {
+    //     try {
+    //         await Provinces.findByIdAndDelete(req.params.id);
 
-            res.json({
-                success: true, message: "Delete province success"
-            });
-        } catch (err) {
-            console.log(err)
-            res.status(500).json({ success: false, message: err.message })
-        }
-    }
+    //         res.deleted('Xóa tỉnh thành công');
+    //     } catch (err) {
+    //         console.log(err)
+    //         res.error(err);
+    //     }
+    // }
 
     // lấy thông tin 1 Province theo params.id
     async getProvince(req, res) {
@@ -60,60 +58,60 @@ class ProvinceController {
             const id = req.params.id;
             var province = await Provinces.findOne({ name: id });
             if (province) {
-                res.json({
+                res.success({
                     success: true, message: "get info 1 province success", province
                 });
             }
             else {
-                res.status(404).json({ success: false, message: "Không tìm thấy tỉnh!" });
+                res.notFound("Không tìm thấy tỉnh!");
             }
 
 
         } catch (err) {
             console.log(err)
-            res.status(500).json({ success: false, message: err.message })
+            res.error(err);
         }
     }
 
     async getLocationsProvince(req, res) {
         try {
             const locations = await Locations.find({ province: req.params.id });
-            res.json({
+            res.success({
                 success: true,
                 message: "Success",
                 locations
             })
         }
         catch (err) {
-            res.status(500).json({ success: false, message: err.message })
+            res.error(err);
         }
     }
 
     async getEventsProvince(req, res) {
         try {
             const events = await Events.find({ provinceId: req.params.id });
-            res.json({
+            res.success({
                 success: true,
                 message: "Success",
                 events
             })
         }
         catch (err) {
-            res.status(500).json({ success: false, message: err.message })
+            res.error(err);
         }
     }
 
     async getServicesProvince(req, res) {
         try {
             const services = await Services.find({ province: req.params.id });
-            res.json({
+            res.success({
                 success: true,
                 message: "Success",
                 services
             })
         }
         catch (err) {
-            res.status(500).json({ success: false, message: err.message })
+            res.error(err);
         }
     }
 
@@ -121,20 +119,20 @@ class ProvinceController {
     async getProvinces(req, res) {
         try {
             const provinces = await Provinces.find({}, "fullname name position");
-            res.json({ success: true, message: "get all provinces success", provinces });
+            res.success({ success: true, message: "get all provinces success", provinces });
         } catch (err) {
             console.log(err)
-            res.status(500).json({ success: false, message: err.message })
+            res.error(err);
         }
     }
 
     async getAllDetail(req, res) {
         try {
             const provinces = await Provinces.find({}, "fullname name image information");
-            res.json({ success: true, message: "get all provinces success", provinces })
+            res.success({ success: true, message: "get all provinces success", provinces })
         } catch (err) {
             console.log(err)
-            res.status(500).json({ success: false, message: err.message })
+            res.error(err);
         }
     }
 
@@ -151,10 +149,10 @@ class ProvinceController {
                 image: item.image,
                 score: item._doc.score
             }))
-            res.json({ success: true, results: provinces, query: q })
+            res.success({ success: true, results: provinces, query: q })
         }
         catch (err) {
-            res.status(500).json({ success: false, message: err.message })
+            res.error(err);
         }
     }
 

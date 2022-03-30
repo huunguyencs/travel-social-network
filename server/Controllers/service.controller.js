@@ -19,7 +19,7 @@ class ServiceController {
             await newService.save()
 
             // console.log(location)
-            res.json({
+            res.created({
                 success: true,
                 message: "Create Service successful",
                 newService: {
@@ -28,7 +28,7 @@ class ServiceController {
             })
         } catch (err) {
             console.log(err)
-            res.status(500).json({ success: false, message: err.message })
+            res.error(err);
         }
     }
 
@@ -41,10 +41,10 @@ class ServiceController {
                 name, description, type, province, images, cost, discount
             }, { new: true })
 
-            res.json({ success: true, message: "update Service successful", service })
+            res.success({ success: true, message: "update Service successful", service })
         } catch (err) {
             console.log(err)
-            res.status(500).json({ success: false, message: err.message })
+            res.error(err);
         }
     }
 
@@ -53,12 +53,10 @@ class ServiceController {
             await Services.findOneAndDelete({ _id: req.params.id, cooperator: req.user._id });
 
 
-            res.json({
-                success: true, message: "Delete Service success"
-            });
+            res.deleted('Xóa dịch vụ thành công!');
         } catch (err) {
             console.log(err)
-            res.status(500).json({ success: false, message: err.message })
+            res.error(err);
         }
     }
 
@@ -67,12 +65,12 @@ class ServiceController {
         try {
             const service = await Services.findById(req.params.id)
                 .populate("cooperator")
-            res.json({
+            res.success({
                 success: true, message: "get info 1 Service success", service
             });
         } catch (err) {
             console.log(err)
-            res.status(500).json({ success: false, message: err.message })
+            res.error(err);
         }
     }
 
@@ -82,10 +80,10 @@ class ServiceController {
                 // .populate("cooperator")
                 .populate("cooperator", "fullname")
                 .populate("province", "fullname")
-            res.json({ success: true, message: "get info all Service success", services });
+            res.success({ success: true, message: "get info all Service success", services });
         } catch (error) {
             console.log(err)
-            res.status(500).json({ success: false, message: err.message })
+            res.error(err);
         }
     }
 
@@ -97,19 +95,19 @@ class ServiceController {
             const services = await Services.find({}, "-rate -attribute").skip(offset * 5).limit(5)
                 // .populate("cooperator")
                 .populate("province", "name fullname");
-            res.json({ success: true, message: "get info all Service success", services });
+            res.success({ success: true, message: "get info all Service success", services });
         } catch (err) {
             console.log(err)
-            res.status(500).json({ success: false, message: err.message })
+            res.error(err);
         }
     }
 
     async getServiceByCoop(req, res) {
         try {
             const services = await Services.find({ cooperator: req.params.id }, "-rate -attribute").populate("province", "name fullname");
-            res.json({ success: true, message: "", services })
+            res.success({ success: true, message: "", services })
         } catch (err) {
-            res.status(500).json({ success: false, message: err.message })
+            res.error(err);
         }
     }
 
@@ -123,10 +121,10 @@ class ServiceController {
                         select: "name fullname avatar"
                     }
                 })
-            res.json({ success: true, message: "", rate: service.rate, attribute: service.attribute });
+            res.success({ success: true, message: "", rate: service.rate, attribute: service.attribute });
         }
         catch (err) {
-            res.status(500).json({ success: false, message: err.message })
+            res.error(err);
         }
     }
 
@@ -169,10 +167,10 @@ class ServiceController {
                     break;
             }
 
-            res.json({ success: true, message: "", star: service.star })
+            res.success({ success: true, message: "", star: service.star })
         } catch (err) {
             console.log(err);
-            res.status(500).json({ success: false, message: err.message })
+            res.error(err);
         }
     }
 
@@ -191,9 +189,9 @@ class ServiceController {
                 description: item.description,
                 image: item.images[0]
             }))
-            res.json({ success: true, results: services, query: q })
+            res.success({ success: true, results: services, query: q })
         } catch (err) {
-            res.status(500).json({ success: false, message: err.message })
+            res.error(err);
         }
     }
 }

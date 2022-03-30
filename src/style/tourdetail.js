@@ -5,9 +5,8 @@ import color from "./color";
 
 const tourdetailStyles = makeStyles((theme) => ({
     coverTitle: {
-        marginTop: 60,
         textAlign: "center",
-        paddingTop: 30,
+        // paddingTop: 30,
     },
     seeDetail: {
         marginBottom: 20,
@@ -26,32 +25,15 @@ const tourdetailStyles = makeStyles((theme) => ({
             paddingRight: 0
         }
     },
-    timeline: {
-        paddingTop: 80,
-        marginTop: 80,
-        position: "sticky",
-        top: 0,
+    hiddenSmall: {
         [theme.breakpoints.down("sm")]: {
-            display: 'none',
+            display: 'none'
         }
-    },
-    smallTimeline: {
-        display: 'none',
-        [theme.breakpoints.down("sm")]: {
-            display: 'flex',
-            justifyContent: 'center',
-            marginBottom: 20,
-
-        }
-    },
-    timelineWrap: {
-        display: 'flex',
-        overflow: 'auto',
     },
     cardContainer: {
         marginBlock: 15,
         width: '100%',
-        borderRadius: attr.borderRadius.sm,
+        // borderRadius: attr.borderRadius.sm,
         [theme.breakpoints.down("md")]: {
             marginInline: 3,
         },
@@ -64,8 +46,8 @@ const tourdetailStyles = makeStyles((theme) => ({
     },
     serviceContainer: {
         margin: 30,
-        width: 500,
-        borderRadius: attr.borderRadius.sm,
+        width: 420,
+        // borderRadius: attr.borderRadius.sm,
         [theme.breakpoints.down("md")]: {
             width: 400
         },
@@ -85,7 +67,7 @@ const tourdetailStyles = makeStyles((theme) => ({
         display: "flex",
     },
     img: {
-        height: "150px",
+        height: "180px",
         width: "100%",
         [theme.breakpoints.down("md")]: {
             height: "100px",
@@ -175,22 +157,21 @@ const tourdetailStyles = makeStyles((theme) => ({
     },
     addDay: {
         marginTop: 20,
-        backgroundColor: color.turquoise,
-        borderRadius: attr.borderRadius.md,
-        paddingInline: 10,
-        marginLeft: 20,
         textTransform: 'none',
         [theme.breakpoints.down("md")]: {
             marginLeft: 10,
         }
+    },
+    content: {
+        marginLeft: 10,
     },
     info: {
         marginInline: 100
     },
     itemInfo: {
         marginTop: 10,
-        display: "flex",
-        justifyContent: "center",
+        display: 'flex',
+        justifyContent: 'center'
     },
     hashtagWrap: {
         display: "flex",
@@ -248,6 +229,10 @@ const tourdetailStyles = makeStyles((theme) => ({
         padding: 20,
     },
     addDayWrap: {
+        marginLeft: 50,
+        [theme.breakpoints.down("md")]: {
+            marginLeft: 20
+        },
         [theme.breakpoints.down("sm")]: {
             display: "flex",
             justifyContent: 'center'
@@ -327,6 +312,29 @@ const tourdetailStyles = makeStyles((theme) => ({
     closeBtn: {
         display: 'flex',
         justifyContent: 'right',
+    },
+    timeline: {
+        maxHeight: 400,
+        overflowY: 'auto',
+        marginBlock: 20,
+        marginLeft: 50,
+        [theme.breakpoints.down("md")]: {
+            marginLeft: 20,
+        },
+        [theme.breakpoints.down("sm")]: {
+            display: 'flex',
+            marginBottom: 15
+        }
+    },
+    timelineItem: {
+        marginBlock: 10,
+        [theme.breakpoints.down("sm")]: {
+            marginBlock: 0
+        }
+    },
+    paperDetailDate: {
+        width: 1000,
+        height: '70vh'
     }
 }))
 

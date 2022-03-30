@@ -12,8 +12,8 @@ import customAxios from "../../utils/fetchData";
 export default function EditLocationForm(props) {
 
     // const idRef = useRef(props.locationId);
-    const [currentProvince, setCurrentProvince] = useState(props.location.location.province);
-    const [loc, setLoc] = useState(props.location.location);
+    const [currentProvince, setCurrentProvince] = useState(props.location?.location.province);
+    const [loc, setLoc] = useState(props.location?.location);
 
     const dispatch = useDispatch();
     const { location } = useSelector(state => state);

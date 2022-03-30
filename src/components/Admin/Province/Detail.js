@@ -98,10 +98,7 @@ export default function DetailProvinceAdmin() {
     const changePosition = (position) => {
         setProvince(province => ({
             ...province,
-            position: {
-                lat: position.lat,
-                lon: position.lng
-            }
+            position: position
         }));
     }
 
@@ -310,9 +307,9 @@ export default function DetailProvinceAdmin() {
                                         <TextField
                                             label="Kinh độ"
                                             variant='outlined'
-                                            name='lon'
+                                            name='lng'
                                             handleChange={changePositionText}
-                                            value={province.position.lon}
+                                            value={province.position.lng}
                                             className={classes.fullField}
                                             InputProps={{
                                                 readOnly: picker,
@@ -337,7 +334,7 @@ export default function DetailProvinceAdmin() {
                                         <MapPicker
                                             position={{
                                                 lat: parseFloat(province.position.lat),
-                                                lng: parseFloat(province.position.lon)
+                                                lng: parseFloat(province.position.lng)
                                             }}
                                             setPosition={changePosition}
                                             height={400}

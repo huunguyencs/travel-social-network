@@ -28,6 +28,7 @@ export default function TourDetail(props) {
     })
 
     const [isOwn, setIsOwn] = useState(false);
+    const [joined, setJoined] = useState(false);
 
     useEffect(() => {
         if (tour && tour.name) {
@@ -37,9 +38,19 @@ export default function TourDetail(props) {
 
     useEffect(() => {
         if (auth.user && tour) {
-            setIsOwn(tour.joinIds.includes(auth.user._id));
+            // setIsOwn(tour.joinIds.includes(auth.user._id));
+            setIsOwn(tour.userId._id === auth.user._id);
         }
-    }, [setIsOwn, tour, auth]);
+    }, [tour, auth.user]);
+
+    useEffect(() => {
+        if (auth.user && tour) {
+            const find = tour.joinIds.findIndex(ele => ele._id === auth.user._id);
+            console.log("Find", find);
+            if (find >= 0) setJoined(true);
+            else setJoined(false)
+        }
+    }, [tour, auth.user])
 
 
     const getTourDetail = async (id) => {
@@ -107,7 +118,7 @@ export default function TourDetail(props) {
                                 </>
                             </div> :
 
-                            tour && (edit === 'true' && isOwn ? <AddTour isUpdate={true} /> : <Tour tour={tour} setTour={setTour} isOwn={isOwn} />)
+                            tour && (edit === 'true' && isOwn ? <AddTour isUpdate={true} /> : <Tour tour={tour} setTour={setTour} isOwn={isOwn} joined={joined} />)
             }
         </>
     )
