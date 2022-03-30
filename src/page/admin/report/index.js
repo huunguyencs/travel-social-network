@@ -1,12 +1,16 @@
-import React from 'react'
+import React, {useEffect} from 'react'
 import { Grid } from "@material-ui/core";
 import LeftBar from "../../../components/Leftbar";
 import { adminListMenu } from "../../../constant/adminMenu";
 import AdminReport from '../../../components/Admin/report';
 
 export default function AdminReportPage() {
-    return (
 
+    useEffect(() => {
+        document.title = "Admin - Ý kiến đóng góp"
+    }, [])
+
+    return (
         <Grid container>
             <Grid item md={3}>
                 <LeftBar menuList={adminListMenu} />
