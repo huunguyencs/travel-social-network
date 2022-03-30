@@ -89,7 +89,7 @@ export default function CreateReviewForm(props) {
         ht = [...hashtagArr, ...ht]
         dispatch(createPost({
             content: text,
-            image: imageUpload,
+            images: imageUpload,
             hashtags: ht,
             rate: rate,
             locationId: location._id,

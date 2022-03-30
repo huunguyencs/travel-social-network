@@ -3,7 +3,7 @@ import { Backdrop, Container, Fade, InputBase, Modal } from "@material-ui/core";
 
 import Post from '../Post';
 import Feed from './index';
-import { feedStyles } from "../../style";
+import { feedReviewStyles } from "../../style";
 import { useDispatch, useSelector } from "react-redux";
 import { getPostsLocation } from "../../redux/callApi/postCall";
 import CreateReview from '../Forms/CreateReview'
@@ -27,7 +27,7 @@ export default function FeedReview(props) {
         setOpen(false);
     }
 
-    const classes = feedStyles();
+    const classes = feedReviewStyles();
 
     const loadMoreReview = () => {
         if (post.hasMore) {
@@ -66,8 +66,7 @@ export default function FeedReview(props) {
 
 
     return (
-        <Container>
-            <div className={classes.content}>
+            <div style={{minHeight: "153px"}}>
                 <div className={classes.create}>
                     <div className={classes.containerText}>
                         <InputBase
@@ -103,6 +102,7 @@ export default function FeedReview(props) {
                     error={post.error}
                     hasMore={post.hasMore}
                     tryAgain={tryAgain}
+                    type = "review"
                 >
                     {
                         post.posts.map((post) => (
@@ -152,6 +152,5 @@ export default function FeedReview(props) {
 
                 </div> */}
             </div>
-        </Container>
     )
 }

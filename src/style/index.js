@@ -35,7 +35,7 @@ import adminStyles from "./adminStyles";
 import volunteerStyles from "./volunteer";
 import tableStyles from "./table";
 import addVolunteerStyles from "./addVolunteer";
-
+import feedReviewStyles from "./feedReview";
 
 const useStyles = makeStyles((theme) => ({
     center: {
@@ -92,4 +92,5 @@ export {
     volunteerStyles,
     tableStyles,
     addVolunteerStyles,
+    feedReviewStyles
 };

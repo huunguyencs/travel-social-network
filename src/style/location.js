@@ -3,12 +3,25 @@ import color from "./color";
 import attr from "./attr";
 
 const locationStyles = makeStyles((theme) => ({
+    container:{
+        width: 1300,
+        margin: 'auto',
+        [theme.breakpoints.down("md")]: {
+            width: "100%",
+            padding: "0 16"
+        }
+    },
     imageList: {
-        margin: 30,
-        marginTop: 50,
+        marginTop: 20,
         borderRadius: attr.borderRadius.md,
         height: 400,
-        padding: 0
+        padding: 0,
+        display: "flex",
+        overflow: "hidden",
+        boxShadow: "0 2px 8px #00000026",
+        [theme.breakpoints.down("sm")]: {
+            marginInline: 15
+        },
     },
     coverText: {
         position: 'absolute',
@@ -28,7 +41,7 @@ const locationStyles = makeStyles((theme) => ({
         }
     },
     iconProvince: {
-        fontSize: 40,
+        fontSize: 30,
         marginRight: "10px",
         color: "black",
         [theme.breakpoints.down("sm")]: {
@@ -36,58 +49,136 @@ const locationStyles = makeStyles((theme) => ({
         }
     },
     infoPanel: {
-        marginInline: 20,
-        marginTop: 50,
+        marginInline: 15,
+        marginTop: 20,
         backgroundColor: color.white,
         borderRadius: attr.borderRadius.md,
-        height: 400
+        height: 400,
+        boxShadow: "0 2px 8px #00000026",
+        overflow: "hidden"
     },
     infoHeader: {
-        backgroundColor: color.turquoise,
+        background: `linear-gradient(90deg,${color.turquoise},#dbf8ec)`,
         display: "flex",
         justifyContent: "center",
-        padding: 15,
-        borderRadius: attr.borderRadius.md,
+        padding: 8,
+        borderRadius: `${attr.borderRadius.md}px ${attr.borderRadius.md}px 0 0`
     },
     infoContent: {
         padding: 30,
     },
     map: {
         height: 400,
-        marginInline: 10,
-        marginTop: 50,
-    },
-    review: {
-        marginTop: 30
+        marginInline: 15,
+        marginTop: 20,
+        boxShadow: "0 2px 8px #00000026"
     },
     fullname: {
-        marginTop: 120,
+        marginTop: 100,
         display: 'flex',
         justifyContent: 'center'
     },
     provinceWrap: {
         display: 'flex',
         justifyContent: 'center',
-        marginTop: 20
+        marginTop: 15
     },
     centerMarginTop: {
         display: 'flex',
         justifyContent: 'center',
         marginTop: 150
     },
-    image: {
+    image1: {
         cursor: "pointer",
         height: "100%",
+        width: "50%",
         transition: "0.5s",
         "&:hover": {
             filter: "brightness(85%)",
-        }
+        },
+        objectFit: "cover",
+        borderRight: "3px solid white"
+
+    },
+    image2: {
+        cursor: "pointer",
+        height: "50%",
+        transition: "0.5s",
+        "&:hover": {
+            filter: "brightness(85%)",
+        },
+        objectFit: "cover",
+        width: "100%"
+    },
+    image3: {
+        cursor: "pointer",
+        height: "50%",
+        transition: "0.5s",
+        "&:hover": {
+            filter: "brightness(85%)",
+        },
+        objectFit: "cover",
+        width: "100%"
     },
     titleFullname: {
         [theme.breakpoints.down("sm")]: {
             fontSize: 40
         }
+    },
+    rate:{
+        marginInline: 15,
+        marginTop: 20,
+        backgroundColor: color.white,
+        borderRadius: attr.borderRadius.md,
+        boxShadow: "0 2px 8px #00000026",
+        position: "sticky",
+        top: "80px"
+    },
+    weather:{
+        marginInline: 15,
+        marginTop: 20,
+        backgroundColor: color.white,
+        borderRadius: attr.borderRadius.md,
+        boxShadow: "0 2px 8px #00000026",
+        position: "sticky",
+        top: "80px"
+    },
+    review: {
+        marginTop: 20,
+        backgroundColor: color.white,
+        borderRadius: attr.borderRadius.md,
+        boxShadow: "0 2px 8px #00000026",
+        padding: "8px 16px",
+        [theme.breakpoints.down("sm")]: {
+            marginInline: 15
+        },
+    },
+    reviewTop:{
+        display:"flex",
+        alignItems: "center",
+        paddingBottom: 6   
+    },
+    overView:{
+        display:"flex",
+        alignItems: "center",
+        justifyContent: "space-between",
+        padding: "10px 16px",
+        position: "relative",
+        borderRadius: 20,
+        background: `linear-gradient(90deg,${color.turquoise},#dbf8ec)`
+    },
+    overView_image:{
+        width: "30%",
+        height: "100%",
+        textAlign: "center",
+        position: "relative"
+    },
+    overView_text:{
+        flexGrow: 1,
+        padding: "10px 8px"
     }
+
+
 }))
 
 export default locationStyles;

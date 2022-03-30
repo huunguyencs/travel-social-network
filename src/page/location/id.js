@@ -1,4 +1,4 @@
-import { Button, Card, CircularProgress, Grid, Typography } from "@material-ui/core";
+import { Button, CircularProgress, Grid, Typography } from "@material-ui/core";
 // import { LocationOn } from "@material-ui/icons";
 import React, { useEffect, useState } from "react";
 import { Link, useParams } from "react-router-dom";
@@ -120,21 +120,18 @@ export default function Location(props) {
                                         <SpeedDialButton />
                                         <Grid item md={12} sm={12} xs={12}>
                                             <div className={classes.fullname}>
-                                                <Typography variant="h2" noWrap={false} className={classes.titleFullname}>
+                                                <Typography variant="h4" noWrap={false} className={classes.titleFullname}>
                                                     {location.fullname}
                                                 </Typography>
                                             </div>
                                             <div className={classes.provinceWrap}>
                                                 <>
-                                                    {/* <LocationOn className={classes.iconProvince} /> */}
                                                     <MapPinIcon className={classes.iconProvince} />
-                                                    <Typography className={classes.provinceName} variant="h4" component={Link} to={`/province/${location.province.name}`}>
+                                                    <Typography className={classes.provinceName} variant="h5" component={Link} to={`/province/${location.province.name}`}>
                                                         {location.province.fullname}
                                                     </Typography>
                                                 </>
                                             </div>
-
-
                                         </Grid>
                                         <Grid item md={3} sm={12} xs={12}>
                                             <div className={classes.infoPanel}>
@@ -148,16 +145,14 @@ export default function Location(props) {
                                                 </div>
                                             </div>
                                         </Grid>
-
-
                                         <Grid item md={6} sm={12} xs={12}>
-                                            <div className={classes.map}>
-                                                <MapCard position={location.position} zoom={12} name={location.fullname} height={400} />
-                                            </div>
-                                        </Grid>
-                                        <Grid item md={3} sm={12} xs={12}>
-                                            <Card className={classes.imageList}>
-                                                <img src={location.images[0]} alt="Đang tải..." className={classes.image} onClick={handleShowImage} />
+                                            <div className={classes.imageList}>
+                                                <img src={location.images[0]} alt="Đang tải..." className={classes.image1} onClick={handleShowImage} />
+                                                <div style={{height:"100%", width:"100%"}}>
+                                                    <img src={location.images[1]} alt="Đang tải..." className={classes.image2} onClick={handleShowImage} />
+                                                    <img src={location.images[2]} alt="Đang tải..." className={classes.image3} onClick={handleShowImage} />
+                                                </div>
+                                                
                                                 {showImg && (
                                                     <Lightbox
                                                         mainSrc={location.images[imgIdx]}
@@ -172,20 +167,43 @@ export default function Location(props) {
                                                         onMovePrevRequest={prevImage}
                                                     />
                                                 )}
-                                            </Card>
+                                            </div>
                                         </Grid>
                                         <Grid item md={3} sm={12} xs={12}>
-                                            <div style={{ margin: 30 }}>
+                                            <div className={classes.map}>
+                                                <MapCard position={location.position} zoom={12} name={location.fullname} height={400} />
+                                            </div>
+                                        </Grid>
+                                        <Grid item md={3} sm={12} xs={12}>
+                                            <div className={classes.rate}>
                                                 <RatingChart star={location.star} />
                                             </div>
                                         </Grid>
                                         <Grid item md={6} sm={12} xs={12}>
                                             <div className={classes.review}>
+                                                <div className={classes.reviewTop}>
+                                                    <Typography variant="h5">
+                                                        Đánh giá từ cộng đồng 
+                                                    </Typography>
+                                                </div>
+                                                <div className={classes.overView}>
+                                                    <div className={classes.overView_image}>
+                                                        <img style={{maxHeight: "100%"}} src="https://ik.imagekit.io/reviewcafe/Online_Review-cuate_wG_WzURJF.svg"/>
+                                                    </div>
+                                                    <div className={classes.overView_text}>
+                                                        <Typography variant="h5">
+                                                            Bạn đã từng đến đây?
+                                                        </Typography>
+                                                        <Typography >
+                                                            Chia sẻ trải nghiệm và cảm nhận của bản thân cho mọi người cùng biết
+                                                        </Typography>
+                                                    </div>
+                                                </div>
                                                 <FeedReview location={location} />
                                             </div>
                                         </Grid>
                                         <Grid item md={3} sm={12} xs={12}>
-                                            <div style={{ margin: 30 }}>
+                                            <div className={classes.weather}>
                                                 <WeatherCardGeneral position={location.position} nameShow={location.fullname} />
                                             </div>
                                         </Grid>

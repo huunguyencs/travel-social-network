@@ -3,6 +3,14 @@ import color from "./color";
 import attr from "./attr";
 
 const provinceStyles = makeStyles((theme) => ({
+    container:{
+        margin: "auto",
+        width: 1200,
+        [theme.breakpoints.down("md")]: {
+            width: "100%",
+            padding: "0 16"
+        }
+    },
     img: {
         position: "relative",
         textAlign: "center",
@@ -29,38 +37,47 @@ const provinceStyles = makeStyles((theme) => ({
         left: "50%",
         transform: "translate(-50%, -50%)",
         backgroundColor: color.black,
+        opacity: 0.6,
+        borderRadius: 100,
+        padding: "20px 150px 20px 150px",
+        border: "5px solid white",
         [theme.breakpoints.down("md")]: {
-            fontSize: 64
+            fontSize: 64,
+            padding: "15px 100px 15px 100px",
         },
         [theme.breakpoints.down("sm")]: {
-            fontSize: 48
+            fontSize: 48,
+            padding: "10px 50px 10px 50px",
         },
     },
     desContainer: {
-        margin: 50,
+        marginTop: 20,
         backgroundColor: color.white,
         borderRadius: attr.borderRadius.md,
+        boxShadow: "0 2px 8px #00000026",
+        overflow: "hidden"
     },
     title: {
         backgroundColor: color.turquoise,
         display: "flex",
         justifyContent: "center",
         padding: 15,
-        borderRadius: attr.borderRadius.md,
+        borderRadius: `${attr.borderRadius.md}px ${attr.borderRadius.md}px 0 0`
     },
     desContent: {
         padding: 30,
     },
     locationList: {
-        margin: 50,
+        marginBottom: 20,
         backgroundColor: color.white,
         borderRadius: attr.borderRadius.md,
-        // marginBottom: 20,
         paddingBottom: 20,
+        boxShadow: "0 2px 8px #00000026",
+        overflow: "hidden"
     },
     map: {
-        margin: 30,
-        height: 600
+        margin: "20px 0 20px 0",
+        boxShadow: "0 2px 8px #00000026"
     },
     patination: {
         display: "flex",

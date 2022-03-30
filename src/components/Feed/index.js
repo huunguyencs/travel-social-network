@@ -3,7 +3,7 @@ import React, { useEffect, useState } from 'react'
 import { feedStyles } from '../../style';
 
 export default function Feed(props) {
-    const { loadMore, tryAgain, loading, error, hasMore, children } = props;
+    const { loadMore, tryAgain, loading, error, hasMore, children, type } = props;
     const classes = feedStyles();
     const [fetch, setFetch] = useState(false);
 
@@ -27,23 +27,42 @@ export default function Feed(props) {
     }
     return (
         <div className={classes.container}>
-            <div className={classes.content}>
-                <div className={classes.feedContent}>
-                    {children}
-                    {
-                        loading &&
-                        <div className={classes.centerMarginTop}>
-                            <CircularProgress color={"inherit"} />
-                        </div>
-                    }
-                    {
-                        error &&
-                        <div className={classes.centerMarginTop}>
-                            <Button onClick={tryAgain}>Thử lại</Button>
-                        </div>
-                    }
+            {
+                type && type=="review" ?
+                    <div>
+                        {children}
+                        {
+                            loading &&
+                            <div className={classes.centerMarginTop}>
+                                <CircularProgress color={"inherit"} />
+                            </div>
+                        }
+                        {
+                            error &&
+                            <div className={classes.centerMarginTop}>
+                                <Button onClick={tryAgain}>Thử lại</Button>
+                            </div>
+                        }
+                    </div>
+                : 
+                <div className={classes.content}>
+                    <div className={classes.feedContent}>
+                        {children}
+                        {
+                            loading &&
+                            <div className={classes.centerMarginTop}>
+                                <CircularProgress color={"inherit"} />
+                            </div>
+                        }
+                        {
+                            error &&
+                            <div className={classes.centerMarginTop}>
+                                <Button onClick={tryAgain}>Thử lại</Button>
+                            </div>
+                        }
+                    </div>
                 </div>
-            </div>
+            }
         </div>
     )
 }
