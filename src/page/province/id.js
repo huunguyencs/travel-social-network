@@ -218,7 +218,7 @@ export default function Province(props) {
                                                 </div>
                                             </Grid>
                                             <Grid container className={classes.container}>
-                                                <Grid item md={9} sm={12} xs={12}>
+                                                <Grid item md={8} sm={12} xs={12}>
                                                     <Card className={classes.desContainer}>
                                                         <div className={classes.title}>
                                                             <Typography variant="h5">Thông tin về {province.fullname}</Typography>
@@ -272,9 +272,9 @@ export default function Province(props) {
                                                         </div>
                                                     </Card>
                                                 </Grid>
-                                                <Grid item md={3}>
+                                                <Grid item md={4}>
                                                     <div className={classes.rightbar}>
-                                                        <div style={{ width: "100%", margin:"20px 0px 20px 20px" }}>
+                                                        <div className={classes.rightWrap}>
                                                             <WeatherCardGeneral position={province?.position} nameShow={province?.fullname} />
                                                             <CovidCard name={province?.fullname} />
                                                         </div>

@@ -1,5 +1,5 @@
 import { Button, CircularProgress, Grid, Typography } from "@material-ui/core";
-// import { LocationOn } from "@material-ui/icons";
+import { PhotoLibrary } from "@material-ui/icons";
 import React, { useEffect, useState } from "react";
 import { Link, useParams } from "react-router-dom";
 import { useDispatch } from "react-redux";
@@ -148,9 +148,15 @@ export default function Location(props) {
                                         <Grid item md={6} sm={12} xs={12}>
                                             <div className={classes.imageList}>
                                                 <img src={location.images[0]} alt="Đang tải..." className={classes.image1} onClick={handleShowImage} />
-                                                <div style={{height:"100%", width:"100%"}}>
+                                                <div style={{height:"100%", width:"100%",position:"relative"}}>
                                                     <img src={location.images[1]} alt="Đang tải..." className={classes.image2} onClick={handleShowImage} />
                                                     <img src={location.images[2]} alt="Đang tải..." className={classes.image3} onClick={handleShowImage} />
+                                                    {
+                                                        location.images.length >= 3 && 
+                                                        <span className={classes.imageMore} onClick={handleShowImage}>
+                                                            <PhotoLibrary style={{fontSize: 12}}/> Xem tất cả ảnh ({location.images.length})
+                                                        </span >
+                                                    }
                                                 </div>
                                                 
                                                 {showImg && (
@@ -188,7 +194,7 @@ export default function Location(props) {
                                                 </div>
                                                 <div className={classes.overView}>
                                                     <div className={classes.overView_image}>
-                                                        <img style={{maxHeight: "100%"}} src="https://ik.imagekit.io/reviewcafe/Online_Review-cuate_wG_WzURJF.svg"/>
+                                                        <img style={{maxHeight: "100%"}} src="https://ik.imagekit.io/reviewcafe/Online_Review-cuate_wG_WzURJF.svg" alt="icon"/>
                                                     </div>
                                                     <div className={classes.overView_text}>
                                                         <Typography variant="h5">

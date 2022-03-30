@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Button, Grid, IconButton, TextField, Typography, Modal, Backdrop, Fade, CircularProgress } from '@material-ui/core';
+import { Button, Grid, IconButton, TextField, Typography, Modal, Backdrop, Fade, CircularProgress, InputAdornment } from '@material-ui/core';
 import { addVolunteerStyles } from '../../style';
 import { useDispatch, useSelector } from 'react-redux';
 import { useHistory } from 'react-router-dom';
@@ -306,13 +306,17 @@ export default function AddVolunteer(props) {
             <Grid container>
                 <Grid item md={6} sm={12} xs={12}>
                     <TextField
-                        label="Giá tiêu chuẩn"
-                        variant="outlined"
+                        type={"number"}
                         name="cost"
-                        required
+                        id="cost"
+                        label="Giá tiêu chuẩn (Nghìn đồng)"
+                        variant="outlined"
                         className={classes.fullField}
                         onChange={handleChange}
                         value={context.cost}
+                        InputProps={{
+                            endAdornment: <InputAdornment position="end">.000 VND</InputAdornment>,
+                        }}
                     />
                 </Grid>
                 <Grid item md={6} sm={12} xs={12}>
@@ -430,8 +434,27 @@ export default function AddVolunteer(props) {
                                 value={tempActivity}
                                 required
                             />
-                            <Button variant='contained' onClick={handleShowAddLoc}>
-                                Thêm địa điểm
+                            {
+                                tempLocation != null &&
+                                <TextField
+                                    variant="outlined"
+                                    name="location"
+                                    className={classes.halfFeild}
+                                    value={tempLocation.fullname}
+                                    required
+                                />
+                            }
+                            <Button variant='contained' onClick={handleShowAddLoc} style={{marginTop: 20}}> 
+                               {tempLocation == null ? "Thêm địa điểm":"Thay đổi địa điểm" } 
+                            </Button>
+                            <Button
+                                type="submit"
+                                disabled={!(tempActivity && tempTime)}
+                                variant='contained'
+                                color="primary"
+                                style={{marginLeft: 10, marginTop:20}}
+                            >
+                                Thêm
                             </Button>
                             <Modal
                                 aria-labelledby="modal-add-location"
@@ -453,14 +476,6 @@ export default function AddVolunteer(props) {
                                     />
                                 </Fade>
                             </Modal>
-                            <Button
-                                type="submit"
-                                disabled={!(tempActivity && tempTime)}
-                                variant='contained'
-                                color="primary"
-                            >
-                                Thêm
-                            </Button>
                         </form>
                         <Typography>Lịch trình ngày: {idx + 1}</Typography>
                         {
@@ -526,6 +541,7 @@ export default function AddVolunteer(props) {
                     </Grid>
                     <Grid item md={9} sm={12} xs={12}>
                         <TextField
+                            type={"number"}
                             label="Khoảng tuổi"
                             variant="outlined"
                             name="ageUser"
@@ -534,6 +550,7 @@ export default function AddVolunteer(props) {
                             value={locationVolunteer[idxLocation] && locationVolunteer[idxLocation].ageUser}
                         />
                         <TextField
+                            type={"number"}
                             label="Số người tham gia tối đa"
                             variant="outlined"
                             name="maxUser"

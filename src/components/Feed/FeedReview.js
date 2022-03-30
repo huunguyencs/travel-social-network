@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { Backdrop, Container, Fade, InputBase, Modal } from "@material-ui/core";
+import { Backdrop, Fade, InputBase, Modal } from "@material-ui/core";
 
 import Post from '../Post';
 import Feed from './index';

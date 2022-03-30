@@ -28,7 +28,7 @@ export default function Feed(props) {
     return (
         <div className={classes.container}>
             {
-                type && type=="review" ?
+                type && type==="review" ?
                     <div>
                         {children}
                         {

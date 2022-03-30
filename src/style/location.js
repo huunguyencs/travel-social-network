@@ -176,8 +176,21 @@ const locationStyles = makeStyles((theme) => ({
     overView_text:{
         flexGrow: 1,
         padding: "10px 8px"
+    },
+    imageMore:{
+        position: "absolute",
+        top: "auto",
+        right: "auto",
+        bottom: 10,
+        left: 10,
+        cursor: "pointer",
+        fontSize: 16,
+        opacity: 1,
+        padding: "4px 10px",
+        color: "#fff",
+        backgroundColor: "#000000aa",
+        borderRadius: attr.borderRadius.md
     }
-
 
 }))
 

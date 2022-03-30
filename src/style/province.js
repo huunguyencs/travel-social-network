@@ -5,7 +5,7 @@ import attr from "./attr";
 const provinceStyles = makeStyles((theme) => ({
     container:{
         margin: "auto",
-        width: 1200,
+        width: 1300,
         [theme.breakpoints.down("md")]: {
             width: "100%",
             padding: "0 16"
@@ -45,9 +45,9 @@ const provinceStyles = makeStyles((theme) => ({
             fontSize: 64,
             padding: "15px 100px 15px 100px",
         },
-        [theme.breakpoints.down("sm")]: {
-            fontSize: 48,
-            padding: "10px 50px 10px 50px",
+        [theme.breakpoints.down("md")]: {
+            fontSize: 64,
+            padding: "15px 100px 15px 100px",
         },
     },
     desContainer: {
@@ -55,7 +55,9 @@ const provinceStyles = makeStyles((theme) => ({
         backgroundColor: color.white,
         borderRadius: attr.borderRadius.md,
         boxShadow: "0 2px 8px #00000026",
-        overflow: "hidden"
+        overflow: "hidden",
+        marginInline: 15,
+        minHeight: "1050px"
     },
     title: {
         backgroundColor: color.turquoise,
@@ -65,7 +67,7 @@ const provinceStyles = makeStyles((theme) => ({
         borderRadius: `${attr.borderRadius.md}px ${attr.borderRadius.md}px 0 0`
     },
     desContent: {
-        padding: 30,
+        padding: 30
     },
     locationList: {
         marginBottom: 20,
@@ -73,11 +75,13 @@ const provinceStyles = makeStyles((theme) => ({
         borderRadius: attr.borderRadius.md,
         paddingBottom: 20,
         boxShadow: "0 2px 8px #00000026",
-        overflow: "hidden"
+        overflow: "hidden",
+        marginInline: 15
     },
     map: {
         margin: "20px 0 20px 0",
-        boxShadow: "0 2px 8px #00000026"
+        boxShadow: "0 2px 8px #00000026",
+        marginInline: 15
     },
     patination: {
         display: "flex",
@@ -112,6 +116,11 @@ const provinceStyles = makeStyles((theme) => ({
         [theme.breakpoints.down("sm")]: {
             display: 'none'
         }
+    },
+    rightWrap:{
+        width: "100%", 
+        margin:"20px 0px 20px 0px",
+        marginInlineEnd: 15
     }
 }))
 

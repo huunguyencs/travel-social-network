@@ -50,7 +50,7 @@ const cardStyles = makeStyles((theme) => ({
         borderRadius: attr.borderRadius.md,
     },
     covidCardContainer: {
-        marginBlock: 40,
+        marginTop: 15,
         borderRadius: attr.borderRadius.md,
     },
     content: {
