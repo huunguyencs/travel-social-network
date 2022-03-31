@@ -16,6 +16,7 @@ import { SeeMoreText } from "../SeeMoreText";
 import ImageList from "../Modal/ImageList";
 import AddService, { ServiceCard } from './AddService'
 import UserList from "../Modal/UserList";
+import { joinLocation, unjoinLocation } from "../../redux/callApi/tourCall";
 
 
 function ReviewList(props) {
@@ -234,7 +235,7 @@ export default function Location(props) {
 
     const dispatch = useDispatch();
 
-    const { location, isEdit, isSave, tourDateId, indexDate, indexLocation, addReview, joined, join, unjoin, joinIds, isOwn } = props;
+    const { location, isEdit, isSave, tourDateId, indexDate, indexLocation, addReview, joined, joinIds, isOwn, updateJoinLocation } = props;
 
     const [showDetail, setShowDetail] = useState(false);
     const [showCreateRv, setShowCreateRv] = useState(false);
@@ -243,6 +244,43 @@ export default function Location(props) {
     const [showDeleteLocation, setShowDeleteLocation] = useState(false);
     const [showReview, setShowReview] = useState(false);
     const [showJoin, setShowJoin] = useState(false);
+    const [loadingJoin, setLoadingJoin] = useState();
+    const [joinedLoc, setJoinedLoc] = useState(false);
+
+    const handleJoin = () => {
+        setLoadingJoin(true);
+        setJoinedLoc(true);
+        var prevJoin = location.joinIds;
+        updateJoinLocation([...prevJoin, user], tourDateId, location._id);
+        dispatch(joinLocation(user.token, tourDateId, location._id, () => {
+            setLoadingJoin(false);
+            setJoinedLoc(true);
+        }, () => {
+            setLoadingJoin(false);
+            if (joinLocation) {
+                setJoinedLoc(false);
+                updateJoinLocation(prevJoin, tourDateId, location._id);
+            }
+        }))
+    }
+
+    const handleUnJoin = () => {
+        setLoadingJoin(true);
+        setJoinedLoc(false);
+        var prevJoin = tour.joinIds;
+        var newJoin = prevJoin.filter(user => user._id !== user._id);
+        updateJoinLocation(newJoin, tourDateId, location._id);
+        dispatch(unjoinLocation(user.token, tourDateId, location._id, () => {
+            setLoadingJoin(false);
+            setJoinedLoc(false);
+        }, () => {
+            setLoadingJoin(false);
+            if (!joined) {
+                setJoinedLoc(true);
+                updateJoin(prevJoin, tourDateId, location._id);
+            }
+        }))
+    }
 
     const handleShowJoin = () => {
         setShowJoin(true);
@@ -256,6 +294,12 @@ export default function Location(props) {
         let find = location.joinIds.findIndex(ele => ele._id === user._id)
         return find >= 0;
     }
+
+    // const joinLocation = checkJoinLocation();
+    useEffect(() => {
+        let find = location.joinIds.findIndex(ele => ele._id === user._id);
+        setJoinedLoc(find >= 0)
+    }, [location.joinIds])
 
     useEffect(() => {
         setShowDetail(false);
@@ -387,17 +431,14 @@ export default function Location(props) {
                                         {
                                             !joined && !isOwn &&
                                             <>
-                                                {
-                                                    checkJoinLocation() ?
-                                                        <Button onClick={() => unjoin(indexDate, indexLocation)}>
-                                                            Hủy tham gia
-                                                        </Button>
-                                                        :
-                                                        <Button onClick={() => join(indexDate, indexLocation)}>
-                                                            Tham gia
-                                                        </Button>
+                                                {loadingJoin ?
+                                                    <Button onClick={joinedLoc ? handleUnJoin : handleJoin}>
+                                                        {joinedLoc ? 'Huỷ tham gia' : 'Tham gia'}
+                                                    </Button> :
+                                                    <CircularProgress />
                                                 }
                                             </>
+
 
                                         }
                                         <Typography>Thành viên tham gia</Typography>

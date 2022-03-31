@@ -482,7 +482,7 @@ class TourController {
 
             await TourDates.findOneAndUpdate({ _id: req.params.id, locations: { $elemMatch: { _id: locationId } } }, {
                 $pull: {
-                    'locations.$.postId': []
+                    'locations.$.postId': reviewId
                 }
             }, { new: true, safe: true, upsert: true })
 
@@ -498,15 +498,57 @@ class TourController {
     }
 
     async joinLocation(req, res) {
-
+        try {
+            const { id } = req.params;
+            const { locationId } = req.body;
+            await TourDates.findOneAndUpdate({ _id: id, locations: { $elemMatch: { _id: locationId } } }, {
+                $push: {
+                    'locations.$.joinIds': req.user._id
+                }
+            })
+            res.success({
+                success: true,
+                message: 'Tham gia thành công'
+            })
+        } catch (err) {
+            res.error(err);
+        }
     }
 
     async unjoinLocation(req, res) {
-
+        try {
+            const { id } = req.params;
+            const { locationId } = req.body;
+            await TourDates.findOneAndUpdate({ _id: id, locations: { $elemMatch: { _id: locationId } } }, {
+                $pull: {
+                    'locations.$.joinIds': req.user._id
+                }
+            })
+            res.success({
+                success: true,
+                message: 'Bỏ tham gia thành công'
+            })
+        } catch (err) {
+            res.error(err);
+        }
     }
 
     async removeJoinLocation(req, res) {
-
+        try {
+            const { id } = req.params;
+            const { locationId, userId } = req.body;
+            await TourDates.findOneAndUpdate({ _id: id, locations: { $elemMatch: { _id: locationId } } }, {
+                $pull: {
+                    'locations.$.joinIds': userId
+                }
+            })
+            res.success({
+                success: true,
+                message: 'Loại thành công'
+            })
+        } catch (err) {
+            res.error(err);
+        }
     }
 
     async search(req, res) {

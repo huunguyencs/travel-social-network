@@ -265,8 +265,9 @@ export const unlikeTour = (id, auth, socket, next) => async (dispatch) => {
 
 export const joinTour = (id, token, next, error) => async (dispatch) => {
     try {
-        const res = await customAxios(token).patch(`/tour/${id}/join`);
-        dispatch(tourAction.updateJoin({ id: id, joinIds: res.data.joinIds }));
+        await customAxios(token).patch(`/tour/${id}/join`);
+        // dispatch(tourAction.updateJoin({ id: id, joinIds: res.data.joinIds }));
+        dispatch(alertAction.success({ message: 'Hủy tham gia thành công' }))
         next();
     }
     catch (err) {
@@ -280,8 +281,9 @@ export const joinTour = (id, token, next, error) => async (dispatch) => {
 
 export const unJoinTour = (id, token, next, error) => async (dispatch) => {
     try {
-        const res = await customAxios(token).patch(`/tour/${id}/unjoin`);
-        dispatch(tourAction.updateJoin({ id: id, joinIds: res.data.joinIds }));
+        await customAxios(token).patch(`/tour/${id}/unjoin`);
+        // dispatch(tourAction.updateJoin({ id: id, joinIds: res.data.joinIds }));
+        dispatch(alertAction.success({ message: 'Hủy tham gia thành công' }))
         next();
     }
     catch (err) {
@@ -295,10 +297,11 @@ export const unJoinTour = (id, token, next, error) => async (dispatch) => {
 
 export const removeJoin = (tourId, userId, token, next) => async (dispatch) => {
     try {
-        const res = await customAxios(token).patch(`/tour/${tourId}/remove_join`, {
+        await customAxios(token).patch(`/tour/${tourId}/remove_join`, {
             user: userId
         });
-        dispatch(tourAction.updateJoin({ id: tourId, joinIds: res.data.joinIds }));
+        // dispatch(tourAction.updateJoin({ id: tourId, joinIds: res.data.joinIds }));
+        dispatch(alertAction.success({ message: 'Loại bỏ thành công' }))
     }
     catch (err) {
         next();
@@ -328,5 +331,47 @@ export const getTourSaved = (token) => async (dispatch) => {
     }
     catch (err) {
         dispatch(tourAction.error({ error: "Có lỗi xảy ra" }))
+    }
+}
+
+export const joinLocation = (token, tourDateId, locationId, next, error) => async (dispatch) => {
+    try {
+        await customAxios(token).patch(`/tour/${tourDateId}/join_loc`, {
+            locationId
+        });
+        dispatch(alertAction.success({ message: 'Tham gia 1 địa điểm thành công' }));
+        next();
+    }
+    catch (err) {
+        dispatch(alertAction.error({ message: "Có lỗi xảy ra" }));
+        error();
+    }
+}
+
+export const unjoinLocation = (token, tourDateId, locationId, next, error) => async (dispatch) => {
+    try {
+        await customAxios(token).patch(`/tour/${tourDateId}/unjoin_loc`, {
+            locationId
+        });
+        dispatch(alertAction.success({ message: 'Hủy tham gia 1 địa điểm thành công' }));
+        next();
+    }
+    catch (err) {
+        dispatch(alertAction.error({ message: "Có lỗi xảy ra" }));
+        error();
+    }
+}
+
+export const removejoinLocation = (token, tourDateId, locationId, next, error) => async (dispatch) => {
+    try {
+        await customAxios(token).patch(`/tour/${tourDateId}/remove_join_loc`, {
+            locationId
+        });
+        dispatch(alertAction.success({ message: 'Loại bỏ thành công' }));
+        next();
+    }
+    catch (err) {
+        dispatch(alertAction.error({ message: "Có lỗi xảy ra" }));
+        error();
     }
 }

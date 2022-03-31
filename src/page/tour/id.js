@@ -44,11 +44,10 @@ export default function TourDetail(props) {
     }, [tour, auth.user]);
 
     useEffect(() => {
-        if (auth.user && tour) {
-            const find = tour.joinIds.findIndex(ele => ele._id === auth.user._id);
-            console.log("Find", find);
-            if (find >= 0) setJoined(true);
-            else setJoined(false)
+        if (auth.user && tour && tour.joinIds.findIndex(join => join._id === auth.user._id) >= 0) {
+            console.log(tour.joinIds);
+            console.log(auth.user);
+            setJoined(true);
         }
     }, [tour, auth.user])
 

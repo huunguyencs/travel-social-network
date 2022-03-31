@@ -12,6 +12,8 @@ import { Close, Update } from "@material-ui/icons";
 import { ServiceCard } from "./AddService";
 import { Link } from "react-router-dom";
 import UserList from "../Modal/UserList";
+import { useDispatch } from "react-redux";
+import { joinTour, unJoinTour } from "../../redux/callApi/tourCall";
 
 function DetailDate(props) {
     const { tourDate, date, handleClose, joined } = props;
@@ -66,6 +68,8 @@ export default function TourDetail(props) {
 
     const classes = tourdetailStyles();
 
+    const dispatch = useDispatch();
+
     // const history = useHistory();
     // const dispatch = useDispatch();
 
@@ -75,6 +79,10 @@ export default function TourDetail(props) {
     const [showImage, setShowImage] = useState(false);
     const [detailDate, setDetailDate] = useState(false);
     const [showUserJoin, setShowUserJoin] = useState(false);
+    const [state, setState] = useState({
+        loadingJoin: false,
+        error: false
+    })
 
     const handleShowJoin = () => {
         setShowUserJoin(true);
@@ -113,20 +121,76 @@ export default function TourDetail(props) {
         }))
     }
 
-    const joinTour = () => {
-        console.log('join')
+    const updateJoin = (joins) => {
+        setTour({
+            ...tour,
+            joinIds: joins
+        })
     }
 
-    const unjoinTour = () => {
-        console.log('unjoin')
+    const updateJoinLocation = (joins, idDate, idLocation) => {
+        setTour(tour => ({
+            ...tour,
+            tour: tour.tour.map(item => item._id === idDate ? {
+                ...item,
+                locations: item.locations.map(loc => loc._id === idLocation ? {
+                    ...loc,
+                    joinIds: joins
+                } : loc)
+            } : item)
+        }))
     }
 
-    const joinLocation = (indexDate, indexLocation) => {
-        console.log('join-loc')
+    const handleJoin = () => {
+        setState({
+            loadingJoin: true,
+            error: false
+        })
+        setJoin(true);
+        var prevJoin = tour.joinIds;
+        updateJoin([...prevJoin, auth.user]);
+        dispatch(joinTour(tour._id, auth.token, () => {
+            setState({
+                loadingJoin: false,
+                error: false,
+            })
+        }, () => {
+            setState({
+                loadingJoin: false,
+                error: true,
+            })
+            if (join) {
+                setJoin(false);
+                updateJoin(prevJoin);
+            }
+        }))
     }
 
-    const unjoinLocation = (indexDate, indexLocation) => {
-        console.log('unjoin-loc')
+    const handleUnJoin = () => {
+        setState({
+            loadingJoin: true,
+            error: false,
+        })
+        setJoin(false);
+        var prevJoin = tour.joinIds;
+        var newJoin = prevJoin.filter(user => user._id !== auth.user._id);
+        updateJoin(newJoin);
+
+        dispatch(unJoinTour(tour._id, auth.token, () => {
+            setState({
+                loadingJoin: false,
+                error: false,
+            })
+        }, () => {
+            setState({
+                loadingJoin: false,
+                error: true,
+            })
+            if (!joined) {
+                setJoin(true);
+                updateJoin(prevJoin);
+            }
+        }))
     }
 
     useEffect(() => {
@@ -182,11 +246,11 @@ export default function TourDetail(props) {
                                                 <>
                                                     {
                                                         joined ?
-                                                            <Button onClick={joinTour}>
-                                                                Tham gia ngay
-                                                            </Button> :
-                                                            <Button onClick={unjoinTour}>
+                                                            <Button onClick={handleJoin}>
                                                                 Hủy tham gia
+                                                            </Button> :
+                                                            <Button onClick={handleUnJoin}>
+                                                                Tham gia ngay
                                                             </Button>
                                                     }
                                                 </>
@@ -265,6 +329,7 @@ export default function TourDetail(props) {
                                                     <Location
                                                         location={item}
                                                         indexDate={idx}
+                                                        tourDateId={tour.tour[idx]._id}
                                                         indexLocation={index}
                                                         edit={false}
                                                         key={index}
@@ -272,10 +337,9 @@ export default function TourDetail(props) {
                                                         isEdit={false}
                                                         addReview={createReview}
                                                         joined={joined}
-                                                        join={joinLocation}
-                                                        unjoin={unjoinLocation}
                                                         joinIds={tour.joinIds}
                                                         isOwn={isOwn}
+                                                        updateJoinLocation={updateJoinLocation}
                                                     />
                                                 ))
                                             }
