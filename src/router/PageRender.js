@@ -50,6 +50,9 @@ const PageRender = () => {
                 if (id === 'add') {
                     pageName = `${page}/add`
                 }
+                if (id === 'contribute') {
+                    pageName = `${page}/contribute`;
+                }
                 else
                     pageName = `${page}/id`;
             }

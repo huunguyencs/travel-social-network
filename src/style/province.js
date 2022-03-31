@@ -3,7 +3,7 @@ import color from "./color";
 import attr from "./attr";
 
 const provinceStyles = makeStyles((theme) => ({
-    container:{
+    container: {
         margin: "auto",
         width: 1300,
         [theme.breakpoints.down("md")]: {
@@ -117,10 +117,14 @@ const provinceStyles = makeStyles((theme) => ({
             display: 'none'
         }
     },
-    rightWrap:{
-        width: "100%", 
-        margin:"20px 0px 20px 0px",
+    rightWrap: {
+        width: "100%",
+        margin: "20px 0px 20px 0px",
         marginInlineEnd: 15
+    },
+    contribute: {
+        display: 'flex',
+        justifyContent: 'right'
     }
 }))
 
