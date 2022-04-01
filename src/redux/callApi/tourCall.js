@@ -343,6 +343,7 @@ export const joinLocation = (token, tourDateId, locationId, next, error) => asyn
         next();
     }
     catch (err) {
+        console.log(err);
         dispatch(alertAction.error({ message: "Có lỗi xảy ra" }));
         error();
     }

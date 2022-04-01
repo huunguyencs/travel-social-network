@@ -231,7 +231,7 @@ export default function Location(props) {
 
     const classes = tourdetailStyles();
 
-    const { user } = useSelector(state => state.auth)
+    const { user, token } = useSelector(state => state.auth)
 
     const dispatch = useDispatch();
 
@@ -252,7 +252,7 @@ export default function Location(props) {
         setJoinedLoc(true);
         var prevJoin = location.joinIds;
         updateJoinLocation([...prevJoin, user], tourDateId, location._id);
-        dispatch(joinLocation(user.token, tourDateId, location._id, () => {
+        dispatch(joinLocation(token, tourDateId, location._id, () => {
             setLoadingJoin(false);
             setJoinedLoc(true);
         }, () => {
@@ -267,17 +267,17 @@ export default function Location(props) {
     const handleUnJoin = () => {
         setLoadingJoin(true);
         setJoinedLoc(false);
-        var prevJoin = tour.joinIds;
-        var newJoin = prevJoin.filter(user => user._id !== user._id);
+        var prevJoin = location.joinIds;
+        var newJoin = prevJoin.filter(item => item._id !== user._id);
         updateJoinLocation(newJoin, tourDateId, location._id);
-        dispatch(unjoinLocation(user.token, tourDateId, location._id, () => {
+        dispatch(unjoinLocation(token, tourDateId, location._id, () => {
             setLoadingJoin(false);
             setJoinedLoc(false);
         }, () => {
             setLoadingJoin(false);
             if (!joined) {
                 setJoinedLoc(true);
-                updateJoin(prevJoin, tourDateId, location._id);
+                updateJoinLocation(prevJoin, tourDateId, location._id);
             }
         }))
     }
@@ -299,7 +299,7 @@ export default function Location(props) {
     useEffect(() => {
         let find = location.joinIds.findIndex(ele => ele._id === user._id);
         setJoinedLoc(find >= 0)
-    }, [location.joinIds])
+    }, [location.joinIds, user._id])
 
     useEffect(() => {
         setShowDetail(false);
@@ -432,10 +432,11 @@ export default function Location(props) {
                                             !joined && !isOwn &&
                                             <>
                                                 {loadingJoin ?
+                                                    <CircularProgress /> :
                                                     <Button onClick={joinedLoc ? handleUnJoin : handleJoin}>
                                                         {joinedLoc ? 'Huỷ tham gia' : 'Tham gia'}
-                                                    </Button> :
-                                                    <CircularProgress />
+                                                    </Button>
+
                                                 }
                                             </>
 

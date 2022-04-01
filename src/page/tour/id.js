@@ -117,7 +117,7 @@ export default function TourDetail(props) {
                                 </>
                             </div> :
 
-                            tour && (edit === 'true' && isOwn ? <AddTour isUpdate={true} /> : <Tour tour={tour} setTour={setTour} isOwn={isOwn} joined={joined} />)
+                            tour && (edit === 'true' && isOwn ? <AddTour isUpdate={true} /> : <Tour tour={tour} setTour={setTour} isOwn={isOwn} joined={joined} setJoined={setJoined} />)
             }
         </>
     )

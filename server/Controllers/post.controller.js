@@ -326,7 +326,7 @@ class PostController {
             }
 
             post = await Posts.findOneAndUpdate({ _id: req.params.id }, {
-                $push: {
+                $addToSet: {
                     likes: req.user._id
                 }
             }, { new: true }).populate("likes", "username fullname avatar")

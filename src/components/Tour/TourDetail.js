@@ -12,7 +12,7 @@ import { Close, Update } from "@material-ui/icons";
 import { ServiceCard } from "./AddService";
 import { Link } from "react-router-dom";
 import UserList from "../Modal/UserList";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { joinTour, unJoinTour } from "../../redux/callApi/tourCall";
 
 function DetailDate(props) {
@@ -64,11 +64,12 @@ function DetailDate(props) {
 
 export default function TourDetail(props) {
 
-    const { tour, isOwn, setTour, joined } = props;
+    const { tour, isOwn, setTour, joined, setJoined } = props;
 
     const classes = tourdetailStyles();
 
     const dispatch = useDispatch();
+    const { auth } = useSelector(state => state)
 
     // const history = useHistory();
     // const dispatch = useDispatch();
@@ -146,7 +147,7 @@ export default function TourDetail(props) {
             loadingJoin: true,
             error: false
         })
-        setJoin(true);
+        setJoined(true);
         var prevJoin = tour.joinIds;
         updateJoin([...prevJoin, auth.user]);
         dispatch(joinTour(tour._id, auth.token, () => {
@@ -159,8 +160,8 @@ export default function TourDetail(props) {
                 loadingJoin: false,
                 error: true,
             })
-            if (join) {
-                setJoin(false);
+            if (joined) {
+                setJoined(false);
                 updateJoin(prevJoin);
             }
         }))
@@ -171,7 +172,7 @@ export default function TourDetail(props) {
             loadingJoin: true,
             error: false,
         })
-        setJoin(false);
+        setJoined(false);
         var prevJoin = tour.joinIds;
         var newJoin = prevJoin.filter(user => user._id !== auth.user._id);
         updateJoin(newJoin);
@@ -187,7 +188,7 @@ export default function TourDetail(props) {
                 error: true,
             })
             if (!joined) {
-                setJoin(true);
+                setJoined(true);
                 updateJoin(prevJoin);
             }
         }))
@@ -245,13 +246,12 @@ export default function TourDetail(props) {
                                                 !isOwn &&
                                                 <>
                                                     {
-                                                        joined ?
-                                                            <Button onClick={handleJoin}>
-                                                                Hủy tham gia
-                                                            </Button> :
-                                                            <Button onClick={handleUnJoin}>
-                                                                Tham gia ngay
+                                                        state.loadingJoin ?
+                                                            <CircularProgress /> :
+                                                            <Button onClick={joined ? handleUnJoin : handleJoin}>
+                                                                {joined ? "Hủy tham gia" : "Tham gia"}
                                                             </Button>
+
                                                     }
                                                 </>
                                             }

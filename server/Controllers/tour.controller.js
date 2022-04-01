@@ -168,7 +168,7 @@ class TourController {
             }
 
             tour = await Tours.findByIdAndUpdate(req.params.id, {
-                $push: {
+                $addToSet: {
                     likes: req.user._id
                 }
             }, { new: true }).populate("likes", "username fullname avatar")
@@ -420,7 +420,7 @@ class TourController {
             }
 
             tour = await Tours.findByIdAndUpdate(req.params.id, {
-                $push: {
+                $addToSet: {
                     joinIds: req.user._id
                 }
             }, { new: true }).populate("joinIds", "avatar fullname username")
@@ -502,7 +502,7 @@ class TourController {
             const { id } = req.params;
             const { locationId } = req.body;
             await TourDates.findOneAndUpdate({ _id: id, locations: { $elemMatch: { _id: locationId } } }, {
-                $push: {
+                $addToSet: {
                     'locations.$.joinIds': req.user._id
                 }
             })
@@ -511,6 +511,7 @@ class TourController {
                 message: 'Tham gia thành công'
             })
         } catch (err) {
+            console.log(err);
             res.error(err);
         }
     }
