@@ -40,7 +40,7 @@ export const register = (data, next, callback) => async (dispatch) => {
         // stop loading
         // dispatch(alertAction.callSuccess({ message: res.data.message }));
 
-        dispatch(alertAction.success({ message: "Đăng ký tài khoản thành công!" }))
+        dispatch(alertAction.success({ message: "Đăng ký thành công. Bạn cần vào mail để kích hoạt!" }))
     }
     catch (err) {
         // console.log(err);
@@ -52,18 +52,18 @@ export const register = (data, next, callback) => async (dispatch) => {
     }
 }
 
-export const refreshToken = (token) => async (dispatch) => {
+export const refreshToken = () => async (dispatch) => {
     const login = localStorage.getItem("login");
-    if (login && !token) {
+    if (login) {
         try {
             // console.log("refresh");
             const res = await customAxios().post("/user/refresh_token", {}, {
                 // withCredentials: true,
-                credentials: 'include',
-                timeout: 30 * 1000
+                credentials: 'include'
             });
             // console.log(res);
             dispatch(authAction.auth({ user: res.data.user, token: res.data.accessToken }));
+            // return res.data.accessToken
         }
         catch (err) {
             // console.log(err.response.data.message);
@@ -72,9 +72,37 @@ export const refreshToken = (token) => async (dispatch) => {
         }
     }
     else return;
-
 }
-
+export const forgotPassword = (email, next) => async (dispatch) => {
+    try {
+        await customAxios().post("/user/forgot_password", {email});
+        next();
+        dispatch(alertAction.success({ message: "Bạn cần truy cập vào mail để đặt lại mật khẩu!" }))
+    }
+    catch (err) {
+        next();
+        console.log(err.response)
+        if (err.response && err.response.data && err.response.data.message)
+            dispatch(alertAction.error({ message: err.response.data.message }))
+        else
+            dispatch(alertAction.error({ message: "Có lỗi xảy ra" }));
+    }
+}
+export const resetPassword = (token, password, next) => async (dispatch) => {
+    try {
+        await customAxios(token).post("/user/reset_password", {password});
+        next();
+        dispatch(alertAction.success({ message: "Đặt lại mật khẩu thành công!" }))
+    }
+    catch (err) {
+        next();
+        console.log(err.response)
+        if (err.response && err.response.data && err.response.data.message)
+            dispatch(alertAction.error({ message: err.response.data.message }))
+        else
+            dispatch(alertAction.error({ message: "Có lỗi xảy ra" }));
+    }
+}
 export const logout = (data) => async (dispatch) => {
     try {
         await customAxios().post("/user/logout", data)

@@ -2,15 +2,14 @@ import React, { useEffect, useState } from "react";
 import TextField from '@material-ui/core/TextField/TextField';
 import Button from '@material-ui/core/Button/Button';
 import { useDispatch, useSelector } from "react-redux";
-import { CircularProgress, Grid, Typography } from "@material-ui/core";
+import { CircularProgress, Grid, Typography, Modal, Fade, Backdrop, IconButton } from "@material-ui/core";
 import { Link, useHistory } from 'react-router-dom';
 import InputAdornment from "@material-ui/core/InputAdornment";
 import Visibility from "@material-ui/icons/Visibility";
 import VisibilityOff from "@material-ui/icons/VisibilityOff";
-import IconButton from "@material-ui/core/IconButton";
-
+import { Close} from '@material-ui/icons';
 import Validator, { isEmpty } from '../utils/validator';
-import { login } from '../redux/callApi/authCall';
+import { login, forgotPassword } from '../redux/callApi/authCall';
 import { authStyles } from "../style";
 
 export default function Login(props) {
@@ -57,7 +56,6 @@ export default function Login(props) {
     const validator = new Validator(rules);
 
     const handleInput = (e) => {
-
         setContext({
             ...context,
             [e.target.name]: e.target.value,
@@ -107,8 +105,29 @@ export default function Login(props) {
         }
     }, [errors, submit, dispatch, context])
 
-
-
+    const [loadingForgot, setLoadingForgot] = useState(false);
+    const [emailForgot, setEmailForgot] = useState("")
+    const handleInputEmail = (e) => {
+        setEmailForgot(e.target.value)
+    }
+    const [showForgotPassword, setShowForgotPassword] = useState(false);
+    const handleShowForgotPassword = () => {
+        setShowForgotPassword(true);
+    }
+    const handleCloseForgotPassword = () => {
+        setShowForgotPassword(false);
+    }
+    const handleSubmitEmailForgot = (e) => {
+        e.preventDefault();
+        setLoadingForgot(true);
+        dispatch(forgotPassword(emailForgot, () => {
+            setLoadingForgot(false);
+            setShowForgotPassword(false);
+        }, (err) => {
+            setLoadingForgot(false);
+        }));
+        setEmailForgot("");
+    }
 
     const handleClickShowPassword = () => {
         setShowPassword(state => !state);
@@ -184,7 +203,7 @@ export default function Login(props) {
                             }}
                         />
                     </div>
-                    <p className={classes.forgotPassword}>
+                    <p className={classes.forgotPassword} onClick={handleShowForgotPassword}>
                         Quên mật khẩu?
                     </p>
                     <div className={classes.center}>
@@ -204,6 +223,59 @@ export default function Login(props) {
                         </Button>
                     </div>
                 </form>
+                <Modal
+                        aria-labelledby="modal-add-location"
+                        aria-describedby="modal-add-location-description"
+                        open={showForgotPassword}
+                        className={classes.modal}
+                        onClose={handleCloseForgotPassword}
+                        closeAfterTransition
+                        BackdropComponent={Backdrop}
+                        BackdropProps={{
+                            timeout: 500,
+                        }}
+                    >
+                        <Fade in={showForgotPassword}>
+                           <div className={classes.forgot_wrap}>
+                                <div className={classes.forgot_heading}>
+                                    <Typography className={classes.forgot_heading_text}>Bạn quên mật khẩu? </Typography>
+                                    <IconButton onClick={handleCloseForgotPassword}>
+                                        <Close/>
+                                    </IconButton>
+                                </div>
+                                <form
+                                    onSubmit={handleSubmitEmailForgot}
+                                    className={classes.forgot_form}
+                                >
+                                    <Typography>Hãy điền email tài khoản của bạn!</Typography>
+                                     <TextField
+                                        autoComplete=""
+                                        label="Email"
+                                        variant="outlined"
+                                        name="email"
+                                        id="email"
+                                        type="email"
+                                        className={classes.formInputEmail}
+                                        required
+                                        // error={Boolean(errors?.email)}
+                                        // helperText={errors?.email}
+                                        value={emailForgot}
+                                        onChange={handleInputEmail}
+                                    />
+                                    <Button
+                                        variant="contained"
+                                        type="submit"
+                                        className={classes.forgotButton}
+                                    >
+                                        {loadingForgot ?
+                                            <CircularProgress size="25px" color="inherit" />
+                                            : "Lấy mật khẩu"
+                                        }
+                                    </Button>
+                                </form>
+                           </div>
+                        </Fade>
+                    </Modal>
             </Grid>
         </Grid>
     )
