@@ -62,7 +62,7 @@ function ExportToolbar() {
     );
 }
 
-export default function AdminLocationContribute(props) {
+export default function AdminEventContribute(props) {
 
     const history = useHistory();
     const classes = tableStyles();
@@ -97,7 +97,7 @@ export default function AdminLocationContribute(props) {
         <Container className={classes.container}>
             <div className={classes.admin_location_header}>
                 <div>
-                    <Typography variant="h4">{locations.length} địa điểm du lịch được đóng góp</Typography>
+                    <Typography variant="h4">{locations.length} sự kiện được đóng góp</Typography>
                 </div>
             </div>
 

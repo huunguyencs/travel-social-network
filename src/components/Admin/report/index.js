@@ -102,7 +102,7 @@ export default function AdminReport() {
                         </Link>
                     </Grid>
                     <Grid item md={4}>
-                        <Link component={Link} to={`/`}>
+                        <Link component={Link} to={`/admin/report/locationContribute`}>
                             <Card className={classes.cardInfo}>
                                 <Typography variant="h5">
                                     Số địa điểm được đóng góp
@@ -115,7 +115,7 @@ export default function AdminReport() {
                         </Link>
                     </Grid>
                     <Grid item md={4}>
-                        <Link component={Link} to={`/`}>
+                        <Link component={Link} to={`/admin/report/eventContribute`}>
                             <Card className={classes.cardInfo}>
                                 <Typography variant="h5">
                                     Sự kiến được đóng góp
