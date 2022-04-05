@@ -29,19 +29,21 @@ export default function FeedPostUser(props) {
     }
 
     return (
-        <Feed
-            loadMore={loadPost}
-            tryAgain={tryAgain}
-            loading={post.loading}
-            error={post.error}
-            hasMore={post.hasMore}
-        >
-            {post.posts.map((post) => (
-                <Post
-                    post={post}
-                    key={post._id}
-                />
-            ))}
-        </Feed>
+        <div style={{ marginTop: 100 }}>
+            <Feed
+                loadMore={loadPost}
+                tryAgain={tryAgain}
+                loading={post.loading}
+                error={post.error}
+                hasMore={post.hasMore}
+            >
+                {post.posts.map((post) => (
+                    <Post
+                        post={post}
+                        key={post._id}
+                    />
+                ))}
+            </Feed>
+        </div>
     )
 }

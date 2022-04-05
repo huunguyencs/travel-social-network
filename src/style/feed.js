@@ -10,7 +10,7 @@ const feedStyles = makeStyles((theme) => ({
     //     justifyContent: 'center'
     // },
     content: {
-        marginTop: theme.spacing(10),
+
         marginInline: 50,
         [theme.breakpoints.down("lg")]: {
             marginInline: 20,

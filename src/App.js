@@ -63,7 +63,6 @@ function App() {
       <CustomRouter path='/:page/:id' component={PageRender} exact />
       <CustomRouter path='/:page/:id/:subpage' component={PageRender} exact />
     </div>
-
   );
 }
 

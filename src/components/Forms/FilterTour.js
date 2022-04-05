@@ -43,8 +43,8 @@ export default function FilterTour(props) {
             minCost -= maxCost;
         }
         dispatch(getTours({
-            maxCost: maxCost * 100,
-            minCost: minCost * 100,
+            maxCost: maxCost * 10,
+            minCost: minCost * 10,
             q: text
         }))
         setFilter(true);

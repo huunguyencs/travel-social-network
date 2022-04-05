@@ -220,7 +220,7 @@ export default function Header(props) {
                                                         history.push(`${item.url}`)
                                                         handleIsRead(item)
                                                     }}>
-                                                        <Avatar className={classes.avatar} alt="avatar" src={item.user.avatar} />
+                                                        <Avatar className={classes.avatar} alt="avatar" src={item?.user.avatar || ''} />
 
                                                         <div>
                                                             <div style={{ display: "flex", alignItems: "center" }}>
