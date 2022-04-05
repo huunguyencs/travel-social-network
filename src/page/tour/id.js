@@ -29,6 +29,7 @@ export default function TourDetail(props) {
 
     const [isOwn, setIsOwn] = useState(false);
     const [joined, setJoined] = useState(false);
+    const [joinLoc, setJoinLoc] = useState(false);
 
     useEffect(() => {
         if (tour && tour.name) {
@@ -45,9 +46,25 @@ export default function TourDetail(props) {
 
     useEffect(() => {
         if (auth.user && tour && tour.joinIds.findIndex(join => join._id === auth.user._id) >= 0) {
-            console.log(tour.joinIds);
-            console.log(auth.user);
             setJoined(true);
+        }
+    }, [tour, auth.user]);
+
+    useEffect(() => {
+        if (auth.user && tour) {
+            // let temp = tour.tour.some(item =>
+            //     item.locations.some(item => item.joinIds.findIndex(join => join._id === auth.user._id))
+            // )
+            var sum = 0;
+            tour.tour.forEach(date => {
+                var sumDate = 0;
+                date.locations.forEach(loc => {
+                    if (loc.joinIds.findIndex(join => join._id === auth.user._id) >= 0) sumDate += 1;
+                })
+                sum += sumDate;
+            });
+            setJoinLoc(sum);
+            console.log(sum);
         }
     }, [tour, auth.user])
 
@@ -95,10 +112,6 @@ export default function TourDetail(props) {
         getTourDetail(id);
     }
 
-    // useEffect(() => {
-    //     console.log(tour)
-    // }, [tour])
-
 
     return (
         <>
@@ -117,7 +130,7 @@ export default function TourDetail(props) {
                                 </>
                             </div> :
 
-                            tour && (edit === 'true' && isOwn ? <AddTour isUpdate={true} /> : <Tour tour={tour} setTour={setTour} isOwn={isOwn} joined={joined} setJoined={setJoined} />)
+                            tour && (edit === 'true' && isOwn ? <AddTour isUpdate={true} /> : <Tour tour={tour} setTour={setTour} isOwn={isOwn} joined={joined} setJoined={setJoined} joinLoc={joinLoc} />)
             }
         </>
     )

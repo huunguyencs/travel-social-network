@@ -64,7 +64,7 @@ function DetailDate(props) {
 
 export default function TourDetail(props) {
 
-    const { tour, isOwn, setTour, joined, setJoined } = props;
+    const { tour, isOwn, setTour, joined, setJoined, joinLoc } = props;
 
     const classes = tourdetailStyles();
 
@@ -243,7 +243,7 @@ export default function TourDetail(props) {
                                                 Tổng chi phí: {new Intl.NumberFormat().format(tour.cost * 1000)} VND
                                             </Typography>
                                             {
-                                                !isOwn &&
+                                                !isOwn && joinLoc === 0 &&
                                                 <>
                                                     {
                                                         state.loadingJoin ?
@@ -340,6 +340,7 @@ export default function TourDetail(props) {
                                                         joinIds={tour.joinIds}
                                                         isOwn={isOwn}
                                                         updateJoinLocation={updateJoinLocation}
+                                                        joinLoc={joinLoc}
                                                     />
                                                 ))
                                             }
