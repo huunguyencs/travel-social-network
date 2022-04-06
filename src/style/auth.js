@@ -102,7 +102,54 @@ const authStyles = makeStyles((theme) => ({
         '&:hover': {
             textDecoration: 'underline'
         }
+    },
+    modal:{
+        display: 'flex',
+        alignItems: 'center',
+        justifyContent: 'center',
+    },
+    forgot_wrap:{
+        width: 400,
+        height: 250,
+        outline: "none",
+        overflow: "hidden",
+        borderRadius: attr.borderRadius.md,
+        backgroundColor: color.white,
+        padding: "0px 20px"
+    },
+    forgot_heading:{
+        display:"flex",
+        alignItems: "center",
+        padding: 8,
+        justifyContent: "space-between",
+        borderBottom: "1px solid #f1f1f1",
+    },
+    forgot_heading_text:{
+        margin: 0,
+        fontSize: 20,
+        fontWeight: 800,
+        color: "#0f1419"
+    },
+    forgot_form:{
+        width: "100%",
+        display: "flex",
+        flexDirection: "column",
+        marginTop: 10
+    },
+    formInputEmail:{
+        width: "100%",
+        borderRadius: attr.borderRadius.md,
+        backgroundColor: color.white,
+        marginBottom: 20,
+        marginTop: 10
+    },
+    forgotButton:{
+        margin: "0 auto",
+        width: 200,
+        borderRadius: attr.borderRadius.md,
+        backgroundColor: color.success,
     }
+
 }))
 
 export default authStyles;

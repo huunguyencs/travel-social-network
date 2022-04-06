@@ -4,6 +4,7 @@ const bcrypt = require('bcrypt')
 const jwt = require('jsonwebtoken');
 const ObjectId = require('mongoose').Types.ObjectId;
 const Confirms = require('../Models/confirm.model');
+const sendEmail = require('../utils/sendEmail')
 class UserController {
     async register(req, res) {
         try {
@@ -14,22 +15,26 @@ class UserController {
 
             const user_email = await Users.findOne({ email })
             if (user_email) return res.status(400).json({ success: false, message: "Email này đã tồn tại!" })
-
+            
+            if(!validateEmail(email))
+                return res.status(400).json({success: false, message: "Email không hợp lệ!"})
             const passwordHash = await bcrypt.hash(password, 12)
 
-            const userNew = new Users({
+            const userNew = {
                 fullname, username, email, password: passwordHash, phone
-            })
+            }
 
 
-            //Return Token
-            // const accessToken = jwt.sign({ id: userNew._id }, process.env.ACCESS_TOKEN_SECRET || "abcdefghiklmn")
-
-            await userNew.save();
+            //Activation Token
+            // const activationToken = jwt.sign({ id: userNew._id }, process.env.ACTIVATION_TOKEN_SECRET || "abcdefghiklmn")
+            const activationToken = createActivationToken(userNew)
+            const url = `${process.env.CLIENT_URL}/activate?token=${activationToken}`
+            sendEmail(userNew.email, url, "Xác thực địa chỉ email")
+    
 
             res.created({
                 success: true,
-                message: "Đăng ký thành công!",
+                message: "Đăng ký thành công! Bạn cần kích hoạt tài khoản trong email của bạn để bắt đầu.",
                 // accessToken
             })
         } catch (err) {
@@ -37,7 +42,30 @@ class UserController {
             res.error(err);
         }
     }
+    async activateEmail(req, res) {
+        try {
+            const {activation_token} = req.body
+            const user = jwt.verify(activation_token, process.env.ACTIVATION_TOKEN_SECRET)
 
+            const {fullname, username, email, phone, password} = user
+
+            const check = await Users.findOne({email})
+            if(check) return res.status(400).json({message:"Email đã tồn tại!"})
+
+            const newUser = new Users({
+                fullname, username, email, phone, password
+            })
+
+            await newUser.save()
+
+            res.success({
+                success: true,
+                message: "Tài khoản của bạn đã được kích hoạt!"
+            })
+        } catch (err) {
+            return res.status(500).json({message: err.message})
+        }
+    }
     async login(req, res) {
         try {
             const { email, password } = req.body
@@ -53,14 +81,14 @@ class UserController {
 
             //all Good
             //Return Token
-            const accessToken = jwt.sign({ id: user._id }, process.env.ACCESS_TOKEN_SECRET)
-            //trả về dữ liệu user khi login thành công
+            // const accessToken = jwt.sign({ id: user._id }, process.env.ACCESS_TOKEN_SECRET, {expiresIn: '5m'})
+            const accessToken = createAccessToken({ id: user._id })
 
-            const refreshToken = jwt.sign({ id: user._id }, process.env.REFRESH_TOKEN_SECRET)
-
+            // const refreshToken = jwt.sign({ id: user._id }, process.env.REFRESH_TOKEN_SECRET)
+            const refreshToken = createRefreshToken({ id: user._id })
             res.cookie('refreshtoken', refreshToken, {
                 httpOnly: true,
-                // path: '/user/refresh_token',
+                path: '/user/refresh_token',
                 maxAge: 30 * 24 * 60 * 60 * 1000 // 30days
             })
 
@@ -83,10 +111,11 @@ class UserController {
     async refreshToken(req, res) {
         try {
             const refresh_token = req.cookies.refreshtoken;
-            if (!refresh_token) return res.status(400).json({ message: "No token" });
+            //refresh_token expire
+            if (!refresh_token) return res.status(400).json({ message: "Bạn hãy đăng nhập lại!" });
 
             jwt.verify(refresh_token, "REFRESH_TOKEN_SECRET", async (err, result) => {
-                if (err) return res.status(400).json({ message: "No token" });
+                if (err) return res.status(400).json({ message: "Bạn hãy đăng nhập lại!" });
 
                 const user = await Users.findById(result.id).select("-password").populate("followers followings", "username avatar fullname followings")
                     .populate({
@@ -95,11 +124,11 @@ class UserController {
                     })
                 if (!user) return res.status(400).json("No token");
 
-                const accessToken = jwt.sign({ id: user._id }, process.env.ACCESS_TOKEN_SECRET)
+                const accessToken = createAccessToken({ id: user._id })
 
                 res.success({
                     success: true,
-                    message: "Thành công!",
+                    message: "Lấy token thành công!",
                     accessToken,
                     user: {
                         ...user._doc,
@@ -112,17 +141,44 @@ class UserController {
             res.error(err);
         }
     }
-
     async logout(req, res) {
         try {
-            res.clearCookie('refreshtoken', { path: '/' })
+            res.clearCookie('refreshtoken', {path: '/user/refresh_token'})
             return res.success({ success: true, message: "Đăng xuất thành công!" })
         } catch (err) {
             console.log(err)
             res.error(err);
         }
     }
+    async forgotPassword(req, res){
+        try {
+            const {email} = req.body
+            const user = await Users.findOne({email})
+            if(!user) return res.status(400).json({success: false,message: "Email không tồn tại!"})
 
+            const access_token = createAccessToken({id: user._id})
+            const url = `${process.env.CLIENT_URL}/reset?token=${access_token}`
+
+            sendEmail(email, url, "Đặt lại mật khẩu")
+            res.success({success: true, message: "Hãy kiểm tra mail để đặt lại mật khẩu!"}) 
+        }
+        catch (err) {
+            res.error(err);
+        }
+    }
+    async resetPassword(req, res) {
+        try {
+            const {password} = req.body
+            const passwordHash = await bcrypt.hash(password, 12)
+            await Users.findOneAndUpdate({_id: req.user._id}, {
+                password: passwordHash
+            })
+
+            res.success({success: true, message: "Đặt lại mật khẩu thành công"}) 
+        } catch (err) {
+            return res.status(500).json({message: err.message})
+        }
+    }
     async changePassword(req, res) {
         try {
             const { oldPassword, newPassword } = req.body;
@@ -499,5 +555,19 @@ class UserController {
         }
     }
 }
+function validateEmail(email) {
+    const re = /^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+    return re.test(email);
+}
+function createActivationToken(payload) {
+    return jwt.sign(payload, process.env.ACTIVATION_TOKEN_SECRET, { expiresIn: '1d' })
+}
+function createAccessToken(payload) {
+    return jwt.sign(payload, process.env.ACCESS_TOKEN_SECRET, { expiresIn: '1d' })
+}
+function createRefreshToken(payload) {
+    return jwt.sign(payload, process.env.REFRESH_TOKEN_SECRET, { expiresIn: '30d' })
+}
+
 
 module.exports = new UserController
