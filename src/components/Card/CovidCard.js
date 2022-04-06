@@ -26,6 +26,7 @@ export default function CovidCard(props) {
         const getData = async () => {
             await fetch('https://static.pipezero.com/covid/data.json').then(res => res.json()).then(data => {
                 setCovid(data);
+                // console.log(data);
                 for (var loc of data.locations) {
                     if (loc.name === name) {
                         setData(loc);
