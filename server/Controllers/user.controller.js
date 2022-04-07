@@ -344,7 +344,6 @@ class UserController {
             // res.json("ok")
             const users = await Users.find({ fullname: { $regex: req.query.fullname } })
                 .limit(10).select("fullname avatar");
-
             res.success({ success: true, users })
         } catch (err) {
             console.log(err)

@@ -29,6 +29,7 @@ export default function TourDetail(props) {
 
     const [isOwn, setIsOwn] = useState(false);
     const [joined, setJoined] = useState(false);
+    const [joinLoc, setJoinLoc] = useState(false);
 
     useEffect(() => {
         if (tour && tour.name) {
@@ -44,11 +45,26 @@ export default function TourDetail(props) {
     }, [tour, auth.user]);
 
     useEffect(() => {
+        if (auth.user && tour && tour.joinIds.findIndex(join => join._id === auth.user._id) >= 0) {
+            setJoined(true);
+        }
+    }, [tour, auth.user]);
+
+    useEffect(() => {
         if (auth.user && tour) {
-            const find = tour.joinIds.findIndex(ele => ele._id === auth.user._id);
-            console.log("Find", find);
-            if (find >= 0) setJoined(true);
-            else setJoined(false)
+            // let temp = tour.tour.some(item =>
+            //     item.locations.some(item => item.joinIds.findIndex(join => join._id === auth.user._id))
+            // )
+            var sum = 0;
+            tour.tour.forEach(date => {
+                var sumDate = 0;
+                date.locations.forEach(loc => {
+                    if (loc.joinIds.findIndex(join => join._id === auth.user._id) >= 0) sumDate += 1;
+                })
+                sum += sumDate;
+            });
+            setJoinLoc(sum);
+            console.log(sum);
         }
     }, [tour, auth.user])
 
@@ -96,10 +112,6 @@ export default function TourDetail(props) {
         getTourDetail(id);
     }
 
-    // useEffect(() => {
-    //     console.log(tour)
-    // }, [tour])
-
 
     return (
         <>
@@ -118,7 +130,7 @@ export default function TourDetail(props) {
                                 </>
                             </div> :
 
-                            tour && (edit === 'true' && isOwn ? <AddTour isUpdate={true} /> : <Tour tour={tour} setTour={setTour} isOwn={isOwn} joined={joined} />)
+                            tour && (edit === 'true' && isOwn ? <AddTour isUpdate={true} /> : <Tour tour={tour} setTour={setTour} isOwn={isOwn} joined={joined} setJoined={setJoined} joinLoc={joinLoc} />)
             }
         </>
     )

@@ -1,13 +1,13 @@
-import React, { useEffect } from 'react'
+import React, {useEffect} from 'react'
 import { Grid } from "@material-ui/core";
 import LeftBar from "../../../components/Leftbar";
 import { adminListMenu } from "../../../constant/adminMenu";
-import AdminTour from '../../../components/Admin/Tour';
+import AdminReport from '../../../components/Admin/report';
 
-export default function AdminTourPage() {
-    
+export default function AdminReportPage() {
+
     useEffect(() => {
-        document.title = "Admin - Hành trình"
+        document.title = "Admin - Ý kiến đóng góp"
     }, [])
 
     return (
@@ -16,7 +16,7 @@ export default function AdminTourPage() {
                 <LeftBar menuList={adminListMenu} />
             </Grid>
             <Grid item md={9}>
-                <AdminTour />
+                <AdminReport/>
             </Grid>
         </Grid>
 

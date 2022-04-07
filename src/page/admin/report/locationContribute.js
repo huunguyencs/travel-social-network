@@ -2,12 +2,12 @@ import React, { useEffect } from 'react'
 import { Grid } from "@material-ui/core";
 import LeftBar from "../../../components/Leftbar";
 import { adminListMenu } from "../../../constant/adminMenu";
-import AdminTour from '../../../components/Admin/Tour';
+import AdminLocationContribute from '../../../components/Admin/report/locationContribute';
 
-export default function AdminTourPage() {
-    
+export default function AdminLocationContributePage() {
+
     useEffect(() => {
-        document.title = "Admin - Hành trình"
+        document.title = "Admin - Địa điểm được đóng góp"
     }, [])
 
     return (
@@ -16,7 +16,7 @@ export default function AdminTourPage() {
                 <LeftBar menuList={adminListMenu} />
             </Grid>
             <Grid item md={9}>
-                <AdminTour />
+                <AdminLocationContribute/>
             </Grid>
         </Grid>
 

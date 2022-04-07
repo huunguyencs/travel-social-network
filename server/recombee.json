@@ -1,0 +1,26 @@
+{
+    "item_properties": {
+        "type": [
+            "post",
+            "tour",
+            "location",
+            "volunteer",
+            "service"
+        ],
+        "cats": [
+            "hashtags",
+            "bien",
+            "nui",
+            "giao duc",
+            "lich su",
+            "le hoi",
+            "trai he"
+        ],
+        "description": ""
+    },
+    "user_properties": {
+        "pref": [
+            ""
+        ]
+    }
+}

@@ -10,7 +10,6 @@ export default function AdminProvince() {
         document.title = "Admin - Tỉnh"
     }, [])
 
-
     return (
         <Grid container>
             <Grid item md={3} sm={2} xs={2}>

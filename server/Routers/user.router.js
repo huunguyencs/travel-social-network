@@ -8,10 +8,10 @@ router.post("/register", UserController.register);
 router.post("/login", UserController.login);
 
 router.post("/logout", UserController.logout);
-router.post("/activate_email",UserController.activateEmail);
+router.post("/activate_email", UserController.activateEmail);
 router.post("/refresh_token", UserController.refreshToken);
-router.post("/forgot_password",UserController.forgotPassword);
-router.post("/reset_password",auth, UserController.resetPassword);
+router.post("/forgot_password", UserController.forgotPassword);
+router.post("/reset_password", auth, UserController.resetPassword);
 router.patch("/change_avatar", auth, UserController.changeAvatar);
 router.patch("/change_background", auth, UserController.changeBackground);
 router.patch("/change_info", auth, UserController.editProfile);
@@ -21,10 +21,10 @@ router.get("/all", auth, authRole([2]), UserController.getAll);
 router.get('/search', UserController.search);
 router.post('/user_list', UserController.getUserByArray);
 
-router.post("/confirm_account", auth, UserController.confirmAccount);
-router.get('/get_friend_recommend', auth, UserController.getFriendRecommend);
-router.get('/search', UserController.searchUsers);
-router.get('/get_tour_saved', auth, UserController.getTourSaved);
+router.post("/confirm_account", auth, UserController.confirmAccount)
+router.get('/get_friend_recommend', auth, UserController.getFriendRecommend)
+router.get('/search_by_name', UserController.searchUsers);
+router.get('/get_tour_saved', auth, UserController.getTourSaved)
 
 // lấy thông tin một user
 router.get("/:id", UserController.getUser);

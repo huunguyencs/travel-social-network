@@ -44,7 +44,7 @@ export default function FeedPost(props) {
 
 
     return (
-        <div className={classes.container}>
+        <div className={classes.container} style={{ marginTop: 100 }}>
             <div className={classes.content}>
                 <div className={classes.create}>
                     <div className={classes.containerText}>

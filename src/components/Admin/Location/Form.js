@@ -158,7 +158,7 @@ export default function FormLocationAdmin(props) {
                     dispatch(error({ message: 'Có lỗi xảy ra' }))
                 })
             }
-            else if (mode === 'donggop') {
+            else if (mode === 'contribute') {
 
             }
         }
@@ -169,7 +169,7 @@ export default function FormLocationAdmin(props) {
     return (
         <>
             <div style={{ display: 'flex', justifyContent: 'center', marginBottom: 30 }}>
-                <Typography variant='h4'>{mode === 'edit' ? 'Chỉnh sửa thông tin địa điểm' : 'Thêm địa điểm'}</Typography>
+                <Typography variant='h4'>{ mode === 'edit' ? 'Chỉnh sửa thông tin địa điểm' : mode ==='add' ? 'Thêm địa điểm': 'Đóng góp địa điểm'}</Typography>
             </div>
             <div>
                 <TextField
