@@ -7,9 +7,9 @@ class ReportController {
 
             const newReport = new Reports({
                 userId: req.user._id, type, content, postId
-            })
+            });
 
-            await newReport.save()
+            await newReport.save();
             
             res.success({ success: true, message: "Báo cáo bài viết thành công!", newReport })
         } catch (err) {
