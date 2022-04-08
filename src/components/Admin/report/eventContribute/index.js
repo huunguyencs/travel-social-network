@@ -21,33 +21,32 @@ const columns = [
     {
         field: 'fullname',
         headerName: 'Tên đầy đủ',
-        width: 300
+        width: 350
     },
     {
         field: 'province',
         headerName: 'Tỉnh',
         width: 200,
-        valueGetter: (location) => location.row.province.fullname
+        valueGetter: (event) => event.row.provinceId?.fullname || 'All'
     },
     {
-        field: 'star',
-        headerName: 'Đánh giá (/5)',
-        width: 175,
-        valueGetter: (location) => getStar(location.row.star)
+        field: 'time',
+        headerName: 'Thời gian',
+        width: 150,
     },
     {
-        field: 'numRate',
-        headerName: 'Lượt đánh giá',
-        width: 175,
-        valueGetter: (location) => totalNumRate(location.row.star)
+        field: 'calendar',
+        headerName: 'Lịch',
+        width: 150,
+        valueGetter: (event) => event.row.calendarType ? 'DL' : 'AL'
     },
     {
         field: 'action',
-        headerName: 'Chi tiết',
+        headerName: 'Chỉnh sửa',
         width: 150,
         sortable: false,
-        renderCell: (location) => (
-            <IconButton size='small' component={Link} to={`/admin/location/${location.row.name}`} title={'Chi tiết'}>
+        renderCell: (event) => (
+            <IconButton size='small' component={Link} to={`/admin/report/eventContribute/${event.row.name}`} title='Chỉnh sửa'>
                 <MoreVert />
             </IconButton>
         )
@@ -76,8 +75,8 @@ export default function AdminEventContribute(props) {
     const getAllLocations = async (token) => {
         setLoading(true);
         setError(null);
-        await customAxios(token).get('/location/all?admin=true').then(res => {
-            setLocations(res.data.locations);
+        await customAxios(token).get('/event/all').then(res => {
+            setLocations(res.data.events);
             setLoading(false);
         }).catch(err => {
             setLoading(false);
@@ -110,7 +109,7 @@ export default function AdminEventContribute(props) {
                     onPageSizeChange={(newPageSize) => setPageSize(newPageSize)}
                     pagination
                     onRowDoubleClick={(location) => {
-                        history.push(`/admin/location/${location.row.name}`)
+                        history.push(`/admin/report/eventContribute/${location.row.name}`)
                     }}
                     autoHeight
                     loading={loading}
