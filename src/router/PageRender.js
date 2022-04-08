@@ -25,7 +25,7 @@ const PageRender = () => {
         if (user && user.role) {
             if (id) {
                 if (subpage) {
-                    if (subpage === 'add'||subpage==='locationContribute'||subpage==='eventContribute') {
+                    if (subpage === 'add' || subpage === 'locationContribute' || subpage === 'eventContribute') {
                         pageName = `admin/${id}/${subpage}`
                     }
                     else pageName = `admin/${id}/id`;
@@ -47,7 +47,7 @@ const PageRender = () => {
                 pageName = `${page}/id/${subpage}`;
             }
             else {
-                if (id === 'add'||id==='contribute') {
+                if (id === 'add' || id === 'contribute') {
                     pageName = `${page}/${id}`
                 }
                 else

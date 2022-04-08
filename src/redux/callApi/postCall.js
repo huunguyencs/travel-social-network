@@ -255,7 +255,6 @@ export const unlikePost = (id, auth, socket, next) => async (dispatch) => {
     }
     catch (err) {
         next();
-        // console.log(err);
         if (err.response && err.response.data && err.response.data.message)
             dispatch(alertAction.error({ message: err.response.data.message }))
         else

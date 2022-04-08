@@ -2,14 +2,21 @@
 # Content-Type: application/json
 
 # {
-#     "email":"test1@gmail.com",
-#     "username": "test1",
+#     "email":"0@gmail.",
+#     "username": "tecst1",
 #     "password": "123456",
 #     "gender":"male",
 #     "phone": "0123456",
-#     "fullname": "huythunhat"
+#     "fullname": "huy1tran"
 # }
 
+# POST http://localhost:5000/user/reset_password
+# Content-Type: application/json
+# Authorization:Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjYyNDU3M2VkN2JjZTU2ZDY5YjIwZTU1OCIsImlhdCI6MTY0ODc0MjQwNywiZXhwIjoxNjQ4NzQzMzA3fQ.6p4F-if_-EN_SAW-zEufd1nGjcfrQdrI9Yl0ehXsL5Y
+
+# {
+#     "password":"456789"
+# }
 ###
 #PATCH là một cập nhập một phần
 # #PUT là cập nhập tât cả
@@ -18,8 +25,8 @@
 # Content-Type: application/json
 
 # {
-#     "email": "test@gmail.com",
-#     "password": "123456"
+#     "email": "quanghuytran02072000@gmail.com",
+#     "password": "456789"
 # }
 
 
@@ -214,9 +221,9 @@
 #     }]
 # }
 
-GET http://localhost:5000/volunteer/622b197a5a8f304314aacde5
-Content-Type: application/json
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjYxY2U3NzM0YmI5ZmIxNTIwZjQxNTcyYyIsImlhdCI6MTY0NDgyNDQxMX0.mPDebvCIN2r5jw2Lzpb1gbq_mXTL2hsdSJC7afDRS10
+# GET http://localhost:5000/volunteer/622b197a5a8f304314aacde5
+# Content-Type: application/json
+# Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjYxY2U3NzM0YmI5ZmIxNTIwZjQxNTcyYyIsImlhdCI6MTY0NDgyNDQxMX0.mPDebvCIN2r5jw2Lzpb1gbq_mXTL2hsdSJC7afDRS10
 
 # DELETE http://localhost:5000/volunteer/620a228f93de006ae71d1736
 # Content-Type: application/json

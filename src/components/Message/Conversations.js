@@ -23,7 +23,7 @@ export default function Conversations() {
         e.preventDefault();
         if (!search) return setSearchUsers([]);
         try {
-            const res = await customAxios().get(`/user/search?fullname=${search}`)
+            const res = await customAxios().get(`/user/search_by_name?fullname=${search}`)
             setSearchUsers(res.data.users);
         } catch (err) {
             console.log(err)
@@ -60,9 +60,9 @@ export default function Conversations() {
                         <form className={classes.message_search_form} onSubmit={handleSearch}>
                             <Search className={classes.message_searchIcon} />
                             <input placeholder="Tìm bạn bè..." type="text" name="search" className={classes.message_input} value={search} onChange={e => setSearch(e.target.value)} />
-                            {search !== '' && 
-                                <IconButton>
-                                     <Cancel className={classes.message_closeIcon} onClick={() => handleClose()} />
+                            {search !== '' &&
+                                <IconButton onClick={() => handleClose()}>
+                                    <Cancel className={classes.message_closeIcon} />
                                 </IconButton>
                             }
                         </form>
@@ -93,7 +93,7 @@ export default function Conversations() {
                                                     </Avatar>
                                                 </ListItemAvatar>
                                                 <ListItemText className={classes.message_card_text} primary={user.fullname} secondary={
-                                                    user.text ? (user.text.length > 20 ? user.text.slice(0,20):user.text) : user.fullname
+                                                    user.text ? (user.text.length > 20 ? user.text.slice(0, 20) : user.text) : user.fullname
                                                 } />
                                                 <ListItemIcon>
                                                     {!user.seen && <FiberManualRecord style={{ color: "#a5dec8" }} />}

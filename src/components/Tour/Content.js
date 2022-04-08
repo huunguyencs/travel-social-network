@@ -232,7 +232,7 @@ function BaseContent(props) {
     }
 
     useEffect(() => {
-        if (auth.user && tour.joinIds.find(join => join._id === auth.user._id)) {
+        if (auth.user && tour.joinIds.findIndex(join => join._id === auth.user._id) >= 0) {
             setJoin(true);
         }
     }, [tour, auth.user]);
@@ -462,9 +462,8 @@ function BaseContent(props) {
 
             <CardContent>
                 <div>
-                    {new Date(tour.tour[0]?.date) > new Date() && tour.userId._id !== auth.user?._id &&
+                    {tour.userId._id !== auth.user?._id &&
                         <Button onClick={joinClick}>{state.loadingJoin ? <CircularProgress size={18} color='inherit' /> : join ? "Rời khỏi tour" : "Tham gia tour"}</Button>
-
                     }
                 </div>
                 <Typography variant="h6" className={classes.title} component={Link} to={`/tour/${tour._id}`}>

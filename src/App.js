@@ -33,6 +33,14 @@ function App() {
   }
 
   useEffect(() => {
+    dispatch(refreshToken());
+    const socket = io();
+    dispatch({ type: SOCKET_TYPES.SOCKET, payload: socket });
+    return () => socket.close();
+  }, [dispatch, history])
+
+
+  useEffect(() => {
     if (auth.token) {
       dispatch(getNotifies(auth.token))
     }
@@ -43,14 +51,6 @@ function App() {
       dispatch(getFriendRecommend(auth.token, 5))
     }
   }, [auth.token, dispatch])
-
-  useEffect(() => {
-    dispatch(refreshToken(auth?.token));
-    const socket = io();
-    dispatch({ type: SOCKET_TYPES.SOCKET, payload: socket });
-    return () => socket.close();
-  }, [dispatch, history, location.pathname, auth.token])
-
   return (
     <div>
       <WithRouterScroll />
@@ -63,7 +63,6 @@ function App() {
       <CustomRouter path='/:page/:id' component={PageRender} exact />
       <CustomRouter path='/:page/:id/:subpage' component={PageRender} exact />
     </div>
-
   );
 }
 

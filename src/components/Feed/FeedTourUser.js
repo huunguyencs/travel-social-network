@@ -26,22 +26,23 @@ export default function FeedUserTour(props) {
     }
 
     return (
-        <Feed
-            loadMore={loadTour}
-            loading={tour.loading}
-            error={tour.error}
-            tryAgain={tryAgain}
-            hasMore={tour.hasMore}
-        >
-            {
-                tour.tours.map((tour) => (
-                    <Tour
-                        tour={tour}
-                        key={tour._id}
-                    />
-                ))
-            }
-
-        </Feed>
+        <div style={{ marginTop: 100 }}>
+            <Feed
+                loadMore={loadTour}
+                loading={tour.loading}
+                error={tour.error}
+                tryAgain={tryAgain}
+                hasMore={tour.hasMore}
+            >
+                {
+                    tour.tours.map((tour) => (
+                        <Tour
+                            tour={tour}
+                            key={tour._id}
+                        />
+                    ))
+                }
+            </Feed>
+        </div>
     )
 }
