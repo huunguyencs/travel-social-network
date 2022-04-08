@@ -2,7 +2,9 @@ const Posts = require('../Models/post.model')
 const Comments = require('../Models/comment.model')
 const TourDates = require('../Models/tourDate.model');
 const Locations = require('../Models/location.model');
-const { createItem, shareItem, reviewItem, likeItem, unLikeItem, deleteItem } = require('../utils/recombee');
+const { createItem, shareItem, reviewItem, likeItem, unLikeItem, deleteItem, viewDetailItem } = require('../utils/recombee');
+
+const ObjectId = require('mongoose').Types.ObjectId;
 
 class PostController {
     //co hai loai post
@@ -140,6 +142,10 @@ class PostController {
 
     async updatePost(req, res) {
         try {
+            if (!ObjectId.isValid(req.params.id)) {
+                res.notFound('Không tìm thấy bài viết');
+                return;
+            }
             const { content, images, rate, hashtags, oldRate, locationId } = req.body;
             const post = await Posts.findOneAndUpdate({ _id: req.params.id, userId: req.user._id }, {
                 content, images, rate, hashtags
@@ -228,6 +234,11 @@ class PostController {
     //lấy pots của 1 user cụ thể (params.id)
     async getUserPost(req, res) {
         try {
+
+            if (!ObjectId.isValid(req.params.id)) {
+                res.notFound('Không tìm thấy user');
+                return;
+            }
             const { offset } = req.query;
             // console.log(offset);
             const posts = await Posts.find({ userId: req.params.id }).skip(offset * 5).limit(5).sort("-createdAt")
@@ -292,6 +303,10 @@ class PostController {
     // lấy thông tin 1 post theo params.id
     async getPost(req, res) {
         try {
+            if (!ObjectId.isValid(req.params.id)) {
+                res.notFound('Không tìm thấy bài viết');
+                return;
+            }
             const post = await Posts.findById(req.params.id)
                 .populate("userId likes", "username fullname avatar")
                 .populate("locationId", "name fullname")
@@ -318,6 +333,9 @@ class PostController {
                 res.notFound('Không tìm thấy bài viết')
             }
 
+            if (req.user && req.user._id !== 0) {
+                viewDetailItem(req.user._id, req.params.id)
+            }
         } catch (err) {
             console.log(err)
             res.error(err);
@@ -327,6 +345,10 @@ class PostController {
     //A(user._id) like post B(params.id)
     async likePost(req, res) {
         try {
+            if (!ObjectId.isValid(req.params.id)) {
+                res.notFound('Không tìm thấy bài viết')
+                return;
+            }
             var post = await Posts.find({ _id: req.params.id, likes: req.user._id });
             if (post.length > 0) {
                 return res.status(400).json({ success: false, message: "You liked this post." })
@@ -355,6 +377,10 @@ class PostController {
     //A(user._id) unlike post B(params.id)
     async unlikePost(req, res) {
         try {
+            if (!ObjectId.isValid(req.params.id)) {
+                res.notFound('Không tìm thấy bài viết');
+                return;
+            }
             const post = await Posts.findByIdAndUpdate(req.params.id, {
                 $pull: {
                     likes: req.user._id
@@ -375,6 +401,10 @@ class PostController {
 
     async deletePost(req, res) {
         try {
+            if (!ObjectId.isValid(req.params.id)) {
+                res.notFound('Không tìm thấy bài viết')
+                return
+            }
             const post = await Posts.findById(req.params.id)
             await Posts.findOneAndDelete({ _id: req.params.id, userId: req.user._id });
             if (post.comments) await Comments.deleteMany({ _id: { $in: post.comments } });

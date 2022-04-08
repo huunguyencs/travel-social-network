@@ -1,7 +1,7 @@
 const Services = require('../Models/service.model');
-const { createItem, reviewItem } = require('../utils/recombee');
+const { createItem, reviewItem, viewDetailItem } = require('../utils/recombee');
 // const mongoose = require('mongoose');
-
+const ObjectId = require('mongoose').Types.ObjectId;
 
 class ServiceController {
     async createService(req, res) {
@@ -37,7 +37,10 @@ class ServiceController {
 
     async updateService(req, res) {
         try {
-
+            if (!ObjectId.isValid(req.params.id)) {
+                res.notFound('Không tìm thấy dịch vụ');
+                return;
+            }
             const { name, description, type, province, images, cost, discount } = req.body;
 
             const service = await Services.findOneAndUpdate({ _id: req.params.id, cooperator: req.user._id }, {
@@ -53,8 +56,12 @@ class ServiceController {
 
     async deleteService(req, res) {
         try {
-            await Services.findOneAndDelete({ _id: req.params.id, cooperator: req.user._id });
+            if (!ObjectId.isValid(req.params.id)) {
+                res.notFound('Không tìm thấy dịch vụ');
+                return;
+            }
 
+            await Services.findOneAndDelete({ _id: req.params.id, cooperator: req.user._id });
 
             res.deleted('Xóa dịch vụ thành công!');
         } catch (err) {
@@ -66,6 +73,10 @@ class ServiceController {
     // lấy thông tin 1 Service theo params.id
     async getService(req, res) {
         try {
+            if (!ObjectId.isValid(req.params.id)) {
+                res.notFound('Không tìm thấy dịch vụ');
+                return;
+            }
             const service = await Services.findById(req.params.id)
                 .populate("cooperator")
             res.success({
@@ -107,6 +118,11 @@ class ServiceController {
 
     async getServiceByCoop(req, res) {
         try {
+
+            if (!ObjectId.isValid(req.params.id)) {
+                res.notFound('Không tìm thấy user');
+                return;
+            }
             const services = await Services.find({ cooperator: req.params.id }, "-rate -attribute").populate("province", "name fullname");
             res.success({ success: true, message: "", services })
         } catch (err) {
@@ -116,6 +132,10 @@ class ServiceController {
 
     async getServiceDetail(req, res) {
         try {
+            if (!ObjectId.isValid(req.params.id)) {
+                res.notFound('Không tìm thấy dịch vụ');
+                return;
+            }
             const service = await Services.findById(req.params.id, "rate attribute")
                 .populate({
                     path: "rate",
@@ -125,6 +145,10 @@ class ServiceController {
                     }
                 })
             res.success({ success: true, message: "", rate: service.rate, attribute: service.attribute });
+
+            if (req.user && req.user._id !== 0) {
+                viewDetailItem(req.user._id, req.params.id);
+            }
         }
         catch (err) {
             res.error(err);
@@ -133,6 +157,10 @@ class ServiceController {
 
     async reviewService(req, res) {
         try {
+            if (!ObjectId.isValid(req.params.id)) {
+                res.notFound('Không tìm thấy dịch vụ');
+                return;
+            }
             const { rate, content, images } = req.body;
             await Services.findByIdAndUpdate(req.params.id, {
                 $push: {

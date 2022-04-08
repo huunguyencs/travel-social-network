@@ -91,19 +91,21 @@ export const getMorePost = (data) => async (dispatch) => {
 }
 
 
-export const getPostById = (id, next) => async (dispatch) => {
+export const getPostById = (id, token, next) => async (dispatch) => {
     dispatch(postAction.getPosts({ posts: [] }));
     dispatch(postAction.loading());
     try {
-        await customAxios().get(`/post/${id}`).then(res => {
+        await customAxios(token).get(`/post/${id}`).then(res => {
             dispatch(postAction.getPosts({ posts: [res.data.post] }));
         }).catch(err => {
             if (err.response.status === 404) {
                 next();
             }
+            dispatch(postAction.error({ error: 'Có lỗi xảy ra' }))
         })
     }
     catch (err) {
+        next();
         // console.log(err);
         dispatch(postAction.error({ error: "Có lỗi xảy ra" }))
     }

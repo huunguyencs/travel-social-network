@@ -1,7 +1,9 @@
 const Locations = require('../Models/location.model')
 const Posts = require('../Models/post.model');
 const Provinces = require('../Models/province.model');
-const { createItem, deleteItem } = require('../utils/recombee');
+const { createItem, deleteItem, viewDetailItem } = require('../utils/recombee');
+
+const ObjectId = require('mongoose').Types.ObjectId;
 
 class LocationController {
     async createLocation(req, res) {
@@ -24,7 +26,7 @@ class LocationController {
                     }
                 })
 
-                createItem(newLocation._doc._id, 'location')
+                createItem(newLocation._doc._id, 'location', [province], information)
             }
             else {
                 res.notFound('Không tìm thấy tỉnh!')
@@ -36,7 +38,12 @@ class LocationController {
 
     async updateLocation(req, res) {
         try {
-            const { name, images, province, position, information } = req.body
+            if (!ObjectId.isValid(req.params.id)) {
+                res.notFound('Không tìm thấy địa điểm')
+                return;
+            }
+
+            const { name, images, province, position, information } = req.body;
 
             const location = await Locations.findByIdAndUpdate(req.params.id, {
                 name, images, province, position, information
@@ -51,6 +58,10 @@ class LocationController {
 
     async deleteLocation(req, res) {
         try {
+            if (!Object.isValid(req.params.id)) {
+                res.notFound('Không tìm thấy địa điểm');
+                return;
+            }
             const location = await Locations.findByIdAndDelete(req.params.id);
             if (location.posts != null) await Posts.deleteMany({ _id: { $in: location.posts } });
 
@@ -78,6 +89,9 @@ class LocationController {
                 res.notFound("Không tìm thấy địa điểm!");
             }
 
+            if (req.user && req.user._id !== 0) {
+                viewDetailItem(req.user._id, location._id)
+            }
         } catch (err) {
             res.error(err);
         }

@@ -1,7 +1,9 @@
 const Tours = require('../Models/tour.model')
 const TourDates = require('../Models/tourDate.model')
 const Comments = require('../Models/comment.model');
-const { createItem, shareItem, likeItem, unLikeItem, deleteItem, joinItem, unJoinItem } = require('../utils/recombee');
+const { createItem, shareItem, likeItem, unLikeItem, deleteItem, joinItem, unJoinItem, viewDetailItem } = require('../utils/recombee');
+
+const ObjectId = require('mongoose').Types.ObjectId;
 
 class TourController {
     async createTour(req, res) {
@@ -91,6 +93,11 @@ class TourController {
     ///
     async updateTour(req, res) {
         try {
+
+            if (!ObjectId.isValid(req.params.id)) {
+                res.notFound('Không tìm thấy tour');
+                return;
+            }
             const { content, name, isPublic, image, hashtags, services, tour, cost, provinces, locations } = req.body;
 
             const newTour = await Tours.findOneAndUpdate({ _id: req.params.id, userId: req.user._id }, {
@@ -167,6 +174,10 @@ class TourController {
     //A(user._id) like tour B(params.id)
     async likeTour(req, res) {
         try {
+            if (!ObjectId.isValid(req.params.id)) {
+                res.notFound('Không tìm thấy tour');
+                return;
+            }
             var tour = await Tours.findOne({ _id: req.params.id, likes: req.user._id });
             if (tour) {
                 return res.status(400).json({ success: false, message: "You liked this tour." })
@@ -193,6 +204,10 @@ class TourController {
     //A(user._id) unlike tour B(params.id)
     async unlikeTour(req, res) {
         try {
+            if (!ObjectId.isValid(req.params.id)) {
+                res.notFound('Không tìm thấy tour');
+                return;
+            }
             const tour = await Tours.findByIdAndUpdate(req.params.id, {
                 $pull: {
                     likes: req.user._id
@@ -212,6 +227,10 @@ class TourController {
 
     async deleteTour(req, res) {
         try {
+            if (!ObjectId.isValid(req.params.id)) {
+                res.notFound('Không tìm thấy tour');
+                return;
+            }
             const tour = await Tours.findById(req.params.id);
             if (tour) {
                 await Tours.findOneAndDelete({ _id: req.params.id, userId: req.user._id });
@@ -308,6 +327,11 @@ class TourController {
     //lấy tours của 1 user cụ thể (params.id)
     async getUserTour(req, res) {
         try {
+
+            if (!ObjectId.isValid(req.params.id)) {
+                res.notFound('Không tìm thấy user');
+                return;
+            }
             var { offset } = req.query;
             offset = offset || 0;
             const tours = await Tours.find({ userId: req.params.id }).sort("-createdAt").skip(offset * 5).limit(5)
@@ -338,6 +362,10 @@ class TourController {
     // lấy thông tin 1 tour theo params.id
     async getTour(req, res) {
         try {
+            if (!ObjectId.isValid(req.params.id)) {
+                res.notFound('Không tìm thấy tour');
+                return;
+            }
             // console.log(req.params.id)
             let tour = await Tours.findById(req.params.id);
             let requestId;
@@ -414,6 +442,9 @@ class TourController {
                 success: true, message: "get info 1 tour success", tour
             });
 
+            if (req.user && req.user._id !== 0) {
+                viewDetailItem(req.user._id, req.params.id)
+            }
 
         } catch (err) {
             console.log(err)
@@ -423,6 +454,10 @@ class TourController {
 
     async joinTour(req, res) {
         try {
+            if (!ObjectId.isValid(req.params.id)) {
+                res.notFound('Không tìm thấy tour');
+                return;
+            }
             var tour = await Tours.find({ _id: req.params.id, joinIds: req.user._id });
             if (tour.length > 0) {
                 return res.status(400).json({ success: false, message: "You joined this tour." })
@@ -446,6 +481,10 @@ class TourController {
 
     async unJoinTour(req, res) {
         try {
+            if (!ObjectId.isValid(req.params.id)) {
+                res.notFound('Không tìm thấy tour');
+                return;
+            }
             const tour = await Tours.findByIdAndUpdate(req.params.id, {
                 $pull: {
                     joinIds: req.user._id
@@ -465,6 +504,10 @@ class TourController {
 
     async removeJoin(req, res) {
         try {
+            if (!ObjectId.isValid(req.params.id)) {
+                res.notFound('Không tìm thấy tour');
+                return;
+            }
             let tour = await Tours.findById(req.params.id);
             if (tour.userId.toString() !== req.user._id.toString()) {
                 res.status(401).json({ success: false, message: "Không được quyền" })
@@ -490,6 +533,10 @@ class TourController {
 
     async removeReview(req, res) {
         try {
+            if (!ObjectId.isValid(req.params.id)) {
+                res.notFound('Không tìm thấy tour');
+                return;
+            }
             const { locationId } = req.body;
             const { reviewId } = req.query;
 
@@ -512,7 +559,12 @@ class TourController {
 
     async joinLocation(req, res) {
         try {
+
             const { id } = req.params;
+            if (!ObjectId.isValid(id)) {
+                res.notFound('Không tìm thấy tour');
+                return;
+            }
             const { locationId } = req.body;
             await TourDates.findOneAndUpdate({ _id: id, locations: { $elemMatch: { _id: locationId } } }, {
                 $addToSet: {
@@ -532,6 +584,10 @@ class TourController {
     async unjoinLocation(req, res) {
         try {
             const { id } = req.params;
+            if (!ObjectId.isValid(id)) {
+                res.notFound('Không tìm thấy tour');
+                return;
+            }
             const { locationId } = req.body;
             await TourDates.findOneAndUpdate({ _id: id, locations: { $elemMatch: { _id: locationId } } }, {
                 $pull: {
@@ -550,6 +606,10 @@ class TourController {
     async removeJoinLocation(req, res) {
         try {
             const { id } = req.params;
+            if (!ObjectId.isValid(id)) {
+                res.notFound('Không tìm thấy tour');
+                return;
+            }
             const { locationId, userId } = req.body;
             await TourDates.findOneAndUpdate({ _id: id, locations: { $elemMatch: { _id: locationId } } }, {
                 $pull: {

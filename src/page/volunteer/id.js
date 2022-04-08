@@ -6,18 +6,18 @@ import { NotFound } from "../404";
 import { Grid, Button, CircularProgress, Typography } from '@material-ui/core';
 import SpeedDialButton from '../../components/SpeedDialBtn';
 import { homeMenu } from '../../constant/menu';
-import { getVolunteers } from "../../redux/callApi/volunteerCall";
 
-import { useSelector, useDispatch } from "react-redux";
+import { useSelector } from "react-redux";
 import { useParams } from "react-router-dom";
 // import customAxios from "../../utils/fetchData";
 import Volunteer from "../../components/Volunteer/VolunteerDetail";
+import customAxios from "../../utils/fetchData";
 
 
 export default function VolunteerDetail() {
 
 
-    const {volunteer } = useSelector(state => state);
+    const { auth } = useSelector(state => state);
 
     const { id } = useParams();
     const [volunteerDetail, setVolunteerDetail] = useState();
@@ -26,26 +26,38 @@ export default function VolunteerDetail() {
         notFound: false,
         error: false
     })
-    const dispatch = useDispatch();
-    useEffect(() => {
-        dispatch(getVolunteers());
-    }, [dispatch])
 
-    useEffect(() => {
+    const getVolunteer = (id, token) => {
         setState({
             loading: true,
-            error: false,
             notFound: false,
+            error: false
         })
-        volunteer.volunteers.forEach(element => {
-            if(element._id === id) setVolunteerDetail(element)
+        customAxios(token).get(`/volunteer/${id}`).then(res => {
+            setVolunteerDetail(res.volunteer);
+            setState({
+                loading: false,
+                notFound: false,
+                error: false,
+            })
+        }).catch(err => {
+            if (err && err.response && err.response.status === 404)
+                setState({
+                    loading: false,
+                    error: true,
+                    notFound: true,
+                })
+            else setState({
+                loading: false,
+                error: true,
+                notFound: false,
+            })
         })
-        setState({
-            loading: false,
-            error: false,
-            notFound: false,
-        })
-    },[id, volunteer])
+    }
+
+    useEffect(() => {
+        getVolunteer(id, auth.token);
+    }, [id, auth.token])
 
     useEffect(() => {
         if (volunteerDetail && volunteerDetail.name) {
@@ -54,19 +66,20 @@ export default function VolunteerDetail() {
     }, [volunteerDetail])
 
     const tryAgain = () => {
-        setState({
-            loading: true,
-            error: false,
-            notFound: false,
-        })
-        volunteer.volunteers.forEach(element => {
-            if(element._id === id) setVolunteerDetail(element)
-        })
-        setState({
-            loading: false,
-            error: false,
-            notFound: false,
-        })
+        getVolunteer(id, auth.token)
+        // setState({
+        //     loading: true,
+        //     error: false,
+        //     notFound: false,
+        // })
+        // // volunteer.volunteers.forEach(element => {
+        // //     if (element._id === id) setVolunteerDetail(element)
+        // // })
+        // setState({
+        //     loading: false,
+        //     error: false,
+        //     notFound: false,
+        // })
     }
 
     return (

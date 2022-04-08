@@ -6,6 +6,7 @@ const ObjectId = require('mongoose').Types.ObjectId;
 const Confirms = require('../Models/confirm.model');
 const sendEmail = require('../utils/sendEmail');
 const { createUser, saveItem, unSaveItem } = require('../utils/recombee');
+
 class UserController {
     async register(req, res) {
         try {
@@ -59,12 +60,15 @@ class UserController {
 
             await newUser.save()
 
+
+
             res.success({
                 success: true,
                 message: "Tài khoản của bạn đã được kích hoạt!"
             })
 
-            createUser(user._doc._id)
+            createUser(newUser._doc._id)
+
         } catch (err) {
             return res.status(500).json({ message: err.message })
         }
@@ -289,6 +293,10 @@ class UserController {
     async follow(req, res) {
         try {
 
+            if (!ObjectId.isValid(req.params.id)) {
+                res.notFound('Không tìm thấy user');
+                return;
+            }
             const user = await Users.findOne({ _id: req.params.id, followers: req.user._id })
             if (user) {
                 return res.status(400).json({ success: false, message: "Bạn đã theo dõi người dùng này!" });
@@ -318,6 +326,10 @@ class UserController {
     // A(user._id) unfollow B(params.id)
     async unfollow(req, res) {
         try {
+            if (!ObjectId.isValid(req.params.id)) {
+                res.notFound('Không tìm thấy user');
+                return;
+            }
             // cập nhập ds ở B
             const followers = await Users.findByIdAndUpdate(req.params.id, {
                 $pull: { followers: req.user._id }
@@ -524,7 +536,12 @@ class UserController {
 
     async deleteUser(req, res) {
         try {
+
             const { id } = req.params;
+            if (!ObjectId.isValid(id)) {
+                res.notFound('Không tìm thấy tour');
+                return;
+            }
             await Users.findByIdAndDelete(id);
             res.deleted('Xóa user thành công')
         }

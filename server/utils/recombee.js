@@ -75,9 +75,9 @@ function createUser(id, pref) {
     item.push(new rqs.AddUser(id));
     if (pref) item.push(new rqs.AddUserProperty('pref', new Set(pref)))
     recombeeClient.send(new rqs.Batch(item)).then(res => {
-        console.log(`Create ${type} ${id} successful`)
+        console.log(`Create ${id} successful`)
     }).catch(err => {
-        console.log(`Create ${type} ${id} fail`)
+        console.log(`Create ${id} fail`)
     })
 }
 

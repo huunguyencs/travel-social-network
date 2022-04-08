@@ -1,6 +1,7 @@
 const Messages = require('../Models/message.model');
 const Conversations = require('../Models/conversation.model');
 
+const ObjectId = require('mongoose').Types.ObjectId;
 class MessageController {
     async createMessage(req, res) {
         try {
@@ -58,6 +59,12 @@ class MessageController {
     // get messages of the conversation
     async getMessages(req, res) {
         try {
+
+            if (!ObjectId.isValid(req.params.id)) {
+                res.notFound('Không tìm thấy tin nhắn');
+                return;
+            }
+
             const messages = await Messages.find({
                 $or: [
                     { sender: req.user._id, recipient: req.params.id },
@@ -76,6 +83,12 @@ class MessageController {
     }
     async deleteConversation(req, res) {
         try {
+
+            if (!ObjectId.isValid(req.params.id)) {
+                res.notFound('Không tìm thấy tin nhắn');
+                return;
+            }
+
             const newConversation = await Conversations.findOneAndDelete({
                 $or: [
                     { members: [req.user._id, req.params.id] },

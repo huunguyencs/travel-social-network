@@ -2,7 +2,7 @@ import { Button, CircularProgress, Grid, Typography } from "@material-ui/core";
 import { PhotoLibrary } from "@material-ui/icons";
 import React, { useEffect, useState } from "react";
 import { Link, useParams } from "react-router-dom";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import Lightbox from "react-image-lightbox";
 
 import MapCard from "../../components/Map/MapCard";
@@ -31,15 +31,16 @@ export default function Location(props) {
         error: false
     })
     const dispatch = useDispatch();
+    const { auth } = useSelector(state => state)
 
-    const getLocation = async (id) => {
+    const getLocation = async (id, token) => {
         if (id) {
             setState({
                 loading: true,
                 error: false
             })
             setNotFound(false);
-            await customAxios().get(`/location/${id}`).then(res => {
+            await customAxios(token).get(`/location/${id}`).then(res => {
                 setLocation(res.data.location)
                 setState({
                     loading: false,
@@ -77,9 +78,9 @@ export default function Location(props) {
 
     useEffect(() => {
         if (id) {
-            getLocation(id);
+            getLocation(id, auth.token);
         }
-    }, [id])
+    }, [id, auth.token])
 
     useEffect(() => {
         if (location) {
@@ -95,7 +96,7 @@ export default function Location(props) {
     }, [location])
 
     const tryAgain = () => {
-        getLocation(id);
+        getLocation(id, auth.token);
     }
 
     return (
@@ -148,17 +149,17 @@ export default function Location(props) {
                                         <Grid item md={6} sm={12} xs={12}>
                                             <div className={classes.imageList}>
                                                 <img src={location.images[0]} alt="Đang tải..." className={classes.image1} onClick={handleShowImage} />
-                                                <div style={{height:"100%", width:"100%",position:"relative"}}>
+                                                <div style={{ height: "100%", width: "100%", position: "relative" }}>
                                                     <img src={location.images[1]} alt="Đang tải..." className={classes.image2} onClick={handleShowImage} />
                                                     <img src={location.images[2]} alt="Đang tải..." className={classes.image3} onClick={handleShowImage} />
                                                     {
-                                                        location.images.length >= 3 && 
+                                                        location.images.length >= 3 &&
                                                         <span className={classes.imageMore} onClick={handleShowImage}>
-                                                            <PhotoLibrary style={{fontSize: 12}}/> Xem tất cả ảnh ({location.images.length})
+                                                            <PhotoLibrary style={{ fontSize: 12 }} /> Xem tất cả ảnh ({location.images.length})
                                                         </span >
                                                     }
                                                 </div>
-                                                
+
                                                 {showImg && (
                                                     <Lightbox
                                                         mainSrc={location.images[imgIdx]}
@@ -189,12 +190,12 @@ export default function Location(props) {
                                             <div className={classes.review}>
                                                 <div className={classes.reviewTop}>
                                                     <Typography variant="h5">
-                                                        Đánh giá từ cộng đồng 
+                                                        Đánh giá từ cộng đồng
                                                     </Typography>
                                                 </div>
                                                 <div className={classes.overView}>
                                                     <div className={classes.overView_image}>
-                                                        <img style={{maxHeight: "100%"}} src="https://ik.imagekit.io/reviewcafe/Online_Review-cuate_wG_WzURJF.svg" alt="icon"/>
+                                                        <img style={{ maxHeight: "100%" }} src="https://ik.imagekit.io/reviewcafe/Online_Review-cuate_wG_WzURJF.svg" alt="icon" />
                                                     </div>
                                                     <div className={classes.overView_text}>
                                                         <Typography variant="h5">
