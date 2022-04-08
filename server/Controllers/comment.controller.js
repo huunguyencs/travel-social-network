@@ -1,7 +1,8 @@
 const Comments = require('../Models/comment.model')
 const Posts = require('../Models/post.model')
 const Tours = require('../Models/tour.model')
-const Volunteers = require('../Models/volunteer.model')
+const Volunteers = require('../Models/volunteer.model');
+const { commentItem } = require('../utils/recombee');
 class CommentController {
     async createComment(req, res) {
         try {
@@ -54,6 +55,7 @@ class CommentController {
                     break;
             }
             res.created({ success: true, message: "Create comment successful", newComment })
+            commentItem(req.user._id, postId)
         } catch (err) {
             res.error(err);
         }

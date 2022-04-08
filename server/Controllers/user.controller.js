@@ -4,7 +4,8 @@ const bcrypt = require('bcrypt')
 const jwt = require('jsonwebtoken');
 const ObjectId = require('mongoose').Types.ObjectId;
 const Confirms = require('../Models/confirm.model');
-const sendEmail = require('../utils/sendEmail')
+const sendEmail = require('../utils/sendEmail');
+const { createUser, saveItem, unSaveItem } = require('../utils/recombee');
 class UserController {
     async register(req, res) {
         try {
@@ -15,9 +16,9 @@ class UserController {
 
             const user_email = await Users.findOne({ email })
             if (user_email) return res.status(400).json({ success: false, message: "Email này đã tồn tại!" })
-            
-            if(!validateEmail(email))
-                return res.status(400).json({success: false, message: "Email không hợp lệ!"})
+
+            if (!validateEmail(email))
+                return res.status(400).json({ success: false, message: "Email không hợp lệ!" })
             const passwordHash = await bcrypt.hash(password, 12)
 
             const userNew = {
@@ -30,7 +31,7 @@ class UserController {
             const activationToken = createActivationToken(userNew)
             const url = `${process.env.CLIENT_URL}/activate?token=${activationToken}`
             sendEmail(userNew.email, url, "Xác thực địa chỉ email")
-    
+
 
             res.created({
                 success: true,
@@ -44,13 +45,13 @@ class UserController {
     }
     async activateEmail(req, res) {
         try {
-            const {activation_token} = req.body
+            const { activation_token } = req.body
             const user = jwt.verify(activation_token, process.env.ACTIVATION_TOKEN_SECRET)
 
-            const {fullname, username, email, phone, password} = user
+            const { fullname, username, email, phone, password } = user
 
-            const check = await Users.findOne({email})
-            if(check) return res.status(400).json({message:"Email đã tồn tại!"})
+            const check = await Users.findOne({ email })
+            if (check) return res.status(400).json({ message: "Email đã tồn tại!" })
 
             const newUser = new Users({
                 fullname, username, email, phone, password
@@ -62,8 +63,10 @@ class UserController {
                 success: true,
                 message: "Tài khoản của bạn đã được kích hoạt!"
             })
+
+            createUser(user._doc._id)
         } catch (err) {
-            return res.status(500).json({message: err.message})
+            return res.status(500).json({ message: err.message })
         }
     }
     async login(req, res) {
@@ -143,24 +146,24 @@ class UserController {
     }
     async logout(req, res) {
         try {
-            res.clearCookie('refreshtoken', {path: '/user/refresh_token'})
+            res.clearCookie('refreshtoken', { path: '/user/refresh_token' })
             return res.success({ success: true, message: "Đăng xuất thành công!" })
         } catch (err) {
             console.log(err)
             res.error(err);
         }
     }
-    async forgotPassword(req, res){
+    async forgotPassword(req, res) {
         try {
-            const {email} = req.body
-            const user = await Users.findOne({email})
-            if(!user) return res.status(400).json({success: false,message: "Email không tồn tại!"})
+            const { email } = req.body
+            const user = await Users.findOne({ email })
+            if (!user) return res.status(400).json({ success: false, message: "Email không tồn tại!" })
 
-            const access_token = createAccessToken({id: user._id})
+            const access_token = createAccessToken({ id: user._id })
             const url = `${process.env.CLIENT_URL}/reset?token=${access_token}`
 
             sendEmail(email, url, "Đặt lại mật khẩu")
-            res.success({success: true, message: "Hãy kiểm tra mail để đặt lại mật khẩu!"}) 
+            res.success({ success: true, message: "Hãy kiểm tra mail để đặt lại mật khẩu!" })
         }
         catch (err) {
             res.error(err);
@@ -168,15 +171,15 @@ class UserController {
     }
     async resetPassword(req, res) {
         try {
-            const {password} = req.body
+            const { password } = req.body
             const passwordHash = await bcrypt.hash(password, 12)
-            await Users.findOneAndUpdate({_id: req.user._id}, {
+            await Users.findOneAndUpdate({ _id: req.user._id }, {
                 password: passwordHash
             })
 
-            res.success({success: true, message: "Đặt lại mật khẩu thành công"}) 
+            res.success({ success: true, message: "Đặt lại mật khẩu thành công" })
         } catch (err) {
-            return res.status(500).json({message: err.message})
+            return res.status(500).json({ message: err.message })
         }
     }
     async changePassword(req, res) {
@@ -361,6 +364,8 @@ class UserController {
             }, { new: true })
 
             res.success({ success: true, message: "Lưu tour thành công", tourSaved: user.tourSaved })
+
+            saveItem(req.user._id, tour)
         }
         catch (err) {
             res.error(err);
@@ -375,6 +380,7 @@ class UserController {
             }, { new: true })
 
             res.success({ success: true, message: 'Loại khỏi danh sách thành công', tourSaved: user.tourSaved })
+            unSaveItem(req.user._id, tour)
         } catch (err) {
             res.error(err);
         }

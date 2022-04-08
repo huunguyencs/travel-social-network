@@ -1,6 +1,7 @@
 const Tours = require('../Models/tour.model')
 const TourDates = require('../Models/tourDate.model')
-const Comments = require('../Models/comment.model')
+const Comments = require('../Models/comment.model');
+const { createItem, shareItem, likeItem, unLikeItem, deleteItem, joinItem, unJoinItem } = require('../utils/recombee');
 
 class TourController {
     async createTour(req, res) {
@@ -44,6 +45,8 @@ class TourController {
                     }
                 }
             })
+
+            createItem(req.user._id, newTour._doc._id, 'tour', [...hashtags, ...provinces, ...locations], content)
         } catch (err) {
             console.log(err)
             res.error(err);
@@ -76,6 +79,8 @@ class TourController {
                     shareId: share
                 }
             })
+
+            shareItem(req.user._id, shareId)
         }
         catch (err) {
             console.log(err);
@@ -177,6 +182,8 @@ class TourController {
                 likes: tour.likes,
                 tour
             });
+
+            likeItem(req.user._id, req.params.id)
         } catch (err) {
             console.log(err)
             res.error(err);
@@ -196,6 +203,7 @@ class TourController {
                 success: true, message: "unlike tour success",
                 likes: tour.likes
             });
+            unLikeItem(req.user._id, req.params.id)
         } catch (err) {
             console.log(err)
             res.error(err);
@@ -215,6 +223,7 @@ class TourController {
                 res.notFound("Không tìm thấy tour");
             }
 
+            // deleteItem(req.params.id)
 
         } catch (err) {
             console.log(err)
@@ -428,6 +437,8 @@ class TourController {
                 success: true, message: "join tour success",
                 joinIds: tour.joinIds
             });
+
+            joinItem(req.user._id, req.params.id);
         } catch (err) {
             res.error(err);
         }
@@ -445,6 +456,8 @@ class TourController {
                 success: true, message: "unjoin tour success",
                 joinIds: tour.joinIds
             });
+
+            unJoinItem(req.user._id, req.params.id)
         } catch (err) {
             res.error(err);
         }
@@ -468,7 +481,7 @@ class TourController {
                 success: true, message: "remove user success",
                 joinIds: tour.joinIds
             });
-
+            unJoinItem(user, req.params.id)
         }
         catch (err) {
             res.error(err);

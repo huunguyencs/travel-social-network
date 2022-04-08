@@ -22,5 +22,36 @@
         "pref": [
             ""
         ]
+    },
+    "interaction": {
+        "post": [
+            "like - cart_add",
+            "comment - cart_add",
+            "share - bookmark",
+            "view_detail"
+        ],
+        "tour": [
+            "join - purchases",
+            "like - cart_add",
+            "comment - cart_add",
+            "share - bookmark",
+            "view_detail",
+            "save - bookmark"
+        ],
+        "location": [
+            "review - rating",
+            "visit - purchases",
+            "view_detail"
+        ],
+        "volunteer": [
+            "join - purchases",
+            "view_detail",
+            "comment - cart_add"
+        ],
+        "service": [
+            "use - purchases",
+            "review - rating",
+            "view_detail"
+        ]
     }
 }

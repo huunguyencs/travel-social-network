@@ -2,6 +2,7 @@ const Volunteers = require('../Models/volunteer.model')
 const VolunteerDates = require('../Models/volunteerDate.model')
 const VolunteerLocations = require('../Models/volunteerLocation.model')
 const Comments = require('../Models/comment.model')
+const { createItem, joinItem, unJoinItem } = require('../utils/recombee')
 class VolunteerController {
     async createVolunteer(req, res) {
         try {
@@ -55,6 +56,8 @@ class VolunteerController {
                     }
                 }
             })
+
+            createItem(newVolunteer._doc._id, 'volunteer', [type], descriptions[0])
         } catch (err) {
             console.log(err)
             res.error(err);
@@ -297,6 +300,8 @@ class VolunteerController {
                 success: true, message: "join volunteer success",
                 users: volunteer.users
             });
+
+            joinItem(req.user._id, req.params.id)
         } catch (err) {
             res.error(err);
         }
@@ -313,6 +318,7 @@ class VolunteerController {
                 success: true, message: "unjoin volunteer success",
                 users: volunteer.users
             });
+            unJoinItem(req.user._id, req.params.id)
         } catch (err) {
             res.error(err);
         }

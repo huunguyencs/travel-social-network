@@ -1,6 +1,7 @@
 const Locations = require('../Models/location.model')
 const Posts = require('../Models/post.model');
-const Provinces = require('../Models/province.model')
+const Provinces = require('../Models/province.model');
+const { createItem, deleteItem } = require('../utils/recombee');
 
 class LocationController {
     async createLocation(req, res) {
@@ -22,6 +23,8 @@ class LocationController {
                         ...newLocation._doc,
                     }
                 })
+
+                createItem(newLocation._doc._id, 'location')
             }
             else {
                 res.notFound('Không tìm thấy tỉnh!')
@@ -54,6 +57,8 @@ class LocationController {
             res.success({
                 success: true, message: "Delete Location success"
             });
+
+            // deleteItem(req.params.id);
         } catch (err) {
             res.error(err);
         }

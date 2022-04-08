@@ -1,4 +1,5 @@
-const Services = require('../Models/service.model')
+const Services = require('../Models/service.model');
+const { createItem, reviewItem } = require('../utils/recombee');
 // const mongoose = require('mongoose');
 
 
@@ -26,6 +27,8 @@ class ServiceController {
                     ...newService._doc,
                 }
             })
+
+            createItem(newService._doc._id, 'service', [attribute.conform, attribute.featured], description)
         } catch (err) {
             console.log(err)
             res.error(err);
@@ -168,6 +171,8 @@ class ServiceController {
             }
 
             res.success({ success: true, message: "", star: service.star })
+
+            reviewItem(req.user._id, req.params.id)
         } catch (err) {
             console.log(err);
             res.error(err);

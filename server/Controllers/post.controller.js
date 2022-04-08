@@ -1,7 +1,8 @@
 const Posts = require('../Models/post.model')
 const Comments = require('../Models/comment.model')
 const TourDates = require('../Models/tourDate.model');
-const Locations = require('../Models/location.model')
+const Locations = require('../Models/location.model');
+const { createItem, shareItem, reviewItem, likeItem, unLikeItem, deleteItem } = require('../utils/recombee');
 
 class PostController {
     //co hai loai post
@@ -26,6 +27,8 @@ class PostController {
                     }
                 }
             })
+
+            createItem(newPost._doc._id, 'post', hashtags, content)
         } catch (err) {
             console.log(err)
             res.error(err);
@@ -58,6 +61,8 @@ class PostController {
                     shareId: share
                 }
             })
+
+            shareItem(req.user._id, shareId)
         }
         catch (err) {
             res.error(err);
@@ -124,6 +129,8 @@ class PostController {
                         break;
                 }
             }
+
+            reviewItem(req.user._id, locationId, rate)
         }
         catch (err) {
             console.log(err)
@@ -338,6 +345,7 @@ class PostController {
                 post
             });
 
+            likeItem(req.user._id, req.params.id);
 
         } catch (err) {
             console.log(err)
@@ -357,6 +365,8 @@ class PostController {
                 success: true, message: "unlike post success",
                 likes: post.likes,
             });
+
+            unLikeItem(req.user._id, req.params.id)
         } catch (err) {
             console.log(err)
             res.error(err);
@@ -400,6 +410,8 @@ class PostController {
             }
 
             res.deleted('Xoá bài viết thành công');
+
+            // deleteItem(req.params.id)
         } catch (err) {
             console.log(err)
             res.error(err);
