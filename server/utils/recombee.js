@@ -52,6 +52,14 @@ function unBookmark(userId, itemId) {
     recombeeClient.send(i)
 }
 
+function getRecomment(userId, count, type) {
+    var i = new rqs.RecommendItemsToUser(userId, count, {
+        'filter': `'type' == '${type}'`
+    })
+    i.timeout = 10000;
+    recombeeClient.send(i)
+}
+
 
 function createItem(id, type, categories, description) {
     var item = [];
@@ -129,6 +137,26 @@ function reviewItem(userId, itemId, rate) {
     rating(userId, itemId, rate)
 }
 
+function getPostRecomment(userId, count = 10) {
+    getRecomment(userId, count, 'post')
+}
+
+function getTourRecomment(userId, count = 10) {
+    getRecomment(userId, count, 'tour')
+}
+
+function getLocationRecomment(userId, count = 10) {
+    getRecomment(userId, count, 'location')
+}
+
+function getVolunteerRecomment(userId, count = 10) {
+    getRecomment(userId, count, 'volunteer')
+}
+
+function getServiceRecomment(userId, count = 10) {
+    getRecomment(userId, count, 'service')
+}
+
 module.exports = {
     createItem,
     deleteItem,
@@ -144,5 +172,10 @@ module.exports = {
     useService,
     saveItem,
     unSaveItem,
-    reviewItem
+    reviewItem,
+    getPostRecomment,
+    getTourRecomment,
+    getLocationRecomment,
+    getVolunteerRecomment,
+    getServiceRecomment
 };
