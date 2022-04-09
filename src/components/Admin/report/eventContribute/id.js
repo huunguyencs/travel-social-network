@@ -47,7 +47,9 @@ export default function AdminEventContributeDetail() {
         console.log(subpage);
     }, [subpage])
 
-
+    useEffect(() => {
+        document.title = 'Admin - Sự kiện được đóng góp'
+    }, [])
 
     return (
         <Paper style={{ marginTop: 120, marginInline: 50, marginBottom: 30, padding: 30 }}>

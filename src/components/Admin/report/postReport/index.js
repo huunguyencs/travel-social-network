@@ -21,32 +21,33 @@ const columns = [
     {
         field: 'fullname',
         headerName: 'Tên đầy đủ',
-        width: 350
+        width: 300
     },
     {
         field: 'province',
         headerName: 'Tỉnh',
         width: 200,
-        valueGetter: (event) => event.row.provinceId?.fullname || 'All'
+        valueGetter: (location) => location.row.province.fullname
     },
     {
-        field: 'time',
-        headerName: 'Thời gian',
-        width: 150,
+        field: 'star',
+        headerName: 'Đánh giá (/5)',
+        width: 175,
+        valueGetter: (location) => getStar(location.row.star)
     },
     {
-        field: 'calendar',
-        headerName: 'Lịch',
-        width: 150,
-        valueGetter: (event) => event.row.calendarType ? 'DL' : 'AL'
+        field: 'numRate',
+        headerName: 'Lượt đánh giá',
+        width: 175,
+        valueGetter: (location) => totalNumRate(location.row.star)
     },
     {
         field: 'action',
-        headerName: 'Chỉnh sửa',
+        headerName: 'Chi tiết',
         width: 150,
         sortable: false,
-        renderCell: (event) => (
-            <IconButton size='small' component={Link} to={`/admin/report/eventContribute/${event.row.name}`} title='Chỉnh sửa'>
+        renderCell: (location) => (
+            <IconButton size='small' component={Link} to={`/admin/report/locationContribute/${location.row.name}`} title={'Chi tiết'}>
                 <MoreVert />
             </IconButton>
         )
@@ -61,7 +62,7 @@ function ExportToolbar() {
     );
 }
 
-export default function AdminEventContribute(props) {
+export default function AdminPostReport(props) {
 
     const history = useHistory();
     const classes = tableStyles();
@@ -75,8 +76,8 @@ export default function AdminEventContribute(props) {
     const getAllLocations = async (token) => {
         setLoading(true);
         setError(null);
-        await customAxios(token).get('/event/all').then(res => {
-            setLocations(res.data.events);
+        await customAxios(token).get('/location/all?admin=true').then(res => {
+            setLocations(res.data.locations);
             setLoading(false);
         }).catch(err => {
             setLoading(false);
@@ -89,14 +90,14 @@ export default function AdminEventContribute(props) {
     }, [token])
 
     useEffect(() => {
-        document.title = "Admin - Sự kiện được đóng góp"
+        document.title = 'Admin - Địa điểm';
     }, [])
 
     return (
         <Container className={classes.container}>
             <div className={classes.admin_location_header}>
                 <div>
-                    <Typography variant="h4">{locations.length} sự kiện được đóng góp</Typography>
+                    <Typography variant="h4">{locations.length} địa điểm du lịch được đóng góp</Typography>
                 </div>
             </div>
 
@@ -109,7 +110,7 @@ export default function AdminEventContribute(props) {
                     onPageSizeChange={(newPageSize) => setPageSize(newPageSize)}
                     pagination
                     onRowDoubleClick={(location) => {
-                        history.push(`/admin/report/eventContribute/${location.row.name}`)
+                        history.push(`/admin/report/locationContribute/${location.row.name}`)
                     }}
                     autoHeight
                     loading={loading}

@@ -89,7 +89,7 @@ export default function AdminReport() {
             <div>
                 <Grid container>
                     <Grid item md={4} >
-                        <Link to={`/`}>
+                        <Link to={`/admin/report/postReport`}>
                             <Card className={classes.cardInfo}>
                                 <Typography variant="h5">
                                     Số bài viết bị báo cáo
@@ -102,7 +102,6 @@ export default function AdminReport() {
                         </Link>
                     </Grid>
                     <Grid item md={4}>
-                        {/* <Link hr></Link> */}
                         <Link to={`/admin/report/locationContribute`}>
                             <Card className={classes.cardInfo}>
                                 <Typography variant="h5">

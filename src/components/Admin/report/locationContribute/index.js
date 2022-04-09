@@ -90,7 +90,7 @@ export default function AdminLocationContribute(props) {
     }, [token])
 
     useEffect(() => {
-        document.title = 'Admin - Địa điểm';
+        document.title = "Admin - Địa điểm được đóng góp"
     }, [])
 
     return (

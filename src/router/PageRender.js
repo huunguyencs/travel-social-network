@@ -25,7 +25,7 @@ const PageRender = () => {
         if (user && user.role) {
             if (id) {
                 if (subpage) {
-                    if (subpage === 'add' || subpage === 'locationContribute' || subpage === 'eventContribute') {
+                    if (subpage === 'add' || subpage === 'locationContribute' || subpage === 'eventContribute' || subpage === 'postReport') {
                         pageName = `admin/${id}/${subpage}`
                     }
                     else pageName = `admin/${id}/id`;

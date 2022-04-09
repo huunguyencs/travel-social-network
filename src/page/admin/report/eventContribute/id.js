@@ -6,10 +6,6 @@ import AdminEventContributeDetail from '../../../../components/Admin/report/even
 
 export default function AdminEventContributeDetailPage(props) {
 
-    useEffect(() => {
-        document.title = "Admin - Sự kiện được đóng góp"
-        console.log("...");
-    }, [])
     return (
         <Grid container>
             <Grid item md={3} sm={2} xs={2}>
