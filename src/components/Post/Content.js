@@ -1,10 +1,10 @@
-import { Avatar, Backdrop, Box, Button, CardContent, CardHeader, CardMedia, CircularProgress, ClickAwayListener, Dialog, DialogActions, DialogContent, DialogTitle, IconButton, MenuItem, MenuList, Modal, Paper, Popper, Typography } from '@material-ui/core';
-import { MoreVert } from '@material-ui/icons';
+import {InputBase, RadioGroup, FormControlLabel, Avatar, Backdrop, Box, Button, List, ListItem, Radio, CardContent, CardHeader, CardMedia, CircularProgress, ClickAwayListener, Dialog, DialogActions, DialogContent, DialogTitle, IconButton, MenuItem, MenuList, Modal, Paper, Popper, Typography } from '@material-ui/core';
+import { MoreVert, Report, Edit, Delete, Close} from '@material-ui/icons';
 import { Rating } from '@material-ui/lab';
 import React, { useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux';
 import { Link } from 'react-router-dom';
-import { deletePost } from '../../redux/callApi/postCall';
+import { deletePost, reportPost } from '../../redux/callApi/postCall';
 
 import { postStyles } from '../../style';
 import { timeAgo } from '../../utils/date';
@@ -13,7 +13,10 @@ import UpdateReviewForm from '../Forms/UpdateReview';
 import ImageList from '../Modal/ImageList';
 import { SeeMoreText } from '../SeeMoreText';
 
-
+const menuType = [
+    "Ảnh khỏa thân", "Bạo lực", "Quấy rối", "Tự tử/Tự gây thương tích",
+    "Thông tin sai lệch", "Bán hàng trái phép", "Ngôn từ gây thù ghét", "Spam", "Khủng bố", "Vấn đề khác"
+]
 function Header(props) {
 
     const { post, share } = props;
@@ -90,7 +93,37 @@ function Header(props) {
     const UpdateReviewRef = React.forwardRef((props, ref) => (
         <UpdateReviewForm {...props} innerRef={ref} />
     ))
+    const [contextReport, setContextReport] = useState({
+        type:menuType[0],
+        content: ""
+    })
+    const handleChangeInput = (e) => {
+        setContextReport({
+            ...contextReport,
+            [e.target.name]: e.target.value
+        })
+    }
 
+    const handleReport = () => {
+        setState({
+            loading: true,
+            error: false,
+        })
+        dispatch(reportPost(contextReport.type, contextReport.content, post._id, auth.token, () => {
+            setState({
+                loading: false,
+                error: false
+            })
+            handleCloseEdit();
+            handleCloseMenu();
+        }, () => {
+            setState({
+                loading: false,
+                error: true
+            })
+        }));
+
+    }
     return (
         <CardHeader
             avatar={
@@ -114,15 +147,12 @@ function Header(props) {
                                 anchorEl={anchorEl}
                                 onClose={handleCloseMenu}
                                 disablePortal
+                                className={classes.menuWrap}
                             >
-                                {/* <Grow
-                                    style={{ transformOrigin: "center bottom" }}
-                                > */}
-
                                 <ClickAwayListener onClickAway={handleCloseMenu}>
                                     <Paper>
                                         <MenuList>
-                                            <MenuItem onClick={handleShowEdit}>Chỉnh sửa bài viết</MenuItem>
+                                            <MenuItem onClick={handleShowEdit}> <Edit className={classes.menuIcon}/> Chỉnh sửa bài viết</MenuItem>
                                             <Modal
                                                 aria-labelledby="transition-modal-edit"
                                                 aria-describedby="transition-modal-edit-description"
@@ -139,7 +169,7 @@ function Header(props) {
                                                     <UpdatePostRef ref={refTour} post={post} handleClose={handleCloseEdit} />
                                                 }
                                             </Modal>
-                                            <MenuItem onClick={handleShowDelete}>Xóa bài viết</MenuItem>
+                                            <MenuItem onClick={handleShowDelete}> <Delete className={classes.menuIcon}/>Xóa bài viết</MenuItem>
                                             <Dialog
                                                 open={showDelete}
                                                 onClose={handleCloseDelete}
@@ -163,8 +193,91 @@ function Header(props) {
                                         </MenuList>
                                     </Paper>
                                 </ClickAwayListener>
-
-                                {/* </Grow> */}
+                            </Popper>
+                        </>
+                    }
+                    {
+                        auth.user && auth.user._id !== post.userId._id && !share && <>
+                            <IconButton
+                                aria-label="settings"
+                                onClick={handleShowMenu}
+                                className={classes.action}
+                                size='small'
+                                controls={anchorEl ? "post-menu" : undefined}
+                            >
+                                <MoreVert />
+                            </IconButton>
+                            <Popper
+                                open={Boolean(anchorEl)}
+                                anchorEl={anchorEl}
+                                onClose={handleCloseMenu}
+                                disablePortal
+                                className={classes.menuWrap}
+                            >
+                                <ClickAwayListener onClickAway={handleCloseMenu}>
+                                    <Paper>
+                                        <MenuList>
+                                            <MenuItem onClick={handleShowEdit}><Report className={classes.menuIcon}/> Báo cáo</MenuItem>
+                                            <Modal
+                                                aria-labelledby="transition-modal-edit"
+                                                aria-describedby="transition-modal-edit-description"
+                                                open={showEdit}
+                                                className={classes.modal}
+                                                onClose={handleCloseEdit}
+                                                BackdropComponent={Backdrop}
+                                                BackdropProps={{
+                                                    timeout: 500,
+                                                }}
+                                            >
+                                                <div className={classes.reportWrap}>
+                                                    <div className={classes.reportHeader}>
+                                                        <div className={classes.reportHeader_text}>
+                                                            <Typography variant='h5' style={{fontWeight: 500}}>
+                                                                Báo cáo
+                                                            </Typography>
+                                                        </div>
+                                                        <IconButton onClick={handleCloseEdit}>
+                                                            <Close/>
+                                                        </IconButton>
+                                                    </div>
+                                                    <div className={classes.reportBody}>
+                                                        <Typography>Hãy chọn vấn đề nếu bạn cảm thấy bài viết có vi phạm tiêu chuẩn cộng đồng!</Typography>
+                                                        <div className={classes.reportList}>
+                                                            <RadioGroup id="type" className={classes.reportListForm} row aria-label="type" name="type" value={contextReport.type} onChange={handleChangeInput}>
+                                                                <List  component="nav" aria-label="main folders">
+                                                                    {
+                                                                        menuType&& menuType.map((item, index) => (
+                                                                            <ListItem key={index} button className={classes.reportListItem}>
+                                                                                <FormControlLabel className={classes.reportListItemRadio} value={item} control={<Radio color="primary" />} label={item} />
+                                                                            </ListItem>
+                                                                        ))
+                                                                    }
+                                                                </List>
+                                                            </RadioGroup>
+                                                        </div>
+                                                        <InputBase
+                                                            placeholder="Nội dung cụ thể..."
+                                                            title="Nội dung cụ thể"
+                                                            rows={3}
+                                                            name="content"
+                                                            id="content"
+                                                            multiline
+                                                            className={classes.input}
+                                                            value={contextReport.content}
+                                                            onChange={handleChangeInput}
+                                                        />
+                                                        <Button onClick={handleReport} className={classes.reportIcon}>
+                                                            {
+                                                                state.loading ?
+                                                                    <CircularProgress size={15} color='inherit' /> : "Gửi"
+                                                            }
+                                                        </Button>
+                                                    </div>
+                                                </div>
+                                            </Modal>
+                                        </MenuList>
+                                    </Paper>
+                                </ClickAwayListener>
                             </Popper>
                         </>
                     }
