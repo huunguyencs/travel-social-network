@@ -49,6 +49,7 @@ app.use('/event', require('./Routers/event.router'));
 app.use('/notify', require('./Routers/notify.router'));
 app.use('/message', require('./Routers/message.router'));
 app.use('/volunteer', require('./Routers/volunteer.router'));
+app.use('/report', require('./Routers/report.router'));
 //connect MongoDB
 mongoose.connect(MONGO_URL, {
     // useCreateIndex: true,
