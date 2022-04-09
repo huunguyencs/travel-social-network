@@ -178,16 +178,17 @@ class TourController {
                 res.notFound('Không tìm thấy tour');
                 return;
             }
-            var tour = await Tours.findOne({ _id: req.params.id, likes: req.user._id });
-            if (tour) {
-                return res.status(400).json({ success: false, message: "You liked this tour." })
-            }
+            // var tour = await Tours.findOne({ _id: req.params.id, likes: req.user._id });
+            // if (tour) {
+            //     return res.status(400).json({ success: false, message: "You liked this tour." })
+            // }
 
-            tour = await Tours.findByIdAndUpdate(req.params.id, {
+            const tour = await Tours.findByIdAndUpdate(req.params.id, {
                 $addToSet: {
                     likes: req.user._id
                 }
             }, { new: true }).populate("likes", "username fullname avatar")
+
             res.success({
                 success: true, message: "like tour success",
                 likes: tour.likes,

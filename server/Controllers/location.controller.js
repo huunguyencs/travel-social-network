@@ -39,8 +39,7 @@ class LocationController {
     async updateLocation(req, res) {
         try {
             if (!ObjectId.isValid(req.params.id)) {
-                res.notFound('Không tìm thấy địa điểm')
-                return;
+                return res.notFound('Không tìm thấy địa điểm')
             }
 
             const { name, images, province, position, information } = req.body;

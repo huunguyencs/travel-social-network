@@ -313,7 +313,7 @@ class VolunteerController {
                 return res.status(400).json({ success: false, message: "Bạn đã tham gia hoạt động này!" })
             }
             volunteer = await Volunteers.findOneAndUpdate({ _id: req.params.id }, {
-                $push: {
+                $addToSet: {
                     users: req.user._id
                 }
             }, { new: true }).populate("users", "avatar fullname username")
@@ -366,7 +366,7 @@ class VolunteerController {
                 });
             }
             volunteerLocation = await VolunteerLocations.findOneAndUpdate({ _id: req.params.id }, {
-                $push: {
+                $addToSet: {
                     users: { isAccommodation: isAccommodation, user: req.user._id }
                 }
             }, { new: true }).populate({

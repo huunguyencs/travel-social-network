@@ -6,10 +6,6 @@ const ObjectId = require('mongoose').Types.ObjectId;
 class ServiceController {
     async createService(req, res) {
         try {
-            if (req.user.role !== 1) {
-                res.status(500).json({ success: false, message: "You are not cooperator" })
-                return;
-            }
 
             const { name, description, attribute, contact, type, province, cost, andress, position, images, discount } = req.body
 

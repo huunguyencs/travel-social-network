@@ -349,17 +349,16 @@ class PostController {
                 res.notFound('Không tìm thấy bài viết')
                 return;
             }
-            var post = await Posts.find({ _id: req.params.id, likes: req.user._id });
-            if (post.length > 0) {
-                return res.status(400).json({ success: false, message: "You liked this post." })
-            }
+            // var post = await Posts.find({ _id: req.params.id, likes: req.user._id });
+            // if (post.length > 0) {
+            //     return res.status(400).json({ success: false, message: "You liked this post." })
+            // }
 
-            post = await Posts.findOneAndUpdate({ _id: req.params.id }, {
+            const post = await Posts.findOneAndUpdate({ _id: req.params.id }, {
                 $addToSet: {
                     likes: req.user._id
                 }
             }, { new: true }).populate("likes", "username fullname avatar")
-
 
             res.success({
                 success: true, message: "like post success",
