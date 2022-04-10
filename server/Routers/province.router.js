@@ -7,7 +7,7 @@ const authRole = require('../Middlewares/authRole');
 router.post('/create', auth, authRole([2]), ProvinceController.createProvince);
 router.get('/provinces', ProvinceController.getProvinces);
 router.get('/all', ProvinceController.getAllDetail);
-router.get('/search', ProvinceController.search)
+router.get('/search', ProvinceController.search);
 
 router.get('/location/:id', ProvinceController.getLocationsProvince)
 router.get('/event/:id', ProvinceController.getEventsProvince)

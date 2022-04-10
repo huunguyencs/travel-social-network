@@ -61,10 +61,10 @@ class ProvinceController {
     // lấy thông tin 1 Province theo params.id
     async getProvince(req, res) {
         try {
-            if (!ObjectId.isValid(req.params.id)) {
-                res.notFound('Không tìm thấy tỉnh');
-                return;
-            }
+            // if (!ObjectId.isValid(req.params.id)) {
+            //     res.notFound('Không tìm thấy tỉnh');
+            //     return;
+            // }
             const id = req.params.id;
             var province = await Provinces.findOne({ name: id });
             if (province) {

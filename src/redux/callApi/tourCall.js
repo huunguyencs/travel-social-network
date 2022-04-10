@@ -267,7 +267,7 @@ export const joinTour = (id, token, next, error) => async (dispatch) => {
     try {
         await customAxios(token).patch(`/tour/${id}/join`);
         // dispatch(tourAction.updateJoin({ id: id, joinIds: res.data.joinIds }));
-        dispatch(alertAction.success({ message: 'Hủy tham gia thành công' }))
+        dispatch(alertAction.success({ message: 'Tham gia thành công' }))
         next();
     }
     catch (err) {

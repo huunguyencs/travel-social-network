@@ -297,9 +297,11 @@ export default function Location(props) {
 
     // const joinLocation = checkJoinLocation();
     useEffect(() => {
-        let find = location.joinIds.findIndex(ele => ele._id === user._id);
-        setJoinedLoc(find >= 0)
-    }, [location.joinIds, user._id])
+        if (isSave) {
+            let find = location.joinIds.findIndex(ele => ele._id === user._id);
+            setJoinedLoc(find >= 0)
+        }
+    }, [location.joinIds, user._id, isSave])
 
     useEffect(() => {
         setShowDetail(false);
