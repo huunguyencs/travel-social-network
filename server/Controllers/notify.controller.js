@@ -1,6 +1,6 @@
 const Notifies = require('../Models/notify.model');
 const Users = require('../Models/user.model');
-const Posts = require('../Models/post.model');
+
 class NotifyController {
     async createNotify(req, res) {
         try {
@@ -40,7 +40,7 @@ class NotifyController {
 
     async deleteNotify(req, res) {
         try {
-            const notify = await Notifies.findOneAndDelete({ id: req.params.id, url: req.query.url });
+            const notify = await Notifies.findOneAndDelete({ _id: req.params.id, url: req.query.url });
 
             if (req.query.type === 'deletePost' || req.query.type === 'deleteTour' || req.query.type === 'deleteVolunteer') {
                 await Notifies.deleteMany({ url: req.query.url });

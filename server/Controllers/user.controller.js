@@ -4,20 +4,24 @@ const bcrypt = require('bcrypt')
 const jwt = require('jsonwebtoken');
 const ObjectId = require('mongoose').Types.ObjectId;
 const Confirms = require('../Models/confirm.model');
-const sendEmail = require('../utils/sendEmail')
+const sendEmail = require('../utils/sendEmail');
+const { createUser, saveItem, unSaveItem } = require('../utils/recombee');
+
 class UserController {
     async register(req, res) {
         try {
             const { fullname, username, email, phone, password } = req.body;
 
             const user_name = await Users.findOne({ username })
-            if (user_name) return res.status(400).json({ success: false, message: "Username đã tồn tại! Vui lòng chọn tên khác." })
+            // if (user_name) return res.status(400).json({ success: false, message: "Username đã tồn tại! Vui lòng chọn tên khác." })
+            if (user_name) return res.errorClient('Username đã tồn tại! Vui lòng chọn tên khác.')
 
             const user_email = await Users.findOne({ email })
-            if (user_email) return res.status(400).json({ success: false, message: "Email này đã tồn tại!" })
-            
-            if(!validateEmail(email))
-                return res.status(400).json({success: false, message: "Email không hợp lệ!"})
+            // if (user_email) return res.status(400).json({ success: false, message: "Email này đã tồn tại!" })
+            if (user_name) return res.errorClient('Email này đã tồn tại!')
+
+            if (!validateEmail(email)) return res.errorClient('Email không hợp lệ!')
+            // return res.status(400).json({ success: false, message: "Email không hợp lệ!" })
             const passwordHash = await bcrypt.hash(password, 12)
 
             const userNew = {
@@ -30,7 +34,7 @@ class UserController {
             const activationToken = createActivationToken(userNew)
             const url = `${process.env.CLIENT_URL}/activate?token=${activationToken}`
             sendEmail(userNew.email, url, "Xác thực địa chỉ email")
-    
+
 
             res.created({
                 success: true,
@@ -44,13 +48,14 @@ class UserController {
     }
     async activateEmail(req, res) {
         try {
-            const {activation_token} = req.body
+            const { activation_token } = req.body
             const user = jwt.verify(activation_token, process.env.ACTIVATION_TOKEN_SECRET)
 
-            const {fullname, username, email, phone, password} = user
+            const { fullname, username, email, phone, password } = user
 
-            const check = await Users.findOne({email})
-            if(check) return res.status(400).json({message:"Email đã tồn tại!"})
+            const check = await Users.findOne({ email })
+            // if (check) return res.status(400).json({ message: "Email đã tồn tại!" })
+            if (check) return res.errorClient('Email đã tồn tại!')
 
             const newUser = new Users({
                 fullname, username, email, phone, password
@@ -58,12 +63,18 @@ class UserController {
 
             await newUser.save()
 
+
+
             res.success({
                 success: true,
                 message: "Tài khoản của bạn đã được kích hoạt!"
             })
+
+            createUser(newUser._doc._id)
+
         } catch (err) {
-            return res.status(500).json({message: err.message})
+            // return res.status(500).json({ message: err.message })
+            return res.error(err);
         }
     }
     async login(req, res) {
@@ -75,9 +86,11 @@ class UserController {
                     path: "confirmAccount",
                     select: "cmnd cmndFront cmndBack cmndFace state"
                 })
-            if (!user) return res.status(400).json({ success: false, message: "Email không đúng!" })
+            // if (!user) return res.status(400).json({ success: false, message: "Email không đúng!" })
+            if (!user) return res.errorClient('Email không đúng!')
             const passwordValid = await bcrypt.compare(password, user.password)
-            if (!passwordValid) return res.status(400).json({ success: false, message: "Mật khẩu không đúng!" })
+            // if (!passwordValid) return res.status(400).json({ success: false, message: "Mật khẩu không đúng!" })
+            if (!passwordValid) return res.errorClient('Mật khẩu không đúng!')
 
             //all Good
             //Return Token
@@ -115,14 +128,16 @@ class UserController {
             if (!refresh_token) return res.status(400).json({ message: "Bạn hãy đăng nhập lại!" });
 
             jwt.verify(refresh_token, "REFRESH_TOKEN_SECRET", async (err, result) => {
-                if (err) return res.status(400).json({ message: "Bạn hãy đăng nhập lại!" });
+                // if (err) return res.status(400).json({ message: "Bạn hãy đăng nhập lại!" });
+                if (err) return res.errorClient('Bạn hãy đăng nhập lại!')
 
                 const user = await Users.findById(result.id).select("-password").populate("followers followings", "username avatar fullname followings")
                     .populate({
                         path: "confirmAccount",
                         select: "cmnd cmndFront cmndBack cmndFace state"
                     })
-                if (!user) return res.status(400).json("No token");
+                // if (!user) return res.status(400).json("No token");
+                if (!user) return res.errorClient('No token');
 
                 const accessToken = createAccessToken({ id: user._id })
 
@@ -143,24 +158,24 @@ class UserController {
     }
     async logout(req, res) {
         try {
-            res.clearCookie('refreshtoken', {path: '/user/refresh_token'})
+            res.clearCookie('refreshtoken', { path: '/user/refresh_token' })
             return res.success({ success: true, message: "Đăng xuất thành công!" })
         } catch (err) {
             console.log(err)
             res.error(err);
         }
     }
-    async forgotPassword(req, res){
+    async forgotPassword(req, res) {
         try {
-            const {email} = req.body
-            const user = await Users.findOne({email})
-            if(!user) return res.status(400).json({success: false,message: "Email không tồn tại!"})
+            const { email } = req.body
+            const user = await Users.findOne({ email })
+            if (!user) return res.status(400).json({ success: false, message: "Email không tồn tại!" })
 
-            const access_token = createAccessToken({id: user._id})
+            const access_token = createAccessToken({ id: user._id })
             const url = `${process.env.CLIENT_URL}/reset?token=${access_token}`
 
             sendEmail(email, url, "Đặt lại mật khẩu")
-            res.success({success: true, message: "Hãy kiểm tra mail để đặt lại mật khẩu!"}) 
+            res.success({ success: true, message: "Hãy kiểm tra mail để đặt lại mật khẩu!" })
         }
         catch (err) {
             res.error(err);
@@ -168,15 +183,16 @@ class UserController {
     }
     async resetPassword(req, res) {
         try {
-            const {password} = req.body
+            const { password } = req.body
             const passwordHash = await bcrypt.hash(password, 12)
-            await Users.findOneAndUpdate({_id: req.user._id}, {
+            await Users.findOneAndUpdate({ _id: req.user._id }, {
                 password: passwordHash
             })
 
-            res.success({success: true, message: "Đặt lại mật khẩu thành công"}) 
+            res.success({ success: true, message: "Đặt lại mật khẩu thành công" })
         } catch (err) {
-            return res.status(500).json({message: err.message})
+            // return res.status(500).json({ message: err.message })
+            return res.error(err);
         }
     }
     async changePassword(req, res) {
@@ -272,7 +288,8 @@ class UserController {
                 res.success({ success: true, user })
             }
             else {
-                res.status(404).json({ success: false, massage: "Người dùng không tồn tại" })
+                // res.status(404).json({ success: false, massage: "Người dùng không tồn tại" })
+                res.notFound('Người dùng không tồn tại')
             }
 
 
@@ -286,18 +303,22 @@ class UserController {
     async follow(req, res) {
         try {
 
-            const user = await Users.findOne({ _id: req.params.id, followers: req.user._id })
-            if (user) {
-                return res.status(400).json({ success: false, message: "Bạn đã theo dõi người dùng này!" });
+            if (!ObjectId.isValid(req.params.id)) {
+                res.notFound('Không tìm thấy user');
+                return;
             }
+            // const user = await Users.findOne({ _id: req.params.id, followers: req.user._id })
+            // if (user) {
+            //     return res.status(400).json({ success: false, message: "Bạn đã theo dõi người dùng này!" });
+            // }
             //cập nhập ds follower ở B
             const followers = await Users.findOneAndUpdate({ _id: req.params.id }, {
-                $push: { followers: req.user._id }
+                $addToSet: { followers: req.user._id }
             }, { new: true }).populate("followers", "username fullname avatar followings followers")
 
             //cập nhập ds following ở A
             const followings = await Users.findByIdAndUpdate(req.user._id, {
-                $push: { followings: req.params.id }
+                $addToSet: { followings: req.params.id }
             }, { new: true }).populate("followings", "username fullname avatar followings followers")
 
             res.success({
@@ -315,6 +336,10 @@ class UserController {
     // A(user._id) unfollow B(params.id)
     async unfollow(req, res) {
         try {
+            if (!ObjectId.isValid(req.params.id)) {
+                res.notFound('Không tìm thấy user');
+                return;
+            }
             // cập nhập ds ở B
             const followers = await Users.findByIdAndUpdate(req.params.id, {
                 $pull: { followers: req.user._id }
@@ -361,6 +386,8 @@ class UserController {
             }, { new: true })
 
             res.success({ success: true, message: "Lưu tour thành công", tourSaved: user.tourSaved })
+
+            saveItem(req.user._id, tour)
         }
         catch (err) {
             res.error(err);
@@ -375,6 +402,7 @@ class UserController {
             }, { new: true })
 
             res.success({ success: true, message: 'Loại khỏi danh sách thành công', tourSaved: user.tourSaved })
+            unSaveItem(req.user._id, tour)
         } catch (err) {
             res.error(err);
         }
@@ -518,7 +546,12 @@ class UserController {
 
     async deleteUser(req, res) {
         try {
+
             const { id } = req.params;
+            if (!ObjectId.isValid(id)) {
+                res.notFound('Không tìm thấy tour');
+                return;
+            }
             await Users.findByIdAndDelete(id);
             res.deleted('Xóa user thành công')
         }

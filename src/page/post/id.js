@@ -11,17 +11,17 @@ import { postStyles } from '../../style';
 
 export default function PostDetail() {
     const { id } = useParams();
-    const { post } = useSelector(state => state);
+    const { post, auth } = useSelector(state => state);
     const dispatch = useDispatch();
     const [notFound, setNotFound] = useState(false);
 
     useEffect(() => {
         if (id) {
-            dispatch(getPostById(id, () => {
+            dispatch(getPostById(id, auth.token, () => {
                 setNotFound(true);
             }))
         }
-    }, [id, dispatch])
+    }, [id, dispatch, auth.token])
 
     useEffect(() => {
         if (post.posts?.length > 0 && post.posts[0]?.userId) {
@@ -31,7 +31,7 @@ export default function PostDetail() {
 
     const tryAgain = () => {
         if (id) {
-            dispatch(getPostById(id, () => {
+            dispatch(getPostById(id, auth.token, () => {
                 setNotFound(true);
             }))
         }

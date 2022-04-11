@@ -1,7 +1,8 @@
 const express = require('express');
 const router = express.Router();
 const TourController = require('../Controllers/tour.controller');
-const auth = require('../Middlewares/auth')
+const auth = require('../Middlewares/auth');
+const fakeAuth = require('../Middlewares/fakeAuth');
 
 router.post('/create', auth, TourController.createTour);
 router.post('/share', auth, TourController.shareTour);
@@ -11,7 +12,7 @@ router.get('/search', TourController.search);
 router.get('/user/:id', TourController.getUserTour);
 
 
-router.get('/:id', TourController.getTour);
+router.get('/:id', fakeAuth, TourController.getTour);
 router.patch('/:id', auth, TourController.updateTour);
 router.delete('/:id', auth, TourController.deleteTour);
 

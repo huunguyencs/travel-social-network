@@ -2,6 +2,9 @@ const Volunteers = require('../Models/volunteer.model')
 const VolunteerDates = require('../Models/volunteerDate.model')
 const VolunteerLocations = require('../Models/volunteerLocation.model')
 const Comments = require('../Models/comment.model')
+const { createItem, joinItem, unJoinItem, viewDetailItem } = require('../utils/recombee')
+
+const ObjectId = require('mongoose').Types.ObjectId;
 class VolunteerController {
     async createVolunteer(req, res) {
         try {
@@ -55,6 +58,8 @@ class VolunteerController {
                     }
                 }
             })
+
+            createItem(newVolunteer._doc._id, 'volunteer', [type], descriptions[0])
         } catch (err) {
             console.log(err)
             res.error(err);
@@ -63,6 +68,10 @@ class VolunteerController {
 
     async updateVolunteer(req, res) {
         try {
+            if (!ObjectId.isValid(req.params.id)) {
+                res.notFound('Không tìm thấy hoạt động');
+                return;
+            }
             const { name, images, type, cost, descriptions, date, location } = req.body;
 
             const newVolunteer = await Volunteers.findOneAndUpdate({ _id: req.params.id, userId: req.user._id }, {
@@ -211,6 +220,10 @@ class VolunteerController {
     // lấy thông tin 1 volunteer theo params.id
     async getVolunteer(req, res) {
         try {
+            if (!ObjectId.isValid(req.params.id)) {
+                res.notFound('Không tìm thấy hoạt động');
+                return;
+            }
             // console.log(req.params.id)
             let volunteer = await Volunteers.findById(req.params.id);
 
@@ -253,6 +266,9 @@ class VolunteerController {
                 success: true, message: "get info 1 volunteer success", volunteer
             });
 
+            if (req.user && req.user._id !== 0) {
+                viewDetailItem(req.user._id, req.params.id)
+            }
 
         } catch (err) {
             console.log(err)
@@ -262,6 +278,10 @@ class VolunteerController {
 
     async deleteVolunteer(req, res) {
         try {
+            if (!ObjectId.isValid(req.params.id)) {
+                res.notFound('Không tìm thấy hoạt động');
+                return;
+            }
             const volunteer = await Volunteers.findById(req.params.id);
             if (volunteer) {
                 await Volunteers.findOneAndDelete({ _id: req.params.id, userId: req.user._id });
@@ -284,12 +304,16 @@ class VolunteerController {
     //Tham gia hết volunteer, params.id là id của volunteer
     async joinVolunteerAll(req, res) {
         try {
+            if (!ObjectId.isValid(req.params.id)) {
+                res.notFound('Không tìm thấy hoạt động');
+                return;
+            }
             var volunteer = await Volunteers.find({ _id: req.params.id, users: req.user._id });
             if (volunteer.length > 0) {
                 return res.status(400).json({ success: false, message: "Bạn đã tham gia hoạt động này!" })
             }
             volunteer = await Volunteers.findOneAndUpdate({ _id: req.params.id }, {
-                $push: {
+                $addToSet: {
                     users: req.user._id
                 }
             }, { new: true }).populate("users", "avatar fullname username")
@@ -297,12 +321,18 @@ class VolunteerController {
                 success: true, message: "join volunteer success",
                 users: volunteer.users
             });
+
+            joinItem(req.user._id, req.params.id)
         } catch (err) {
             res.error(err);
         }
     }
     async unJoinVolunteerAll(req, res) {
         try {
+            if (!ObjectId.isValid(req.params.id)) {
+                res.notFound('Không tìm thấy hoạt động');
+                return;
+            }
             const volunteer = await Volunteers.findByIdAndUpdate(req.params.id, {
                 $pull: {
                     users: req.user._id
@@ -313,6 +343,7 @@ class VolunteerController {
                 success: true, message: "unjoin volunteer success",
                 users: volunteer.users
             });
+            unJoinItem(req.user._id, req.params.id)
         } catch (err) {
             res.error(err);
         }
@@ -320,6 +351,10 @@ class VolunteerController {
     //Tham gia từng địa điểm, params.id là id của volunteerLocation
     async joinVolunteerOne(req, res) {
         try {
+            if (!ObjectId.isValid(req.params.id)) {
+                res.notFound('Không tìm thấy hoạt động');
+                return;
+            }
             const { isAccommodation } = req.body;
 
             var volunteerLocation = await VolunteerLocations.find({ _id: req.params.id });
@@ -331,7 +366,7 @@ class VolunteerController {
                 });
             }
             volunteerLocation = await VolunteerLocations.findOneAndUpdate({ _id: req.params.id }, {
-                $push: {
+                $addToSet: {
                     users: { isAccommodation: isAccommodation, user: req.user._id }
                 }
             }, { new: true }).populate({
@@ -351,6 +386,10 @@ class VolunteerController {
     }
     async unJoinVolunteerOne(req, res) {
         try {
+            if (!ObjectId.isValid(req.params.id)) {
+                res.notFound('Không tìm thấy hoạt động');
+                return;
+            }
             const { isAccommodation } = req.body;
             const volunteerLocation = await VolunteerLocations.findByIdAndUpdate(req.params.id, {
                 $pull: {
