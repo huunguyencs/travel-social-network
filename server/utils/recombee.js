@@ -63,13 +63,15 @@ function getRecomment(userId, count, type) {
 
 function createItem(id, type, categories, description) {
     var item = [];
-    // item.push(new rqs.AddItem(id));
-    item.push(new rqs.AddItemProperty('type', type));
-    if (categories) item.push(new rqs.AddItemProperty('categories', new Set(categories)));
-    if (description) item.push(new rqs.AddItemProperty('description', description))
+    item.push(new rqs.AddItem(id));
+    var value = { type: type }
+    if (categories) value.categories = categories;
+    if (description) value.description = description;
+    item.push(new rqs.SetItemValues(id, value));
     recombeeClient.send(new rqs.Batch(item)).then(res => {
         console.log(`Create ${type} ${id} successful`)
     }).catch(err => {
+        console.log(err);
         console.log(`Create ${type} ${id} fail`)
     })
 }
@@ -81,7 +83,7 @@ function deleteItem(id) {
 function createUser(id, pref) {
     var item = []
     item.push(new rqs.AddUser(id));
-    if (pref) item.push(new rqs.AddUserProperty('pref', new Set(pref)))
+    if (pref) item.push(new rqs.SetUserValues(id, { pref: new Set(pref) }))
     recombeeClient.send(new rqs.Batch(item)).then(res => {
         console.log(`Create ${id} successful`)
     }).catch(err => {
