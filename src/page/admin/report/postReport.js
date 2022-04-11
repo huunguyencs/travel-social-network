@@ -6,10 +6,6 @@ import AdminPostReport from '../../../components/Admin/report/postReport';
 
 export default function AdminPostReportPage() {
 
-    useEffect(() => {
-        document.title = "Admin - Bài viết bị báo cáo"
-    }, [])
-
     return (
         <Grid container>
             <Grid item md={3}>

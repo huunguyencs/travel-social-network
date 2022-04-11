@@ -6,10 +6,6 @@ import AdminLocationContribute from '../../../components/Admin/report/locationCo
 
 export default function AdminLocationContributePage() {
 
-    useEffect(() => {
-        document.title = "Admin - Địa điểm được đóng góp"
-    }, [])
-
     return (
         <Grid container>
             <Grid item md={3}>

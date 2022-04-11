@@ -27,19 +27,19 @@ const columns = [
         field: 'province',
         headerName: 'Tỉnh',
         width: 200,
-        valueGetter: (location) => location.row.province.fullname
+        valueGetter: (report) => report.row.province.fullname
     },
     {
         field: 'star',
         headerName: 'Đánh giá (/5)',
         width: 175,
-        valueGetter: (location) => getStar(location.row.star)
+        valueGetter: (report) => getStar(report.row.star)
     },
     {
         field: 'numRate',
         headerName: 'Lượt đánh giá',
         width: 175,
-        valueGetter: (location) => totalNumRate(location.row.star)
+        valueGetter: (report) => totalNumRate(report.row.star)
     },
     {
         field: 'action',
@@ -68,16 +68,16 @@ export default function AdminPostReport(props) {
     const classes = tableStyles();
     const { token } = useSelector(state => state.auth);
 
-    const [locations, setLocations] = useState([]);
+    const [reports, setLocations] = useState([]);
     const [loading, setLoading] = useState(false);
     const [error, setError] = useState(null);
     const [pageSize, setPageSize] = useState(10);
 
-    const getAllLocations = async (token) => {
+    const getAllReports = async (token) => {
         setLoading(true);
         setError(null);
-        await customAxios(token).get('/location/all?admin=true').then(res => {
-            setLocations(res.data.locations);
+        await customAxios(token).get('/reports/all').then(res => {
+            setLocations(res.data.reports);
             setLoading(false);
         }).catch(err => {
             setLoading(false);
@@ -86,31 +86,31 @@ export default function AdminPostReport(props) {
     }
 
     useEffect(() => {
-        getAllLocations(token);
+        getAllReports(token);
     }, [token])
 
     useEffect(() => {
-        document.title = 'Admin - Địa điểm';
+        document.title = "Admin - Bài viết bị báo cáo"
     }, [])
 
     return (
         <Container className={classes.container}>
             <div className={classes.admin_location_header}>
                 <div>
-                    <Typography variant="h4">{locations.length} địa điểm du lịch được đóng góp</Typography>
+                    <Typography variant="h4">{reports.length} địa điểm du lịch được đóng góp</Typography>
                 </div>
             </div>
 
             <Paper className={classes.paper}>
                 <DataGrid
-                    rows={locations}
+                    rows={reports}
                     columns={columns}
                     pageSize={pageSize}
                     rowsPerPageOptions={[5, 10, 25]}
                     onPageSizeChange={(newPageSize) => setPageSize(newPageSize)}
                     pagination
-                    onRowDoubleClick={(location) => {
-                        history.push(`/admin/report/locationContribute/${location.row.name}`)
+                    onRowDoubleClick={(post) => {
+                        history.push(`/admin/report/postReport/${post.row.name}`)
                     }}
                     autoHeight
                     loading={loading}
