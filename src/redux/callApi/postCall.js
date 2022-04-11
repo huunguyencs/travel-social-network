@@ -288,3 +288,22 @@ export const share = (type, token, shareId, content, hashtags, next, error) => a
             dispatch(alertAction.error({ message: "Có lỗi xảy ra" }));
     }
 }
+
+export const reportPost = (type, content, postId, token, next, error) => async (dispatch) => {
+    try {
+        await customAxios(token).post(`/report/create`, {
+            postId: postId,
+            content: content,
+            type: type
+        })
+        next();
+        dispatch(alertAction.success({ message: "Báo cáo bài viết thành công!" }))
+    }
+    catch (err) {
+        error();
+        if (err.response && err.response.data && err.response.data.message)
+            dispatch(alertAction.error({ message: err.response.data.message }))
+        else
+            dispatch(alertAction.error({ message: "Có lỗi xảy ra" }));
+    }
+}

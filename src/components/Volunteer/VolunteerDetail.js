@@ -518,19 +518,20 @@ export default function VolunteerDetail(props) {
                                     </Grid>
                                     <Grid item md={9}>
                                         <Typography>Thông tin: </Typography>
-                                        {
-                                            volunteer.location[idxLocation] && volunteer.location[idxLocation].description.map((item, index) => (
-
-                                                <List key={index} component="nav" aria-label="main folders">
-                                                    <ListItem button className={classes.scheduleItem}>
-                                                        <ListItemIcon>
-                                                            <RadioButtonUnchecked style={{ color: "#A5DEC8" }} />
-                                                        </ListItemIcon>
-                                                        <ListItemText primary={item} />
-                                                    </ListItem>
-                                                </List>
-                                            ))
-                                        }
+                                            <List  component="nav" aria-label="main folders">
+                                            {
+                                                volunteer.location[idxLocation] && volunteer.location[idxLocation].description.map((item, index) => (
+                                                        <ListItem key={index} button className={classes.scheduleItem}>
+                                                            <ListItemIcon>
+                                                                <RadioButtonUnchecked style={{ color: "#A5DEC8" }} />
+                                                            </ListItemIcon>
+                                                            <ListItemText primary={item} />
+                                                        </ListItem>
+                                                
+                                                ))
+                                            }
+                                            </List>
+                                        
                                         {
                                             (!isJoinAll && !isOwn) &&
                                             <div className={classes.registerItemBooking}>
