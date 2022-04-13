@@ -7,6 +7,7 @@ import { feedStyles } from "../../style";
 import CreatePostForm from "../Forms/CreatePost";
 import { useDispatch, useSelector } from "react-redux";
 import { getPosts } from "../../redux/callApi/postCall";
+import { getMorePost } from "../../redux/actions/postAction";
 
 
 
@@ -21,9 +22,10 @@ export default function FeedPost(props) {
     const classes = feedStyles();
 
     const loadMore = () => {
-
+        if (post.postId.length > 0) {
+            dispatch(getMorePost({ postId: post.postId }))
+        }
     }
-
 
     const handleShow = () => {
         setShow(true);

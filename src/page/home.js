@@ -1,6 +1,6 @@
 import { Grid } from "@material-ui/core";
 import React, { createRef, useEffect } from "react";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 
 import LeftBar from "../components/Leftbar";
 import FeedPost from "../components/Feed/FeedPost";
@@ -17,6 +17,8 @@ import { getPosts } from "../redux/callApi/postCall";
 
 function HomePage() {
 
+  const { token } = useSelector(state => state.auth)
+
   const classes = useStyles();
 
   const ref = createRef();
@@ -24,8 +26,10 @@ function HomePage() {
   const dispatch = useDispatch();
 
   useEffect(() => {
-    dispatch(getPosts());
-  }, [dispatch])
+    if (token) {
+      dispatch(getPosts(token));
+    }
+  }, [dispatch, token])
 
   useEffect(() => {
     document.title = "Triple H";
@@ -42,12 +46,15 @@ function HomePage() {
         <LeftBar menuList={homeMenu} />
       </Grid>
       <Grid item md={6} sm={10} xs={10} className={classes.content}>
-        <FeedPost />
+        {token ?
+          <FeedPost /> :
+          <></>
+        }
       </Grid>
       <Grid item md={3} className={classes.rightbar}>
         <RightBar ref={ref}>
           <Calendar />
-          <FriendRecommendCard />
+          {token && <FriendRecommendCard />}
         </RightBar>
       </Grid>
     </Grid>

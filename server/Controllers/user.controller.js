@@ -27,7 +27,7 @@ class UserController {
             const userNew = {
                 fullname, username, email, password: passwordHash, phone
             }
-
+            
 
             //Activation Token
             // const activationToken = jwt.sign({ id: userNew._id }, process.env.ACTIVATION_TOKEN_SECRET || "abcdefghiklmn")
@@ -41,6 +41,7 @@ class UserController {
                 message: "Đăng ký thành công! Bạn cần kích hoạt tài khoản trong email của bạn để bắt đầu.",
                 // accessToken
             })
+
         } catch (err) {
             console.log(err)
             res.error(err);
@@ -62,8 +63,6 @@ class UserController {
             })
 
             await newUser.save()
-
-
 
             res.success({
                 success: true,

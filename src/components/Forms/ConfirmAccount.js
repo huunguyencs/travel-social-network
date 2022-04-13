@@ -32,14 +32,14 @@ export default function ConfirmAccount(props) {
 
     const handleSubmit = async (e) => {
         e.preventDefault();
+        setState({
+            loading: true,
+            error: null
+        })
         const cmndFront = await uploadImages([imageFront])
         const cmndBack = await uploadImages([imageBack])
         const cmndFace = await uploadImages([imageFace])
         if (text !== '' && imageFront != null && imageBack != null && imageFace != null) {
-            setState({
-                loading: true,
-                error: null
-            })
             dispatch(confirmAccount(token, { cmnd: text, cmndFront: cmndFront[0], cmndBack: cmndBack[0], cmndFace: cmndFace[0] }, () => {
                 setState({
                     loading: false,
@@ -54,7 +54,6 @@ export default function ConfirmAccount(props) {
 
         }
     }
-
     return (
         <div className={classes.confirmAccount}>
             <Typography variant="h5">Xác minh tài khoản</Typography>

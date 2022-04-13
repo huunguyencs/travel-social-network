@@ -54,7 +54,7 @@ function unBookmark(userId, itemId) {
 
 function getRecomment(userId, count, type) {
     var i = new rqs.RecommendItemsToUser(userId, count, {
-        'filter': `'type' == '${type}'`
+        filter: 'type' == type
     })
     i.timeout = 10000;
     recombeeClient.send(i)

@@ -1,9 +1,9 @@
 import React, { useEffect, useState } from "react";
-import LeftBar from '../components/Leftbar';
+// import LeftBar from '../components/Leftbar';
 import { NotFound } from './404'
 import { Grid, Button, CircularProgress, Typography } from '@material-ui/core';
 import SpeedDialButton from '../components/SpeedDialBtn';
-import { homeMenu } from '../constant/menu';
+// import { homeMenu } from '../constant/menu';
 import { useLocation } from 'react-router-dom';
 import customAxios from "../utils/fetchData";
 import { useSelector } from "react-redux";
@@ -18,6 +18,7 @@ export default function CreateVolunteer() {
     })
     const { auth } = useSelector(state => state);
     const [isOwn, setIsOwn] = useState(false);
+    // const [isAccountConfirm, serIsAccountConfirm] = useState(false);
     const location = useLocation();
     const [volunteer, setVolunteer] = useState(null);
     const id = (new URLSearchParams(location.search)).get("id");
@@ -56,8 +57,16 @@ export default function CreateVolunteer() {
     }, [id])
 
     useEffect(() => {
-        if (auth.user && volunteer) {
-            setIsOwn(volunteer.userId._id === auth.user._id);
+        if(auth.user){
+            if(volunteer){
+                setIsOwn(volunteer.userId._id === auth.user._id);
+            }
+        }else{
+            setState({
+                loading: false,
+                error: false,
+                notFound: true,
+            })
         }
     }, [setIsOwn, volunteer, auth]);
 
@@ -70,14 +79,14 @@ export default function CreateVolunteer() {
     }
 
     return (
-        <Grid container style={{ margin: 0, padding: 0 }}>
+        <Grid container style={{ display:"flex", justifyContent: 'center' }}>
             <SpeedDialButton />
-            <Grid item md={3} sm={2} xs={2}>
+            {/* <Grid item md={3} sm={2} xs={2}>
                 <LeftBar menuList={homeMenu} />
-            </Grid>
-            <Grid item md={9} sm={10} xs={10} style={{ padding: 30 }}>
+            </Grid> */}
+            <Grid item md={9} sm={10} xs={10} style={{marginTop: 80, border:"1px solid black" }}>
                 {
-                    state.notFound ?
+                    state.notFound || (volunteer && !isOwn) ?
                         <NotFound /> :
                         state.loading ?
                             <div style={{ display: 'flex', justifyContent: 'center', marginTop: 150 }}>

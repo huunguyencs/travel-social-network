@@ -293,7 +293,7 @@ export default function AddVolunteer(props) {
 
     return (
         <div className={classes.formContainer}>
-            <Typography variant='h5' style={{ marginTop: 50 }}>Tạo hoạt động tình nguyện của bạn</Typography>
+            <Typography variant='h5' >Tạo hoạt động tình nguyện của bạn</Typography>
             <TextField
                 label="Tên hoạt động"
                 variant="outlined"
