@@ -2,7 +2,8 @@ const Posts = require('../Models/post.model')
 const Comments = require('../Models/comment.model')
 const TourDates = require('../Models/tourDate.model');
 const Locations = require('../Models/location.model');
-const { createItem, shareItem, reviewItem, likeItem, unLikeItem, deleteItem, viewDetailItem } = require('../utils/recombee');
+const { createItem, shareItem, reviewItem, likeItem, unLikeItem, deleteItem, viewDetailItem, getPostRecomment } = require('../utils/recombee');
+const { shuffle } = require('../utils/utils');
 
 const ObjectId = require('mongoose').Types.ObjectId;
 
@@ -271,8 +272,27 @@ class PostController {
     //lấy nhiều post gắn lên trang feed theo người mình theo dõi  hoặc  group 
     async getPosts(req, res) {
         try {
-            const posts = await Posts.find({}).limit(8)
-                .populate("userId likes", "username fullname avatar")
+            var postId = await Posts.find({
+                userId: {
+                    $in: req.user.followings
+                }
+            }).limit(80).sort({ 'createdAt': -1 })
+
+            var postRecommendId = getPostRecomment(req.user._id, 20)
+            if (postRecommendId) {
+                postRecommendId = postRecommendId.recomms.map(item => item.id)
+                postId = postId.concat(postRecommendId.filter((item => postId.indexOf(item) < 0)))
+            }
+
+            postId = shuffle(postId)
+            var currentPostId = postId.slice(0, 10)
+            postId = postId.slice(10)
+
+            const posts = await Posts.find({
+                _id: {
+                    $in: currentPostId
+                }
+            }).populate("userId likes", "username fullname avatar")
                 .populate("locationId", "name fullname")
                 .populate({
                     path: "shareId",
@@ -289,10 +309,12 @@ class PostController {
                     }
                 })
                 .sort({ "createdAt": -1 });
+
             res.success({
                 success: true,
                 message: 'Lấy danh sách bài viết thành công',
                 posts,
+                postId
             });
         } catch (err) {
             console.log(err)
@@ -472,9 +494,10 @@ class PostController {
     async postList(req, res) {
         try {
             const { list } = req.body;
-            var { offset, detail } = req.query;
+            var { offset, detail, limit } = req.query;
             offset = offset || 0;
             detail = detail || false;
+            limit = limit || 0
 
             var posts;
 
@@ -483,7 +506,7 @@ class PostController {
                     _id: {
                         $in: list
                     }
-                }).skip(offset).limit(5)
+                }).skip(offset).limit(limit)
                     .populate("userId likes", "username fullname avatar")
                     .populate("locationId", "name fullname")
                     .populate({

@@ -1,11 +1,13 @@
 import * as POST_TYPES from '../constants/postConstant';
 
 const INIT_STATE = {
+    postId: [],
     posts: [],
     page: 1,
     scrollTop: false,
     loading: false,
     error: null,
+    hasMore: true
 }
 
 const postRecuder = (state = INIT_STATE, action) => {
@@ -17,13 +19,14 @@ const postRecuder = (state = INIT_STATE, action) => {
                 page: 1,
                 loading: false,
                 error: null,
-                hasMore: action.payload.posts.length >= 5
+                hasMore: action.payload.posts.length >= 5,
+                postId: action.payload.postId
             }
         }
         case POST_TYPES.ADD_POST: {
             return {
                 ...state,
-                posts: [...state.posts, action.payload.post],
+                posts: [action.payload.post, ...state.posts],
                 loading: false,
                 error: null,
             }
@@ -35,7 +38,8 @@ const postRecuder = (state = INIT_STATE, action) => {
                 page: state.page + 1,
                 loading: false,
                 error: null,
-                hasMore: action.payload.posts.length >= 5
+                hasMore: action.payload.posts.length >= 5,
+                postId: state.postId.slice(10)
             }
         }
         case POST_TYPES.LOADING_POST: { // dang tai danh sach

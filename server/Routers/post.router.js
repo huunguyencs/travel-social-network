@@ -9,7 +9,7 @@ router.get('/user/:id', PostController.getUserPost);//bug
 router.post('/create_post', auth, PostController.createPost);
 router.post('/create_review', auth, PostController.createReview);
 router.post('/share', auth, PostController.sharePost);
-router.get('/posts', PostController.getPosts);
+router.get('/posts', auth, PostController.getPosts);
 router.get('/search', PostController.search);
 router.post('/list', PostController.postList)
 
