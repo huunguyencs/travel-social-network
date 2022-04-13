@@ -1,8 +1,10 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { Container, Paper, Typography, Card, Grid, Box, CardHeader } from "@material-ui/core";
 import { tableStyles } from "../../style";
 import { ResponsiveContainer, LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, Legend } from 'recharts';
-import { Group, Person, PostAdd } from "@material-ui/icons";
+import { Explore, Person, PostAdd } from "@material-ui/icons";
+import { useSelector } from "react-redux";
+import customAxios from "../../utils/fetchData";
 
 const data = [
     { month: "Jan", user: 100, tour: 2, post: 300 },
@@ -21,7 +23,58 @@ const data = [
 
 
 function AdminHome(props) {
+
     const classes = tableStyles();
+    const { token } = useSelector(state => state.auth);
+    const [users, setUsers] = useState([]);
+    const [tours, setTours] = useState([]);
+    const [posts, setPosts] = useState([]);
+    const [loading, setLoading] = useState(false);
+    const [error, setError] = useState(null);
+    const [pageSize, setPageSize] = useState(10);
+
+    const getAllUsers = async (token) => {
+        setLoading(true);
+        setError(null);
+        await customAxios(token).get(`/user/all`).then(res => {
+            setUsers(res.data.users);
+            setLoading(false);
+        }).catch(err => {
+            setLoading(false);
+            setError('Có lỗi xảy ra')
+        })
+    }
+
+    const getAllTours = async (token) => {
+        setLoading(true);
+        setError(null);
+        await customAxios(token).get(`/tour/tours`).then(res => {
+            setTours(res.data.tours);
+            setLoading(false);
+        }).catch(err => {
+            setLoading(false);
+            setError('Có lỗi xảy ra')
+        })
+    }
+
+    const getAllPosts = async (token) => {
+        setLoading(true);
+        setError(null);
+        await customAxios(token).get(`/post/posts`).then(res => {
+            setPosts(res.data.posts);
+            setLoading(false);
+        }).catch(err => {
+            setLoading(false);
+            setError('Có lỗi xảy ra')
+        })
+    }
+    
+    useEffect(() => {
+        getAllUsers(token);
+        getAllTours(token);
+        getAllPosts(token);
+    }, [token]);
+
     return (
         <Container className={classes.container}>
             <div>
@@ -33,29 +86,29 @@ function AdminHome(props) {
                             </Typography>
                             <Typography variant="h3" className={classes.cardValue}>
                                 <Person className={classes.cardIcon} />
-                                1300
+                                {users.length}
                             </Typography>
                         </Card>
                     </Grid>
                     <Grid item md={4}>
                         <Card className={classes.cardInfo}>
                             <Typography variant="h5">
-                                Tổng số nhóm
+                                Tổng số hành trình
                             </Typography>
                             <Typography variant="h3" className={classes.cardValue}>
-                                <Group className={classes.cardIcon} />
-                                57
+                                <Explore className={classes.cardIcon} />
+                                {tours.length}
                             </Typography>
                         </Card>
                     </Grid>
                     <Grid item md={4}>
                         <Card className={classes.cardInfo}>
                             <Typography variant="h5">
-                                Số bài viết mới trong tuần
+                                Tổng số bài viết / review
                             </Typography>
                             <Typography variant="h3" className={classes.cardValue}>
                                 <PostAdd className={classes.cardIcon} />
-                                180
+                                {posts.length}
                             </Typography>
                         </Card>
                     </Grid>

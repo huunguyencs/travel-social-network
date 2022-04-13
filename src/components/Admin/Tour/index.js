@@ -1,11 +1,12 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { Container, Paper, Typography, Card, Grid } from "@material-ui/core";
 import { PostAdd } from "@material-ui/icons";
 import { tableStyles } from "../../../style";
 import { BarChart, Bar, Cell, XAxis, YAxis, CartesianGrid } from "recharts";
 import { scaleOrdinal } from "d3-scale";
 import { schemeCategory10 } from "d3-scale-chromatic";
-
+import { useSelector } from "react-redux";
+import customAxios from "../../../utils/fetchData";
 
 const colors = scaleOrdinal(schemeCategory10).range();
 
@@ -76,7 +77,30 @@ const TriangleBar = (props) => {
 };
 
 export default function AdminTour() {
+
     const classes = tableStyles();
+    const { token } = useSelector(state => state.auth);
+    const [tours, setTours] = useState([]);
+    const [loading, setLoading] = useState(false);
+    const [error, setError] = useState(null);
+    const [pageSize, setPageSize] = useState(10);
+
+    const getAllTours = async (token) => {
+        setLoading(true);
+        setError(null);
+        await customAxios(token).get(`/tour/tours`).then(res => {
+            setTours(res.data.tours);
+            setLoading(false);
+        }).catch(err => {
+            setLoading(false);
+            setError('Có lỗi xảy ra')
+        })
+    }
+
+    useEffect(() => {
+        getAllTours(token);
+    }, [token]);
+
     return (
         <Container className={classes.container}>
             <div>
@@ -88,7 +112,7 @@ export default function AdminTour() {
                             </Typography>
                             <Typography variant="h3" className={classes.cardValue}>
                                 <PostAdd className={classes.cardIcon} />
-                                1300
+                                {tours.length}
                             </Typography>
                         </Card>
                     </Grid>

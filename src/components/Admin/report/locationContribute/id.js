@@ -27,7 +27,7 @@ function AdminLocationContributeDetail() {
       loading: true,
       error: false
     })
-    await customAxios().get(`/locationContribute/${id}`).then(res => {
+    await customAxios().get(`/location/${id}`).then(res => {
       setLocation(res.data.location);
       setState({
         notFound: false,

@@ -1,38 +1,10 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { Container, Paper, Typography, Card, Grid } from "@material-ui/core";
 import { PostAdd } from "@material-ui/icons";
 import { tableStyles } from "../../../style";
 import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, Legend } from 'recharts';
-// const columns = [
-//     {
-//         field: 'name',
-//         headerName: 'Tên',
-//         width: 300,
-//     },
-//     {
-//         field: 'type',
-//         headerName: 'Loại',
-//         width: 250,
-//     },
-//     {
-//         field: 'cooperator',
-//         headerName: 'Sở hữu',
-//         width: 250,
-//         valueGetter: (service) => service.row.cooperator.fullname
-//     },
-//     {
-//         field: 'rate',
-//         headerName: 'Đánh giá (/5)',
-//         width: 200,
-//         valueGetter: (service) => getStar(service.row.star)
-//     },
-//     {
-//         field: 'numRate',
-//         headerName: 'Lượt đánh giá',
-//         width: 200,
-//         valueGetter: (service) => totalNumRate(service.row.star)
-//     }
-// ];
+import { useSelector } from "react-redux";
+import customAxios from "../../../utils/fetchData";
 
 const data = [
     {
@@ -98,7 +70,30 @@ const data = [
 ];
 
 function AdminPosts(props) {
+    
     const classes = tableStyles();
+    const { token } = useSelector(state => state.auth);
+    const [posts, setPosts] = useState([]);
+    const [loading, setLoading] = useState(false);
+    const [error, setError] = useState(null);
+    const [pageSize, setPageSize] = useState(10);
+
+    const getAllPosts = async (token) => {
+        setLoading(true);
+        setError(null);
+        await customAxios(token).get(`/post/posts`).then(res => {
+            setPosts(res.data.posts);
+            setLoading(false);
+        }).catch(err => {
+            setLoading(false);
+            setError('Có lỗi xảy ra')
+        })
+    }
+
+    useEffect(() => {
+        getAllPosts(token);
+    }, [token]);
+
     return (
         <Container className={classes.container}>
             <div>
@@ -110,7 +105,7 @@ function AdminPosts(props) {
                             </Typography>
                             <Typography variant="h3" className={classes.cardValue}>
                                 <PostAdd className={classes.cardIcon} />
-                                1300
+                                {posts.length}
                             </Typography>
                         </Card>
                     </Grid>
@@ -121,7 +116,7 @@ function AdminPosts(props) {
                             </Typography>
                             <Typography variant="h3" className={classes.cardValue}>
                                 <PostAdd className={classes.cardIcon} />
-                                1300
+                                {posts.length}
                             </Typography>
                         </Card>
                     </Grid>
