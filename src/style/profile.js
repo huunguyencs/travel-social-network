@@ -277,7 +277,35 @@ const profileStyles = makeStyles((theme) => ({
   sizeImageChange: {
     width: 300,
     height: 200
+  },
+  // //Introduction
+  introContainer:{
+    overflow: "hidden",
+    boxShadow: "0 2px 8px #00000026", 
+    marginTop: 90,
+    height: 400,
+    width: "100%",
+    borderRadius: attr.borderRadius.md,
+    marginInline: 15,
+    minHeight: 400
+  },
+  introHeader:{
+    padding: "20px 0 10px 20px",
+    borderBottom: "1px solid #d0d0d0"
+  },
+  introTabPanelItem:{
+    display: "flex", 
+    marginBottom: 30
+  },
+  introTabPanelIcon:{
+    marginRight: 10
+  },
+  introTabPanel:{
+    flex: 1,
+    marginTop: 50, 
+    marginLeft: 20
   }
+
 }));
 
 export default profileStyles;

@@ -4,7 +4,7 @@ import attr from "./attr";
 
 const locationStyles = makeStyles((theme) => ({
     container:{
-        width: 1300,
+        width: 1400,
         margin: 'auto',
         [theme.breakpoints.down("md")]: {
             width: "100%",
@@ -87,6 +87,17 @@ const locationStyles = makeStyles((theme) => ({
         display: 'flex',
         justifyContent: 'center',
         marginTop: 150
+    },
+    imageLength1:{
+        cursor: "pointer",
+        height: "100%",
+        width: "100%",
+        transition: "0.5s",
+        "&:hover": {
+            filter: "brightness(85%)",
+        },
+        objectFit: "cover",
+        borderRight: "3px solid white"
     },
     image1: {
         cursor: "pointer",
