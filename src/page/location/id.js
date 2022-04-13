@@ -148,18 +148,36 @@ export default function Location(props) {
                                         </Grid>
                                         <Grid item md={6} sm={12} xs={12}>
                                             <div className={classes.imageList}>
-                                                <img src={location.images[0]} alt="Đang tải..." className={classes.image1} onClick={handleShowImage} />
-                                                <div style={{ height: "100%", width: "100%", position: "relative" }}>
-                                                    <img src={location.images[1]} alt="Đang tải..." className={classes.image2} onClick={handleShowImage} />
-                                                    <img src={location.images[2]} alt="Đang tải..." className={classes.image3} onClick={handleShowImage} />
-                                                    {
-                                                        location.images.length >= 3 &&
-                                                        <span className={classes.imageMore} onClick={handleShowImage}>
-                                                            <PhotoLibrary style={{ fontSize: 12 }} /> Xem tất cả ảnh ({location.images.length})
-                                                        </span >
-                                                    }
-                                                </div>
-
+                                                {
+                                                    location.images.length === 1 ? 
+                                                    <img src={location.images[0]} alt="Đang tải..." className={classes.imageLength1} onClick={handleShowImage} />
+                                                    : 
+                                                    location.images.length === 2 ?
+                                                    <div style={{ height: "100%", width: "100%", position: "relative" }}>
+                                                        <img src={location.images[0]} alt="Đang tải..." className={classes.image2} onClick={handleShowImage} />
+                                                        <img src={location.images[1]} alt="Đang tải..." className={classes.image3} onClick={handleShowImage} />
+                                                        {
+                                                            location.images.length >= 2 &&
+                                                            <span className={classes.imageMore} onClick={handleShowImage}>
+                                                                <PhotoLibrary style={{ fontSize: 12 }} /> Xem tất cả ảnh ({location.images.length})
+                                                            </span >
+                                                        }
+                                                    </div>
+                                                    :
+                                                    <>
+                                                    <img src={location.images[0]} alt="Đang tải..." className={classes.image1} onClick={handleShowImage} />
+                                                    <div style={{ height: "100%", width: "100%", position: "relative" }}>
+                                                        <img src={location.images[1]} alt="Đang tải..." className={classes.image2} onClick={handleShowImage} />
+                                                        <img src={location.images[2]} alt="Đang tải..." className={classes.image3} onClick={handleShowImage} />
+                                                        {
+                                                            location.images.length >= 3 &&
+                                                            <span className={classes.imageMore} onClick={handleShowImage}>
+                                                                <PhotoLibrary style={{ fontSize: 12 }} /> Xem tất cả ảnh ({location.images.length})
+                                                            </span >
+                                                        }
+                                                    </div>
+                                                    </>
+                                                }
                                                 {showImg && (
                                                     <Lightbox
                                                         mainSrc={location.images[imgIdx]}

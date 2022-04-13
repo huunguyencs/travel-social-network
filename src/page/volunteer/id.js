@@ -18,7 +18,6 @@ export default function VolunteerDetail() {
 
 
     const { auth } = useSelector(state => state);
-
     const { id } = useParams();
     const [volunteerDetail, setVolunteerDetail] = useState();
     const [state, setState] = useState({
@@ -34,7 +33,7 @@ export default function VolunteerDetail() {
             error: false
         })
         customAxios(token).get(`/volunteer/${id}`).then(res => {
-            setVolunteerDetail(res.volunteer);
+            setVolunteerDetail(res.data.volunteer);
             setState({
                 loading: false,
                 notFound: false,
@@ -57,6 +56,9 @@ export default function VolunteerDetail() {
 
     useEffect(() => {
         getVolunteer(id, auth.token);
+        // volunteer.volunteers.forEach(element => {
+        //     if (element._id === id) setVolunteerDetail(element)
+        // })
     }, [id, auth.token])
 
     useEffect(() => {

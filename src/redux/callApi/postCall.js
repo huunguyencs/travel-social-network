@@ -299,7 +299,7 @@ export const reportPost = (type, content, postId, token, next, error) => async (
             type: type
         })
         next();
-        dispatch(alertAction.success({ message: "Báo cáo bài viết thành công!" }))
+        dispatch(alertAction.success({ message:"Gửi báo cáo thành công!" }))
     }
     catch (err) {
         error();

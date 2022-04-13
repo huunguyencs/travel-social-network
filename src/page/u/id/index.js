@@ -7,6 +7,7 @@ import LeftBar from "../../../components/Leftbar";
 import RightBar from "../../../components/Rightbar";
 import Scroll from "../../../components/Scroll";
 import ProfileAvatar from "../../../components/Profile/Avatar";
+import Introduction from "../../../components/Profile/Introduction";
 import { profileMenu, serviceMenu } from "../../../constant/menu";
 import SpeedDialButton from "../../../components/SpeedDialBtn";
 import Calendar from "../../../components/Calendar";
@@ -58,7 +59,8 @@ function InfoProfile() {
                                 )}
                             </Grid>
                             <Grid item md={6} sm={10} xs={10}>
-                                {user.user && user.user.role === 1 ? <ServiceList /> : <div></div>}
+                                {user.user && user.user.role === 1 ? <ServiceList /> : 
+                                <Introduction user={user.user}/>}
                             </Grid>
                             <Grid item md={3} className={classes.rightbar}>
                                 <RightBar ref={ref}>
