@@ -44,9 +44,6 @@ function AdminPostReportDetail() {
 
     useEffect(() => {
         getReport(subpage);
-        console.log(subpage);
-        console.log(report);
-        console.log(state);
     }, [subpage])
 
     useEffect(() => {

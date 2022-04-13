@@ -3,8 +3,8 @@ import color from "./color";
 import attr from "./attr";
 
 const locationStyles = makeStyles((theme) => ({
-    container:{
-        width: 1400,
+    container: {
+        width: 1500,
         margin: 'auto',
         [theme.breakpoints.down("md")]: {
             width: "100%",
@@ -88,7 +88,7 @@ const locationStyles = makeStyles((theme) => ({
         justifyContent: 'center',
         marginTop: 150
     },
-    imageLength1:{
+    imageLength1: {
         cursor: "pointer",
         height: "100%",
         width: "100%",
@@ -136,7 +136,7 @@ const locationStyles = makeStyles((theme) => ({
             fontSize: 40
         }
     },
-    rate:{
+    rate: {
         marginInline: 15,
         marginTop: 20,
         backgroundColor: color.white,
@@ -145,7 +145,7 @@ const locationStyles = makeStyles((theme) => ({
         position: "sticky",
         top: "80px"
     },
-    weather:{
+    weather: {
         marginInline: 15,
         marginTop: 20,
         backgroundColor: color.white,
@@ -164,13 +164,13 @@ const locationStyles = makeStyles((theme) => ({
             marginInline: 15
         },
     },
-    reviewTop:{
-        display:"flex",
+    reviewTop: {
+        display: "flex",
         alignItems: "center",
-        paddingBottom: 6   
+        paddingBottom: 6
     },
-    overView:{
-        display:"flex",
+    overView: {
+        display: "flex",
         alignItems: "center",
         justifyContent: "space-between",
         padding: "10px 16px",
@@ -178,17 +178,17 @@ const locationStyles = makeStyles((theme) => ({
         borderRadius: 20,
         background: `linear-gradient(90deg,${color.turquoise},#dbf8ec)`
     },
-    overView_image:{
+    overView_image: {
         width: "30%",
         height: "100%",
         textAlign: "center",
         position: "relative"
     },
-    overView_text:{
+    overView_text: {
         flexGrow: 1,
         padding: "10px 8px"
     },
-    imageMore:{
+    imageMore: {
         position: "absolute",
         top: "auto",
         right: "auto",

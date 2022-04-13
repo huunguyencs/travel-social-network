@@ -48,6 +48,7 @@ const cardStyles = makeStyles((theme) => ({
     },
     weatherCardContainer: {
         borderRadius: attr.borderRadius.md,
+        marginBottom: 10
     },
     covidCardContainer: {
         marginTop: 15,
@@ -70,8 +71,8 @@ const cardStyles = makeStyles((theme) => ({
     temp: {
         display: "flex",
         justifyContent: "space-between",
-        marginLeft: 50,
-        marginRight: 80,
+        marginLeft: 20,
+        marginRight: 20,
         [theme.breakpoints.down("md")]: {
             marginLeft: 10,
             marginRight: 10,
