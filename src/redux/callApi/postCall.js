@@ -7,12 +7,11 @@ import * as alertAction from '../actions/alertAction';
 
 
 export const getPosts = (token) => async (dispatch) => {
-    // dispatch(postAction.getPosts({ posts: [] }));
     dispatch(postAction.loading());
 
     try {
         // call api to get post list
-        const res = await customAxios().get("/post/posts");
+        const res = await customAxios(token).get("/post/posts");
 
         // console.log(res);
 
@@ -77,11 +76,12 @@ export const getMorePost = (data) => async (dispatch) => {
     dispatch(postAction.loading());
 
     try {
-        // const { type } = data;
+        const { postId } = data;
+        const limit = postId.length
 
-        // console.log(type);
-        // call api to get more post
-        const res = [];
+        const res = customAxios().post(`/post/list?detail=true&limit=${limit}`, {
+            postId: postId
+        });
 
         dispatch(postAction.getMorePost({ posts: res }));
     }

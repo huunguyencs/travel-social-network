@@ -4,12 +4,12 @@ const EventContributeController = require('../Controllers/eventContribute.contro
 const auth = require('../Middlewares/auth');
 const authRole = require('../Middlewares/authRole');
 
-router.post('/create', auth, authRole([2]), EventContributeController.createEvent);
+router.post('/create', auth, EventContributeController.createEvent);
 router.get('/all', auth, authRole([2]), EventContributeController.getAll)
-router.get('/search', EventContributeController.search)
+router.get('/search', auth, authRole([2]), EventContributeController.search)
 
-router.get('/current', EventContributeController.getCurrentEvent)
-router.get('/:name', EventContributeController.getEvent);
+router.get('/current', auth, authRole([2]), EventContributeController.getCurrentEvent)
+router.get('/:name', auth, authRole([2]), EventContributeController.getEvent);
 
 router.patch('/:id', auth, authRole([2]), EventContributeController.updateEvent)
 router.delete(':/id', auth, authRole([2]), EventContributeController.deleteEvent)
