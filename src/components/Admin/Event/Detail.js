@@ -26,7 +26,7 @@ export default function AminEventDetail() {
             loading: true,
             error: false
         })
-        await customAxios().get(`/event/${id}`).then(res => {
+        await customAxios().get(`/eventContribute/${id}`).then(res => {
             setEvent(res.data.event);
             setState({
                 notFound: false,

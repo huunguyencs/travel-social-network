@@ -19,35 +19,34 @@ const columns = [
         sortable: false,
     },
     {
-        field: 'fullname',
-        headerName: 'Tên đầy đủ',
-        width: 300
-    },
-    {
-        field: 'province',
-        headerName: 'Tỉnh',
+        field: 'user',
+        headerName: 'Người báo cáo',
         width: 200,
-        valueGetter: (report) => report.row.province.fullname
+        valueGetter: (report) => report.row.userId.fullname
     },
     {
-        field: 'star',
-        headerName: 'Đánh giá (/5)',
+        field: 'type',
+        headerName: 'Lý do',
         width: 175,
-        valueGetter: (report) => getStar(report.row.star)
     },
     {
-        field: 'numRate',
-        headerName: 'Lượt đánh giá',
+        field: 'content',
+        headerName: 'Nôi dung',
         width: 175,
-        valueGetter: (report) => totalNumRate(report.row.star)
+    },
+    {
+        field: 'status',
+        headerName: 'Trạng thái',
+        width: 175,
+        valueGetter: (report) => report.row.state === 0 ? "Chưa xử lý" : report.row.state === 1 ? "Đang xử lý" : "Đã xử lý"
     },
     {
         field: 'action',
         headerName: 'Chi tiết',
         width: 150,
         sortable: false,
-        renderCell: (location) => (
-            <IconButton size='small' component={Link} to={`/admin/report/locationContribute/${location.row.name}`} title={'Chi tiết'}>
+        renderCell: (report) => (
+            <IconButton size='small' component={Link} to={`/admin/postReport/${report.row._id}`} title={'Chi tiết'}>
                 <MoreVert />
             </IconButton>
         )
@@ -76,7 +75,7 @@ export default function AdminPostReport(props) {
     const getAllReports = async (token) => {
         setLoading(true);
         setError(null);
-        await customAxios(token).get('/reports/all').then(res => {
+        await customAxios(token).get('/report/all').then(res => {
             setLocations(res.data.reports);
             setLoading(false);
         }).catch(err => {
@@ -97,7 +96,7 @@ export default function AdminPostReport(props) {
         <Container className={classes.container}>
             <div className={classes.admin_location_header}>
                 <div>
-                    <Typography variant="h4">{reports.length} địa điểm du lịch được đóng góp</Typography>
+                    <Typography variant="h4">{reports.length} bài viết bị báo cáo</Typography>
                 </div>
             </div>
 
@@ -109,8 +108,8 @@ export default function AdminPostReport(props) {
                     rowsPerPageOptions={[5, 10, 25]}
                     onPageSizeChange={(newPageSize) => setPageSize(newPageSize)}
                     pagination
-                    onRowDoubleClick={(post) => {
-                        history.push(`/admin/report/postReport/${post.row.name}`)
+                    onRowDoubleClick={(report) => {
+                        history.push(`/admin/postReport/${report.row._id}`)
                     }}
                     autoHeight
                     loading={loading}

@@ -27,7 +27,7 @@ function AdminLocationContributeDetail() {
       loading: true,
       error: false
     })
-    await customAxios().get(`/admin/report/locationContribute/${id}`).then(res => {
+    await customAxios().get(`/locationContribute/${id}`).then(res => {
       setLocation(res.data.location);
       setState({
         notFound: false,
@@ -56,7 +56,7 @@ function AdminLocationContributeDetail() {
     <Paper style={{ marginTop: 120, marginInline: 50, marginBottom: 30, padding: 30 }}>
       <div style={{ display: 'flex', justifyContent: 'space-between' }}>
         <div>
-          <IconButton component={Link} to={`/admin/report/locationContribute`} title="Quay lại">
+          <IconButton component={Link} to={`/admin/locationContribute`} title="Quay lại">
             <ArrowBack />
           </IconButton>
         </div>

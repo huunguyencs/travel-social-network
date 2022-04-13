@@ -26,7 +26,7 @@ export default function AdminEventContributeDetail() {
             loading: true,
             error: false
         })
-        await customAxios().get(`/admin/report/eventContribute/${id}`).then(res => {
+        await customAxios().get(`/event/${id}`).then(res => {
             setEvent(res.data.event);
             setState({
                 notFound: false,
@@ -55,7 +55,7 @@ export default function AdminEventContributeDetail() {
         <Paper style={{ marginTop: 120, marginInline: 50, marginBottom: 30, padding: 30 }}>
             <div style={{ display: 'flex', justifyContent: 'space-between' }}>
                 <div>
-                    <IconButton component={Link} to={`/admin/report/eventContribute`} title="Quay lại">
+                    <IconButton component={Link} to={`/admin/eventContribute`} title="Quay lại">
                         <ArrowBack />
                     </IconButton>
                 </div>

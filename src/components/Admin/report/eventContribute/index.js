@@ -46,7 +46,7 @@ const columns = [
         width: 150,
         sortable: false,
         renderCell: (event) => (
-            <IconButton size='small' component={Link} to={`/admin/report/eventContribute/${event.row.name}`} title='Chỉnh sửa'>
+            <IconButton size='small' component={Link} to={`/admin/eventContribute/${event.row.name}`} title='Chỉnh sửa'>
                 <MoreVert />
             </IconButton>
         )
@@ -109,7 +109,7 @@ export default function AdminEventContribute(props) {
                     onPageSizeChange={(newPageSize) => setPageSize(newPageSize)}
                     pagination
                     onRowDoubleClick={(location) => {
-                        history.push(`/admin/report/eventContribute/${location.row.name}`)
+                        history.push(`/admin/eventContribute/${location.row.name}`)
                     }}
                     autoHeight
                     loading={loading}

@@ -47,7 +47,7 @@ const columns = [
         width: 150,
         sortable: false,
         renderCell: (location) => (
-            <IconButton size='small' component={Link} to={`/admin/report/locationContribute/${location.row.name}`} title={'Chi tiết'}>
+            <IconButton size='small' component={Link} to={`/admin/locationContribute/${location.row.name}`} title={'Chi tiết'}>
                 <MoreVert />
             </IconButton>
         )
@@ -110,7 +110,7 @@ export default function AdminLocationContribute(props) {
                     onPageSizeChange={(newPageSize) => setPageSize(newPageSize)}
                     pagination
                     onRowDoubleClick={(location) => {
-                        history.push(`/admin/report/locationContribute/${location.row.name}`)
+                        history.push(`/admin/locationContribute/${location.row.name}`)
                     }}
                     autoHeight
                     loading={loading}

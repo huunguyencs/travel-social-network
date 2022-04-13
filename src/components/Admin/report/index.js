@@ -89,7 +89,7 @@ export default function AdminReport() {
             <div>
                 <Grid container>
                     <Grid item md={4} >
-                        <Link to={`/admin/report/postReport`}>
+                        <Link to={`/admin/postReport`}>
                             <Card className={classes.cardInfo}>
                                 <Typography variant="h5">
                                     Số bài viết bị báo cáo
@@ -102,7 +102,7 @@ export default function AdminReport() {
                         </Link>
                     </Grid>
                     <Grid item md={4}>
-                        <Link to={`/admin/report/locationContribute`}>
+                        <Link to={`/admin/locationContribute`}>
                             <Card className={classes.cardInfo}>
                                 <Typography variant="h5">
                                     Số địa điểm được đóng góp
@@ -115,7 +115,7 @@ export default function AdminReport() {
                         </Link>
                     </Grid>
                     <Grid item md={4}>
-                        <Link to={`/admin/report/eventContribute`}>
+                        <Link to={`/admin/eventContribute`}>
                             <Card className={classes.cardInfo}>
                                 <Typography variant="h5">
                                     Sự kiến được đóng góp
