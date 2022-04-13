@@ -1,8 +1,8 @@
 import React from "react";
-import { Container, Paper, Typography, Card, Grid, Button } from "@material-ui/core";
+import { Container, Paper, Typography, Card, Grid } from "@material-ui/core";
 import { tableStyles } from "../../../style";
 import { AddLocation, Report, Event } from "@material-ui/icons";
-import { BarChart, Bar, Cell, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer } from 'recharts';
+import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, Legend} from 'recharts';
 import { Link } from "react-router-dom";
 
 export default function AdminReport() {

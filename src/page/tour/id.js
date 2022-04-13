@@ -31,6 +31,39 @@ export default function TourDetail(props) {
     const [joined, setJoined] = useState(false);
     const [joinLoc, setJoinLoc] = useState(false);
 
+    const getTourDetail = async (id, token) => {
+        setState({
+            loading: true,
+            error: false,
+            notFound: false,
+        })
+        await customAxios(token).get(`/tour/${id}`).then(res => {
+            setTour(sortTourDate(res.data.tour));
+            setState({
+                loading: false,
+                error: false,
+                notFound: false,
+            })
+        }).catch(err => {
+            if (err && err.response && err.response.status === 404)
+                setState({
+                    loading: false,
+                    error: true,
+                    notFound: true,
+                })
+            else setState({
+                loading: false,
+                error: true,
+                notFound: false,
+            })
+
+        })
+    }
+
+    useEffect(() => {
+        getTourDetail(id, auth.token);
+    }, [id, auth.token])
+
     useEffect(() => {
         if (tour && tour.name) {
             document.title = tour.name;
@@ -68,40 +101,6 @@ export default function TourDetail(props) {
         }
     }, [tour, auth.user])
 
-
-    const getTourDetail = async (id) => {
-        setState({
-            loading: true,
-            error: false,
-            notFound: false,
-        })
-        await customAxios().get(`/tour/${id}`).then(res => {
-            setTour(sortTourDate(res.data.tour));
-            setState({
-                loading: false,
-                error: false,
-                notFound: false,
-            })
-        }).catch(err => {
-            if (err && err.response && err.response.status === 404)
-                setState({
-                    loading: false,
-                    error: true,
-                    notFound: true,
-                })
-            else setState({
-                loading: false,
-                error: true,
-                notFound: false,
-            })
-
-        })
-    }
-
-    useEffect(() => {
-        getTourDetail(id);
-    }, [id])
-
     useEffect(() => {
         if (edit === 'true' && tour) {
             dispatch(loadTour({ tour: tour }));
@@ -109,7 +108,7 @@ export default function TourDetail(props) {
     }, [edit, tour, dispatch])
 
     const tryAgain = () => {
-        getTourDetail(id);
+        getTourDetail(id, auth.token);
     }
 
 

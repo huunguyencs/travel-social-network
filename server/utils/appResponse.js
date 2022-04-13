@@ -15,6 +15,10 @@ const appResponse = (req, res, next) => {
         res.responseData(204, data);
     }
 
+    res.errorClient = (msg) => {
+        res.responseData(400, { success: false, message: msg })
+    }
+
     res.unauthorized = () => {
         res.responseData(401, { success: false, message: 'Xác thực không thành công!' })
     }

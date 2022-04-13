@@ -2,6 +2,8 @@ const Events = require('../Models/event.model')
 const date = require('../utils/date');
 const Provinces = require('../Models/province.model')
 
+const ObjectId = require('mongoose').Types.ObjectId;
+
 class EventController {
     async createEvent(req, res) {
         try {
@@ -41,6 +43,10 @@ class EventController {
 
     async updateEvent(req, res) {
         try {
+            if (!ObjectId.isValid(req.params.id)) {
+                res.notFound('Không tìm thấy sự kiện')
+                return;
+            }
             const { description, timedes, name, fullname, provinceId, images, time, calendarType } = req.body;
             const event = await Events.findOneAndUpdate({ _id: req.params.id }, {
                 description, timedes, name, fullname, provinceId, images, time, calendarType
@@ -81,6 +87,10 @@ class EventController {
     async deleteEvent(req, res) {
         try {
             const { id } = req.params;
+            if (!ObjectId.isValid(id)) {
+                res.notFound('Không tìm thấy sự kiện');
+                return;
+            }
             await Events.findByIdAndDelete(id)
             res.deleted('Xóa sự kiện thành công')
         }

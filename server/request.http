@@ -263,5 +263,5 @@
 #     "postId": "624181d5e212fc8279f80ea8"
 # }
 
-Patch  http://localhost:5000/report/624e45674fa149df992d8cc5
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjYyM2M5NjYxMDI5ODFmNzZiZTY3NWEwZCIsImlhdCI6MTY0OTI5Njk1MiwiZXhwIjoxNjQ5MzgzMzUyfQ.kq72-7hxseNEJBelJ6m3y_Mq-W3MPo-ixAHmCbjjT5s
+# Patch  http://localhost:5000/report/624e45674fa149df992d8cc5
+# Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjYyM2M5NjYxMDI5ODFmNzZiZTY3NWEwZCIsImlhdCI6MTY0OTI5Njk1MiwiZXhwIjoxNjQ5MzgzMzUyfQ.kq72-7hxseNEJBelJ6m3y_Mq-W3MPo-ixAHmCbjjT5s

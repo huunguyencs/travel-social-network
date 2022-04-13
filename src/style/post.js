@@ -8,6 +8,7 @@ const postStyles = makeStyles((theme) => ({
         margin: 10,
         borderRadius: attr.borderRadius.md,
         backgroundColor: color.white,
+        position: "relative"
     },
     likedIcon: {
         color: color.like,
@@ -135,6 +136,71 @@ const postStyles = makeStyles((theme) => ({
     },
     errorComment: {
         marginInline: 20
+    },
+    menuWrap:{
+        left: "-80px !important" ,
+        [theme.breakpoints.down("sm")]: {
+            left: "-60px !important" 
+        }
+    },
+    menuIcon:{
+        marginRight:  5
+    },
+    reportWrap:{
+        width:  548,
+        height: 760,
+        boxShadow: "0 2px 8px #00000026",
+        backgroundColor: color.white,
+        display: "flex",
+        flexDirection: "column",
+        overflowX: "hidden",
+        overflowY: "hidden",
+        borderRadius: attr.borderRadius.md,
+        maxWidth: 548
+    },
+    reportHeader:{
+        height: 60,
+        borderBottom: `1px solid ${color.gray}`,
+        display: "flex",
+        alignItems: "center",
+        width: "100%",
+        justifyContent: "space-between"
+    },
+    reportHeader_text:{
+        paddingLeft: "40%"
+    },
+    reportBody:{
+        padding: 20
+    },
+    reportList:{
+        width: "100%",
+        overflowY: "scroll",
+        height: 500
+    },
+    reportListForm:{
+        display: "inline-block",
+        width: "100%"
+    },
+    reportListItem:{
+        width: "100%"
+    },
+    reportListItemRadio:{
+        width: "100%"
+    },
+    input:{
+        width: "100%",
+        height: 80,
+        backgroundColor: color.cloud,
+        marginTop: 10,
+        padding: 10,
+    },
+    reportIcon:{
+        marginLeft: "45%",
+        backgroundColor: color.cloud,
+        marginTop: 5,
+        "&:hover": {
+            backgroundColor: color.blue,
+        }
     }
 }))
 

@@ -3,6 +3,8 @@ const Locations = require('../Models/location.model');
 const Services = require('../Models/service.model');
 const Events = require('../Models/event.model');
 
+const ObjectId = require('mongoose').Types.ObjectId;
+
 class ProvinceController {
     async createProvince(req, res) {
         try {
@@ -28,6 +30,10 @@ class ProvinceController {
 
     async updateProvince(req, res) {
         try {
+            if (!ObjectId.isValid(req.params.id)) {
+                res.notFound('Không tìm thấy tỉnh');
+                return;
+            }
             const { name, fullname, information, detail, image, position } = req.body;
 
             const province = await Provinces.findByIdAndUpdate(req.params.id, {
@@ -55,6 +61,10 @@ class ProvinceController {
     // lấy thông tin 1 Province theo params.id
     async getProvince(req, res) {
         try {
+            // if (!ObjectId.isValid(req.params.id)) {
+            //     res.notFound('Không tìm thấy tỉnh');
+            //     return;
+            // }
             const id = req.params.id;
             var province = await Provinces.findOne({ name: id });
             if (province) {
@@ -75,6 +85,10 @@ class ProvinceController {
 
     async getLocationsProvince(req, res) {
         try {
+            if (!ObjectId.isValid(req.params.id)) {
+                res.notFound('Không tìm thấy tỉnh');
+                return;
+            }
             const locations = await Locations.find({ province: req.params.id });
             res.success({
                 success: true,
@@ -89,6 +103,10 @@ class ProvinceController {
 
     async getEventsProvince(req, res) {
         try {
+            if (!ObjectId.isValid(req.params.id)) {
+                res.notFound('Không tìm thấy tỉnh');
+                return;
+            }
             const events = await Events.find({ provinceId: req.params.id });
             res.success({
                 success: true,
@@ -103,6 +121,10 @@ class ProvinceController {
 
     async getServicesProvince(req, res) {
         try {
+            if (!ObjectId.isValid(req.params.id)) {
+                res.notFound('Không tìm thấy tỉnh');
+                return;
+            }
             const services = await Services.find({ province: req.params.id });
             res.success({
                 success: true,
