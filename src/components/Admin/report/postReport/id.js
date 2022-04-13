@@ -2,7 +2,7 @@ import { Button, CircularProgress, IconButton, Paper } from "@material-ui/core";
 import { ArrowBack } from "@material-ui/icons";
 import React, { useEffect, useState } from "react";
 import { Link, useParams } from "react-router-dom";
-
+import { useSelector } from 'react-redux';
 import { NotFound } from '../../../../page/404'
 import customAxios from "../../../../utils/fetchData";
 
@@ -17,7 +17,7 @@ function AdminPostReportDetail() {
         loading: false,
         error: false,
     });
-
+    const { token } = useSelector(state => state.auth);
 
 
     const getReport = async (id) => {
@@ -26,7 +26,7 @@ function AdminPostReportDetail() {
             loading: true,
             error: false
         })
-        await customAxios().get(`/report/${id}`).then(res => {
+        await customAxios(token).get(`/report/${id}`).then(res => {
             setReport(res.data.report);
             setState({
                 notFound: false,
@@ -44,9 +44,6 @@ function AdminPostReportDetail() {
 
     useEffect(() => {
         getReport(subpage);
-        console.log(subpage);
-        console.log(report);
-        console.log(state);
     }, [subpage])
 
     useEffect(() => {
@@ -71,7 +68,7 @@ function AdminPostReportDetail() {
                         </div> :
                         state.error ?
                             <div style={{ display: 'flex', justifyContent: 'center', marginTop: 60 }}>Có lỗi xảy ra</div> :
-                            <div></div>
+                            report && <div>{report._id}</div>
             }
         </Paper>
     );

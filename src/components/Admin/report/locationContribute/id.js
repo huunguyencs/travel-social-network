@@ -44,7 +44,6 @@ function AdminLocationContributeDetail() {
   }
 
   useEffect(() => {
-    console.log(subpage);
     getLocation(subpage);
   }, [subpage])
 

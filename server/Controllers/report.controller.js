@@ -48,7 +48,7 @@ class ReportController {
 
     async getReport(req, res) {
         try {
-            const report = await Reports.findById({_id: req.params.id})
+            const report = await Reports.findById(req.params.id)
                 .populate('userId', 'avatar username fullname')
             if (report) {
                 await Reports.findOneAndUpdate({ _id: req.params.id}, {
