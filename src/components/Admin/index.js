@@ -6,21 +6,43 @@ import { Explore, Person, PostAdd } from "@material-ui/icons";
 import { useSelector } from "react-redux";
 import customAxios from "../../utils/fetchData";
 
-const data = [
-    { month: "Jan", user: 100, tour: 2, post: 300 },
-    { month: "Feb", user: 120, tour: 3, post: 400 },
-    { month: "Mar", user: 140, tour: 4, post: 450 },
-    { month: "Apr", user: 150, tour: 5, post: 490 },
-    { month: "May", user: 170, tour: 8, post: 500 },
-    { month: "Jun", user: 200, tour: 10, post: 700 },
-    { month: "Jul", user: 210, tour: 15, post: 740 },
-    { month: "Aug", user: 210, tour: 15, post: 900 },
-    { month: "Sep", user: 180, tour: 9, post: 600 },
-    { month: "Oct", user: 150, tour: 5, post: 400 },
-    { month: "Nov", user: 130, tour: 2, post: 300 },
-    { month: "Dec", user: 110, tour: 2, post: 100 },
-]
+function handling(arr) {
+    const data = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0];
+    arr.forEach(element => {
+        let d = new Date(element.createdAt);
+        let mon = d.getMonth();
+        if (d.getFullYear() == (new Date()).getFullYear()) {
+            data[mon] += 1;
+        }
+    });
+    return data;
+}
 
+function getData(posts, tours, users) {
+    const data = [
+        { month: "Jan", user: 0, tour: 0, post: 0 },
+        { month: "Feb", user: 0, tour: 0, post: 0 },
+        { month: "Mar", user: 0, tour: 0, post: 0 },
+        { month: "Apr", user: 0, tour: 0, post: 0 },
+        { month: "May", user: 0, tour: 0, post: 0 },
+        { month: "Jun", user: 0, tour: 0, post: 0 },
+        { month: "Jul", user: 0, tour: 0, post: 0 },
+        { month: "Aug", user: 0, tour: 0, post: 0 },
+        { month: "Sep", user: 0, tour: 0, post: 0 },
+        { month: "Oct", user: 0, tour: 0, post: 0 },
+        { month: "Nov", user: 0, tour: 0, post: 0 },
+        { month: "Dec", user: 0, tour: 0, post: 0 },
+    ]
+    let tour = handling(tours);
+    let user = handling(users);
+    let post = handling(posts);
+    for (let i = 0; i < 12; i++) {
+        data.at(i).tour = tour.at(i);
+        data.at(i).user = user.at(i);
+        data.at(i).post = post.at(i);
+    }
+    return data;
+}
 
 function AdminHome(props) {
 
@@ -32,7 +54,9 @@ function AdminHome(props) {
     const [loading, setLoading] = useState(false);
     const [error, setError] = useState(null);
     const [pageSize, setPageSize] = useState(10);
-
+    let handlingPost = false;
+    let handlingUser = false;
+    let handlingTour = false;
     const getAllUsers = async (token) => {
         setLoading(true);
         setError(null);
@@ -68,7 +92,7 @@ function AdminHome(props) {
             setError('Có lỗi xảy ra')
         })
     }
-    
+
     useEffect(() => {
         getAllUsers(token);
         getAllTours(token);
@@ -117,7 +141,7 @@ function AdminHome(props) {
             <Paper className={classes.paper}>
                 <div>
                     <Card>
-                        <CardHeader title="Website Visits" subheader="(+43%) than last year" />
+                        <CardHeader title="Thống kê" subheader={"Biến động năm " + (new Date()).getFullYear().toString()} />
                         <Box>
                             <div
                                 style={{
@@ -140,7 +164,7 @@ function AdminHome(props) {
                                         <LineChart
                                             width={1000}
                                             height={500}
-                                            data={data}
+                                            data={getData(posts, tours, users)}
                                             margin={{ top: 5, right: 20, left: 10, bottom: 5 }}
                                         >
                                             <XAxis dataKey="month" />
@@ -148,9 +172,9 @@ function AdminHome(props) {
                                             <CartesianGrid strokeDasharray="3 3" />
                                             <Tooltip />
                                             <Legend />
-                                            <Line type="monotone" dataKey="user" stroke="#8884d8" activeDot={{ r: 8 }} />
-                                            <Line type="monotone" dataKey="tour" stroke="#82ca9d" />
-                                            <Line type="monotone" dataKey="post" stroke="#ECCC68" />
+                                            <Line type="monotone" dataKey="user" stroke="#8884d8" name="Người dùng" activeDot={{ r: 8 }} />
+                                            <Line type="monotone" dataKey="tour" stroke="#82ca9d" name="Hành trình" />
+                                            <Line type="monotone" dataKey="post" stroke="#ECCC68" name="Bài viết/review" />
                                         </LineChart>
                                     </ResponsiveContainer>
                                 </div>
