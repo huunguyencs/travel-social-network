@@ -1,7 +1,7 @@
 const Locations = require('../Models/location.model')
 const Posts = require('../Models/post.model');
 const Provinces = require('../Models/province.model');
-const { createItem, deleteItem, viewDetailItem } = require('../utils/recombee');
+const { createItem, viewDetailItem } = require('../utils/recombee');
 
 const ObjectId = require('mongoose').Types.ObjectId;
 
@@ -193,4 +193,4 @@ class LocationController {
 
 }
 
-module.exports = new LocationController;
+module.exports = new LocationController();

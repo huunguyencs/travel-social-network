@@ -150,6 +150,11 @@ const headerStyles = makeStyles((theme) => ({
         "&:hover": {
             textDecorationLine: "underline"
         }
+    },
+    modal: {
+        display: 'flex',
+        alignItems: 'center',
+        justifyContent: 'center',
     }
 }));
 

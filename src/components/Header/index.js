@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { createRef, forwardRef, useState } from "react";
 import {
     Typography,
     AppBar,
@@ -14,7 +14,9 @@ import {
     ClickAwayListener,
     Badge,
     Paper,
-    ListItemIcon
+    ListItemIcon,
+    Modal,
+    Backdrop
 } from "@material-ui/core";
 import {
     Search,
@@ -24,7 +26,8 @@ import {
     ExitToApp,
     SupervisorAccount,
     AccessibilityNew,
-    Bookmark
+    Bookmark,
+    ReportProblem
 } from "@material-ui/icons";
 import { Link, useHistory } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
@@ -35,6 +38,7 @@ import { timeAgo } from '../../utils/date';
 import { isSeenNotify, markAllRead } from '../../redux/callApi/notifyCall';
 import NotificationIcon from "../Icons/Notification";
 import ChatIcon from "../Icons/Chat";
+import Help from "../Modal/Help";
 
 
 export default function Header(props) {
@@ -49,6 +53,7 @@ export default function Header(props) {
     const [toggleNoti, setToggleNoti] = useState(null);
     const openNoti = Boolean(toggleNoti)
     const [search, setSearch] = useState("");
+    const [showHelp, setShowHelp] = useState(false);
 
     const handleToggleUser = (e) => {
         if (toggleMenuUser) setToggleMenuUser(null);
@@ -100,6 +105,19 @@ export default function Header(props) {
     const isSeen = (notify) => {
         return notify.seen.find(item => item.id_recipient === auth.user._id)?.isSeen;
     }
+
+    const handleCloseHelp = () => {
+        setShowHelp(false);
+    }
+
+    const handleShowHelp = () => {
+        setShowHelp(true);
+    }
+
+    const refHelp = createRef();
+    const HelpModal = forwardRef((props, ref) =>
+        <Help innerRef={ref} {...props} />
+    )
 
     return (
         <AppBar style={{ zIndex: 2 }}>
@@ -251,6 +269,23 @@ export default function Header(props) {
 
                                     {/* </Grow> */}
                                 </Popper>
+                                <IconButton className={classes.badge} aria-label="messages" onClick={handleShowHelp} title="Trợ giúp khẩn cấp">
+                                    <ReportProblem />
+                                </IconButton>
+                                <Modal
+                                    aria-labelledby="create-post"
+                                    aria-describedby="create-post-modal"
+                                    className={classes.modal}
+                                    open={showHelp}
+                                    onClose={handleCloseHelp}
+                                    closeAfterTransition
+                                    BackdropComponent={Backdrop}
+                                    BackdropProps={{
+                                        timeout: 500,
+                                    }}
+                                >
+                                    <HelpModal ref={refHelp} handleClose={handleCloseHelp} />
+                                </Modal>
                                 <IconButton className={classes.badge} aria-label="messages" component={Link} to="/message" title="Tin nhắn">
                                     <Badge>
                                         <ChatIcon />

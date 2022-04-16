@@ -22,7 +22,7 @@ export default function FeedPost(props) {
     const classes = feedStyles();
 
     const loadMore = () => {
-        if (post.postId.length > 0) {
+        if (post.postId && post.postId.length > 0) {
             dispatch(getMorePost({ postId: post.postId }))
         }
     }

@@ -16,7 +16,7 @@ class UserController {
             // if (user_name) return res.status(400).json({ success: false, message: "Username đã tồn tại! Vui lòng chọn tên khác." })
             if (user_name) return res.errorClient('Username đã tồn tại! Vui lòng chọn tên khác.')
 
-            const user_email = await Users.findOne({ email })
+            // const user_email = await Users.findOne({ email })
             // if (user_email) return res.status(400).json({ success: false, message: "Email này đã tồn tại!" })
             if (user_name) return res.errorClient('Email này đã tồn tại!')
 
@@ -27,7 +27,7 @@ class UserController {
             const userNew = {
                 fullname, username, email, password: passwordHash, phone
             }
-            
+
 
             //Activation Token
             // const activationToken = jwt.sign({ id: userNew._id }, process.env.ACTIVATION_TOKEN_SECRET || "abcdefghiklmn")
@@ -439,7 +439,7 @@ class UserController {
 
             if (limit) {
                 sorted = sorted.slice(0, limit)
-                var recommend = await Users.find({
+                let recommend = await Users.find({
                     _id: {
                         $in: sorted
                     }
@@ -449,7 +449,7 @@ class UserController {
             }
             else {
                 sorted = sorted.slice(0, 50)
-                var recommend = await Users.find({
+                let recommend = await Users.find({
                     _id: {
                         $in: sorted
                     }
@@ -588,7 +588,7 @@ class UserController {
     }
 }
 function validateEmail(email) {
-    const re = /^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+    const re = /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
     return re.test(email);
 }
 function createActivationToken(payload) {
@@ -602,4 +602,4 @@ function createRefreshToken(payload) {
 }
 
 
-module.exports = new UserController
+module.exports = new UserController();

@@ -172,4 +172,4 @@ class EventContributeController {
     }
 }
 
-module.exports = new EventContributeController;
+module.exports = new EventContributeController();

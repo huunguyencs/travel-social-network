@@ -1,9 +1,15 @@
+const { ip2position, distance } = require('./utils/ip2position')
+
 let users = [];
 
 const SocketServer = (socket) => {
     //connect
-    socket.on('joinUser', id => {
-        users.push({ id, socketId: socket.id });
+    socket.on('joinUser', data => {
+        if (!data.position) {
+            data.position = ip2position(socket.handshake.headers['x-forwarded-for'])
+        }
+        console.log(socket.handshake.headers['x-forwarded-for']);
+        users.push({ id: data.id, socketId: socket.id, position: data.position });
     })
 
     //disconnect
@@ -89,11 +95,39 @@ const SocketServer = (socket) => {
     })
 
     //add message
-    socket.on('addMessage',data=>{
+    socket.on('addMessage', data => {
         // console.log(data.user);
-        const user = users.filter(user => user.id === data.msg.recipient );
-        if(user.length >0){
-            socket.to(user[0].socketId).emit('addMessageToClient',data);
+        const user = users.filter(user => user.id === data.msg.recipient);
+        if (user.length > 0) {
+            socket.to(user[0].socketId).emit('addMessageToClient', data);
+        }
+    })
+
+
+    //help
+    socket.on('createHelp', data => {
+        const clients = users.filter(user => distance(user.position, data.position) < 5000);
+        if (clients.length > 0) {
+            clients.forEach(user => {
+                socket.to(user.socketId).emit('helpToClient', data);
+            })
+        }
+    })
+
+    socket.on('updateHelp', data => {
+        const clients = users.filter(user => distance(user.position, data.position) < 5000);
+        if (clients.length > 0) {
+            clients.forEach(user => {
+                socket.to(user.socketId).emit('updateHelpToClient', data);
+            })
+        }
+    })
+
+    socket.on('deleteHelp', id => {
+        if (users.length > 0) {
+            users.forEach(user => {
+                socket.to(user.socketId).emit('deleteHelpToClient', id)
+            })
         }
     })
 }

@@ -7,6 +7,8 @@ import * as userAction from './redux/actions/userAction';
 import * as tourAction from './redux/actions/tourAction';
 import * as notifyAction from './redux/actions/notifyAction';
 import * as messageAction from './redux/actions/messageAction';
+import { addHelp, deleteHelp, updateHelp } from './redux/actions/helpAction';
+import { getHelps } from './redux/callApi/helpCall';
 
 const SocketClient = () => {
     const { auth, socket } = useSelector(state => state);
@@ -14,10 +16,29 @@ const SocketClient = () => {
 
     //connect
     useEffect(() => {
+
         if (auth.user) {
-            socket.emit('joinUser', auth.user._id)
+            console.log("what?")
+            navigator.geolocation.getCurrentPosition(position => {
+                socket.emit('joinUser',
+                    {
+                        id: auth.user._id,
+                        position: {
+                            latitude: position.coords.latitude,
+                            longitude: position.coords.longitude
+                        }
+                    }
+                )
+            }, () => socket.emit("joinUser", { id: auth.user._id }))
+
         }
     }, [socket, auth.user])
+
+    useEffect(() => {
+        navigator.geolocation.getCurrentPosition(position => {
+            dispatch(getHelps(position.coords.latitude, position.coords.longitude))
+        }, () => dispatch(getHelps()))
+    }, [dispatch])
 
     //like
     useEffect(() => {
@@ -106,29 +127,29 @@ const SocketClient = () => {
     }, [socket, dispatch])
 
     //create notify
-    useEffect(()=>{
-        socket.on('createNotifyToClient', data=>{
+    useEffect(() => {
+        socket.on('createNotifyToClient', data => {
             dispatch(notifyAction.createNotify(data));
         })
-       
+
         return () => socket.off('createNotifyToClient');
-    },[socket,dispatch])
+    }, [socket, dispatch])
 
     //delete notify 
-    useEffect(()=>{
-        socket.on('deleteNotifyToClient', data=>{
+    useEffect(() => {
+        socket.on('deleteNotifyToClient', data => {
             dispatch(notifyAction.deleteNotify(data));
         })
         return () => socket.off('deleteNotifyToClient');
-    },[socket,dispatch])
+    }, [socket, dispatch])
 
     //add Message
-    useEffect(()=>{
-        socket.on('addMessageToClient', data=>{ 
+    useEffect(() => {
+        socket.on('addMessageToClient', data => {
             // console.log(data);
             dispatch(messageAction.addMessage(data.msg));
-            
-            const user ={
+
+            const user = {
                 _id: data.user._id,
                 fullname: data.user.fullname,
                 username: data.user.username,
@@ -138,12 +159,33 @@ const SocketClient = () => {
             }
             dispatch(messageAction.addUser(user))
         })
-        return ()=> socket.off('addMessageToClient');
-    },[socket,dispatch])
+        return () => socket.off('addMessageToClient');
+    }, [socket, dispatch])
+
+    useEffect(() => {
+        socket.on('addHelpToClient', data => {
+            dispatch(addHelp(data))
+        })
+        return () => socket.off('addHelpToClient')
+    })
+
+    useEffect(() => {
+        socket.on('updateHelpToClient', data => {
+            dispatch(updateHelp(data))
+        })
+        return () => socket.off('updateHelpToClient')
+    })
+
+    useEffect(() => {
+        socket.on('deleteHelpToClient', data => {
+            dispatch(deleteHelp(data))
+        })
+        return () => socket.off('deleteHelpToClient')
+    })
 
     return <></>
 
-    
+
 }
 
 export default SocketClient;

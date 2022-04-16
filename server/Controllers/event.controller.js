@@ -182,4 +182,4 @@ class EventController {
     }
 }
 
-module.exports = new EventController;
+module.exports = new EventController();

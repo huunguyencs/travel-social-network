@@ -53,6 +53,8 @@ class CommentController {
                         }
                     })
                     break;
+                default:
+                    break;
             }
             res.created({ success: true, message: "Create comment successful", newComment })
             commentItem(req.user._id, postId)
@@ -206,6 +208,8 @@ class CommentController {
                         $pull: { comments: req.params.id }
                     })
                     break;
+                default:
+                    break;
             }
             res.success({ success: true, message: "Delete comment" })
         } catch (err) {
@@ -216,4 +220,4 @@ class CommentController {
 
 }
 
-module.exports = new CommentController;
+module.exports = new CommentController();

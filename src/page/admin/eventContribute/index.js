@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react'
+import React from 'react'
 import { Grid } from "@material-ui/core";
 import LeftBar from "../../../components/Leftbar";
 import { adminListMenu } from "../../../constant/adminMenu";
@@ -12,7 +12,7 @@ export default function AdminLocationContributePage() {
                 <LeftBar menuList={adminListMenu} />
             </Grid>
             <Grid item md={9}>
-                <AdminEventContribute/>
+                <AdminEventContribute />
             </Grid>
         </Grid>
 
