@@ -6,10 +6,6 @@ import AdminReport from '../../../components/Admin/report';
 
 export default function AdminReportPage() {
 
-    useEffect(() => {
-        document.title = "Admin - Ý kiến đóng góp"
-    }, [])
-
     return (
         <Grid container>
             <Grid item md={3}>

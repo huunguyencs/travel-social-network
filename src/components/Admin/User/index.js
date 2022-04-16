@@ -90,33 +90,42 @@ const columns = [
     }
 ];
 
-const data = [
-    { month: "Jan", newuser: 0, user: 0 },
-    { month: "Feb", newuser: 0, user: 0 },
-    { month: "Mar", newuser: 0, user: 0 },
-    { month: "Apr", newuser: 0, user: 0 },
-    { month: "May", newuser: 0, user: 0 },
-    { month: "Jun", newuser: 0, user: 0 },
-    { month: "Jul", newuser: 0, user: 0 },
-    { month: "Aug", newuser: 0, user: 0 },
-    { month: "Sep", newuser: 0, user: 0 },
-    { month: "Oct", newuser: 0, user: 0 },
-    { month: "Nov", newuser: 0, user: 0 },
-    { month: "Dec", newuser: 0, user: 0 },
-]
-
-function handlingDataUsers(arr) {
+function handling(arr) {
+    const newusers = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0];
+    const users = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0];
     arr.forEach(element => {
         let d = new Date(element.createdAt);
         let mon = d.getMonth();
-        data.at(mon).user++;
+        users[mon]+=1;
         if (d.getFullYear() == (new Date()).getFullYear()) {
-            data.at(mon).newuser++;
-        }
-        for (let i = 1; i <= 12; i++) {
-            data.at(i).user += data.at(i - 1).user;
+            newusers[mon] += 1;
         }
     });
+    return {'newusers': newusers,'users':users};
+}
+
+function getData(users) {
+    const data = [
+        { month: "Tháng 1", newuser: 0, user: 0 },
+        { month: "Tháng 2", newuser: 0, user: 0 },
+        { month: "Tháng 3", newuser: 0, user: 0 },
+        { month: "Tháng 4", newuser: 0, user: 0 },
+        { month: "Tháng 5", newuser: 0, user: 0 },
+        { month: "Tháng 6", newuser: 0, user: 0 },
+        { month: "Tháng 7", newuser: 0, user: 0 },
+        { month: "Tháng 8", newuser: 0, user: 0 },
+        { month: "Tháng 9", newuser: 0, user: 0 },
+        { month: "Tháng 10", newuser: 0, user: 0 },
+        { month: "Tháng 11", newuser: 0, user: 0 },
+        { month: "Tháng 12", newuser: 0, user: 0 },
+    ]
+    let tmp = handling(users);
+    console.log(tmp);
+    for (let i = 0; i < 12; i++) {
+        data.at(i).newuser = tmp.newusers[i];
+        data.at(i).user=tmp.users[i];
+    }
+    return data;
 }
 
 function AdminUsers(props) {
@@ -189,7 +198,7 @@ function AdminUsers(props) {
                                     <LineChart
                                         width={400}
                                         height={300}
-                                        data={data}
+                                        data={getData(users)}
                                         margin={{ top: 5, right: 20, left: 10, bottom: 5 }}
                                     >
                                         <XAxis dataKey="month" />
@@ -197,8 +206,8 @@ function AdminUsers(props) {
                                         <CartesianGrid strokeDasharray="3 3" />
                                         <Tooltip />
                                         <Legend />
-                                        <Line type="monotone" dataKey="newuser" stroke="#8884d8" activeDot={{ r: 8 }} />
-                                        <Line type="monotone" dataKey="user" stroke="#ECCC68" />
+                                        <Line type="monotone" dataKey="newuser" stroke="#8884d8" name={((new Date()).getFullYear()).toString()} activeDot={{ r: 8 }} />
+                                        <Line type="monotone" dataKey="user" stroke="#ECCC68" name="Tổng thể"/>
                                     </LineChart>
                                 </ResponsiveContainer>
                             </div>
