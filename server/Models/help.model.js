@@ -5,11 +5,9 @@ const helpSchema = new mongoose.Schema({
     description: String,
     position: [Number], //lng, lat
     type: String,
+    contact: String,
     positionStr: String,
-    state: {
-        type: Number,
-        default: 0
-    }
+    state: [{ type: mongoose.Types.ObjectId, ref: 'users' }]
 }, {
     timestamps: true
 })

@@ -2,13 +2,13 @@ import customAxios from '../../utils/fetchData'
 import { getHelpsAction } from '../actions/helpAction';
 
 
-export const getHelps = (lat, lng) => async (dispatch) => {
+export const getHelps = (id, lat, lng) => async (dispatch) => {
     try {
         const res = await customAxios().get(`/help?lat=${lat}&lng=${lng}`);
         if (!res.data.success) {
             return;
         };
-        dispatch(getHelpsAction(res.data.helps))
+        dispatch(getHelpsAction(res.data.helps.filter(item => item.userId._id !== id)))
     }
     catch (err) {
         console.log(err);

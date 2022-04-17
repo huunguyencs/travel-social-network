@@ -2,7 +2,7 @@ const Posts = require('../Models/post.model')
 const Comments = require('../Models/comment.model')
 const TourDates = require('../Models/tourDate.model');
 const Locations = require('../Models/location.model');
-const { createItem, shareItem, reviewItem, likeItem, unLikeItem, deleteItem, viewDetailItem, getPostRecomment } = require('../utils/recombee');
+const { createItem, shareItem, reviewItem, likeItem, unLikeItem, viewDetailItem, getPostRecomment } = require('../utils/recombee');
 const { shuffle } = require('../utils/utils');
 
 const ObjectId = require('mongoose').Types.ObjectId;
@@ -130,6 +130,8 @@ class PostController {
                             $inc: { "star.4": 1 }
                         }, { new: true })
                         break;
+                    default:
+                        break;
                 }
             }
 
@@ -196,6 +198,8 @@ class PostController {
                             $inc: { "star.4": -1 }
                         }, { new: true })
                         break;
+                    default:
+                        break;
                 }
 
                 switch (parseInt(rate)) {
@@ -223,6 +227,8 @@ class PostController {
                         await Locations.findByIdAndUpdate(locationId, {
                             $inc: { "star.4": 1 }
                         }, { new: true })
+                        break;
+                    default:
                         break;
                 }
             }
@@ -457,6 +463,8 @@ class PostController {
                             $inc: { "star.4": -1 }
                         }, { new: true })
                         break;
+                    default:
+                        break;
                 }
             }
 
@@ -545,4 +553,4 @@ class PostController {
 
 }
 
-module.exports = new PostController;
+module.exports = new PostController();
