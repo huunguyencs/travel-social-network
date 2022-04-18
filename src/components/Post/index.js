@@ -2,13 +2,15 @@ import React, { useEffect, useState } from "react";
 import {
     Backdrop,
     Card,
-    CardActions,
+    // CardActions,
     Collapse,
     Modal,
-    Typography
+    Typography,
+    CardMedia
 } from "@material-ui/core";
 import { useDispatch, useSelector } from "react-redux";
-
+import { Link } from 'react-router-dom';
+import {Favorite, InsertLink, ChatBubbleOutlineSharp} from "@material-ui/icons";
 import Comment from "../Comment";
 import InputComment from "../Input/Comment";
 import { postStyles } from "../../style";
@@ -17,12 +19,12 @@ import SharePost from "../Forms/Share";
 import PostContent from "./Content";
 import { likePost, unlikePost } from '../../redux/callApi/postCall';
 import LoginModal from "../Modal/Login";
-import HeartIcon from "../Icons/Heart";
-import HeartFillIcon from "../Icons/HeartFill";
-import CommentIcon from "../Icons/Comment";
-import ShareIcon from "../Icons/Share";
+// import HeartIcon from "../Icons/Heart";
+// import HeartFillIcon from "../Icons/HeartFill";
+// import CommentIcon from "../Icons/Comment";
+// import ShareIcon from "../Icons/Share";
 import { loadComment } from "../../redux/callApi/commentCall";
-
+import ImageList from '../Modal/ImageList';
 
 export default function Post(props) {
 
@@ -170,14 +172,65 @@ export default function Post(props) {
         <Card className={classes.cardContainer}>
             {post && <>
                 <PostContent post={post} />
-
-                <CardActions style={{ marginLeft: 10 }}>
-                    <div className={classes.iconWrap}>
-                        {
-                            like ? <HeartFillIcon className={classes.likedIcon} onClick={likePress} /> : <HeartIcon className={classes.iconButton} onClick={likePress} />
-                        }
-                    </div>
-                    <Modal
+                {
+                    post.images.length > 0 ?
+                        <div className={classes.postImage}>
+                            <div className={classes.masonryGrid}>
+                                {/* <img style={{height: 352,objectFit: "cover", width: "100%"}} src="https://friendkit.cssninja.io/assets/img/demo/unsplash/2.jpg" alt="post_image" /> */}
+                                <CardMedia>
+                                    <ImageList imageList={post.images} show2Image={true} defaultHeight={500} />
+                                </CardMedia>
+                                <div className={classes.likeWrapper} onClick={likePress}>
+                                    {
+                                        like ?  
+                                        <div className={classes.likeButton} style={{backgroundColor: "red"}}>
+                                            <Favorite className={classes.likedIcon} style={{color: "white"}}/>
+                                        </div>
+                                        :
+                                        <div className={classes.likeButton}>
+                                            <Favorite className={classes.likedIcon} style={{color: "red"}}/>
+                                        </div>
+                                    }
+                                </div>
+                                <div className={classes.commentWrapper}>
+                                    <div className={classes.likeButton} style={{backgroundColor: "#a5dec8"}}>
+                                        <ChatBubbleOutlineSharp className={classes.iconButton} onClick={handleShowCmt}/>
+                                    </div>
+                                </div>
+                                <div className={classes.shareWrapper}>
+                                    <div className={classes.likeButton} style={{backgroundColor: "#a5dec8"}}>
+                                        <InsertLink className={classes.iconButton} onClick={handleShowShare}/>
+                                    </div>
+                                </div>
+                            </div> 
+                        </div>
+                        : 
+                        <div className={classes.postActions}>
+                            <div className={classes.likeWrapperNotImage} onClick={likePress}>
+                                {
+                                    like ?  
+                                    <div className={classes.likeButton} style={{backgroundColor: "red"}}>
+                                        <Favorite className={classes.likedIcon} style={{color: "white"}}/>
+                                    </div>
+                                    :
+                                    <div className={classes.likeButton}>
+                                        <Favorite className={classes.likedIcon} style={{color: "red"}}/>
+                                    </div>
+                                }
+                            </div>
+                            <div className={classes.commentWrapperNotImage}>
+                                <div className={classes.likeButton} style={{backgroundColor: "#a5dec8"}}>
+                                    <ChatBubbleOutlineSharp className={classes.iconButton} onClick={handleShowCmt}/>
+                                </div>
+                            </div>
+                            <div className={classes.shareWrapperNotImage}>
+                                <div className={classes.likeButton} style={{backgroundColor: "#a5dec8"}}>
+                                    <InsertLink className={classes.iconButton} onClick={handleShowShare}/>
+                                </div>
+                            </div>
+                        </div>
+                }
+                <Modal
                         aria-labelledby="login"
                         aria-describedby="must-login"
                         className={classes.modal}
@@ -189,50 +242,80 @@ export default function Post(props) {
                             timeout: 500,
                         }}
                     >
-                        <Login ref={refLogin} />
-                    </Modal>
-                    <Typography className={classes.numLike} onClick={handleOpen}>
-                        {post.likes.length}
-                    </Typography>
-                    <Modal
-                        aria-labelledby="like"
-                        aria-describedby="user-like-this-post"
-                        className={classes.modal}
-                        open={showLike}
-                        onClose={handleClose}
-                        closeAfterTransition
-                        BackdropComponent={Backdrop}
-                        BackdropProps={{
-                            timeout: 500,
-                        }}
-                    >
-                        <User ref={refUser} listUser={post?.likes} title={"Đã thích"} handleClose={handleClose} />
-                    </Modal>
-                    <div className={classes.iconWrap}>
-                        <CommentIcon onClick={handleShowCmt} className={classes.iconButton} />
+                    <Login ref={refLogin} />
+                </Modal>
+                <Modal
+                    aria-labelledby="share"
+                    aria-describedby="share-this-post"
+                    className={classes.modal}
+                    open={share}
+                    onClose={handleCloseShare}
+                    closeAfterTransition
+                    BackdropComponent={Backdrop}
+                    BackdropProps={{
+                        timeout: 500,
+                    }}
+                >
+                    <ShareRef ref={refShare} object={post.shareId ? post.shareId : post} type="post" handleClose={handleCloseShare} />
+                </Modal>
+                <div className={classes.postFooter}>
+                    <div className={classes.likers} >
+                        {
+                            post?.likes.length > 0 && post.likes.map((item)=>(
+                                <img className={classes.liker} src={item.avatar} alt="avatar"/>
+                            ))
+                        }
                     </div>
-                    <Typography className={classes.numCmt}>
-                        {post.comments.length}
-                    </Typography>
-                    <div className={classes.iconWrap}>
-                        <ShareIcon onClick={handleShowShare} className={classes.iconButton} />
+                    <div className={classes.likersText}>
+                        <p style={{fontSize: 13, color: "#888da8", margin: 0}}>
+                            {
+                                post?.likes.length > 0 && post.likes.slice(0,5).map((item)=>(
+                                    <Typography component={Link} to={`/u/${item._id}`} style={{fontWeight: 500, color:"black"}}>
+                                        {item.fullname}
+                                    </Typography>
+                                ))
+                            }
+                        </p>
+                        {
+                            post?.likes.length === 1 ?
+                            <p style={{margin: 0}} >
+                                đã thích bài viết này
+                            </p>:
+                            post?.likes.length > 1 &&
+                            <p style={{margin: 0}} >
+                                và những người khác đã thích bài này
+                            </p>
+                        }
                     </div>
-                    <Modal
-                        aria-labelledby="share"
-                        aria-describedby="share-this-post"
-                        className={classes.modal}
-                        open={share}
-                        onClose={handleCloseShare}
-                        closeAfterTransition
-                        BackdropComponent={Backdrop}
-                        BackdropProps={{
-                            timeout: 500,
-                        }}
-                    >
-                        <ShareRef ref={refShare} object={post.shareId ? post.shareId : post} type="post" handleClose={handleCloseShare} />
-                    </Modal>
-                </CardActions>
-
+                    <div className={classes.socialCount}>
+                        <div className={classes.likeCount} onClick={handleOpen}> 
+                            <Favorite style={{height: 18, width: 18, color: "#888da8"}}/>
+                            <span style={{display: "block",fontSize: 13, color: "#888da8", margin: "0 5px"}}>{post.likes.length}</span>
+                        </div>
+                        <div className={classes.likeCount}>
+                            <ChatBubbleOutlineSharp style={{height: 18, width: 18, color: "#888da8"}}/>
+                            <span style={{display: "block",fontSize: 13, color: "#888da8", margin: "0 5px"}}>{post.comments.length}</span>
+                        </div>
+                        <div className={classes.likeCount}>
+                            <InsertLink style={{height: 18, width: 18, color: "#888da8"}}/>
+                            <span style={{display: "block",fontSize: 13, color: "#888da8", margin: "0 5px"}}>{post.likes.length}</span>
+                        </div>
+                    </div>
+                </div>
+                <Modal
+                    aria-labelledby="like"
+                    aria-describedby="user-like-this-post"
+                    className={classes.modal}
+                    open={showLike}
+                    onClose={handleClose}
+                    closeAfterTransition
+                    BackdropComponent={Backdrop}
+                    BackdropProps={{
+                        timeout: 500,
+                    }}
+                >
+                    <User ref={refUser} listUser={post?.likes} title={"Đã thích"} handleClose={handleClose} />
+                </Modal>
                 <Collapse className={classes.cmt} in={showCmt}>
                     <hr className={classes.line} />
                     <div className={classes.listCmt}>
@@ -246,8 +329,9 @@ export default function Post(props) {
                         <Typography variant="body2" className={classes.loadMoreComment} onClick={loadMoreComment}>Xem thêm bình luận</Typography>
                     }
                 </Collapse>
-
-                <InputComment type="post" id={post._id} />
+                {
+                    showCmt && <InputComment type="post" id={post._id} />
+                }
             </>}
         </Card>
     )

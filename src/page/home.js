@@ -37,25 +37,27 @@ function HomePage() {
 
 
   return (
-    <Grid container style={{ margin: 0, padding: 0 }}>
+    <Grid container className={classes.container}>
       <SpeedDialButton />
-      <Grid item md={12} sm={12} xs={12}>
+      <Grid item md={12} sm={12} xs={12} style={{marginBottom: -60}}>
         <Slider />
       </Grid>
-      <Grid item md={3} sm={2} xs={2} className={classes.leftbar}>
-        <LeftBar menuList={homeMenu} />
-      </Grid>
-      <Grid item md={6} sm={10} xs={10} className={classes.content}>
-        {token ?
-          <FeedPost /> :
-          <></>
-        }
-      </Grid>
-      <Grid item md={3} className={classes.rightbar}>
-        <RightBar ref={ref}>
-          <Calendar />
-          {token && <FriendRecommendCard />}
-        </RightBar>
+      <Grid container className={classes.containerHome}>
+        <Grid item md={3} sm={2.5} xs={2} className={classes.leftbar}>
+          <LeftBar menuList={homeMenu} />
+        </Grid>
+        <Grid item md={6} sm={9} xs={10} className={classes.content}>
+          {token ?
+            <FeedPost /> :
+            <></>
+          }
+        </Grid>
+        <Grid item md={3} className={classes.rightbar}>
+          <RightBar ref={ref}>
+            <Calendar />
+            {token && <FriendRecommendCard />}
+          </RightBar>
+        </Grid>
       </Grid>
     </Grid>
   );

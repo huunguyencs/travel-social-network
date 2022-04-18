@@ -303,7 +303,6 @@ export default function Calendar() {
 
     return (
         <div>
-
             <div style={{ display: 'flex', justifyContent: 'center' }}>
                 <Table setContent={setContent} setDetail={setDetail} />
             </div>

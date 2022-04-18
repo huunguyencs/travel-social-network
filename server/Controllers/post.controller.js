@@ -272,6 +272,7 @@ class PostController {
     //lấy nhiều post gắn lên trang feed theo người mình theo dõi  hoặc  group 
     async getPosts(req, res) {
         try {
+            req.user.followings.push(req.user._id)
             var postId = await Posts.find({
                 userId: {
                     $in: req.user.followings
@@ -309,7 +310,6 @@ class PostController {
                     }
                 })
                 .sort({ "createdAt": -1 });
-
             res.success({
                 success: true,
                 message: 'Lấy danh sách bài viết thành công',

@@ -1,4 +1,4 @@
-import { Button, CircularProgress, IconButton, Paper } from "@material-ui/core";
+import { CircularProgress, IconButton, Paper } from "@material-ui/core";
 import { ArrowBack } from "@material-ui/icons";
 import React, { useEffect, useState } from "react";
 import { Link, useParams } from "react-router-dom";
@@ -68,7 +68,7 @@ function AdminPostReportDetail() {
                         </div> :
                         state.error ?
                             <div style={{ display: 'flex', justifyContent: 'center', marginTop: 60 }}>Có lỗi xảy ra</div> :
-                            <div></div>
+                            report && <div></div>
             }
         </Paper>
     );

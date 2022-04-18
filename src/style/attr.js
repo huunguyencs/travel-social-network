@@ -5,7 +5,7 @@ const attr = {
         circle: "50%",
         xl: 40,
         lg: 30,
-        md: 10,
+        md: 15,
         sm: 10,
         xs: 5,
     },

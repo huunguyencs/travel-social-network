@@ -18,17 +18,3 @@ const RightBar = forwardRef((props, ref) => {
 })
 
 export default RightBar;
-
-
-
-
-// export default function RightBar((props, ref)) {
-//     const classes = rightbarStyles();
-
-//     return (
-//         <Container className={classes.container}>
-//             {props?.children}
-//         </Container>
-
-//     )
-// }

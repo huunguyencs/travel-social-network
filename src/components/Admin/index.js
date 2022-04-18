@@ -33,7 +33,7 @@ function AdminHome(props) {
                             </Typography>
                             <Typography variant="h3" className={classes.cardValue}>
                                 <Person className={classes.cardIcon} />
-                                1300
+                                 10
                             </Typography>
                         </Card>
                     </Grid>
@@ -44,7 +44,7 @@ function AdminHome(props) {
                             </Typography>
                             <Typography variant="h3" className={classes.cardValue}>
                                 <Group className={classes.cardIcon} />
-                                57
+                                0
                             </Typography>
                         </Card>
                     </Grid>
@@ -55,7 +55,7 @@ function AdminHome(props) {
                             </Typography>
                             <Typography variant="h3" className={classes.cardValue}>
                                 <PostAdd className={classes.cardIcon} />
-                                180
+                                20
                             </Typography>
                         </Card>
                     </Grid>
