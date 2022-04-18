@@ -32,19 +32,21 @@ export default function TourPage(props) {
 
     return (
         <>
-            <Grid container style={{ margin: 0, padding: 0 }}>
+            <Grid container className={classes.container}>
                 <SpeedDialButton />
-                <Grid item md={3} sm={2} xs={2} className={classes.leftbar}>
-                    <LeftBar menuList={homeMenu} />
-                </Grid>
-                <Grid item md={6} sm={10} xs={10} className={classes.content}>
-                    <FeedTour />
-                </Grid>
-                <Grid item md={3} className={classes.rightbar}>
-                    <RightBar ref={ref}>
-                        <Calendar />
-                        <FriendRecommendCard />
-                    </RightBar>
+                <Grid container className={classes.containerHome} style={{marginTop: -50}}>
+                    <Grid item md={3} sm={3} xs={2} className={classes.leftbar}>
+                        <LeftBar menuList={homeMenu} />
+                    </Grid>
+                    <Grid item md={6} sm={9} xs={10} className={classes.content}>
+                        <FeedTour />
+                    </Grid>
+                    <Grid item md={3} className={classes.rightbar}>
+                        <RightBar ref={ref}>
+                            <Calendar />
+                            <FriendRecommendCard />
+                        </RightBar>
+                    </Grid>
                 </Grid>
             </Grid>
         </>

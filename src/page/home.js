@@ -43,7 +43,7 @@ function HomePage() {
         <Slider />
       </Grid>
       <Grid container className={classes.containerHome}>
-        <Grid item md={3} sm={2.5} xs={2} className={classes.leftbar}>
+        <Grid item md={3} sm={3} xs={2} className={classes.leftbar}>
           <LeftBar menuList={homeMenu} />
         </Grid>
         <Grid item md={6} sm={9} xs={10} className={classes.content}>

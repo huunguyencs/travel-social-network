@@ -8,17 +8,12 @@ const feedStyles = makeStyles((theme) => ({
         paddingLeft: 10,
         paddingRight: 10
     },
-    // content: {
-    //    padding: 10   
-    // },
     title: {
         display: "flex",
         justifyContent: "center",
         marginBottom: 20,
     },
     create: {
-        // margin: 30,
-        // marginBottom: 50,
         marginTop: 20,
         marginBottom: 20,
         border: "1px solid #e8e8e8",
@@ -112,7 +107,7 @@ const feedStyles = makeStyles((theme) => ({
         justifyContent: 'center',
     },
     event: {
-        paddingTop: 50,
+        // paddingTop: 50,
     },
     hot: {
         paddingTop: 50,

@@ -1,5 +1,5 @@
 import React from "react";
-import { Card, List, Typography } from "@material-ui/core";
+import { Card, List, Typography} from "@material-ui/core";
 import {PersonAddOutlined} from "@material-ui/icons";
 import { friendCardStyles } from "../../style";
 import { useHistory } from "react-router-dom";

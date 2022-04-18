@@ -82,7 +82,7 @@ export default function FeedTour(props) {
     )
 
     return (
-        <div className={classes.container} style={{ marginTop: 100 }}>
+        <div className={classes.container}>
             <div className={classes.content}>
                 <div className={classes.createTourContainer}>
                     <Button className={classes.createTour} onClick={handleShow} disabled={!auth.token}>

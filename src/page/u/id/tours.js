@@ -55,7 +55,7 @@ function ProfileTours() {
           <><Scroll showBelow={500} />
             <SpeedDialButton />
             <ProfileAvatar user={user.user} />
-            <Grid container style={{ margin: 0, padding: 0 }}>
+            <Grid container className={classes.containerHome}>
               <Grid item md={3} sm={2} xs={2}>
                 {user.user && (
                   <LeftBar menuList={user.user.role === 1 ? serviceMenu : profileMenu} />

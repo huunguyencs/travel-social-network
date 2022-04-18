@@ -70,7 +70,7 @@ export default function FeedHot(props) {
     }, [])
 
     return (
-        <Container className={classes.container} style={{ marginTop: 100 }}>
+        <Container className={classes.container} >
             <div className={classes.content}>
                 <div className={classes.event}>
                     <div className={classes.title}>
