@@ -1,5 +1,5 @@
 import { InputBase, Typography, Button, Paper, IconButton, CircularProgress, Chip } from "@material-ui/core";
-import { Create, Image } from "@material-ui/icons";
+import { Create, Image, Close } from "@material-ui/icons";
 import React, { useState } from "react";
 import { ScrollMenu } from 'react-horizontal-scrolling-menu';
 import { useDispatch, useSelector } from "react-redux";
@@ -114,11 +114,19 @@ export default function CreatePostForm(props) {
     return (
         <>
             {auth.token ?
-                <Paper className={classes.paperContainer} style={{ width: 500 }}>
-                    <div className={classes.textTitle}>
+                <Paper className={classes.paperContainer}>
+                    {/* <div className={classes.textTitle}>
                         <Typography variant="h5">
                             Tạo bài viết
                         </Typography>
+                    </div> */}
+                    <div className={classes.modal_header}>
+                        <Typography variant="h5" style={{marginLeft: "35%"}}>
+                            Tạo bài viết
+                        </Typography>
+                        <IconButton  size="small">
+                            <Close className={classes.modal_header_closeIcon} />
+                        </IconButton>
                     </div>
                     <div>
                         <div className={classes.formContainer}>

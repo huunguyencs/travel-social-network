@@ -1,5 +1,5 @@
 import React,{ useState }  from "react";
-import { Backdrop, Card, List, Fade, Typography, ListItem, ListItemText, Collapse, Button, Slider, TextField, Modal} from "@material-ui/core";
+import { Backdrop, CircularProgress, Chip, Card, List, Fade, Typography, ListItem, ListItemText, Collapse, Button, Slider, TextField, Modal} from "@material-ui/core";
 import {ExpandLess, ExpandMore} from "@material-ui/icons";
 import { feedStyles } from "../../style";
 import { useSelector, useDispatch} from 'react-redux';
@@ -25,7 +25,8 @@ export default function FilterTour(props) {
     const [openText, setOpenText] = useState(true);
     const [cost, setCost] = useState(costParent);
     const [text, setText] = useState(textParent);
-    // const [isFiltering, setIsFiltering] = useState(false);
+    const [isFiltering, setIsFiltering] = useState(false);
+    const [loadingFilter, setLoadingFilter] = useState(false);
 
     const handleClickCost = () => {
         setOpenCost(!openCost);
@@ -41,8 +42,10 @@ export default function FilterTour(props) {
     }
     const handleSubmit = (e) => {
         e.preventDefault();
+        setLoadingFilter(true);
         setCostParent(cost);
         setTextParent(text);
+        setIsFiltering(true);
         var maxCost = cost[1], minCost = cost[0];
         if (minCost > maxCost) {
             minCost += maxCost;
@@ -54,7 +57,7 @@ export default function FilterTour(props) {
             minCost: minCost * 10,
             q: text
         }))
-        // setIsFiltering(true);
+        setLoadingFilter(false);
     }
     const [show, setShow] = useState(false);
 
@@ -66,13 +69,30 @@ export default function FilterTour(props) {
         setShow(false);
     }
 
-    // const removeFilter = () => {
-    //     setCostParent([0, 100]);
-    //     setTextParent('');
-    //     dispatch(getTours());
-    //     setIsFiltering(false);
-    // }
-    
+    const removeFilter = () => {
+        setCostParent([0, 100]);
+        setTextParent('');
+        dispatch(getTours());
+        setIsFiltering(false);
+    }
+    const removeFilterText = () =>{
+        setLoadingFilter(true);
+        setText('');
+        setTextParent('');
+        setIsFiltering(true);
+        var maxCost = cost[1], minCost = cost[0];
+        if (minCost > maxCost) {
+            minCost += maxCost;
+            maxCost = minCost - maxCost;
+            minCost -= maxCost;
+        }
+        dispatch(getTours({
+            maxCost: maxCost * 10,
+            minCost: minCost * 10,
+            q: text
+        }))
+        setLoadingFilter(false);
+    }
     const ref = React.createRef();
     const CreateTourRef = React.forwardRef((props, ref) =>
         <CreateTourForm innerRef={ref} {...props} />
@@ -105,19 +125,17 @@ export default function FilterTour(props) {
                 <Typography style={{fontSize: 18, fontWeight: 500}}>Lọc hành trình</Typography>
             </div>
             <div className={classes.filterBody}>
-                {/* {
+                {
                     isFiltering &&
                     <div>
-                        <Typography>
-                            Đang lọc:
-                        </Typography>
-                        <ul>
-                            <li>Chi phí: {cost[0] === 0 ? 'Tối thiểu' : (new Intl.NumberFormat().format(cost[0] * 10000) + ' VND')}  - {cost[1] === 100 ? 'Tối đa' : (new Intl.NumberFormat().format(cost[1] * 10000) + ' VND')} </li>
-                            <li>Từ khóa: {text}</li>
-                        </ul>
-                        <Button onClick={removeFilter}>Xoá bộ lọc</Button>
+                        <Chip
+                            label={text}
+                            onDelete={() => removeFilterText()}
+                            style={{ marginInline: 5 }}
+                        />
+                        <Button style={{color: "red"}}onClick={removeFilter}>Xoá bộ lọc</Button>
                     </div>
-                } */}
+                }
                 <List
                      component="nav"
                      className={classes.filterOptions}
@@ -165,7 +183,10 @@ export default function FilterTour(props) {
                     </Collapse>
                 </List>
                 <div style={{ display: 'flex', justifyContent: 'right', margin: 10 }}>
-                    <Button variant='outlined'  onClick={handleSubmit}>Lọc</Button>
+                    {
+                        loadingFilter ?  <CircularProgress color="inherit" /> :
+                        <Button variant='outlined'  onClick={handleSubmit}>Lọc</Button>
+                    }
                 </div>
             </div>
         </Card>
