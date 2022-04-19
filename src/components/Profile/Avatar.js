@@ -1,19 +1,26 @@
-import React, { useEffect, useState } from "react";
-import { RssFeed, Update, VerifiedUser } from "@material-ui/icons";
-import { Avatar, Button, Container, Typography, Modal, Backdrop, CircularProgress, Tooltip } from "@material-ui/core";
+import React, { useEffect, useState } from 'react';
+import { RssFeed, Update, VerifiedUser } from '@material-ui/icons';
+import {
+  Avatar,
+  Button,
+  Container,
+  Typography,
+  Modal,
+  Backdrop,
+  CircularProgress,
+  Tooltip
+} from '@material-ui/core';
 
-import { profileStyles } from "../../style";
-import UserList from "../Modal/UserList";
-import ImageModal from "../Modal/Image";
-import { useSelector, useDispatch } from "react-redux";
-import { useParams, useHistory, Link } from "react-router-dom";
-import { follow, unfollow } from "../../redux/callApi/userCall";
-import ChatIcon from "../Icons/Chat";
+import { profileStyles } from '../../style';
+import UserList from '../Modal/UserList';
+import ImageModal from '../Modal/Image';
+import { useSelector, useDispatch } from 'react-redux';
+import { useParams, useHistory, Link } from 'react-router-dom';
+import { follow, unfollow } from '../../redux/callApi/userCall';
+import ChatIcon from '../Icons/Chat';
 import { addUser, getConversations } from '../../redux/callApi/messageCall';
 
-
 export default function ProfileAvatar(props) {
-
   const { user } = props;
 
   const { id } = useParams();
@@ -23,7 +30,6 @@ export default function ProfileAvatar(props) {
 
   const dispatch = useDispatch();
 
-
   const classes = profileStyles();
   const [openFollowing, setOpenFollowing] = useState(false);
   const [openFollower, setOpenFollower] = useState(false);
@@ -32,21 +38,21 @@ export default function ProfileAvatar(props) {
   const [followed, setFollowed] = useState(false);
   const [stateFollow, setStateFollow] = useState({
     loading: false,
-    error: false,
-  })
-  const {message} = useSelector(state => state);
-  const handleMessage = async () =>{
+    error: false
+  });
+  const { message } = useSelector(state => state);
+  const handleMessage = async () => {
     const dataUser = {
       _id: user._id,
       fullname: user.fullname,
       username: user.username,
       avatar: user.avatar,
-      role:user.role,
-      text: ""
+      role: user.role,
+      text: ''
     };
-    console.log("message", message)
+    console.log('message', message);
     await dispatch(addUser(dataUser, message, socket));
-  }
+  };
 
   const handleOpenFollowing = () => {
     setOpenFollowing(true);
@@ -66,19 +72,19 @@ export default function ProfileAvatar(props) {
 
   const handleOpenAvatar = () => {
     setOpenAvatar(true);
-  }
+  };
 
   const handleCloseAvatar = () => {
     setOpenAvatar(false);
-  }
+  };
 
   const handleOpenCover = () => {
     setOpenCover(true);
-  }
+  };
 
   const handleCloseCover = () => {
     setOpenCover(false);
-  }
+  };
 
   const handleFollow = () => {
     // console.log(user);
@@ -86,39 +92,40 @@ export default function ProfileAvatar(props) {
       setStateFollow({
         loading: true,
         error: false
-      })
-      dispatch(unfollow(user, auth.token, socket, () => {
-        setStateFollow({
-          loading: false,
-          error: true
+      });
+      dispatch(
+        unfollow(user, auth.token, socket, () => {
+          setStateFollow({
+            loading: false,
+            error: true
+          });
         })
-      }));
+      );
       setStateFollow({
         loading: false,
         error: false
-      })
+      });
       setFollowed(false);
-
-    }
-    else {
+    } else {
       setStateFollow({
         loading: true,
         error: false
-      })
-      dispatch(follow(user, auth.token, socket, () => {
-        setStateFollow({
-          loading: false,
-          error: true
+      });
+      dispatch(
+        follow(user, auth.token, socket, () => {
+          setStateFollow({
+            loading: false,
+            error: true
+          });
         })
-      }));
+      );
       setStateFollow({
         loading: false,
         error: false
-      })
+      });
       setFollowed(true);
     }
-  }
-
+  };
 
   useEffect(() => {
     const isFollowed = () => {
@@ -130,8 +137,7 @@ export default function ProfileAvatar(props) {
         }
         return false;
       }
-
-    }
+    };
 
     if (isFollowed()) setFollowed(true);
     else setFollowed(false);
@@ -141,26 +147,29 @@ export default function ProfileAvatar(props) {
     if (user?.fullname) {
       document.title = user.fullname;
     }
-    if (!message.firstLoad){
+    if (!message.firstLoad) {
       dispatch(getConversations(auth, socket));
     }
-  }, [dispatch,message.firstLoad,auth,socket,user])
+  }, [dispatch, message.firstLoad, auth, socket, user]);
 
   const refFollowing = React.createRef();
   const refFollower = React.createRef();
 
   const UserListRef = React.forwardRef((props, ref) => (
     <UserList {...props} innerRef={ref} />
-  ))
-
+  ));
 
   return (
     <>
-      {
-        user &&
+      {user && (
         <Container className={classes.container}>
           <div>
-            <img className={classes.profile_overImage} src={user.background} alt="cover" onClick={handleOpenCover} />
+            <img
+              className={classes.profile_overImage}
+              src={user.background}
+              alt="cover"
+              onClick={handleOpenCover}
+            />
             <ImageModal
               open={openCover}
               handleClose={handleCloseCover}
@@ -169,7 +178,12 @@ export default function ProfileAvatar(props) {
           </div>
           <div className={classes.profile_info}>
             <div className={classes.profile_avatar}>
-              <Avatar className={classes.profile_avatar__img} src={user.avatar} alt="avatar" onClick={handleOpenAvatar} />
+              <Avatar
+                className={classes.profile_avatar__img}
+                src={user.avatar}
+                alt="avatar"
+                onClick={handleOpenAvatar}
+              />
               <ImageModal
                 open={openAvatar}
                 handleClose={handleCloseAvatar}
@@ -179,15 +193,22 @@ export default function ProfileAvatar(props) {
             <div className={classes.infoUser}>
               <Typography variant="body1" className={classes.fullname}>
                 {user.fullname}
-                {
-                   user.confirmAccount && user.confirmAccount.state  &&
-                  <Tooltip title={'Tài khoản đã được xác thực'} aria-label='verified'>
+                {user.confirmAccount && user.confirmAccount.state !== 0 && (
+                  <Tooltip
+                    title={'Tài khoản đã được xác thực'}
+                    aria-label="verified"
+                  >
                     <VerifiedUser color="primary" fontSize="small" />
                   </Tooltip>
-                }
+                )}
               </Typography>
               <div variant="body1" component="p" className={classes.follow}>
-                <Typography className={classes.followInfo} onClick={handleOpenFollowing} >{user.followings.length} đang theo dõi</Typography>
+                <Typography
+                  className={classes.followInfo}
+                  onClick={handleOpenFollowing}
+                >
+                  {user.followings.length} đang theo dõi
+                </Typography>
                 <Modal
                   aria-labelledby="transition-modal-title"
                   aria-describedby="transition-modal-description"
@@ -197,12 +218,22 @@ export default function ProfileAvatar(props) {
                   closeAfterTransition
                   BackdropComponent={Backdrop}
                   BackdropProps={{
-                    timeout: 500,
+                    timeout: 500
                   }}
                 >
-                  <UserListRef ref={refFollowing} listUser={user?.followings} title={"Đang theo dõi"} handleClose={handleCloseFollowing} />
+                  <UserListRef
+                    ref={refFollowing}
+                    listUser={user?.followings}
+                    title={'Đang theo dõi'}
+                    handleClose={handleCloseFollowing}
+                  />
                 </Modal>
-                <Typography className={classes.followInfo} onClick={handleOpenFollower} >{user.followers.length} người theo dõi</Typography>
+                <Typography
+                  className={classes.followInfo}
+                  onClick={handleOpenFollower}
+                >
+                  {user.followers.length} người theo dõi
+                </Typography>
                 <Modal
                   aria-labelledby="transition-modal-title"
                   aria-describedby="transition-modal-description"
@@ -212,32 +243,60 @@ export default function ProfileAvatar(props) {
                   closeAfterTransition
                   BackdropComponent={Backdrop}
                   BackdropProps={{
-                    timeout: 500,
+                    timeout: 500
                   }}
                 >
-                  <UserListRef ref={refFollower} listUser={user?.followers} title={"Người theo dõi"} handleClose={handleCloseFollower} />
+                  <UserListRef
+                    ref={refFollower}
+                    listUser={user?.followers}
+                    title={'Người theo dõi'}
+                    handleClose={handleCloseFollower}
+                  />
                 </Modal>
               </div>
             </div>
             <div className={classes.profile_button}>
-              {
-                user._id !== auth.user?._id ?
-                  <>
-                    <Button startIcon={< RssFeed />} className={classes.button} onClick={handleFollow} disabled={!auth.token}>
-                      {stateFollow.loading ? <CircularProgress size={16} color='inherit' /> : followed ? "Hủy theo dõi" : "Theo dõi"}
-                    </Button>
-                    <Button startIcon={<ChatIcon />} className={classes.button} disabled={!auth.token} component={Link} to={`/message/${user._id}`} onClick={handleMessage}>
-                      Nhắn tin
-                    </Button>
-                  </> :
-                  <Button startIcon={<Update />} className={classes.button} component={Link} to='/changeinfo'>Thay đổi thông tin</Button>
-
-              }
+              {user._id !== auth.user?._id ? (
+                <>
+                  <Button
+                    startIcon={<RssFeed />}
+                    className={classes.button}
+                    onClick={handleFollow}
+                    disabled={!auth.token}
+                  >
+                    {stateFollow.loading ? (
+                      <CircularProgress size={16} color="inherit" />
+                    ) : followed ? (
+                      'Hủy theo dõi'
+                    ) : (
+                      'Theo dõi'
+                    )}
+                  </Button>
+                  <Button
+                    startIcon={<ChatIcon />}
+                    className={classes.button}
+                    disabled={!auth.token}
+                    component={Link}
+                    to={`/message/${user._id}`}
+                    onClick={handleMessage}
+                  >
+                    Nhắn tin
+                  </Button>
+                </>
+              ) : (
+                <Button
+                  startIcon={<Update />}
+                  className={classes.button}
+                  component={Link}
+                  to="/changeinfo"
+                >
+                  Thay đổi thông tin
+                </Button>
+              )}
             </div>
           </div>
         </Container>
-      }
+      )}
     </>
-
-  )
+  );
 }
