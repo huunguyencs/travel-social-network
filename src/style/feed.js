@@ -69,17 +69,16 @@ const feedStyles = makeStyles((theme) => ({
     },
     createTourContainer: {
         display: 'flex',
-        justifyContent: 'center',
-        paddingTop: 20,
-        marginBottom: 30,
+        justifyContent: 'center'
     },
     createTour: {
         backgroundColor: color.turquoise,
         borderRadius: attr.borderRadius.md,
         padding: 10,
         display: 'flex',
-        justifyContent: 'center'
-        // paddingInline: 30,
+        justifyContent: 'center',
+        marginLeft: 10,
+        width: "100%"
     },
     contentSubNav:{
         position: "sticky",
@@ -130,7 +129,29 @@ const feedStyles = makeStyles((theme) => ({
         display: 'flex',
         justifyContent: 'center',
         marginTop: 50
-    }
+    },
+    filterContainer:{
+        position: "sticky",
+        top: 64,
+        marginTop: 20,
+        borderRadius: attr.borderRadius.md,
+        color: color.text,
+        backgroundColor: color.white,
+        padding: 10,
+        marginLeft: 10
+    },
+    filterHeader:{
+        borderBottom:`1px solid ${color.gray}`,
+        padding: 5
+    },
+    filterBody:{
+        overflow:"hidden",
+        width: "100%"
+    },
+    center: {
+        display: "flex",
+        justifyContent: "center"
+    },
 }));
 
 export default feedStyles;

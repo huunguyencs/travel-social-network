@@ -9,10 +9,11 @@ const friendCardStyles = makeStyles((theme) => ({
         borderRadius: attr.borderRadius.md,
         color: color.text,
         backgroundColor: color.white,
+        padding: 10
     },
     friendHeader:{
         borderBottom:`1px solid ${color.gray}`,
-        padding: 10
+        padding: 5
     },
     text: {
         fontSize: "1.15em",
