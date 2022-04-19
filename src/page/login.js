@@ -19,7 +19,6 @@ import { Close } from '@material-ui/icons';
 import Validator, { isEmpty } from '../utils/validator';
 import { login, forgotPassword } from '../redux/callApi/authCall';
 import { authStyles } from '../style';
-import customAxios from '../utils/fetchData';
 
 export default function Login(props) {
   const classes = authStyles();
