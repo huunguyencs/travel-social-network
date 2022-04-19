@@ -8,7 +8,6 @@ const SocketServer = socket => {
     if (!data.position) {
       data.position = ip2position(socket.handshake.headers['x-forwarded-for']);
     }
-    console.log(socket.handshake.headers['x-forwarded-for']);
     users.push({ id: data.id, socketId: socket.id, position: data.position });
   });
 
@@ -109,7 +108,7 @@ const SocketServer = socket => {
       user =>
         distance(user.position, {
           longitude: data.position[0],
-          latitude: data.position[1],
+          latitude: data.position[1]
         }) < 5000
     );
     if (clients.length > 0) {
@@ -124,7 +123,7 @@ const SocketServer = socket => {
       user =>
         distance(user.position, {
           longitude: data.position[0],
-          latitude: data.position[1],
+          latitude: data.position[1]
         }) < 5000
     );
     if (clients.length > 0) {

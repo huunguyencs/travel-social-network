@@ -23,8 +23,8 @@ const SocketClient = () => {
             id: auth.user._id,
             position: {
               latitude: position.coords.latitude,
-              longitude: position.coords.longitude,
-            },
+              longitude: position.coords.longitude
+            }
           });
         },
         () => socket.emit('joinUser', { id: auth.user._id })
@@ -33,18 +33,20 @@ const SocketClient = () => {
   }, [socket, auth.user]);
 
   useEffect(() => {
-    navigator.geolocation.getCurrentPosition(
-      position => {
-        dispatch(
-          getHelps(
-            auth.user._id,
-            position.coords.latitude,
-            position.coords.longitude
-          )
-        );
-      },
-      () => dispatch(getHelps(auth.user._id))
-    );
+    if (auth.user) {
+      navigator.geolocation.getCurrentPosition(
+        position => {
+          dispatch(
+            getHelps(
+              auth.user._id,
+              position.coords.latitude,
+              position.coords.longitude
+            )
+          );
+        },
+        () => dispatch(getHelps(auth.user._id))
+      );
+    }
   }, [dispatch, auth.user]);
 
   //like
@@ -63,7 +65,7 @@ const SocketClient = () => {
             commentAction.updateCommentPost({
               comment: data.comment,
               id: data.id,
-              postId: data.postId,
+              postId: data.postId
             })
           );
           break;
@@ -72,7 +74,7 @@ const SocketClient = () => {
             commentAction.updateCommentTour({
               comment: data.comment,
               id: data.id,
-              tourId: data.tourId,
+              tourId: data.tourId
             })
           );
           break;
@@ -99,7 +101,7 @@ const SocketClient = () => {
             commentAction.updateCommentPost({
               comment: data.comment,
               id: data.id,
-              postId: data.postId,
+              postId: data.postId
             })
           );
           break;
@@ -108,7 +110,7 @@ const SocketClient = () => {
             commentAction.updateCommentTour({
               comment: data.comment,
               id: data.id,
-              tourId: data.tourId,
+              tourId: data.tourId
             })
           );
           break;
@@ -137,7 +139,7 @@ const SocketClient = () => {
           dispatch(
             commentAction.addCommentVolunteer({
               id: data.id,
-              comment: data.comment,
+              comment: data.comment
             })
           );
           break;
@@ -195,7 +197,7 @@ const SocketClient = () => {
         username: data.user.username,
         avatar: data.user.avatar,
         text: data.msg.text,
-        seen: false,
+        seen: false
       };
       dispatch(messageAction.addUser(user));
     });

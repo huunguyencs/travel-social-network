@@ -26,7 +26,7 @@ class HelpController {
         contact,
         type,
         positionStr,
-        expireAt,
+        expireAt
       });
       await help.save();
       res.success({
@@ -36,9 +36,9 @@ class HelpController {
           userId: {
             _id: req.user._id,
             fullname: req.user.fullname,
-            avatar: req.user.avatar,
-          },
-        },
+            avatar: req.user.avatar
+          }
+        }
       });
     } catch (err) {
       console.log(err);
@@ -49,7 +49,7 @@ class HelpController {
   async getHelps(req, res) {
     try {
       let { lat, lng } = req.query;
-      if (!lat || !lng) {
+      if (lat === 'undefined' || lng === 'undefined') {
         if (!req.headers['x-forwarded-for']) {
           return res.error({ message: 'Not found your position' });
         }
@@ -57,22 +57,24 @@ class HelpController {
         lat = temp.latitude;
         lng = temp.longitude;
       }
+      lat = parseFloat(lat);
+      lng = parseFloat(lng);
 
       const helps = await Helps.find({
         position: {
           $near: {
             $geometry: {
               type: 'Point',
-              coordinates: [lng, lat],
+              coordinates: [lng, lat]
             },
-            $maxDistance: 5000,
-          },
-        },
+            $maxDistance: 5000
+          }
+        }
       }).populate('userId', 'avatar fullname');
 
       res.success({
         success: true,
-        helps,
+        helps
       });
     } catch (err) {
       console.log(err);
@@ -85,7 +87,7 @@ class HelpController {
       const helps = await Helps.find({ userId: req.user._id });
       res.success({
         success: true,
-        helps,
+        helps
       });
     } catch (err) {
       res.error(err);
@@ -102,7 +104,7 @@ class HelpController {
 
       res.success({
         success: true,
-        help,
+        help
       });
     } catch (err) {
       res.error(err);
@@ -116,15 +118,15 @@ class HelpController {
         id,
         {
           $addToSet: {
-            state: req.user._id,
-          },
+            state: req.user._id
+          }
         },
         { new: true }
       );
 
       res.success({
         success: true,
-        help,
+        help
       });
     } catch (err) {
       res.error(err);
@@ -136,7 +138,7 @@ class HelpController {
       const { id } = req.params;
       await Helps.findByIdAndDelete(id);
       res.deleted({
-        success: true,
+        success: true
       });
     } catch (err) {
       res.error(err);
