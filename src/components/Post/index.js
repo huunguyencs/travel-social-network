@@ -176,7 +176,6 @@ export default function Post(props) {
                     post.images.length > 0 ?
                         <div className={classes.postImage}>
                             <div className={classes.masonryGrid}>
-                                {/* <img style={{height: 352,objectFit: "cover", width: "100%"}} src="https://friendkit.cssninja.io/assets/img/demo/unsplash/2.jpg" alt="post_image" /> */}
                                 <CardMedia>
                                     <ImageList imageList={post.images} show2Image={true} defaultHeight={500} />
                                 </CardMedia>
@@ -267,10 +266,10 @@ export default function Post(props) {
                         }
                     </div>
                     <div className={classes.likersText}>
-                        <p style={{fontSize: 13, color: "#888da8", margin: 0}}>
+                        <p style={{color: "#888da8", margin: 0}}>
                             {
                                 post?.likes.length > 0 && post.likes.slice(0,5).map((item)=>(
-                                    <Typography component={Link} to={`/u/${item._id}`} style={{fontWeight: 500, color:"black"}}>
+                                    <Typography component={Link} to={`/u/${item._id}`} style={{fontSize: 14,fontWeight: 500, color:"black"}}>
                                         {item.fullname}
                                     </Typography>
                                 ))

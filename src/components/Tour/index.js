@@ -2,15 +2,14 @@ import React, { useEffect, useState } from "react";
 import {
     Backdrop,
     Card,
-    CardActions,
+    // CardActions,
     Collapse,
     Modal,
     Typography
 } from "@material-ui/core";
-
+import { Link } from 'react-router-dom';
 import { useDispatch, useSelector } from "react-redux";
-
-
+import {Favorite, InsertLink, ChatBubbleOutlineSharp} from "@material-ui/icons";
 import Comment from "../Comment";
 import { postStyles } from "../../style";
 import InputComment from "../Input/Comment";
@@ -20,10 +19,10 @@ import SharePost from "../Forms/Share";
 import TourContent from "./Content";
 import { likeTour, unlikeTour } from "../../redux/callApi/tourCall";
 import LoginModal from "../Modal/Login";
-import HeartFillIcon from "../Icons/HeartFill";
-import HeartIcon from "../Icons/Heart";
-import CommentIcon from "../Icons/Comment";
-import ShareIcon from "../Icons/Share";
+// import HeartFillIcon from "../Icons/HeartFill";
+// import HeartIcon from "../Icons/Heart";
+// import CommentIcon from "../Icons/Comment";
+// import ShareIcon from "../Icons/Share";
 import { loadComment } from "../../redux/callApi/commentCall";
 
 
@@ -186,7 +185,7 @@ export default function Tour(props) {
                 {tour && <>
                     <TourContent tour={tour} setTour={setTour} />
 
-                    <CardActions>
+                    {/* <CardActions>
                         <div className={classes.iconWrap}>
                             {
                                 like ? <HeartFillIcon className={classes.likedIcon} onClick={likePress} /> : <HeartIcon className={classes.iconButton} onClick={likePress} />
@@ -249,9 +248,117 @@ export default function Tour(props) {
                         >
                             <ShareRef ref={refShare} object={tour.shareId ? tour.shareId : tour} type="tour" handleClose={handleCloseShare} />
                         </Modal>
-                    </CardActions>
-
-
+                    </CardActions> */}
+                    <div className={classes.postActions} style={{marginTop: -80}}>
+                        <div className={classes.likeWrapperNotImage} onClick={likePress}>
+                            {
+                                like ?  
+                                <div className={classes.likeButton} style={{backgroundColor: "red"}}>
+                                    <Favorite className={classes.likedIcon} style={{color: "white"}}/>
+                                </div>
+                                :
+                                <div className={classes.likeButton}>
+                                    <Favorite className={classes.likedIcon} style={{color: "red"}}/>
+                                </div>
+                            }
+                        </div>
+                        <div className={classes.commentWrapperNotImage}>
+                            <div className={classes.likeButton} style={{backgroundColor: "#a5dec8"}}>
+                                <ChatBubbleOutlineSharp className={classes.iconButton} onClick={handleShowCmt}/>
+                            </div>
+                        </div>
+                        <div className={classes.shareWrapperNotImage}>
+                            <div className={classes.likeButton} style={{backgroundColor: "#a5dec8"}}>
+                                <InsertLink className={classes.iconButton} onClick={handleShowShare}/>
+                            </div>
+                        </div>
+                    </div>
+                    <div className={classes.postFooter}>
+                        <div className={classes.likers} >
+                            {
+                                tour?.likes.length > 0 && tour.likes.map((item)=>(
+                                    <img className={classes.liker} src={item.avatar} alt="avatar"/>
+                                ))
+                            }
+                        </div>
+                        <div className={classes.likersText}>
+                            <p style={{color: "#888da8", margin: 0}}>
+                                {
+                                    tour?.likes.length > 0 && tour.likes.slice(0,5).map((item)=>(
+                                        <Typography component={Link} to={`/u/${item._id}`} style={{fontSize: 14, fontWeight: 500, color:"black"}}>
+                                            {item.fullname}
+                                        </Typography>
+                                    ))
+                                }
+                            </p>
+                            {
+                                tour?.likes.length === 1 ?
+                                <p style={{margin: 0}} >
+                                    đã thích bài viết này
+                                </p>:
+                                tour?.likes.length > 1 &&
+                                <p style={{margin: 0}} >
+                                    và những người khác đã thích bài này
+                                </p>
+                            }
+                        </div>
+                        <div className={classes.socialCount}>
+                            <div className={classes.likeCount} onClick={handleOpen}> 
+                                <Favorite style={{height: 18, width: 18, color: "#888da8"}}/>
+                                <span style={{display: "block",fontSize: 13, color: "#888da8", margin: "0 5px"}}>{tour.likes.length}</span>
+                            </div>
+                            <div className={classes.likeCount}>
+                                <ChatBubbleOutlineSharp style={{height: 18, width: 18, color: "#888da8"}}/>
+                                <span style={{display: "block",fontSize: 13, color: "#888da8", margin: "0 5px"}}>{tour.comments.length}</span>
+                            </div>
+                            <div className={classes.likeCount}>
+                                <InsertLink style={{height: 18, width: 18, color: "#888da8"}}/>
+                                <span style={{display: "block",fontSize: 13, color: "#888da8", margin: "0 5px"}}>{tour.likes.length}</span>
+                            </div>
+                        </div>
+                    </div>
+                    <Modal
+                        aria-labelledby="login"
+                        aria-describedby="must-login"
+                        className={classes.modal}
+                        open={login}
+                        onClose={handleCloseLogin}
+                        closeAfterTransition
+                        BackdropComponent={Backdrop}
+                        BackdropProps={{
+                            timeout: 500,
+                        }}
+                    >
+                        <LoginRef ref={refLogin} />
+                    </Modal>
+                    <Modal
+                        aria-labelledby="share"
+                        aria-describedby="share-this-tour"
+                        className={classes.modal}
+                        open={share}
+                        onClose={handleCloseShare}
+                        closeAfterTransition
+                        BackdropComponent={Backdrop}
+                        BackdropProps={{
+                            timeout: 500,
+                        }}
+                    >
+                        <ShareRef ref={refShare} object={tour.shareId ? tour.shareId : tour} type="tour" handleClose={handleCloseShare} />
+                    </Modal>
+                    <Modal
+                        aria-labelledby="like"
+                        aria-describedby="user-like-this-tour"
+                        className={classes.modal}
+                        open={showLike}
+                        onClose={handleClose}
+                        closeAfterTransition
+                        BackdropComponent={Backdrop}
+                        BackdropProps={{
+                            timeout: 500,
+                        }}
+                    >
+                        <UserListRef ref={refUser} listUser={tour.likes} title={"Đã thích"} handleClose={handleClose} />
+                    </Modal>
                     <Collapse className={classes.cmt} in={showCmt}>
                         <hr className={classes.line} />
                         <div className={classes.listCmt}>
@@ -265,8 +372,9 @@ export default function Tour(props) {
                             <Typography variant="body2" onClick={loadMoreComment}>Xem thêm bình luận</Typography>
                         }
                     </Collapse>
-
-                    <InputComment type="tour" id={tour._id} />
+                    {
+                        showCmt && <InputComment type="tour" id={tour._id} />
+                    }
                 </>}
             </>
         </Card>

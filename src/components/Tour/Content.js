@@ -1,4 +1,4 @@
-import { Avatar, Backdrop, Button, CardContent, CardHeader, CardMedia, CircularProgress, ClickAwayListener, Dialog, DialogActions, DialogContent, DialogTitle, IconButton, MenuItem, MenuList, Modal, Paper, Popper, Typography } from '@material-ui/core'
+import { Avatar, Backdrop, Button, Box, CardContent, CardHeader, CardMedia, CircularProgress, ClickAwayListener, Dialog, DialogActions, DialogContent, DialogTitle, IconButton, MenuItem, MenuList, Modal, Paper, Popper, Typography } from '@material-ui/core'
 import { Bookmark, BookmarkBorder, MoreVert } from '@material-ui/icons'
 import { AvatarGroup } from '@material-ui/lab'
 import React, { useEffect, useState } from 'react'
@@ -171,14 +171,16 @@ function ShareContent({ tour }) {
                     maxText={100}
                     text={tour.content}
                 />
-
+                <div className={classes.hashtagWrap}>
+                    {tour.hashtags.map((item, index) =>
+                        <Typography className={classes.hashtag} key={index}>#{item}</Typography>
+                    )}
+                </div>
+                <Box style={{border: "1px solid #e8e8e8", borderBottomColor: "transparent"}}>
+                    {tourShare ? <BaseContent tour={tourShare} setTour={setTourShare} share={true} /> : <Typography>Nội dung không còn tồn tại</Typography>}
+                </Box>
             </CardContent>
-            <div className={classes.hashtagWrap}>
-                {tour.hashtags.map((item, index) =>
-                    <Typography className={classes.hashtag} key={index}>#{item}</Typography>
-                )}
-            </div>
-            {tourShare ? <BaseContent tour={tourShare} setTour={setTourShare} share={true} /> : <Typography>Nội dung không còn tồn tại</Typography>}
+            
         </>
     )
 }
@@ -377,9 +379,6 @@ function BaseContent(props) {
                             onClose={handleCloseMenu}
                             disablePortal
                         >
-                            {/* <Grow
-                                style={{ transformOrigin: "center bottom" }}
-                            > */}
                             <ClickAwayListener onClickAway={handleCloseMenu}>
                                 <Paper>
                                     <>
@@ -426,18 +425,13 @@ function BaseContent(props) {
                                                             </MenuList>
 
                                                     }
-
                                                 </>
                                         }
-
                                     </>
-
                                 </Paper>
                             </ClickAwayListener>
-                            {/* </Grow> */}
                         </Popper>
                     </>
-
                 }
                 title={
                     <Typography noWrap={false} className={classes.userName} component={Link} to={`/u/${tour.userId._id}`}>{tour.userId.fullname}</Typography>

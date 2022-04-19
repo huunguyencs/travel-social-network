@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { Backdrop, Button, Fade, Modal, Typography } from "@material-ui/core";
+import { Backdrop, Button, Fade, Modal, Typography, BottomNavigation, BottomNavigationAction } from "@material-ui/core";
 
 import Tour from "../Tour";
 import Feed from './index';
@@ -8,7 +8,7 @@ import CreateTourForm from "../Forms/CreateTour";
 import { useSelector, useDispatch } from "react-redux";
 import { getMoreTours, getTours } from "../../redux/callApi/tourCall"
 import FilterTour from "../Forms/FilterTour";
-import { Tune } from "@material-ui/icons";
+import {Restore, Favorite } from "@material-ui/icons";
 
 
 export default function FeedTour(props) {
@@ -80,11 +80,11 @@ export default function FeedTour(props) {
     const FilterTourRef = React.forwardRef((props, ref) =>
         <FilterTour innerRef={ref} {...props} />
     )
-
+    const [value, setValue] = useState(0);
     return (
         <div className={classes.container}>
             <div className={classes.content}>
-                <div className={classes.createTourContainer}>
+                {/* <div className={classes.createTourContainer}>
                     <Button className={classes.createTour} onClick={handleShow} disabled={!auth.token}>
                         Lên lịch trình ngay!
                     </Button>
@@ -104,11 +104,22 @@ export default function FeedTour(props) {
                             <CreateTourRef ref={ref} handleClose={handleClose} />
                         </Fade>
                     </Modal>
+                </div> */}
+                <div className={classes.contentSubNav}>
+                    <BottomNavigation
+                        value={value}
+                        onChange={(event, newValue) => {
+                            setValue(newValue);
+                        }}
+                        showLabels
+                        className={classes.contentSubNavList}
+                        >
+                        <BottomNavigationAction label="Hành trình của bạn" icon={<Restore />} />
+                        <BottomNavigationAction label="Hành trình nổi bật" icon={<Favorite />} />
+                    </BottomNavigation>
                 </div>
-
-
                 <div className={classes.feedContent}>
-                    <div style={{ display: 'flex', justifyContent: 'right', margin: 10 }}>
+                    {/* <div style={{ display: 'flex', justifyContent: 'right', margin: 10 }}>
                         <Button
                             onClick={handleShowFilter}
                             startIcon={<Tune />}
@@ -153,7 +164,7 @@ export default function FeedTour(props) {
                             </ul>
                             <Button onClick={removeFilter}>Xoá bộ lọc</Button>
                         </div>
-                    }
+                    } */}
                     <Feed
                         loadMore={loadTour}
                         tryAgain={tryAgain}

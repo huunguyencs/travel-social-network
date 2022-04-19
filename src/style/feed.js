@@ -81,6 +81,20 @@ const feedStyles = makeStyles((theme) => ({
         justifyContent: 'center'
         // paddingInline: 30,
     },
+    contentSubNav:{
+        position: "sticky",
+        zIndex: 3,
+        top: 64,
+        marginBottom: 10,
+        boxShadow: "0px 5px 25px 0px #08070717",
+        backgroundColor: color.background,
+        borderRadius: `0 0 ${attr.borderRadius.md}px ${attr.borderRadius.md}px`
+    },
+    contentSubNavList:{
+        backgroundColor: color.background,
+        borderRadius: `0 0 ${attr.borderRadius.md}px ${attr.borderRadius.md}px`,
+        justifyContent: "space-evenly"
+    },
     containerText: {
         // width: "90%",
         // width: "100%",

@@ -4,14 +4,14 @@ import { useDispatch } from "react-redux";
 
 import LeftBar from "../../components/Leftbar";
 import FeedTour from "../../components/Feed/FeedTour";
-import RightBar from "../../components/Rightbar";
+// import RightBar from "../../components/Rightbar";
 import useStyles from "../../style";
 import { homeMenu } from "../../constant/menu";
 import SpeedDialButton from "../../components/SpeedDialBtn";
-import Calendar from '../../components/Calendar';
-import FriendRecommendCard from '../../components/Card/FriendRecommend';
+// import Calendar from '../../components/Calendar';
+// import FriendRecommendCard from '../../components/Card/FriendRecommend';
 import { getTours } from "../../redux/callApi/tourCall";
-
+import FilterTour from "../../components/Tour/FilterTour";
 
 export default function TourPage(props) {
 
@@ -42,10 +42,11 @@ export default function TourPage(props) {
                         <FeedTour />
                     </Grid>
                     <Grid item md={3} className={classes.rightbar}>
-                        <RightBar ref={ref}>
+                        <FilterTour/>
+                        {/* <RightBar ref={ref}>
                             <Calendar />
                             <FriendRecommendCard />
-                        </RightBar>
+                        </RightBar> */}
                     </Grid>
                 </Grid>
             </Grid>

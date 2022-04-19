@@ -6,8 +6,8 @@ const commentStyles = makeStyles((theme) => ({
     comment: {
         display: 'flex',
         marginTop: 10,
-        marginBottom: 20,
-        marginInline: 30,
+        marginBottom: 15,
+        marginInline: 15,
     },
     avatar: {
         marginRight: 10,

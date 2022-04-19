@@ -313,7 +313,7 @@ function ShareContent({ post }) {
                         <Typography className={classes.hashtag} key={index}>#{item}</Typography>
                     )}
                 </div>
-                <Box style={{borderTop: "1px solid #dedada"}}>
+                <Box style={{border: "1px solid #e8e8e8", borderBottomColor: "transparent"}}>
                     <BaseContent post={post.shareId} share={true} />
                     {
                         post.shareId.images.length > 0 &&
@@ -322,7 +322,6 @@ function ShareContent({ post }) {
                         </CardMedia>
                     } 
                 </Box>
-
             </CardContent>
         </>
     )

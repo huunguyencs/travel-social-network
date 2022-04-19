@@ -22,7 +22,7 @@ const postStyles = makeStyles((theme) => ({
         width: "80%",
     },
     listCmt: {
-        marginTop: 30,
+        marginTop: 20,
     },
     title: {
         paddingBottom: 20,
@@ -216,21 +216,21 @@ const postStyles = makeStyles((theme) => ({
     commentWrapper:{
         position: "absolute",
         bottom: -18,
-        right: 68,
+        right: 58,
         maxHeight: 50,
         cursor:"pointer"
     },
     shareWrapper:{
         position: "absolute",
         bottom: -18,
-        right: 125,
+        right: 105,
         maxHeight: 50,
         cursor:"pointer"
     },
     likeButton:{
         position: "relative",
-        width: 50,
-        height: 50,
+        width: 43,
+        height: 43,
         borderRadius: "50%",
         background: "#fff",
         boxShadow: "0px 5px 43px #00000026",
@@ -255,8 +255,8 @@ const postStyles = makeStyles((theme) => ({
         alignItems: "center"
     },
     liker:{
-        height: 32,
-        width: 32,
+        height: 30,
+        width: 30,
         borderRadius: "50%",
         border: "3px solid #fff",
         "&:not(:first-child)": {
