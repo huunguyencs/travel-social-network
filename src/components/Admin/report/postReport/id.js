@@ -17,13 +17,13 @@ function AdminPostReportDetail() {
   });
   const { token } = useSelector(state => state.auth);
 
-  const getReport = async id => {
+  const getReport = async (id, _token) => {
     setState({
       notFound: false,
       loading: true,
       error: false
     });
-    await customAxios(token)
+    await customAxios(_token)
       .get(`/report/${id}`)
       .then(res => {
         setReport(res.data.report);
@@ -43,8 +43,8 @@ function AdminPostReportDetail() {
   };
 
   useEffect(() => {
-    getReport(subpage);
-  }, [subpage]);
+    getReport(subpage, token);
+  }, [subpage, token]);
 
   useEffect(() => {
     document.title = 'Admin - Bài viết được báo cáo';
