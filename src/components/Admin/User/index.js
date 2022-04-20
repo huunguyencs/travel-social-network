@@ -10,25 +10,6 @@ import { useSelector } from "react-redux";
 import { tableStyles } from "../../../style";
 import { ResponsiveContainer, LineChart, Line, XAxis, YAxis, CartesianGrid, Legend, Tooltip } from 'recharts';
 
-
-// const useStyles = makeStyles((theme) => ({
-//     appBarSpacer: {
-//         marginTop: 140,
-//     },
-//     cardInfo: {
-//         margin: 20,
-//         padding: 20,
-//         borderRadius: 10,
-//     },
-//     cardValue: {
-//         marginTop: 10,
-//     },
-//     cardIcon: {
-//         fontSize: "37px",
-//         marginRight: 30,
-//     }
-// }))
-
 function ExportToolbar() {
     return (
         <GridToolbarContainer>
@@ -109,21 +90,43 @@ const columns = [
     }
 ];
 
-const data = [
-    { month: "Jan", newuser: 100, user: 300 },
-    { month: "Feb", newuser: 120, user: 400 },
-    { month: "Mar", newuser: 140, user: 450 },
-    { month: "Apr", newuser: 150, user: 490 },
-    { month: "May", newuser: 170, user: 500 },
-    { month: "Jun", newuser: 200, user: 700 },
-    { month: "Jul", newuser: 210, user: 740 },
-    { month: "Aug", newuser: 210, user: 900 },
-    { month: "Sep", newuser: 180, user: 600 },
-    { month: "Oct", newuser: 150, user: 400 },
-    { month: "Nov", newuser: 130, user: 300 },
-    { month: "Dec", newuser: 110, user: 100 },
-]
+function handling(arr) {
+    const newusers = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0];
+    const users = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0];
+    arr.forEach(element => {
+        let d = new Date(element.createdAt);
+        let mon = d.getMonth();
+        users[mon]+=1;
+        if (d.getFullYear() == (new Date()).getFullYear()) {
+            newusers[mon] += 1;
+        }
+    });
+    return {'newusers': newusers,'users':users};
+}
 
+function getData(users) {
+    const data = [
+        { month: "Tháng 1", newuser: 0, user: 0 },
+        { month: "Tháng 2", newuser: 0, user: 0 },
+        { month: "Tháng 3", newuser: 0, user: 0 },
+        { month: "Tháng 4", newuser: 0, user: 0 },
+        { month: "Tháng 5", newuser: 0, user: 0 },
+        { month: "Tháng 6", newuser: 0, user: 0 },
+        { month: "Tháng 7", newuser: 0, user: 0 },
+        { month: "Tháng 8", newuser: 0, user: 0 },
+        { month: "Tháng 9", newuser: 0, user: 0 },
+        { month: "Tháng 10", newuser: 0, user: 0 },
+        { month: "Tháng 11", newuser: 0, user: 0 },
+        { month: "Tháng 12", newuser: 0, user: 0 },
+    ]
+    let tmp = handling(users);
+    console.log(tmp);
+    for (let i = 0; i < 12; i++) {
+        data.at(i).newuser = tmp.newusers[i];
+        data.at(i).user=tmp.users[i];
+    }
+    return data;
+}
 
 function AdminUsers(props) {
     const classes = tableStyles();
@@ -142,6 +145,7 @@ function AdminUsers(props) {
         await customAxios(token).get(`/user/all`).then(res => {
             setUsers(res.data.users);
             setLoading(false);
+            //handlingDataUsers(res.data.users);
         }).catch(err => {
             setLoading(false);
             setError('Có lỗi xảy ra')
@@ -194,7 +198,7 @@ function AdminUsers(props) {
                                     <LineChart
                                         width={400}
                                         height={300}
-                                        data={data}
+                                        data={getData(users)}
                                         margin={{ top: 5, right: 20, left: 10, bottom: 5 }}
                                     >
                                         <XAxis dataKey="month" />
@@ -202,8 +206,8 @@ function AdminUsers(props) {
                                         <CartesianGrid strokeDasharray="3 3" />
                                         <Tooltip />
                                         <Legend />
-                                        <Line type="monotone" dataKey="newuser" stroke="#8884d8" activeDot={{ r: 8 }} />
-                                        <Line type="monotone" dataKey="user" stroke="#ECCC68" />
+                                        <Line type="monotone" dataKey="newuser" stroke="#8884d8" name={((new Date()).getFullYear()).toString()} activeDot={{ r: 8 }} />
+                                        <Line type="monotone" dataKey="user" stroke="#ECCC68" name="Tổng thể"/>
                                     </LineChart>
                                 </ResponsiveContainer>
                             </div>

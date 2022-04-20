@@ -1,88 +1,170 @@
-import React from "react";
 import { Container, Paper, Typography, Card, Grid } from "@material-ui/core";
 import { tableStyles } from "../../../style";
 import { AddLocation, Report, Event } from "@material-ui/icons";
-import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, Legend} from 'recharts';
-import { Link } from "react-router-dom";
+import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, Legend } from 'recharts';
+import React, { useEffect, useState } from "react";
+import { useSelector } from 'react-redux';
+import { Link, useHistory } from "react-router-dom";
+import customAxios from "../../../utils/fetchData";
 
-export default function AdminReport() {
+function handling(arr) {
+    const data = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0];
+    arr.forEach(element => {
+        let d = new Date(element.createdAt);
+        let mon = d.getMonth();
+        if (d.getFullYear() == (new Date()).getFullYear()) {   
+            data[mon] += 1;
+        }
+    });
+    return data;
+}
 
-    const classes = tableStyles();
-
+function getData(reports, locationContributes, eventContributes) {
     const data = [
         {
             name: 'Tháng 1',
-            uv: 4000,
-            pv: 2400,
-            amt: 2400,
+            report: 0,
+            location: 0,
+            event: 0,
         },
         {
             name: 'Tháng 2',
-            uv: 3000,
-            pv: 1398,
-            amt: 2210,
+            report: 0,
+            location: 0,
+            event: 0,
         },
         {
             name: 'Tháng 3',
-            uv: 2000,
-            pv: 9800,
-            amt: 2290,
+            report: 0,
+            location: 0,
+            event: 0,
         },
         {
             name: 'Tháng 4',
-            uv: 2780,
-            pv: 3908,
-            amt: 2000,
+            report: 0,
+            location: 0,
+            event: 0,
         },
         {
             name: 'Tháng 5',
-            uv: 1890,
-            pv: 4800,
-            amt: 2181,
+            report: 0,
+            location: 0,
+            event: 0,
         },
         {
             name: 'Tháng 6',
-            uv: 2390,
-            pv: 3800,
-            amt: 2500,
+            report: 0,
+            location: 0,
+            event: 0,
         },
         {
             name: 'Tháng 7',
-            uv: 3490,
-            pv: 4300,
-            amt: 2100,
+            report: 0,
+            location: 0,
+            event: 0,
         },
         {
             name: 'Tháng 8',
-            uv: 2000,
-            pv: 9800,
-            amt: 2290,
+            report: 0,
+            location: 0,
+            event: 0,
         },
         {
             name: 'Tháng 9',
-            uv: 2780,
-            pv: 3908,
-            amt: 2000,
+            report: 0,
+            location: 0,
+            event: 0,
         },
         {
             name: 'Tháng 10',
-            uv: 1890,
-            pv: 4800,
-            amt: 2181,
+            report: 0,
+            location: 0,
+            event: 0,
         },
         {
             name: 'Tháng 11',
-            uv: 2390,
-            pv: 3800,
-            amt: 2500,
+            report: 0,
+            location: 0,
+            event: 0,
         },
         {
             name: 'Tháng 12',
-            uv: 3490,
-            pv: 4300,
-            amt: 2100,
+            report: 0,
+            location: 0,
+            event: 0,
         },
     ];
+    
+    let report = handling(reports);
+    let location = handling(locationContributes);
+    let event = handling(eventContributes);
+
+    //console.log(reports);
+    for(let i = 0; i <12; i++){
+        data.at(i).report = report.at(i);
+        data.at(i).event = event.at(i);
+        data.at(i).location = location.at(i);
+    }
+    console.log(data);
+    return data;
+}
+
+export default function AdminReport() {
+
+    const history = useHistory();
+    const classes = tableStyles();
+    const { token } = useSelector(state => state.auth);
+
+    const [reports, setReports] = useState([]);
+    const [locations, setLocations] = useState([]);
+    const [events, setEvents] = useState([]);
+    const [loading, setLoading] = useState(false);
+    const [error, setError] = useState(null);
+    const [pageSize, setPageSize] = useState(10);
+
+    const getAllReports = async (token) => {
+        setLoading(true);
+        setError(null);
+        await customAxios(token).get('/report/all').then(res => {
+            setReports(res.data.reports);
+            setLoading(false);
+        }).catch(err => {
+            setLoading(false);
+            setError(err);
+        })
+    }
+
+    const getAllLocations = async (token) => {
+        setLoading(true);
+        setError(null);
+        await customAxios(token).get('/locationContribute/all').then(res => {
+            setLocations(res.data.locations);
+            setLoading(false);
+        }).catch(err => {
+            setLoading(false);
+            setError(err);
+        })
+    }
+
+    const getAllEvents = async (token) => {
+        setLoading(true);
+        setError(null);
+        await customAxios(token).get('/eventContribute/all').then(res => {
+            setLocations(res.data.events);
+            setLoading(false);
+        }).catch(err => {
+            setLoading(false);
+            setError(err);
+        })
+    }
+
+    useEffect(() => {
+        getAllReports(token);
+    }, [token])
+
+    useEffect(() => {
+        document.title = "Admin - Ý kiến đóng góp"
+    }, [])
 
     return (
         <Container className={classes.container}>
@@ -96,7 +178,7 @@ export default function AdminReport() {
                                 </Typography>
                                 <Typography variant="h3" className={classes.cardValue}>
                                     <Report className={classes.cardIcon} />
-                                    1300
+                                    {reports.length}
                                 </Typography>
                             </Card>
                         </Link>
@@ -135,7 +217,7 @@ export default function AdminReport() {
                         <BarChart
                             width={1000}
                             height={600}
-                            data={data}
+                            data={getData(reports,locations,events)}
                             margin={{
                                 top: 20,
                                 right: 30,
@@ -148,9 +230,9 @@ export default function AdminReport() {
                             <YAxis />
                             <Tooltip />
                             <Legend />
-                            <Bar dataKey="pv" stackId="a" fill="#8884d8" name="Địa điểm" />
-                            <Bar dataKey="amt" stackId="a" fill="#82ca9d" name="Sự kiện" />
-                            <Bar dataKey="uv" fill="#ffc658" name="Bài viết" />
+                            <Bar dataKey="report" stackId="a" fill="#8884d8" name="Báo cáo" />
+                            <Bar dataKey="location" stackId="a" fill="#82ca9d" name="Địa điểm" />
+                            <Bar dataKey="event" fill="#ffc658" name="Sự kiện" />
                         </BarChart>
                     </Card>
                 </div>
