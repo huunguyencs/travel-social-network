@@ -93,12 +93,15 @@ export default function Comment(props) {
 
     return (
         <div className={classes.comment}>
-            <div className={classes.avatar}>
-                <Avatar
-                    src={comment.userId?.avatar}
-                    atl="Avatar"
-                />
-            </div>
+            {
+                !edit &&
+                <div className={classes.avatar}>
+                    <Avatar
+                        src={comment.userId?.avatar}
+                        atl="Avatar"
+                    />
+                </div>
+            }
             <div style={{ display: 'flex' }}>
                 {
                     edit ?
@@ -149,9 +152,6 @@ export default function Comment(props) {
                             onClose={handleCloseMenu}
                             disablePortal
                         >
-                            {/* <Grow
-                                            style={{ transformOrigin: 'center bottom' }}
-                                        > */}
                             <ClickAwayListener onClickAway={handleCloseMenu}>
                                 <Paper>
                                     <MenuList>
@@ -184,14 +184,10 @@ export default function Comment(props) {
                                     </MenuList>
                                 </Paper>
                             </ClickAwayListener>
-                            {/* </Grow> */}
                         </Popper>
                     </div>
                 }
-
             </div>
-
         </div>
-
     )
 }

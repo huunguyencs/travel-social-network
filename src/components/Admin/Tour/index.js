@@ -41,51 +41,51 @@ function getData(arr) {
     const data = [
         {
             name: "Tháng 1",
-            tour: 4000,
+            tour: 0,
         },
         {
             name: "Tháng 2",
-            tour: 3000,
+            tour: 0,
         },
         {
             name: "Tháng 3",
-            tour: 2000,
+            tour: 0,
         },
         {
             name: "Tháng 4",
-            tour: 2780,
+            tour: 0,
         },
         {
             name: "Tháng 5",
-            tour: 1890,
+            tour: 0,
         },
         {
             name: "Tháng 6",
-            tour: 2390,
+            tour: 0,
         },
         {
             name: "Tháng 7",
-            tour: 3490,
+            tour: 0,
         },
         {
             name: "Tháng 8",
-            tour: 490,
+            tour: 0,
         },
         {
             name: "Tháng 9",
-            tour: 1490,
+            tour: 0,
         },
         {
             name: "Tháng 10",
-            tour: 3790,
+            tour: 0,
         },
         {
             name: "Tháng 11",
-            tour: 2490,
+            tour: 0,
         },
         {
             name: "Tháng 12",
-            tour: 3090,
+            tour: 0,
         }
     ];
 

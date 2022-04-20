@@ -1,4 +1,6 @@
 import { makeStyles } from "@material-ui/core";
+import attr from "./attr";
+import color from "./color";
 
 const modalStyles = makeStyles((theme) => ({
     container: {
@@ -53,6 +55,36 @@ const modalStyles = makeStyles((theme) => ({
     },
     title: {
         fontSize: 20
+    },
+    paperHelp: {
+        width: 700,
+        padding: 10
+    },
+    modal_header: {
+        display: 'flex',
+        justifyContent: 'space-between'
+    },
+    explainText: {
+        textAlign: 'center'
+    },
+    form: {
+        padding: 20
+    },
+    formItem: {
+        marginBlock: 20
+    },
+    input: {
+        backgroundColor: color.lightgray,
+        width: '100%',
+        padding: 10,
+        borderRadius: attr.borderRadius.md
+    },
+    autocomplete: {
+        width: '100% !important'
+    },
+    button: {
+        display: 'flex',
+        justifyContent: 'right'
     }
 }))
 

@@ -379,8 +379,8 @@ export default function VolunteerDetail(props) {
                                                                         textColor="primary"
                                                                         centered
                                                                     >
-                                                                        <Tab label="Tham gia tất cả" {...a11yProps(0)}/>
-                                                                        <Tab label="Từng địa điểm" {...a11yProps(1)}/>
+                                                                        <Tab label= {`Tham gia tất cả( ${volunteer.users.length})`} {...a11yProps(0)}/>
+                                                                        <Tab label= "Từng địa điểm" {...a11yProps(1)}/>
                                                                     </Tabs>
                                                                     <TabPanel value={value} index={0} className={classes.tabPanel}>
                                                                         <div style={{ position: "relative", overflowY: "auto" }}>
@@ -411,7 +411,7 @@ export default function VolunteerDetail(props) {
                                                                                                 </div>
                                                                                             </div>
                                                                                             <div>
-                                                                                                <p style={{marginTop: 35}}>{element.location.fullname}</p>
+                                                                                                <p style={{marginTop: 35}}>{element.location.fullname +"( "+ element.users.length + ")"}</p>
                                                                                             </div>
                                                                                             <div>
                                                                                                 {

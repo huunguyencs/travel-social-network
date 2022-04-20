@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { InputBase, Modal, Backdrop, Fade } from "@material-ui/core";
-
+import {CameraAltOutlined, SentimentSatisfiedOutlined, MoreHorizOutlined} from "@material-ui/icons";
 import Feed from './index';
 import Post from '../Post';
 import { feedStyles } from "../../style";
@@ -22,7 +22,7 @@ export default function FeedPost(props) {
     const classes = feedStyles();
 
     const loadMore = () => {
-        if (post.postId.length > 0) {
+        if (post.postId && post.postId.length > 0) {
             dispatch(getMorePost({ postId: post.postId }))
         }
     }
@@ -46,52 +46,67 @@ export default function FeedPost(props) {
 
 
     return (
-        <div className={classes.container} style={{ marginTop: 100 }}>
-            <div className={classes.content}>
-                <div className={classes.create}>
-                    <div className={classes.containerText}>
-                        <InputBase
-                            placeholder="Bạn đang nghĩ gì?..."
-                            className={classes.createText}
-                            onClick={handleShow}
-                            readOnly
-                            rows={1}
-                            disabled={!auth.user}
-                        />
+        <div className={classes.container}>
+            <div className={classes.create}>
+                <div className={classes.createWrapper}>
+                    <div className={classes.compose}>
+                        <div className={classes.composeForm}>
+                            <img className={classes.composeFormImage} src={auth.user.avatar} alt ="avatar"/>
+                            <InputBase
+                                placeholder="Bạn đang nghĩ gì?..."
+                                className={classes.createText}
+                                onClick={handleShow}
+                                readOnly
+                                rows={1}
+                                disabled={!auth.user}
+                            />
+                        </div>
                     </div>
-                    <Modal
-                        aria-labelledby="transition-modal-title"
-                        aria-describedby="transition-modal-description"
-                        className={classes.modal}
-                        open={show}
-                        onClose={handleClose}
-                        closeAfterTransition
-                        BackdropComponent={Backdrop}
-                        BackdropProps={{
-                            timeout: 500,
-                        }}
-                    >
-                        <Fade in={show}>
-                            <CreatePostRef ref={ref} handleClose={handleClose} />
-                        </Fade>
-                    </Modal>
-
+                    <div className={classes.composeOptions}>
+                        <div className={classes.composeOption} onClick={handleShow}>
+                            <CameraAltOutlined className={classes.composeIcon}/>
+                            <span>Hình ảnh</span>
+                        </div>
+                        <div className={classes.composeOption} onClick={handleShow}>
+                            <SentimentSatisfiedOutlined className={classes.composeIcon}/>
+                            <span>Cảm xúc</span>
+                        </div>
+                        <div className={classes.composeOption} onClick={handleShow}>
+                            <MoreHorizOutlined className={classes.composeIcon}/>
+                        </div>
+                    </div>
                 </div>
-                <Feed
-                    loadMore={loadMore}
-                    tryAgain={tryAgain}
-                    loading={post.loading}
-                    error={post.error}
-                    hasMore={post.hasMore}
-                >
-                    {post.posts.map((post) => (
-                        <Post
-                            post={post}
-                            key={post._id}
-                        />
-                    ))}
-                </Feed>
             </div>
+            <Modal
+                aria-labelledby="transition-modal-title"
+                aria-describedby="transition-modal-description"
+                className={classes.modal}
+                open={show}
+                onClose={handleClose}
+                closeAfterTransition
+                BackdropComponent={Backdrop}
+                BackdropProps={{
+                    timeout: 500,
+                }}
+            >
+                <Fade in={show}>
+                    <CreatePostRef ref={ref} handleClose={handleClose} />
+                </Fade>
+            </Modal>
+            <Feed
+                loadMore={loadMore}
+                tryAgain={tryAgain}
+                loading={post.loading}
+                error={post.error}
+                hasMore={post.hasMore}
+            >
+                {post.posts.map((post) => (
+                    <Post
+                        post={post}
+                        key={post._id}
+                    />
+                ))}
+            </Feed>
         </div>
     )
 }

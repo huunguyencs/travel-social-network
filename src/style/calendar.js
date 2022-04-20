@@ -1,4 +1,5 @@
 import { makeStyles } from "@material-ui/core";
+import attr from "./attr";
 // import attr from "./attr";
 import color from "./color";
 
@@ -35,26 +36,25 @@ const calendarStyles = makeStyles((theme) => ({
         justifyContent: 'center',
     },
     tableCard: {
-        padding: 5,
-        borderRadius: 5,
+        padding: 2,
+        borderRadius: 15,
     },
     amlich: {
         borderCollapse: 'collapse',
         fontSize: '16px',
-        borderRadius: 5,
+        borderRadius: attr.borderRadius.md,
         tableLayout: 'fixed',
-        backgroundColor: color.white,
-        padding: '5px',
+        backgroundColor: color.turquoise,
+        padding: 5
     },
     colWidth: {
-        width: '50px',
+        width: '47px',
         [theme.breakpoints.down(1600)]: {
             width: '40px',
         }
     },
     ngaythang: {
         cursor: 'pointer',
-        // borderBottom: 'solid 1px #eee',
         borderRadius: '50%',
         padding: '8px',
         margin: 2,

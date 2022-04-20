@@ -26,7 +26,7 @@ export default function Feed(props) {
         }
     }
     return (
-        <div className={classes.container}>
+        <>
             {
                 type && type==="review" ?
                     <div>
@@ -63,6 +63,6 @@ export default function Feed(props) {
                     </div>
                 </div>
             }
-        </div>
+        </>
     )
 }

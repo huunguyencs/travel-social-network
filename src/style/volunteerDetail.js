@@ -147,7 +147,7 @@ const volunteerDetailStyles = makeStyles((theme) => ({
         color:"black"
     },
     listCmt: {
-        marginTop: 30,
+        marginTop: 20,
     },
     buttonShowCmt:{
         fontSize: 20

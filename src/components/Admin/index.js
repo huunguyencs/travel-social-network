@@ -1,10 +1,27 @@
-import React, { useEffect, useState } from "react";
-import { Container, Paper, Typography, Card, Grid, Box, CardHeader } from "@material-ui/core";
-import { tableStyles } from "../../style";
-import { ResponsiveContainer, LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, Legend } from 'recharts';
-import { Explore, Person, PostAdd } from "@material-ui/icons";
-import { useSelector } from "react-redux";
-import customAxios from "../../utils/fetchData";
+import React, { useEffect, useState } from 'react';
+import {
+    Container,
+    Paper,
+    Typography,
+    Card,
+    Grid,
+    Box,
+    CardHeader
+} from '@material-ui/core';
+import { tableStyles } from '../../style';
+import {
+    ResponsiveContainer,
+    LineChart,
+    Line,
+    XAxis,
+    YAxis,
+    CartesianGrid,
+    Tooltip,
+    Legend
+} from 'recharts';
+import { Explore, Person, PostAdd } from '@material-ui/icons';
+import { useSelector } from 'react-redux';
+import customAxios from '../../utils/fetchData';
 
 function handling(arr) {
     const data = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0];
@@ -20,19 +37,19 @@ function handling(arr) {
 
 function getData(posts, tours, users) {
     const data = [
-        { month: "Jan", user: 0, tour: 0, post: 0 },
-        { month: "Feb", user: 0, tour: 0, post: 0 },
-        { month: "Mar", user: 0, tour: 0, post: 0 },
-        { month: "Apr", user: 0, tour: 0, post: 0 },
-        { month: "May", user: 0, tour: 0, post: 0 },
-        { month: "Jun", user: 0, tour: 0, post: 0 },
-        { month: "Jul", user: 0, tour: 0, post: 0 },
-        { month: "Aug", user: 0, tour: 0, post: 0 },
-        { month: "Sep", user: 0, tour: 0, post: 0 },
-        { month: "Oct", user: 0, tour: 0, post: 0 },
-        { month: "Nov", user: 0, tour: 0, post: 0 },
-        { month: "Dec", user: 0, tour: 0, post: 0 },
-    ]
+        { month: 'Jan', user: 0, tour: 0, post: 0 },
+        { month: 'Feb', user: 0, tour: 0, post: 0 },
+        { month: 'Mar', user: 0, tour: 0, post: 0 },
+        { month: 'Apr', user: 0, tour: 0, post: 0 },
+        { month: 'May', user: 0, tour: 0, post: 0 },
+        { month: 'Jun', user: 0, tour: 0, post: 0 },
+        { month: 'Jul', user: 0, tour: 0, post: 0 },
+        { month: 'Aug', user: 0, tour: 0, post: 0 },
+        { month: 'Sep', user: 0, tour: 0, post: 0 },
+        { month: 'Oct', user: 0, tour: 0, post: 0 },
+        { month: 'Nov', user: 0, tour: 0, post: 0 },
+        { month: 'Dec', user: 0, tour: 0, post: 0 }
+    ];
     let tour = handling(tours);
     let user = handling(users);
     let post = handling(posts);
@@ -45,7 +62,27 @@ function getData(posts, tours, users) {
 }
 
 function AdminHome(props) {
-
+    const classes = tableStyles();
+    const { token } = useSelector(state => state.auth);
+    const [users, setUsers] = useState([]);
+    const [tours, setTours] = useState([]);
+    const [posts, setPosts] = useState([]);
+    const [loading, setLoading] = useState(false);
+    const [error, setError] = useState(null);
+    const getAllUsers = async token => {
+        setLoading(true);
+        setError(null);
+        await customAxios(token)
+            .get(`/user/all`)
+            .then(res => {
+                setUsers(res.data.users);
+                setLoading(false);
+            })
+            .catch(err => {
+                setLoading(false);
+                setError('Có lỗi xảy ra');
+            });
+    };
     const classes = tableStyles();
     const { token } = useSelector(state => state.auth);
     const [users, setUsers] = useState([]);
@@ -90,6 +127,21 @@ function AdminHome(props) {
         })
     }
 
+    const getAllPosts = async token => {
+        setLoading(true);
+        setError(null);
+        await customAxios(token)
+            .get(`/post/posts`)
+            .then(res => {
+                setPosts(res.data.posts);
+                setLoading(false);
+            })
+            .catch(err => {
+                setLoading(false);
+                setError('Có lỗi xảy ra');
+            });
+    };
+
     useEffect(() => {
         getAllUsers(token);
         getAllTours(token);
@@ -100,11 +152,9 @@ function AdminHome(props) {
         <Container className={classes.container}>
             <div>
                 <Grid container>
-                    <Grid item md={4} >
+                    <Grid item md={4}>
                         <Card className={classes.cardInfo}>
-                            <Typography variant="h5">
-                                Tổng số người dùng
-                            </Typography>
+                            <Typography variant="h5">Tổng số người dùng</Typography>
                             <Typography variant="h3" className={classes.cardValue}>
                                 <Person className={classes.cardIcon} />
                                 {users.length}
@@ -113,9 +163,7 @@ function AdminHome(props) {
                     </Grid>
                     <Grid item md={4}>
                         <Card className={classes.cardInfo}>
-                            <Typography variant="h5">
-                                Tổng số hành trình
-                            </Typography>
+                            <Typography variant="h5">Tổng số hành trình</Typography>
                             <Typography variant="h3" className={classes.cardValue}>
                                 <Explore className={classes.cardIcon} />
                                 {tours.length}
@@ -124,9 +172,7 @@ function AdminHome(props) {
                     </Grid>
                     <Grid item md={4}>
                         <Card className={classes.cardInfo}>
-                            <Typography variant="h5">
-                                Tổng số bài viết / review
-                            </Typography>
+                            <Typography variant="h5">Tổng số bài viết / review</Typography>
                             <Typography variant="h3" className={classes.cardValue}>
                                 <PostAdd className={classes.cardIcon} />
                                 {posts.length}
@@ -138,26 +184,33 @@ function AdminHome(props) {
             <Paper className={classes.paper}>
                 <div>
                     <Card>
-                        <CardHeader title="Thống kê" subheader={"Biến động năm " + (new Date()).getFullYear().toString()} />
+                        <CardHeader
+                            title="Thống kê"
+                            subheader={'Biến động năm ' + new Date().getFullYear().toString()}
+                        />
                         <Box>
                             <div
                                 style={{
-                                    display: "flex",
-                                    justifyContent: "center",
-                                    marginTop: "20px"
-                                }}>
-
+                                    display: 'flex',
+                                    justifyContent: 'center',
+                                    marginTop: '20px'
+                                }}
+                            >
                                 <div
                                     style={{
-                                        backgroundColor: "#FFFFFF",
-                                        paddingTop: "20px",
-                                        borderRadius: "15px",
-                                        width: "90%",
-                                        justifyContent: "center",
-                                        display: "flex",
+                                        backgroundColor: '#FFFFFF',
+                                        paddingTop: '20px',
+                                        borderRadius: '15px',
+                                        width: '90%',
+                                        justifyContent: 'center',
+                                        display: 'flex'
                                     }}
                                 >
-                                    <ResponsiveContainer className="chart" height={500} width={1200}>
+                                    <ResponsiveContainer
+                                        className="chart"
+                                        height={500}
+                                        width={1200}
+                                    >
                                         <LineChart
                                             width={1000}
                                             height={500}
@@ -169,9 +222,25 @@ function AdminHome(props) {
                                             <CartesianGrid strokeDasharray="3 3" />
                                             <Tooltip />
                                             <Legend />
-                                            <Line type="monotone" dataKey="user" stroke="#8884d8" name="Người dùng" activeDot={{ r: 8 }} />
-                                            <Line type="monotone" dataKey="tour" stroke="#82ca9d" name="Hành trình" />
-                                            <Line type="monotone" dataKey="post" stroke="#ECCC68" name="Bài viết/review" />
+                                            <Line
+                                                type="monotone"
+                                                dataKey="user"
+                                                stroke="#8884d8"
+                                                name="Người dùng"
+                                                activeDot={{ r: 8 }}
+                                            />
+                                            <Line
+                                                type="monotone"
+                                                dataKey="tour"
+                                                stroke="#82ca9d"
+                                                name="Hành trình"
+                                            />
+                                            <Line
+                                                type="monotone"
+                                                dataKey="post"
+                                                stroke="#ECCC68"
+                                                name="Bài viết/review"
+                                            />
                                         </LineChart>
                                     </ResponsiveContainer>
                                 </div>

@@ -140,57 +140,59 @@ function Detail(props) {
         <Paper className={classes.paperDetailDate}>
             <Grid container>
                 <Grid item md={6} sm={12} xs={12}>
-                    <div>
-                        <Typography variant='h5' style={{ textAlign: 'center', marginTop: 10 }}>{location.locationName ? location.locationName : location.location.fullname}</Typography>
                         {
                             isEdit ?
                                 <>
-                                    <div style={{ overflowY: 'auto', height: '70vh', padding: 20 }}>
-                                        <InputBase
-                                            placeholder="Ghi chú"
-                                            title="Ghi chú"
-                                            variant="outlined"
-                                            name="description"
-                                            id="description"
-                                            className={classes.descriptionInput}
-                                            multiline
-                                            rows={5}
-                                            value={description}
-                                            onChange={e => setDescription(e.target.value)}
-                                        />
-                                        <TextField
-                                            label="Thời gian"
-                                            title="Thời gian"
-                                            variant="outlined"
-                                            name="time"
-                                            id="time"
-                                            className={classes.fullField}
-                                            value={time}
-                                            onChange={e => setTime(e.target.value)}
-                                        />
-                                        <TextField
-                                            label="Chi phí"
-                                            title="Chi phí"
-                                            variant="outlined"
-                                            name="cost"
-                                            id="cost"
-                                            type="number"
-                                            className={classes.fullField}
-                                            // className={classes.hashtag}
-                                            value={cost}
-                                            onChange={e => setCost(e.target.value)}
-                                            InputProps={{
-                                                endAdornment: <InputAdornment position="end">.000 VND</InputAdornment>,
-                                            }}
-                                        />
-                                        <div className={classes.btnWrap}>
-                                            <Button onClick={handleUpdateInfo} variant="contained" color="primary">Cập nhật</Button>
+                                    <div style={{ overflowY: 'auto', height: '70vh'}}>
+                                        <Typography variant='h5' style={{ textAlign: 'center', marginTop: 10 }}>{location.locationName ? location.locationName : location.location.fullname}</Typography>
+                                        <div style={{ margin: 20 }} >
+                                            <InputBase
+                                                placeholder="Ghi chú"
+                                                title="Ghi chú"
+                                                variant="outlined"
+                                                name="description"
+                                                id="description"
+                                                className={classes.descriptionInput}
+                                                multiline
+                                                rows={5}
+                                                value={description}
+                                                onChange={e => setDescription(e.target.value)}
+                                            />
+                                            <TextField
+                                                label="Thời gian"
+                                                title="Thời gian"
+                                                variant="outlined"
+                                                name="time"
+                                                id="time"
+                                                className={classes.fullField}
+                                                value={time}
+                                                onChange={e => setTime(e.target.value)}
+                                            />
+                                            <TextField
+                                                label="Chi phí"
+                                                title="Chi phí"
+                                                variant="outlined"
+                                                name="cost"
+                                                id="cost"
+                                                type="number"
+                                                className={classes.fullField}
+                                                // className={classes.hashtag}
+                                                value={cost}
+                                                onChange={e => setCost(e.target.value)}
+                                                InputProps={{
+                                                    endAdornment: <InputAdornment position="end">.000 VND</InputAdornment>,
+                                                }}
+                                            />
+                                            <div className={classes.btnWrap}>
+                                                <Button onClick={handleUpdateInfo} variant="contained" color="primary">Cập nhật</Button>
+                                            </div>
                                         </div>
+                                        <AddService type='location' indexDate={indexDate} indexLocation={indexLocation} />
                                     </div>
-                                    <AddService type='location' indexDate={indexDate} indexLocation={indexLocation} />
                                 </>
                                 :
                                 <div style={{ overflowY: 'auto', height: '70vh' }}>
+                                    <Typography variant='h5' style={{ textAlign: 'center', marginTop: 10 }}>{location.locationName ? location.locationName : location.location.fullname}</Typography>
                                     <div style={{ padding: 20 }}>
                                         <Typography>Chi phí: {new Intl.NumberFormat().format(location.cost * 1000)} VND</Typography>
                                         <Typography>Thời gian: {location.time}</Typography>
@@ -198,10 +200,6 @@ function Detail(props) {
                                     </div>
                                 </div>
                         }
-
-
-                    </div>
-
                 </Grid>
                 <Grid item md={6} sm={12} xs={12}>
                     <div style={{ overflowY: 'auto', height: '70vh' }}>

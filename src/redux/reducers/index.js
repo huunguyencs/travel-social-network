@@ -12,6 +12,7 @@ import notify from './notifyReducer';
 import message from './messageReducer';
 import volunteer from './volunteerReducer';
 import service from './serviceReducer';
+import help from './helpReducer';
 
 const rootReducer = combineReducers({
     post,
@@ -25,7 +26,8 @@ const rootReducer = combineReducers({
     notify,
     message,
     volunteer,
-    service
+    service,
+    help
 });
 
 export default rootReducer;

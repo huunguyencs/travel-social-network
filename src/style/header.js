@@ -7,8 +7,8 @@ const headerStyles = makeStyles((theme) => ({
     toolbar: {
         display: "flex",
         justifyContent: "space-between",
-        paddingTop: 5,
-        paddingBottom: 5,
+        // paddingTop: 5,
+        // paddingBottom: 5,
         backgroundColor: "#57606F",
     },
     search: {
@@ -150,6 +150,11 @@ const headerStyles = makeStyles((theme) => ({
         "&:hover": {
             textDecorationLine: "underline"
         }
+    },
+    modal: {
+        display: 'flex',
+        alignItems: 'center',
+        justifyContent: 'center',
     }
 }));
 
