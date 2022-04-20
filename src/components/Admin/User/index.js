@@ -97,7 +97,7 @@ function handling(arr) {
         let d = new Date(element.createdAt);
         let mon = d.getMonth();
         users[mon]+=1;
-        if (d.getFullYear() == (new Date()).getFullYear()) {
+        if (d.getFullYear() === (new Date()).getFullYear()) {
             newusers[mon] += 1;
         }
     });

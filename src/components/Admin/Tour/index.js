@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { Container, Paper, Typography, Card, Grid, Box, CardHeader } from "@material-ui/core";
+import { Container, Typography, Card, Grid, Box, CardHeader } from "@material-ui/core";
 import { PostAdd } from "@material-ui/icons";
 import { tableStyles } from "../../../style";
 import { BarChart, Bar, Cell, XAxis, YAxis, CartesianGrid } from "recharts";
@@ -30,7 +30,7 @@ function handling(arr) {
     arr.forEach(element => {
         let d = new Date(element.createdAt);
         let mon = d.getMonth();
-        if (d.getFullYear() == (new Date()).getFullYear()) {
+        if (d.getFullYear() === (new Date()).getFullYear()) {
             tour[mon] += 1;
         }
     });
@@ -103,7 +103,6 @@ export default function AdminTour() {
     const [tours, setTours] = useState([]);
     const [loading, setLoading] = useState(false);
     const [error, setError] = useState(null);
-    const [pageSize, setPageSize] = useState(10);
 
     const getAllTours = async (token) => {
         setLoading(true);

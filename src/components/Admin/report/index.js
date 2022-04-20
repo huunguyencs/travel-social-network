@@ -1,10 +1,10 @@
-import { Container, Paper, Typography, Card, Grid, Box, CardHeader } from "@material-ui/core";
+import { Container, Typography, Card, Grid, Box, CardHeader } from "@material-ui/core";
 import { tableStyles } from "../../../style";
 import { AddLocation, Report, Event } from "@material-ui/icons";
 import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, Legend } from 'recharts';
 import React, { useEffect, useState } from "react";
 import { useSelector } from 'react-redux';
-import { Link, useHistory } from "react-router-dom";
+import { Link } from "react-router-dom";
 import customAxios from "../../../utils/fetchData";
 
 function handling(arr) {
@@ -12,7 +12,7 @@ function handling(arr) {
     arr.forEach(element => {
         let d = new Date(element.createdAt);
         let mon = d.getMonth();
-        if (d.getFullYear() == (new Date()).getFullYear()) {
+        if (d.getFullYear() === (new Date()).getFullYear()) {
             data[mon] += 1;
         }
     });
@@ -111,7 +111,6 @@ function getData(reports, locationContributes, eventContributes) {
 
 export default function AdminReport() {
 
-    const history = useHistory();
     const classes = tableStyles();
     const { token } = useSelector(state => state.auth);
 
@@ -120,7 +119,6 @@ export default function AdminReport() {
     const [events, setEvents] = useState([]);
     const [loading, setLoading] = useState(false);
     const [error, setError] = useState(null);
-    const [pageSize, setPageSize] = useState(10);
 
     const getAllReports = async (token) => {
         setLoading(true);

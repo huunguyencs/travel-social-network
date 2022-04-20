@@ -11,7 +11,7 @@ function handling(arr) {
     arr.forEach(element => {
         let d = new Date(element.createdAt);
         let mon = d.getMonth();
-        if (d.getFullYear() == (new Date()).getFullYear()) {
+        if (d.getFullYear() === (new Date()).getFullYear()) {
             data[mon] += 1;
         }
     });
@@ -53,10 +53,7 @@ function AdminHome(props) {
     const [posts, setPosts] = useState([]);
     const [loading, setLoading] = useState(false);
     const [error, setError] = useState(null);
-    const [pageSize, setPageSize] = useState(10);
-    let handlingPost = false;
-    let handlingUser = false;
-    let handlingTour = false;
+
     const getAllUsers = async (token) => {
         setLoading(true);
         setError(null);

@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { Container, Paper, Typography, Card, Grid, Box, CardHeader } from "@material-ui/core";
+import { Container, Typography, Card, Grid, Box, CardHeader } from "@material-ui/core";
 import { PostAdd } from "@material-ui/icons";
 import { tableStyles } from "../../../style";
 import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, Legend } from 'recharts';
@@ -8,14 +8,14 @@ import customAxios from "../../../utils/fetchData";
 
 function filterPostReview(arr) {
     let postReview = arr.filter((element) => {
-        return element.isPostReview == true;
+        return element.isPostReview === true;
     })
     return postReview;
 }
 
 function filterPost(arr) {
     let postReview = arr.filter((element) => {
-        return element.isPostReview == false;
+        return element.isPostReview === false;
     })
     return postReview;
 }
@@ -25,7 +25,7 @@ function handling(arr) {
     arr.forEach(element => {
         let d = new Date(element.createdAt);
         let mon = d.getMonth();
-        if (d.getFullYear() == (new Date()).getFullYear()) {
+        if (d.getFullYear() === (new Date()).getFullYear()) {
             post[mon] += 1;
         }
     });
@@ -37,63 +37,63 @@ function getData(arr) {
     const data = [
         {
             name: 'Tháng 1',
-            post: 4000,
-            review: 2400,
+            post: 0,
+            review: 0,
         },
         {
             name: 'Tháng 2',
-            post: 3000,
-            review: 1398,
+            post: 0,
+            review: 0,
         },
         {
             name: 'Tháng 3',
-            post: 2000,
-            review: 9800,
+            post: 0,
+            review: 0,
         },
         {
             name: 'Tháng 4',
-            post: 2780,
-            review: 3908,
+            post: 0,
+            review: 0,
         },
         {
             name: 'Tháng 5',
-            post: 1890,
-            review: 4800,
+            post: 0,
+            review: 0,
         },
         {
             name: 'Tháng 6',
-            post: 2390,
-            review: 3800,
+            post: 0,
+            review: 0,
         },
         {
             name: 'Tháng 7',
-            post: 3490,
-            review: 4300,
+            post: 0,
+            review: 0,
         },
         {
             name: 'Tháng 8',
-            post: 2490,
-            review: 3300,
+            post: 0,
+            review: 0,
         },
         {
             name: 'Tháng 9',
-            post: 3490,
-            review: 6300,
+            post: 0,
+            review: 0,
         },
         {
             name: 'Tháng 10',
-            post: 4090,
-            review: 4300,
+            post: 0,
+            review: 0,
         },
         {
             name: 'Tháng 11',
-            post: 3090,
-            review: 3300,
+            post: 0,
+            review: 0,
         },
         {
             name: 'Tháng 12',
-            post: 4490,
-            review: 5080,
+            post: 0,
+            review: 0,
         },
     ];
 
@@ -115,7 +115,6 @@ function AdminPosts(props) {
     const [posts, setPosts] = useState([]);
     const [loading, setLoading] = useState(false);
     const [error, setError] = useState(null);
-    const [pageSize, setPageSize] = useState(10);
 
     const getAllPosts = async (token) => {
         setLoading(true);
