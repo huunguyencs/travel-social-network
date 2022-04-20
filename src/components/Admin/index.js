@@ -37,18 +37,18 @@ function handling(arr) {
 
 function getData(posts, tours, users) {
     const data = [
-        { month: 'Jan', user: 0, tour: 0, post: 0 },
-        { month: 'Feb', user: 0, tour: 0, post: 0 },
-        { month: 'Mar', user: 0, tour: 0, post: 0 },
-        { month: 'Apr', user: 0, tour: 0, post: 0 },
-        { month: 'May', user: 0, tour: 0, post: 0 },
-        { month: 'Jun', user: 0, tour: 0, post: 0 },
-        { month: 'Jul', user: 0, tour: 0, post: 0 },
-        { month: 'Aug', user: 0, tour: 0, post: 0 },
-        { month: 'Sep', user: 0, tour: 0, post: 0 },
-        { month: 'Oct', user: 0, tour: 0, post: 0 },
-        { month: 'Nov', user: 0, tour: 0, post: 0 },
-        { month: 'Dec', user: 0, tour: 0, post: 0 }
+        { month: 'Tháng 1', user: 0, tour: 0, post: 0 },
+        { month: 'Tháng 2', user: 0, tour: 0, post: 0 },
+        { month: 'Tháng 3', user: 0, tour: 0, post: 0 },
+        { month: 'Tháng 4', user: 0, tour: 0, post: 0 },
+        { month: 'Tháng 5', user: 0, tour: 0, post: 0 },
+        { month: 'Tháng 6', user: 0, tour: 0, post: 0 },
+        { month: 'Tháng 7', user: 0, tour: 0, post: 0 },
+        { month: 'Tháng 8', user: 0, tour: 0, post: 0 },
+        { month: 'Tháng 9', user: 0, tour: 0, post: 0 },
+        { month: 'Tháng 10', user: 0, tour: 0, post: 0 },
+        { month: 'Tháng 11', user: 0, tour: 0, post: 0 },
+        { month: 'Tháng 12', user: 0, tour: 0, post: 0 }
     ];
     let tour = handling(tours);
     let user = handling(users);
