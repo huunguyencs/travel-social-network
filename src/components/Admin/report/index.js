@@ -1,4 +1,4 @@
-import { Container, Paper, Typography, Card, Grid } from "@material-ui/core";
+import { Container, Paper, Typography, Card, Grid, Box, CardHeader } from "@material-ui/core";
 import { tableStyles } from "../../../style";
 import { AddLocation, Report, Event } from "@material-ui/icons";
 import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, Legend } from 'recharts';
@@ -12,7 +12,7 @@ function handling(arr) {
     arr.forEach(element => {
         let d = new Date(element.createdAt);
         let mon = d.getMonth();
-        if (d.getFullYear() == (new Date()).getFullYear()) {   
+        if (d.getFullYear() == (new Date()).getFullYear()) {
             data[mon] += 1;
         }
     });
@@ -94,13 +94,13 @@ function getData(reports, locationContributes, eventContributes) {
             event: 0,
         },
     ];
-    
+
     let report = handling(reports);
     let location = handling(locationContributes);
     let event = handling(eventContributes);
 
     //console.log(reports);
-    for(let i = 0; i <12; i++){
+    for (let i = 0; i < 12; i++) {
         data.at(i).report = report.at(i);
         data.at(i).event = event.at(i);
         data.at(i).location = location.at(i);
@@ -211,32 +211,54 @@ export default function AdminReport() {
                     </Grid>
                 </Grid>
             </div>
-            <Paper className={classes.paper}>
-                <div>
-                    <Card>
-                        <BarChart
-                            width={1000}
-                            height={600}
-                            data={getData(reports,locations,events)}
-                            margin={{
-                                top: 20,
-                                right: 30,
-                                left: 20,
-                                bottom: 5,
-                            }}
-                        >
-                            <CartesianGrid strokeDasharray="3 3" />
-                            <XAxis dataKey="name" />
-                            <YAxis />
-                            <Tooltip />
-                            <Legend />
-                            <Bar dataKey="report" stackId="a" fill="#8884d8" name="Báo cáo" />
-                            <Bar dataKey="location" stackId="a" fill="#82ca9d" name="Địa điểm" />
-                            <Bar dataKey="event" fill="#ffc658" name="Sự kiện" />
-                        </BarChart>
-                    </Card>
-                </div>
-            </Paper>
+            <div>
+                <Card>
+                    <CardHeader title="Thống kê" subheader={"Biến động năm " + (new Date()).getFullYear().toString()} />
+                    <Box>
+                        <div
+                            style={{
+                                display: "flex",
+                                justifyContent: "center",
+                                marginTop: "20px"
+                            }}>
+
+                            <div
+                                style={{
+                                    backgroundColor: "#FFFFFF",
+                                    paddingTop: "20px",
+                                    borderRadius: "15px",
+                                    width: "90%",
+                                    justifyContent: "center",
+                                    display: "flex",
+                                }}
+                            >
+                                <Card>
+                                    <BarChart
+                                        width={1000}
+                                        height={500}
+                                        data={getData(reports, locations, events)}
+                                        margin={{
+                                            top: 20,
+                                            right: 30,
+                                            left: 20,
+                                            bottom: 5,
+                                        }}
+                                    >
+                                        <CartesianGrid strokeDasharray="3 3" />
+                                        <XAxis dataKey="name" />
+                                        <YAxis />
+                                        <Tooltip />
+                                        <Legend />
+                                        <Bar dataKey="location" stackId="a" fill="#8884d8" name="Địa điểm" />
+                                        <Bar dataKey="event" stackId="a" fill="#82ca9d" name="Sự kiện" />
+                                        <Bar dataKey="report" fill="#ffc658" name="Báo cáo" />
+                                    </BarChart>
+                                </Card>
+                            </div>
+                        </div>
+                    </Box>
+                </Card>
+            </div>
         </Container>
     );
 }
