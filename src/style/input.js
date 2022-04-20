@@ -2,16 +2,35 @@ import { makeStyles } from "@material-ui/core";
 import attr from "./attr";
 
 const inputStyles = makeStyles((theme) => ({
+    writeCmtWrapper:{
+        display: "flex",
+        alignItems: "center",
+        justifyContent: "flex-start"
+    },
+    writeCmtAvatar:{
+        width: 40,
+        height: 40,
+        marginBottom: 15,
+        marginLeft: 15
+    },
+    writeCmtAvatarIcon:{
+        zIndex: 2,
+        marginLeft: -18,
+        marginBottom: -8,
+        fontSize: 20,
+        color: "#78a493"
+    },
     writeCmt: {
         display: "flex",
         justifyContent: "space-between",
         backgroundColor: "#ededed",
-        margin: 20,
+        margin: "0 15px 15px 10px",
         borderRadius: attr.borderRadius.lg,
         maxWidth: "100%",
+        flexGrow: 1
     },
     writeCmtText: {
-        paddingInline: 5,
+        paddingInline: 15,
         width: "100%",
     },
     addImageContainer: {
@@ -19,8 +38,6 @@ const inputStyles = makeStyles((theme) => ({
         overflow: 'auto'
     },
     item: {
-        // width: 200,
-        // height: 300,
         margin: 20
     },
     addArea: {

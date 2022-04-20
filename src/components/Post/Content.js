@@ -126,6 +126,7 @@ function Header(props) {
     }
     return (
         <CardHeader
+            className={classes.cardHeader}
             avatar={
                 <Avatar alt="avatar" src={post.userId.avatar} />
             }
@@ -312,10 +313,15 @@ function ShareContent({ post }) {
                         <Typography className={classes.hashtag} key={index}>#{item}</Typography>
                     )}
                 </div>
-                <Box>
+                <Box style={{border: "1px solid #e8e8e8", borderBottomColor: "transparent"}}>
                     <BaseContent post={post.shareId} share={true} />
+                    {
+                        post.shareId.images.length > 0 &&
+                        <CardMedia>
+                            <ImageList imageList={post.shareId.images} show2Image={true} defaultHeight={500} />
+                        </CardMedia>
+                    } 
                 </Box>
-
             </CardContent>
         </>
     )
@@ -349,12 +355,12 @@ function BaseContent(props) {
                     )}
                 </div>
             </CardContent>
-            {
+            {/* {
                 post.images.length > 0 &&
                 <CardMedia>
                     <ImageList imageList={post.images} show2Image={true} defaultHeight={500} />
                 </CardMedia>
-            }
+            } */}
         </>
     )
 }

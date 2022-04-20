@@ -282,12 +282,12 @@ const profileStyles = makeStyles((theme) => ({
   introContainer:{
     overflow: "hidden",
     boxShadow: "0 2px 8px #00000026", 
-    marginTop: 90,
-    height: 400,
+    marginTop: 80,
+    height: 380,
     width: "100%",
     borderRadius: attr.borderRadius.md,
     marginInline: 15,
-    minHeight: 400
+    minHeight: 380
   },
   introHeader:{
     padding: "20px 0 10px 20px",

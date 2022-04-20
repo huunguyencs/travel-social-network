@@ -16,11 +16,7 @@ import color from "../../style/color";
 export default function Menu(props) {
 
     const location = useLocation();
-
-    // const [more, setMore] = useState(false);
-
     const classes = leftbarStyles();
-
     const isActive = (path) => {
         // if (path === "/" && location.pathname === "/home") return true;
         // return path === location.pathname;
@@ -49,7 +45,6 @@ export default function Menu(props) {
 
     return (
 
-
         <List className={classes.panel}>
             {menuList.menu.map((item, index) => (
                 <Link className={classes.itemLink} to={renderLink(item.link)} key={index}>
@@ -62,11 +57,18 @@ export default function Menu(props) {
                         title={item.name}
                     >
                         <ListItemIcon>
-                            {<item.icon className={classes.icon} />}
+                            {<item.icon className={classes.icon} 
+                                style={{
+                                   color: isActive(item.link) ? color.white : color.black,
+                                }}
+                            />}
                         </ListItemIcon>
                         <ListItemText
                             primary={item.name}
                             classes={{ primary: classes.text }}
+                            style={{
+                                color: isActive(item.link) ? color.white : color.black,
+                             }}
                         />
                     </ListItem>
                 </Link>

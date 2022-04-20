@@ -3,21 +3,10 @@ import color from "./color";
 import attr from "./attr";
 
 const feedStyles = makeStyles((theme) => ({
-    // container: {
-
-    //     color: 'black',
-    //     display: 'flex',
-    //     justifyContent: 'center'
-    // },
-    content: {
-
-        marginInline: 50,
-        [theme.breakpoints.down("lg")]: {
-            marginInline: 20,
-        },
-        [theme.breakpoints.down("md")]: {
-            marginInline: 10,
-        }
+    container: {
+        paddingTop: 60,
+        paddingLeft: 10,
+        paddingRight: 10
     },
     title: {
         display: "flex",
@@ -25,22 +14,85 @@ const feedStyles = makeStyles((theme) => ({
         marginBottom: 20,
     },
     create: {
-        margin: 30,
-        marginBottom: 50,
+        marginTop: 20,
+        marginBottom: 20,
+        border: "1px solid #e8e8e8",
+        background: "#fff",
+        borderRadius: attr.borderRadius.md,
+        boxShadow: "none"
+    },
+    createWrapper:{
+        borderRadius: attr.borderRadius.md,
+    },
+    compose:{
+        padding: 16,
+        borderBottom: "1px solid #e8e8e8",
+        height: 60
+    },
+    composeForm:{
+        display: "flex",
+        justifyContent: "flex-start",
+        alignItems: "stretch"
+    },
+    composeFormImage:{
+        height: 42,
+        width: 42,
+        borderRadius: "50%"
+    },
+    composeOptions:{
+        display: "flex",
+        justifyContent: "flex-start",
+        alignItems: "center",
+        padding: 8,
+        borderRadius: `0 0 ${attr.borderRadius.md}px ${attr.borderRadius.md}px`,
+        background: color.white,
+        cursor: "pointer"
+    },
+    composeOption:{
+        position: "relative",
+        display: "flex",
+        justifyContent: "flex-start",
+        alignItems: "center",
+        padding: "6px 16px",
+        marginRight: 10,
+        background: "#f7f7f7",
+        borderRadius: 500,
+        fontSize: 15,
+        color: "#888da8",
+        transition: "all 0.3s"
+    },
+    composeIcon:{
+        height: 20,
+        width: 20,
+        transition: "all 0.3s",
+        marginRight: 5
     },
     createTourContainer: {
         display: 'flex',
-        justifyContent: 'center',
-        paddingTop: 20,
-        marginBottom: 30,
+        justifyContent: 'center'
     },
     createTour: {
         backgroundColor: color.turquoise,
         borderRadius: attr.borderRadius.md,
         padding: 10,
         display: 'flex',
-        justifyContent: 'center'
-        // paddingInline: 30,
+        justifyContent: 'center',
+        marginLeft: 10,
+        width: "100%"
+    },
+    contentSubNav:{
+        position: "sticky",
+        zIndex: 3,
+        top: 64,
+        marginBottom: 10,
+        boxShadow: "0px 5px 25px 0px #08070717",
+        backgroundColor: color.background,
+        borderRadius: `0 0 ${attr.borderRadius.md}px ${attr.borderRadius.md}px`
+    },
+    contentSubNavList:{
+        backgroundColor: color.background,
+        borderRadius: `0 0 ${attr.borderRadius.md}px ${attr.borderRadius.md}px`,
+        justifyContent: "space-evenly"
     },
     containerText: {
         // width: "90%",
@@ -59,6 +111,7 @@ const feedStyles = makeStyles((theme) => ({
         },
     },
     createText: {
+        marginLeft: 20,
         width: "100%",
     },
     modal: {
@@ -67,7 +120,7 @@ const feedStyles = makeStyles((theme) => ({
         justifyContent: 'center',
     },
     event: {
-        paddingTop: 50,
+        // paddingTop: 50,
     },
     hot: {
         paddingTop: 50,
@@ -77,15 +130,28 @@ const feedStyles = makeStyles((theme) => ({
         justifyContent: 'center',
         marginTop: 50
     },
-    feedContent: {
-        marginInline: 30,
-        [theme.breakpoints.down("lg")]: {
-            marginInline: 10,
-        },
-        [theme.breakpoints.down("md")]: {
-            marginInline: 5,
-        }
-    }
+    filterContainer:{
+        position: "sticky",
+        top: 64,
+        marginTop: 20,
+        borderRadius: attr.borderRadius.md,
+        color: color.text,
+        backgroundColor: color.white,
+        padding: 10,
+        marginLeft: 10
+    },
+    filterHeader:{
+        borderBottom:`1px solid ${color.gray}`,
+        padding: 5
+    },
+    filterBody:{
+        overflow:"hidden",
+        width: "100%"
+    },
+    center: {
+        display: "flex",
+        justifyContent: "center"
+    },
 }));
 
 export default feedStyles;

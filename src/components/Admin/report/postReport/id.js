@@ -68,7 +68,7 @@ function AdminPostReportDetail() {
                         </div> :
                         state.error ?
                             <div style={{ display: 'flex', justifyContent: 'center', marginTop: 60 }}>Có lỗi xảy ra</div> :
-                            <div></div>
+                            report && <div></div>
             }
         </Paper>
     );

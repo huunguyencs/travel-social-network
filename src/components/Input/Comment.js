@@ -1,6 +1,6 @@
 import React, { useState } from "react";
-import { IconButton, InputBase } from "@material-ui/core";
-import { Send } from "@material-ui/icons";
+import { IconButton, InputBase, Avatar } from "@material-ui/core";
+import { Send, FiberManualRecord} from "@material-ui/icons";
 import { useDispatch, useSelector } from "react-redux";
 
 import EmojiPicker from "./EmojiPicker";
@@ -38,23 +38,31 @@ export default function InputComment(props) {
     }
 
     return (
-        <form
-            onSubmit={handleComment}
-            className={classes.writeCmt}
-            style={{ margin: isUpdate ? 0 : 20 }}
-        >
-            <EmojiPicker content={text} setContent={setText} />
-
-            <InputBase
-                placeholder="Viết bình luận ..."
-                className={classes.writeCmtText}
-                value={text}
-                onChange={e => setText(e.target.value)}
-                disabled={!auth.user}
-            />
-            <IconButton disabled={!text || text.trim() === ""} type="submit">
-                <Send />
-            </IconButton>
-        </form>
+        <div className={classes.writeCmtWrapper}>
+            <Avatar
+                    src={auth.user.avatar}
+                    atl="Avatar"
+                    className={classes.writeCmtAvatar}
+            >
+            </Avatar>
+            <FiberManualRecord className={classes.writeCmtAvatarIcon}/>
+            <form
+                onSubmit={handleComment}
+                className={classes.writeCmt}
+                // style={{ margin: isUpdate ? 0 : 20 }}
+            >
+                <InputBase
+                    placeholder="Viết bình luận ..."
+                    className={classes.writeCmtText}
+                    value={text}
+                    onChange={e => setText(e.target.value)}
+                    disabled={!auth.user}
+                />
+                <EmojiPicker content={text} setContent={setText} />
+                <IconButton disabled={!text || text.trim() === ""} type="submit">
+                    <Send />
+                </IconButton>
+            </form>
+        </div>
     )
 }

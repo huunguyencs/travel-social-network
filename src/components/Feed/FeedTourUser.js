@@ -35,12 +35,14 @@ export default function FeedUserTour(props) {
                 hasMore={tour.hasMore}
             >
                 {
+                    tour.tours.length > 0 ? 
                     tour.tours.map((tour) => (
                         <Tour
                             tour={tour}
                             key={tour._id}
                         />
-                    ))
+                    )):
+                    <div style={{fontSize: 20}}>Hiện bạn chưa có hành trình cho riêng mình</div>
                 }
             </Feed>
         </div>

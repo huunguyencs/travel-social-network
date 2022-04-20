@@ -16,7 +16,7 @@ import {
   Paper,
   ListItemIcon,
   Modal,
-  Backdrop,
+  Backdrop
 } from '@material-ui/core';
 import {
   Search,
@@ -28,7 +28,7 @@ import {
   AccessibilityNew,
   Bookmark,
   ReportProblem,
-  Warning,
+  Warning
 } from '@material-ui/icons';
 import { Link, useHistory } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
@@ -125,6 +125,11 @@ export default function Header(props) {
       <Toolbar className={classes.toolbar}>
         <Link to="/" style={{ display: 'flex', alignItems: 'center' }}>
           {/* <Typography variant="h6" className={classes.logo}>
+    return (
+        <AppBar style={{ zIndex: 2, height: 64 }}>
+            <Toolbar className={classes.toolbar}>
+                <Link to="/" style={{ display: 'flex', alignItems: 'center' }}>
+                    {/* <Typography variant="h6" className={classes.logo}>
                         Triple H
                     </Typography> */}
           <img src="/Logo.png" alt="Logo" width={40} height={40} />
@@ -133,7 +138,7 @@ export default function Header(props) {
             style={{
               fontFamily: 'Leckerli One',
               color: 'white',
-              marginLeft: 10,
+              marginLeft: 10
             }}
           >
             Triple H
@@ -397,7 +402,7 @@ export default function Header(props) {
                 closeAfterTransition
                 BackdropComponent={Backdrop}
                 BackdropProps={{
-                  timeout: 500,
+                  timeout: 500
                 }}
               >
                 <HelpModal ref={refHelp} handleClose={handleCloseHelp} />

@@ -38,14 +38,31 @@ import addVolunteerStyles from "./addVolunteer";
 import feedReviewStyles from "./feedReview";
 
 const useStyles = makeStyles((theme) => ({
+    container:{
+        margin: 0,
+        paddingTop: 64
+    },
+    containerHome:{
+        flexGrow: 1, 
+        padding: 0,
+        maxWidth: 1344,
+        margin: "0 auto",
+        width: "auto",
+        [theme.breakpoints.down('md')]: {
+            maxWidth: 1152
+        },
+        [theme.breakpoints.down('sm')]: {
+            maxWidth: 960
+        }
+    },
     center: {
         display: 'flex',
         justifyContent: 'center',
         marginTop: 200
     },
     rightbar: {
-        marginTop: 20,
-        [theme.breakpoints.down('md')]: {
+        // marginTop: 20,
+        [theme.breakpoints.down('sm')]: {
             display: "none",
         }
     },

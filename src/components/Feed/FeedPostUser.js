@@ -29,7 +29,7 @@ export default function FeedPostUser(props) {
     }
 
     return (
-        <div style={{ marginTop: 100 }}>
+        <div style={{ marginTop: 90, padding: "0 10px 10px 10px" }}>
             <Feed
                 loadMore={loadPost}
                 tryAgain={tryAgain}
