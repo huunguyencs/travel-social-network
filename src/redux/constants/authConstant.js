@@ -6,3 +6,5 @@ export const CHANGE_BG = 'CHANGE_BG';
 export const CHANGE_AVATAR = 'CHANGE_AVATAR';
 export const SAVE_TOUR = 'SAVE_TOUR';
 export const GET_FRIEND_RECOMMEND = 'GET_FRIEND_RECOMMEND';
+export const LOGIN_LOADING = 'LOGIN_LOADING';
+export const LOGIN_FAILED = 'LOGIN_FAILED';
