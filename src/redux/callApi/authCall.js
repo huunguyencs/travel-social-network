@@ -57,13 +57,13 @@ export const register = (data, next, callback) => async dispatch => {
 };
 
 export const refreshToken = () => async dispatch => {
-  dispatch(authAction.loginLoading());
-  const login = localStorage.getItem('login');
-  if (login) {
+  const token = getToken();
+  if (token) {
+    dispatch(authAction.loginLoading());
     try {
       // console.log("refresh");
       const res = await customAxios().post('/user/refresh_token', {
-        refresh_token: getToken()
+        refresh_token: token
       });
       // console.log(res);
       dispatch(
@@ -77,7 +77,7 @@ export const refreshToken = () => async dispatch => {
       // callback();
       // dispatch(notifyAction.callFail({ error: err.response.data.message }));
     }
-  } else return;
+  }
 };
 export const forgotPassword = (email, next) => async dispatch => {
   try {
