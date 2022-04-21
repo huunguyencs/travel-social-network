@@ -69,6 +69,7 @@ function AdminHome(props) {
     const [posts, setPosts] = useState([]);
     const [loading, setLoading] = useState(false);
     const [error, setError] = useState(null);
+    
     const getAllUsers = async token => {
         setLoading(true);
         setError(null);
@@ -83,25 +84,6 @@ function AdminHome(props) {
                 setError('Có lỗi xảy ra');
             });
     };
-    const classes = tableStyles();
-    const { token } = useSelector(state => state.auth);
-    const [users, setUsers] = useState([]);
-    const [tours, setTours] = useState([]);
-    const [posts, setPosts] = useState([]);
-    const [loading, setLoading] = useState(false);
-    const [error, setError] = useState(null);
-
-    const getAllUsers = async (token) => {
-        setLoading(true);
-        setError(null);
-        await customAxios(token).get(`/user/all`).then(res => {
-            setUsers(res.data.users);
-            setLoading(false);
-        }).catch(err => {
-            setLoading(false);
-            setError('Có lỗi xảy ra')
-        })
-    }
 
     const getAllTours = async (token) => {
         setLoading(true);
@@ -126,21 +108,6 @@ function AdminHome(props) {
             setError('Có lỗi xảy ra')
         })
     }
-
-    const getAllPosts = async token => {
-        setLoading(true);
-        setError(null);
-        await customAxios(token)
-            .get(`/post/posts`)
-            .then(res => {
-                setPosts(res.data.posts);
-                setLoading(false);
-            })
-            .catch(err => {
-                setLoading(false);
-                setError('Có lỗi xảy ra');
-            });
-    };
 
     useEffect(() => {
         getAllUsers(token);

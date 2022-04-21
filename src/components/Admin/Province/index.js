@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react'
 import { DataGrid, GridToolbarContainer, GridToolbarExport } from '@mui/x-data-grid';
-
+import Typography from '@material-ui/core/Typography';
 import customAxios from '../../../utils/fetchData';
 import { Container, IconButton, Paper } from '@material-ui/core';
 import { Edit, Visibility } from '@material-ui/icons';
@@ -87,29 +87,38 @@ export default function AdminProvinces() {
 
     return (
         <Container className={classes.container}>
-            <Paper className={classes.paper}>
-                <DataGrid
-                    rows={provinces}
-                    columns={columns}
-                    pageSize={pageSize}
-                    rowsPerPageOptions={[5, 10, 25]}
-                    onPageSizeChange={(newPageSize) => setPageSize(newPageSize)}
-                    pagination
-                    onRowDoubleClick={(province) => {
-                        history.push(`/admin/province/${province.row.name}`)
-                        // console.log(e);
-                    }}
-                    autoHeight
-                    loading={loading}
-                    error={error}
-                    getRowId={row => row._id}
-                    disableSelectionOnClick
-                    components={{
-                        Toolbar: ExportToolbar,
-                    }}
-                // style={{background:}}
-                />
-            </Paper>
+            <div className={classes.admin_location_header}>
+                <div>
+                <Typography variant="h4">{provinces.length} địa điểm du lịch</Typography>
+                </div>
+                <div>
+                </div>
+            </div>
+            <div>
+                <Paper className={classes.paper}>
+                    <DataGrid
+                        rows={provinces}
+                        columns={columns}
+                        pageSize={pageSize}
+                        rowsPerPageOptions={[5, 10, 25]}
+                        onPageSizeChange={(newPageSize) => setPageSize(newPageSize)}
+                        pagination
+                        onRowDoubleClick={(province) => {
+                            history.push(`/admin/province/${province.row.name}`)
+                            // console.log(e);
+                        }}
+                        autoHeight
+                        loading={loading}
+                        error={error}
+                        getRowId={row => row._id}
+                        disableSelectionOnClick
+                        components={{
+                            Toolbar: ExportToolbar,
+                        }}
+                    // style={{background:}}
+                    />
+                </Paper>
+            </div>
         </Container>
     )
 }
