@@ -18,11 +18,16 @@ const authReducer = (state = INIT_STATE, action) => {
         loading: false
       };
     }
-    case AUTH_TYPES.LOGIN_FAILED:
-    case AUTH_TYPES.LOGIN_LOADING: {
+    case AUTH_TYPES.LOGIN_FAILED: {
       return {
         ...state,
         loading: false
+      };
+    }
+    case AUTH_TYPES.LOGIN_LOADING: {
+      return {
+        ...state,
+        loading: true
       };
     }
     case AUTH_TYPES.LOGOUT: {
