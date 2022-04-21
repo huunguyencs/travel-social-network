@@ -529,9 +529,7 @@ export default function Location(props) {
           <CardMedia>
             {location.locationName ? (
               <img
-                src={
-                  'https://skillz4kidzmartialarts.com/wp-content/uploads/2017/04/default-image-620x600.jpg'
-                }
+                src={'default2.jpg'}
                 alt="Đang tải..."
                 className={classes.img}
               />

@@ -3,7 +3,7 @@ import {
   Card,
   CardActions,
   CardContent,
-  Typography,
+  Typography
 } from '@material-ui/core';
 import { Message } from '@material-ui/icons';
 import React, { useEffect, useState } from 'react';
@@ -34,7 +34,7 @@ export default function HelpCard({ help }) {
             recipients: [help.userId._id],
             url: `/help/my?id=${help._id}`,
             content: `${auth.user.fullname} sẽ đến giúp bạn!`,
-            image: `${auth.user.avatar}`,
+            image: `${auth.user.avatar}`
           };
 
           dispatch(createNotify(dataNotify, auth.token, socket));
@@ -103,29 +103,35 @@ export default function HelpCard({ help }) {
             : `Đã có ${help.state.length} người giúp`}
         </Typography>
       </CardContent>
-      <CardActions style={{ display: 'flex', justifyContent: 'space-between' }}>
-        {!helped && (
-          <Button size="small" variant="outlined" onClick={canHelp}>
-            Tôi có thể giúp
-          </Button>
-        )}
-        {own && (
-          <Button size="small" variant="outlined" onClick={removeHelp}>
-            Xóa yêu cầu trợ giúp
-          </Button>
-        )}
-        {!own && (
-          <Button
-            component={Link}
-            to={`/message/${help.userId._id}`}
-            variant="outlined"
-            size="small"
-            startIcon={<Message />}
-          >
-            Nhắn tin
-          </Button>
-        )}
-      </CardActions>
+      {auth.user && (
+        <CardActions
+          style={{ display: 'flex', justifyContent: 'space-between' }}
+        >
+          {own ? (
+            <Button size="small" variant="outlined" onClick={removeHelp}>
+              Xóa yêu cầu trợ giúp
+            </Button>
+          ) : (
+            <>
+              {!helped && (
+                <Button size="small" variant="outlined" onClick={canHelp}>
+                  Tôi có thể giúp
+                </Button>
+              )}
+
+              <Button
+                component={Link}
+                to={`/message/${help.userId._id}`}
+                variant="outlined"
+                size="small"
+                startIcon={<Message />}
+              >
+                Nhắn tin
+              </Button>
+            </>
+          )}
+        </CardActions>
+      )}
     </Card>
   );
 }
