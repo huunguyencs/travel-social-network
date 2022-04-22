@@ -35,13 +35,13 @@ function AdminPostReportDetail() {
 
   const { token } = useSelector(state => state.auth);
 
-  const getReport = async id => {
+  const getReport = async (id, _token) => {
     setState({
       notFound: false,
       loading: true,
       error: false
     });
-    await customAxios(token)
+    await customAxios(_token)
       .get(`/report/${id}`)
       .then(res => {
         setReport(res.data.report);
@@ -111,11 +111,16 @@ function AdminPostReportDetail() {
   }
 
   useEffect(() => {
+<<<<<<< HEAD
     getReport(subpage);
     if (report) {
       getPost(report.postId);
     }
   }, [subpage]);
+=======
+    getReport(subpage, token);
+  }, [subpage, token]);
+>>>>>>> f6600eb73e1ea629e63e4d3976ab459e802d880c
 
   useEffect(() => {
     if (report) {
