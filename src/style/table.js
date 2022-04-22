@@ -36,7 +36,6 @@ const tableStyles = makeStyles(
       marginTop: 10
     },
     cardIcon: {
-<<<<<<< HEAD
         fontSize: "37px",
         marginRight: 30,
     },
@@ -66,10 +65,6 @@ const tableStyles = makeStyles(
         justifyItems: "center",
         justifyContent: "center",
         display: 'flex',
-=======
-      fontSize: '37px',
-      marginRight: 30
->>>>>>> f6600eb73e1ea629e63e4d3976ab459e802d880c
     }
   }),
   { index: 1 }

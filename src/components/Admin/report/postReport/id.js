@@ -111,16 +111,8 @@ function AdminPostReportDetail() {
   }
 
   useEffect(() => {
-<<<<<<< HEAD
     getReport(subpage);
-    if (report) {
-      getPost(report.postId);
-    }
   }, [subpage]);
-=======
-    getReport(subpage, token);
-  }, [subpage, token]);
->>>>>>> f6600eb73e1ea629e63e4d3976ab459e802d880c
 
   useEffect(() => {
     if (report) {
@@ -173,14 +165,14 @@ function AdminPostReportDetail() {
             <Typography variant='h4' gutterBottom>
               Chi tiết
             </Typography>
-            {/* <div>
+            <div>
               <Feed>
                 <Post
                   post={post}
                   key={post._id}
                 />
               </Feed>
-            </div> */}
+            </div>
           </div>
           <div className={classes.cardReport}>
             <div>
