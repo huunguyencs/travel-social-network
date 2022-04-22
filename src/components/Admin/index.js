@@ -181,6 +181,8 @@ function AdminHome(props) {
                                         <LineChart
                                             width={1000}
                                             height={500}
+                                            loading ={loading}
+                                            error = {error}
                                             data={getData(posts, tours, users)}
                                             margin={{ top: 5, right: 20, left: 10, bottom: 5 }}
                                         >

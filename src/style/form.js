@@ -202,26 +202,6 @@ const formStyles = makeStyles(
         width: 300
       }
     },
-    imageService: {
-      width: 100,
-      height: 100
-    },
-    serviceInfo: {
-      marginLeft: 15,
-      width: '100%'
-    },
-    changeContainer: {
-      position: 'relative'
-    },
-    removeButton: {
-      position: 'absolute',
-      top: 0,
-      right: 0
-    },
-    sizeImageAvatar: {
-      width: '300px',
-      height: '300px'
-    },
     sizeImageBg: {
       width: '500px',
       height: '250px'
@@ -301,10 +281,6 @@ const formStyles = makeStyles(
       width: '100%',
       height: '300px'
     },
-    imageService: {
-      width: 100,
-      height: 100
-    },
     serviceInfo: {
       marginLeft: 15,
       width: '100%'
@@ -321,85 +297,6 @@ const formStyles = makeStyles(
       width: '300px',
       height: '300px'
     },
-    sizeImageBg: {
-      width: '500px',
-      height: '250px'
-    },
-    modal_header: {
-      display: 'flex',
-      alignItems: 'center',
-      justifyContent: 'space-between',
-      padding: '0 20px',
-      borderBottom: '1px solid #f1f1f1'
-    },
-    modal_header_closeIcon: {
-      color: color.gray,
-      fontSize: '20px',
-      width: '25px',
-      height: '25px'
-    },
-    create: {
-      marginTop: 20,
-      marginBottom: 20,
-      border: '1px solid #e8e8e8',
-      background: '#fff',
-      borderRadius: attr.borderRadius.md,
-      boxShadow: 'none'
-    },
-    createWrapper: {
-      borderRadius: attr.borderRadius.md
-    },
-    compose: {
-      padding: 16,
-      borderBottom: '1px solid #e8e8e8',
-      height: 60
-    },
-    composeForm: {
-      display: 'flex',
-      justifyContent: 'flex-start',
-      alignItems: 'stretch'
-    },
-    composeFormImage: {
-      height: 42,
-      width: 42,
-      borderRadius: '50%'
-    },
-    composeOptions: {
-      display: 'flex',
-      justifyContent: 'flex-start',
-      alignItems: 'center',
-      padding: 8,
-      borderRadius: '0 0 ${attr.borderRadius.md}px ${attr.borderRadius.md}px',
-      background: color.white,
-      cursor: 'pointer'
-    },
-    composeOption: {
-      position: 'relative',
-      display: 'flex',
-      justifyContent: 'flex-start',
-      alignItems: 'center',
-      padding: '6px 16px',
-      marginRight: 10,
-      background: '#f7f7f7',
-      borderRadius: 500,
-      fontSize: 15,
-      color: '#888da8',
-      transition: 'all 0.3s'
-    },
-    composeIcon: {
-      height: 20,
-      width: 20,
-      transition: 'all 0.3s',
-      marginRight: 5
-    },
-    sizeAvatarInfo: {
-      width: '100%',
-      height: '300px'
-    },
-    sizeBgInfo: {
-      width: '100%',
-      height: '300px'
-    }
   }),
   { index: 1 }
 );

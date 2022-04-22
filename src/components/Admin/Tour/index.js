@@ -164,6 +164,8 @@ export default function AdminTour() {
                 <BarChart
                   width={1000}
                   height={500}
+                  loading={loading}
+                  error = {error}
                   data={getData(tours)}
                   margin={{
                     top: 20,

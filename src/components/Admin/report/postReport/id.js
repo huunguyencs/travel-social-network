@@ -1,4 +1,4 @@
-import { CircularProgress, IconButton, Paper, Typography, Button, Box } from '@material-ui/core';
+import { CircularProgress, IconButton, Paper, Typography, Button } from '@material-ui/core';
 import { ArrowBack } from '@material-ui/icons';
 import React, { useEffect, useState } from 'react';
 import { Link, useParams } from 'react-router-dom';

@@ -211,6 +211,8 @@ export default function AdminReport() {
                   <BarChart
                     width={1000}
                     height={500}
+                    loading = {loading}
+                    error = {error}
                     data={getData(reports, locations, events)}
                     margin={{
                       top: 20,
