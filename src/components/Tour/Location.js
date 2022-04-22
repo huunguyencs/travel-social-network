@@ -1,6 +1,6 @@
-import { Button, Card, CardContent, CardMedia, Grid, IconButton, InputBase, Modal, Typography, Backdrop, Fade, MenuItem, Dialog, DialogTitle, DialogActions, Popper, ClickAwayListener, Paper, MenuList, TextField, CircularProgress, CardHeader, Avatar, InputAdornment } from "@material-ui/core";
+import { Button, Card, Collapse, CardContent, CardMedia, Grid, IconButton, InputBase, Modal, Typography, Backdrop, Fade, MenuItem, Dialog, DialogTitle, DialogActions, Popper, ClickAwayListener, Paper, MenuList, TextField, CircularProgress, CardHeader, Avatar, InputAdornment } from "@material-ui/core";
 import React, { useEffect, useState } from "react";
-import { Close, MoreVert } from "@material-ui/icons";
+import { Close, MoreVert, Label } from "@material-ui/icons";
 import { useDispatch, useSelector } from "react-redux";
 import { Link } from "react-router-dom";
 
@@ -143,8 +143,8 @@ function Detail(props) {
                         {
                             isEdit ?
                                 <>
-                                    <div style={{ overflowY: 'auto', height: '70vh'}}>
-                                        <Typography variant='h5' style={{ textAlign: 'center', marginTop: 10 }}>{location.locationName ? location.locationName : location.location.fullname}</Typography>
+                                    <div>
+                                        <Typography variant='h6' style={{ textAlign: 'center', marginTop: 10 }}>{location.locationName ? location.locationName : location.location.fullname}</Typography>
                                         <div style={{ margin: 20 }} >
                                             <InputBase
                                                 placeholder="Ghi chú"
@@ -191,12 +191,18 @@ function Detail(props) {
                                     </div>
                                 </>
                                 :
-                                <div style={{ overflowY: 'auto', height: '70vh' }}>
+                                <div>
                                     <Typography variant='h5' style={{ textAlign: 'center', marginTop: 10 }}>{location.locationName ? location.locationName : location.location.fullname}</Typography>
                                     <div style={{ padding: 20 }}>
-                                        <Typography>Chi phí: {new Intl.NumberFormat().format(location.cost * 1000)} VND</Typography>
-                                        <Typography>Thời gian: {location.time}</Typography>
-                                        <Typography>Mô tả: {location.description}</Typography>
+                                        <Typography>
+                                            <Label style={{fontSize: 15}}/><span style={{fontWeight: 500}}>Chi phí: </span>  {new Intl.NumberFormat().format(location.cost * 1000)} VND
+                                        </Typography>
+                                        <Typography>
+                                            <Label style={{fontSize: 15}}/><span style={{fontWeight: 500}}>Thời gian: </span> {location.time}
+                                        </Typography>
+                                        <Typography>
+                                            <Label style={{fontSize: 15}}/><span style={{fontWeight: 500}}>Mô tả: </span> {location.description}
+                                        </Typography>
                                     </div>
                                 </div>
                         }
@@ -344,13 +350,8 @@ export default function Location(props) {
     }
 
     const handleShowDetail = () => {
-        setShowDetail(true);
+        setShowDetail(state => !state);
     }
-
-    const handleCloseDetail = () => {
-        setShowDetail(false);
-    }
-
 
     const handleShowReview = () => {
         setShowReview(true);
@@ -391,7 +392,7 @@ export default function Location(props) {
 
             <Grid container>
                 <Grid item md={4} sm={3} className={classes.imageLocation}>
-                    <CardMedia>
+                    <CardMedia style={{height: 200}}>
                         {
                             location.locationName ?
                                 <img src={"https://skillz4kidzmartialarts.com/wp-content/uploads/2017/04/default-image-620x600.jpg"} alt="Đang tải..." className={classes.img} />
@@ -422,26 +423,26 @@ export default function Location(props) {
                                 {
                                     isSave &&
                                     <>
-                                        {
-                                            location.location && (joined || checkJoinLocation()) && <div> <Button className={classes.reviewBtn} onClick={handleShow}>Tạo Review</Button> </div>
-                                        }
-                                        {
-                                            location.postId?.length > 0 && <Button onClick={handleShowReview}>Xem review</Button>
-                                        }
-                                        {
-                                            !joined && !isOwn &&
-                                            <>
-                                                {loadingJoin ?
-                                                    <CircularProgress /> :
-                                                    <Button onClick={joinedLoc ? handleUnJoin : handleJoin}>
-                                                        {joinedLoc ? 'Huỷ tham gia' : 'Tham gia'}
-                                                    </Button>
+                                        <div style={{display:"flex"}}>
+                                            {
+                                                location.location && (joined || checkJoinLocation()) && <div> <Button className={classes.reviewBtn} onClick={handleShow}>Tạo Review</Button> </div>
+                                            }
+                                            {
+                                                location.postId?.length > 0 && <Button className={classes.reviewBtn} onClick={handleShowReview}>Xem review</Button>
+                                            }
+                                            {
+                                                !joined && !isOwn &&
+                                                <>
+                                                    {loadingJoin ?
+                                                        <CircularProgress /> :
+                                                        <Button onClick={joinedLoc ? handleUnJoin : handleJoin} className={classes.reviewBtn}>
+                                                            {joinedLoc ? 'Huỷ tham gia' : 'Tham gia'}
+                                                        </Button>
 
-                                                }
-                                            </>
-
-
-                                        }
+                                                    }
+                                                </>
+                                            }
+                                        </div>
                                         <Typography>Thành viên tham gia</Typography>
                                         <AvatarGroup max={4} onClick={handleShowJoin} style={{ cursor: 'pointer' }}>
                                             {joinIds.concat(location.joinIds).map(user =>
@@ -464,7 +465,7 @@ export default function Location(props) {
                                         </Modal>
                                     </>
                                 }
-                                <Button onClick={handleShowDetail}>Chi tiết</Button>
+                                <Button className={classes.reviewBtn} onClick={handleShowDetail}>Chi tiết</Button>
                             </div>
                             {isEdit &&
                                 <div>
@@ -479,9 +480,6 @@ export default function Location(props) {
                                         onClose={handleCloseMenu}
                                         disablePortal
                                     >
-                                        {/* <Grow
-                                            style={{ transformOrigin: "center bottom" }}
-                                        > */}
                                         <ClickAwayListener onClickAway={handleCloseMenu}>
                                             <Paper>
                                                 <MenuList>
@@ -537,13 +535,10 @@ export default function Location(props) {
                                                 </MenuList>
                                             </Paper>
                                         </ClickAwayListener>
-                                        {/* </Grow> */}
                                     </Popper>
                                 </div>
                             }
                         </div>
-
-
                         <Modal
                             aria-labelledby="transition-modal-title"
                             aria-describedby="transition-modal-description"
@@ -589,7 +584,19 @@ export default function Location(props) {
                         </Modal>
                     </CardContent>
                 </Grid>
-
+                <Grid item md={12} sm={12} xs={12}>
+                    <Collapse in={showDetail} style={{ width: "100%" }}>
+                        <DetailRef
+                            ref={refDetail}
+                            location={location}
+                            isEdit={isEdit}
+                            indexDate={indexDate}
+                            indexLocation={indexLocation}
+                            handleClose={handleShowDetail}
+                            joined={joined}
+                        />
+                    </Collapse>
+                </Grid>
                 {/* <Collapse in={showDetail} style={{ width: "100%" }}>
                     <Grid item md={12} sm={12} xs={12}>
                         <Detail
@@ -600,7 +607,7 @@ export default function Location(props) {
                         />
                     </Grid>
                 </Collapse> */}
-                <Modal
+                {/* <Modal
                     aria-labelledby="transition-modal-detail"
                     aria-describedby="transition-modal-detail-description"
                     open={showDetail}
@@ -622,7 +629,7 @@ export default function Location(props) {
                             joined={joined}
                         />
                     </Fade>
-                </Modal>
+                </Modal> */}
 
             </Grid>
         </Card >

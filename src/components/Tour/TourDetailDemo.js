@@ -10,7 +10,7 @@ import MapCard from "../Map/MapCard";
 import ImageModal from "../Modal/Image";
 import { Close, Update, LocationOnOutlined, Label } from "@material-ui/icons";
 import { ServiceCard } from "./AddService";
-import { Link } from "react-router-dom";
+// import { Link } from "react-router-dom";
 import UserList from "../Modal/UserList";
 import { useDispatch, useSelector } from "react-redux";
 import { joinTour, unJoinTour } from "../../redux/callApi/tourCall";
@@ -40,7 +40,7 @@ function DetailDate(props) {
                 <Grid item md={12} sm={12} xs={12}>
                     <div >
                         <div style={{ display: 'flex', justifyContent: 'space-between' }}>
-                            <Typography variant='h5' style={{ textAlign: 'center', marginTop: 10 }}>Danh sách dịch vụ</Typography>
+                            <Typography variant='h6' style={{ textAlign: 'center', marginTop: 10 }}>Danh sách dịch vụ</Typography>
                         </div>
                         {
                             tourDate.services.map(((item, index) =>
@@ -363,8 +363,7 @@ export default function TourDetailDemo(props) {
                             </Grid>
                             <Grid container className={classes.tourDates}>
                                 <Grid item lg={8} md={8} sm={12} className={classes.tourDatesLeft}>
-                                    <div className={classes.datesWrapper}>
-                                    <Stepper  activeStep={idx}  orientation="vertical" >
+                                    <Stepper  activeStep={idx}  orientation="vertical" className={classes.datesWrapper}>
                                         {tour.tour.map((item, index) => (
                                         <Step key={index}  onClick={() => setIdx(index)}>
                                             <StepLabel StepIconComponent={ColorlibStepIcon}>Chi tiết lịch trình ngày {convertDateToStr(item.date)}</StepLabel>
@@ -377,7 +376,7 @@ export default function TourDetailDemo(props) {
                                                     variant="scrollable"
                                                     scrollButtons="auto"
                                                     aria-label="scrollable auto tabs example"
-                                                    >
+                                                >
                                                     <Tab label="Tổng quan ngày" {...a11yProps(0)} />
                                                     <Tab label="Các địa điểm" {...a11yProps(1)} />
                                                 </Tabs>
@@ -385,15 +384,15 @@ export default function TourDetailDemo(props) {
                                                     <DetailDateRef ref={refDetail} date={idx} tourDate={tour.tour[idx]} joined={joined} />
                                                 </TabPanel>
                                                 <TabPanel value={value} index={1} className={classes.tabPanel}>
-                                                    {
-                                                    tour.tour[idx].locations.map((item, indexLocation) => (
+                                                {
+                                                    tour.tour[idx].locations.map((item, index) => (
                                                         <Location
                                                             location={item}
                                                             indexDate={idx}
                                                             tourDateId={tour.tour[idx]._id}
-                                                            indexLocation={indexLocation}
+                                                            indexLocation={index}
                                                             edit={false}
-                                                            key={indexLocation}
+                                                            key={index}
                                                             isSave={true}
                                                             isEdit={false}
                                                             addReview={createReview}
@@ -410,7 +409,6 @@ export default function TourDetailDemo(props) {
                                         </Step>
                                         ))}
                                     </Stepper>
-                                    </div>
                                 </Grid>
                                 <Grid item lg={4} md={4} sm={12} className={classes.tourDatesRight}>
                                     <div className={classes.map}>

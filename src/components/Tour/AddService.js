@@ -219,7 +219,7 @@ function DetailService(props) {
     const classes = tourdetailStyles();
 
     return (
-        <div style={{ padding: 15, paddingTop: 0 }}>
+        <div style={{ padding: 15 }}>
             {
                 isEdit ?
                     <div >
@@ -253,7 +253,7 @@ function DetailService(props) {
                         </div>
                     </div> :
                     <div>
-                         <Typography>
+                        <Typography>
                             <Label style={{fontSize: 15}}/><span style={{fontWeight: 500}}>Chi phí: </span>  {new Intl.NumberFormat().format(cost * 1000)} VND
                         </Typography>
                         <Typography>
@@ -316,13 +316,12 @@ export function ServiceCard(props) {
         <Card className={classes.serviceContainer} >
             <Grid container>
                 <Grid item md={5} sm={3} className={classes.imageLocation}>
-                    <CardMedia>
+                    <CardMedia style={{height: 160}}>
                         <img src={service.service ? service.service.images[0] : 'https://skillz4kidzmartialarts.com/wp-content/uploads/2017/04/default-image-620x600.jpg'} alt="Service" className={classes.img} />
                     </CardMedia>
                 </Grid>
                 <Grid item md={7} sm={9} xs={12}>
                     <CardContent className={classes.contentContainer}>
-
                         <div className={classes.locationContentContainer}>
                             <div>
                                 <div>

@@ -59,11 +59,9 @@ const tourdetailStyles = makeStyles((theme) => ({
         display: "flex",
     },
     img: {
-        height: "180px",
+        height: "100%",
         width: "100%",
-        [theme.breakpoints.down("md")]: {
-            height: "100px",
-        }
+        objectFit: "cover"
     },
     contentContainer: {
         marginTop: 10,
@@ -73,12 +71,35 @@ const tourdetailStyles = makeStyles((theme) => ({
         justifyContent: 'space-between'
     },
     reviewBtn: {
-        // backgroundColor: "#ECCC68",
-        // borderRadius: attr.borderRadius.md,
-        // padding: 8,
-        // paddingInline: 15,
-        // marginTop: 15,
-        // marginBottom: 5,
+        marginRight: 5,
+        color: "#63b696",
+        borderRadius: 5,
+        backgroundColor: "transparent",
+        cursor: "pointer",
+        fontWeight: 500,
+        outline: "none",
+        border: `1px solid ${color.turquoise}`,
+        fontSize: 12,
+        position: "relative",
+        isolation: "isolate",
+        "&::before": {
+            content: "''",
+            height: "100%",
+            width: 0,
+            position: "absolute",
+            top: 0,
+            left: 0,
+            backgroundColor: "#63b696",
+            zIndex: -1,
+            transition: "width 0.25s ease-in",
+            color:color.white
+        },
+        "&:hover::before": {
+            width: "100%"
+        },
+        "&:hover": {
+            color: color.white
+        },
     },
     locationName: {
         marginTop: 10,
@@ -350,8 +371,8 @@ const tourdetailStyles = makeStyles((theme) => ({
         maxWidth: 1280,
         padding: 0,
         flexGrow: 1,
-        marginLeft: 60,
-        marginTop: 20
+        marginTop: 16,
+        marginInline: 16
 
     },
     tourInfoLeftImage:{
@@ -362,8 +383,8 @@ const tourdetailStyles = makeStyles((theme) => ({
 
     },
     tourRecommend:{
-        margin:"0 30px 20px 10px",
-        height: 600,
+        margin:"0 0 20px 10px",
+        height: "100%",
         borderRadius: attr.borderRadius.md,
         boxShadow: "0 2px 8px #00000026",
     },
@@ -372,11 +393,12 @@ const tourdetailStyles = makeStyles((theme) => ({
         padding: 10,
         borderRadius: attr.borderRadius.md,
         boxShadow: "0 2px 8px #00000026",
+        backgroundColor: color.white
     },
     tourName:{
         fontWeight: 500,
-        fontSize: 20,
-        letterSpacing: 2
+        fontSize: 25,
+        letterSpacing: 1
     },
     tourTime:{
         height: 100,
@@ -386,8 +408,8 @@ const tourdetailStyles = makeStyles((theme) => ({
     tourDates:{
         padding: 0,
         flexGrow: 1,
-        marginLeft: 60,
-        marginTop: 10
+        marginTop: 10,
+        marginInline: 16
     },
     tourDatesRight:{
 
@@ -397,10 +419,11 @@ const tourdetailStyles = makeStyles((theme) => ({
         top: 74,
         borderRadius: attr.borderRadius.md,
         boxShadow: "0 2px 8px #00000026",
-        margin:"0 0 0 10px"
+        margin:"0 0 0 10px",
+        overflow:"hidden"
     },
     datesWrapper:{
-        
+        borderRadius: attr.borderRadius.md
     }
     
 
