@@ -251,6 +251,6 @@ const volunteerDetailStyles = makeStyles((theme) => ({
             fontSize: "14px",
         },
     },
-}))
+}), {index: 1})
 
 export default volunteerDetailStyles;

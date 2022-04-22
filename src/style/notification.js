@@ -89,6 +89,6 @@ const notificationStyles = makeStyles((theme) => ({
         }
     }
 
-}))
+}), {index: 1})
 
 export default notificationStyles;

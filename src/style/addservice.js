@@ -40,6 +40,6 @@ const addServiceStyles = makeStyles((theme) => ({
         marginBlock: 5,
         paddingBottom: 10
     }
-}))
+}), {index: 1})
 
 export default addServiceStyles;

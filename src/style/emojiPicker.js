@@ -24,6 +24,6 @@ const emoijPickerStyles = makeStyles((theme) => ({
             backgroundColor: color.lightgray,
         }
     }
-}));
+}), {index: 1});
 
 export default emoijPickerStyles;

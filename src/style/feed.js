@@ -71,14 +71,67 @@ const feedStyles = makeStyles((theme) => ({
         display: 'flex',
         justifyContent: 'center'
     },
+    button: {
+        position: "relative",
+        isolation: "isolate",
+        backgroundColor: color.turquoise,
+        padding: 10,
+        paddingInline: 20,
+        borderRadius: attr.borderRadius.md,
+        [theme.breakpoints.down("sm")]: {
+            padding: 5,
+            paddingInline: 10,
+            marginBlock: 10,
+        },
+        "&::before": {
+            content: "''",
+            height: "100%",
+            width: 0,
+            position: "absolute",
+            top: 0,
+            left: 0,
+            backgroundColor: "#77a694",
+            zIndex: -1,
+            borderRadius: attr.borderRadius.md,
+            transition: "width 0.25s ease-in",
+        },
+        "&:hover::before": {
+            width: "100%"
+        },
+        "&:hover": {
+           color: color.white
+        },
+        transition: "color 0.25s ease-in",
+    },
     createTour: {
+        position: "relative",
+        isolation: "isolate",
         backgroundColor: color.turquoise,
         borderRadius: attr.borderRadius.md,
         padding: 10,
         display: 'flex',
         justifyContent: 'center',
         marginLeft: 10,
-        width: "100%"
+        width: "100%",
+        "&::before": {
+            content: "''",
+            height: 0,
+            width: "100%",
+            position: "absolute",
+            bottom: 0,
+            left: 0,
+            backgroundColor: "#77a694",
+            zIndex: -1,
+            borderRadius: attr.borderRadius.md,
+            transition: "height 0.25s ease-in",
+        },
+        "&:hover::before": {
+           height: "100%"
+        },
+        "&:hover": {
+           color: color.white
+        },
+        transition: "color 0.25s ease-in",
     },
     contentSubNav:{
         position: "sticky",
@@ -152,6 +205,11 @@ const feedStyles = makeStyles((theme) => ({
         display: "flex",
         justifyContent: "center"
     },
-}));
+    filterTour:{
+        [theme.breakpoints.down("sm")]: {
+           display: "none"
+        }
+    }
+}), {index: 1});
 
 export default feedStyles;

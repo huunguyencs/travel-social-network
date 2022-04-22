@@ -7,6 +7,6 @@ const mapCardStyles = makeStyles((theme) => ({
         marginInline: 20,
         marginTop: 50,
     }
-}))
+}), {index: 1})
 
 export default mapCardStyles;

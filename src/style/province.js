@@ -126,6 +126,6 @@ const provinceStyles = makeStyles((theme) => ({
         display: 'flex',
         justifyContent: 'right'
     }
-}))
+}), {index: 1})
 
 export default provinceStyles;

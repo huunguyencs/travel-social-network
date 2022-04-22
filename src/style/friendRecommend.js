@@ -63,6 +63,6 @@ const friendCardStyles = makeStyles((theme) => ({
         marginRight: 8
     }
 
-}))
+}), {index: 1})
 
 export default friendCardStyles;

@@ -160,11 +160,14 @@ export default function FilterTour(props) {
         <div className={classes.filterBody}>
           {isFiltering && (
             <div>
-              <Chip
-                label={text}
-                onDelete={() => removeFilterText()}
-                style={{ marginInline: 5 }}
-              />
+              {
+                text !== '' && 
+                <Chip
+                  label={text}
+                  onDelete={() => removeFilterText()}
+                  style={{ marginInline: 5 }}
+                />
+              }
               <Button style={{ color: 'red' }} onClick={removeFilter}>
                 Xoá bộ lọc
               </Button>
@@ -172,7 +175,7 @@ export default function FilterTour(props) {
           )}
           <List component="nav" className={classes.filterOptions}>
             <ListItem button onClick={handleClickCost}>
-              <ListItemText style={{ fontWeight: 500 }} primary="Khoảng giá" />
+              <ListItemText style={{ fontWeight: 500 }} primary="Khoảng chi phí" />
               {openCost ? <ExpandLess /> : <ExpandMore />}
             </ListItem>
             <Collapse in={openCost} timeout="auto" unmountOnExit>

@@ -86,6 +86,6 @@ const addVolunteerStyles = makeStyles((theme) => ({
         alignItems: 'center',
         justifyContent: 'center',
     }
-}))
+}), {index: 1})
 
 export default addVolunteerStyles;

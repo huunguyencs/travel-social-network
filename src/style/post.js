@@ -298,6 +298,6 @@ const postStyles = makeStyles((theme) => ({
     shareWrapperNotImage:{
         margin: "0 2px"
     }
-}))
+}), {index: 1})
 
 export default postStyles;

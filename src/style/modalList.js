@@ -134,6 +134,6 @@ const modalListStyles = makeStyles((theme) => ({
     userWrap: {
         display: 'flex'
     }
-}))
+}), {index: 1})
 
 export default modalListStyles;

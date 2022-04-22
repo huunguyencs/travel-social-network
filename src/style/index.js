@@ -55,6 +55,20 @@ const useStyles = makeStyles((theme) => ({
             maxWidth: 960
         }
     },
+    containerProvince:{
+        flexGrow: 1, 
+        padding: 0,
+        margin: "0 auto",
+        width: "auto",
+        marginTop: -50
+    },
+    wrapperProvinces:{
+        marginTop: 70,
+        paddingRight: 20,
+        [theme.breakpoints.down('sm')]: {
+            paddingRight: 0,
+        }
+    },
     center: {
         display: 'flex',
         justifyContent: 'center',
@@ -71,7 +85,7 @@ const useStyles = makeStyles((theme) => ({
         textAlign: "center",
     }
 
-}));
+}), {index: 1});
 
 export default useStyles;
 export {

@@ -41,6 +41,6 @@ const volunteerStyles = makeStyles((theme) => ({
     width: 350,
     marginLeft: 30
   }
-}))
+}), {index: 1})
 
 export default volunteerStyles;

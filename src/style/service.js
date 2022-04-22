@@ -17,7 +17,7 @@ const serviceStyles = makeStyles((theme) => ({
         }
     },
     container: {
-        margin: 50,
+        margin: "16px 0 16px 0",
         [theme.breakpoints.down("sm")]: {
             margin: 10
         }
@@ -138,6 +138,6 @@ const serviceStyles = makeStyles((theme) => ({
             marginTop: 80
         }
     }
-}))
+}), {index: 1})
 
 export default serviceStyles;

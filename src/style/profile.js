@@ -306,6 +306,6 @@ const profileStyles = makeStyles((theme) => ({
     marginLeft: 20
   }
 
-}));
+}), {index: 1});
 
 export default profileStyles;

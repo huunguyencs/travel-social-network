@@ -91,6 +91,6 @@ const commentStyles = makeStyles((theme) => ({
             textDecorationLine: 'underline',
         }
     }
-}))
+}), {index: 1})
 
 export default commentStyles;

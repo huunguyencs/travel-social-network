@@ -41,7 +41,7 @@ const searchStyles = makeStyles((theme) => ({
         height: theme.spacing(10),
         marginRight: 20
     }
-}));
+}), {index: 1});
 
 
 export default searchStyles;

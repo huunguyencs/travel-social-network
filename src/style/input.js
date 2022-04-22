@@ -71,6 +71,6 @@ const inputStyles = makeStyles((theme) => ({
         top: 5,
         right: 5,
     },
-}))
+}), {index: 1})
 
 export default inputStyles;

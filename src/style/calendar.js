@@ -188,6 +188,6 @@ const calendarStyles = makeStyles((theme) => ({
             padding: '0px',
         }
     }
-}))
+}), {index: 1})
 
 export default calendarStyles;

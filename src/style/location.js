@@ -203,6 +203,6 @@ const locationStyles = makeStyles((theme) => ({
         borderRadius: attr.borderRadius.md
     }
 
-}))
+}), {index: 1})
 
 export default locationStyles;

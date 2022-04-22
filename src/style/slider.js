@@ -66,6 +66,6 @@ const sliderStyles = makeStyles((theme) => ({
             marginTop: 24,
         },
     }
-}));
+}), {index: 1});
 
 export default sliderStyles;

@@ -218,6 +218,6 @@ const messageStyles = makeStyles((theme) => ({
             display: "none"
         }
     }
-}));
+}), {index: 1});
 
 export default messageStyles;

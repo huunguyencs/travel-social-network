@@ -92,7 +92,7 @@ const eventStyles = makeStyles((theme) => ({
         marginRight: "10px",
         color: color.black
     },
-}))
+}), {index: 1})
 
 
 export default eventStyles;

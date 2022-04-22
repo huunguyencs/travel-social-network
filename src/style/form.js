@@ -11,7 +11,7 @@ const formStyles = makeStyles((theme) => ({
         width: '100%',
     },
     paperContainer: {
-        padding: 10,
+        padding: 16,
         width: 550,
         display: 'flex',
         flexDirection: 'column',
@@ -34,17 +34,36 @@ const formStyles = makeStyles((theme) => ({
         justifyContent: "space-between",
     },
     button: {
-        // width: "100%",
+        position: "relative",
+        isolation: "isolate",
         backgroundColor: color.turquoise,
         padding: 10,
         paddingInline: 20,
-        marginBlock: 15,
         borderRadius: attr.borderRadius.md,
         [theme.breakpoints.down("sm")]: {
             padding: 5,
             paddingInline: 10,
             marginBlock: 10,
-        }
+        },
+        "&::before": {
+            content: "''",
+            height: "100%",
+            width: 0,
+            position: "absolute",
+            top: 0,
+            left: 0,
+            backgroundColor: "#77a694",
+            zIndex: -1,
+            borderRadius: attr.borderRadius.md,
+            transition: "width 0.25s ease-in",
+        },
+        "&:hover::before": {
+            width: "100%"
+        },
+        "&:hover": {
+           color: color.white
+        },
+        transition: "color 0.25s ease-in",
     },
     hashtag: {
         width: "100%",
@@ -100,10 +119,10 @@ const formStyles = makeStyles((theme) => ({
         marginInline: 20
     },
     imageInputContainer: {
-        marginInline: "20px",
-        maxWidth: "500px",
+        // marginInline: "20px",
+        maxWidth: "100%",
         [theme.breakpoints.down("sm")]: {
-            maxWidth: "300px"
+            maxWidth: "100%"
         }
     },
     imageInput: {
@@ -228,11 +247,11 @@ const formStyles = makeStyles((theme) => ({
         width: '500px',
         height: '250px'
     },
+
     modal_header:{
         display: "flex",
         alignItems: "center",
         justifyContent: "space-between",
-        padding: "0 20px",
         borderBottom: "1px solid #f1f1f1"
     },
     modal_header_closeIcon: {
@@ -244,7 +263,6 @@ const formStyles = makeStyles((theme) => ({
     create: {
         marginTop: 20,
         marginBottom: 20,
-        border: "1px solid #e8e8e8",
         background: "#fff",
         borderRadius: attr.borderRadius.md,
         boxShadow: "none"
@@ -253,7 +271,12 @@ const formStyles = makeStyles((theme) => ({
         borderRadius: attr.borderRadius.md,
     },
     compose:{
-        padding: 16,
+        padding: "16px 10px 16px 0px",
+        borderBottom: "1px solid #e8e8e8",
+        height: 100
+    },
+    composeTour:{
+        padding: "16px 10px 16px 0px",
         borderBottom: "1px solid #e8e8e8",
         height: 60
     },
@@ -271,7 +294,6 @@ const formStyles = makeStyles((theme) => ({
         display: "flex",
         justifyContent: "flex-start",
         alignItems: "center",
-        padding: 8,
         borderRadius: `0 0 ${attr.borderRadius.md}px ${attr.borderRadius.md}px`,
         background: color.white,
         cursor: "pointer"
@@ -287,7 +309,8 @@ const formStyles = makeStyles((theme) => ({
         borderRadius: 500,
         fontSize: 15,
         color: "#888da8",
-        transition: "all 0.3s"
+        transition: "all 0.3s",
+        cursor: "pointer"
     },
     composeIcon:{
         height: 20,
@@ -295,6 +318,10 @@ const formStyles = makeStyles((theme) => ({
         transition: "all 0.3s",
         marginRight: 5
     },
-}))
+    createText: {
+        marginLeft: 15,
+        width: "100%",
+    }
+}), {index: 1})
 
 export default formStyles;

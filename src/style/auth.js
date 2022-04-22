@@ -60,7 +60,7 @@ const authStyles = makeStyles((theme) => ({
         justifyContent: 'center',
     },
     formInput: {
-        margin: "10px",
+        margin: 5,
         marginInline: "60px",
         backgroundColor: color.white,
         borderRadius: 5,
@@ -70,7 +70,6 @@ const authStyles = makeStyles((theme) => ({
         }
     },
     loginGroup: {
-        marginTop: "40px",
         display: 'flex',
         justifyContent: 'center'
     },
@@ -150,6 +149,6 @@ const authStyles = makeStyles((theme) => ({
         backgroundColor: color.success,
     }
 
-}))
+}), {index: 1})
 
 export default authStyles;

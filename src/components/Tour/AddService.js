@@ -6,7 +6,7 @@ import * as tourAction from '../../redux/actions/createTourAction';
 import Autocomplete, { createFilterOptions } from '@material-ui/lab/Autocomplete';
 import { formStyles, tourdetailStyles } from '../../style';
 // import { Link } from 'react-router-dom';
-import { AddCircle, MoreVert } from '@material-ui/icons';
+import { AddCircle, MoreVert, Label } from '@material-ui/icons';
 import { ReviewArea } from '../Service/ServiceItem';
 import { success } from '../../redux/actions/alertAction';
 
@@ -253,8 +253,12 @@ function DetailService(props) {
                         </div>
                     </div> :
                     <div>
-                        <Typography>Chi phí: {new Intl.NumberFormat().format(cost * 1000)} VND</Typography>
-                        <Typography>Mô tả: {description}</Typography>
+                         <Typography>
+                            <Label style={{fontSize: 15}}/><span style={{fontWeight: 500}}>Chi phí: </span>  {new Intl.NumberFormat().format(cost * 1000)} VND
+                        </Typography>
+                        <Typography>
+                            <Label style={{fontSize: 15}}/> <span style={{fontWeight: 500}}> Mô tả: </span> {description}
+                        </Typography> 
                     </div>
             }
             {!isEdit && joined && service?.service &&

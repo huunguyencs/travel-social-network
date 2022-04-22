@@ -70,7 +70,7 @@ export default function TourDetail(props) {
 
     const dispatch = useDispatch();
     const { auth } = useSelector(state => state)
-
+    
     // const history = useHistory();
     // const dispatch = useDispatch();
 

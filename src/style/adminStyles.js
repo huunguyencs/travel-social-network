@@ -99,6 +99,6 @@ const adminStyles = makeStyles((theme) => ({
     button: {
 
     }
-}))
+}), {index: 1})
 
 export default adminStyles;

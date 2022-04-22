@@ -15,16 +15,16 @@ const tourdetailStyles = makeStyles((theme) => ({
         borderRadius: attr.borderRadius.md,
         paddingInline: 20,
     },
-    container: {
-        // maxWidth: "90%",
-        maxWidth: "100%",
-        paddingInline: 80,
-        marginTop: 20,
-        marginBottom: 0,
-        [theme.breakpoints.down("md")]: {
-            paddingRight: 0
-        }
-    },
+    // container: {
+    //     // maxWidth: "90%",
+    //     maxWidth: "100%",
+    //     paddingInline: 80,
+    //     marginTop: 20,
+    //     marginBottom: 0,
+    //     [theme.breakpoints.down("md")]: {
+    //         paddingRight: 0
+    //     }
+    // },
     hiddenSmall: {
         [theme.breakpoints.down("sm")]: {
             display: 'none'
@@ -45,18 +45,10 @@ const tourdetailStyles = makeStyles((theme) => ({
         }
     },
     serviceContainer: {
-        margin: 30,
-        width: 420,
-        // borderRadius: attr.borderRadius.sm,
-        [theme.breakpoints.down("md")]: {
-            width: 400
-        },
-        [theme.breakpoints.down("sm")]: {
-            width: 500
-        },
-        [theme.breakpoints.down("xs")]: {
-            width: 400,
-        }
+        marginTop: 10,
+        width: "100%",
+        borderRadius: attr.borderRadius.sm
+
     },
     detailInfo: {
         // marginTop: 30
@@ -193,7 +185,10 @@ const tourdetailStyles = makeStyles((theme) => ({
         }
     },
     image: {
-        cursor: 'pointer'
+        objectFit: "cover",
+        cursor: 'pointer',
+        height: "100%",
+        borderRadius: attr.borderRadius.md
     },
     tabsMenu: {
         display: 'flex',
@@ -333,9 +328,83 @@ const tourdetailStyles = makeStyles((theme) => ({
         }
     },
     paperDetailDate: {
-        width: 1000,
-        height: '70vh'
+        width: "100%"
+    },
+
+
+
+
+
+
+    container:{
+        margin: 0,
+        paddingTop: 64
+    },
+    tourDetailContainer:{
+        maxWidth: 1280,
+        flexGrow: 1, 
+        padding: 0,
+        margin: "0 auto",
+    },
+    tourInfos:{
+        maxWidth: 1280,
+        padding: 0,
+        flexGrow: 1,
+        marginLeft: 60,
+        marginTop: 20
+
+    },
+    tourInfoLeftImage:{
+        height: 500,
+        width: "100%"
+    },
+    tourInfoRight:{
+
+    },
+    tourRecommend:{
+        margin:"0 30px 20px 10px",
+        height: 600,
+        borderRadius: attr.borderRadius.md,
+        boxShadow: "0 2px 8px #00000026",
+    },
+    tourLeftInfo:{
+        marginTop: 10,
+        padding: 10,
+        borderRadius: attr.borderRadius.md,
+        boxShadow: "0 2px 8px #00000026",
+    },
+    tourName:{
+        fontWeight: 500,
+        fontSize: 20,
+        letterSpacing: 2
+    },
+    tourTime:{
+        height: 100,
+        width: "100%",
+        borderBottom: "1px solid black"
+    },
+    tourDates:{
+        padding: 0,
+        flexGrow: 1,
+        marginLeft: 60,
+        marginTop: 10
+    },
+    tourDatesRight:{
+
+    },
+    map:{
+        position: "sticky" ,
+        top: 74,
+        borderRadius: attr.borderRadius.md,
+        boxShadow: "0 2px 8px #00000026",
+        margin:"0 0 0 10px"
+    },
+    datesWrapper:{
+        
     }
-}))
+    
+
+
+}), {index: 1})
 
 export default tourdetailStyles;

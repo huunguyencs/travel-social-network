@@ -38,6 +38,6 @@ const tableStyles = makeStyles((theme) => ({
         fontSize: "37px",
         marginRight: 30,
     }
-}))
+}), {index: 1})
 
 export default tableStyles;

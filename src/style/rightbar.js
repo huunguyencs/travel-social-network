@@ -12,6 +12,6 @@ const rightbarStyles = makeStyles((theme) => ({
         top: 0,
         alignItems: 'center'
     },
-}));
+}), {index: 1});
 
 export default rightbarStyles;
