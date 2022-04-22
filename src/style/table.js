@@ -65,6 +65,7 @@ const tableStyles = makeStyles(
         justifyItems: "center",
         justifyContent: "center",
         display: 'flex',
+        marginTop: 50
     }
   }),
   { index: 1 }

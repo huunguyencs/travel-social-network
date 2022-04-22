@@ -41,7 +41,7 @@ function AdminPostReportDetail() {
       loading: true,
       error: false
     });
-    await customAxios(_token)
+    await customAxios(token)
       .get(`/report/${id}`)
       .then(res => {
         setReport(res.data.report);
@@ -85,30 +85,30 @@ function AdminPostReportDetail() {
       });
   }
 
-  const deletePost = async id => {
-    setState({
-      notFound: false,
-      loading: true,
-      error: false
-    });
-    await customAxios(token)
-      .delete(`/post/${id}`)
-      .then(res => {
-        setPost(res.data.post);
-        setState({
-          notFound: false,
-          loading: false,
-          error: false
-        });
-      })
-      .catch(err => {
-        setState({
-          notFound: false,
-          loading: false,
-          error: true
-        });
-      });
-  }
+  // const deletePost = async id => {
+  //   setState({
+  //     notFound: false,
+  //     loading: true,
+  //     error: false
+  //   });
+  //   await customAxios(token)
+  //     .delete(`/post/${id}`)
+  //     .then(res => {
+  //       setPost(res.data.post);
+  //       setState({
+  //         notFound: false,
+  //         loading: false,
+  //         error: false
+  //       });
+  //     })
+  //     .catch(err => {
+  //       setState({
+  //         notFound: false,
+  //         loading: false,
+  //         error: true
+  //       });
+  //     });
+  // }
 
   useEffect(() => {
     getReport(subpage);
