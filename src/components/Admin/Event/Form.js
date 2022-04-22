@@ -117,7 +117,7 @@ export default function FormAddEvent(props) {
                     dispatch(error({ message: 'Có lỗi xảy ra' }))
                 })
             }
-            else {
+            else if(mode ==='add') {
                 await customAxios(token).post(`/event/create`, {
                     ...event,
                     provinceId: provinceOpt._id
@@ -128,7 +128,17 @@ export default function FormAddEvent(props) {
                     dispatch(error({ message: 'Có lỗi xảy ra' }))
                 })
             }
+            else if(mode ==='contribute') {
+                await customAxios(token).post(`/eventContribute/create`, {
+                    ...event,
+                    provinceId: provinceOpt._id
+                }).then(res => {
 
+                    dispatch(success({ message: 'Cảm ơn bạn đã đóng góp sự kiện' }))
+                }).catch(err => {
+                    dispatch(error({ message: 'Có lỗi xảy ra' }))
+                })
+            }
         }
         setLoading(false);
     }

@@ -185,6 +185,7 @@ function AdminPosts(props) {
                                     width={1000}
                                     height={500}
                                     data={getData(posts)}
+                                    loading={loading}
                                     margin={{
                                         top: 20,
                                         right: 30,

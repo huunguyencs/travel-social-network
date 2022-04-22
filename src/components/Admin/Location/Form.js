@@ -159,7 +159,15 @@ export default function FormLocationAdmin(props) {
                 })
             }
             else if (mode === 'contribute') {
+                await customAxios(token).post(`/locationContribute/create`, {
+                    ...location,
+                    province: provinceOpt._id
+                }).then(res => {
+                    dispatch(success({ message: 'Cảm ơn bạn đã đóng góp địa điểm' }))
+                }).catch(err => {
 
+                    dispatch(error({ message: 'Có lỗi xảy ra' }))
+                })
             }
         }
         setLoading(false);

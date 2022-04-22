@@ -37,6 +37,33 @@ const tableStyles = makeStyles((theme) => ({
     cardIcon: {
         fontSize: "37px",
         marginRight: 30,
+    },
+    containerReport:{
+        display: "flex",
+        flexDirection: "row",
+        justifyContent: "space-between",
+    },
+    cardPost:{
+        width: "600px",
+        margin: 20,
+        padding: 20,
+        borderRadius: 10,
+        backgroundColor: "#a5dec8"
+    },
+    cardReport:{
+        margin: 20,
+        padding: 20,
+        borderRadius: 10,
+        width: "400px",
+        backgroundColor: "#a5dec8"
+    },
+    textReport:{
+        margin: 10,
+    },
+    btnReport:{
+        justifyItems: "center",
+        justifyContent: "center",
+        display: 'flex',
     }
 }))
 

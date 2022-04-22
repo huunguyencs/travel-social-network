@@ -61,9 +61,6 @@ function ExportToolbar() {
   );
 }
 
-
-
-
 function AdminLocations(props) {
   const history = useHistory();
   const classes = tableStyles();

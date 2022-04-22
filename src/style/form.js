@@ -292,10 +292,6 @@ const formStyles = makeStyles(theme => ({
     transition: 'all 0.3s',
     marginRight: 5
   },
-  sizeImageBg: {
-    width: '500px',
-    height: '250px'
-  },
   sizeAvatarInfo: {
     width: '100%',
     height: '300px'
