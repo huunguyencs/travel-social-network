@@ -18,7 +18,7 @@ import { formStyles } from '../style';
 import customAxios from '../utils/fetchData';
 import { useDispatch, useSelector } from 'react-redux';
 import { uploadImages } from '../utils/uploadImage';
-import { Link, useHistory } from 'react-router-dom';
+import { useHistory } from 'react-router-dom';
 import { getUserInfo } from '../redux/actions/userAction';
 
 const hobbiesOption = [
@@ -56,6 +56,23 @@ export default function InfoPage() {
   const handleChangeDate = e => {
     setBirthday(e);
     // console.log(e);
+  };
+
+  const handlePass = () => {
+    customAxios(token)
+      .patch('/user/change_new', {})
+      .then(res => {
+        setState({
+          loading: false
+        });
+        history.push('/');
+      })
+      .catch(err => {
+        setState({
+          loading: false,
+          error: true
+        });
+      });
   };
 
   const handleSubmit = async () => {
@@ -165,8 +182,7 @@ export default function InfoPage() {
         <div>
           <Button
             variant="contained"
-            component={Link}
-            to="/"
+            onClick={handlePass}
             disabled={state.loading}
           >
             Bỏ qua
