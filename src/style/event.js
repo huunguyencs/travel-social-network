@@ -29,9 +29,8 @@ const eventStyles = makeStyles(
       backgroundRepeat: 'no-repeat'
     },
     coverText: {
-      paddingTop: 120,
-      color: color.white,
-      textAlign: 'left'
+      paddingTop: 120
+      // textAlign: 'center !important'
     },
     content: {
       width: '60%',
@@ -81,7 +80,10 @@ const eventStyles = makeStyles(
       justifyContent: 'center'
     },
     fullname: {
-      color: color.black
+      color: color.black,
+      [theme.breakpoints.down('md')]: {
+        fontSize: 32
+      }
     },
     provinceName: {
       display: 'flex',

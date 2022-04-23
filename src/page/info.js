@@ -18,7 +18,7 @@ import { formStyles } from '../style';
 import customAxios from '../utils/fetchData';
 import { useDispatch, useSelector } from 'react-redux';
 import { uploadImages } from '../utils/uploadImage';
-import { useHistory } from 'react-router-dom';
+import { Link, useHistory } from 'react-router-dom';
 import { getUserInfo } from '../redux/actions/userAction';
 
 const hobbiesOption = [
@@ -132,15 +132,17 @@ export default function InfoPage() {
           />
         )}
       />
-      <TextField
-        label="Tên đầy đủ"
-        variant="outlined"
-        name="fullname"
-        onChange={e => setAndress(e.target.value)}
-        value={andress}
-        className={classes.fullField}
-        required
-      />
+      <div>
+        <TextField
+          label="Địa chỉ"
+          variant="outlined"
+          name="andress"
+          onChange={e => setAndress(e.target.value)}
+          value={andress}
+          className={classes.fullField}
+          required
+        />
+      </div>
       <MuiPickersUtilsProvider utils={DateFnsUtils}>
         <KeyboardDatePicker
           name="birthday"
@@ -159,7 +161,17 @@ export default function InfoPage() {
         />
       </MuiPickersUtilsProvider>
       {state.error && <span>Có lỗi xảy ra!</span>}
-      <div>
+      <div style={{ display: 'flex', justifyContent: 'space-between' }}>
+        <div>
+          <Button
+            variant="contained"
+            component={Link}
+            to="/"
+            disabled={state.loading}
+          >
+            Bỏ qua
+          </Button>
+        </div>
         {state.loading ? (
           <CircularProgress />
         ) : (
