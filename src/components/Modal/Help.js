@@ -214,7 +214,8 @@ export default function Help({ handleClose }) {
           <Button
             onClick={handleSubmit}
             variant="contained"
-            startIcon={loading && <CircularProgress />}
+            startIcon={loading && <CircularProgress size="15" />}
+            disabled={loading}
           >
             Tạo yêu cầu trợ giúp
           </Button>

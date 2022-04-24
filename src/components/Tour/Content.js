@@ -20,7 +20,13 @@ import {
   Popper,
   Typography
 } from '@material-ui/core';
-import { Bookmark, BookmarkBorder, MoreVert, Edit, Delete} from '@material-ui/icons';
+import {
+  Bookmark,
+  BookmarkBorder,
+  MoreVert,
+  Edit,
+  Delete
+} from '@material-ui/icons';
 import { AvatarGroup } from '@material-ui/lab';
 import React, { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
@@ -137,7 +143,9 @@ function ShareContent({ tour }) {
                   <ClickAwayListener onClickAway={handleCloseMenu}>
                     <Paper>
                       <MenuList>
-                        <MenuItem onClick={handleShowEdit}> <Edit className={classes.menuIcon}/>
+                        <MenuItem onClick={handleShowEdit}>
+                          {' '}
+                          <Edit className={classes.menuIcon} />
                           Chỉnh sửa bài viết
                         </MenuItem>
                         <Modal
@@ -158,7 +166,8 @@ function ShareContent({ tour }) {
                             handleClose={handleCloseEdit}
                           />
                         </Modal>
-                        <MenuItem onClick={handleShowDelete}><Delete className={classes.menuIcon}/>
+                        <MenuItem onClick={handleShowDelete}>
+                          <Delete className={classes.menuIcon} />
                           Xóa bài viết
                         </MenuItem>
                         <Dialog
@@ -179,6 +188,7 @@ function ShareContent({ tour }) {
                             <Button
                               onClick={handleDeleteTour}
                               className={classes.delete}
+                              disabled={state.loading}
                             >
                               {state.loading ? (
                                 <CircularProgress size={15} color="inherit" />
@@ -465,40 +475,44 @@ function BaseContent(props) {
                     auth.user._id === tour.userId._id &&
                     !share ? (
                       <MenuList>
-                          <MenuItem component={Link} to={`/tour/${tour._id}?edit=true`} >
-                              <Edit className={classes.menuIcon}/>
-                              Chỉnh sửa hành trình
-                          </MenuItem>
-                          <MenuItem onClick={handleShowDelete}>
-                              <Delete className={classes.menuIcon}/>
-                              Xóa hành trình
-                          </MenuItem>
-                          <Dialog
-                              open={showDelete}
-                              onClose={handleCloseDelete}
-                              aria-labelledby="show-delete-dialog"
-                              aria-describedby="show-delete-dialog-description"
-                          >
-                            <DialogTitle id="alert-dialog-title">
-                                {'Bạn có chắc chắn muốn xóa?'}
-                            </DialogTitle>
-                            <DialogContent>
-                                Bạn sẽ không thể khôi phục lại dữ liệu sau khi xóa!
-                            </DialogContent>
-                            <DialogActions>
-                              <Button onClick={handleCloseDelete}>Hủy</Button>
-                              <Button
-                                onClick={handleDeleteTour}
-                                className={classes.delete}
-                              >
-                                {state.loadingDelete ? (
-                                  <CircularProgress color="inherit" size={15} />
-                                ) : (
-                                  'Xóa'
-                                )}
-                              </Button>
-                            </DialogActions>
-                          </Dialog>
+                        <MenuItem
+                          component={Link}
+                          to={`/tour/${tour._id}?edit=true`}
+                        >
+                          <Edit className={classes.menuIcon} />
+                          Chỉnh sửa hành trình
+                        </MenuItem>
+                        <MenuItem onClick={handleShowDelete}>
+                          <Delete className={classes.menuIcon} />
+                          Xóa hành trình
+                        </MenuItem>
+                        <Dialog
+                          open={showDelete}
+                          onClose={handleCloseDelete}
+                          aria-labelledby="show-delete-dialog"
+                          aria-describedby="show-delete-dialog-description"
+                        >
+                          <DialogTitle id="alert-dialog-title">
+                            {'Bạn có chắc chắn muốn xóa?'}
+                          </DialogTitle>
+                          <DialogContent>
+                            Bạn sẽ không thể khôi phục lại dữ liệu sau khi xóa!
+                          </DialogContent>
+                          <DialogActions>
+                            <Button onClick={handleCloseDelete}>Hủy</Button>
+                            <Button
+                              onClick={handleDeleteTour}
+                              className={classes.delete}
+                              disabled={state.loadingDelete}
+                            >
+                              {state.loadingDelete ? (
+                                <CircularProgress color="inherit" size={15} />
+                              ) : (
+                                'Xóa'
+                              )}
+                            </Button>
+                          </DialogActions>
+                        </Dialog>
                       </MenuList>
                     ) : (
                       <>
@@ -561,7 +575,7 @@ function BaseContent(props) {
       <CardContent>
         <div>
           {tour.userId._id !== auth.user?._id && (
-            <Button onClick={joinClick}>
+            <Button onClick={joinClick} disabled={state.loadingJoin}>
               {state.loadingJoin ? (
                 <CircularProgress size={18} color="inherit" />
               ) : join ? (

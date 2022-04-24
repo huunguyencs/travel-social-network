@@ -142,84 +142,99 @@ export default function CreatePostForm(props) {
             </IconButton>
           </div>
           <div className={classes.create}>
-              <div className={classes.createWrapper}>
-                  <div className={classes.compose} >
-                      <div className={classes.composeForm}>
-                          <img className={classes.composeFormImage} src={auth.user.avatar} alt ="avatar"/>
-                          <InputBase
-                            placeholder="Bạn đang nghĩ gì?..."
-                            title="Bạn đang nghĩ gì"
-                            rows={5}
-                            name="content"
-                            id="content"
-                            multiline
-                            className={classes.createText}
-                            value={text}
-                            onChange={e => handleChange(e)}
-                          />
-                      </div>
-                  </div>
-                  <div style={{padding: "5px 0 5px 0"}}>
-                    {hashtagArr.map((value, idx) => (
-                      <Chip
-                        label={'#' + value}
-                        onDelete={() => removeHashtag(idx)}
-                        key={idx}
-                        style={{ marginInline: 5, marginBottom: 5, backgroundColor:"#A5DEC8" }}
-                      />
-                    ))}
-                  </div>
-                  <form onSubmit={addHashtag} style={{borderBottom: "1px solid #e8e8e8"}}>
-                    <InputBase
-                      placeholder="Hashtag"
-                      title="Hashtag"
-                      variant="outlined"
-                      name="hashtag"
-                      id="hashtag"
-                      className={classes.hashtag}
-                      value={hashtag}
-                      onChange={e => setHashtag(e.target.value)}
-                    />
-                  </form>
-                  <FormControlLabel
-                    control={
-                      <Switch
-                        checked={isPublic}
-                        onChange={e => setIsPublic(e.target.checked)}
-                        name="isPublic"
-                        color="primary"
-                      />
-                    }
-                    label={isPublic ? 'Công khai' : 'Chỉ mình tôi'}
+            <div className={classes.createWrapper}>
+              <div className={classes.compose}>
+                <div className={classes.composeForm}>
+                  <img
+                    className={classes.composeFormImage}
+                    src={auth.user.avatar}
+                    alt="avatar"
                   />
-                  <div className={classes.composeOptions}>
-                      <input
-                        accept="image/*"
-                        className={classes.input}
-                        style={{ display: 'none' }}
-                        id="input-image"
-                        name="images"
-                        multiple
-                        type="file"
-                        onChange={handleChangeImageUpload}
-                      />
-                      <label className={classes.composeOption} htmlFor="input-image">
-                          <CameraAltOutlined className={classes.composeIcon}/>
-                          <span>Hình ảnh</span>
-                      </label>
-                      <EmojiPicker content={text} setContent={setText} />
-                  </div>
+                  <InputBase
+                    placeholder="Bạn đang nghĩ gì?..."
+                    title="Bạn đang nghĩ gì"
+                    rows={5}
+                    name="content"
+                    id="content"
+                    multiline
+                    className={classes.createText}
+                    value={text}
+                    onChange={e => handleChange(e)}
+                  />
+                </div>
               </div>
+              <div style={{ padding: '5px 0 5px 0' }}>
+                {hashtagArr.map((value, idx) => (
+                  <Chip
+                    label={'#' + value}
+                    onDelete={() => removeHashtag(idx)}
+                    key={idx}
+                    style={{
+                      marginInline: 5,
+                      marginBottom: 5,
+                      backgroundColor: '#A5DEC8'
+                    }}
+                  />
+                ))}
+              </div>
+              <form
+                onSubmit={addHashtag}
+                style={{ borderBottom: '1px solid #e8e8e8' }}
+              >
+                <InputBase
+                  placeholder="Hashtag"
+                  title="Hashtag"
+                  variant="outlined"
+                  name="hashtag"
+                  id="hashtag"
+                  className={classes.hashtag}
+                  value={hashtag}
+                  onChange={e => setHashtag(e.target.value)}
+                />
+              </form>
+              <FormControlLabel
+                control={
+                  <Switch
+                    checked={isPublic}
+                    onChange={e => setIsPublic(e.target.checked)}
+                    name="isPublic"
+                    color="primary"
+                  />
+                }
+                label={isPublic ? 'Công khai' : 'Chỉ mình tôi'}
+              />
+              <div className={classes.composeOptions}>
+                <input
+                  accept="image/*"
+                  className={classes.input}
+                  style={{ display: 'none' }}
+                  id="input-image"
+                  name="images"
+                  multiple
+                  type="file"
+                  onChange={handleChangeImageUpload}
+                />
+                <label className={classes.composeOption} htmlFor="input-image">
+                  <CameraAltOutlined className={classes.composeIcon} />
+                  <span>Hình ảnh</span>
+                </label>
+                <EmojiPicker content={text} setContent={setText} />
+              </div>
+            </div>
           </div>
-          <Button className={classes.button} onClick={handleSubmit}>
-              {state.loading ? (
-                <CircularProgress size="25px" color="inherit" />
-              ) : (
-                <>
-                  <Create style={{ marginRight: 10 }} />
-                  Đăng
-                </>
-              )}
+          <Button
+            className={classes.button}
+            onClick={handleSubmit}
+            disabled={state.loading}
+          >
+            {state.loading ? (
+              <CircularProgress size="25px" color="inherit" />
+            ) : (
+              <>
+                <Create style={{ marginRight: 10 }} />
+                Đăng
+              </>
+            )}
           </Button>
           <div className={classes.error}>
             <Typography variant="caption" color="inherit">

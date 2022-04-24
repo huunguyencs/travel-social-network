@@ -439,7 +439,7 @@ export default function Location(props) {
                                                 </>
                                             }
                                         </div>
-                                        <Typography>Thành viên tham gia:</Typography>
+                                        <Typography>Thành viên tham gia :</Typography>
                                         <AvatarGroup max={4} onClick={handleShowJoin} style={{ cursor: 'pointer' }}>
                                             {joinIds.concat(location.joinIds).map(user =>
                                                 <Avatar src={user.avatar} alt={'A'} key={user._id} style={{ height: 20, width: 20 }} />

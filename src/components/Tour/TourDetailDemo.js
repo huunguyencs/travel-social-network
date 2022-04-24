@@ -1,8 +1,8 @@
 import { Button,Card, CardContent, CardHeader, Popper, ClickAwayListener, MenuList, MenuItem, Grid, Typography, CircularProgress, Backdrop, Paper, IconButton, Modal, Fade, Avatar, Dialog, DialogActions, DialogContent, DialogTitle } from "@material-ui/core";
 import AvatarGroup from '@material-ui/lab/AvatarGroup';
-import React, { useEffect, useState } from "react";
-import {Stepper, Step, StepLabel, StepContent} from "@material-ui/core";
-import { tourdetailStyles } from "../../style";
+import React, { useEffect, useState } from 'react';
+import { Stepper, Step, StepLabel, StepContent } from '@material-ui/core';
+import { tourdetailStyles } from '../../style';
 import Location from './Location';
 import { convertDateToStr, timeAgo } from "../../utils/date";
 // import { useSelector } from "react-redux";
@@ -16,126 +16,139 @@ import { useDispatch, useSelector } from "react-redux";
 import { joinTour, unJoinTour } from "../../redux/callApi/tourCall";
 import SpeedDialButton from '../SpeedDialBtn';
 import PropTypes from 'prop-types';
-import { makeStyles} from "@material-ui/core";
+import { makeStyles } from '@material-ui/core';
 import clsx from 'clsx';
 import { Box, Tab, Tabs} from "@material-ui/core";
 import { deleteTour} from '../../redux/callApi/tourCall';
 import RecommendCard from '../Card/RecommendCard';
 function DetailDate(props) {
-    const { tourDate, date, joined } = props;
+  const { tourDate, date, joined } = props;
 
-    const classes = tourdetailStyles();
-    
-    return (
-        <Paper className={classes.paperDetailDate}>
-            <Grid container style={{padding: 16}}>
-                <Grid item md={12} sm={12} xs={12}>
-                    <Typography>
-                        <Label style={{fontSize: 15}}/> <span style={{fontWeight: 500}}> Mô tả: </span> {tourDate.description}
-                    </Typography>
-                    <Typography>
-                        <Label style={{fontSize: 15}}/><span style={{fontWeight: 500}}>Chi phí: </span> {new Intl.NumberFormat().format(tourDate.cost * 1000)} VND
-                    </Typography>
-                </Grid>
-                <Grid item md={12} sm={12} xs={12}>
-                    <div >
-                        <div style={{ display: 'flex', justifyContent: 'space-between' }}>
-                            <Typography variant='h6' style={{ textAlign: 'center', marginTop: 10 }}>Danh sách dịch vụ</Typography>
-                        </div>
-                        {
-                            tourDate.services.map(((item, index) =>
-                                <ServiceCard joined={joined} type='date' key={index} service={item} index={index} isEdit={false} indexDate={date} />
-                            ))
-                        }
-                    </div>
-                </Grid>
-            </Grid>
-        </Paper>
-    )
+  const classes = tourdetailStyles();
+
+  return (
+    <Paper className={classes.paperDetailDate}>
+      <Grid container style={{ padding: 16 }}>
+        <Grid item md={12} sm={12} xs={12}>
+          <Typography>
+            <Label style={{ fontSize: 15 }} />{' '}
+            <span style={{ fontWeight: 500 }}> Mô tả: </span>{' '}
+            {tourDate.description}
+          </Typography>
+          <Typography>
+            <Label style={{ fontSize: 15 }} />
+            <span style={{ fontWeight: 500 }}>Chi phí: </span>{' '}
+            {new Intl.NumberFormat().format(tourDate.cost * 1000)} VND
+          </Typography>
+        </Grid>
+        <Grid item md={12} sm={12} xs={12}>
+          <div>
+            <div style={{ display: 'flex', justifyContent: 'space-between' }}>
+              <Typography
+                variant="h6"
+                style={{ textAlign: 'center', marginTop: 10 }}
+              >
+                Danh sách dịch vụ
+              </Typography>
+            </div>
+            {tourDate.services.map((item, index) => (
+              <ServiceCard
+                joined={joined}
+                type="date"
+                key={index}
+                service={item}
+                index={index}
+                isEdit={false}
+                indexDate={date}
+              />
+            ))}
+          </div>
+        </Grid>
+      </Grid>
+    </Paper>
+  );
 }
 const useColorlibStepIconStyles = makeStyles({
-    root: {
-        backgroundColor: "white",
-        zIndex: 1,
-        color: '#63B191',
-        width: 35,
-        height: 35,
-        display: 'flex',
-        borderRadius: '50%',
-        justifyContent: 'center',
-        alignItems: 'center',
-        border: "1px solid #63B191"
-    },
-    active: {
-        backgroundColor: '#63B191',
-        color:"white",
-        boxShadow: '0 4px 10px 0 rgba(0,0,0,.25)',
-    },
-    completed: {
-        backgroundColor: "white",
-        color: '#63B191'
-    },
-  });
+  root: {
+    backgroundColor: 'white',
+    zIndex: 1,
+    color: '#63B191',
+    width: 35,
+    height: 35,
+    display: 'flex',
+    borderRadius: '50%',
+    justifyContent: 'center',
+    alignItems: 'center',
+    border: '1px solid #63B191'
+  },
+  active: {
+    backgroundColor: '#63B191',
+    color: 'white',
+    boxShadow: '0 4px 10px 0 rgba(0,0,0,.25)'
+  },
+  completed: {
+    backgroundColor: 'white',
+    color: '#63B191'
+  }
+});
 function ColorlibStepIcon(props) {
-    const classes = useColorlibStepIconStyles();
-    const { active, completed } = props;
+  const classes = useColorlibStepIconStyles();
+  const { active, completed } = props;
 
-    return (
-        <div
-        className={clsx(classes.root, {
-            [classes.active]: active,
-            [classes.completed]: completed,
-        })}
-        >
-            <LocationOnOutlined style={{width: 25}}/>
-        </div>
-    );
+  return (
+    <div
+      className={clsx(classes.root, {
+        [classes.active]: active,
+        [classes.completed]: completed
+      })}
+    >
+      <LocationOnOutlined style={{ width: 25 }} />
+    </div>
+  );
 }
 
 ColorlibStepIcon.propTypes = {
-    active: PropTypes.bool,
-    completed: PropTypes.bool,
-    icon: PropTypes.node,
+  active: PropTypes.bool,
+  completed: PropTypes.bool,
+  icon: PropTypes.node
 };
 
 function TabPanel(props) {
-    const { children, value, index, ...other } = props;
+  const { children, value, index, ...other } = props;
 
-    return (
-        <div
-            role="tabpanel"
-            hidden={value !== index}
-            id={`vertical-tabpanel-${index}`}
-            aria-labelledby={`vertical-tab-${index}`}
-            {...other}
-        >
-            {value === index && (
-                <Box>
-                    {children}
-                </Box>
-            )}
-        </div>
-    );
+  return (
+    <div
+      role="tabpanel"
+      hidden={value !== index}
+      id={`vertical-tabpanel-${index}`}
+      aria-labelledby={`vertical-tab-${index}`}
+      {...other}
+    >
+      {value === index && <Box>{children}</Box>}
+    </div>
+  );
 }
 
 TabPanel.propTypes = {
-    children: PropTypes.node,
-    index: PropTypes.any.isRequired,
-    value: PropTypes.any.isRequired
+  children: PropTypes.node,
+  index: PropTypes.any.isRequired,
+  value: PropTypes.any.isRequired
 };
 
 function a11yProps(index) {
-    return {
-        id: `vertical-tab-${index}`,
-        "aria-controls": `vertical-tabpanel-${index}`
-    };
+  return {
+    id: `vertical-tab-${index}`,
+    'aria-controls': `vertical-tabpanel-${index}`
+  };
 }
 
 export default function TourDetailDemo(props) {
+  const { tour, isOwn, setTour, joined, setJoined, joinLoc } = props;
 
-    const { tour, isOwn, setTour, joined, setJoined, joinLoc } = props;
+  const classes = tourdetailStyles();
 
-    const classes = tourdetailStyles();
+//   const dispatch = useDispatch();
+    // const { auth } = useSelector(state => state);
 
     const dispatch = useDispatch();
     const { auth, socket} = useSelector(state => state)
@@ -153,58 +166,74 @@ export default function TourDetailDemo(props) {
         error: false
     })
 
-    const handleShowJoin = () => {
-        setShowUserJoin(true);
-    }
+  const handleShowJoin = () => {
+    setShowUserJoin(true);
+  };
 
-    const handleCloseJoin = () => {
-        setShowUserJoin(false)
-    }
+  const handleCloseJoin = () => {
+    setShowUserJoin(false);
+  };
 
-    const handleShowImage = () => {
-        setShowImage(true);
-    }
+  const handleShowImage = () => {
+    setShowImage(true);
+  };
 
-    const handleCloseImage = () => {
-        setShowImage(false);
-    }
+  const handleCloseImage = () => {
+    setShowImage(false);
+  };
 
-    const createReview = (id, index_loc, tourdate_id) => {
-        setTour(state => ({
-            ...state,
-            tour: state.tour.map(item => item._id === tourdate_id ? {
-                ...item,
-                locations: item.locations.map((location, index) => index === index_loc ? {
-                    ...location,
-                    postId: [...location.postId, id]
-                } : location)
-            } : item)
-        }))
-    }
+  const createReview = (id, index_loc, tourdate_id) => {
+    setTour(state => ({
+      ...state,
+      tour: state.tour.map(item =>
+        item._id === tourdate_id
+          ? {
+              ...item,
+              locations: item.locations.map((location, index) =>
+                index === index_loc
+                  ? {
+                      ...location,
+                      postId: [...location.postId, id]
+                    }
+                  : location
+              )
+            }
+          : item
+      )
+    }));
+  };
 
-    const updateJoin = (joins) => {
-        setTour({
-            ...tour,
-            joinIds: joins
-        })
-    }
+  const updateJoin = joins => {
+    setTour({
+      ...tour,
+      joinIds: joins
+    });
+  };
 
-    const updateJoinLocation = (joins, idDate, idLocation) => {
-        setTour(tour => ({
-            ...tour,
-            tour: tour.tour.map(item => item._id === idDate ? {
-                ...item,
-                locations: item.locations.map(loc => loc._id === idLocation ? {
-                    ...loc,
-                    joinIds: joins
-                } : loc)
-            } : item)
-        }))
-    }
+  const updateJoinLocation = (joins, idDate, idLocation) => {
+    setTour(tour => ({
+      ...tour,
+      tour: tour.tour.map(item =>
+        item._id === idDate
+          ? {
+              ...item,
+              locations: item.locations.map(loc =>
+                loc._id === idLocation
+                  ? {
+                      ...loc,
+                      joinIds: joins
+                    }
+                  : loc
+              )
+            }
+          : item
+      )
+    }));
+  };
 
-    const handleJoin = () => {
+  const handleJoin = () => {
         setState({
-            loading: true,
+            loadingJoin: true,
             error: false
         })
         setJoined(true);
@@ -212,12 +241,12 @@ export default function TourDetailDemo(props) {
         updateJoin([...prevJoin, auth.user]);
         dispatch(joinTour(tour._id, auth.token, () => {
             setState({
-                loading: false,
+                loadingJoin: false,
                 error: false,
             })
         }, () => {
             setState({
-                loading: false,
+                loadingJoin: false,
                 error: true,
             })
             if (joined) {
@@ -229,7 +258,7 @@ export default function TourDetailDemo(props) {
 
     const handleUnJoin = () => {
         setState({
-            loading: true,
+            loadingJoin: true,
             error: false,
         })
         setJoined(false);
@@ -239,12 +268,12 @@ export default function TourDetailDemo(props) {
 
         dispatch(unJoinTour(tour._id, auth.token, () => {
             setState({
-                loading: false,
+                loadingJoin: false,
                 error: false,
             })
         }, () => {
             setState({
-                loading: false,
+                loadingJoin: false,
                 error: true,
             })
             if (!joined) {
@@ -253,13 +282,11 @@ export default function TourDetailDemo(props) {
             }
         }))
     }
-
     useEffect(() => {
         if (tour && tour.tour[idx].locations.length > 0) {
             setPosition(tour.tour[idx].locations[0].location.position)
         }
     }, [tour, idx])
-
     useEffect(() => {
         var locs = tour.tour[idx].locations.filter(item => item.location).map(item => item.location);
         setLocations(locs);
@@ -324,7 +351,7 @@ export default function TourDetailDemo(props) {
             }
             )
         );
-        };
+    };
     return (
         <>
             {

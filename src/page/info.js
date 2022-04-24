@@ -190,7 +190,7 @@ export default function InfoPage() {
           </Button>
         </div>
         {state.loading ? (
-          <CircularProgress />
+          <CircularProgress size={18} />
         ) : (
           <Button variant="contained" color="primary" onClick={handleSubmit}>
             Xong

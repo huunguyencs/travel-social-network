@@ -8,64 +8,66 @@ import { convertDateToStr, timeAgo } from '../../utils/date';
 import { useDispatch, useSelector } from 'react-redux';
 
 export default function VolunteerCard(props) {
+  const { volunteer } = props;
+  const { auth, socket } = useSelector(state => state);
+  const classes = volunteerStyles();
+  const dispatch = useDispatch();
+  const [anchorEl, setAnchorEl] = useState(null);
+  // const [showEdit, setShowEdit] = useState(false);
+  const [showDelete, setShowDelete] = useState(false);
+  const [state, setState] = useState({
+    loading: false,
+    error: false
+  });
+  const handleShowMenu = e => {
+    setAnchorEl(e.currentTarget);
+  };
 
-    const { volunteer } = props;
-    const {auth, socket} = useSelector(state =>state);
-    const classes = volunteerStyles();
-    const dispatch = useDispatch();
-    const [anchorEl, setAnchorEl] = useState(null);
-    // const [showEdit, setShowEdit] = useState(false);
-    const [showDelete, setShowDelete] = useState(false);
-    const [state, setState] = useState({
-        loading: false,
-        error: false
-    })
-    const handleShowMenu = (e) => {
-        setAnchorEl(e.currentTarget);
-    }
+  const handleCloseMenu = () => {
+    setAnchorEl(null);
+  };
 
-    const handleCloseMenu = () => {
-        setAnchorEl(null);
-    }
+  // const handleCloseEdit = () => {
+  //     setShowEdit(false);
+  //     handleCloseMenu();
+  // }
 
-    // const handleCloseEdit = () => {
-    //     setShowEdit(false);
-    //     handleCloseMenu();
-    // }
+  const handleShowDelete = () => {
+    setShowDelete(true);
+  };
 
-    const handleShowDelete = () => {
-        setShowDelete(true);
-    }
+  const handleCloseDelete = () => {
+    setShowDelete(false);
+    handleCloseMenu();
+  };
 
-    const handleCloseDelete = () => {
-        setShowDelete(false);
-        handleCloseMenu();
-    }
-
-    const handleDeleteVolunteer = () => {
-        setState({
-            loading: true,
-            error: false,
-        })
-        dispatch(deleteVolunteer(volunteer, auth.token, socket, () => {
-            setState({
-                loading: false,
-                error: false
-            })
-            handleCloseDelete();
-            handleCloseMenu();
-        }, () => {
-            setState({
-                loading: false,
-                error: true
-            })
-        }));
-
-    }
-
-    // const handleShowEdit = () => {
-    //     setShowEdit(true)
-    // }
+  const handleDeleteVolunteer = () => {
+    setState({
+      loading: true,
+      error: false
+    });
+    dispatch(
+      deleteVolunteer(
+        volunteer,
+        auth.token,
+        socket,
+        () => {
+          setState({
+            loading: false,
+            error: false
+          });
+          handleCloseDelete();
+          handleCloseMenu();
+        },
+        () => {
+          setState({
+            loading: false,
+            error: true
+          });
+        }
+      )
+    );
+  };
    
     return (
         <Card className={classes.root}>

@@ -397,6 +397,7 @@ export default function ChangeInfo(props) {
                 color="primary"
                 type="submit"
                 className={classes.updateBtn}
+                disabled={loading}
               >
                 {loading ? (
                   <CircularProgress size="25px" color="inherit" />

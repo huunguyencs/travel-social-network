@@ -282,7 +282,7 @@ export default function ProfileAvatar(props) {
                     startIcon={<RssFeed />}
                     className={classes.button}
                     onClick={handleFollow}
-                    disabled={!auth.token}
+                    disabled={!auth.token || stateFollow.loading}
                   >
                     {stateFollow.loading ? (
                       <CircularProgress size={16} color="inherit" />

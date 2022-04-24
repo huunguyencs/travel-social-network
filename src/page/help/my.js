@@ -1,7 +1,8 @@
-import { CircularProgress, Container, Grid } from '@material-ui/core';
+import { Container, Grid } from '@material-ui/core';
 import React, { useEffect, useState } from 'react';
 import { useSelector } from 'react-redux';
 import HelpCard from '../../components/Help/HelpCard';
+import Loading from '../../components/Loading';
 import customAxios from '../../utils/fetchData';
 
 export default function MyHelpPage() {
@@ -39,7 +40,7 @@ export default function MyHelpPage() {
       <div
         style={{ display: 'flex', justifyContent: 'center', marginTop: 150 }}
       >
-        <CircularProgress />
+        <Loading />
       </div>
     );
 
