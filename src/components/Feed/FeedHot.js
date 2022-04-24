@@ -4,74 +4,76 @@ import React, { useEffect, useState } from 'react';
 import { feedStyles } from '../../style';
 import Event from '../Event';
 import Location from '../Location';
-import customAxios from '../../utils/fetchData';
 import Loading from '../Loading';
+import { useDispatch, useSelector } from 'react-redux';
+import { getEvent, getHotLocation } from '../../redux/callApi/hotCall';
 
 export default function FeedHot(props) {
   const classes = feedStyles();
+  const { events, locations } = useSelector(state => state.hot);
+  const dispatch = useDispatch();
 
-  const [events, setEvents] = useState([]);
   const [stateEvent, setStateEvent] = useState({
     loading: false,
     error: false
   });
-  const [locations, setLocations] = useState([]);
+
   const [stateLocation, setStateLocation] = useState({
     loading: false,
     error: false
   });
 
-  const getCurrentEvent = async () => {
+  const getCurrentEvent = dispatch => {
     setStateEvent({
       loading: true,
       error: false
     });
-    await customAxios()
-      .get('/event/current')
-      .then(res => {
-        setEvents(res.data.events);
-        setStateEvent({
-          loading: false,
-          error: false
-        });
-      })
-      .catch(err => {
-        setStateEvent({
-          loading: false,
-          error: true
-        });
-      });
+    dispatch(
+      getEvent(
+        () =>
+          setStateEvent({
+            loading: false,
+            error: false
+          }),
+        () =>
+          setStateEvent({
+            loading: false,
+            error: true
+          })
+      )
+    );
   };
 
-  const getHotLocations = async () => {
+  const getHotLocations = dispatch => {
     setStateLocation({
       loading: true,
       error: false
     });
-    await customAxios()
-      .get('location/hot')
-      .then(res => {
-        setLocations(res.data.locations);
-        setStateLocation({
-          loading: false,
-          error: false
-        });
-      })
-      .catch(err => {
-        setStateLocation({
-          loading: false,
-          error: true
-        });
-      });
+    dispatch(
+      getHotLocation(
+        () =>
+          setStateLocation({
+            loading: false,
+            error: false
+          }),
+        () =>
+          setStateLocation({
+            loading: false,
+            error: true
+          })
+      )
+    );
   };
 
   useEffect(() => {
-    getHotLocations();
-  }, []);
+    if (stateLocation.loading || stateLocation.error || locations) return;
+    getHotLocations(dispatch);
+  }, [dispatch, stateLocation, locations]);
 
   useEffect(() => {
-    getCurrentEvent();
-  }, []);
+    if (stateEvent.loading || stateEvent.error || events) return;
+    getCurrentEvent(dispatch);
+  }, [dispatch, stateEvent, events]);
 
   return (
     <Container className={classes.container}>
@@ -89,7 +91,7 @@ export default function FeedHot(props) {
               <Button onClick={getCurrentEvent}>Thử lại</Button>
             </div>
           ) : (
-            <Event events={events} />
+            events && <Event events={events} />
           )}
         </div>
         <div className={classes.hot}>
@@ -106,6 +108,7 @@ export default function FeedHot(props) {
                 <Button onClick={getHotLocations}>Thử lại</Button>
               </div>
             ) : (
+              locations &&
               locations.map(item => <Location location={item} key={item._id} />)
             )}
           </div>

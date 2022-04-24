@@ -1,23 +1,20 @@
-import { Grid } from "@material-ui/core";
-import React, { createRef, useEffect } from "react";
-import { useDispatch, useSelector } from "react-redux";
+import { Grid } from '@material-ui/core';
+import React, { createRef, useEffect } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
 
-import LeftBar from "../components/Leftbar";
-import FeedPost from "../components/Feed/FeedPost";
-import RightBar from "../components/Rightbar";
-import Slider from "../components/Slider";
-import useStyles from "../style";
-import { homeMenu } from "../constant/menu";
-import SpeedDialButton from "../components/SpeedDialBtn";
+import LeftBar from '../components/Leftbar';
+import FeedPost from '../components/Feed/FeedPost';
+import RightBar from '../components/Rightbar';
+import Slider from '../components/Slider';
+import useStyles from '../style';
+import { homeMenu } from '../constant/menu';
+import SpeedDialButton from '../components/SpeedDialBtn';
 import Calendar from '../components/Calendar';
 import FriendRecommendCard from '../components/Card/FriendRecommend';
-import { getPosts } from "../redux/callApi/postCall";
-
-
+import { getPosts } from '../redux/callApi/postCall';
 
 function HomePage() {
-
-  const { token } = useSelector(state => state.auth)
+  const { auth, post } = useSelector(state => state);
 
   const classes = useStyles();
 
@@ -26,20 +23,25 @@ function HomePage() {
   const dispatch = useDispatch();
 
   useEffect(() => {
-    if (token) {
-      dispatch(getPosts(token));
-    }
-  }, [dispatch, token])
+    if (
+      !auth.token ||
+      post.loading ||
+      post.loadingFirst ||
+      post.error ||
+      (post.posts && post.id === 0)
+    )
+      return;
+    dispatch(getPosts(auth.token));
+  }, [dispatch, auth.token, post]);
 
   useEffect(() => {
-    document.title = "Triple H";
-  }, [])
-
+    document.title = 'Triple H';
+  }, []);
 
   return (
     <Grid container className={classes.container}>
       <SpeedDialButton />
-      <Grid item md={12} sm={12} xs={12} style={{marginBottom: -60}}>
+      <Grid item md={12} sm={12} xs={12} style={{ marginBottom: -60 }}>
         <Slider />
       </Grid>
       <Grid container className={classes.containerHome}>
@@ -47,15 +49,12 @@ function HomePage() {
           <LeftBar menuList={homeMenu} />
         </Grid>
         <Grid item md={6} sm={9} xs={10} className={classes.content}>
-          {token ?
-            <FeedPost /> :
-            <></>
-          }
+          {auth.token ? <FeedPost /> : <></>}
         </Grid>
         <Grid item md={3} className={classes.rightbar}>
           <RightBar ref={ref}>
             <Calendar />
-            {token && <FriendRecommendCard />}
+            {auth.token && <FriendRecommendCard />}
           </RightBar>
         </Grid>
       </Grid>

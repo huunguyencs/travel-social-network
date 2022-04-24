@@ -11,9 +11,7 @@ import { volunteerStyles } from '../../style';
 import Loading from '../../components/Loading';
 export default function Volunteer() {
   const dispatch = useDispatch();
-  useEffect(() => {
-    dispatch(getVolunteers());
-  }, [dispatch]);
+
   const classes = volunteerStyles();
   useEffect(() => {
     document.title = 'Du lịch tình nguyện | Triple H';
@@ -21,6 +19,10 @@ export default function Volunteer() {
 
   const { volunteer, auth } = useSelector(state => state);
 
+  useEffect(() => {
+    if (volunteer.loading || volunteer.error || volunteer.volunteers) return;
+    dispatch(getVolunteers());
+  }, [dispatch, volunteer]);
   return (
     <Grid container style={{ margin: 0, padding: 0 }}>
       <SpeedDialButton />
@@ -60,11 +62,12 @@ export default function Volunteer() {
               Hãy tạo hoạt động tình nguyện của bạn
             </Button>
             <Grid container>
-              {volunteer.volunteers.map(item => (
-                <Grid item lg={4} md={6} sm={6} xs={12} key={item._id}>
-                  <VolunteerCard volunteer={item} />
-                </Grid>
-              ))}
+              {volunteer.volunteers &&
+                volunteer.volunteers.map(item => (
+                  <Grid item lg={4} md={6} sm={6} xs={12} key={item._id}>
+                    <VolunteerCard volunteer={item} />
+                  </Grid>
+                ))}
             </Grid>
           </div>
         )}

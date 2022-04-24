@@ -4,6 +4,7 @@ import Tour from '../Tour';
 import Feed from './index';
 import { useSelector, useDispatch } from 'react-redux';
 import { getUserTour } from '../../redux/callApi/tourCall';
+import Loading from '../Loading';
 
 export default function FeedUserTour(props) {
   const { id } = props;
@@ -24,17 +25,24 @@ export default function FeedUserTour(props) {
 
   return (
     <div style={{ marginTop: 100 }}>
-      <Feed
-        loadMore={loadTour}
-        loading={tour.loading}
-        error={tour.error}
-        tryAgain={tryAgain}
-        hasMore={tour.hasMore}
-      >
-        {tour.tours.map(tour => (
-          <Tour tour={tour} key={tour._id} />
-        ))}
-      </Feed>
+      {tour.loadingFirst ? (
+        <div
+          style={{ display: 'flex', justifyContent: 'center', marginTop: 150 }}
+        >
+          <Loading />
+        </div>
+      ) : (
+        <Feed
+          loadMore={loadTour}
+          loading={tour.loading}
+          error={tour.error}
+          tryAgain={tryAgain}
+          hasMore={tour.hasMore}
+        >
+          {tour.tours &&
+            tour.tours.map(tour => <Tour tour={tour} key={tour._id} />)}
+        </Feed>
+      )}
     </div>
   );
 }

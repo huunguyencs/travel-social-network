@@ -7,60 +7,60 @@ import {
 } from '@material-ui/core';
 import { Search } from '@material-ui/icons';
 import React, { useEffect, useState } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
 
 import ProvinceCard from '../../components/Card/ProvinceCard';
 import LeftBar from '../../components/Leftbar';
 import Loading from '../../components/Loading';
 import SpeedDialButton from '../../components/SpeedDialBtn';
 import { homeMenu } from '../../constant/menu';
+import { getAllProvince } from '../../redux/callApi/locationCall';
 import useStyles from '../../style';
-import customAxios from '../../utils/fetchData';
 
 export default function ProvincePage() {
-  const [provincesCon, setProvincesCon] = useState([]);
-  const [loading, setLoading] = useState(false);
-  const [error, setError] = useState(false);
+  // const [provincesCon, setProvincesCon] = useState([]);
+  const { allProvince, loadingProvinces, error } = useSelector(
+    state => state.location
+  );
+  const dispatch = useDispatch();
+  // const [loading, setLoading] = useState(false);
+  // const [error, setError] = useState(false);
   const [search, setSearch] = useState('');
   const classes = useStyles();
   const [provinces, setProvinces] = useState([]);
 
-  const getProvince = async () => {
-    setLoading(true);
-    setError(false);
-    await customAxios()
-      .get(`/province/all`)
-      .then(res => {
-        setLoading(false);
-        setProvincesCon(res.data.provinces);
-        setProvinces(res.data.provinces);
-      })
-      .catch(err => {
-        setLoading(false);
-        setError(true);
-      });
+  const getProvince = dispatch => {
+    dispatch(getAllProvince());
   };
 
   useEffect(() => {
-    getProvince();
-  }, []);
+    if (loadingProvinces || error || allProvince) return;
+    getProvince(dispatch);
+  }, [dispatch, loadingProvinces, error, allProvince]);
+
+  useEffect(() => {
+    if (allProvince) {
+      setProvinces(allProvince);
+    }
+  }, [allProvince]);
 
   const handleChangeSearch = e => {
     let temp = e.target.value;
     setSearch(temp);
     if (e.target.value === '') {
-      setProvinces(provincesCon);
+      setProvinces(allProvince);
       return;
     }
   };
 
   useEffect(() => {
     if (search !== '') {
-      let pros = provincesCon.filter(item =>
+      let pros = allProvince.filter(item =>
         item.fullname.toLowerCase().match(search.toLowerCase())
       );
       setProvinces(pros);
     }
-  }, [search, provincesCon]);
+  }, [search, allProvince]);
 
   useEffect(() => {
     document.title = 'Tỉnh thành | Triple H';
@@ -74,7 +74,7 @@ export default function ProvincePage() {
           <LeftBar menuList={homeMenu} />
         </Grid>
         <Grid item md={9} sm={10} xs={10} className={classes.content}>
-          {loading ? (
+          {loadingProvinces ? (
             <div className={classes.center}>
               <Loading />
             </div>

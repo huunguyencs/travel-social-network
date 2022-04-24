@@ -148,7 +148,7 @@ export default function ProfileAvatar(props) {
     if (user?.fullname) {
       document.title = user.fullname;
     }
-    if (!message.firstLoad) {
+    if (auth.token && !message.firstLoad) {
       dispatch(getConversations(auth, socket));
     }
   }, [dispatch, message.firstLoad, auth, socket, user]);
