@@ -192,7 +192,9 @@ function Detail(props) {
                                 </>
                                 :
                                 <div>
-                                    <Typography variant='h5' style={{ textAlign: 'center', marginTop: 10 }}>{location.locationName ? location.locationName : location.location.fullname}</Typography>
+                                    <div className={classes.locationImages}>
+                                        <img style={{width: "100%", height: "100%"}} src="https://res.cloudinary.com/dqxvfu5k1/image/upload/v1649898282/k4hoq9jblhx65msx64c8.jpg" alt="loading ..."></img>
+                                    </div>
                                     <div style={{ padding: 20 }}>
                                         <Typography>
                                             <Label style={{fontSize: 15}}/><span style={{fontWeight: 500}}>Chi phí: </span>  {new Intl.NumberFormat().format(location.cost * 1000)} VND
@@ -210,15 +212,8 @@ function Detail(props) {
                 <Grid item md={6} sm={12} xs={12}>
                     <div style={{ overflowY: 'auto', height: '70vh' }}>
                         <div style={{ display: 'flex', justifyContent: 'space-between' }}>
-                            <div></div>
                             <Typography variant='h5' style={{ textAlign: 'center', marginTop: 10 }}>Danh sách dịch vụ</Typography>
-                            <div>
-                                <IconButton size='small' onClick={handleClose}>
-                                    <Close />
-                                </IconButton>
-                            </div>
                         </div>
-
                         {
                             location.services.map(((item, index) =>
                                 <ServiceCard joined={joined} type='location' key={index} service={item} index={index} isEdit={isEdit} indexDate={indexDate} indexLocation={indexLocation} />

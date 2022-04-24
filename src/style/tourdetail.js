@@ -351,7 +351,11 @@ const tourdetailStyles = makeStyles((theme) => ({
     paperDetailDate: {
         width: "100%"
     },
-
+    locationImages:{
+        padding: 10,
+        height: 250,
+        overflow: "hidden",
+    },
 
 
 
