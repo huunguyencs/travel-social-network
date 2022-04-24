@@ -181,6 +181,7 @@ function ShareContent({ tour }) {
                             <Button
                               onClick={handleDeleteTour}
                               className={classes.delete}
+                              disabled={state.loading}
                             >
                               {state.loading ? (
                                 <CircularProgress size={15} color="inherit" />
@@ -492,6 +493,7 @@ function BaseContent(props) {
                             <Button
                               onClick={handleDeleteTour}
                               className={classes.delete}
+                              disabled={state.loadingDelete}
                             >
                               {state.loadingDelete ? (
                                 <CircularProgress color="inherit" size={15} />
@@ -563,7 +565,7 @@ function BaseContent(props) {
       <CardContent>
         <div>
           {tour.userId._id !== auth.user?._id && (
-            <Button onClick={joinClick}>
+            <Button onClick={joinClick} disabled={state.loadingJoin}>
               {state.loadingJoin ? (
                 <CircularProgress size={18} color="inherit" />
               ) : join ? (

@@ -1,4 +1,4 @@
-import { CircularProgress, IconButton, Paper } from '@material-ui/core';
+import { IconButton, Paper } from '@material-ui/core';
 import { ArrowBack } from '@material-ui/icons';
 import React, { useEffect, useState } from 'react';
 import { Link, useParams } from 'react-router-dom';
@@ -6,6 +6,7 @@ import { Link, useParams } from 'react-router-dom';
 import FormEventAdmin from '../../Event/Form';
 import { NotFound } from '../../../../page/404';
 import customAxios from '../../../../utils/fetchData';
+import Loading from '../../../Loading';
 
 export default function AdminEventContributeDetail() {
   const { subpage } = useParams();
@@ -78,7 +79,7 @@ export default function AdminEventContributeDetail() {
         <div
           style={{ display: 'flex', justifyContent: 'center', marginTop: 60 }}
         >
-          <CircularProgress color="inherit" />
+          <Loading />
         </div>
       ) : state.error ? (
         <div

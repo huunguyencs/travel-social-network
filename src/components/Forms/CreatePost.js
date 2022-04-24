@@ -217,7 +217,11 @@ export default function CreatePostForm(props) {
                   <EmojiPicker content={text} setContent={setText} />
                 </div>
                 <div>
-                  <Button className={classes.button} onClick={handleSubmit}>
+                  <Button
+                    className={classes.button}
+                    onClick={handleSubmit}
+                    disabled={state.loading}
+                  >
                     {state.loading ? (
                       <CircularProgress size="25px" color="inherit" />
                     ) : (

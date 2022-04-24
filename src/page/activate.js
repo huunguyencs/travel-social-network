@@ -1,7 +1,8 @@
-import { Grid, CircularProgress, Button } from '@material-ui/core';
+import { Grid, Button } from '@material-ui/core';
 import React, { useEffect, useState } from 'react';
 import { useLocation, Link } from 'react-router-dom';
 import LeftBar from '../components/Leftbar';
+import Loading from '../components/Loading';
 import SpeedDialButton from '../components/SpeedDialBtn';
 import { homeMenu } from '../constant/menu';
 import customAxios from '../utils/fetchData';
@@ -65,7 +66,7 @@ export default function ActivatePage() {
               margin: 50
             }}
           >
-            <CircularProgress color="inherit" />
+            <Loading />
           </div>
         ) : state.error ? (
           <div

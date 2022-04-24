@@ -93,7 +93,8 @@ const feedStyles = makeStyles(
     contentSubNavList: {
       backgroundColor: color.background,
       borderRadius: `0 0 ${attr.borderRadius.md}px ${attr.borderRadius.md}px`,
-      justifyContent: 'space-evenly'
+      justifyContent: 'space-evenly',
+      zIndex: 2
     },
     containerText: {
       // width: "90%",

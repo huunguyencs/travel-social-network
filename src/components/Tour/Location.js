@@ -42,6 +42,7 @@ import ImageList from '../Modal/ImageList';
 import AddService, { ServiceCard } from './AddService';
 import UserList from '../Modal/UserList';
 import { joinLocation, unjoinLocation } from '../../redux/callApi/tourCall';
+import Loading from '../Loading';
 
 function ReviewList(props) {
   const { reviews, handleClose } = props;
@@ -98,7 +99,7 @@ function ReviewList(props) {
                 marginTop: 100
               }}
             >
-              <CircularProgress />
+              <Loading />
             </div>
           )}
           {error && (
@@ -592,7 +593,7 @@ export default function Location(props) {
                     {!joined && !isOwn && (
                       <>
                         {loadingJoin ? (
-                          <CircularProgress />
+                          <CircularProgress size={18} />
                         ) : (
                           <Button
                             onClick={joinedLoc ? handleUnJoin : handleJoin}

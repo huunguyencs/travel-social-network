@@ -1,10 +1,11 @@
-import { CircularProgress, IconButton, Paper } from '@material-ui/core';
+import { IconButton, Paper } from '@material-ui/core';
 import { ArrowBack } from '@material-ui/icons';
 import React, { useEffect, useState } from 'react';
 import { Link, useParams } from 'react-router-dom';
 import { useSelector } from 'react-redux';
 import { NotFound } from '../../../../page/404';
 import customAxios from '../../../../utils/fetchData';
+import Loading from '../../../Loading';
 
 function AdminPostReportDetail() {
   const { subpage } = useParams();
@@ -76,7 +77,7 @@ function AdminPostReportDetail() {
         <div
           style={{ display: 'flex', justifyContent: 'center', marginTop: 60 }}
         >
-          <CircularProgress color="inherit" />
+          <Loading />
         </div>
       ) : state.error ? (
         <div
