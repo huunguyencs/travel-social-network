@@ -7,6 +7,7 @@ import { feedReviewStyles } from '../../style';
 import { useDispatch, useSelector } from 'react-redux';
 import { getPostsLocation } from '../../redux/callApi/postCall';
 import CreateReview from '../Forms/CreateReview';
+import Loading from '../Loading';
 // import SuccessIcon from "../Icons/Success";
 
 export default function FeedReview(props) {
@@ -96,17 +97,25 @@ export default function FeedReview(props) {
           </Fade>
         </Modal>
       </div>
-      <Feed
-        loadMore={loadMoreReview}
-        loading={post.loading}
-        error={post.error}
-        hasMore={post.hasMore}
-        tryAgain={tryAgain}
-        type="review"
-      >
-        {post.posts &&
-          post.posts.map(post => <Post post={post} key={post._id} />)}
-      </Feed>
+      {post.loadingFirst ? (
+        <div
+          style={{ display: 'flex', justifyContent: 'center', marginTop: 50 }}
+        >
+          <Loading />
+        </div>
+      ) : (
+        <Feed
+          loadMore={loadMoreReview}
+          loading={post.loading}
+          error={post.error}
+          hasMore={post.hasMore}
+          tryAgain={tryAgain}
+          type="review"
+        >
+          {post.posts &&
+            post.posts.map(post => <Post post={post} key={post._id} />)}
+        </Feed>
+      )}
     </div>
   );
 }

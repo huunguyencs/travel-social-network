@@ -11,7 +11,7 @@ import {
 import { resetTour } from '../actions/createTourAction';
 
 export const getTours = query => async dispatch => {
-  dispatch(tourAction.loading());
+  dispatch(tourAction.loadingFirst());
   // console.log(dispatch)
   try {
     var res;
@@ -60,8 +60,7 @@ export const getUserTour = (id, token, page) => async dispatch => {
   // dispatch(tourAction.getTours({ tour: [] }));
   if (page === 0) {
     dispatch(tourAction.loadingFirst());
-  }
-  dispatch(tourAction.loading());
+  } else dispatch(tourAction.loading());
   try {
     var res;
     if (page && page > 0) {

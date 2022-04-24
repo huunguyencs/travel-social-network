@@ -43,9 +43,12 @@ function ProfileTours() {
       tour.error ||
       tour.loadingFirst ||
       (tour.tours && tour.id === id)
-    )
+    ) {
+      console.log('???');
       return;
-    dispatch(getUserTour(user.user._id, auth.token, 0));
+    }
+
+    dispatch(getUserTour(id, auth.token, 0));
   }, [dispatch, user.user, auth.token, tour, id]);
 
   const ref = createRef();

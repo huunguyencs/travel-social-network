@@ -112,10 +112,10 @@ export default function TabPanel(props) {
   }, []);
 
   useEffect(() => {
-    if (fetch) {
+    if (fetch && !error && !loading) {
       handleSearch(q, item, page, hasMore);
     }
-  }, [fetch, q, item, hasMore, page]);
+  }, [fetch, q, item, hasMore, page, error, loading]);
 
   const classes = searchStyles();
 
