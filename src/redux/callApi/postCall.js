@@ -6,7 +6,7 @@ import { createNotify, deleteNotify } from './notifyCall';
 import * as alertAction from '../actions/alertAction';
 
 export const getPosts = token => async dispatch => {
-  dispatch(postAction.loading());
+  dispatch(postAction.loadingFirst());
 
   try {
     // call api to get post list
@@ -16,7 +16,7 @@ export const getPosts = token => async dispatch => {
 
     // console.log(res.data.posts)
 
-    dispatch(postAction.getPosts({ posts: res.data.posts }));
+    dispatch(postAction.getPosts({ posts: res.data.posts, id: 0 }));
   } catch (err) {
     // console.log(err);
     dispatch(postAction.error({ error: 'Có lỗi xảy ra' }));
@@ -32,7 +32,7 @@ export const getPostsLocation = (id, page) => async dispatch => {
   try {
     const res = await customAxios().get(`/location/${id}/posts?offset=${page}`);
     if (page === 0) {
-      dispatch(postAction.getPosts({ posts: res.data.posts }));
+      dispatch(postAction.getPosts({ posts: res.data.posts, id: id }));
     } else {
       dispatch(postAction.getMorePost({ posts: res.data.posts }));
     }
@@ -41,18 +41,23 @@ export const getPostsLocation = (id, page) => async dispatch => {
   }
 };
 
-export const getUserPost = (id, offset) => async dispatch => {
+export const getUserPost = (id, token, offset) => async dispatch => {
   // dispatch(postAction.getPosts({ posts: [] }));
-  dispatch(postAction.loading());
+  // console.log(id, offset);
+  if (offset === 0) {
+    dispatch(postAction.loadingFirst());
+  } else dispatch(postAction.loading());
 
   try {
-    const res = await customAxios().get(`/post/user/${id}?offset=${offset}`);
+    const res = await customAxios(token).get(
+      `/post/user/${id}?offset=${offset}`
+    );
 
     // console.log(res.data.posts);
     if (offset > 0) {
       dispatch(postAction.getMorePost({ posts: res.data.posts }));
     } else {
-      dispatch(postAction.getPosts({ posts: res.data.posts }));
+      dispatch(postAction.getPosts({ posts: res.data.posts, id: id }));
     }
   } catch (err) {
     // console.log(err.response.data.message);

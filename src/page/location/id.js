@@ -30,7 +30,7 @@ export default function Location(props) {
     error: false
   });
   const dispatch = useDispatch();
-  const { auth } = useSelector(state => state);
+  const { auth, post } = useSelector(state => state);
 
   const getLocation = async (id, token) => {
     if (id) {
@@ -82,10 +82,15 @@ export default function Location(props) {
   }, [id, auth.token]);
 
   useEffect(() => {
-    if (location) {
-      dispatch(getPostsLocation(location._id, 0));
-    }
-  }, [location, dispatch]);
+    if (
+      !location ||
+      post.loading ||
+      post.error ||
+      (post.posts && post.id === id)
+    )
+      return;
+    dispatch(getPostsLocation(location._id, 0));
+  }, [location, dispatch, post, id]);
 
   useEffect(() => {
     if (location?.fullname) {

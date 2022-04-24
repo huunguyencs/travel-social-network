@@ -12,6 +12,7 @@ import { useSelector, useDispatch } from 'react-redux';
 import { getMoreTours } from '../../redux/callApi/tourCall';
 import { Timeline, Favorite } from '@material-ui/icons';
 import FilterTour from '../../components/Tour/FilterTour';
+import Loading from '../Loading';
 
 export default function FeedTour(props) {
   const dispatch = useDispatch();
@@ -74,17 +75,28 @@ export default function FeedTour(props) {
             </BottomNavigation>
           </div>
           <div className={classes.feedContent}>
-            <Feed
-              loadMore={loadTour}
-              tryAgain={tryAgain}
-              loading={tour.loading}
-              error={tour.error}
-              hasMore={tour.hasMore}
-            >
-              {tour.tours.map(tour => (
-                <Tour tour={tour} key={tour._id} />
-              ))}
-            </Feed>
+            {tour.loadingFirst ? (
+              <div
+                style={{
+                  display: 'flex',
+                  justifyContent: 'center',
+                  marginTop: 150
+                }}
+              >
+                <Loading />
+              </div>
+            ) : (
+              <Feed
+                loadMore={loadTour}
+                tryAgain={tryAgain}
+                loading={tour.loading}
+                error={tour.error}
+                hasMore={tour.hasMore}
+              >
+                {tour.tours &&
+                  tour.tours.map(tour => <Tour tour={tour} key={tour._id} />)}
+              </Feed>
+            )}
           </div>
         </div>
       </Grid>

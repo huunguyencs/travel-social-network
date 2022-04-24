@@ -8,47 +8,17 @@ import Tour from '../Tour';
 import Feed from './index';
 import { feedStyles } from '../../style';
 
-import { useSelector, useDispatch } from 'react-redux';
+import { useSelector } from 'react-redux';
 // import { getMoreTours } from '../../redux/callApi/tourCall';
 import { Bookmark } from '@material-ui/icons';
+import Loading from '../Loading';
 // import FilterTour from '../../components/Tour/FilterTour';
 
 export default function FeedTourSave(props) {
-  // const dispatch = useDispatch();
   const { tour } = useSelector(state => state);
 
-  // const [cost, setCost] = useState([0, 100]);
-  // const [text, setText] = useState('');
-  // const [isFiltering, setIsFiltering] = useState(false);
   const classes = feedStyles();
-  // const loadTour = () => {
-  //   if (tour.hasMore) {
-  //     var maxCost = cost[1],
-  //       minCost = cost[0];
-  //     if (minCost > maxCost) {
-  //       minCost += maxCost;
-  //       maxCost = minCost - maxCost;
-  //       minCost -= maxCost;
-  //     }
-  //     dispatch(
-  //       getMoreTours(tour.page, {
-  //         maxCost: maxCost * 10,
-  //         minCost: minCost * 10,
-  //         q: text
-  //       })
-  //     );
-  //   }
-  // };
 
-  // const tryAgain = () => {
-  //   loadTour(tour.page, dispatch, tour.hasMore);
-  // };
-
-  // const refFilter = React.createRef();
-
-  // const FilterTourRef = React.forwardRef((props, ref) => (
-  //   <FilterTour innerRef={ref} {...props} />
-  // ));
   const [value, setValue] = useState(0);
   return (
     <Grid container className={classes.container}>
@@ -70,23 +40,32 @@ export default function FeedTourSave(props) {
             </BottomNavigation>
           </div>
           <div className={classes.feedContent}>
-            <Feed
-              // loadMore={loadTour}
-              // tryAgain={tryAgain}
-              loading={tour.loading}
-              error={tour.error}
-              hasMore={tour.hasMore}
-            >
-              {tour.tours.map(tour => (
-                <Tour tour={tour} key={tour._id} />
-              ))}
-            </Feed>
+            {tour.loadingFirst ? (
+              <div
+                style={{
+                  display: 'flex',
+                  justifyContent: 'center',
+                  marginTop: 150
+                }}
+              >
+                <Loading />
+              </div>
+            ) : (
+              <Feed
+                // loadMore={loadTour}
+                // tryAgain={tryAgain}
+                loading={tour.loading}
+                error={tour.error}
+                hasMore={tour.hasMore}
+              >
+                {tour.tours &&
+                  tour.tours.map(tour => <Tour tour={tour} key={tour._id} />)}
+              </Feed>
+            )}
           </div>
         </div>
       </Grid>
-      <Grid item md={4} className={classes.filterTour}>
-    
-      </Grid>
+      <Grid item md={4} className={classes.filterTour}></Grid>
     </Grid>
   );
 }
