@@ -85,11 +85,13 @@ export default function InfoPage() {
     if (avatar) urlAvatar = await uploadImages([avatar]);
     if (bg) urlBg = await uploadImages([bg]);
 
+    let parseHobbies = hobbies.join(',');
+
     customAxios(token)
       .patch('/user/change_new', {
         avatar: urlAvatar,
         background: urlBg,
-        hobbies,
+        hobbies: parseHobbies,
         birthday,
         andress
       })
@@ -157,7 +159,6 @@ export default function InfoPage() {
           onChange={e => setAndress(e.target.value)}
           value={andress}
           className={classes.fullField}
-          required
         />
       </div>
       <MuiPickersUtilsProvider utils={DateFnsUtils}>

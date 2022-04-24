@@ -10,12 +10,12 @@ import React, { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { Link } from 'react-router-dom';
 import { error, success } from '../../redux/actions/alertAction';
-import { deleteHelp, updateHelp } from '../../redux/actions/helpAction';
+import { updateHelp } from '../../redux/actions/helpAction';
 import { createNotify } from '../../redux/callApi/notifyCall';
 import { timeAgo } from '../../utils/date';
 import customAxios from '../../utils/fetchData';
 
-export default function HelpCard({ help }) {
+export default function HelpCard({ help, handleRemove }) {
   const { auth, socket } = useSelector(state => state);
   const dispatch = useDispatch();
 
@@ -26,23 +26,24 @@ export default function HelpCard({ help }) {
     customAxios(auth.token)
       .patch(`/help/help/${help._id}`)
       .then(res => {
-        if (res.data.success) {
-          socket.emit('updateHelp', res.data.help);
-          const dataNotify = {
-            id: auth.user._id,
-            text: ``,
-            recipients: [help.userId._id],
-            url: `/help/my?id=${help._id}`,
-            content: `${auth.user.fullname} sẽ đến giúp bạn!`,
-            image: `${auth.user.avatar}`
-          };
+        socket.emit('updateHelp', res.data.help);
+        const dataNotify = {
+          id: auth.user._id,
+          text: ``,
+          recipients: [help.userId._id],
+          url: `/help/my?id=${help._id}`,
+          content: `${auth.user.fullname} sẽ đến giúp bạn!`,
+          image: `${auth.user.avatar}`
+        };
 
-          dispatch(createNotify(dataNotify, auth.token, socket));
-          dispatch(updateHelp(res.data.help));
-          dispatch(success({ message: 'Cảm ơn bạn đã tham gia giúp đỡ!' }));
-          return;
-        }
-        dispatch(error({ message: 'Có lỗi xảy ra!' }));
+        dispatch(createNotify(dataNotify, auth.token, socket));
+        dispatch(updateHelp(res.data.help));
+        dispatch(
+          success({
+            message:
+              'Cảm ơn bạn đã tham gia giúp đỡ! Hãy liên hệ với người cần giúp'
+          })
+        );
       })
       .catch(err => dispatch(error({ message: 'Có lỗi xảy ra!' })));
   };
@@ -51,12 +52,9 @@ export default function HelpCard({ help }) {
     customAxios(auth.token)
       .delete(`/help/${help._id}`)
       .then(res => {
-        if (res.data.success) {
-          socket.emit('deleteHelp', help._id);
-          dispatch(deleteHelp(help._id));
-          dispatch(success({ message: 'Xóa yêu cầu thành công!' }));
-        }
-        dispatch(error({ message: 'Có lỗi xảy ra!' }));
+        socket.emit('deleteHelp', help._id);
+        handleRemove(help._id);
+        dispatch(success({ message: 'Xóa yêu cầu thành công!' }));
       })
       .catch(err => dispatch(error({ message: 'Có lỗi xảy ra!' })));
   };
@@ -81,8 +79,7 @@ export default function HelpCard({ help }) {
         </Typography>
 
         <Link to={`/u/${help.userId._id}`}>
-          <Typography variant="h6"></Typography>
-          {help.userId.fullname}
+          <Typography variant="h6">{help.userId.fullname}</Typography>
         </Link>
         <Typography>
           <b>Liên lạc:</b> {help.contact}
