@@ -63,9 +63,6 @@ const tourdetailStyles = makeStyles(
         width: "100%",
         objectFit: "cover"
     },
-    contentContainer: {
-      marginTop: 10
-    },
     locationContentContainer: {
       display: 'flex',
       justifyContent: 'space-between'
@@ -201,6 +198,7 @@ const tourdetailStyles = makeStyles(
       }
     },
     imageLocation: {
+      maxHeight: 200,
       [theme.breakpoints.down('xs')]: {
         display: 'none'
       }
@@ -388,9 +386,10 @@ const tourdetailStyles = makeStyles(
     },
     tourRecommend:{
         margin:"0 0 20px 10px",
-        height: "100%",
         borderRadius: attr.borderRadius.md,
         boxShadow: "0 2px 8px #00000026",
+        backgroundColor: color.white,
+
     },
     tourLeftInfo:{
         marginTop: 10,
@@ -428,6 +427,28 @@ const tourdetailStyles = makeStyles(
     },
     datesWrapper:{
         borderRadius: attr.borderRadius.md
+    },
+    username: {
+      fontSize: 18,
+      fontWeight: 500,
+      cursor: 'pointer',
+      '&:hover': {
+        textDecorationLine: 'underline'
+      }
+    },
+    subheader: {
+      fontSize: '13px',
+      [theme.breakpoints.down('sm')]: {
+        fontSize: '10px'
+      }
+    },
+    menuIcon: {
+      marginRight: 5
+    },
+    cardInfoUser:{
+        margin:"0 0 10px 10px",
+        borderRadius: attr.borderRadius.md,
+        boxShadow: "0 2px 8px #00000026",
     }
     
 

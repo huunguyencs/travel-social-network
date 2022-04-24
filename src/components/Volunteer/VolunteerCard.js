@@ -1,5 +1,5 @@
 import { Avatar, Card, CardContent, CardHeader, CardMedia, IconButton, Typography, Popper, ClickAwayListener,MenuList,Paper,Button,Dialog, DialogActions, DialogContent, DialogTitle,CircularProgress,MenuItem} from '@material-ui/core'
-import { MoreVert } from '@material-ui/icons';
+import { MoreVert, Delete, Edit } from '@material-ui/icons';
 import React, { useState } from 'react'
 import { Link } from 'react-router-dom';
 import { deleteVolunteer } from '../../redux/callApi/volunteerCall';
@@ -104,8 +104,8 @@ export default function VolunteerCard(props) {
                                     <ClickAwayListener onClickAway={handleCloseMenu}>
                                         <Paper>
                                             <MenuList>
-                                                <MenuItem component={Link} to={`/createvolunteer?id=${volunteer._id}`}>Chỉnh sửa bài viết</MenuItem>
-                                                <MenuItem onClick={handleShowDelete}>Xóa bài viết</MenuItem>
+                                                <MenuItem component={Link} to={`/createvolunteer?id=${volunteer._id}`}><Edit className={classes.menuIcon}/> Chỉnh sửa bài viết</MenuItem>
+                                                <MenuItem onClick={handleShowDelete}><Delete className={classes.menuIcon}/> Xóa bài viết</MenuItem>
                                                 <Dialog
                                                     open={showDelete}
                                                     onClose={handleCloseDelete}

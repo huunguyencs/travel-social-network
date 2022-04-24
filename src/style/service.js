@@ -25,7 +25,6 @@ const serviceStyles = makeStyles(
     image: {
 
     },
-    image: {},
     serviceName: {
       marginBottom: 10,
       cursor: 'pointer',

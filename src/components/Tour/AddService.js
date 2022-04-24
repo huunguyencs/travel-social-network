@@ -316,8 +316,8 @@ export function ServiceCard(props) {
         <Card className={classes.serviceContainer} >
             <Grid container>
                 <Grid item md={5} sm={3} className={classes.imageLocation}>
-                    <CardMedia style={{height: 160}}>
-                        <img src={service.service ? service.service.images[0] : 'https://skillz4kidzmartialarts.com/wp-content/uploads/2017/04/default-image-620x600.jpg'} alt="Service" className={classes.img} />
+                    <CardMedia style={{height: "100%"}}>
+                        <img src={service.service ? service.service.images[0] : '/default1.jpg'} alt="Service" className={classes.img} />
                     </CardMedia>
                 </Grid>
                 <Grid item md={7} sm={9} xs={12}>
@@ -333,7 +333,7 @@ export function ServiceCard(props) {
                                 <div>
                                     <Typography>Chi phí: {new Intl.NumberFormat().format(service.cost * 1000)} VND</Typography>
                                 </div>
-                                <Button onClick={handleShowDetail}>Chi tiết</Button>
+                                <Button onClick={handleShowDetail} className={classes.reviewBtn}>Chi tiết</Button>
                             </div>
                             <div>
                                 {isEdit &&

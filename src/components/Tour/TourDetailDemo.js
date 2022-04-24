@@ -1,16 +1,16 @@
-import { Button, Grid, Typography, CircularProgress, Backdrop, Paper, IconButton, Modal, Fade, Avatar } from "@material-ui/core";
+import { Button,Card, CardContent, CardHeader, Popper, ClickAwayListener, MenuList, MenuItem, Grid, Typography, CircularProgress, Backdrop, Paper, IconButton, Modal, Fade, Avatar, Dialog, DialogActions, DialogContent, DialogTitle } from "@material-ui/core";
 import AvatarGroup from '@material-ui/lab/AvatarGroup';
 import React, { useEffect, useState } from "react";
 import {Stepper, Step, StepLabel, StepContent} from "@material-ui/core";
 import { tourdetailStyles } from "../../style";
 import Location from './Location';
-import { convertDateToStr } from "../../utils/date";
+import { convertDateToStr, timeAgo } from "../../utils/date";
 // import { useSelector } from "react-redux";
 import MapCard from "../Map/MapCard";
 import ImageModal from "../Modal/Image";
-import { Close, Update, LocationOnOutlined, Label } from "@material-ui/icons";
+import { MoreVert, LocationOnOutlined, Label, Delete, Edit } from "@material-ui/icons";
 import { ServiceCard } from "./AddService";
-// import { Link } from "react-router-dom";
+import { Link } from "react-router-dom";
 import UserList from "../Modal/UserList";
 import { useDispatch, useSelector } from "react-redux";
 import { joinTour, unJoinTour } from "../../redux/callApi/tourCall";
@@ -19,8 +19,8 @@ import PropTypes from 'prop-types';
 import { makeStyles} from "@material-ui/core";
 import clsx from 'clsx';
 import { Box, Tab, Tabs} from "@material-ui/core";
-
-
+import { deleteTour} from '../../redux/callApi/tourCall';
+import RecommendCard from '../Card/RecommendCard';
 function DetailDate(props) {
     const { tourDate, date, joined } = props;
 
@@ -138,7 +138,7 @@ export default function TourDetailDemo(props) {
     const classes = tourdetailStyles();
 
     const dispatch = useDispatch();
-    const { auth } = useSelector(state => state)
+    const { auth, socket} = useSelector(state => state)
     
     // const history = useHistory();
     // const dispatch = useDispatch();
@@ -149,7 +149,7 @@ export default function TourDetailDemo(props) {
     const [showImage, setShowImage] = useState(false);
     const [showUserJoin, setShowUserJoin] = useState(false);
     const [state, setState] = useState({
-        loadingJoin: false,
+        loading: false,
         error: false
     })
 
@@ -204,7 +204,7 @@ export default function TourDetailDemo(props) {
 
     const handleJoin = () => {
         setState({
-            loadingJoin: true,
+            loading: true,
             error: false
         })
         setJoined(true);
@@ -212,12 +212,12 @@ export default function TourDetailDemo(props) {
         updateJoin([...prevJoin, auth.user]);
         dispatch(joinTour(tour._id, auth.token, () => {
             setState({
-                loadingJoin: false,
+                loading: false,
                 error: false,
             })
         }, () => {
             setState({
-                loadingJoin: false,
+                loading: false,
                 error: true,
             })
             if (joined) {
@@ -229,7 +229,7 @@ export default function TourDetailDemo(props) {
 
     const handleUnJoin = () => {
         setState({
-            loadingJoin: true,
+            loading: true,
             error: false,
         })
         setJoined(false);
@@ -239,12 +239,12 @@ export default function TourDetailDemo(props) {
 
         dispatch(unJoinTour(tour._id, auth.token, () => {
             setState({
-                loadingJoin: false,
+                loading: false,
                 error: false,
             })
         }, () => {
             setState({
-                loadingJoin: false,
+                loading: false,
                 error: true,
             })
             if (!joined) {
@@ -282,6 +282,49 @@ export default function TourDetailDemo(props) {
         setValue(newValue);
     };
     
+    const [anchorEl, setAnchorEl] = useState(null);
+    const [showDelete, setShowDelete] = useState(false);
+    const handleShowMenu = (e) => {
+        setAnchorEl(e.currentTarget);
+    }
+    const handleCloseMenu = () => {
+        setAnchorEl(null);
+    }
+    const handleShowDelete = () => {
+        setShowDelete(true);
+    }
+
+    const handleCloseDelete = () => {
+        setShowDelete(false);
+        handleCloseMenu();
+    }
+    const handleDeleteTour = () => {
+        setState({
+            loading: true,
+            error: false
+        });
+        dispatch(
+            deleteTour(
+            tour,
+            auth.token,
+            socket,
+            () => {
+                setState({
+                loading: false,
+                error: false
+                });
+                setShowDelete(false);
+                handleCloseMenu();
+            },
+            () => {
+                setState({
+                loading: false,
+                error: true
+                });
+            }
+            )
+        );
+        };
     return (
         <>
             {
@@ -323,7 +366,7 @@ export default function TourDetailDemo(props) {
                                             !isOwn && joinLoc === 0 &&
                                             <>
                                                 {
-                                                    state.loadingJoin ?
+                                                    state.loading ?
                                                         <CircularProgress /> :
                                                         <Button onClick={joined ? handleUnJoin : handleJoin}>
                                                             {joined ? "Hủy tham gia" : "Tham gia"}
@@ -356,16 +399,98 @@ export default function TourDetailDemo(props) {
                                     </div>
                                 </Grid>
                                 <Grid item lg={4} md={4} sm={12} className={classes.tourInfoRight}>
+                                    <Card className={classes.cardInfoUser}>
+                                        <CardHeader
+                                            avatar={
+                                                <Avatar
+                                                    alt={tour.userId.fullname}
+                                                    src={tour.userId.avatar}
+                                                    aria-label='avatar'
+                                                />
+                                            }
+                                            action={
+                                                <>
+                                                    {
+                                                        auth.user && auth.user._id === tour.userId._id && <>
+                                                            <IconButton
+                                                                aria-label="settings"
+                                                                onClick={handleShowMenu}
+                                                                className={classes.action}
+                                                                size='small'
+                                                                controls={anchorEl ? "post-menu" : undefined}
+                                                            >
+                                                                <MoreVert />
+                                                            </IconButton>
+                                                            <Popper
+                                                                open={Boolean(anchorEl)}
+                                                                anchorEl={anchorEl}
+                                                                onClose={handleCloseMenu}
+                                                                disablePortal
+                                                            >
+                                                                <ClickAwayListener onClickAway={handleCloseMenu}>
+                                                                    <Paper>
+                                                                        <MenuList>
+                                                                            <MenuItem component={Link} to={'?edit=true'}><Edit className={classes.menuIcon}/> Chỉnh sửa hành trình</MenuItem>
+                                                                            <MenuItem onClick={handleShowDelete}> <Delete className={classes.menuIcon}/>Xóa hành trình</MenuItem>
+                                                                            <Dialog
+                                                                                open={showDelete}
+                                                                                onClose={handleCloseDelete}
+                                                                                aria-labelledby="show-delete-dialog"
+                                                                                aria-describedby="show-delete-dialog-description"
+                                                                            >
+                                                                                <DialogTitle id="alert-dialog-title">{"Bạn có chắc chắn muốn xóa?"}</DialogTitle>
+                                                                                <DialogContent>Bạn sẽ không thể khôi phục lại dữ liệu sau khi xóa!</DialogContent>
+                                                                                <DialogActions>
+                                                                                    <Button onClick={handleCloseDelete}>
+                                                                                        Hủy
+                                                                                    </Button>
+                                                                                    <Button onClick={handleDeleteTour} className={classes.delete}>
+                                                                                        {
+                                                                                            state.loading ?
+                                                                                                <CircularProgress size={15} color='inherit' /> : "Xóa"
+                                                                                        }
+                                                                                    </Button>
+                                                                                </DialogActions>
+                                                                            </Dialog>
+                                                                        </MenuList>
+                                                                    </Paper>
+                                                                </ClickAwayListener>
+                                                            </Popper>
+                                                        </>
+                                                    }
+                                                </>
+                                            }
+                                            title={
+                                                <Typography className={classes.username} component={Link} to={`/u/${tour.userId._id}`}>
+                                                   {tour.userId?.fullname}
+                                                </Typography>
+                                            }
+                                            subheader={
+                                                <Typography className={classes.subheader}>
+                                                    {timeAgo(new Date(tour.createdAt))}
+                                                </Typography>
+                                            }
+                                        />
+                                        <CardContent>
+                                            <Typography className={classes.tourName}>
+                                                {tour.name}
+                                            </Typography>
+                                            {/* <Typography>Thời gian: {convertDateToStr(volunteer.date[0].date)}</Typography>
+                                            <Typography>Địa điểm xuất phát: {volunteer.location[0].location.fullname}</Typography>
+                                            <Typography>Thể loại: {volunteer.type}</Typography> */}
+                                        </CardContent>
+                                    </Card>
                                     <div className={classes.tourRecommend}>
-                                        
+                                        <RecommendCard title="Hành trình gợi ý"/> 
                                     </div>
+                                    
                                 </Grid>
                             </Grid>
                             <Grid container className={classes.tourDates}>
                                 <Grid item lg={8} md={8} sm={12} className={classes.tourDatesLeft}>
                                     <Stepper  activeStep={idx}  orientation="vertical" className={classes.datesWrapper}>
                                         {tour.tour.map((item, index) => (
-                                        <Step key={index}  onClick={() => setIdx(index)}>
+                                        <Step key={index}  onClick={() => setIdx(index)} style={{cursor: "pointer"}}>
                                             <StepLabel StepIconComponent={ColorlibStepIcon}>Chi tiết lịch trình ngày {convertDateToStr(item.date)}</StepLabel>
                                             <StepContent>
                                                 <Tabs

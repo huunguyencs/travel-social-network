@@ -209,18 +209,19 @@ function Detail(props) {
                                 </div>
                         }
                 </Grid>
-                <Grid item md={6} sm={12} xs={12}>
-                    <div style={{ overflowY: 'auto', height: '70vh' }}>
-                        <div style={{ display: 'flex', justifyContent: 'space-between' }}>
-                            <Typography variant='h5' style={{ textAlign: 'center', marginTop: 10 }}>Danh sách dịch vụ</Typography>
-                        </div>
-                        {
-                            location.services.map(((item, index) =>
-                                <ServiceCard joined={joined} type='location' key={index} service={item} index={index} isEdit={isEdit} indexDate={indexDate} indexLocation={indexLocation} />
-                            ))
-                        }
-                    </div>
-                </Grid>
+                {
+                    location.services?.length > 0 && 
+                    <Grid item md={6} sm={12} xs={12} style={{padding: 10}}>
+                            <div style={{ display: 'flex', justifyContent: 'space-between' }}>
+                                <Typography variant='h5' style={{ textAlign: 'center'}}>Danh sách dịch vụ</Typography>
+                            </div>
+                            {
+                                location.services.map(((item, index) =>
+                                    <ServiceCard joined={joined} type='location' key={index} service={item} index={index} isEdit={isEdit} indexDate={indexDate} indexLocation={indexLocation} />
+                                ))
+                            }
+                    </Grid>
+                }
             </Grid>
         </Paper>
     )
@@ -290,17 +291,17 @@ export default function Location(props) {
     }
 
     const checkJoinLocation = () => {
-        let find = location.joinIds.findIndex(ele => ele._id === user._id)
+        let find = location.joinIds.findIndex(ele => ele._id === user?._id)
         return find >= 0;
     }
 
     // const joinLocation = checkJoinLocation();
     useEffect(() => {
         if (isSave) {
-            let find = location.joinIds.findIndex(ele => ele._id === user._id);
+            let find = location.joinIds.findIndex(ele => ele._id === user?._id);
             setJoinedLoc(find >= 0)
         }
-    }, [location.joinIds, user._id, isSave])
+    }, [location.joinIds, user?._id, isSave])
 
     useEffect(() => {
         setShowDetail(false);
@@ -387,7 +388,7 @@ export default function Location(props) {
 
             <Grid container>
                 <Grid item md={4} sm={3} className={classes.imageLocation}>
-                    <CardMedia style={{height: 200}}>
+                    <CardMedia style={{height: "100%"}}>
                         {
                             location.locationName ?
                                 <img src={"https://skillz4kidzmartialarts.com/wp-content/uploads/2017/04/default-image-620x600.jpg"} alt="Đang tải..." className={classes.img} />
@@ -438,7 +439,7 @@ export default function Location(props) {
                                                 </>
                                             }
                                         </div>
-                                        <Typography>Thành viên tham gia</Typography>
+                                        <Typography>Thành viên tham gia:</Typography>
                                         <AvatarGroup max={4} onClick={handleShowJoin} style={{ cursor: 'pointer' }}>
                                             {joinIds.concat(location.joinIds).map(user =>
                                                 <Avatar src={user.avatar} alt={'A'} key={user._id} style={{ height: 20, width: 20 }} />
