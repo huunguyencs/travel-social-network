@@ -1,6 +1,7 @@
 import {
   Button,
   Card,
+  Collapse,
   CardContent,
   CardMedia,
   Grid,
@@ -25,7 +26,7 @@ import {
   InputAdornment
 } from '@material-ui/core';
 import React, { useEffect, useState } from 'react';
-import { Close, MoreVert } from '@material-ui/icons';
+import { Close, MoreVert, Label } from '@material-ui/icons';
 import { useDispatch, useSelector } from 'react-redux';
 import { Link } from 'react-router-dom';
 
@@ -174,8 +175,7 @@ function Detail(props) {
   const classes = tourdetailStyles();
   const dispatch = useDispatch();
 
-  const { location, isEdit, indexDate, indexLocation, handleClose, joined } =
-    props;
+  const { location, isEdit, indexDate, indexLocation, joined } = props;
 
   const [description, setDescription] = useState();
   const [time, setTime] = useState(location.time);
@@ -206,9 +206,9 @@ function Detail(props) {
         <Grid item md={6} sm={12} xs={12}>
           {isEdit ? (
             <>
-              <div style={{ overflowY: 'auto', height: '70vh' }}>
+              <div>
                 <Typography
-                  variant="h5"
+                  variant="h6"
                   style={{ textAlign: 'center', marginTop: 10 }}
                 >
                   {location.locationName
@@ -273,22 +273,30 @@ function Detail(props) {
               </div>
             </>
           ) : (
-            <div style={{ overflowY: 'auto', height: '70vh' }}>
-              <Typography
-                variant="h5"
-                style={{ textAlign: 'center', marginTop: 10 }}
-              >
-                {location.locationName
-                  ? location.locationName
-                  : location.location.fullname}
-              </Typography>
+            <div>
+              <div className={classes.locationImages}>
+                <img
+                  style={{ width: '100%', height: '100%' }}
+                  src="https://res.cloudinary.com/dqxvfu5k1/image/upload/v1649898282/k4hoq9jblhx65msx64c8.jpg"
+                  alt="loading ..."
+                ></img>
+              </div>
               <div style={{ padding: 20 }}>
                 <Typography>
-                  Chi phí:{' '}
+                  <Label style={{ fontSize: 15 }} />
+                  <span style={{ fontWeight: 500 }}>Chi phí: </span>{' '}
                   {new Intl.NumberFormat().format(location.cost * 1000)} VND
                 </Typography>
-                <Typography>Thời gian: {location.time}</Typography>
-                <Typography>Mô tả: {location.description}</Typography>
+                <Typography>
+                  <Label style={{ fontSize: 15 }} />
+                  <span style={{ fontWeight: 500 }}>Thời gian: </span>{' '}
+                  {location.time}
+                </Typography>
+                <Typography>
+                  <Label style={{ fontSize: 15 }} />
+                  <span style={{ fontWeight: 500 }}>Mô tả: </span>{' '}
+                  {location.description}
+                </Typography>
               </div>
             </div>
           )}
@@ -296,20 +304,13 @@ function Detail(props) {
         <Grid item md={6} sm={12} xs={12}>
           <div style={{ overflowY: 'auto', height: '70vh' }}>
             <div style={{ display: 'flex', justifyContent: 'space-between' }}>
-              <div></div>
               <Typography
                 variant="h5"
                 style={{ textAlign: 'center', marginTop: 10 }}
               >
                 Danh sách dịch vụ
               </Typography>
-              <div>
-                <IconButton size="small" onClick={handleClose}>
-                  <Close />
-                </IconButton>
-              </div>
             </div>
-
             {location.services.map((item, index) => (
               <ServiceCard
                 joined={joined}
@@ -361,7 +362,6 @@ export default function Location(props) {
   const [joinedLoc, setJoinedLoc] = useState(false);
 
   const handleJoin = () => {
-    if (!user) return;
     setLoadingJoin(true);
     setJoinedLoc(true);
     var prevJoin = location.joinIds;
@@ -387,7 +387,6 @@ export default function Location(props) {
   };
 
   const handleUnJoin = () => {
-    if (!user) return;
     setLoadingJoin(true);
     setJoinedLoc(false);
     var prevJoin = location.joinIds;
@@ -429,9 +428,11 @@ export default function Location(props) {
 
   // const joinLocation = checkJoinLocation();
   useEffect(() => {
-    if (!isSave || !user) return;
-    let find = location.joinIds.findIndex(ele => ele._id === user._id);
-    setJoinedLoc(find >= 0);
+    if (isSave) {
+      if (!user) return;
+      let find = location.joinIds.findIndex(ele => ele._id === user._id);
+      setJoinedLoc(find >= 0);
+    }
   }, [location.joinIds, user, isSave]);
 
   useEffect(() => {
@@ -482,11 +483,7 @@ export default function Location(props) {
   };
 
   const handleShowDetail = () => {
-    setShowDetail(true);
-  };
-
-  const handleCloseDetail = () => {
-    setShowDetail(false);
+    setShowDetail(state => !state);
   };
 
   const handleShowReview = () => {
@@ -527,10 +524,12 @@ export default function Location(props) {
     <Card className={classes.cardContainer}>
       <Grid container>
         <Grid item md={4} sm={3} className={classes.imageLocation}>
-          <CardMedia>
+          <CardMedia style={{ height: 200 }}>
             {location.locationName ? (
               <img
-                src={'default2.jpg'}
+                src={
+                  'https://skillz4kidzmartialarts.com/wp-content/uploads/2017/04/default-image-620x600.jpg'
+                }
                 alt="Đang tải..."
                 className={classes.img}
               />
@@ -576,33 +575,41 @@ export default function Location(props) {
                 )}
                 {isSave && (
                   <>
-                    {location.location && (joined || checkJoinLocation()) && (
-                      <div>
-                        {' '}
+                    <div style={{ display: 'flex' }}>
+                      {location.location && (joined || checkJoinLocation()) && (
+                        <div>
+                          {' '}
+                          <Button
+                            className={classes.reviewBtn}
+                            onClick={handleShow}
+                          >
+                            Tạo Review
+                          </Button>{' '}
+                        </div>
+                      )}
+                      {location.postId?.length > 0 && (
                         <Button
                           className={classes.reviewBtn}
-                          onClick={handleShow}
+                          onClick={handleShowReview}
                         >
-                          Tạo Review
-                        </Button>{' '}
-                      </div>
-                    )}
-                    {location.postId?.length > 0 && (
-                      <Button onClick={handleShowReview}>Xem review</Button>
-                    )}
-                    {!joined && !isOwn && (
-                      <>
-                        {loadingJoin ? (
-                          <CircularProgress size={18} />
-                        ) : (
-                          <Button
-                            onClick={joinedLoc ? handleUnJoin : handleJoin}
-                          >
-                            {joinedLoc ? 'Huỷ tham gia' : 'Tham gia'}
-                          </Button>
-                        )}
-                      </>
-                    )}
+                          Xem review
+                        </Button>
+                      )}
+                      {!joined && !isOwn && (
+                        <>
+                          {loadingJoin ? (
+                            <CircularProgress size={15} />
+                          ) : (
+                            <Button
+                              onClick={joinedLoc ? handleUnJoin : handleJoin}
+                              className={classes.reviewBtn}
+                            >
+                              {joinedLoc ? 'Huỷ tham gia' : 'Tham gia'}
+                            </Button>
+                          )}
+                        </>
+                      )}
+                    </div>
                     <Typography>Thành viên tham gia</Typography>
                     <AvatarGroup
                       max={4}
@@ -639,7 +646,12 @@ export default function Location(props) {
                     </Modal>
                   </>
                 )}
-                <Button onClick={handleShowDetail}>Chi tiết</Button>
+                <Button
+                  className={classes.reviewBtn}
+                  onClick={handleShowDetail}
+                >
+                  Chi tiết
+                </Button>
               </div>
               {isEdit && (
                 <div>
@@ -658,9 +670,6 @@ export default function Location(props) {
                     onClose={handleCloseMenu}
                     disablePortal
                   >
-                    {/* <Grow
-                                            style={{ transformOrigin: "center bottom" }}
-                                        > */}
                     <ClickAwayListener onClickAway={handleCloseMenu}>
                       <Paper>
                         <MenuList>
@@ -716,12 +725,10 @@ export default function Location(props) {
                         </MenuList>
                       </Paper>
                     </ClickAwayListener>
-                    {/* </Grow> */}
                   </Popper>
                 </div>
               )}
             </div>
-
             <Modal
               aria-labelledby="transition-modal-title"
               aria-describedby="transition-modal-description"
@@ -767,7 +774,19 @@ export default function Location(props) {
             </Modal>
           </CardContent>
         </Grid>
-
+        <Grid item md={12} sm={12} xs={12}>
+          <Collapse in={showDetail} style={{ width: '100%' }}>
+            <DetailRef
+              ref={refDetail}
+              location={location}
+              isEdit={isEdit}
+              indexDate={indexDate}
+              indexLocation={indexLocation}
+              handleClose={handleShowDetail}
+              joined={joined}
+            />
+          </Collapse>
+        </Grid>
         {/* <Collapse in={showDetail} style={{ width: "100%" }}>
                     <Grid item md={12} sm={12} xs={12}>
                         <Detail
@@ -778,29 +797,29 @@ export default function Location(props) {
                         />
                     </Grid>
                 </Collapse> */}
-        <Modal
-          aria-labelledby="transition-modal-detail"
-          aria-describedby="transition-modal-detail-description"
-          open={showDetail}
-          className={classes.modal}
-          onClose={handleCloseDetail}
-          BackdropComponent={Backdrop}
-          BackdropProps={{
-            timeout: 500
-          }}
-        >
-          <Fade in={showDetail}>
-            <DetailRef
-              ref={refDetail}
-              location={location}
-              isEdit={isEdit}
-              indexDate={indexDate}
-              indexLocation={indexLocation}
-              handleClose={handleCloseDetail}
-              joined={joined}
-            />
-          </Fade>
-        </Modal>
+        {/* <Modal
+                    aria-labelledby="transition-modal-detail"
+                    aria-describedby="transition-modal-detail-description"
+                    open={showDetail}
+                    className={classes.modal}
+                    onClose={handleCloseDetail}
+                    BackdropComponent={Backdrop}
+                    BackdropProps={{
+                        timeout: 500,
+                    }}
+                >
+                    <Fade in={showDetail}>
+                        <DetailRef
+                            ref={refDetail}
+                            location={location}
+                            isEdit={isEdit}
+                            indexDate={indexDate}
+                            indexLocation={indexLocation}
+                            handleClose={handleCloseDetail}
+                            joined={joined}
+                        />
+                    </Fade>
+                </Modal> */}
       </Grid>
     </Card>
   );

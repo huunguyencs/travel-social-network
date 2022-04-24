@@ -91,12 +91,11 @@ const eventStyles = makeStyles(
       marginTop: 10
     },
     locationIcon: {
-      fontSize: '40px',
-      marginRight: '10px',
-      color: color.black
-    }
-  }),
-  { index: 1 }
-);
+        fontSize: "40px",
+        marginRight: "10px",
+        color: color.black
+    },
+}), {index: 1});
+
 
 export default eventStyles;

@@ -177,136 +177,121 @@ const profileStyles = makeStyles(
     },
     infoUser: {
       display: 'flex',
-      flexDirection: 'column',
-      justifyContent: 'center',
-      marginTop: '90px',
-      marginLeft: '2vw',
-      [theme.breakpoints.down('sm')]: {
-        marginTop: 5
-      }
+      alignSelf: 'center',
+      fontSize: "22px"
     },
-    fullname: {
-      fontSize: '30px',
-      color: 'inherit',
-      [theme.breakpoints.down('sm')]: {
-        display: 'flex',
-        alignSelf: 'center',
-        fontSize: '22px'
-      }
+  follow: {
+    display: "flex",
+    fontSize: "20px",
+    color: "inherit"
+  },
+  followInfo: {
+    marginRight: "20px",
+    cursor: "pointer",
+    [theme.breakpoints.down("sm")]: {
+      fontSize: 14
     },
-    follow: {
-      display: 'flex',
-      fontSize: '20px',
-      color: 'inherit'
-    },
-    followInfo: {
-      marginRight: '20px',
-      cursor: 'pointer',
-      [theme.breakpoints.down('sm')]: {
-        fontSize: 14
-      }
-    },
-    change_password: {
-      marginTop: 50
-    },
-    change_password_form: {
-      margin: 30
-    },
-    cmnd_front: {
-      width: 300,
-      position: 'relative',
-      marginBottom: 10
-    },
-    cmnd_front_upload: {
-      position: 'absolute',
-      bottom: 0,
-      right: 0
-    },
-    cmnd_front_image: {
-      width: '100%',
-      height: '100%',
-      objectFit: 'cover'
-    },
-    cmnd_textStrong: {
-      fontWeight: 'bold'
-    },
-    input_cmnd_number: {
-      width: 550,
-      marginBottom: 10
-    },
-    cmnd_icon_upload: {
-      border: '2px solid white',
-      color: 'white'
-    },
-    confirmAccount: {
-      marginTop: 20
-    },
-    state0: {
-      color: '#ff7200',
-      fontSize: 17
-    },
-    state1: {
-      color: '#61c38e',
-      fontSize: 17
-    },
-    state2: {
-      color: '#ff0000',
-      fontSize: 17
-    },
-    fullField: {
-      width: '100%',
-      marginBlock: 10
-    },
-    halfFeild: {
-      width: '50%',
-      marginBlock: 10
-    },
-    error: {
-      fontSize: '15px',
-      color: 'red',
-      marginInline: '20px',
-      marginTop: '10px'
-    },
-    btnWrap: {
-      display: 'flex',
-      justifyContent: 'right'
-    },
-    updateBtn: {
-      margin: 20
-    },
-    sizeImageChange: {
-      width: 300,
-      height: 200
-    },
-    // //Introduction
-    introContainer: {
-      overflow: 'hidden',
-      boxShadow: '0 2px 8px #00000026',
-      marginTop: 80,
-      height: 380,
-      width: '100%',
-      borderRadius: attr.borderRadius.md,
-      marginInline: 15,
-      minHeight: 380
-    },
-    introHeader: {
-      padding: '20px 0 10px 20px',
-      borderBottom: '1px solid #d0d0d0'
-    },
-    introTabPanelItem: {
-      display: 'flex',
-      marginBottom: 30
-    },
-    introTabPanelIcon: {
-      marginRight: 10
-    },
-    introTabPanel: {
-      flex: 1,
-      marginTop: 50,
-      marginLeft: 20
-    }
-  }),
-  { index: 1 }
-);
+  },
+  change_password: {
+    marginTop: 50
+  },
+  change_password_form: {
+    margin: 30
+  },
+  cmnd_front: {
+    width: 300,
+    position: "relative",
+    marginBottom: 10
+  },
+  cmnd_front_upload: {
+    position: "absolute",
+    bottom: 0,
+    right: 0,
+  },
+  cmnd_front_image: {
+    width: "100%",
+    height: "100%",
+    objectFit: "cover"
+  },
+  cmnd_textStrong: {
+    fontWeight: "bold"
+  },
+  input_cmnd_number: {
+    width: 550,
+    marginBottom: 10
+  },
+  cmnd_icon_upload: {
+    border: "2px solid white",
+    color: "white",
+  },
+  confirmAccount: {
+    marginTop: 20
+  },
+  state0: {
+    color: "#ff7200",
+    fontSize: 17
+  },
+  state1: {
+    color: "#61c38e",
+    fontSize: 17
+  },
+  state2: {
+    color: "#ff0000",
+    fontSize: 17
+  },
+  fullField: {
+    width: "100%",
+    marginBlock: 10
+  },
+  halfFeild: {
+    width: "50%",
+    marginBlock: 10
+  },
+  error: {
+    fontSize: "15px",
+    color: "red",
+    marginInline: "20px",
+    marginTop: "10px"
+  },
+  btnWrap: {
+    display: 'flex',
+    justifyContent: 'right'
+  },
+  updateBtn: {
+    margin: 20
+  },
+  sizeImageChange: {
+    width: 300,
+    height: 200
+  },
+  // //Introduction
+  introContainer:{
+    overflow: "hidden",
+    boxShadow: "0 2px 8px #00000026", 
+    marginTop: 80,
+    height: 380,
+    width: "100%",
+    borderRadius: attr.borderRadius.md,
+    marginInline: 15,
+    minHeight: 380
+  },
+  introHeader:{
+    padding: "20px 0 10px 20px",
+    borderBottom: "1px solid #d0d0d0"
+  },
+  introTabPanelItem:{
+    display: "flex", 
+    marginBottom: 30
+  },
+  introTabPanelIcon:{
+    marginRight: 10
+  },
+  introTabPanel:{
+    flex: 1,
+    marginTop: 50, 
+    marginLeft: 20
+  }
+
+}), {index: 1});
 
 export default profileStyles;

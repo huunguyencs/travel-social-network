@@ -17,7 +17,7 @@ const serviceStyles = makeStyles(
       }
     },
     container: {
-      margin: 50,
+      margin: '16px 0 16px 0',
       [theme.breakpoints.down('sm')]: {
         margin: 10
       }

@@ -92,5 +92,4 @@ const notificationStyles = makeStyles(
   }),
   { index: 1 }
 );
-
 export default notificationStyles;

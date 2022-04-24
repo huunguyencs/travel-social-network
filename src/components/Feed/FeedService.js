@@ -4,12 +4,13 @@ import { getServices } from "../../redux/callApi/serviceCall";
 
 import Feed from './index';
 import ServiceItem from '../Service/ServiceItem';
+import { feedStyles } from "../../style";
 
 export default function FeedService(props) {
 
     // const classes = feedStyles();
     const { service } = useSelector(state => state);
-
+    const classes = feedStyles();
     // const [fetch, setFetch] = useState(false);
     const dispatch = useDispatch();
 
@@ -41,21 +42,23 @@ export default function FeedService(props) {
     // }
 
     return (
-        <Feed
-            loadMore={loadMore}
-            tryAgain={tryAgain}
-            loading={service.loading}
-            error={service.error}
-            hasMore={service.hasMore}
-        >
-            {
-                service.services.map((item) => (
-                    item._id ?
-                        <ServiceItem key={item._id} service={item} />
-                        : <div></div>
-                ))
-            }
-        </Feed>
+        <div className={classes.container}>
+             <Feed
+                loadMore={loadMore}
+                tryAgain={tryAgain}
+                loading={service.loading}
+                error={service.error}
+                hasMore={service.hasMore}
+            >
+                {
+                    service.services.map((item) => (
+                        item._id ?
+                            <ServiceItem key={item._id} service={item} />
+                            : <div></div>
+                    ))
+                }
+            </Feed>
+        </div>
         // <Container className={classes.container}>
         //     <div className={classes.content}>
 

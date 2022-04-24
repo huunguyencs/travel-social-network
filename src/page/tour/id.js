@@ -3,7 +3,7 @@ import { useLocation, useParams } from 'react-router-dom';
 import { Button, Typography } from '@material-ui/core';
 import { useDispatch, useSelector } from 'react-redux';
 
-import Tour from '../../components/Tour/TourDetail';
+import Tour from '../../components/Tour/TourDetailDemo';
 import customAxios from '../../utils/fetchData';
 import { NotFound } from '../404';
 import { loadTour } from '../../redux/actions/createTourAction';

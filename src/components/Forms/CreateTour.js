@@ -3,7 +3,8 @@ import React, { useState } from "react";
 import DateFnsUtils from '@date-io/date-fns';
 import { useDispatch, useSelector } from "react-redux";
 import 'date-fns';
-import { Button, Paper, TextField, Typography } from "@material-ui/core";
+import { Button, Paper, InputBase, Typography, IconButton } from "@material-ui/core";
+import { Close } from '@material-ui/icons';
 import { useHistory } from "react-router-dom";
 
 import { formStyles } from "../../style";
@@ -12,7 +13,7 @@ import LoginModal from "../Modal/Login";
 
 
 export default function CreateTourForm(props) {
-
+    const { handleClose } = props;
     const { auth } = useSelector(state => state);
 
     const history = useHistory();
@@ -41,24 +42,33 @@ export default function CreateTourForm(props) {
         <>
             {auth.token ?
                 <Paper className={classes.paperContainer}>
-                    <div className={classes.textTitle}>
-                        <Typography variant="h5" style={{ marginBottom: 30 }}>
-                            Tạo tour du lịch
+                    <div className={classes.modal_header}>
+                        <Typography variant="h5" style={{ marginLeft: '35%' }}>
+                            Tạo hành trình
                         </Typography>
+                        <IconButton size="small" onClick={handleClose}>
+                            <Close className={classes.modal_header_closeIcon} />
+                        </IconButton>
                     </div>
                     <form
                         onSubmit={handleSubmit}
+                        style={{marginTop: 20}}
                     >
-
-                        <TextField
-                            label="Tên tour"
-                            variant="outlined"
-                            name="tourname"
-                            required
-                            className={classes.tourNameInput}
-                            value={name}
-                            onChange={handleTextChange}
-                        />
+                        <div className={classes.composeTour}>
+                            <div className={classes.composeForm}>
+                                <InputBase
+                                    placeholder="Hãy đặt tên cho hành trình của bạn..."
+                                    title="Hãy đặt tên cho hành trình của bạn"
+                                    rows={3}
+                                    name="tourname"
+                                    required
+                                    multiline
+                                    className={classes.createText}
+                                    value={name}
+                                    onChange={handleTextChange}
+                                />
+                            </div>
+                        </div>
                         <div className={classes.datepicker}>
                             <MuiPickersUtilsProvider utils={DateFnsUtils}>
                                 <KeyboardDatePicker

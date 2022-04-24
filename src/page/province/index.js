@@ -1,4 +1,10 @@
-import { Button, Grid, Input, InputAdornment } from '@material-ui/core';
+import {
+  Button,
+  Grid,
+  Input,
+  InputAdornment,
+  Typography
+} from '@material-ui/core';
 import { Search } from '@material-ui/icons';
 import React, { useEffect, useState } from 'react';
 
@@ -61,58 +67,62 @@ export default function ProvincePage() {
   }, []);
 
   return (
-    <Grid container style={{ margin: 0, padding: 0 }}>
+    <Grid container className={classes.container}>
       <SpeedDialButton />
-      <Grid item md={3} sm={2} xs={2} className={classes.leftbar}>
-        <LeftBar menuList={homeMenu} />
-      </Grid>
-      <Grid item md={9} sm={10} xs={10} className={classes.content}>
-        {loading ? (
-          <div className={classes.center}>
-            <Loading />
-          </div>
-        ) : error ? (
-          <div className={classes.center}>
-            <Button onClick={getProvince}>Thử lại</Button>
-          </div>
-        ) : (
-          <Grid container style={{ marginTop: 100 }}>
-            <Grid item md={12} sm={12} xs={12}>
-              <div
-                style={{
-                  display: 'flex',
-                  justifyContent: 'right',
-                  marginRight: 50,
-                  marginBottom: 20
-                }}
-              >
-                <Input
-                  type="search"
-                  name="search"
-                  id="search-province"
-                  value={search}
-                  onChange={handleChangeSearch}
-                  placeholder="Tìm kiếm ..."
-                  startAdornment={
-                    <InputAdornment position="start">
-                      <Search />
-                    </InputAdornment>
-                  }
-                />
-              </div>
-            </Grid>
-            <Grid item md={12} sm={12} xs={12}>
-              {provinces.length === 0 && (
-                <div className={classes.center}>Không tìm thấy tỉnh.</div>
-              )}
-            </Grid>
-            {provinces.map(province => (
-              <Grid item md={4} sm={6} xs={12} key={province._id}>
-                <ProvinceCard province={province} />
+      <Grid container className={classes.containerProvince}>
+        <Grid item md={3} sm={2} xs={2} className={classes.leftbar}>
+          <LeftBar menuList={homeMenu} />
+        </Grid>
+        <Grid item md={9} sm={10} xs={10} className={classes.content}>
+          {loading ? (
+            <div className={classes.center}>
+              <Loading />
+            </div>
+          ) : error ? (
+            <div className={classes.center}>
+              <Button onClick={getProvince}>Thử lại</Button>
+            </div>
+          ) : (
+            <Grid container className={classes.wrapperProvinces}>
+              <Grid item md={12} sm={12} xs={12}>
+                <div
+                  style={{
+                    display: 'flex',
+                    justifyContent: 'right',
+                    marginRight: 50,
+                    marginBottom: 20
+                  }}
+                >
+                  <Input
+                    type="search"
+                    name="search"
+                    id="search-province"
+                    value={search}
+                    onChange={handleChangeSearch}
+                    placeholder="Tìm kiếm ..."
+                    startAdornment={
+                      <InputAdornment position="start">
+                        <Search />
+                      </InputAdornment>
+                    }
+                  />
+                </div>
               </Grid>
-            ))}
-          </Grid>
-        )}
+              <Grid item md={12} sm={12} xs={12}>
+                {provinces.length === 0 && (
+                  <div className={classes.center}>
+                    <Typography variant="h5">Không tìm thấy tỉnh.</Typography>
+                  </div>
+                )}
+              </Grid>
+              {provinces.map(province => (
+                <Grid item md={4} sm={6} xs={12} key={province._id}>
+                  <ProvinceCard province={province} />
+                </Grid>
+              ))}
+            </Grid>
+          )}
+        </Grid>
       </Grid>
     </Grid>
   );

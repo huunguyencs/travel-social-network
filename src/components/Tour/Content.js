@@ -20,7 +20,13 @@ import {
   Popper,
   Typography
 } from '@material-ui/core';
-import { Bookmark, BookmarkBorder, MoreVert } from '@material-ui/icons';
+import {
+  Bookmark,
+  BookmarkBorder,
+  MoreVert,
+  Edit,
+  Delete
+} from '@material-ui/icons';
 import { AvatarGroup } from '@material-ui/lab';
 import React, { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
@@ -132,14 +138,14 @@ function ShareContent({ tour }) {
                   anchorEl={anchorEl}
                   onClose={handleCloseMenu}
                   disablePortal
+                  className={classes.menuWrap}
                 >
-                  {/* <Grow
-                                        style={{ transformOrigin: "center bottom" }}
-                                    > */}
                   <ClickAwayListener onClickAway={handleCloseMenu}>
                     <Paper>
                       <MenuList>
                         <MenuItem onClick={handleShowEdit}>
+                          {' '}
+                          <Edit className={classes.menuIcon} />
                           Chỉnh sửa bài viết
                         </MenuItem>
                         <Modal
@@ -161,6 +167,7 @@ function ShareContent({ tour }) {
                           />
                         </Modal>
                         <MenuItem onClick={handleShowDelete}>
+                          <Delete className={classes.menuIcon} />
                           Xóa bài viết
                         </MenuItem>
                         <Dialog
@@ -459,6 +466,7 @@ function BaseContent(props) {
               anchorEl={anchorEl}
               onClose={handleCloseMenu}
               disablePortal
+              className={classes.menuWrap}
             >
               <ClickAwayListener onClickAway={handleCloseMenu}>
                 <Paper>
@@ -471,9 +479,11 @@ function BaseContent(props) {
                           component={Link}
                           to={`/tour/${tour._id}?edit=true`}
                         >
+                          <Edit className={classes.menuIcon} />
                           Chỉnh sửa hành trình
                         </MenuItem>
                         <MenuItem onClick={handleShowDelete}>
+                          <Delete className={classes.menuIcon} />
                           Xóa hành trình
                         </MenuItem>
                         <Dialog

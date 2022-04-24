@@ -11,8 +11,8 @@ export default function ProvinceCard(props) {
     const classes = cardStyles();
 
     return (
-        <Card className={classes.cardContainer}>
-            <CardActionArea>
+        <Card className={classes.cardProvinceContainer}>
+            <CardActionArea style={{backgroundColor: "#5e9c84", overflow:"hidden"}}component={Link} to={`/province/${province.name}`}>
                 <CardMedia
                     image={province.image}
                     title={province.fullname}
@@ -26,7 +26,7 @@ export default function ProvinceCard(props) {
                 <SeeMoreText maxText={80} text={province.information} variant="body2" />
             </CardContent>
             <CardActions>
-                <Button size="small" color="primary" component={Link} to={`/province/${province.name}`}>
+                <Button size="small" className={classes.buttonProvince} component={Link} to={`/province/${province.name}`}>
                     Chi tiết
                 </Button>
             </CardActions>

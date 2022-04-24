@@ -126,7 +126,7 @@ export default function Header(props) {
         <Link to="/" style={{ display: 'flex', alignItems: 'center' }}>
           {/* <Typography variant="h6" className={classes.logo}>
     return (
-        <AppBar style={{ zIndex: 2, height: 64 }}>
+        <AppBar style={{ zIndex: 10, height: 64 }}>
             <Toolbar className={classes.toolbar}>
                 <Link to="/" style={{ display: 'flex', alignItems: 'center' }}>
                     {/* <Typography variant="h6" className={classes.logo}>

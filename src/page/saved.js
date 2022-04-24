@@ -3,7 +3,7 @@ import React, { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { useHistory } from 'react-router-dom';
 
-import FeedTour from '../components/Feed/FeedTour';
+import FeedTourSave from '../components/Feed/FeedTourSave';
 import SpeedDialButton from '../components/SpeedDialBtn';
 import { getTourSaved } from '../redux/callApi/tourCall';
 
@@ -49,7 +49,7 @@ export default function TourSavedPage() {
                     <SpeedDialButton />
                     <Container >
                         <div className={classes.container}>
-                            <FeedTour />
+                            <FeedTourSave />
                         </div>
                     </Container>
                 </>

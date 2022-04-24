@@ -68,12 +68,10 @@ const inputStyles = makeStyles(
       position: 'relative'
     },
     removeButton: {
-      position: 'absolute',
-      top: 5,
-      right: 5
-    }
-  }),
-  { index: 1 }
-);
+        position: 'absolute',
+        top: 5,
+        right: 5,
+    },
+}), {index: 1});
 
 export default inputStyles;

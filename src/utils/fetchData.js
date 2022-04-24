@@ -34,5 +34,4 @@ const customAxios = (token = '') => {
   // });
   return instance;
 };
-
 export default customAxios;

@@ -20,12 +20,10 @@ const speedDialStyles = makeStyles(
       }
     },
     modal: {
-      display: 'flex',
-      alignItems: 'center',
-      justifyContent: 'center'
-    }
-  }),
-  { index: 1 }
-);
+        display: 'flex',
+        alignItems: 'center',
+        justifyContent: 'center',
+    },
+}), {index: 1});
 
 export default speedDialStyles;

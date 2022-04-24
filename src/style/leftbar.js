@@ -57,18 +57,16 @@ const leftbarStyles = makeStyles(
       }
     },
     text: {
-      fontSize: '1.2em',
-      fontWeight: 500,
-      // color: color.text,
-      [theme.breakpoints.down('sm')]: {
-        fontSize: '1.0em'
-      },
-      [theme.breakpoints.down('xs')]: {
-        display: 'none'
-      }
-    }
-  }),
-  { index: 1 }
-);
+        fontSize: '1.2em',
+        fontWeight: 500,
+        // color: color.text,
+        [theme.breakpoints.down("sm")]: {
+            fontSize: '1.0em'
+        },
+        [theme.breakpoints.down("xs")]: {
+            display: 'none'
+        }
+    },
+}), {index: 1});
 
 export default leftbarStyles;

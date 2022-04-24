@@ -299,8 +299,6 @@ const postStyles = makeStyles(
     shareWrapperNotImage: {
       margin: '0 2px'
     }
-  }),
-  { index: 1 }
-);
+}), {index: 1});
 
 export default postStyles;

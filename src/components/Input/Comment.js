@@ -49,7 +49,6 @@ export default function InputComment(props) {
             <form
                 onSubmit={handleComment}
                 className={classes.writeCmt}
-                // style={{ margin: isUpdate ? 0 : 20 }}
             >
                 <InputBase
                     placeholder="Viết bình luận ..."

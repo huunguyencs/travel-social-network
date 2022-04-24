@@ -242,17 +242,15 @@ const volunteerDetailStyles = makeStyles(
       }
     },
     fullname: {
-      fontSize: '20px',
-      cursor: 'pointer',
-      '&:hover': {
-        textDecorationLine: 'underline'
-      },
-      [theme.breakpoints.down('sm')]: {
-        fontSize: '14px'
-      }
-    }
-  }),
-  { index: 1 }
-);
+        fontSize: "20px",
+        cursor: "pointer",
+        "&:hover": {
+            textDecorationLine: 'underline',
+        },
+        [theme.breakpoints.down("sm")]: {
+            fontSize: "14px",
+        },
+    },
+}), {index: 1})
 
 export default volunteerDetailStyles;
