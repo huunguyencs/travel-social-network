@@ -24,8 +24,3 @@ yarn-error.log*
 
 
 .vscode
-
-# src/key/*
-
-server/node_modules
-server/.env

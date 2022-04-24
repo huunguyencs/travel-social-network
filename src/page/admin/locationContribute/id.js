@@ -12,7 +12,7 @@ export default function AdminLocationContributeDetailPage() {
                 <LeftBar menuList={adminListMenu} />
             </Grid>
             <Grid item md={9} sm={10} xs={10}>
-                <AdminLocationContributeDetail/>
+                <AdminLocationContributeDetail />
             </Grid>
         </Grid>
 

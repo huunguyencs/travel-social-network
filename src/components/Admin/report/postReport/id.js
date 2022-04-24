@@ -1,77 +1,94 @@
-import { CircularProgress, IconButton, Paper } from "@material-ui/core";
-import { ArrowBack } from "@material-ui/icons";
-import React, { useEffect, useState } from "react";
-import { Link, useParams } from "react-router-dom";
-
-import { NotFound } from '../../../../page/404'
-import customAxios from "../../../../utils/fetchData";
-
+import { CircularProgress, IconButton, Paper } from '@material-ui/core';
+import { ArrowBack } from '@material-ui/icons';
+import React, { useEffect, useState } from 'react';
+import { Link, useParams } from 'react-router-dom';
+import { useSelector } from 'react-redux';
+import { NotFound } from '../../../../page/404';
+import customAxios from '../../../../utils/fetchData';
 
 function AdminPostReportDetail() {
+  const { subpage } = useParams();
 
-    const { subpage } = useParams();
+  const [report, setReport] = useState(null);
+  const [state, setState] = useState({
+    notFound: false,
+    loading: false,
+    error: false
+  });
+  const { token } = useSelector(state => state.auth);
 
-    const [report, setReport] = useState(null);
-    const [state, setState] = useState({
-        notFound: false,
-        loading: false,
-        error: false,
+  const getReport = async (id, _token) => {
+    setState({
+      notFound: false,
+      loading: true,
+      error: false
     });
-
-
-
-    const getReport = async (id) => {
+    await customAxios(_token)
+      .get(`/report/${id}`)
+      .then(res => {
+        setReport(res.data.report);
         setState({
-            notFound: false,
-            loading: true,
-            error: false
-        })
-        await customAxios().get(`/report/${id}`).then(res => {
-            setReport(res.data.report);
-            setState({
-                notFound: false,
-                loading: false,
-                error: false
-            })
-        }).catch(err => {
-            setState({
-                notFound: false,
-                loading: false,
-                error: true
-            })
-        })
-    }
+          notFound: false,
+          loading: false,
+          error: false
+        });
+      })
+      .catch(err => {
+        setState({
+          notFound: false,
+          loading: false,
+          error: true
+        });
+      });
+  };
 
-    useEffect(() => {
-        getReport(subpage);
-    }, [subpage])
+  useEffect(() => {
+    getReport(subpage, token);
+  }, [subpage, token]);
 
-    useEffect(() => {
-        document.title = 'Admin - Bài viết được báo cáo'
-    }, [])
+  useEffect(() => {
+    document.title = 'Admin - Bài viết được báo cáo';
+  }, []);
 
-    return (
-        <Paper style={{ marginTop: 120, marginInline: 50, marginBottom: 30, padding: 30 }}>
-            <div style={{ display: 'flex', justifyContent: 'space-between' }}>
-                <div>
-                    <IconButton component={Link} to={`/admin/postReport`} title="Quay lại">
-                        <ArrowBack />
-                    </IconButton>
-                </div>
-            </div>
-            {
-                state.notFound ?
-                    <NotFound /> :
-                    state.loading ?
-                        <div style={{ display: 'flex', justifyContent: 'center', marginTop: 60 }}>
-                            <CircularProgress color='inherit' />
-                        </div> :
-                        state.error ?
-                            <div style={{ display: 'flex', justifyContent: 'center', marginTop: 60 }}>Có lỗi xảy ra</div> :
-                            report && <div></div>
-            }
-        </Paper>
-    );
+  return (
+    <Paper
+      style={{
+        marginTop: 120,
+        marginInline: 50,
+        marginBottom: 30,
+        padding: 30
+      }}
+    >
+      <div style={{ display: 'flex', justifyContent: 'space-between' }}>
+        <div>
+          <IconButton
+            component={Link}
+            to={`/admin/postReport`}
+            title="Quay lại"
+          >
+            <ArrowBack />
+          </IconButton>
+        </div>
+      </div>
+      {state.notFound ? (
+        <NotFound />
+      ) : state.loading ? (
+        <div
+          style={{ display: 'flex', justifyContent: 'center', marginTop: 60 }}
+        >
+          <CircularProgress color="inherit" />
+        </div>
+      ) : state.error ? (
+        <div
+          style={{ display: 'flex', justifyContent: 'center', marginTop: 60 }}
+        >
+          Có lỗi xảy ra
+        </div>
+      ) : (
+        report && <div>{report._id}</div>
+      )}
+    </Paper>
+  );
 }
 
 export default AdminPostReportDetail;

@@ -1,44 +1,45 @@
-import { makeStyles } from "@material-ui/core";
-import attr from "./attr";
-import color from "./color";
+import { makeStyles } from '@material-ui/core';
+import attr from './attr';
+import color from './color';
 
-const locationCardStyles = makeStyles((theme) => ({
+const locationCardStyles = makeStyles(
+  theme => ({
     locationCardContainer: {
         margin: "20px 0",
         borderRadius: attr.borderRadius.md,
         backgroundColor: color.white,
     },
     seeMoreBtn: {
-        paddingInline: 10,
-        backgroundColor: color.turquoise,
-        margin: 10,
-        [theme.breakpoints.down("sm")]: {
-            margin: 2
-        }
+      paddingInline: 10,
+      backgroundColor: color.turquoise,
+      margin: 10,
+      [theme.breakpoints.down('sm')]: {
+        margin: 2
+      }
     },
     media: {
-        height: 500,
-        [theme.breakpoints.down("sm")]: {
-            height: 300
-        }
+      height: 500,
+      [theme.breakpoints.down('sm')]: {
+        height: 300
+      }
     },
     content: {
-        margin: 10,
-        [theme.breakpoints.down("sm")]: {
-            margin: 2
-        }
+      margin: 10,
+      [theme.breakpoints.down('sm')]: {
+        margin: 2
+      }
     },
     rate: {
-        marginTop: 10,
-        [theme.breakpoints.down("sm")]: {
-            marginTop: 3
-        }
+      marginTop: 10,
+      [theme.breakpoints.down('sm')]: {
+        marginTop: 3
+      }
     },
     fullname: {
-        "&:hover": {
-            textDecorationLine: 'underline',
-        }
+      '&:hover': {
+        textDecorationLine: 'underline'
+      }
     }
-}), {index: 1})
+}), {index: 1});
 
 export default locationCardStyles;

@@ -1,303 +1,304 @@
-import { makeStyles } from "@material-ui/core";
+import { makeStyles } from '@material-ui/core';
 
-import color from "./color";
-import attr from "./attr";
+import color from './color';
+import attr from './attr';
 
-const postStyles = makeStyles((theme) => ({
+const postStyles = makeStyles(
+  theme => ({
     cardContainer: {
-        marginBottom: 15,
-        borderRadius: attr.borderRadius.md,
-        backgroundColor: color.white,
-        position: "relative"
+      marginBottom: 15,
+      borderRadius: attr.borderRadius.md,
+      backgroundColor: color.white,
+      position: 'relative'
     },
     userName: {
-        fontSize: 16,
-        fontWeight: 500,
-        cursor: "pointer",
-        "&:hover": {
-            textDecorationLine: 'underline',
-        }
+      fontSize: 16,
+      fontWeight: 500,
+      cursor: 'pointer',
+      '&:hover': {
+        textDecorationLine: 'underline'
+      }
     },
     line: {
-        width: "80%",
+      width: '80%'
     },
     listCmt: {
-        marginTop: 20,
+      marginTop: 20
     },
     title: {
-        paddingBottom: 20,
-        color: color.text,
-        "&:hover": {
-            textDecorationLine: 'underline',
-        }
+      paddingBottom: 20,
+      color: color.text,
+      '&:hover': {
+        textDecorationLine: 'underline'
+      }
     },
     location: {
-        padding: 5,
-        cursor: "pointer",
-        color: color.text,
+      padding: 5,
+      cursor: 'pointer',
+      color: color.text
     },
     modal: {
-        display: 'flex',
-        alignItems: 'center',
-        justifyContent: 'center',
+      display: 'flex',
+      alignItems: 'center',
+      justifyContent: 'center'
     },
     hashtagWrap: {
-        marginTop: 10,
+      marginTop: 10
     },
     hashtag: {
-        display: "inline",
-        marginRight: 5,
-        color: color.brightgreek,
-        cursor: "pointer",
-        "&:hover": {
-            textDecorationLine: 'underline',
-        }
+      display: 'inline',
+      marginRight: 5,
+      color: color.brightgreek,
+      cursor: 'pointer',
+      '&:hover': {
+        textDecorationLine: 'underline'
+      }
     },
     image: {
-        cursor: "pointer",
-        transition: "0.8s",
-        "&:hover": {
-            filter: "brightness(90%)",
-        }
+      cursor: 'pointer',
+      transition: '0.8s',
+      '&:hover': {
+        filter: 'brightness(90%)'
+      }
     },
     center: {
-        display: 'flex',
-        justifyContent: 'center'
+      display: 'flex',
+      justifyContent: 'center'
     },
     contentWrap: {
-        paddingTop: 100,
-        width: "70%",
-        [theme.breakpoints.down("sm")]: {
-            width: "100%"
-        }
+      paddingTop: 100,
+      width: '70%',
+      [theme.breakpoints.down('sm')]: {
+        width: '100%'
+      }
     },
     subheader: {
-        cursor: "pointer",
-        fontSize: '13px',
-        [theme.breakpoints.down("sm")]: {
-            fontSize: "10px",
-        }
+      cursor: 'pointer',
+      fontSize: '13px',
+      [theme.breakpoints.down('sm')]: {
+        fontSize: '10px'
+      }
     },
     delete: {
-        backgroundColor: color.red,
-        "&:hover": {
-            backgroundColor: color.darkred,
-        }
+      backgroundColor: color.red,
+      '&:hover': {
+        backgroundColor: color.darkred
+      }
     },
     loadMoreComment: {
-        marginInline: 20,
-        color: color.blue,
-        cursor: 'pointer',
-        '&:hover': {
-            textDecoration: 'underline',
-        }
+      marginInline: 20,
+      color: color.blue,
+      cursor: 'pointer',
+      '&:hover': {
+        textDecoration: 'underline'
+      }
     },
     loadingComment: {
-        marginInline: 20,
-        cursor: 'wait'
+      marginInline: 20,
+      cursor: 'wait'
     },
     errorComment: {
-        marginInline: 20
+      marginInline: 20
     },
-    menuWrap:{
-        left: "-80px !important" ,
-        [theme.breakpoints.down("sm")]: {
-            left: "-60px !important" 
-        }
+    menuWrap: {
+      left: '-80px !important',
+      [theme.breakpoints.down('sm')]: {
+        left: '-60px !important'
+      }
     },
-    menuIcon:{
-        marginRight:  5
+    menuIcon: {
+      marginRight: 5
     },
-    reportWrap:{
-        width:  548,
-        height: 760,
-        boxShadow: "0 2px 8px #00000026",
-        backgroundColor: color.white,
-        display: "flex",
-        flexDirection: "column",
-        overflowX: "hidden",
-        overflowY: "hidden",
-        borderRadius: attr.borderRadius.md,
-        maxWidth: 548
+    reportWrap: {
+      width: 548,
+      height: 760,
+      boxShadow: '0 2px 8px #00000026',
+      backgroundColor: color.white,
+      display: 'flex',
+      flexDirection: 'column',
+      overflowX: 'hidden',
+      overflowY: 'hidden',
+      borderRadius: attr.borderRadius.md,
+      maxWidth: 548
     },
-    reportHeader:{
-        height: 60,
-        borderBottom: `1px solid ${color.gray}`,
-        display: "flex",
-        alignItems: "center",
-        width: "100%",
-        justifyContent: "space-between"
+    reportHeader: {
+      height: 60,
+      borderBottom: `1px solid ${color.gray}`,
+      display: 'flex',
+      alignItems: 'center',
+      width: '100%',
+      justifyContent: 'space-between'
     },
-    reportHeader_text:{
-        paddingLeft: "40%"
+    reportHeader_text: {
+      paddingLeft: '40%'
     },
-    reportBody:{
-        padding: 20
+    reportBody: {
+      padding: 20
     },
-    reportList:{
-        width: "100%",
-        overflowY: "scroll",
-        height: 500
+    reportList: {
+      width: '100%',
+      overflowY: 'scroll',
+      height: 500
     },
-    reportListForm:{
-        display: "inline-block",
-        width: "100%"
+    reportListForm: {
+      display: 'inline-block',
+      width: '100%'
     },
-    reportListItem:{
-        width: "100%"
+    reportListItem: {
+      width: '100%'
     },
-    reportListItemRadio:{
-        width: "100%"
+    reportListItemRadio: {
+      width: '100%'
     },
-    input:{
-        width: "100%",
-        height: 80,
-        backgroundColor: color.cloud,
-        marginTop: 10,
-        padding: 10,
+    input: {
+      width: '100%',
+      height: 80,
+      backgroundColor: color.cloud,
+      marginTop: 10,
+      padding: 10
     },
-    reportIcon:{
-        marginLeft: "45%",
-        backgroundColor: color.cloud,
-        marginTop: 5,
-        "&:hover": {
-            backgroundColor: color.blue,
-        }
+    reportIcon: {
+      marginLeft: '45%',
+      backgroundColor: color.cloud,
+      marginTop: 5,
+      '&:hover': {
+        backgroundColor: color.blue
+      }
     },
-    cardHeader:{
-        padding: "16px 16px 0 16px" 
+    cardHeader: {
+      padding: '16px 16px 0 16px'
     },
 
     //images
-    postImage:{
-        position: "relative",
-        margin: "10px 0"
+    postImage: {
+      position: 'relative',
+      margin: '10px 0'
     },
-    masonryGrid:{
-        position: "relative",
-        display: "flex",
-        alignItems: "center"
+    masonryGrid: {
+      position: 'relative',
+      display: 'flex',
+      alignItems: 'center'
     },
 
     //iconPost
     iconButton: {
-        color: "white",
-        // backgroundColor: "#a5dec8",
-        cursor: 'pointer',
-        fontSize: 20,
-        margin: 10,
-        transition: "0.5s",
-        animation: "bouncy 0.6s",
-        '&:hover': {
-            fontSize: 25
-        },
-        "&:active": {
-            fontSize: 25
-        }
+      color: 'white',
+      // backgroundColor: "#a5dec8",
+      cursor: 'pointer',
+      fontSize: 20,
+      margin: 10,
+      transition: '0.5s',
+      animation: 'bouncy 0.6s',
+      '&:hover': {
+        fontSize: 25
+      },
+      '&:active': {
+        fontSize: 25
+      }
     },
-    
+
     likedIcon: {
-        color: "white",
-        cursor: 'pointer',
-        margin: 10,
-        fontSize: 15,
-        animation: "bouncy 0.6s",
-        "&:active": {
-            fontSize: 15,
-        }
+      color: 'white',
+      cursor: 'pointer',
+      margin: 10,
+      fontSize: 15,
+      animation: 'bouncy 0.6s',
+      '&:active': {
+        fontSize: 15
+      }
     },
-    likeWrapper:{
-        position: "absolute",
-        bottom: -18,
-        right: 10,
-        maxHeight: 54,
-        cursor:"pointer"
+    likeWrapper: {
+      position: 'absolute',
+      bottom: -18,
+      right: 10,
+      maxHeight: 54,
+      cursor: 'pointer'
     },
-    commentWrapper:{
-        position: "absolute",
-        bottom: -18,
-        right: 58,
-        maxHeight: 50,
-        cursor:"pointer"
+    commentWrapper: {
+      position: 'absolute',
+      bottom: -18,
+      right: 58,
+      maxHeight: 50,
+      cursor: 'pointer'
     },
-    shareWrapper:{
-        position: "absolute",
-        bottom: -18,
-        right: 105,
-        maxHeight: 50,
-        cursor:"pointer"
+    shareWrapper: {
+      position: 'absolute',
+      bottom: -18,
+      right: 105,
+      maxHeight: 50,
+      cursor: 'pointer'
     },
-    likeButton:{
-        position: "relative",
-        width: 43,
-        height: 43,
-        borderRadius: "50%",
-        background: "#fff",
-        boxShadow: "0px 5px 43px #00000026",
-        display: "flex",
-        justifyContent: "center",
-        alignItems: "center",
-        margin: "0 auto",
-        textDecoration: "none",
-        opacity: "1 !important",
-        overflow: "hidden",
-        transition: "all 0.3s"
+    likeButton: {
+      position: 'relative',
+      width: 43,
+      height: 43,
+      borderRadius: '50%',
+      background: '#fff',
+      boxShadow: '0px 5px 43px #00000026',
+      display: 'flex',
+      justifyContent: 'center',
+      alignItems: 'center',
+      margin: '0 auto',
+      textDecoration: 'none',
+      opacity: '1 !important',
+      overflow: 'hidden',
+      transition: 'all 0.3s'
     },
-    postFooter:{
-        display: "flex",
-        justifyContent: "flex-start",
-        alignItems: "center",
-        padding: 16
+    postFooter: {
+      display: 'flex',
+      justifyContent: 'flex-start',
+      alignItems: 'center',
+      padding: 16
     },
-    likers:{
-        display: "flex",
-        justifyContent: "flex-start",
-        alignItems: "center"
+    likers: {
+      display: 'flex',
+      justifyContent: 'flex-start',
+      alignItems: 'center'
     },
-    liker:{
-        height: 30,
-        width: 30,
-        borderRadius: "50%",
-        border: "3px solid #fff",
-        "&:not(:first-child)": {
-            marginLeft: -12
-        }
+    liker: {
+      height: 30,
+      width: 30,
+      borderRadius: '50%',
+      border: '3px solid #fff',
+      '&:not(:first-child)': {
+        marginLeft: -12
+      }
     },
-    likersText:{
-        marginLeft: 10,
-        lineHeight: 1.4,
-        color: "#888da8",
-        fontSize: 13
+    likersText: {
+      marginLeft: 10,
+      lineHeight: 1.4,
+      color: '#888da8',
+      fontSize: 13
     },
-    socialCount:{
-        marginLeft: "auto",
-        display: "flex",
-        alignItems: "stretch"
+    socialCount: {
+      marginLeft: 'auto',
+      display: 'flex',
+      alignItems: 'stretch'
     },
-    likeCount:{
-        cursor: "pointer",
-        display: "flex",
-        justifyContent: "flex-start",
-        alignItems: "center",
-        margin: "0 3px"
+    likeCount: {
+      cursor: 'pointer',
+      display: 'flex',
+      justifyContent: 'flex-start',
+      alignItems: 'center',
+      margin: '0 3px'
     },
-    postActions:{
-        display: "flex",
-        justifyContent: "flex-start",
-        alignItems: "center",
-        marginTop: -40,
-        flexDirection: "row-reverse",
-        marginRight: 10
+    postActions: {
+      display: 'flex',
+      justifyContent: 'flex-start',
+      alignItems: 'center',
+      marginTop: -40,
+      flexDirection: 'row-reverse',
+      marginRight: 10
     },
-    likeWrapperNotImage:{
-        margin: "0 2px"
+    likeWrapperNotImage: {
+      margin: '0 2px'
     },
-    commentWrapperNotImage:{
-        margin: "0 2px"
+    commentWrapperNotImage: {
+      margin: '0 2px'
     },
-    shareWrapperNotImage:{
-        margin: "0 2px"
+    shareWrapperNotImage: {
+      margin: '0 2px'
     }
-}), {index: 1})
+}), {index: 1});
 
 export default postStyles;

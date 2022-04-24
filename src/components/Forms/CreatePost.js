@@ -5,7 +5,9 @@ import {
   Paper,
   IconButton,
   CircularProgress,
-  Chip
+  Chip,
+  Switch,
+  FormControlLabel
 } from '@material-ui/core';
 import { Create, Close, CameraAltOutlined } from '@material-ui/icons';
 import React, { useState } from 'react';
@@ -37,6 +39,7 @@ export default function CreatePostForm(props) {
   const [text, setText] = useState('');
   const [hashtag, setHashtag] = useState('');
   const [hashtagArr, setHashtagArr] = useState([]);
+  const [isPublic, setIsPublic] = useState(true);
 
   const handleChange = e => {
     setText(e.target.value);
@@ -87,7 +90,7 @@ export default function CreatePostForm(props) {
       });
       dispatch(
         createPost(
-          { content: text, images: imageUpload, hashtags: ht },
+          { content: text, images: imageUpload, hashtags: ht, isPublic },
           auth.token,
           'post',
           socket,
@@ -178,6 +181,17 @@ export default function CreatePostForm(props) {
                       onChange={e => setHashtag(e.target.value)}
                     />
                   </form>
+                  <FormControlLabel
+                    control={
+                      <Switch
+                        checked={isPublic}
+                        onChange={e => setIsPublic(e.target.checked)}
+                        name="isPublic"
+                        color="primary"
+                      />
+                    }
+                    label={isPublic ? 'Công khai' : 'Chỉ mình tôi'}
+                  />
                   <div className={classes.composeOptions}>
                       <input
                         accept="image/*"

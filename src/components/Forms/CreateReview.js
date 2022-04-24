@@ -94,7 +94,8 @@ export default function CreateReviewForm(props) {
             rate: rate,
             locationId: location._id,
             tourDateId: tourDateId,
-            indexLocation: indexLocation
+            indexLocation: indexLocation,
+            isPublic: true
         },
             auth.token,
             "review",

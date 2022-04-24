@@ -12,7 +12,7 @@ export default function AdminPostReportDetailPage(props) {
                 <LeftBar menuList={adminListMenu} />
             </Grid>
             <Grid item md={9} sm={10} xs={10}>
-                <AdminPostReportDetail/>
+                <AdminPostReportDetail />
             </Grid>
         </Grid>
     )

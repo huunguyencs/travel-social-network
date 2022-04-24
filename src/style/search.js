@@ -1,47 +1,49 @@
-import { makeStyles } from "@material-ui/core";
-import color from "./color";
+import { makeStyles } from '@material-ui/core';
+import color from './color';
 
-const searchStyles = makeStyles((theme) => ({
+const searchStyles = makeStyles(
+  theme => ({
     root: {
-        flexGrow: 1,
-        backgroundColor: theme.palette.background.paper,
-        display: 'flex',
-        height: 224,
+      flexGrow: 1,
+      backgroundColor: theme.palette.background.paper,
+      display: 'flex',
+      height: 224
     },
     tabs: {
-        borderRight: `1px solid ${theme.palette.divider}`,
-        maxWidth: "100%",
-        marginBottom: 20,
+      borderRight: `1px solid ${theme.palette.divider}`,
+      maxWidth: '100%',
+      marginBottom: 20
     },
     appBarSpacer: theme.mixins.toolbar,
     tab: {
-        maxWidth: "100%",
-        marginTop: 30,
+      maxWidth: '100%',
+      marginTop: 30
     },
     active: {
-        backgroundColor: color.turquoise,
+      backgroundColor: color.turquoise
     },
     listSearch: {
-        margin: 20,
-        padding: 20,
+      margin: 20,
+      padding: 20
     },
     itemSearch: {
-        backgroundColor: color.lightgray,
-        borderRadius: 10,
-        marginBottom: 30,
-        paddingTop: 20,
-        paddingBottom: 20,
-        paddingLeft: 50,
+      backgroundColor: color.lightgray,
+      borderRadius: 10,
+      marginBottom: 30,
+      paddingTop: 20,
+      paddingBottom: 20,
+      paddingLeft: 50
     },
     query: {
-        marginLeft: 20,
+      marginLeft: 20
     },
     avatarItem: {
-        width: theme.spacing(10),
-        height: theme.spacing(10),
-        marginRight: 20
+      width: theme.spacing(10),
+      height: theme.spacing(10),
+      marginRight: 20
     }
-}), {index: 1});
-
+  }),
+  { index: 1 }
+);
 
 export default searchStyles;

@@ -19,6 +19,7 @@ import { useParams, useHistory, Link } from 'react-router-dom';
 import { follow, unfollow } from '../../redux/callApi/userCall';
 import ChatIcon from '../Icons/Chat';
 import { addUser, getConversations } from '../../redux/callApi/messageCall';
+import { Skeleton } from '@material-ui/lab';
 
 export default function ProfileAvatar(props) {
   const { user } = props;
@@ -158,6 +159,25 @@ export default function ProfileAvatar(props) {
   const UserListRef = React.forwardRef((props, ref) => (
     <UserList {...props} innerRef={ref} />
   ));
+
+  if (!user || user._id !== id) {
+    return (
+      <Container className={classes.container}>
+        <Skeleton
+          variant="rect"
+          width={'100%'}
+          height={400}
+          style={{ position: 'absolute' }}
+        />
+        <div className={classes.profile_info}>
+          <Skeleton variant="circle" width={200} height={200} />
+          <div className={classes.infoUser}>
+            <Skeleton variant="rect" height={50} width={300} />
+          </div>
+        </div>
+      </Container>
+    );
+  }
 
   return (
     <>
