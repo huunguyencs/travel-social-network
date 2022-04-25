@@ -101,7 +101,7 @@ const modalListStyles = makeStyles(
       }
     },
     imageList: {
-      margin: 20,
+      // margin: 20,
       height: '100%'
       // [theme.breakpoints.down("md")]: {
       //     height: 400,
