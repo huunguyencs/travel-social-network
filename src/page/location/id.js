@@ -85,10 +85,12 @@ export default function Location(props) {
     if (
       !location ||
       post.loading ||
+      post.loadingFirst ||
       post.error ||
-      (post.posts && post.id === id)
+      (post.posts && post.id === location._id)
     )
       return;
+    console.log(post);
     dispatch(getPostsLocation(location._id, 0));
   }, [location, dispatch, post, id]);
 

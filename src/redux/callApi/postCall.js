@@ -25,9 +25,8 @@ export const getPosts = token => async dispatch => {
 
 export const getPostsLocation = (id, page) => async dispatch => {
   if (page === 0) {
-    dispatch(postAction.getPosts({ posts: [] }));
-  }
-  dispatch(postAction.loading());
+    dispatch(postAction.loadingFirst());
+  } else dispatch(postAction.loading());
 
   try {
     const res = await customAxios().get(`/location/${id}/posts?offset=${page}`);
@@ -84,13 +83,13 @@ export const getMorePost = data => async dispatch => {
 };
 
 export const getPostById = (id, token, next) => async dispatch => {
-  dispatch(postAction.getPosts({ posts: [] }));
-  dispatch(postAction.loading());
+  // dispatch(postAction.getPosts({ posts: [] }));
+  dispatch(postAction.loadingFirst());
   try {
     await customAxios(token)
       .get(`/post/${id}`)
       .then(res => {
-        dispatch(postAction.getPosts({ posts: [res.data.post] }));
+        dispatch(postAction.getPosts({ posts: [res.data.post], id: id }));
       })
       .catch(err => {
         if (err.response.status === 404) {
