@@ -245,6 +245,7 @@ export default function Login(props) {
               variant="contained"
               type="submit"
               className={classes.loginButton}
+              disabled={loading}
             >
               {loading ? (
                 <CircularProgress size="25px" color="inherit" />
@@ -299,6 +300,7 @@ export default function Login(props) {
                   variant="contained"
                   type="submit"
                   className={classes.forgotButton}
+                  disabled={loadingForgot}
                 >
                   {loadingForgot ? (
                     <CircularProgress size="25px" color="inherit" />

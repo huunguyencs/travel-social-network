@@ -156,8 +156,6 @@ const headerStyles = makeStyles(
       alignItems: 'center',
       justifyContent: 'center'
     }
-  }),
-  { index: 1 }
-);
+}), {index: 1});
 
 export default headerStyles;

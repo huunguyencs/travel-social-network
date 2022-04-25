@@ -60,19 +60,18 @@ const authStyles = makeStyles(
       justifyContent: 'center'
     },
     formInput: {
-      margin: '10px',
-      marginInline: '60px',
-      backgroundColor: color.white,
-      borderRadius: 5,
-      width: '100%',
-      [theme.breakpoints.down('sm')]: {
-        marginInline: '30px'
-      }
+        margin: 5,
+        marginInline: "60px",
+        backgroundColor: color.white,
+        borderRadius: 5,
+        width: "100%",
+        [theme.breakpoints.down("sm")]: {
+            marginInline: "30px"
+        }
     },
     loginGroup: {
-      marginTop: '40px',
-      display: 'flex',
-      justifyContent: 'center'
+        display: 'flex',
+        justifyContent: 'center'
     },
     loginButton: {
       paddingInline: '30px',

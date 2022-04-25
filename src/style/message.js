@@ -215,8 +215,6 @@ const messageStyles = makeStyles(
         display: 'none'
       }
     }
-  }),
-  { index: 1 }
-);
+}), {index: 1});
 
 export default messageStyles;

@@ -1,59 +1,60 @@
 import { Container, makeStyles } from '@material-ui/core';
 import React, { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { useHistory } from 'react-router-dom';
 
-import FeedTour from '../components/Feed/FeedTour';
+import FeedTourSave from '../components/Feed/FeedTourSave';
 import SpeedDialButton from '../components/SpeedDialBtn';
 import { getTourSaved } from '../redux/callApi/tourCall';
 
-const useStyle = makeStyles((theme) => ({
-    container: {
-        marginInline: 100,
-        [theme.breakpoints.down("md")]: {
-            marginInline: 60
-        },
-        [theme.breakpoints.down("sm")]: {
-            marginInline: 20
-        },
-        [theme.breakpoints.down("xs")]: {
-            marginInline: 0
-        }
+const useStyle = makeStyles(theme => ({
+  container: {
+    marginInline: 100,
+    [theme.breakpoints.down('md')]: {
+      marginInline: 60
+    },
+    [theme.breakpoints.down('sm')]: {
+      marginInline: 20
+    },
+    [theme.breakpoints.down('xs')]: {
+      marginInline: 0
     }
-}))
+  }
+}));
 
 export default function TourSavedPage() {
+  const classes = useStyle();
+  const dispatch = useDispatch();
 
-    const classes = useStyle();
-    const history = useHistory();
-    const dispatch = useDispatch();
+  const { auth, tour } = useSelector(state => state);
 
-    const { token } = useSelector(state => state.auth);
+  useEffect(() => {
+    if (
+      !auth.token ||
+      tour.loading ||
+      tour.error ||
+      tour.loadingFirst ||
+      (tour.tours && tour.id === -1)
+    )
+      return;
+    dispatch(getTourSaved(auth.token));
+  }, [dispatch, auth.token, tour]);
 
-    useEffect(() => {
-        if (token) {
-            dispatch(getTourSaved(token));
-        }
-    }, [dispatch, token, history])
+  useEffect(() => {
+    document.title = 'Đã lưu';
+  }, []);
 
-    useEffect(() => {
-        document.title = "Đã lưu";
-    }, [])
-
-
-    return (
+  return (
+    <>
+      {auth.token && (
         <>
-            {
-                token &&
-                <>
-                    <SpeedDialButton />
-                    <Container >
-                        <div className={classes.container}>
-                            <FeedTour />
-                        </div>
-                    </Container>
-                </>
-            }
+          <SpeedDialButton />
+          <Container>
+            <div className={classes.container}>
+              <FeedTourSave />
+            </div>
+          </Container>
         </>
-    );
+      )}
+    </>
+  );
 }

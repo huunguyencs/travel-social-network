@@ -1,9 +1,12 @@
 import customAxios from '../../utils/fetchData';
 import { getHelpsAction } from '../actions/helpAction';
 
-export const getHelps = (id, lat, lng) => async dispatch => {
+export const getHelps = (id, lat, lng, ip) => async dispatch => {
   try {
-    const res = await customAxios().get(`/help?lat=${lat}&lng=${lng}`);
+    let params = '';
+    if (!lat || !lng) params = `ip=${ip}`;
+    else params = `lat=${lat}&lng=${lng}`;
+    const res = await customAxios().get(`/help?${params}`);
     if (!res.data.success) {
       return;
     }

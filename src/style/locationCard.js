@@ -5,9 +5,9 @@ import color from './color';
 const locationCardStyles = makeStyles(
   theme => ({
     locationCardContainer: {
-      margin: 20,
-      borderRadius: attr.borderRadius.md,
-      backgroundColor: color.white
+        margin: "20px 0",
+        borderRadius: attr.borderRadius.md,
+        backgroundColor: color.white,
     },
     seeMoreBtn: {
       paddingInline: 10,
@@ -40,8 +40,6 @@ const locationCardStyles = makeStyles(
         textDecorationLine: 'underline'
       }
     }
-  }),
-  { index: 1 }
-);
+}), {index: 1});
 
 export default locationCardStyles;

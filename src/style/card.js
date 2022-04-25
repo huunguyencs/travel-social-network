@@ -14,9 +14,6 @@ const cardStyles = makeStyles(
     image: {
       height: 180
     },
-    imageProvince: {
-      height: 220
-    },
     locationName: {
       marginInline: 20,
       cursor: 'pointer',
@@ -228,13 +225,65 @@ const cardStyles = makeStyles(
       backgroundColor: color.turquoise
     },
     link: {
-      cursor: 'pointer',
-      '&:hover': {
-        textDecorationLine: 'underline'
-      }
-    }
-  }),
-  { index: 1 }
+        cursor: 'pointer',
+        "&:hover": {
+            textDecorationLine: 'underline'
+        }
+    },
+    imageProvince:{
+       height: 230,
+       opacity: 0.5,
+       transition: "opacity 0.35s, transform 0.35s",
+       transform: "scale(1.12)",
+       "&:hover": {
+            opacity: 0.9,
+            transform: "scale(1)",
+        }
+    },
+    cardProvinceContainer:{
+        margin: 8,
+        borderRadius: attr.borderRadius.md,
+        [theme.breakpoints.down("sm")]: {
+            marginBlock: 8,
+        }
+    },
+    buttonProvince:{
+        color: "#63b696",
+        borderRadius: 5,
+        backgroundColor: "transparent",
+        cursor: "pointer",
+        fontWeight: 500,
+        outline: "none",
+        border: `1px solid ${color.turquoise}`,
+        fontSize: 13,
+        position: "relative",
+        isolation: "isolate",
+        "&::before": {
+            content: "''",
+            height: "100%",
+            width: 0,
+            position: "absolute",
+            top: 0,
+            left: 0,
+            backgroundColor: "#63b696",
+            zIndex: -1,
+            transition: "width 0.25s ease-in",
+            color:color.white
+        },
+        "&:hover::before": {
+            width: "100%"
+        },
+        "&:hover": {
+            color: color.white
+        },
+    },
+
+
+
+    //recommend Card:
+
+    
+}), {index: 1}
 );
 
 export default cardStyles;

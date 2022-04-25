@@ -12,6 +12,7 @@ import CreatePostForm from '../Forms/CreatePost';
 import { useDispatch, useSelector } from 'react-redux';
 import { getPosts } from '../../redux/callApi/postCall';
 import { getMorePost } from '../../redux/actions/postAction';
+import Loading from '../Loading';
 
 export default function FeedPost(props) {
   const dispatch = useDispatch();
@@ -100,17 +101,24 @@ export default function FeedPost(props) {
           <CreatePostRef ref={ref} handleClose={handleClose} />
         </Fade>
       </Modal>
-      <Feed
-        loadMore={loadMore}
-        tryAgain={tryAgain}
-        loading={post.loading}
-        error={post.error}
-        hasMore={post.hasMore}
-      >
-        {post.posts.map(post => (
-          <Post post={post} key={post._id} />
-        ))}
-      </Feed>
+      {post.loadingFirst ? (
+        <div
+          style={{ display: 'flex', justifyContent: 'center', marginTop: 150 }}
+        >
+          <Loading />
+        </div>
+      ) : (
+        <Feed
+          loadMore={loadMore}
+          tryAgain={tryAgain}
+          loading={post.loading}
+          error={post.error}
+          hasMore={post.hasMore}
+        >
+          {post.posts &&
+            post.posts.map(post => <Post post={post} key={post._id} />)}
+        </Feed>
+      )}
     </div>
   );
 }

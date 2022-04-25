@@ -40,11 +40,42 @@ const modalStyles = makeStyles(
       padding: 15
     },
     loginContainer: {
-      padding: '30px'
+        display: "flex",
+        flexDirection: "column",
+        alignItems: "center",
+        padding: "10px 30px 30px 30px",
+        background: "linear-gradient(45deg, rgb(49 137 90 / 80%) 0%, rgb(8 113 126 / 80%) 100%)",
+        color: "white",
+        minWidth: 500
+    },
+    loginFormText:{
+        margin: 20,
+        color: "white"
+    },
+    loginFormButton:{
+        width: "90%",
+        height: "50px",
+        marginLeft: 20,
+        backgroundColor: "white",
+        color: "black"
+    },
+    loginHeader:{
+        display: "flex",
+        width: "100%",
+        justifyContent: "space-between"
+    },
+    loginHeaderIcon:{
+        color: "white"
+    },
+    loginForm:{
+        display: "flex",
+        flexDirection: "column",
+        width: "70%"
     },
     loginTitle: {
-      display: 'flex',
-      alignSelf: 'center'
+        display: 'flex',
+        alignSelf: 'center',
+        marginLeft: "25%"
     },
     centerMarginTop: {
       display: 'flex',
@@ -52,7 +83,8 @@ const modalStyles = makeStyles(
       marginTop: 30
     },
     link: {
-      textDecorationLine: 'underline'
+        textDecorationLine: 'underline',
+        color:"white"
     },
     title: {
       fontSize: 20

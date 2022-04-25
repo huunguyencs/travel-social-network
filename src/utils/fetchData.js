@@ -10,7 +10,7 @@ const customAxios = (token = '') => {
       'Content-Type': 'application/json',
       Authorization: 'Bearer ' + token
     },
-    timeout: 10 * 1000
+    timeout: 50 * 1000
   });
   //sau khi response từ server
   // instance.interceptors.response.use( async (response) => {
@@ -34,5 +34,4 @@ const customAxios = (token = '') => {
   // });
   return instance;
 };
-
 export default customAxios;

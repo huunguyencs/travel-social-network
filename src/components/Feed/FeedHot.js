@@ -1,113 +1,119 @@
-import { Button, CircularProgress, Container, Typography } from "@material-ui/core";
-import React, { useEffect, useState } from "react";
+import { Button, Container, Typography } from '@material-ui/core';
+import React, { useEffect, useState } from 'react';
 
-import { feedStyles } from "../../style";
-import Event from "../Event";
-import Location from "../Location";
-import customAxios from '../../utils/fetchData';
-
-
+import { feedStyles } from '../../style';
+import Event from '../Event';
+import Location from '../Location';
+import Loading from '../Loading';
+import { useDispatch, useSelector } from 'react-redux';
+import { getEvent, getHotLocation } from '../../redux/callApi/hotCall';
 
 export default function FeedHot(props) {
+  const classes = feedStyles();
+  const { events, locations } = useSelector(state => state.hot);
+  const dispatch = useDispatch();
 
-    const classes = feedStyles();
+  const [stateEvent, setStateEvent] = useState({
+    loading: false,
+    error: false
+  });
 
-    const [events, setEvents] = useState([]);
-    const [stateEvent, setStateEvent] = useState({
-        loading: false,
-        error: false
-    })
-    const [locations, setLocations] = useState([]);
-    const [stateLocation, setStateLocation] = useState({
-        loading: false,
-        error: false
-    })
+  const [stateLocation, setStateLocation] = useState({
+    loading: false,
+    error: false
+  });
 
-    const getCurrentEvent = async () => {
-        setStateEvent({
-            loading: true,
+  const getCurrentEvent = dispatch => {
+    setStateEvent({
+      loading: true,
+      error: false
+    });
+    dispatch(
+      getEvent(
+        () =>
+          setStateEvent({
+            loading: false,
             error: false
-        })
-        await customAxios().get('/event/current').then(res => {
-            setEvents(res.data.events);
-            setStateEvent({
-                loading: false,
-                error: false
-            })
-        }).catch(err => {
-            setStateEvent({
-                loading: false,
-                error: true
-            })
-        })
-    }
+          }),
+        () =>
+          setStateEvent({
+            loading: false,
+            error: true
+          })
+      )
+    );
+  };
 
-    const getHotLocations = async () => {
-        setStateLocation({
-            loading: true,
+  const getHotLocations = dispatch => {
+    setStateLocation({
+      loading: true,
+      error: false
+    });
+    dispatch(
+      getHotLocation(
+        () =>
+          setStateLocation({
+            loading: false,
             error: false
-        })
-        await customAxios().get('location/hot').then(res => {
-            setLocations(res.data.locations);
-            setStateLocation({
-                loading: false,
-                error: false
-            })
-        }).catch(err => {
-            setStateLocation({
-                loading: false,
-                error: true
-            })
-        })
-    }
+          }),
+        () =>
+          setStateLocation({
+            loading: false,
+            error: true
+          })
+      )
+    );
+  };
 
-    useEffect(() => {
-        getHotLocations();
-    }, [])
+  useEffect(() => {
+    if (stateLocation.loading || stateLocation.error || locations) return;
+    getHotLocations(dispatch);
+  }, [dispatch, stateLocation, locations]);
 
-    useEffect(() => {
-        getCurrentEvent();
-    }, [])
+  useEffect(() => {
+    if (stateEvent.loading || stateEvent.error || events) return;
+    getCurrentEvent(dispatch);
+  }, [dispatch, stateEvent, events]);
 
-    return (
-        <Container className={classes.container} >
-            <div className={classes.content}>
-                <div className={classes.event}>
-                    <div className={classes.title}>
-                        <Typography variant="h4">Sự kiện</Typography>
-                    </div>
-                    {
-                        stateEvent.loading ?
-                            <div className={classes.centerMarginTop}>
-                                <CircularProgress color="inherit" />
-                            </div> :
-                            stateEvent.error ?
-                                <div className={classes.centerMarginTop}>
-                                    <Button onClick={getCurrentEvent}>Thử lại</Button>
-                                </div> :
-                                <Event events={events} />
-                    }
-
-                </div>
-                <div className={classes.hot}>
-                    <div className={classes.title}>
-                        <Typography variant="h4">Địa điểm hot</Typography>
-                    </div>
-                    <div className={classes.hotFeed}>
-                        {stateLocation.loading ?
-                            <div className={classes.centerMarginTop}>
-                                <CircularProgress color='inherit' />
-                            </div> :
-                            stateLocation.error ?
-                                <div className={classes.centerMarginTop}>
-                                    <Button onClick={getHotLocations}>Thử lại</Button>
-                                </div> :
-                                locations.map((item) =>
-                                    <Location location={item} key={item._id} />
-                                )}
-                    </div>
-                </div>
+  return (
+    <Container className={classes.container}>
+      <div className={classes.content}>
+        <div className={classes.event}>
+          <div className={classes.title}>
+            <Typography variant="h4">Sự kiện</Typography>
+          </div>
+          {stateEvent.loading ? (
+            <div className={classes.centerMarginTop}>
+              <Loading />
             </div>
-        </Container>
-    )
+          ) : stateEvent.error ? (
+            <div className={classes.centerMarginTop}>
+              <Button onClick={getCurrentEvent}>Thử lại</Button>
+            </div>
+          ) : (
+            events && <Event events={events} />
+          )}
+        </div>
+        <div className={classes.hot}>
+          <div className={classes.title}>
+            <Typography variant="h4">Địa điểm hot</Typography>
+          </div>
+          <div className={classes.hotFeed}>
+            {stateLocation.loading ? (
+              <div className={classes.centerMarginTop}>
+                <Loading />
+              </div>
+            ) : stateLocation.error ? (
+              <div className={classes.centerMarginTop}>
+                <Button onClick={getHotLocations}>Thử lại</Button>
+              </div>
+            ) : (
+              locations &&
+              locations.map(item => <Location location={item} key={item._id} />)
+            )}
+          </div>
+        </div>
+      </div>
+    </Container>
+  );
 }

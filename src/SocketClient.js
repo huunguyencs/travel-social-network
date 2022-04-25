@@ -9,6 +9,7 @@ import * as notifyAction from './redux/actions/notifyAction';
 import * as messageAction from './redux/actions/messageAction';
 import { addHelp, deleteHelp, updateHelp } from './redux/actions/helpAction';
 import { getHelps } from './redux/callApi/helpCall';
+import getIp from './utils/getIp';
 
 const SocketClient = () => {
   const { auth, socket } = useSelector(state => state);
@@ -27,7 +28,18 @@ const SocketClient = () => {
             }
           });
         },
-        () => socket.emit('joinUser', { id: auth.user._id })
+        () => {
+          getIp()
+            .then(res => {
+              socket.emit('joinUser', {
+                id: auth.user._id,
+                ipv4: res
+              });
+            })
+            .catch(err => {
+              socket.emit('joinUser', { id: auth.user._id });
+            });
+        }
       );
     }
   }, [socket, auth.user]);
@@ -40,11 +52,14 @@ const SocketClient = () => {
             getHelps(
               auth.user._id,
               position.coords.latitude,
-              position.coords.longitude
+              position.coords.longitude,
+              null
             )
           );
         },
-        () => dispatch(getHelps(auth.user._id))
+        () => {
+          getIp().then(res => dispatch(getHelps(auth.user._id, 0, 0, res)));
+        }
       );
     }
   }, [dispatch, auth.user]);

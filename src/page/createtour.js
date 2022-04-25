@@ -2,7 +2,7 @@ import React, { useEffect } from "react";
 import { useSelector } from "react-redux";
 import { Redirect } from "react-router";
 
-import AddTour from '../components/Tour/AddTour';
+import AddTourDemo from '../components/Tour/AddTourDemo';
 
 export default function CreateTour(props) {
 
@@ -18,6 +18,6 @@ export default function CreateTour(props) {
     }
 
     return (
-        <AddTour isUpdate={false} />
+        <AddTourDemo isUpdate={false} />
     )
 }

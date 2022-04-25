@@ -5,7 +5,7 @@ import {
   InputBase,
   Paper,
   TextField,
-  Typography,
+  Typography
 } from '@material-ui/core';
 import { Close } from '@material-ui/icons';
 import { Autocomplete, createFilterOptions } from '@material-ui/lab';
@@ -21,7 +21,7 @@ const type = [
   'Tai nạn, chấn thương',
   'Thiên tai',
   'Cướp giật',
-  'Khác',
+  'Khác'
 ];
 
 const filter = createFilterOptions();
@@ -35,7 +35,7 @@ export default function Help({ handleClose }) {
     type: null,
     positionStr: '',
     position: null,
-    contact: '',
+    contact: ''
   });
 
   const [loading, setLoading] = useState(false);
@@ -43,21 +43,27 @@ export default function Help({ handleClose }) {
   const handleChange = e => {
     setContext(state => ({
       ...state,
-      [e.target.name]: e.target.value,
+      [e.target.name]: e.target.value
     }));
   };
 
   const changeType = value => {
     setContext(state => ({
       ...state,
-      type: value,
+      type: value
     }));
   };
 
   const handleSubmit = async () => {
     setLoading(true);
+    const payload = context;
+    if (!context.position) {
+      const response = await fetch('https://geolocation-db.com/json/');
+      const data = await response.json();
+      payload.ip = data.IPv4;
+    }
     await customAxios(auth.token)
-      .post('/help', context)
+      .post('/help', payload)
       .then(res => {
         socket.emit('createHelp', res.data.help);
         setLoading(false);
@@ -73,7 +79,7 @@ export default function Help({ handleClose }) {
     navigator.geolocation.getCurrentPosition(position => {
       setContext(state => ({
         ...state,
-        position: [position.coords.longitude, position.coords.latitude],
+        position: [position.coords.longitude, position.coords.latitude]
       }));
     });
   }, []);
@@ -208,7 +214,8 @@ export default function Help({ handleClose }) {
           <Button
             onClick={handleSubmit}
             variant="contained"
-            startIcon={loading && <CircularProgress />}
+            startIcon={loading && <CircularProgress size="15" />}
+            disabled={loading}
           >
             Tạo yêu cầu trợ giúp
           </Button>

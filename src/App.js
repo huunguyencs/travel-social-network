@@ -17,7 +17,7 @@ import * as SOCKET_TYPES from './redux/constants/index';
 import AlertBar from './components/Alert';
 
 import { getNotifies } from './redux/callApi/notifyCall';
-import { CircularProgress } from '@material-ui/core';
+import Loading from './components/Loading';
 
 function App() {
   const location = useLocation();
@@ -56,7 +56,7 @@ function App() {
       <div
         style={{ display: 'flex', justifyContent: 'center', marginTop: 200 }}
       >
-        <CircularProgress />
+        <Loading />
       </div>
     );
   }

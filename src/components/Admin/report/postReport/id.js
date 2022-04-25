@@ -1,10 +1,15 @@
+<<<<<<< HEAD
 import { CircularProgress, IconButton, Paper, Typography, Button } from '@material-ui/core';
+=======
+import { IconButton, Paper } from '@material-ui/core';
+>>>>>>> 61db9315804bbc99481dbfc6de236778dec7e367
 import { ArrowBack } from '@material-ui/icons';
 import React, { useEffect, useState } from 'react';
 import { Link, useParams } from 'react-router-dom';
 import { useSelector } from 'react-redux';
 import { NotFound } from '../../../../page/404';
 import customAxios from '../../../../utils/fetchData';
+<<<<<<< HEAD
 import Feed from '../../../Feed';
 import Post from '../../../Post';
 import { tableStyles } from "../../../../style"
@@ -18,6 +23,9 @@ function formatTime(time) {
   time = dd + '/' + mm + '/' + yyyy;
   return time;
 }
+=======
+import Loading from '../../../Loading';
+>>>>>>> 61db9315804bbc99481dbfc6de236778dec7e367
 
 function AdminPostReportDetail() {
 
@@ -150,7 +158,7 @@ function AdminPostReportDetail() {
         <div
           style={{ display: 'flex', justifyContent: 'center', marginTop: 60 }}
         >
-          <CircularProgress color="inherit" />
+          <Loading />
         </div>
       ) : state.error ? (
         <div

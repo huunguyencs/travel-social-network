@@ -127,8 +127,6 @@ const provinceStyles = makeStyles(
       display: 'flex',
       justifyContent: 'right'
     }
-  }),
-  { index: 1 }
-);
+  }), {index: 1});
 
 export default provinceStyles;

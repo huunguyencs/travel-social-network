@@ -15,16 +15,16 @@ const tourdetailStyles = makeStyles(
       borderRadius: attr.borderRadius.md,
       paddingInline: 20
     },
-    container: {
-      // maxWidth: "90%",
-      maxWidth: '100%',
-      paddingInline: 80,
-      marginTop: 20,
-      marginBottom: 0,
-      [theme.breakpoints.down('md')]: {
-        paddingRight: 0
-      }
-    },
+    // container: {
+    //     // maxWidth: "90%",
+    //     maxWidth: "100%",
+    //     paddingInline: 80,
+    //     marginTop: 20,
+    //     marginBottom: 0,
+    //     [theme.breakpoints.down("md")]: {
+    //         paddingRight: 0
+    //     }
+    // },
     hiddenSmall: {
       [theme.breakpoints.down('sm')]: {
         display: 'none'
@@ -45,18 +45,10 @@ const tourdetailStyles = makeStyles(
       }
     },
     serviceContainer: {
-      margin: 30,
-      width: 420,
-      // borderRadius: attr.borderRadius.sm,
-      [theme.breakpoints.down('md')]: {
-        width: 400
-      },
-      [theme.breakpoints.down('sm')]: {
-        width: 500
-      },
-      [theme.breakpoints.down('xs')]: {
-        width: 400
-      }
+        marginTop: 10,
+        width: "100%",
+        borderRadius: attr.borderRadius.sm
+
     },
     detailInfo: {
       // marginTop: 30
@@ -67,26 +59,44 @@ const tourdetailStyles = makeStyles(
       display: 'flex'
     },
     img: {
-      height: '180px',
-      width: '100%',
-      [theme.breakpoints.down('md')]: {
-        height: '100px'
-      }
-    },
-    contentContainer: {
-      marginTop: 10
+        height: "100%",
+        width: "100%",
+        objectFit: "cover"
     },
     locationContentContainer: {
       display: 'flex',
       justifyContent: 'space-between'
     },
     reviewBtn: {
-      // backgroundColor: "#ECCC68",
-      // borderRadius: attr.borderRadius.md,
-      // padding: 8,
-      // paddingInline: 15,
-      // marginTop: 15,
-      // marginBottom: 5,
+        marginRight: 5,
+        color: "#63b696",
+        borderRadius: 5,
+        backgroundColor: "transparent",
+        cursor: "pointer",
+        fontWeight: 500,
+        outline: "none",
+        border: `1px solid ${color.turquoise}`,
+        fontSize: 12,
+        position: "relative",
+        isolation: "isolate",
+        "&::before": {
+            content: "''",
+            height: "100%",
+            width: 0,
+            position: "absolute",
+            top: 0,
+            left: 0,
+            backgroundColor: "#63b696",
+            zIndex: -1,
+            transition: "width 0.25s ease-in",
+            color:color.white
+        },
+        "&:hover::before": {
+            width: "100%"
+        },
+        "&:hover": {
+            color: color.white
+        },
     },
     locationName: {
       marginTop: 10,
@@ -188,12 +198,16 @@ const tourdetailStyles = makeStyles(
       }
     },
     imageLocation: {
+      maxHeight: 200,
       [theme.breakpoints.down('xs')]: {
         display: 'none'
       }
     },
     image: {
-      cursor: 'pointer'
+        objectFit: "cover",
+        cursor: 'pointer',
+        height: "100%",
+        borderRadius: attr.borderRadius.md
     },
     tabsMenu: {
       display: 'flex',
@@ -333,11 +347,112 @@ const tourdetailStyles = makeStyles(
       }
     },
     paperDetailDate: {
-      width: 1000,
-      height: '70vh'
+        width: "100%"
+    },
+    locationImages:{
+        padding: 10,
+        height: 250,
+        overflow: "hidden",
+    },
+
+
+
+
+
+    container:{
+        margin: 0,
+        paddingTop: 64
+    },
+    tourDetailContainer:{
+        maxWidth: 1280,
+        flexGrow: 1, 
+        padding: 0,
+        margin: "0 auto",
+    },
+    tourInfos:{
+        maxWidth: 1280,
+        padding: 0,
+        flexGrow: 1,
+        marginTop: 16,
+        marginInline: 16
+
+    },
+    tourInfoLeftImage:{
+        height: 500,
+        width: "100%"
+    },
+    tourInfoRight:{
+
+    },
+    tourRecommend:{
+        margin:"0 0 20px 10px",
+        borderRadius: attr.borderRadius.md,
+        boxShadow: "0 2px 8px #00000026",
+        backgroundColor: color.white,
+
+    },
+    tourLeftInfo:{
+        marginTop: 10,
+        padding: 10,
+        borderRadius: attr.borderRadius.md,
+        boxShadow: "0 2px 8px #00000026",
+        backgroundColor: color.white
+    },
+    tourName:{
+        fontWeight: 500,
+        fontSize: 25,
+        letterSpacing: 1
+    },
+    tourTime:{
+        height: 100,
+        width: "100%",
+        borderBottom: "1px solid black"
+    },
+    tourDates:{
+        padding: 0,
+        flexGrow: 1,
+        marginTop: 10,
+        marginInline: 16
+    },
+    tourDatesRight:{
+
+    },
+    map:{
+        position: "sticky" ,
+        top: 74,
+        borderRadius: attr.borderRadius.md,
+        boxShadow: "0 2px 8px #00000026",
+        margin:"0 0 0 10px",
+        overflow:"hidden"
+    },
+    datesWrapper:{
+        borderRadius: attr.borderRadius.md
+    },
+    username: {
+      fontSize: 18,
+      fontWeight: 500,
+      cursor: 'pointer',
+      '&:hover': {
+        textDecorationLine: 'underline'
+      }
+    },
+    subheader: {
+      fontSize: '13px',
+      [theme.breakpoints.down('sm')]: {
+        fontSize: '10px'
+      }
+    },
+    menuIcon: {
+      marginRight: 5
+    },
+    cardInfoUser:{
+        margin:"0 0 10px 10px",
+        borderRadius: attr.borderRadius.md,
+        boxShadow: "0 2px 8px #00000026",
     }
-  }),
-  { index: 1 }
-);
+    
+
+
+}), {index: 1})
 
 export default tourdetailStyles;

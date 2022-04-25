@@ -20,7 +20,13 @@ import {
   Popper,
   Typography
 } from '@material-ui/core';
-import { Bookmark, BookmarkBorder, MoreVert } from '@material-ui/icons';
+import {
+  Bookmark,
+  BookmarkBorder,
+  MoreVert,
+  Edit,
+  Delete
+} from '@material-ui/icons';
 import { AvatarGroup } from '@material-ui/lab';
 import React, { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
@@ -132,14 +138,14 @@ function ShareContent({ tour }) {
                   anchorEl={anchorEl}
                   onClose={handleCloseMenu}
                   disablePortal
+                  className={classes.menuWrap}
                 >
-                  {/* <Grow
-                                        style={{ transformOrigin: "center bottom" }}
-                                    > */}
                   <ClickAwayListener onClickAway={handleCloseMenu}>
                     <Paper>
                       <MenuList>
                         <MenuItem onClick={handleShowEdit}>
+                          {' '}
+                          <Edit className={classes.menuIcon} />
                           Chỉnh sửa bài viết
                         </MenuItem>
                         <Modal
@@ -161,6 +167,7 @@ function ShareContent({ tour }) {
                           />
                         </Modal>
                         <MenuItem onClick={handleShowDelete}>
+                          <Delete className={classes.menuIcon} />
                           Xóa bài viết
                         </MenuItem>
                         <Dialog
@@ -181,6 +188,7 @@ function ShareContent({ tour }) {
                             <Button
                               onClick={handleDeleteTour}
                               className={classes.delete}
+                              disabled={state.loading}
                             >
                               {state.loading ? (
                                 <CircularProgress size={15} color="inherit" />
@@ -458,6 +466,7 @@ function BaseContent(props) {
               anchorEl={anchorEl}
               onClose={handleCloseMenu}
               disablePortal
+              className={classes.menuWrap}
             >
               <ClickAwayListener onClickAway={handleCloseMenu}>
                 <Paper>
@@ -470,9 +479,11 @@ function BaseContent(props) {
                           component={Link}
                           to={`/tour/${tour._id}?edit=true`}
                         >
+                          <Edit className={classes.menuIcon} />
                           Chỉnh sửa hành trình
                         </MenuItem>
                         <MenuItem onClick={handleShowDelete}>
+                          <Delete className={classes.menuIcon} />
                           Xóa hành trình
                         </MenuItem>
                         <Dialog
@@ -492,6 +503,7 @@ function BaseContent(props) {
                             <Button
                               onClick={handleDeleteTour}
                               className={classes.delete}
+                              disabled={state.loadingDelete}
                             >
                               {state.loadingDelete ? (
                                 <CircularProgress color="inherit" size={15} />
@@ -563,7 +575,7 @@ function BaseContent(props) {
       <CardContent>
         <div>
           {tour.userId._id !== auth.user?._id && (
-            <Button onClick={joinClick}>
+            <Button onClick={joinClick} disabled={state.loadingJoin}>
               {state.loadingJoin ? (
                 <CircularProgress size={18} color="inherit" />
               ) : join ? (

@@ -1,114 +1,132 @@
-
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState } from 'react';
 
 import LeftBar from '../../components/Leftbar';
-import { NotFound } from "../404";
-import { Grid, Button, CircularProgress, Typography } from '@material-ui/core';
+import { NotFound } from '../404';
+import { Grid, Button, Typography } from '@material-ui/core';
 import SpeedDialButton from '../../components/SpeedDialBtn';
 import { homeMenu } from '../../constant/menu';
 
-import { useSelector } from "react-redux";
-import { useParams } from "react-router-dom";
+import { useSelector } from 'react-redux';
+import { useParams } from 'react-router-dom';
 // import customAxios from "../../utils/fetchData";
-import Volunteer from "../../components/Volunteer/VolunteerDetail";
-import customAxios from "../../utils/fetchData";
-
+import Volunteer from '../../components/Volunteer/VolunteerDetail';
+import customAxios from '../../utils/fetchData';
+import Loading from '../../components/Loading';
 
 export default function VolunteerDetail() {
+  const { auth } = useSelector(state => state);
+  const { id } = useParams();
+  const [volunteerDetail, setVolunteerDetail] = useState();
+  const [state, setState] = useState({
+    loading: false,
+    notFound: false,
+    error: false
+  });
 
-
-    const { auth } = useSelector(state => state);
-    const { id } = useParams();
-    const [volunteerDetail, setVolunteerDetail] = useState();
-    const [state, setState] = useState({
-        loading: false,
-        notFound: false,
-        error: false
-    })
-
-    const getVolunteer = (id, token) => {
+  const getVolunteer = (id, token) => {
+    setState({
+      loading: true,
+      notFound: false,
+      error: false
+    });
+    customAxios(token)
+      .get(`/volunteer/${id}`)
+      .then(res => {
+        setVolunteerDetail(res.data.volunteer);
         setState({
-            loading: true,
-            notFound: false,
-            error: false
-        })
-        customAxios(token).get(`/volunteer/${id}`).then(res => {
-            setVolunteerDetail(res.data.volunteer);
-            setState({
-                loading: false,
-                notFound: false,
-                error: false,
-            })
-        }).catch(err => {
-            if (err && err.response && err.response.status === 404)
-                setState({
-                    loading: false,
-                    error: true,
-                    notFound: true,
-                })
-            else setState({
-                loading: false,
-                error: true,
-                notFound: false,
-            })
-        })
+          loading: false,
+          notFound: false,
+          error: false
+        });
+      })
+      .catch(err => {
+        if (err && err.response && err.response.status === 404)
+          setState({
+            loading: false,
+            error: true,
+            notFound: true
+          });
+        else
+          setState({
+            loading: false,
+            error: true,
+            notFound: false
+          });
+      });
+  };
+
+  useEffect(() => {
+    getVolunteer(id, auth.token);
+    // volunteer.volunteers.forEach(element => {
+    //     if (element._id === id) setVolunteerDetail(element)
+    // })
+  }, [id, auth.token]);
+
+  useEffect(() => {
+    if (volunteerDetail && volunteerDetail.name) {
+      document.title = volunteerDetail.name;
     }
+  }, [volunteerDetail]);
 
-    useEffect(() => {
-        getVolunteer(id, auth.token);
-        // volunteer.volunteers.forEach(element => {
-        //     if (element._id === id) setVolunteerDetail(element)
-        // })
-    }, [id, auth.token])
+  const tryAgain = () => {
+    getVolunteer(id, auth.token);
+    // setState({
+    //     loading: true,
+    //     error: false,
+    //     notFound: false,
+    // })
+    // // volunteer.volunteers.forEach(element => {
+    // //     if (element._id === id) setVolunteerDetail(element)
+    // // })
+    // setState({
+    //     loading: false,
+    //     error: false,
+    //     notFound: false,
+    // })
+  };
 
-    useEffect(() => {
-        if (volunteerDetail && volunteerDetail.name) {
-            document.title = volunteerDetail.name;
-        }
-    }, [volunteerDetail])
-
-    const tryAgain = () => {
-        getVolunteer(id, auth.token)
-        // setState({
-        //     loading: true,
-        //     error: false,
-        //     notFound: false,
-        // })
-        // // volunteer.volunteers.forEach(element => {
-        // //     if (element._id === id) setVolunteerDetail(element)
-        // // })
-        // setState({
-        //     loading: false,
-        //     error: false,
-        //     notFound: false,
-        // })
-    }
-
-    return (
-        <Grid container style={{ margin: 0, padding: 0 }}>
-            <SpeedDialButton />
-            <Grid item md={3} sm={2} xs={2}>
-                <LeftBar menuList={homeMenu} />
-            </Grid>
-            <Grid item md={9} sm={10} xs={10} style={{ padding: 30, backgroundColor: '#fafafa' }}>
-                {
-                    state.notFound ?
-                        <NotFound /> :
-                        state.loading ?
-                            <div style={{ display: 'flex', justifyContent: 'center', marginTop: 150 }}>
-                                <CircularProgress color="inherit" />
-                            </div>
-                            : state.error ?
-                                <div style={{ display: 'flex', justifyContent: 'center', marginTop: 150 }}>
-                                    <>
-                                        <Typography>Có lỗi xảy ra</Typography>
-                                        <Button onClick={tryAgain}>Thử lại</Button>
-                                    </>
-                                </div> :
-
-                                volunteerDetail && <Volunteer volunteer={volunteerDetail} />
-                }
-            </Grid>
-        </Grid>
-    )
+  return (
+    <Grid container style={{ margin: 0, padding: 0 }}>
+      <SpeedDialButton />
+      <Grid item md={3} sm={2} xs={2}>
+        <LeftBar menuList={homeMenu} />
+      </Grid>
+      <Grid
+        item
+        md={9}
+        sm={10}
+        xs={10}
+        style={{ padding: 30, backgroundColor: '#fafafa' }}
+      >
+        {state.notFound ? (
+          <NotFound />
+        ) : state.loading ? (
+          <div
+            style={{
+              display: 'flex',
+              justifyContent: 'center',
+              marginTop: 150
+            }}
+          >
+            <Loading />
+          </div>
+        ) : state.error ? (
+          <div
+            style={{
+              display: 'flex',
+              justifyContent: 'center',
+              marginTop: 150
+            }}
+          >
+            <>
+              <Typography>Có lỗi xảy ra</Typography>
+              <Button onClick={tryAgain}>Thử lại</Button>
+            </>
+          </div>
+        ) : (
+          volunteerDetail && <Volunteer volunteer={volunteerDetail} />
+        )}
+      </Grid>
+    </Grid>
+  );
 }

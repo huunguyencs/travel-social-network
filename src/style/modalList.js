@@ -135,8 +135,6 @@ const modalListStyles = makeStyles(
     userWrap: {
       display: 'flex'
     }
-  }),
-  { index: 1 }
-);
+}), {index: 1});
 
 export default modalListStyles;

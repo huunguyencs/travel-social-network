@@ -67,8 +67,6 @@ const feedReviewStyles = makeStyles(
         marginInline: 5
       }
     }
-  }),
-  { index: 1 }
-);
+}), {index: 1});
 
 export default feedReviewStyles;

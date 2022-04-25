@@ -58,6 +58,23 @@ export default function InfoPage() {
     // console.log(e);
   };
 
+  const handlePass = () => {
+    customAxios(token)
+      .patch('/user/change_new', {})
+      .then(res => {
+        setState({
+          loading: false
+        });
+        history.push('/');
+      })
+      .catch(err => {
+        setState({
+          loading: false,
+          error: true
+        });
+      });
+  };
+
   const handleSubmit = async () => {
     setState(state => ({
       ...state,
@@ -68,11 +85,13 @@ export default function InfoPage() {
     if (avatar) urlAvatar = await uploadImages([avatar]);
     if (bg) urlBg = await uploadImages([bg]);
 
+    let parseHobbies = hobbies.join(',');
+
     customAxios(token)
       .patch('/user/change_new', {
         avatar: urlAvatar,
         background: urlBg,
-        hobbies,
+        hobbies: parseHobbies,
         birthday,
         andress
       })
@@ -132,15 +151,16 @@ export default function InfoPage() {
           />
         )}
       />
-      <TextField
-        label="Tên đầy đủ"
-        variant="outlined"
-        name="fullname"
-        onChange={e => setAndress(e.target.value)}
-        value={andress}
-        className={classes.fullField}
-        required
-      />
+      <div>
+        <TextField
+          label="Địa chỉ"
+          variant="outlined"
+          name="andress"
+          onChange={e => setAndress(e.target.value)}
+          value={andress}
+          className={classes.fullField}
+        />
+      </div>
       <MuiPickersUtilsProvider utils={DateFnsUtils}>
         <KeyboardDatePicker
           name="birthday"
@@ -159,9 +179,18 @@ export default function InfoPage() {
         />
       </MuiPickersUtilsProvider>
       {state.error && <span>Có lỗi xảy ra!</span>}
-      <div>
+      <div style={{ display: 'flex', justifyContent: 'space-between' }}>
+        <div>
+          <Button
+            variant="contained"
+            onClick={handlePass}
+            disabled={state.loading}
+          >
+            Bỏ qua
+          </Button>
+        </div>
         {state.loading ? (
-          <CircularProgress />
+          <CircularProgress size={18} />
         ) : (
           <Button variant="contained" color="primary" onClick={handleSubmit}>
             Xong

@@ -11,16 +11,16 @@ const formStyles = makeStyles(
       width: '100%'
     },
     paperContainer: {
-      padding: 10,
-      width: 550,
-      display: 'flex',
-      flexDirection: 'column',
-      overflow: 'hidden',
-      borderRadius: attr.borderRadius.md,
-      [theme.breakpoints.down('sm')]: {
-        padding: 10,
-        width: 400
-      }
+        padding: 16,
+        width: 550,
+        display: 'flex',
+        flexDirection: 'column',
+        overflow: "hidden",
+        borderRadius: attr.borderRadius.md,
+        [theme.breakpoints.down("sm")]: {
+            padding: 10,
+            width: 400
+        }
     },
     formContainer: {
       padding: 30
@@ -34,17 +34,36 @@ const formStyles = makeStyles(
       justifyContent: 'space-between'
     },
     button: {
-      // width: "100%",
-      backgroundColor: color.turquoise,
-      padding: 10,
-      paddingInline: 20,
-      marginBlock: 15,
-      borderRadius: attr.borderRadius.md,
-      [theme.breakpoints.down('sm')]: {
-        padding: 5,
-        paddingInline: 10,
-        marginBlock: 10
-      }
+        position: "relative",
+        isolation: "isolate",
+        backgroundColor: color.turquoise,
+        padding: 10,
+        paddingInline: 20,
+        borderRadius: attr.borderRadius.md,
+        [theme.breakpoints.down("sm")]: {
+            padding: 5,
+            paddingInline: 10,
+            marginBlock: 10,
+        },
+        "&::before": {
+            content: "''",
+            height: "100%",
+            width: 0,
+            position: "absolute",
+            top: 0,
+            left: 0,
+            backgroundColor: "#77a694",
+            zIndex: -1,
+            borderRadius: attr.borderRadius.md,
+            transition: "width 0.25s ease-in",
+        },
+        "&:hover::before": {
+            width: "100%"
+        },
+        "&:hover": {
+           color: color.white
+        },
+        transition: "color 0.25s ease-in",
     },
     hashtag: {
       width: '100%',
@@ -100,11 +119,11 @@ const formStyles = makeStyles(
       marginInline: 20
     },
     imageInputContainer: {
-      marginInline: '20px',
-      maxWidth: '500px',
-      [theme.breakpoints.down('sm')]: {
-        maxWidth: '300px'
-      }
+        // marginInline: "20px",
+        maxWidth: "100%",
+        [theme.breakpoints.down("sm")]: {
+            maxWidth: "100%"
+        }
     },
     imageInput: {
       width: '150px',
@@ -206,12 +225,12 @@ const formStyles = makeStyles(
       width: '500px',
       height: '250px'
     },
-    modal_header: {
-      display: 'flex',
-      alignItems: 'center',
-      justifyContent: 'space-between',
-      padding: '0 20px',
-      borderBottom: '1px solid #f1f1f1'
+
+    modal_header:{
+        display: "flex",
+        alignItems: "center",
+        justifyContent: "space-between",
+        borderBottom: "1px solid #f1f1f1"
     },
     modal_header_closeIcon: {
       color: color.gray,
@@ -220,6 +239,7 @@ const formStyles = makeStyles(
       height: '25px'
     },
     create: {
+<<<<<<< HEAD
       marginTop: 20,
       marginBottom: 20,
       border: '1px solid #e8e8e8',
@@ -300,5 +320,69 @@ const formStyles = makeStyles(
   }),
   { index: 1 }
 );
+=======
+        marginTop: 20,
+        marginBottom: 20,
+        background: "#fff",
+        borderRadius: attr.borderRadius.md,
+        boxShadow: "none"
+    },
+    createWrapper:{
+        borderRadius: attr.borderRadius.md,
+    },
+    compose:{
+        padding: "16px 10px 16px 0px",
+        borderBottom: "1px solid #e8e8e8",
+        height: 100
+    },
+    composeTour:{
+        padding: "16px 10px 16px 0px",
+        borderBottom: "1px solid #e8e8e8",
+        height: 60
+    },
+    composeForm:{
+        display: "flex",
+        justifyContent: "flex-start",
+        alignItems: "stretch"
+    },
+    composeFormImage:{
+        height: 42,
+        width: 42,
+        borderRadius: "50%"
+    },
+    composeOptions:{
+        display: "flex",
+        justifyContent: "flex-start",
+        alignItems: "center",
+        borderRadius: `0 0 ${attr.borderRadius.md}px ${attr.borderRadius.md}px`,
+        background: color.white,
+        cursor: "pointer"
+    },
+    composeOption:{
+        position: "relative",
+        display: "flex",
+        justifyContent: "flex-start",
+        alignItems: "center",
+        padding: "6px 16px",
+        marginRight: 10,
+        background: "#f7f7f7",
+        borderRadius: 500,
+        fontSize: 15,
+        color: "#888da8",
+        transition: "all 0.3s",
+        cursor: "pointer"
+    },
+    composeIcon:{
+        height: 20,
+        width: 20,
+        transition: "all 0.3s",
+        marginRight: 5
+    },
+    createText: {
+        marginLeft: 15,
+        width: "100%",
+    }
+}), {index: 1});
+>>>>>>> 61db9315804bbc99481dbfc6de236778dec7e367
 
 export default formStyles;
