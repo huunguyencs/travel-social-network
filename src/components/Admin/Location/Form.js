@@ -129,24 +129,6 @@ export default function FormLocationAdmin(props) {
 
     setErrors(totalErr);
 
-<<<<<<< HEAD
-                    dispatch(error({ message: 'Có lỗi xảy ra' }))
-                })
-            }
-            else if (mode === 'contribute') {
-                await customAxios(token).post(`/locationContribute/create`, {
-                    ...location,
-                    province: provinceOpt._id
-                }).then(res => {
-                    dispatch(success({ message: 'Cảm ơn bạn đã đóng góp địa điểm' }))
-                }).catch(err => {
-
-                    dispatch(error({ message: 'Có lỗi xảy ra' }))
-                })
-            }
-        }
-        setLoading(false);
-=======
     if (imgs.length === 0) {
       setErrors(err => ({
         ...err,
@@ -156,7 +138,6 @@ export default function FormLocationAdmin(props) {
     }
 
     const imageUpload = await uploadImages(imgs);
->>>>>>> 61db9315804bbc99481dbfc6de236778dec7e367
 
     if (Object.keys(err).length === 0 && Object.keys(errPos).length === 0) {
       if (mode === 'edit') {

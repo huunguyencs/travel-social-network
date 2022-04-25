@@ -40,104 +40,10 @@ export default function FormAddEvent(props) {
     }
   }, [provinces.length, dispatch]);
 
-<<<<<<< HEAD
-    const rules = [
-        {
-            field: 'name',
-            method: 'isEmpty',
-            validWhen: false,
-            message: 'Tên không được bỏ trống'
-        },
-        {
-            field: 'fullname',
-            method: 'isEmpty',
-            validWhen: false,
-            message: 'Tên đầy đủ không được bỏ trống!',
-        },
-        {
-            field: 'description',
-            method: 'isEmpty',
-            validWhen: false,
-            message: 'Mô tả không được bỏ trống!',
-        },
-        {
-            field: 'name',
-            method: nameid,
-            validWhen: true,
-            message: 'Tên không hợp lệ',
-        },
-        {
-            field: 'time',
-            method: isInt,
-            validWhen: true,
-            message: 'Thời gian không hợp lệ',
-        }
-    ]
-
-    const validator = new Validator(rules);
-
-    const onClickSubmit = async (e) => {
-        e.preventDefault();
-        setLoading(true);
-        const err = validator.validate(event);
-
-        setErrors(err);
-
-        if (imgs.length === 0) {
-            setErrors(err => ({
-                ...err,
-                images: 'Chèn thêm ảnh'
-            }))
-            return;
-        }
-
-        const imageUpload = await uploadImages(imgs);
-
-        if (Object.keys(err).length === 0) {
-            if (mode === 'edit') {
-                await customAxios(token).patch(`/event/${event._id}`, {
-                    ...event,
-                    images: imageUpload,
-                    provinceId: provinceOpt._id
-                }).then(res => {
-                    setEvent(res.data.event);
-
-                    dispatch(success({ message: "Cập nhật sự kiện thành công" }))
-                }).catch(err => {
-
-                    dispatch(error({ message: 'Có lỗi xảy ra' }))
-                })
-            }
-            else if(mode ==='add') {
-                await customAxios(token).post(`/event/create`, {
-                    ...event,
-                    provinceId: provinceOpt._id
-                }).then(res => {
-
-                    dispatch(success({ message: 'Thêm sự kiện thành công' }))
-                }).catch(err => {
-                    dispatch(error({ message: 'Có lỗi xảy ra' }))
-                })
-            }
-            else if(mode ==='contribute') {
-                await customAxios(token).post(`/eventContribute/create`, {
-                    ...event,
-                    provinceId: provinceOpt._id
-                }).then(res => {
-
-                    dispatch(success({ message: 'Cảm ơn bạn đã đóng góp sự kiện' }))
-                }).catch(err => {
-                    dispatch(error({ message: 'Có lỗi xảy ra' }))
-                })
-            }
-        }
-        setLoading(false);
-=======
   useEffect(() => {
     if (event.provinceId && provinces.length > 0) {
       let temp = provinces.find(item => item._id === event.provinceId._id);
       setProvinceOpt(temp);
->>>>>>> 61db9315804bbc99481dbfc6de236778dec7e367
     }
   }, [event.provinceId, provinces]);
 

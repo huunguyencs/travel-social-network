@@ -120,19 +120,6 @@ const columns = [
 ];
 
 function handling(arr) {
-<<<<<<< HEAD
-    const newusers = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0];
-    const users = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0];
-    arr.forEach(element => {
-        let d = new Date(element.createdAt);
-        let mon = d.getMonth();
-        users[mon]+=1;
-        if (d.getFullYear() === (new Date()).getFullYear()) {
-            newusers[mon] += 1;
-        }
-    });
-    return {'newusers': newusers,'users':users};
-=======
   const newusers = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0];
   const users = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0];
   arr.forEach(element => {
@@ -144,7 +131,6 @@ function handling(arr) {
     }
   });
   return { newusers: newusers, users: users };
->>>>>>> 61db9315804bbc99481dbfc6de236778dec7e367
 }
 
 function getData(users) {
