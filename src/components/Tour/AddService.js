@@ -247,7 +247,7 @@ function DetailService(props) {
                             onChange={(e) => setCost(e.target.value)}
                         />
                         <div className={classes.btnWrap}>
-                            <Button onClick={handleUpdate} variant="contained" color="primary">
+                            <Button onClick={handleUpdate} variant="contained" className={classes.button}>
                                 Cập nhật
                             </Button>
                         </div>
@@ -422,7 +422,7 @@ export default function AddService(props) {
 
     return (
         <div className={classes.paperContainer}>
-            <div style={{ marginTop: 20 }} className={classes.center}>
+            <div style={{marginTop: 10, borderTop: "1px solid #ded9d9"}}>
                 <ServiceItemAddRef
                     ref={ref}
                     {...props}

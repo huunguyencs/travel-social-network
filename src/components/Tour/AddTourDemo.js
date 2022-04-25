@@ -1,4 +1,4 @@
-import { Button, Grid, Modal, Typography, Backdrop, Fade, Dialog, DialogActions, DialogTitle, CircularProgress, Paper, IconButton, TextField, InputAdornment } from "@material-ui/core";
+import { Button, Grid, Modal, Typography, Backdrop, Box, Fade, Dialog, DialogActions, Step, DialogTitle, CircularProgress, Paper, IconButton, TextField, InputAdornment, Stepper, StepContent, StepLabel, Tabs, Tab } from "@material-ui/core";
 import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 
@@ -14,16 +14,18 @@ import { saveTour, updateTour } from "../../redux/callApi/tourCall";
 import AddLocation from "./AddLocation";
 import { getLocations, getProvinces } from '../../redux/callApi/locationCall';
 import AddService, { ServiceCard } from "./AddService";
-import { AddCircle, Close, Save, Update } from "@material-ui/icons";
+import { AddCircle, Close, Save, Update, LocationOnOutlined } from "@material-ui/icons";
 import ChangeImageTour from "./ChangeImageTour";
 import { error } from "../../redux/actions/alertAction";
 import * as alertAction from '../../redux/actions/alertAction'
 import SpeedDialButton from '../SpeedDialBtn';
-
+import { makeStyles } from '@material-ui/core';
+import clsx from 'clsx';
+import PropTypes from 'prop-types';
 
 
 function EditDetailDate(props) {
-    const { tourDate, date, handleClose } = props;
+    const { tourDate, date } = props;
 
     const [text, setText] = useState(tourDate.description || '');
     const [cost, setCost] = useState(tourDate.cost || 0);
@@ -47,9 +49,8 @@ function EditDetailDate(props) {
         <Paper className={classes.paperDetailDate}>
             <Grid container>
                 <Grid item md={6} sm={12} xs={12}>
-                    <div style={{ overflowY: 'auto', height: '70vh' }}>
-                        <Typography variant='h5' style={{ textAlign: 'center', marginTop: 10 }}>Chi tiết lịch trình ngày {convertDateToStr(tourDate.date)}</Typography>
-                        <div style={{ margin: 20 }}>
+                    <div style={{padding: 5}}>
+                        <div >
                             <TextField
                                 label="Ghi chú"
                                 variant='outlined'
@@ -79,8 +80,8 @@ function EditDetailDate(props) {
                                 }}
                             />
                             {
-                                <div style={{ display: 'flex', justifyContent: 'right', marginTop: 20 }}>
-                                    <Button variant="contained" color="primary" onClick={handleSubmit}>
+                                <div style={{ display: 'flex', justifyContent: 'center'}}>
+                                    <Button variant="contained" onClick={handleSubmit} className={classes.button}>
                                         Cập nhật
                                     </Button>
                                 </div>
@@ -91,15 +92,9 @@ function EditDetailDate(props) {
 
                 </Grid>
                 <Grid item md={6} sm={12} xs={12}>
-                    <div style={{ overflowY: 'auto', height: '70vh' }}>
+                    <div>
                         <div style={{ display: 'flex', justifyContent: 'space-between' }}>
-                            <div></div>
-                            <Typography variant='h5' style={{ textAlign: 'center', marginTop: 10 }}>Danh sách dịch vụ</Typography>
-                            <div>
-                                <IconButton size='small' onClick={handleClose}>
-                                    <Close />
-                                </IconButton>
-                            </div>
+                            <Typography variant='h6' style={{ textAlign: 'center', marginTop: 10 }}>Danh sách dịch vụ</Typography>
                         </div>
 
                         {
@@ -115,6 +110,79 @@ function EditDetailDate(props) {
     )
 }
 
+const useColorlibStepIconStyles = makeStyles({
+    root: {
+      backgroundColor: 'white',
+      zIndex: 1,
+      color: '#63B191',
+      width: 35,
+      height: 35,
+      display: 'flex',
+      borderRadius: '50%',
+      justifyContent: 'center',
+      alignItems: 'center',
+      border: '1px solid #63B191'
+    },
+    active: {
+      backgroundColor: '#63B191',
+      color: 'white',
+      boxShadow: '0 4px 10px 0 rgba(0,0,0,.25)'
+    },
+    completed: {
+      backgroundColor: 'white',
+      color: '#63B191'
+    }
+  });
+  function ColorlibStepIcon(props) {
+    const classes = useColorlibStepIconStyles();
+    const { active, completed } = props;
+  
+    return (
+      <div
+        className={clsx(classes.root, {
+          [classes.active]: active,
+          [classes.completed]: completed
+        })}
+      >
+        <LocationOnOutlined style={{ width: 25 }} />
+      </div>
+    );
+  }
+  
+  ColorlibStepIcon.propTypes = {
+    active: PropTypes.bool,
+    completed: PropTypes.bool,
+    icon: PropTypes.node
+  };
+  
+  function TabPanel(props) {
+    const { children, value, index, ...other } = props;
+  
+    return (
+      <div
+        role="tabpanel"
+        hidden={value !== index}
+        id={`vertical-tabpanel-${index}`}
+        aria-labelledby={`vertical-tab-${index}`}
+        {...other}
+      >
+        {value === index && <Box>{children}</Box>}
+      </div>
+    );
+  }
+  
+  TabPanel.propTypes = {
+    children: PropTypes.node,
+    index: PropTypes.any.isRequired,
+    value: PropTypes.any.isRequired
+  };
+  
+  function a11yProps(index) {
+    return {
+      id: `vertical-tab-${index}`,
+      'aria-controls': `vertical-tabpanel-${index}`
+    };
+  }
 export default function AddTourDemo(props) {
 
     const { isUpdate } = props;
@@ -128,37 +196,10 @@ export default function AddTourDemo(props) {
     const dispatch = useDispatch();
     const { createTour, location, auth, socket } = useSelector(state => state);
     const [currentProvince, setCurrentProvince] = useState(null);
-    const [showDetailDate, setShowDetailDate] = useState(false);
-
-    // const [showAddLoc, setShowAddLoc] = useState(false);
-    // const handleShowAddLoc = () => {
-    //     setShowAddLoc(true);
-    // }
-    // const handleCloseAddLoc = () => {
-    //     setShowAddLoc(false);
-    // }
-
-    // const [showAddService, setShowAddService] = useState(false);
-    // const handleShowAddService = () => {
-    //     setShowAddService(true);
-    // }
-    // const handleCloseAddService = () => {
-    //     setShowAddService(false);
-    // }
-
-    const handleShowDetailDate = () => {
-        setShowDetailDate(true);
-    }
-
-    const handleCloseDetailDate = () => {
-        setShowDetailDate(false);
-    }
 
     const [idx, setIdx] = useState(0);
-    // const [addLoc, setAddLoc] = useState(false);
     const [showUpdateDate, setShowUpdateDate] = useState(false);
     const [showDeleteDate, setShowDeteleDate] = useState(-1);
-    const [showChangeInfo, setShowChangeInfo] = useState(false);
     const [showReset, setShowReset] = useState(false);
 
     const handleShowReset = () => {
@@ -275,10 +316,6 @@ export default function AddTourDemo(props) {
         setShowDeteleDate(-1);
     }
 
-    const handleCloseUpdateInfo = () => {
-        setShowChangeInfo(false)
-    }
-
     useEffect(() => {
         if (location.provinces?.length === 0) {
             dispatch(getProvinces());
@@ -291,16 +328,6 @@ export default function AddTourDemo(props) {
             dispatch(getLocations());
         }
     }, [dispatch, location.locations])
-
-    // useEffect(() => {
-    //     if (location.services?.length === 0) {
-    //         dispatch(getServices());
-    //     }
-    // }, [dispatch, location.services])
-
-    const handleShowUpdateInfo = () => {
-        setShowChangeInfo(true);
-    }
 
     const refInfo = React.createRef();
     const refUdDate = React.createRef();
@@ -331,6 +358,13 @@ export default function AddTourDemo(props) {
 
     const classes = tourdetailStyles();
 
+
+
+    const [value, setValue] = React.useState(0);
+
+    const handleChange = (event, newValue) => {
+        setValue(newValue);
+    };
     return (
         <>
             {
@@ -338,27 +372,145 @@ export default function AddTourDemo(props) {
                     <Grid container className={classes.container}>
                         <SpeedDialButton />
                         <Grid container className={classes.tourDetailContainer}>
-                            <Grid item lg={8} md={8} sm={12} className={classes.tourInfoLeft}>
-                                <div style={{height: 300, backgroundColor: "#57606F", margin: 20}}>
-
+                            <Grid item lg={8} md={8} sm={12} xs={12} >
+                                <div className={classes.tourInfoGeneral}>
+                                    <Grid container >
+                                        <Grid item md={8} sm={7} xs={12}>
+                                            <UpdateTourInfoRef ref={refInfo} name={createTour.name} content={createTour.content} hashtags={createTour.hashtags} image={createTour.image}  cost={createTour.cost} />
+                                        </Grid>
+                                        <Grid item md={4} sm={5} xs={12}>
+                                            <div style={{ paddingRight: 40 }}>
+                                                <ChangeImageTour />
+                                            </div>
+                                            {state.error && <span style={{ fontSize: "15px", color: "red", marginInline: "20px", marginTop: "10px" }}>Bạn cần thêm ảnh</span>}
+                                        </Grid>
+                                    </Grid>
                                 </div>
-                                <div style={{height: 200, backgroundColor: "#57606F", margin: 20}}>
-                                    
+                                <div className={classes.createTourDates}>
+                                    <Stepper  activeStep={idx}  orientation="vertical" className={classes.datesWrapper}>
+                                    {createTour.tour.map((item, index) => (
+                                        <Step key={index}  onClick={() => setIdx(index)} style={{cursor: "pointer"}}>
+                                            <StepLabel StepIconComponent={ColorlibStepIcon}>
+                                                Chi tiết lịch trình ngày {convertDateToStr(item.date)}
+                                                <IconButton size="small" onClick={() => handleShowDelete(index)} style={{marginLeft: 20}}>
+                                                    <Close />
+                                                </IconButton>
+                                                <Button onClick={handleShowUpdate} className={classes.addDay} startIcon={(<Update />)}>
+                                                    Thay đổi ngày
+                                                </Button>
+                                                <Button className={classes.addDay} onClick={handleAddDay} startIcon={(<AddCircle />)}>
+                                                    Thêm ngày
+                                                </Button>
+                                            </StepLabel>
+                                            <StepContent>
+                                                <Tabs
+                                                    value={value}
+                                                    onChange={handleChange}
+                                                    indicatorColor="primary"
+                                                    textColor="primary"
+                                                    variant="scrollable"
+                                                    scrollButtons="auto"
+                                                    aria-label="scrollable auto tabs example"
+                                                >
+                                                    <Tab label="Tổng quan ngày" {...a11yProps(0)} />
+                                                    <Tab label="Các địa điểm" {...a11yProps(1)} />
+                                                </Tabs>
+                                                <TabPanel value={value} index={0} className={classes.tabPanel}>
+                                                    <EditDetailDateRef ref={refEditDetailDate} date={idx} tourDate={createTour.tour[idx]} />
+                                                </TabPanel>
+                                                <TabPanel value={value} index={1} className={classes.tabPanel}>
+                                                {
+                                                    createTour.tour[idx].locations.map((item, index) => (
+                                                        <Location
+                                                            location={item}
+                                                            indexDate={idx}
+                                                            indexLocation={index}
+                                                            edit={true}
+                                                            key={index}
+                                                            isOwn={true}
+                                                            isSave={false}
+                                                            isEdit={true}
+                                                        />
+                                                    ))
+                                                }
+                                                </TabPanel>
+                                            </StepContent>
+                                        </Step>
+                                        ))}
+                                    </Stepper>
+                                </div> 
+                                <div className={classes.center}>
+                                    <Dialog
+                                        open={showDeleteDate !== -1}
+                                        onClose={handleCloseDelete}
+                                        aria-labelledby="alert-dialog-title"
+                                        aria-describedby="alert-dialog-description"
+                                    >
+                                        <DialogTitle id="alert-dialog-title">{"Bạn có chắc chắn muốn xóa ngày?"}</DialogTitle>
+                                        <DialogActions>
+                                            <Button onClick={handleCloseDelete}>
+                                                Hủy
+                                            </Button>
+                                            <Button onClick={() => handleDeleteDate(showDeleteDate)} className={classes.delete}>
+                                                Xóa
+                                            </Button>
+                                        </DialogActions>
+                                    </Dialog>
                                 </div>
-                                <div style={{height: 600, backgroundColor: "#57606F", margin: 20}}>
-                                    
-                                </div>
+                                <Modal
+                                    aria-labelledby="transition-modal-title"
+                                    aria-describedby="transition-modal-description"
+                                    open={showUpdateDate}
+                                    className={classes.modal}
+                                    onClose={handleCloseUpdate}
+                                    closeAfterTransition
+                                    BackdropComponent={Backdrop}
+                                    BackdropProps={{
+                                        timeout: 500,
+                                    }}
+                                >
+                                    <Fade in={showUpdateDate}>
+                                        <UpdateDateRef ref={refUdDate} handleClose={handleCloseUpdate} indexDate={idx} currentDate={createTour.tour[idx].date} />
+                                    </Fade>
+                                </Modal>
                             </Grid>
-                            <Grid item lg={4} md={4} sm={12} className={classes.tourDatesRight} >
-                                <div >
-                                    <div style={{height: 100, backgroundColor: "#57606F", margin: 20}}>
-                                    
+                            <Grid item lg={4} md={4} sm={12} xs={12}>
+                                <div className={classes.tourRight}>
+                                    <div className={classes.tourButtons}>
+                                        <Button onClick={handleShowReset} className={classes.reviewBtn}>
+                                            Reset
+                                        </Button>
+                                        <div className={classes.center}>
+                                            <Dialog
+                                                open={showReset}
+                                                onClose={handleCloseDelete}
+                                                aria-labelledby="alert-dialog-title"
+                                                aria-describedby="alert-dialog-description"
+                                            >
+                                                <DialogTitle id="alert-dialog-title">{"Bạn có chắc chắn muốn reset tour?"}</DialogTitle>
+                                                <DialogActions>
+                                                    <Button onClick={handleCloseReset}>
+                                                        Hủy
+                                                    </Button>
+                                                    <Button onClick={handleReset} className={classes.delete}>
+                                                        Reset
+                                                    </Button>
+                                                </DialogActions>
+                                            </Dialog>
+                                        </div>
+                                        <Button onClick={isUpdate ? handleUpdate : handleSave} startIcon={(<Save />)} className={classes.reviewBtn}>
+                                            {state.loading ?
+                                                <CircularProgress size="25px" color="inherit" />
+                                                : "Lưu hành trình"
+                                            }
+                                        </Button>
                                     </div>
-                                    <div style={{height: 100, backgroundColor: "#57606F", margin: 20}}>
-                                        
-                                    </div>
-                                    <div style={{height: 500, backgroundColor: "#57606F", margin: 20}}>
-                                        
+                                    <div className={classes.tourChoose}>
+                                        <AddLocation
+                                            indexDate={idx}
+                                            currentProvince={currentProvince}
+                                            setCurrentProvince={setCurrentProvince}
+                                        />
                                     </div>
                                 </div>
                             </Grid>

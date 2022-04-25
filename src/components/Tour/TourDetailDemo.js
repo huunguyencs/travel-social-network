@@ -1,4 +1,4 @@
-import { Button,Card, CardContent, CardHeader, Popper, ClickAwayListener, MenuList, MenuItem, Grid, Typography, CircularProgress, Backdrop, Paper, IconButton, Modal, Fade, Avatar, Dialog, DialogActions, DialogContent, DialogTitle } from "@material-ui/core";
+import { Button,Card, CardContent, CardHeader, Popper, ClickAwayListener, MenuList, MenuItem, Grid, Typography, CircularProgress, Backdrop, Paper, IconButton, Modal, Avatar, Dialog, DialogActions, DialogContent, DialogTitle } from "@material-ui/core";
 import AvatarGroup from '@material-ui/lab/AvatarGroup';
 import React, { useEffect, useState } from 'react';
 import { Stepper, Step, StepLabel, StepContent } from '@material-ui/core';
@@ -360,7 +360,7 @@ export default function TourDetailDemo(props) {
                         <SpeedDialButton />
                         <Grid container className={classes.tourDetailContainer}>
                             <Grid container className={classes.tourInfos}>
-                                <Grid item lg={8} md={8} sm={12} className={classes.tourInfoLeft}>
+                                <Grid item lg={8} md={8} sm={12} xs={12} >
                                     <div className={classes.tourInfoLeftImage}>
                                         <img src={tour.image} className={classes.image} width="100%" alt="Can not load" onClick={handleShowImage} />
                                         <ImageModal
@@ -425,7 +425,7 @@ export default function TourDetailDemo(props) {
                                         </div>
                                     </div>
                                 </Grid>
-                                <Grid item lg={4} md={4} sm={12} className={classes.tourInfoRight}>
+                                <Grid item lg={4} md={4} sm={12} xs={12} >
                                     <Card className={classes.cardInfoUser}>
                                         <CardHeader
                                             avatar={
@@ -514,7 +514,7 @@ export default function TourDetailDemo(props) {
                                 </Grid>
                             </Grid>
                             <Grid container className={classes.tourDates}>
-                                <Grid item lg={8} md={8} sm={12} className={classes.tourDatesLeft}>
+                                <Grid item lg={8} md={8} sm={12} xs={12} className={classes.tourDatesLeft}>
                                     <Stepper  activeStep={idx}  orientation="vertical" className={classes.datesWrapper}>
                                         {tour.tour.map((item, index) => (
                                         <Step key={index}  onClick={() => setIdx(index)} style={{cursor: "pointer"}}>
@@ -562,7 +562,7 @@ export default function TourDetailDemo(props) {
                                         ))}
                                     </Stepper>
                                 </Grid>
-                                <Grid item lg={4} md={4} sm={12} className={classes.tourDatesRight}>
+                                <Grid item lg={4} md={4} sm={12} xs={12} className={classes.tourDatesRight}>
                                     <div className={classes.map}>
                                         {position ? <MapCard position={position} zoom={12} locations={locations} /> : <div></div>}
                                     </div>

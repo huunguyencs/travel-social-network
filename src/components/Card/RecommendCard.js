@@ -1,12 +1,12 @@
 import React, { useEffect }  from "react";
 import { Card, List, Typography} from "@material-ui/core";
-import {PersonAddOutlined} from "@material-ui/icons";
 import { friendCardStyles } from "../../style";
 import { useHistory } from "react-router-dom";
 import { useSelector } from 'react-redux';
 import { getTours } from "../../redux/callApi/tourCall";
 import { useDispatch } from "react-redux";
-import { Link } from 'react-router-dom';
+
+
 export default function RecommendCard(props) {
 
     const { tour } = useSelector(state => state);
@@ -14,7 +14,7 @@ export default function RecommendCard(props) {
     const history = useHistory();
     const dispatch = useDispatch();
     const classes = friendCardStyles();
-    const { title, type } = props;
+    const { title } = props;
 
     useEffect(() => {
         dispatch(getTours());
@@ -32,7 +32,7 @@ export default function RecommendCard(props) {
                             !item.shareId &&
                             <div key={item._id} className={classes.itemWrapper} onClick={() => history.push(`/tour/${item._id}`)}>
                                 <div className={classes.itemImage}>
-                                    <img className={classes.image} src={item.image}/>
+                                    <img className={classes.image} src={item.image} alt="loading"/>
                                     <Typography variant="h6" className={classes.itemText}>
                                         {item.name}
                                     </Typography>

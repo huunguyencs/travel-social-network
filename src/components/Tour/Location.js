@@ -118,7 +118,7 @@ function Detail(props) {
     const classes = tourdetailStyles();
     const dispatch = useDispatch();
 
-    const { location, isEdit, indexDate, indexLocation, handleClose, joined } = props;
+    const { location, isEdit, indexDate, indexLocation, joined } = props;
 
     const [description, setDescription] = useState();
     const [time, setTime] = useState(location.time);
@@ -144,8 +144,7 @@ function Detail(props) {
                             isEdit ?
                                 <>
                                     <div>
-                                        <Typography variant='h6' style={{ textAlign: 'center', marginTop: 10 }}>{location.locationName ? location.locationName : location.location.fullname}</Typography>
-                                        <div style={{ margin: 20 }} >
+                                        <div style={{ margin: 10 }} >
                                             <InputBase
                                                 placeholder="Ghi chú"
                                                 title="Ghi chú"
@@ -184,7 +183,7 @@ function Detail(props) {
                                                 }}
                                             />
                                             <div className={classes.btnWrap}>
-                                                <Button onClick={handleUpdateInfo} variant="contained" color="primary">Cập nhật</Button>
+                                                <Button onClick={handleUpdateInfo} variant="contained" className={classes.button}>Cập nhật</Button>
                                             </div>
                                         </div>
                                         <AddService type='location' indexDate={indexDate} indexLocation={indexLocation} />

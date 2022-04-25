@@ -7,9 +7,10 @@ import Tour from '../../components/Tour/TourDetailDemo';
 import customAxios from '../../utils/fetchData';
 import { NotFound } from '../404';
 import { loadTour } from '../../redux/actions/createTourAction';
-import AddTour from '../../components/Tour/AddTour';
+// import AddTour from '../../components/Tour/AddTour';
 import { sortTourDate } from '../../utils/utils';
 import Loading from '../../components/Loading';
+import AddTourDemo from '../../components/Tour/AddTourDemo';
 
 export default function TourDetail(props) {
   const location = useLocation();
@@ -141,7 +142,7 @@ export default function TourDetail(props) {
       ) : (
         tour &&
         (edit === 'true' && isOwn ? (
-          <AddTour isUpdate={true} />
+          <AddTourDemo isUpdate={true} />
         ) : (
           <Tour
             tour={tour}
