@@ -63,9 +63,6 @@ const tourdetailStyles = makeStyles(
         width: "100%",
         objectFit: "cover"
     },
-    contentContainer: {
-      marginTop: 10
-    },
     locationContentContainer: {
       display: 'flex',
       justifyContent: 'space-between'
@@ -169,8 +166,18 @@ const tourdetailStyles = makeStyles(
       justifyContent: 'center'
     },
     addDay: {
-      marginTop: 20,
+      color: "#63b696",
+      borderRadius: 5,
+      backgroundColor: "transparent",
+      cursor: "pointer",
+      fontWeight: 500,
+      outline: "none",
+      border: `1px solid ${color.turquoise}`,
+      fontSize: 12,
+      marginTop: 10,
       textTransform: 'none',
+      marginLeft: 20,
+      marginBottom: 10,
       [theme.breakpoints.down('md')]: {
         marginLeft: 10
       }
@@ -201,6 +208,7 @@ const tourdetailStyles = makeStyles(
       }
     },
     imageLocation: {
+      maxHeight: 200,
       [theme.breakpoints.down('xs')]: {
         display: 'none'
       }
@@ -302,7 +310,7 @@ const tourdetailStyles = makeStyles(
     },
     btnWrap: {
       display: 'flex',
-      justifyContent: 'right'
+      justifyContent: 'center'
     },
     descriptionInput: {
       width: '100%',
@@ -377,20 +385,19 @@ const tourdetailStyles = makeStyles(
         flexGrow: 1,
         marginTop: 16,
         marginInline: 16
-
     },
     tourInfoLeftImage:{
         height: 500,
         width: "100%"
     },
-    tourInfoRight:{
-
-    },
     tourRecommend:{
         margin:"0 0 20px 10px",
-        height: "100%",
         borderRadius: attr.borderRadius.md,
         boxShadow: "0 2px 8px #00000026",
+        backgroundColor: color.white,
+        [theme.breakpoints.down('sm')]: {
+          margin:"0",
+        }
     },
     tourLeftInfo:{
         marginTop: 10,
@@ -415,9 +422,6 @@ const tourdetailStyles = makeStyles(
         marginTop: 10,
         marginInline: 16
     },
-    tourDatesRight:{
-
-    },
     map:{
         position: "sticky" ,
         top: 74,
@@ -428,8 +432,102 @@ const tourdetailStyles = makeStyles(
     },
     datesWrapper:{
         borderRadius: attr.borderRadius.md
-    }
-    
+    },
+    username: {
+      fontSize: 18,
+      fontWeight: 500,
+      cursor: 'pointer',
+      '&:hover': {
+        textDecorationLine: 'underline'
+      }
+    },
+    subheader: {
+      fontSize: '13px',
+      [theme.breakpoints.down('sm')]: {
+        fontSize: '10px'
+      }
+    },
+    menuIcon: {
+      marginRight: 5
+    },
+    cardInfoUser:{
+        margin:"0 0 10px 10px",
+        borderRadius: attr.borderRadius.md,
+        boxShadow: "0 2px 8px #00000026",
+        [theme.breakpoints.down('sm')]: {
+            margin:"10px 0 0 0",
+        }
+    },
+
+    //createTour
+    tourInfoGeneral:{
+        borderRadius: attr.borderRadius.md,
+        boxShadow: "0 2px 8px #00000026",
+        marginTop: 16,
+        backgroundColor: color.white,
+        marginInline: 10
+    },
+    tourRight:{
+      position: "sticky",
+      top: 64,
+      marginTop:16,
+      marginRight:10,
+      [theme.breakpoints.down('sm')]: {
+          marginTop:10,
+          marginInline:10
+      }
+    },
+    createTourDates:{
+      padding: 0,
+      flexGrow: 1,
+      marginTop: 10,
+      marginInline: 10,
+      marginBottom: 30,
+      backgroundColor: color.white,
+      borderRadius: attr.borderRadius.md,
+      boxShadow: "0 2px 8px #00000026",
+    },
+    tourButtons:{
+      display: "flex",
+      alignItems: "center",
+      justifyContent: "center",
+      backgroundColor: color.white,
+      borderTopLeftRadius: attr.borderRadius.md,
+      borderTopRightRadius: attr.borderRadius.md,
+      padding: 5
+    },
+    button: {
+      position: "relative",
+      isolation: "isolate",
+      backgroundColor: color.turquoise,
+      padding: 10,
+      paddingInline: 20,
+      borderRadius: attr.borderRadius.md,
+      [theme.breakpoints.down("sm")]: {
+          padding: 5,
+          paddingInline: 10,
+          marginBlock: 10,
+      },
+      "&::before": {
+          content: "''",
+          height: "100%",
+          width: 0,
+          position: "absolute",
+          top: 0,
+          left: 0,
+          backgroundColor: "#77a694",
+          zIndex: -1,
+          borderRadius: attr.borderRadius.md,
+          transition: "width 0.25s ease-in",
+      },
+      "&:hover::before": {
+          width: "100%"
+      },
+      "&:hover": {
+         color: color.white
+      },
+      transition: "color 0.25s ease-in",
+  },
 
 
 }), {index: 1})

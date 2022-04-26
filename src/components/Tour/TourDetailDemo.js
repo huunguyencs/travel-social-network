@@ -1,34 +1,26 @@
-import {
-  Button,
-  Grid,
-  Typography,
-  CircularProgress,
-  Backdrop,
-  Paper,
-  Modal,
-  Avatar
-} from '@material-ui/core';
+import { Button,Card, CardContent, CardHeader, Popper, ClickAwayListener, MenuList, MenuItem, Grid, Typography, CircularProgress, Backdrop, Paper, IconButton, Modal, Avatar, Dialog, DialogActions, DialogContent, DialogTitle } from "@material-ui/core";
 import AvatarGroup from '@material-ui/lab/AvatarGroup';
 import React, { useEffect, useState } from 'react';
 import { Stepper, Step, StepLabel, StepContent } from '@material-ui/core';
 import { tourdetailStyles } from '../../style';
 import Location from './Location';
-import { convertDateToStr } from '../../utils/date';
+import { convertDateToStr, timeAgo } from "../../utils/date";
 // import { useSelector } from "react-redux";
-import MapCard from '../Map/MapCard';
-import ImageModal from '../Modal/Image';
-import { LocationOnOutlined, Label } from '@material-ui/icons';
-import { ServiceCard } from './AddService';
-// import { Link } from "react-router-dom";
-import UserList from '../Modal/UserList';
-import { useDispatch, useSelector } from 'react-redux';
-import { joinTour, unJoinTour } from '../../redux/callApi/tourCall';
+import MapCard from "../Map/MapCard";
+import ImageModal from "../Modal/Image";
+import { MoreVert, LocationOnOutlined, Label, Delete, Edit } from "@material-ui/icons";
+import { ServiceCard } from "./AddService";
+import { Link } from "react-router-dom";
+import UserList from "../Modal/UserList";
+import { useDispatch, useSelector } from "react-redux";
+import { joinTour, unJoinTour } from "../../redux/callApi/tourCall";
 import SpeedDialButton from '../SpeedDialBtn';
 import PropTypes from 'prop-types';
 import { makeStyles } from '@material-ui/core';
 import clsx from 'clsx';
-import { Box, Tab, Tabs } from '@material-ui/core';
-
+import { Box, Tab, Tabs} from "@material-ui/core";
+import { deleteTour} from '../../redux/callApi/tourCall';
+import RecommendCard from '../Card/RecommendCard';
 function DetailDate(props) {
   const { tourDate, date, joined } = props;
 
@@ -155,21 +147,24 @@ export default function TourDetailDemo(props) {
 
   const classes = tourdetailStyles();
 
-  const dispatch = useDispatch();
-  const { auth } = useSelector(state => state);
+//   const dispatch = useDispatch();
+    // const { auth } = useSelector(state => state);
 
-  // const history = useHistory();
-  // const dispatch = useDispatch();
+    const dispatch = useDispatch();
+    const { auth, socket} = useSelector(state => state)
+    
+    // const history = useHistory();
+    // const dispatch = useDispatch();
 
-  const [idx, setIdx] = useState(0);
-  const [position, setPosition] = useState(null);
-  const [locations, setLocations] = useState([]);
-  const [showImage, setShowImage] = useState(false);
-  const [showUserJoin, setShowUserJoin] = useState(false);
-  const [state, setState] = useState({
-    loadingJoin: false,
-    error: false
-  });
+    const [idx, setIdx] = useState(0);
+    const [position, setPosition] = useState(null);
+    const [locations, setLocations] = useState([]);
+    const [showImage, setShowImage] = useState(false);
+    const [showUserJoin, setShowUserJoin] = useState(false);
+    const [state, setState] = useState({
+        loading: false,
+        error: false
+    })
 
   const handleShowJoin = () => {
     setShowUserJoin(true);
@@ -237,298 +232,347 @@ export default function TourDetailDemo(props) {
   };
 
   const handleJoin = () => {
-    setState({
-      loadingJoin: true,
-      error: false
-    });
-    setJoined(true);
-    var prevJoin = tour.joinIds;
-    updateJoin([...prevJoin, auth.user]);
-    dispatch(
-      joinTour(
-        tour._id,
-        auth.token,
-        () => {
-          setState({
-            loadingJoin: false,
+        setState({
+            loadingJoin: true,
             error: false
-          });
-        },
-        () => {
-          setState({
-            loadingJoin: false,
-            error: true
-          });
-          if (joined) {
-            setJoined(false);
-            updateJoin(prevJoin);
-          }
-        }
-      )
-    );
-  };
-
-  const handleUnJoin = () => {
-    setState({
-      loadingJoin: true,
-      error: false
-    });
-    setJoined(false);
-    var prevJoin = tour.joinIds;
-    var newJoin = prevJoin.filter(user => user._id !== auth.user._id);
-    updateJoin(newJoin);
-
-    dispatch(
-      unJoinTour(
-        tour._id,
-        auth.token,
-        () => {
-          setState({
-            loadingJoin: false,
-            error: false
-          });
-        },
-        () => {
-          setState({
-            loadingJoin: false,
-            error: true
-          });
-          if (!joined) {
-            setJoined(true);
-            updateJoin(prevJoin);
-          }
-        }
-      )
-    );
-  };
-
-  useEffect(() => {
-    if (tour && tour.tour[idx].locations.length > 0) {
-      setPosition(tour.tour[idx].locations[0].location.position);
+        })
+        setJoined(true);
+        var prevJoin = tour.joinIds;
+        updateJoin([...prevJoin, auth.user]);
+        dispatch(joinTour(tour._id, auth.token, () => {
+            setState({
+                loadingJoin: false,
+                error: false,
+            })
+        }, () => {
+            setState({
+                loadingJoin: false,
+                error: true,
+            })
+            if (joined) {
+                setJoined(false);
+                updateJoin(prevJoin);
+            }
+        }))
     }
-  }, [tour, idx]);
 
-  useEffect(() => {
-    var locs = tour.tour[idx].locations
-      .filter(item => item.location)
-      .map(item => item.location);
-    setLocations(locs);
-  }, [tour, idx]);
+    const handleUnJoin = () => {
+        setState({
+            loadingJoin: true,
+            error: false,
+        })
+        setJoined(false);
+        var prevJoin = tour.joinIds;
+        var newJoin = prevJoin.filter(user => user._id !== auth.user._id);
+        updateJoin(newJoin);
 
-  const refDetail = React.createRef();
-  const refUser = React.createRef();
+        dispatch(unJoinTour(tour._id, auth.token, () => {
+            setState({
+                loadingJoin: false,
+                error: false,
+            })
+        }, () => {
+            setState({
+                loadingJoin: false,
+                error: true,
+            })
+            if (!joined) {
+                setJoined(true);
+                updateJoin(prevJoin);
+            }
+        }))
+    }
+    useEffect(() => {
+        if (tour && tour.tour[idx].locations.length > 0) {
+            setPosition(tour.tour[idx].locations[0].location.position)
+        }
+    }, [tour, idx])
+    useEffect(() => {
+        var locs = tour.tour[idx].locations.filter(item => item.location).map(item => item.location);
+        setLocations(locs);
+    }, [tour, idx])
 
-  const DetailDateRef = React.forwardRef((props, ref) => (
-    <DetailDate {...props} innerRef={ref} />
-  ));
+    const refDetail = React.createRef();
+    const refUser = React.createRef();
 
-  const UserListRef = React.forwardRef((props, ref) => (
-    <UserList {...props} innerRef={ref} />
-  ));
+    const DetailDateRef = React.forwardRef((props, ref) =>
+        <DetailDate {...props} innerRef={ref} />
+    )
 
-  const [value, setValue] = React.useState(0);
+    const UserListRef = React.forwardRef((props, ref) =>
+        <UserList {...props} innerRef={ref} />
+    )
 
-  const handleChange = (event, newValue) => {
-    setValue(newValue);
-  };
+    const [value, setValue] = React.useState(0);
 
-  return (
-    <>
-      {tour ? (
-        <Grid container className={classes.container}>
-          <SpeedDialButton />
-          <Grid container className={classes.tourDetailContainer}>
-            <Grid container className={classes.tourInfos}>
-              <Grid item lg={8} md={8} sm={12} className={classes.tourInfoLeft}>
-                <div className={classes.tourInfoLeftImage}>
-                  <img
-                    src={tour.image}
-                    className={classes.image}
-                    width="100%"
-                    alt="Can not load"
-                    onClick={handleShowImage}
-                  />
-                  <ImageModal
-                    open={showImage}
-                    handleClose={handleCloseImage}
-                    img={tour.image}
-                  />
-                </div>
-                <div className={classes.tourLeftInfo}>
-                  <Typography variant="h6" className={classes.tourName}>
-                    {tour.name}
-                  </Typography>
-                  <div className={classes.tourTime}></div>
-                  <div className={classes.tourDecs}>
-                    <Typography variant="body1">{tour.content}</Typography>
-                  </div>
-                  <div className={classes.hashtagWrap}>
-                    {tour.hashtags.map((hashtag, index) => (
-                      <Typography className={classes.hashtag} key={index}>
-                        #{hashtag}
-                      </Typography>
-                    ))}
-                  </div>
-                  <Typography variant="body1">
-                    Tổng chi phí:{' '}
-                    {new Intl.NumberFormat().format(tour.cost * 1000)} VND
-                  </Typography>
-                  {!isOwn && joinLoc === 0 && (
-                    <>
-                      {state.loadingJoin ? (
-                        <CircularProgress />
-                      ) : (
-                        <Button onClick={joined ? handleUnJoin : handleJoin}>
-                          {joined ? 'Hủy tham gia' : 'Tham gia'}
-                        </Button>
-                      )}
-                    </>
-                  )}
-                  <div>
-                    <Typography>Danh sách tham gia toàn bộ tour:</Typography>
-                    <AvatarGroup
-                      max={4}
-                      onClick={handleShowJoin}
-                      style={{ cursor: 'pointer' }}
-                    >
-                      {tour.joinIds.map(user => (
-                        <Avatar
-                          src={user.avatar}
-                          alt={'A'}
-                          key={user._id}
-                          style={{ height: 30, width: 30 }}
-                        />
-                      ))}
-                    </AvatarGroup>
-                    <Modal
-                      aria-labelledby="like"
-                      aria-describedby="user-like-this-post"
-                      className={classes.modal}
-                      open={showUserJoin}
-                      onClose={handleCloseJoin}
-                      closeAfterTransition
-                      BackdropComponent={Backdrop}
-                      BackdropProps={{
-                        timeout: 500
-                      }}
-                    >
-                      <UserListRef
-                        ref={refUser}
-                        listUser={tour.joinIds}
-                        title={'Đã tham gia'}
-                        handleClose={handleCloseJoin}
-                      />
-                    </Modal>
-                  </div>
-                </div>
-              </Grid>
-              <Grid
-                item
-                lg={4}
-                md={4}
-                sm={12}
-                className={classes.tourInfoRight}
-              >
-                <div className={classes.tourRecommend}></div>
-              </Grid>
-            </Grid>
-            <Grid container className={classes.tourDates}>
-              <Grid
-                item
-                lg={8}
-                md={8}
-                sm={12}
-                className={classes.tourDatesLeft}
-              >
-                <Stepper
-                  activeStep={idx}
-                  orientation="vertical"
-                  className={classes.datesWrapper}
-                >
-                  {tour.tour.map((item, index) => (
-                    <Step key={index} onClick={() => setIdx(index)}>
-                      <StepLabel StepIconComponent={ColorlibStepIcon}>
-                        Chi tiết lịch trình ngày {convertDateToStr(item.date)}
-                      </StepLabel>
-                      <StepContent>
-                        <Tabs
-                          value={value}
-                          onChange={handleChange}
-                          indicatorColor="primary"
-                          textColor="primary"
-                          variant="scrollable"
-                          scrollButtons="auto"
-                          aria-label="scrollable auto tabs example"
-                        >
-                          <Tab label="Tổng quan ngày" {...a11yProps(0)} />
-                          <Tab label="Các địa điểm" {...a11yProps(1)} />
-                        </Tabs>
-                        <TabPanel
-                          value={value}
-                          index={0}
-                          className={classes.tabPanel}
-                        >
-                          <DetailDateRef
-                            ref={refDetail}
-                            date={idx}
-                            tourDate={tour.tour[idx]}
-                            joined={joined}
-                          />
-                        </TabPanel>
-                        <TabPanel
-                          value={value}
-                          index={1}
-                          className={classes.tabPanel}
-                        >
-                          {tour.tour[idx].locations.map((item, index) => (
-                            <Location
-                              location={item}
-                              indexDate={idx}
-                              tourDateId={tour.tour[idx]._id}
-                              indexLocation={index}
-                              edit={false}
-                              key={index}
-                              isSave={true}
-                              isEdit={false}
-                              addReview={createReview}
-                              joined={joined}
-                              joinIds={tour.joinIds}
-                              isOwn={isOwn}
-                              updateJoinLocation={updateJoinLocation}
-                              joinLoc={joinLoc}
-                            />
-                          ))}
-                        </TabPanel>
-                      </StepContent>
-                    </Step>
-                  ))}
-                </Stepper>
-              </Grid>
-              <Grid
-                item
-                lg={4}
-                md={4}
-                sm={12}
-                className={classes.tourDatesRight}
-              >
-                <div className={classes.map}>
-                  {position ? (
-                    <MapCard
-                      position={position}
-                      zoom={12}
-                      locations={locations}
-                    />
-                  ) : (
-                    <div></div>
-                  )}
-                </div>
-              </Grid>
-            </Grid>
-          </Grid>
-        </Grid>
-      ) : (
-        <CircularProgress color={'inherit'} />
-      )}
-    </>
-  );
+    const handleChange = (event, newValue) => {
+        setValue(newValue);
+    };
+    
+    const [anchorEl, setAnchorEl] = useState(null);
+    const [showDelete, setShowDelete] = useState(false);
+    const handleShowMenu = (e) => {
+        setAnchorEl(e.currentTarget);
+    }
+    const handleCloseMenu = () => {
+        setAnchorEl(null);
+    }
+    const handleShowDelete = () => {
+        setShowDelete(true);
+    }
+
+    const handleCloseDelete = () => {
+        setShowDelete(false);
+        handleCloseMenu();
+    }
+    const handleDeleteTour = () => {
+        setState({
+            loading: true,
+            error: false
+        });
+        dispatch(
+            deleteTour(
+            tour,
+            auth.token,
+            socket,
+            () => {
+                setState({
+                loading: false,
+                error: false
+                });
+                setShowDelete(false);
+                handleCloseMenu();
+            },
+            () => {
+                setState({
+                loading: false,
+                error: true
+                });
+            }
+            )
+        );
+    };
+    return (
+        <>
+            {
+                tour ?
+                    <Grid container className={classes.container}>
+                        <SpeedDialButton />
+                        <Grid container className={classes.tourDetailContainer}>
+                            <Grid container className={classes.tourInfos}>
+                                <Grid item lg={8} md={8} sm={12} xs={12} >
+                                    <div className={classes.tourInfoLeftImage}>
+                                        <img src={tour.image} className={classes.image} width="100%" alt="Can not load" onClick={handleShowImage} />
+                                        <ImageModal
+                                            open={showImage}
+                                            handleClose={handleCloseImage}
+                                            img={tour.image}
+                                        />
+                                    </div>
+                                    <div className={classes.tourLeftInfo}>
+                                        <Typography variant="h6" className={classes.tourName}>
+                                            {tour.name}
+                                        </Typography>
+                                        <div className={classes.tourTime}>
+                                            
+                                        </div>
+                                        <div className={classes.tourDecs}>
+                                            <Typography variant="body1">
+                                                {tour.content}
+                                            </Typography>
+                                        </div>
+                                        <div className={classes.hashtagWrap}>
+                                            {tour.hashtags.map((hashtag, index) => (
+                                                <Typography className={classes.hashtag} key={index}>#{hashtag}</Typography>
+                                            ))}
+                                        </div>
+                                        <Typography variant="body1">
+                                                Tổng chi phí: {new Intl.NumberFormat().format(tour.cost * 1000)} VND
+                                        </Typography>
+                                        {
+                                            !isOwn && joinLoc === 0 &&
+                                            <>
+                                                {
+                                                    state.loading ?
+                                                        <CircularProgress /> :
+                                                        <Button onClick={joined ? handleUnJoin : handleJoin}>
+                                                            {joined ? "Hủy tham gia" : "Tham gia"}
+                                                        </Button>
+                                                }
+                                            </>
+                                        }
+                                        <div>
+                                            <Typography>Danh sách tham gia toàn bộ tour:</Typography>
+                                            <AvatarGroup max={4} onClick={handleShowJoin} style={{ cursor: 'pointer' }}>
+                                                {tour.joinIds.map(user =>
+                                                    <Avatar src={user.avatar} alt={'A'} key={user._id} style={{ height: 30, width: 30 }} />
+                                                )}
+                                            </AvatarGroup>
+                                            <Modal
+                                                aria-labelledby="like"
+                                                aria-describedby="user-like-this-post"
+                                                className={classes.modal}
+                                                open={showUserJoin}
+                                                onClose={handleCloseJoin}
+                                                closeAfterTransition
+                                                BackdropComponent={Backdrop}
+                                                BackdropProps={{
+                                                    timeout: 500,
+                                                }}
+                                            >
+                                                <UserListRef ref={refUser} listUser={tour.joinIds} title={"Đã tham gia"} handleClose={handleCloseJoin} />
+                                            </Modal>
+                                        </div>
+                                    </div>
+                                </Grid>
+                                <Grid item lg={4} md={4} sm={12} xs={12} >
+                                    <Card className={classes.cardInfoUser}>
+                                        <CardHeader
+                                            avatar={
+                                                <Avatar
+                                                    alt={tour.userId.fullname}
+                                                    src={tour.userId.avatar}
+                                                    aria-label='avatar'
+                                                />
+                                            }
+                                            action={
+                                                <>
+                                                    {
+                                                        auth.user && auth.user._id === tour.userId._id && <>
+                                                            <IconButton
+                                                                aria-label="settings"
+                                                                onClick={handleShowMenu}
+                                                                className={classes.action}
+                                                                size='small'
+                                                                controls={anchorEl ? "post-menu" : undefined}
+                                                            >
+                                                                <MoreVert />
+                                                            </IconButton>
+                                                            <Popper
+                                                                open={Boolean(anchorEl)}
+                                                                anchorEl={anchorEl}
+                                                                onClose={handleCloseMenu}
+                                                                disablePortal
+                                                            >
+                                                                <ClickAwayListener onClickAway={handleCloseMenu}>
+                                                                    <Paper>
+                                                                        <MenuList>
+                                                                            <MenuItem component={Link} to={'?edit=true'}><Edit className={classes.menuIcon}/> Chỉnh sửa hành trình</MenuItem>
+                                                                            <MenuItem onClick={handleShowDelete}> <Delete className={classes.menuIcon}/>Xóa hành trình</MenuItem>
+                                                                            <Dialog
+                                                                                open={showDelete}
+                                                                                onClose={handleCloseDelete}
+                                                                                aria-labelledby="show-delete-dialog"
+                                                                                aria-describedby="show-delete-dialog-description"
+                                                                            >
+                                                                                <DialogTitle id="alert-dialog-title">{"Bạn có chắc chắn muốn xóa?"}</DialogTitle>
+                                                                                <DialogContent>Bạn sẽ không thể khôi phục lại dữ liệu sau khi xóa!</DialogContent>
+                                                                                <DialogActions>
+                                                                                    <Button onClick={handleCloseDelete}>
+                                                                                        Hủy
+                                                                                    </Button>
+                                                                                    <Button onClick={handleDeleteTour} className={classes.delete}>
+                                                                                        {
+                                                                                            state.loading ?
+                                                                                                <CircularProgress size={15} color='inherit' /> : "Xóa"
+                                                                                        }
+                                                                                    </Button>
+                                                                                </DialogActions>
+                                                                            </Dialog>
+                                                                        </MenuList>
+                                                                    </Paper>
+                                                                </ClickAwayListener>
+                                                            </Popper>
+                                                        </>
+                                                    }
+                                                </>
+                                            }
+                                            title={
+                                                <Typography className={classes.username} component={Link} to={`/u/${tour.userId._id}`}>
+                                                   {tour.userId?.fullname}
+                                                </Typography>
+                                            }
+                                            subheader={
+                                                <Typography className={classes.subheader}>
+                                                    {timeAgo(new Date(tour.createdAt))}
+                                                </Typography>
+                                            }
+                                        />
+                                        <CardContent>
+                                            <Typography className={classes.tourName}>
+                                                {tour.name}
+                                            </Typography>
+                                            {/* <Typography>Thời gian: {convertDateToStr(volunteer.date[0].date)}</Typography>
+                                            <Typography>Địa điểm xuất phát: {volunteer.location[0].location.fullname}</Typography>
+                                            <Typography>Thể loại: {volunteer.type}</Typography> */}
+                                        </CardContent>
+                                    </Card>
+                                    <div className={classes.tourRecommend}>
+                                        <RecommendCard title="Hành trình gợi ý"/> 
+                                    </div>
+                                    
+                                </Grid>
+                            </Grid>
+                            <Grid container className={classes.tourDates}>
+                                <Grid item lg={8} md={8} sm={12} xs={12} className={classes.tourDatesLeft}>
+                                    <Stepper  activeStep={idx}  orientation="vertical" className={classes.datesWrapper}>
+                                        {tour.tour.map((item, index) => (
+                                        <Step key={index}  onClick={() => setIdx(index)} style={{cursor: "pointer"}}>
+                                            <StepLabel StepIconComponent={ColorlibStepIcon}>Chi tiết lịch trình ngày {convertDateToStr(item.date)}</StepLabel>
+                                            <StepContent>
+                                                <Tabs
+                                                    value={value}
+                                                    onChange={handleChange}
+                                                    indicatorColor="primary"
+                                                    textColor="primary"
+                                                    variant="scrollable"
+                                                    scrollButtons="auto"
+                                                    aria-label="scrollable auto tabs example"
+                                                >
+                                                    <Tab label="Tổng quan ngày" {...a11yProps(0)} />
+                                                    <Tab label="Các địa điểm" {...a11yProps(1)} />
+                                                </Tabs>
+                                                <TabPanel value={value} index={0} className={classes.tabPanel}>
+                                                    <DetailDateRef ref={refDetail} date={idx} tourDate={tour.tour[idx]} joined={joined} />
+                                                </TabPanel>
+                                                <TabPanel value={value} index={1} className={classes.tabPanel}>
+                                                {
+                                                    tour.tour[idx].locations.map((item, index) => (
+                                                        <Location
+                                                            location={item}
+                                                            indexDate={idx}
+                                                            tourDateId={tour.tour[idx]._id}
+                                                            indexLocation={index}
+                                                            edit={false}
+                                                            key={index}
+                                                            isSave={true}
+                                                            isEdit={false}
+                                                            addReview={createReview}
+                                                            joined={joined}
+                                                            joinIds={tour.joinIds}
+                                                            isOwn={isOwn}
+                                                            updateJoinLocation={updateJoinLocation}
+                                                            joinLoc={joinLoc}
+                                                        />
+                                                    ))
+                                                }
+                                                </TabPanel>
+                                            </StepContent>
+                                        </Step>
+                                        ))}
+                                    </Stepper>
+                                </Grid>
+                                <Grid item lg={4} md={4} sm={12} xs={12} className={classes.tourDatesRight}>
+                                    <div className={classes.map}>
+                                        {position ? <MapCard position={position} zoom={12} locations={locations} /> : <div></div>}
+                                    </div>
+                                </Grid>
+                            </Grid>
+                        </Grid>
+                    </Grid>
+                    :
+                    <CircularProgress color={"inherit"} />
+            }
+        </>
+    )
 }

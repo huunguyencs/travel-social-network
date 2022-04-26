@@ -509,6 +509,7 @@ export default function ServiceItem(props) {
             imageList={service.images}
             show2Image={false}
             defaultHeight={500}
+            isPost={false}
           />
         </CardMedia>
         <div>

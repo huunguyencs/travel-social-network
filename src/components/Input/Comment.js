@@ -40,11 +40,10 @@ export default function InputComment(props) {
     return (
         <div className={classes.writeCmtWrapper}>
             <Avatar
-                    src={auth.user.avatar}
-                    atl="Avatar"
-                    className={classes.writeCmtAvatar}
-            >
-            </Avatar>
+                src={auth.user.avatar}
+                atl="Avatar"
+                className={classes.writeCmtAvatar}
+            />
             <FiberManualRecord className={classes.writeCmtAvatarIcon}/>
             <form
                 onSubmit={handleComment}

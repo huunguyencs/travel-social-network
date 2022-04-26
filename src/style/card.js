@@ -276,8 +276,13 @@ const cardStyles = makeStyles(
         "&:hover": {
             color: color.white
         },
+    },
 
-    }
+
+
+    //recommend Card:
+
+    
 }), {index: 1}
 );
 

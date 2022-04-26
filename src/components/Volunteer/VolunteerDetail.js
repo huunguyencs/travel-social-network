@@ -21,7 +21,8 @@ import {
   Modal,
   Backdrop,
   Tabs,
-  Tab
+  Tab,
+  CardMedia
 } from '@material-ui/core';
 import {
   Timeline,
@@ -288,11 +289,14 @@ export default function VolunteerDetail(props) {
           </Typography>
           <Grid container>
             <Grid item md={6} sm={12} xs={12}>
-              <ImageList
-                imageList={volunteer.images}
-                show2Image={true}
-                defaultHeight={300}
-              />
+              <CardMedia>
+                <ImageList
+                  imageList={volunteer.images}
+                  show2Image={true}
+                  defaultHeight={400}
+                  isPost={false}
+                />
+              </CardMedia>
             </Grid>
             <Grid item md={4} sm={12} xs={12} className={classes.infoVolunteer}>
               <CardHeader

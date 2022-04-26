@@ -465,7 +465,7 @@ export default function Tour(props) {
                   </Typography>
                 )}
             </Collapse>
-            {showCmt && <InputComment type="tour" id={tour._id} />}
+            {showCmt && auth.user && <InputComment type="tour" id={tour._id} />}
           </>
         )}
       </>

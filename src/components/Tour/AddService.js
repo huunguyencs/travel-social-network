@@ -247,7 +247,7 @@ function DetailService(props) {
                             onChange={(e) => setCost(e.target.value)}
                         />
                         <div className={classes.btnWrap}>
-                            <Button onClick={handleUpdate} variant="contained" color="primary">
+                            <Button onClick={handleUpdate} variant="contained" className={classes.button}>
                                 Cập nhật
                             </Button>
                         </div>
@@ -316,8 +316,8 @@ export function ServiceCard(props) {
         <Card className={classes.serviceContainer} >
             <Grid container>
                 <Grid item md={5} sm={3} className={classes.imageLocation}>
-                    <CardMedia style={{height: 160}}>
-                        <img src={service.service ? service.service.images[0] : 'https://skillz4kidzmartialarts.com/wp-content/uploads/2017/04/default-image-620x600.jpg'} alt="Service" className={classes.img} />
+                    <CardMedia style={{height: "100%"}}>
+                        <img src={service.service ? service.service.images[0] : '/default1.jpg'} alt="Service" className={classes.img} />
                     </CardMedia>
                 </Grid>
                 <Grid item md={7} sm={9} xs={12}>
@@ -333,7 +333,7 @@ export function ServiceCard(props) {
                                 <div>
                                     <Typography>Chi phí: {new Intl.NumberFormat().format(service.cost * 1000)} VND</Typography>
                                 </div>
-                                <Button onClick={handleShowDetail}>Chi tiết</Button>
+                                <Button onClick={handleShowDetail} className={classes.reviewBtn}>Chi tiết</Button>
                             </div>
                             <div>
                                 {isEdit &&
@@ -422,7 +422,7 @@ export default function AddService(props) {
 
     return (
         <div className={classes.paperContainer}>
-            <div style={{ marginTop: 20 }} className={classes.center}>
+            <div style={{marginTop: 10, borderTop: "1px solid #ded9d9"}}>
                 <ServiceItemAddRef
                     ref={ref}
                     {...props}

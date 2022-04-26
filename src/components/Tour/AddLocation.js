@@ -69,11 +69,6 @@ export default function AddLocation(props) {
 
     return (
         <Paper className={classes.addLocationContainer}>
-            {/* <div className={classes.textTitle}>
-                <Typography variant="h5">
-                    Thêm địa điểm
-                </Typography>
-            </div> */}
             <div
                 className={classes.addLocationForm}
             >
@@ -83,7 +78,7 @@ export default function AddLocation(props) {
                         options={location.provinces}
                         loading={location.loading}
                         getOptionLabel={(option) => option?.fullname}
-                        className={classes.autocomplete}
+                        className={classes.autocompleteProvince}
                         onChange={(e, value) => setProvince(value)}
                         value={currentProvince}
                         renderInput={(params) => <TextField {...params} name="provinces" label="Chọn tỉnh thành" variant="outlined" />}
@@ -93,7 +88,7 @@ export default function AddLocation(props) {
                         id="choose-location"
                         options={locations}
                         loading={loading}
-                        className={classes.autocomplete}
+                        className={classes.autocompleteProvince}
                         onChange={(e, value) => {
                             if (typeof value === 'string') {
                                 setLoc({
@@ -147,6 +142,7 @@ export default function AddLocation(props) {
                         onClick={handleSubmit}
                         startIcon={(<AddCircle />)}
                         disabled={!loc}
+                        style={{padding: 7, marginTop: 5}}
                     >
                         Thêm
                     </Button>

@@ -61,6 +61,52 @@ const friendCardStyles = makeStyles(
       cursor: 'pointer',
       marginLeft: 'auto',
       marginRight: 8
+    },
+
+
+
+    //recommend tour card
+    list:{
+
+    },
+    itemWrapper:{
+      marginBottom: 5,
+      height: 190,
+    },
+    itemImage:{
+      cursor: "pointer",
+      position: "relative",
+      height: "100%",
+      overflow:"hidden"
+    },
+    image:{
+      top: 0,
+      left: 0,
+      width: "100%",
+      height: "100%",
+      position: "absolute",
+      objectFit: "cover",
+      objectPosition: "center",
+      transition: "opacity 0.35s, transform 0.35s",
+       transform: "scale(1.12)",
+       "&:hover": {
+            opacity: 0.9,
+            transform: "scale(1)",
+        }
+    },
+    itemText:{
+      left: 0,
+      color: "#fff",
+      bottom: 0,
+      padding: 16,
+      zIndex: 2,
+      width:"100%",
+      position: "absolute",
+      fontWeight: 500,
+      textShadow:"0px 1px 2px rgb(0 0 0 / 54%)",
+      lineHeight: 1.75,
+      fontSize: 20,
+      backgroundImage: "linear-gradient(to top, rgba(0, 0, 0, 0.3) 0, rgba(0, 0, 0, 0.25) 50%, rgba(0, 0, 0, 0.1) 75%, rgba(0, 0, 0, 0) 100%)"
     }
   }),
   { index: 1 }

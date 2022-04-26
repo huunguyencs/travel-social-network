@@ -430,6 +430,7 @@ function ShareContent({ post }) {
                 imageList={post.shareId.images}
                 show2Image={true}
                 defaultHeight={500}
+                isPost={true}
               />
             </CardMedia>
           )}

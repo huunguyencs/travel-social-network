@@ -8,7 +8,7 @@ import { updateInfo } from '../../redux/actions/createTourAction';
 import EmojiPicker from "../Input/EmojiPicker";
 
 
-export default function UpdateTourInfo({ name, content, hashtags, handleClose, cost }) {
+export default function UpdateTourInfo({ name, content, hashtags, cost }) {
 
     const dispatch = useDispatch();
 
@@ -29,8 +29,6 @@ export default function UpdateTourInfo({ name, content, hashtags, handleClose, c
         })
     }
 
-
-
     const hashtagSplit = (text) => {
         var ht = text.split(" ");
         return ht.filter(item => item !== "");
@@ -41,7 +39,6 @@ export default function UpdateTourInfo({ name, content, hashtags, handleClose, c
         let ht = hashtagSplit(hashtag);
         ht = [...hashtagArr, ...ht];
         dispatch(updateInfo({ name: state.name, content: text, hashtags: ht, cost: parseInt(state.cost) }));
-        handleClose();
     }
 
     const addHashtag = (e) => {
@@ -66,10 +63,10 @@ export default function UpdateTourInfo({ name, content, hashtags, handleClose, c
     const classes = formStyles();
 
     return (
-        <Paper className={classes.paperContainer}>
+        <Paper className={classes.paperUpdateInfoContainer}>
             <div className={classes.textTitle}>
                 <Typography variant="h5">
-                    Thay đổi thông tin
+                    Thông tin hành trình
                 </Typography>
             </div>
             <div>
@@ -139,12 +136,10 @@ export default function UpdateTourInfo({ name, content, hashtags, handleClose, c
                         </div>
                         <div>
                             <Button className={classes.button} onClick={handleSubmit}>
-                                Xong
+                                Cập nhập
                             </Button>
                         </div>
                     </div>
-
-
                 </div>
             </div>
         </Paper>

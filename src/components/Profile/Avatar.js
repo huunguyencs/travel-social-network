@@ -210,7 +210,7 @@ export default function ProfileAvatar(props) {
                 img={user.avatar}
               />
             </div>
-            <div className={classes.infoUser}>
+            <div className={classes.infoUsers}>
               <Typography variant="body1" className={classes.fullname}>
                 {user.fullname}
                 {user.confirmAccount && user.confirmAccount.state !== 0 && (
