@@ -92,7 +92,7 @@ function ReviewList(props) {
                             {
                                 post.images.length > 0 &&
                                 <CardMedia>
-                                    <ImageList imageList={post.images} show2Image={true} defaultHeight={300} />
+                                    <ImageList imageList={post.images} show2Image={true} defaultHeight={300} isPost={false}/>
                                 </CardMedia>
                             }
                             <Rating name="location-rating" value={post.rate} readOnly style={{ marginBottom: 10, marginInline: 20 }} />

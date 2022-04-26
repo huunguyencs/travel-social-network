@@ -97,7 +97,7 @@ export default function EventPage(props) {
                     </Typography>
                   </CardContent>
                   <CardMedia>
-                    <ImageList imageList={event.images} show2Image={true} />
+                    <ImageList imageList={event.images} show2Image={true} isPost={false} />
                   </CardMedia>
                 </Card>
               </Container>

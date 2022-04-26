@@ -198,6 +198,7 @@ export default function Post(props) {
                     imageList={post.images}
                     show2Image={true}
                     defaultHeight={500}
+                    isPost={true}
                   />
                 </CardMedia>
                 <div className={classes.likeWrapper} onClick={likePress}>

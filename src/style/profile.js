@@ -89,10 +89,13 @@ const profileStyles = makeStyles(
     container: {
       position: 'relative',
       maxWidth: '80%',
-      height: '65vh',
+      height: 550,
       display: 'flex',
       marginTop: 70,
-      flexDirection: 'column'
+      flexDirection: 'column',
+      [theme.breakpoints.down('sm')]: {
+        height: 450,
+      }
     },
     profile_overImage: {
       backgroundColor: color.white,
@@ -108,7 +111,7 @@ const profileStyles = makeStyles(
         filter: 'brightness(90%)'
       },
       [theme.breakpoints.down('sm')]: {
-        height: '65%'
+        height: '80%'
       }
     },
     profile_avatar__img: {
@@ -135,12 +138,14 @@ const profileStyles = makeStyles(
     profile_info: {
       position: 'absolute',
       display: 'flex',
-      marginTop: '42vh',
-      marginLeft: '7vw',
+      marginTop: 350,
+      marginLeft: 40,
       [theme.breakpoints.down('sm')]: {
-        display: 'block',
-        marginTop: '30vh'
-        // position: 'relative'
+          marginTop: 280,
+          marginLeft: 0
+      },
+      [theme.breakpoints.down('xs')]: {
+        display: 'flex',
       }
     },
     modal: {
@@ -155,7 +160,7 @@ const profileStyles = makeStyles(
         marginLeft: '4vw'
       },
       [theme.breakpoints.down('sm')]: {
-        marginTop: 10,
+        marginTop: 100,
         marginLeft: 10
       }
     },
@@ -178,12 +183,17 @@ const profileStyles = makeStyles(
     infoUser: {
       display: 'flex',
       alignSelf: 'center',
-      fontSize: "22px"
+      fontSize: "22px",
+      
     },
   follow: {
     display: "flex",
     fontSize: "20px",
-    color: "inherit"
+    color: "inherit",
+    [theme.breakpoints.down("sm")]: {
+      display: "block",
+      fontSize: "18px",
+    },
   },
   followInfo: {
     marginRight: "20px",
@@ -290,6 +300,20 @@ const profileStyles = makeStyles(
     flex: 1,
     marginTop: 50, 
     marginLeft: 20
+  },
+  fullname:{
+    fontSize: 25,
+    fontWeight: 500,
+    padding: "10px 10px 10px 0",
+    [theme.breakpoints.down('sm')]: {
+      fontSize: 20,
+    }
+  },
+  infoUsers:{
+      alignSelf: 'center',
+      fontSize: "22px",
+      marginLeft: 20,
+      marginTop: 60
   }
 
 }), {index: 1});

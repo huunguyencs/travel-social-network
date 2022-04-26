@@ -102,7 +102,7 @@ const modalListStyles = makeStyles(
     },
     imageList: {
       // margin: 20,
-      height: '100%'
+      // height: '100%'
       // [theme.breakpoints.down("md")]: {
       //     height: 400,
       // },
@@ -116,6 +116,12 @@ const modalListStyles = makeStyles(
       '&:hover': {
         filter: 'brightness(85%)'
       }
+    },
+    image:{
+      left: "50%",
+      height: "100%",
+      position: "relative",
+      transform: "translateX(-50%)"
     },
     more: {
       cursor: 'pointer',

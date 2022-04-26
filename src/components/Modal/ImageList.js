@@ -8,7 +8,7 @@ import { modalListStyles } from "../../style";
 export default function ImageList(props) {
     const classes = modalListStyles();
 
-    const { imageList, show2Image, defaultHeight } = props;
+    const { imageList, show2Image, isPost, defaultHeight } = props;
 
     const [open, setOpen] = useState(false);
     const [pictureIndex, setPictureIndex] = useState(0);
@@ -45,25 +45,6 @@ export default function ImageList(props) {
     
     return (
         <>
-            {/* <ImgList rowHeight={defaultHeight || 500} className={classes.imageList} cols={imageList.length > 1 && twoImage ? 2 : 1}>
-                <ImageListItem
-                    key={imageList[0]}
-                    className={classes.imageItem}
-                    onClick={() => handleClick(0)}
-                >
-                    <img src={imageList[0]} alt={"Đang tải..."} />
-                </ImageListItem>
-                {imageList.length > 1 && twoImage && (
-                    <ImageListItem
-                        key={imageList[1]}
-                        className={imageList.length > 2 ? classes.more : classes.imageItem}
-                        onClick={() => handleClick(1)}
-                    >
-                        <img src={imageList[1]} alt={"Đang tải..."} />
-                        {(imageList.length > 2) && <Typography variant="h2" className={classes.textCenter}>{imageList.length - 1}+</Typography>}
-                    </ImageListItem>
-                )}
-            </ImgList> */}
             {
                 imageList.length === 1 ? 
                 <ImgList rowHeight={heightRow} cols={8} className={classes.imageList} >
@@ -72,7 +53,7 @@ export default function ImageList(props) {
                         key={imageList[0]} 
                         onClick={() => handleClick(0)}
                     >
-                        <img src={imageList[0]} alt="loading..." />
+                        <img src={imageList[0]} alt="loading..."/>
                     </ImageListItem>
                 </ImgList> :
                 imageList.length === 2 ?
@@ -83,7 +64,7 @@ export default function ImageList(props) {
                             key={item} 
                             onClick={() => handleClick(index)}
                         >
-                            <img src={item}  alt="loading..."/>
+                            <img src={item}  alt="loading..." className={isPost && classes.image} />
                         </ImageListItem>
                     ))}
                 </ImgList>:
@@ -94,7 +75,7 @@ export default function ImageList(props) {
                         key={imageList[0]} 
                         onClick={() => handleClick(0)}
                     >
-                        <img src={imageList[0]} alt="loading..."/>
+                        <img src={imageList[0]} alt="loading..." className={isPost && classes.image}/>
                     </ImageListItem>
                     <ImageListItem cols={4} rows={6} className={classes.imageItem}>
                         <ImgList rowHeight={heightRow} cols={1} className={classes.imageList} >
@@ -103,14 +84,14 @@ export default function ImageList(props) {
                                 key={imageList[1]} 
                                 onClick={() => handleClick(1)}
                             >
-                                <img src={imageList[1]} alt="loading..."/>
+                                <img src={imageList[1]} alt="loading..." className={isPost && classes.image}/>
                             </ImageListItem>
                             <ImageListItem cols={1} rows={3} 
                                 className={classes.imageItem} 
                                 key={imageList[2]} 
                                 onClick={() => handleClick(2)}
                             >
-                                <img src={imageList[2]} alt="loading..."/>
+                                <img src={imageList[2]} alt="loading..." className={isPost && classes.image}/>
                             </ImageListItem>
                         </ImgList>
                     </ImageListItem>
@@ -136,7 +117,7 @@ export default function ImageList(props) {
                                     key={item} 
                                     onClick={() => handleClick(index)}
                                 >
-                                    <img src={item}  alt="loading..."/>
+                                    <img src={item}  alt="loading..." />
                                 </ImageListItem>
                             ))}
                         </ImgList>
@@ -150,7 +131,7 @@ export default function ImageList(props) {
                                     onClick={() => handleClick(index)}
                                 >
                                     <img src={item}  alt="loading..."/>
-                                    {(imageList.length > 5) && <Typography variant="h2" className={classes.textCenter}>{imageList.length - 5}+</Typography>}
+                                    {(imageList.length > 5) && index === 2 && <Typography variant="h2" className={classes.textCenter}>{imageList.length - 5}+</Typography>}
                                 </ImageListItem>
                             ))}
                         </ImgList>
