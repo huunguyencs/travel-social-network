@@ -33,7 +33,7 @@ function handling(arr) {
 }
 
 function getData(arr) {
-
+  console.log(arr);
   const data = [
     {
       name: 'Tháng 1',
@@ -114,20 +114,17 @@ function AdminPosts(props) {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
 
-  const getAllPosts = async token => {
+  const getAllPosts = async (token) => {
     setLoading(true);
     setError(null);
-    await customAxios(token)
-      .get(`/post/posts`)
-      .then(res => {
-        setPosts(res.data.posts);
-        setLoading(false);
-      })
-      .catch(err => {
-        setLoading(false);
-        setError('Có lỗi xảy ra');
-      });
-  };
+    await customAxios(token).get(`/post/all`).then(res => {
+      setPosts(res.data.posts);
+      setLoading(false);
+    }).catch(err => {
+      setLoading(false);
+      setError('Có lỗi xảy ra')
+    })
+  }
 
   useEffect(() => {
     getAllPosts(token);
@@ -187,7 +184,7 @@ function AdminPosts(props) {
                   height={500}
                   data={getData(posts)}
                   loading={loading}
-                  error = {error}
+                  error={error}
                   margin={{
                     top: 20,
                     right: 30,

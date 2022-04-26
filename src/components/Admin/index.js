@@ -100,7 +100,7 @@ function AdminHome(props) {
     const getAllPosts = async (token) => {
         setLoading(true);
         setError(null);
-        await customAxios(token).get(`/post/posts`).then(res => {
+        await customAxios(token).get(`/post/all`).then(res => {
             setPosts(res.data.posts);
             setLoading(false);
         }).catch(err => {
