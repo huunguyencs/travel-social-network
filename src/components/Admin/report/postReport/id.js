@@ -2,7 +2,7 @@ import { Paper, Typography, Button } from '@material-ui/core';
 import { IconButton } from '@material-ui/core';
 import { ArrowBack } from '@material-ui/icons';
 import React, { useEffect, useState } from 'react';
-import { Link, useParams } from 'react-router-dom';
+import { Link, useHistory, useParams } from 'react-router-dom';
 import { useSelector } from 'react-redux';
 import { NotFound } from '../../../../page/404';
 import customAxios from '../../../../utils/fetchData';
@@ -11,6 +11,8 @@ import Feed from '../../../Feed';
 import Post from '../../../Post';
 import { tableStyles } from "../../../../style"
 import Loading from '../../../Loading';
+import { id } from 'date-fns/locale';
+
 
 function formatTime(time) {
   var tmp = new Date(time);
@@ -27,6 +29,8 @@ function AdminPostReportDetail() {
   const classes = tableStyles();
 
   const { subpage } = useParams();
+
+  const history = useHistory();
 
   const [report, setReport] = useState(null);
   const [post, setPost] = useState(null);
@@ -63,14 +67,14 @@ function AdminPostReportDetail() {
       });
   };
 
-  const getPost = async id => {
+  const getPost = async postId => {
     setState({
       notFound: false,
       loading: true,
       error: false
     });
     await customAxios(token)
-      .get(`/post/${id}`)
+      .get(`/post/${postId}`)
       .then(res => {
         setPost(res.data.post);
         setState({
@@ -88,40 +92,67 @@ function AdminPostReportDetail() {
       });
   }
 
-  // const deletePost = async id => {
-  //   setState({
-  //     notFound: false,
-  //     loading: true,
-  //     error: false
-  //   });
-  //   await customAxios(token)
-  //     .delete(`/post/${id}`)
-  //     .then(res => {
-  //       setPost(res.data.post);
-  //       setState({
-  //         notFound: false,
-  //         loading: false,
-  //         error: false
-  //       });
-  //     })
-  //     .catch(err => {
-  //       setState({
-  //         notFound: false,
-  //         loading: false,
-  //         error: true
-  //       });
-  //     });
-  // }
+  const deletePost = async postId => {
+    setState({
+      notFound: false,
+      loading: true,
+      error: false
+    });
+    await customAxios(token)
+      .patch(`/report/delete/${report._id}`, {
+        postId
+      })
+      .then(res => {
+        setState({
+          notFound: false,
+          loading: false,
+          error: false
+        });
+      })
+      .catch(err => {
+        setState({
+          notFound: false,
+          loading: false,
+          error: true
+        });
+      });
+    history.push('/admin/postReport')
+  }
+
+  const cancelReport = async id => {
+    setState({
+      notFound: false,
+      loading: true,
+      error: false
+    });
+    await customAxios(token)
+      .patch(`/report/${id}`)
+      .then(res => {
+        setState({
+          notFound: false,
+          loading: false,
+          error: false
+        });
+      })
+      .catch(err => {
+        setState({
+          notFound: false,
+          loading: false,
+          error: true
+        });
+      });
+    history.push('/admin/postReport')
+  }
 
   useEffect(() => {
     getReport(subpage);
   }, [subpage]);
 
   useEffect(() => {
-    if (report) {
+    if (report?.postId) {
       getPost(report.postId);
     }
-  }, []);
+  }, [report]);
 
   useEffect(() => {
     document.title = 'Admin - Bài viết được báo cáo';
@@ -169,12 +200,9 @@ function AdminPostReportDetail() {
               Chi tiết
             </Typography>
             <div>
-              <Feed>
-                <Post
-                  post={post}
-                  key={post._id}
-                />
-              </Feed>
+              <Post
+                post={post}
+              />
             </div>
           </div>
           <div className={classes.cardReport}>
@@ -200,16 +228,33 @@ function AdminPostReportDetail() {
               Nội dung báo cáo: {report.content}
             </div>
 
-            <div className={classes.btnReport}>
-              <Button
-                variant="contained"
-                className={classes.addBtn}
-                component={Link}
-                to={`/admin/postReport`}
-              >
-                Xóa bài viết
-              </Button>
+            <div className={classes.textReport}>
+              Trạng thái báo cáo: {report.state === 2 ? 'Đã xử lý' : 'Chưa xử lý'}
             </div>
+
+            {report.state === 2 ?
+              <div></div> : <div className={classes.btnReport}>
+                <div>
+                  <Button
+                    variant="contained"
+                    className={classes.addBtn}
+                    onClick={() => cancelReport(report._id)}
+                  >
+                    Hủy báo cáo
+                  </Button>
+                </div>
+                <div>
+                  <Button
+                    variant="contained"
+                    className={classes.addBtn}
+                    onClick={() => deletePost(post._id)}
+                  >
+                    Xóa bài viết
+                  </Button>
+                </div>
+              </div>
+            }
+
           </div>
         </div>
       )}

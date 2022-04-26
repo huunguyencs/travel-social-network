@@ -30,7 +30,7 @@ const tableStyles = makeStyles(
       margin: 20,
       padding: 20,
       borderRadius: 10,
-      width: '300px'
+      width: '300px',
     },
     cardValue: {
       marginTop: 10
@@ -56,16 +56,19 @@ const tableStyles = makeStyles(
         padding: 20,
         borderRadius: 10,
         width: "400px",
-        backgroundColor: "#a5dec8"
+        backgroundColor: "#a5dec8",
+        height: '300px'
     },
     textReport:{
         margin: 10,
     },
     btnReport:{
         justifyItems: "center",
-        justifyContent: "center",
+        justifyContent: "space-between",
         display: 'flex',
-        marginTop: 50
+        marginTop: 50,
+        marginLeft: 50,
+        marginRight: 50,
     }
   }),
   { index: 1 }
