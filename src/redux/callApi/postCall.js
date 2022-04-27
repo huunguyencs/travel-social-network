@@ -16,7 +16,13 @@ export const getPosts = token => async dispatch => {
 
     // console.log(res.data.posts)
 
-    dispatch(postAction.getPosts({ posts: res.data.posts, id: 0 }));
+    dispatch(
+      postAction.getPosts({
+        posts: res.data.posts,
+        id: 0,
+        postId: res.data.postId
+      })
+    );
   } catch (err) {
     // console.log(err);
     dispatch(postAction.error({ error: 'Có lỗi xảy ra' }));
@@ -72,11 +78,16 @@ export const getMorePost = data => async dispatch => {
     const { postId } = data;
     const limit = postId.length;
 
-    const res = customAxios().post(`/post/list?detail=true&limit=${limit}`, {
-      postId: postId
-    });
+    const res = customAxios().post(
+      `/post/list?detail=true&limit=${limit}`,
+      {
+        postId: postId
+      },
+      { timeout: 50 * 1000 }
+    );
 
-    dispatch(postAction.getMorePost({ posts: res }));
+    // console.log(res.data.posts);
+    dispatch(postAction.getMorePost({ posts: res.data.posts }));
   } catch (err) {
     dispatch(postAction.error({ error: 'Có lỗi xảy ra' }));
   }

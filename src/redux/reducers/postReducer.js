@@ -4,7 +4,7 @@ const INIT_STATE = {
   id: 0,
   postId: [],
   posts: null,
-  page: 1,
+  page: 0,
   scrollTop: false,
   loading: false,
   error: null,
@@ -164,8 +164,6 @@ const postRecuder = (state = INIT_STATE, action) => {
       return {
         ...state,
         loading: false,
-        posts: [],
-        page: 0,
         error: action.payload.error
       };
     }
