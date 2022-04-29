@@ -78,15 +78,13 @@ export const getMorePost = data => async dispatch => {
     const { postId } = data;
     const limit = postId.length;
 
-    const res = customAxios().post(
+    const res = await customAxios().post(
       `/post/list?detail=true&limit=${limit}`,
       {
-        postId: postId
-      },
-      { timeout: 50 * 1000 }
+        list: postId
+      }
     );
 
-    // console.log(res.data.posts);
     dispatch(postAction.getMorePost({ posts: res.data.posts }));
   } catch (err) {
     dispatch(postAction.error({ error: 'Có lỗi xảy ra' }));

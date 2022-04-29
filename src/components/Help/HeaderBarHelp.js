@@ -16,7 +16,7 @@ export default function HeaderBarHelp() {
       >
         {list.map((item, index) => (
           <Link
-            to={`/help?id=${item._id}`}
+            to={`/help/${item._id}`}
             key={index}
             style={{ marginInline: 100 }}
           >

@@ -44,6 +44,7 @@ const postRecuder = (state = INIT_STATE, action) => {
       };
     }
     case POST_TYPES.GET_MORE_POSTS: {
+      console.log(action.payload.posts);
       return {
         ...state,
         posts: [...state.posts, ...action.payload.posts],
