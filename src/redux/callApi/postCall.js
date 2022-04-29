@@ -104,9 +104,7 @@ export const getPostById = (id, token, next) => async dispatch => {
   }
 };
 
-export const createPost =
-  (data, token, type, socket, next, error, createReview) => async dispatch => {
-    // console.log("go?")
+export const createPost = (data, token, type, socket, next, error, createReview) => async dispatch => {
     // post api
     try {
       let image = [];
@@ -207,17 +205,18 @@ export const likePost = (id, auth, socket, next) => async dispatch => {
     dispatch(postAction.updateLike({ id: id, likes: res.data.likes }));
     socket.emit('like', { type: 'post', id, likes: res.data.likes });
 
-    //notify
-    const dataNotify = {
-      id: auth.user._id,
-      text: ' thích bài viết của bạn',
-      recipients: [res.data.post.userId],
-      content: res.data.post.content,
-      image:
-        res.data.post.images.length > 0 ? res.data.post.images[0] : 'empty',
-      url: `/post/${id}`
-    };
-    dispatch(createNotify(dataNotify, auth.token, socket));
+    if(auth.user._id !== res.data.post.userId){
+        const dataNotify = {
+          id: auth.user._id,
+          text: ' thích bài viết của bạn',
+          recipients: [res.data.post.userId],
+          content: res.data.post.content,
+          image:
+            res.data.post.images.length > 0 ? res.data.post.images[0] : 'empty',
+          url: `/post/${id}`
+        };
+        dispatch(createNotify(dataNotify, auth.token, socket));
+    }
   } catch (err) {
     next();
     // console.log(err);
@@ -234,11 +233,13 @@ export const unlikePost = (id, auth, socket, next) => async dispatch => {
     socket.emit('unlike', { type: 'post', id, likes: res.data.likes });
 
     // Notify
-    const dataNotify = {
-      id: auth.user._id,
-      url: `/post/${id}`
-    };
-    dispatch(deleteNotify(dataNotify, auth.token, socket));
+    if(auth.user._id !== res.data.post.userId){
+        const dataNotify = {
+          id: auth.user._id,
+          url: `/post/${id}`
+        };
+        dispatch(deleteNotify(dataNotify, auth.token, socket));
+    }
   } catch (err) {
     next();
     if (err.response && err.response.data && err.response.data.message)

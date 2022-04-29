@@ -131,7 +131,7 @@ export default function ImageList(props) {
                                     onClick={() => handleClick(index)}
                                 >
                                     <img src={item}  alt="loading..."/>
-                                    {(imageList.length > 5) && index === 2 && <Typography variant="h2" className={classes.textCenter}>{imageList.length - 5}+</Typography>}
+                                    {(imageList.length > 5) && index === 2 && <Typography variant="h4" className={classes.textCenter}>{imageList.length - 5}+</Typography>}
                                 </ImageListItem>
                             ))}
                         </ImgList>

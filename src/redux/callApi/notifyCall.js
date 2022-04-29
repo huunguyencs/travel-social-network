@@ -2,9 +2,9 @@ import customAxios from '../../utils/fetchData';
 import * as notifyAction from '../actions/notifyAction';
 export const createNotify = (data, token, socket) => async dispatch => {
   try {
-    console.log('Notify:', data);
+    // console.log('Notify:', data);
     const res = await customAxios(token).post('/notify/create', data);
-    console.log(res.data.newNotify);
+    // console.log(res.data.newNotify);
     socket.emit('createNotify', res.data.newNotify);
   } catch (error) {
     console.log(error);

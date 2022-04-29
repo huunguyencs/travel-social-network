@@ -6,10 +6,7 @@ import * as alertAction from '../actions/alertAction';
 
 
 export const createComment = (id, comment, auth, type, socket) => async (dispatch) => {
-
     try {
-        // call api to update comment
-
         const res = await customAxios(auth.token).post("/comment/create", {
             commentType: type,
             content: comment,
@@ -30,16 +27,17 @@ export const createComment = (id, comment, auth, type, socket) => async (dispatc
             //lấy thông tin  post
             const resPost = await customAxios(auth.token).get(`/post/${id}`)
             // Notify
-            const dataNotify = {
-                id: res.data.newComment._id,
-                text: ' đã bình luận vào bài viết của bạn',
-                recipients: [resPost.data.post.userId._id],
-                url: `/post/${id}`,
-                content: resPost.data.post.content || '',
-                image: resPost.data.post.images.length > 0 ? resPost.data.post.images[0] : ""
+            if(auth.user._id !== resPost.data.post.userId._id){
+                const dataNotify = {
+                    id: res.data.newComment._id,
+                    text: ' đã bình luận vào bài viết của bạn',
+                    recipients: [resPost.data.post.userId._id],
+                    url: `/post/${id}`,
+                    content: resPost.data.post.content || '',
+                    image: resPost.data.post.images.length > 0 ? resPost.data.post.images[0] : ""
+                }
+                dispatch(createNotify(dataNotify, auth.token, socket))
             }
-
-            dispatch(createNotify(dataNotify, auth.token, socket))
         }
         else if (type === "tour") {
             dispatch(commentAction.addCommentTour({ id: id, comment: newComment }))
@@ -48,16 +46,17 @@ export const createComment = (id, comment, auth, type, socket) => async (dispatc
             //lấy thông tin  post
             const resTour = await customAxios(auth.token).get(`/tour/${id}`)
             // Notify
-            const dataNotify = {
-                id: res.data.newComment._id,
-                text: ' đã bình luận vào hành trình của bạn',
-                recipients: [resTour.data.tour.userId._id],
-                url: `/post/${id}`,
-                content: resTour.data.tour.content || '',
-                image: resTour.data.tour.image || ""
+            if(auth.user._id !== resTour.data.tour.userId._id){
+                const dataNotify = {
+                    id: res.data.newComment._id,
+                    text: ' đã bình luận vào hành trình của bạn',
+                    recipients: [resTour.data.tour.userId._id],
+                    url: `/post/${id}`,
+                    content: resTour.data.tour.content || '',
+                    image: resTour.data.tour.image || ""
+                }
+                dispatch(createNotify(dataNotify, auth.token, socket))
             }
-
-            dispatch(createNotify(dataNotify, auth.token, socket))
         }
         else if (type === "volunteer") {
             dispatch(commentAction.addCommentVolunteer({ id: id, comment: newComment }))
@@ -66,18 +65,18 @@ export const createComment = (id, comment, auth, type, socket) => async (dispatc
             //lấy thông tin  post
             const resVolunteer = await customAxios(auth.token).get(`/volunteer/${id}`)
             // Notify
-            const dataNotify = {
-                id: res.data.newComment._id,
-                text: ' đã bình luận vào hoạt động của bạn',
-                recipients: [resVolunteer.data.volunteer.userId._id],
-                url: `/volunteer/${id}`,
-                content: resVolunteer.data.volunteer.name || '',
-                image: ""
+            if(auth.user._id !== resVolunteer.data.volunteer.userId._id){
+                const dataNotify = {
+                    id: res.data.newComment._id,
+                    text: ' đã bình luận vào hoạt động của bạn',
+                    recipients: [resVolunteer.data.volunteer.userId._id],
+                    url: `/volunteer/${id}`,
+                    content: resVolunteer.data.volunteer.name || '',
+                    image: ""
+                }
+                dispatch(createNotify(dataNotify, auth.token, socket))
             }
-
-            dispatch(createNotify(dataNotify, auth.token, socket))
         }
-
     }
     catch (err) {
         console.log(err);
@@ -179,28 +178,28 @@ export const deleteComment = (id, auth, type, postId, socket, next) => async (di
         await customAxios(auth.token).delete(`/comment/${id}?postId=${postId}`);
         if (type === "post") {
             dispatch(commentAction.deleteCommentPost({ id: id, postId: postId }))
-
+            socket.emit('deleteComment', { type: type, id: id, postId: postId });
             const dataNotify = {
-                id: postId,
+                id: id,
                 url: `/post/${postId}`,
             }
             dispatch(deleteNotify(dataNotify, auth.token, socket));
         }
         else if (type === "tour") {
             dispatch(commentAction.deleteCommentTour({ id: id, tourId: postId }));
-
+            socket.emit('deleteComment', { type: type, id: id, tourId: postId });
             const dataNotify = {
-                id: postId,
-                url: `/tour/${postId}`,
+                id: id,
+                url: `/post/${postId}`,
             }
             dispatch(deleteNotify(dataNotify, auth.token, socket));
         }
         else if (type === "volunteer") {
             dispatch(commentAction.deleteCommentVolunteer({ id: id, volunteerId: postId }));
-
+            socket.emit('deleteComment', { type: type, id: id, volunteerId: postId });
             const dataNotify = {
-                id: postId,
-                url: `/volunteer/${postId}`,
+                id: id,
+                url: `/post/${postId}`,
             }
             dispatch(deleteNotify(dataNotify, auth.token, socket));
         }
