@@ -5,9 +5,19 @@ import * as imageUtils from '../../utils/uploadImage';
 import { createNotify, deleteNotify } from './notifyCall';
 
 export const getVolunteers = (data) => async (dispatch) => {
-    dispatch(volunteerAction.loading());
+    // dispatch(volunteerAction.loading());
     try {
-        const res = await customAxios().get("/volunteer/volunteers");
+        var res;
+        if (data) {
+            const { maxCost, minCost, q } = data;
+            var que = '';
+            if (maxCost && maxCost !== 100) que += `maxCost=${maxCost}&`;
+            if (minCost && minCost !== 0) que += `minCost=${minCost}&`;
+            if (q && q !== '') que += `q=${q}`;
+            res = await customAxios().get(`/volunteer/volunteers?${que}`);
+        } else {
+            res = await customAxios().get("/volunteer/volunteers");
+        }
         // console.log(res.data.volunteers)
         dispatch(volunteerAction.getVolunteers({ volunteers: res.data.volunteers }));
     }

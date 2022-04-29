@@ -8,7 +8,7 @@ import { modalListStyles } from "../../style";
 export default function ImageList(props) {
     const classes = modalListStyles();
 
-    const { imageList, show2Image, isPost, defaultHeight } = props;
+    const { imageList, isPost, defaultHeight } = props;
 
     const [open, setOpen] = useState(false);
     const [pictureIndex, setPictureIndex] = useState(0);

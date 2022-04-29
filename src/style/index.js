@@ -1,5 +1,6 @@
 import { makeStyles } from "@material-ui/core";
-
+import color from './color';
+import attr from './attr';
 
 import commentStyles from "./comment";
 import postStyles from './post';
@@ -83,6 +84,15 @@ const useStyles = makeStyles((theme) => ({
     notFoundContainer: {
         height: "100vh",
         textAlign: "center",
+    },
+    buttonCreate:{
+        backgroundColor: color.turquoise,
+        borderRadius: attr.borderRadius.md,
+        padding: 10,
+        display: 'flex',
+        justifyContent: 'center',
+        width: 350,
+        marginLeft: 30
     }
 
 }), {index: 1});

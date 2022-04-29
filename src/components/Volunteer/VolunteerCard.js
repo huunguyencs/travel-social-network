@@ -102,6 +102,7 @@ export default function VolunteerCard(props) {
                                     anchorEl={anchorEl}
                                     onClose={handleCloseMenu}
                                     disablePortal
+                                    className={classes.menuWrap}
                                 >
                                     <ClickAwayListener onClickAway={handleCloseMenu}>
                                         <Paper>
@@ -131,8 +132,6 @@ export default function VolunteerCard(props) {
                                             </MenuList>
                                         </Paper>
                                     </ClickAwayListener>
-
-                                    {/* </Grow> */}
                                 </Popper>
                             </>
                         }
@@ -153,7 +152,7 @@ export default function VolunteerCard(props) {
                 <Typography component={Link} to={`/volunteer/${volunteer._id}`} className={classes.name}>
                     {volunteer.name}
                 </Typography>
-                <Typography>Thời gian: {convertDateToStr(volunteer.date[0].date)}</Typography>
+                <Typography>Ngày xuất phát: {convertDateToStr(volunteer.date[0].date)}</Typography>
                 <Typography>Địa điểm xuất phát: {volunteer.location[0].location.fullname}</Typography>
                 <Typography>Thể loại: {volunteer.type}</Typography>
             </CardContent>

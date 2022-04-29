@@ -3,7 +3,7 @@ import { IconButton, Typography, useTheme } from "@material-ui/core";
 import { autoPlay } from 'react-swipeable-views-utils';
 import SwipeableViews from 'react-swipeable-views';
 import { ChevronLeft, ChevronRight } from "@material-ui/icons";
-
+import Typewriter from 'typewriter-effect';
 import { sliderStyles } from "../../style";
 
 const AutoPlaySwipeableViews = autoPlay(SwipeableViews);
@@ -11,26 +11,26 @@ const AutoPlaySwipeableViews = autoPlay(SwipeableViews);
 const data = [
     {
         label: "one",
-        title: "Welcome to Triple H",
+        title: "Khám phá mọi nơi cùng Triple H",
         subtitle: "It's time to travel",
-        imgPath: "https://i.ytimg.com/vi/NqMS9nldyP4/maxresdefault.jpg",
+        imgPath: "/slider1.jpg",
         color: "white",
-        description: "Ảnh: Ruộng bậc thang Tây Bắc",
+        description: "Ảnh: Núi rừng Tây Bắc",
     },
     {
         label: "two",
-        title: "Hi there :)",
+        title: "Khám phá mọi nơi cùng Triple H",
         subtitle: "",
-        imgPath: "https://toquoc.mediacdn.vn/2018/12/25/cau-vang-ba-na-3-15457134861131150541874.jpg",
-        color: "black",
+        imgPath: "/slider2.jpg",
+        color: "white",
         description: "Ảnh: Cầu Vàng - Bà Nà Hills",
     },
     {
         label: "three",
-        title: "Lorem Ipsum",
+        title: "Khám phá mọi nơi cùng Triple H",
         subtitle: "",
-        imgPath: "https://recmiennam.com/wp-content/uploads/2020/10/nhung-canh-dep-viet-nam-sao-ma-yeu-den-the-1.jpg",
-        color: "black",
+        imgPath: "/slider3.jpg",
+        color: "white",
         description: "Ảnh: Chùa Trấn Quốc - Hà Nội",
     }
 ]
@@ -66,13 +66,14 @@ export default function Slider() {
                 index={activeStep}
                 onChangeIndex={handleStepChange}
                 enableMouseEvents
+                interval= {9000}
             >
                 {data.map((step, index) => (
                     <div key={index}>
                         {Math.abs(activeStep - index) <= 1 ? (
                             <div
                                 style={{
-                                    backgroundImage: `url(${step.imgPath})`,
+                                    background: `linear-gradient(rgb(63 60 60 / 75%),rgb(140 136 136 / 60%)), url(${step.imgPath})`,
                                     color: step.color,
                                 }}
                                 className={classes.img}
@@ -91,13 +92,20 @@ export default function Slider() {
 
                                 <div className={classes.textCover}>
                                     <Typography
-                                        variant="h1"
+                                        variant="h2"
                                         className={classes.title}
                                     >
-                                        {step.title}
+                                        <Typewriter
+                                            options={{
+                                                strings: [step.title],
+                                                autoStart: true,
+                                                loop: true,
+                                                delay: 100
+                                            }}
+                                        />
                                     </Typography>
                                     <Typography
-                                        variant="h3"
+                                        variant="h4"
                                         className={classes.subtitle}
                                     >
                                         {step.subtitle}
@@ -106,7 +114,6 @@ export default function Slider() {
                                         {step.description}
                                     </Typography>
                                 </div>
-
                                 <IconButton
                                     onClick={handleNext}
                                     className={classes.button}

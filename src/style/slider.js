@@ -8,7 +8,7 @@ const sliderStyles = makeStyles(
       flexGrow: 1
     },
     img: {
-      height: 800,
+      height: 570,
       display: 'flex',
       textAlign: 'center',
       maxWidth: '100%',
@@ -17,31 +17,33 @@ const sliderStyles = makeStyles(
       justifyContent: 'space-between',
       backgroundSize: 'cover',
       backgroundRepeat: 'no-repeat',
+      backgroundPosition: "50%",
+      // background: "linear-gradient(rgba(0,0,0,.8),rgba(0,0,0,.6))",
       [theme.breakpoints.down('md')]: {
-        height: 600
+        height: 400
       },
       [theme.breakpoints.down('sm')]: {
         height: 300
       }
     },
     textCover: {
-      paddingTop: 250,
+      paddingTop: 180,
       [theme.breakpoints.down('md')]: {
-        paddingTop: 200
+        paddingTop: 130
       },
       [theme.breakpoints.down('sm')]: {
-        paddingTop: 100
+        paddingTop: 70
       }
     },
     button: {
-      marginTop: 300,
+      marginTop: 220,
       height: 50,
       width: 50,
       [theme.breakpoints.down('md')]: {
-        marginTop: 200
+        marginTop: 150
       },
       [theme.breakpoints.down('sm')]: {
-        marginTop: 100
+        marginTop: 110
       }
     },
     icon: {
@@ -53,10 +55,10 @@ const sliderStyles = makeStyles(
     },
     title: {
       [theme.breakpoints.down('md')]: {
-        fontSize: 42
+        fontSize: 40
       },
       [theme.breakpoints.down('sm')]: {
-        marginTop: 32
+        marginTop: 30
       }
     },
     subtitle: {

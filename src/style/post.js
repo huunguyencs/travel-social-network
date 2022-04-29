@@ -61,6 +61,19 @@ const postStyles = makeStyles(
         filter: 'brightness(90%)'
       }
     },
+    imageTour:{
+        cursor: 'pointer',
+        transition: '0.8s',
+        width: "100%",
+        height: 450,
+        objectFit: "cover",
+        '&:hover': {
+          filter: 'brightness(90%)'
+        },
+        [theme.breakpoints.down('sm')]: {
+          height: 300,
+        }
+    },
     center: {
       display: 'flex',
       justifyContent: 'center'
