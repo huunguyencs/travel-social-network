@@ -84,9 +84,9 @@ export default function AdminEventContribute(props) {
     setLoading(true);
     setError(null);
     await customAxios(token)
-      .get('/eventContribute/all')
+      .get('/event/all')
       .then(res => {
-        setLocations(res.data.events);
+        setLocations([]);
         setLoading(false);
       })
       .catch(err => {

@@ -136,9 +136,9 @@ export default function AdminReport() {
     setLoading(true);
     setError(null);
     await customAxios(token)
-      .get('/eventContribute/all')
+      .get('/event/all')
       .then(res => {
-        setEvents(res.data.events);
+        setEvents([]);
         setLoading(false);
       })
       .catch(err => {
@@ -151,9 +151,9 @@ export default function AdminReport() {
     setLoading(true);
     setError(null);
     await customAxios(token)
-      .get('/locationContribute/all')
+      .get('/location/all?admin=true')
       .then(res => {
-        setLocations(res.data.locations);
+        setLocations([]);
         setLoading(false);
       })
       .catch(err => {
