@@ -234,26 +234,6 @@ const formStyles = makeStyles(
         width: 300
       }
     },
-    imageService: {
-      width: 100,
-      height: 100
-    },
-    serviceInfo: {
-      marginLeft: 15,
-      width: '100%'
-    },
-    changeContainer: {
-      position: 'relative'
-    },
-    removeButton: {
-      position: 'absolute',
-      top: 0,
-      right: 0
-    },
-    sizeImageAvatar: {
-      width: '300px',
-      height: '300px'
-    },
     sizeImageBg: {
       width: '500px',
       height: '250px'

@@ -1,27 +1,14 @@
 import React, { useEffect, useState } from "react";
 import { Container, Button, IconButton } from "@material-ui/core";
 import { useSelector } from 'react-redux';
-
 import Typography from '@material-ui/core/Typography';
 import Paper from '@material-ui/core/Paper';
-
 import { Link, useHistory } from "react-router-dom";
 import { AddCircle, Edit } from "@material-ui/icons";
 import { DataGrid, GridToolbarContainer, GridToolbarExport } from "@mui/x-data-grid";
 import customAxios from "../../../utils/fetchData";
 import { getStar, totalNumRate } from "../../../utils/utils";
 import { tableStyles } from "../../../style";
-
-// import {
-//   ComposedChart,
-//   Tooltip,
-//   Legend,
-//   Area,
-//   XAxis,
-//   YAxis,
-// } from "recharts";
-import _ from "lodash";
-
 
 const columns = [
   {
@@ -74,9 +61,6 @@ function ExportToolbar() {
   );
 }
 
-
-
-
 function AdminLocations(props) {
   const history = useHistory();
   const classes = tableStyles();
@@ -107,14 +91,6 @@ function AdminLocations(props) {
     document.title = 'Admin - Địa điểm';
   }, [])
 
-  const randomData = [];
-  for (let i = 0; i < 698; i++) {
-    randomData.push({
-      name: 'dfg',
-      amt: _.random(0, 5)
-    });
-  }
-
   return (
     <Container className={classes.container}>
       <div className={classes.admin_location_header}>
@@ -135,43 +111,31 @@ function AdminLocations(props) {
           </Button>
         </div>
       </div>
+      
+      <div>
+        <Paper className={classes.paper}>
+          <DataGrid
+            rows={locations}
+            columns={columns}
+            pageSize={pageSize}
+            rowsPerPageOptions={[5, 10, 25]}
+            onPageSizeChange={(newPageSize) => setPageSize(newPageSize)}
+            pagination
+            onRowDoubleClick={(location) => {
+              history.push(`/admin/location/${location.row.name}`)
+            }}
+            autoHeight
+            loading={loading}
+            error={error}
+            getRowId={row => row._id}
+            disableSelectionOnClick
+            components={{
+              Toolbar: ExportToolbar,
+            }}
+          />
+        </Paper>
+      </div>
 
-      {/* <Grid>
-        <Card>
-          <CardHeader title="698 Địa điểm du lịch" subheader="43% địa điểm được ghé thăm" />
-          <Box>
-            <ComposedChart width={1200} height={400} data={randomData}>
-              <XAxis dataKey="name" />
-              <YAxis />
-              <Tooltip />
-              <Legend />
-              <Area type="monotone" dataKey="amt" fill="#8884d8" stroke="#8884d8" />
-            </ComposedChart>
-          </Box>
-        </Card>
-      </Grid> */}
-
-      <Paper className={classes.paper}>
-        <DataGrid
-          rows={locations}
-          columns={columns}
-          pageSize={pageSize}
-          rowsPerPageOptions={[5, 10, 25]}
-          onPageSizeChange={(newPageSize) => setPageSize(newPageSize)}
-          pagination
-          onRowDoubleClick={(location) => {
-            history.push(`/admin/location/${location.row.name}`)
-          }}
-          autoHeight
-          loading={loading}
-          error={error}
-          getRowId={row => row._id}
-          disableSelectionOnClick
-          components={{
-            Toolbar: ExportToolbar,
-          }}
-        />
-      </Paper>
     </Container>
   );
 }
