@@ -5,11 +5,6 @@ import { useHistory } from "react-router-dom";
 import { useSelector } from 'react-redux';
 import { getTours } from "../../redux/callApi/tourCall";
 import { useDispatch } from "react-redux";
-<<<<<<< HEAD
-=======
-
-
->>>>>>> 65451f825753fe0d42cd921b6e3d3297a49c48c3
 export default function RecommendCard(props) {
 
     const { tour } = useSelector(state => state);

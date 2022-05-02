@@ -4,14 +4,9 @@ import axios from 'axios';
 
 const customAxios = (token = '') => {
   const instance = axios.create({
-<<<<<<< HEAD
     baseURL: 'http://localhost:5000',
     // baseURL: 'http://14.169.217.11:5000',
     // baseURL: 'https://api-triple-h.herokuapp.com/',
-=======
-    // baseURL: 'http://localhost:5000',
-    baseURL: process.env.REACT_APP_HOST_API,
->>>>>>> 65451f825753fe0d42cd921b6e3d3297a49c48c3
     headers: {
       'Content-Type': 'application/json',
       Authorization: 'Bearer ' + token

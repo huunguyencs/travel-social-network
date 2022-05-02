@@ -1,30 +1,22 @@
-<<<<<<< HEAD
-import { Button, Grid, Typography, Paper, IconButton, TextField, InputAdornment } from "@material-ui/core";
-=======
 import { Button, Grid, Modal, Typography, Backdrop, Box, Fade, Dialog, DialogActions, Step, DialogTitle, CircularProgress, Paper, IconButton, TextField, InputAdornment, Stepper, StepContent, StepLabel, Tabs, Tab } from "@material-ui/core";
->>>>>>> 65451f825753fe0d42cd921b6e3d3297a49c48c3
 import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 
 import { tourdetailStyles } from "../../style";
 // import AddLocationForm from "../Forms/AddLocation";
-// import Location from './Location';
+import Location from './Location';
 import * as tourAction from '../../redux/actions/createTourAction';
 import { useHistory } from "react-router-dom";
 import UpdateDateForm from "../Forms/UpdateDate";
 import UpdateTourInfo from "../Forms/UpdateInfoCreateTour";
 import { convertDateToStr } from "../../utils/date";
 import { saveTour, updateTour } from "../../redux/callApi/tourCall";
-// import AddLocation from "./AddLocation";
+import AddLocation from "./AddLocation";
 import { getLocations, getProvinces } from '../../redux/callApi/locationCall';
 import AddService, { ServiceCard } from "./AddService";
-<<<<<<< HEAD
-import { Close } from "@material-ui/icons";
 // import ChangeImageTour from "./ChangeImageTour";
-=======
 import { AddCircle, Close, Save, Update, LocationOnOutlined } from "@material-ui/icons";
 import ChangeImageTour from "./ChangeImageTour";
->>>>>>> 65451f825753fe0d42cd921b6e3d3297a49c48c3
 import { error } from "../../redux/actions/alertAction";
 import * as alertAction from '../../redux/actions/alertAction'
 import SpeedDialButton from '../SpeedDialBtn';
