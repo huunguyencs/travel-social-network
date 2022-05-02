@@ -99,7 +99,6 @@ function getData(reports, locationContributes, eventContributes) {
   let location = handling(locationContributes);
   let event = handling(eventContributes);
 
-  //console.log(reports);
   for (let i = 0; i < 12; i++) {
     data.at(i).report = report.at(i);
     data.at(i).event = event.at(i);
@@ -133,8 +132,40 @@ export default function AdminReport() {
       });
   };
 
+  const getAllEvents = async token => {
+    setLoading(true);
+    setError(null);
+    await customAxios(token)
+      .get('/eventContribute/all')
+      .then(res => {
+        setEvents(res.data.events);
+        setLoading(false);
+      })
+      .catch(err => {
+        setLoading(false);
+        setError(err);
+      });
+  };
+
+  const getAllLocations = async token => {
+    setLoading(true);
+    setError(null);
+    await customAxios(token)
+      .get('/locationContribute/all')
+      .then(res => {
+        setLocations(res.data.locations);
+        setLoading(false);
+      })
+      .catch(err => {
+        setLoading(false);
+        setError(err);
+      });
+  };
+
   useEffect(() => {
     getAllReports(token);
+    getAllEvents(token);
+    getAllLocations(token);
   }, [token]);
 
   useEffect(() => {
@@ -166,7 +197,7 @@ export default function AdminReport() {
                 </Typography>
                 <Typography variant="h3" className={classes.cardValue}>
                   <AddLocation className={classes.cardIcon} />
-                  1
+                  {locations.length}
                 </Typography>
               </Card>
             </Link>
@@ -179,7 +210,7 @@ export default function AdminReport() {
                 </Typography>
                 <Typography variant="h3" className={classes.cardValue}>
                   <Event className={classes.cardIcon} />
-                  0
+                  {events.length}
                 </Typography>
               </Card>
             </Link>

@@ -30,18 +30,6 @@ const columns = [
         valueGetter: (location) => location.row.province.fullname
     },
     {
-        field: 'star',
-        headerName: 'Đánh giá (/5)',
-        width: 175,
-        valueGetter: (location) => getStar(location.row.star)
-    },
-    {
-        field: 'numRate',
-        headerName: 'Lượt đánh giá',
-        width: 175,
-        valueGetter: (location) => totalNumRate(location.row.star)
-    },
-    {
         field: 'action',
         headerName: 'Chi tiết',
         width: 150,
