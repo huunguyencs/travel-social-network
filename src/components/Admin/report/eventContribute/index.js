@@ -75,7 +75,7 @@ export default function AdminEventContribute(props) {
   const classes = tableStyles();
   const { token } = useSelector(state => state.auth);
 
-  const [locations, setLocations] = useState([]);
+  const [events, setLocations] = useState([]);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
   const [pageSize, setPageSize] = useState(10);
@@ -84,7 +84,7 @@ export default function AdminEventContribute(props) {
     setLoading(true);
     setError(null);
     await customAxios(token)
-      .get('/event/all')
+      .get('/eventContribute/all')
       .then(res => {
         setLocations(res.data.events);
         setLoading(false);
@@ -108,14 +108,14 @@ export default function AdminEventContribute(props) {
       <div className={classes.admin_location_header}>
         <div>
           <Typography variant="h4">
-            {locations.length} sự kiện được đóng góp
+            {events.length} sự kiện được đóng góp
           </Typography>
         </div>
       </div>
 
       <Paper className={classes.paper}>
         <DataGrid
-          rows={locations}
+          rows={events}
           columns={columns}
           pageSize={pageSize}
           rowsPerPageOptions={[5, 10, 25]}

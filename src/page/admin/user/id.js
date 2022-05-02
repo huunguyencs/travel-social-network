@@ -26,6 +26,7 @@ export default function AdminUserDetailPage(props) {
       .get(`/user/${id}`)
       .then(res => {
         setUser(res.data.user);
+        console.log(res.data.user);
         setState({
           loading: false,
           error: null
