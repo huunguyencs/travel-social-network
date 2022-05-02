@@ -89,7 +89,6 @@ export default function HelpCard({ help, handleRemove }) {
         <Typography color="textSecondary" gutterBottom>
           {timeAgo(new Date(help.createdAt))}
         </Typography>
-
         <Link to={`/u/${help.userId._id}`}>
           <Typography variant="h6">{help.userId.fullname}</Typography>
         </Link>
@@ -111,6 +110,9 @@ export default function HelpCard({ help, handleRemove }) {
             ? 'Chưa có ai giúp đỡ'
             : `Đã có ${help.state.length} người giúp`}
         </Typography>
+        <Button component={Link} to={`/help/${help._id}`} variant="contained">
+          Chi tiết
+        </Button>
       </CardContent>
       {auth.user && (
         <CardActions

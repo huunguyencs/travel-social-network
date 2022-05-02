@@ -34,7 +34,7 @@ function App() {
 
   useEffect(() => {
     dispatch(refreshToken());
-    const socket = io(process.env.REACT_APP_HOST_API);
+    const socket = io(process.env.REACT_APP_HOST_SOCKET);
     dispatch({ type: SOCKET_TYPES.SOCKET, payload: socket });
     return () => socket.close();
   }, [dispatch, history]);
