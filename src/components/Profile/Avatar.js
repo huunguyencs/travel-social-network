@@ -210,13 +210,14 @@ export default function ProfileAvatar(props) {
                 img={user.avatar}
               />
             </div>
-            <div className={classes.infoUser}>
+            <div className={classes.infoUsers}>
               <Typography variant="body1" className={classes.fullname}>
                 {user.fullname}
                 {user.confirmAccount && user.confirmAccount.state !== 0 && (
                   <Tooltip
                     title={'Tài khoản đã được xác thực'}
                     aria-label="verified"
+                    style={{marginLeft:10}}
                   >
                     <VerifiedUser color="primary" fontSize="small" />
                   </Tooltip>

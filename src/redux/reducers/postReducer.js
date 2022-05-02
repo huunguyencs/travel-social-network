@@ -4,7 +4,7 @@ const INIT_STATE = {
   id: 0,
   postId: [],
   posts: null,
-  page: 1,
+  page: 0,
   scrollTop: false,
   loading: false,
   error: null,
@@ -44,6 +44,7 @@ const postRecuder = (state = INIT_STATE, action) => {
       };
     }
     case POST_TYPES.GET_MORE_POSTS: {
+      console.log(action.payload.posts);
       return {
         ...state,
         posts: [...state.posts, ...action.payload.posts],
@@ -164,8 +165,6 @@ const postRecuder = (state = INIT_STATE, action) => {
       return {
         ...state,
         loading: false,
-        posts: [],
-        page: 0,
         error: action.payload.error
       };
     }

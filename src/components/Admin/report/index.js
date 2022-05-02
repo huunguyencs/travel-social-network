@@ -114,21 +114,21 @@ export default function AdminReport() {
   const [reports, setReports] = useState([]);
   const [locations, setLocations] = useState([]);
   const [events, setEvents] = useState([]);
-  const [loading, setLoading] = useState(false);
-  const [error, setError] = useState(null);
+  // const [loading, setLoading] = useState(false);
+  // const [error, setError] = useState(null);
 
   const getAllReports = async token => {
-    setLoading(true);
-    setError(null);
+    // setLoading(true);
+    // setError(null);
     await customAxios(token)
       .get('/report/all')
       .then(res => {
         setReports(res.data.reports);
-        setLoading(false);
+        // setLoading(false);
       })
       .catch(err => {
-        setLoading(false);
-        setError(err);
+        // setLoading(false);
+        // setError(err);
       });
   };
 

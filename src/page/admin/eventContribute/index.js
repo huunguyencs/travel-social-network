@@ -8,7 +8,7 @@ export default function AdminLocationContributePage() {
   return (
     <Grid container>
       <Grid item md={3}>
-        <LeftBar menuList={adminListMenu} />
+        <LeftBar menuList={adminListMenu} showHelp={false} />
       </Grid>
       <Grid item md={9}>
         <AdminEventContribute />

@@ -22,6 +22,17 @@ const formStyles = makeStyles(
             width: 400
         }
     },
+    paperUpdateInfoContainer:{
+        paddingTop: 16,
+        width: "100%",
+        display: 'flex',
+        flexDirection: 'column',
+        overflow: "hidden",
+        borderRadius: attr.borderRadius.md,
+        [theme.breakpoints.down("sm")]: {
+            paddingTop: 10
+        }
+    },
     formContainer: {
       padding: 30
     },
@@ -89,7 +100,7 @@ const formStyles = makeStyles(
     },
     addLocationForm: {
       textAlign: 'center',
-      padding: 20
+      padding: 10
     },
     addFormContainer: {
       paddingBottom: 30
@@ -114,9 +125,12 @@ const formStyles = makeStyles(
       justifyContent: 'center'
     },
     autocomplete: {
-      width: 400,
-      marginTop: 20,
-      marginInline: 20
+      width: "100%",
+      marginTop: 10,
+    },
+    autocompleteProvince:{
+      width: "100%",
+      marginRight: 5
     },
     imageInputContainer: {
         // marginInline: "20px",
@@ -183,7 +197,6 @@ const formStyles = makeStyles(
       justifyContent: 'center',
       position: 'relative'
     },
-    imageChageInput: {},
     buttonWrap: {
       margin: 20,
       display: 'flex',

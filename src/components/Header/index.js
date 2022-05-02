@@ -40,10 +40,9 @@ import { isSeenNotify, markAllRead } from '../../redux/callApi/notifyCall';
 import NotificationIcon from '../Icons/Notification';
 import ChatIcon from '../Icons/Chat';
 import Help from '../Modal/Help';
-import HeaderBarHelp from '../Help/HeaderBarHelp';
 
 export default function Header(props) {
-  const { auth, notify, help } = useSelector(state => state);
+  const { auth, notify } = useSelector(state => state);
   const user = auth.user;
   const dispatch = useDispatch();
   const history = useHistory();
@@ -121,7 +120,6 @@ export default function Header(props) {
 
   return (
     <AppBar style={{ zIndex: 2 }}>
-      {help.list.length > 0 && <HeaderBarHelp />}
       <Toolbar className={classes.toolbar}>
         <Link to="/" style={{ display: 'flex', alignItems: 'center' }}>
           {/* <Typography variant="h6" className={classes.logo}>

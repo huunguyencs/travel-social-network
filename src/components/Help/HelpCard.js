@@ -21,8 +21,11 @@ export default function HelpCard({ help, handleRemove }) {
 
   const [helped, setHelped] = useState(false);
   const [own, setOwn] = useState(false);
+  const [loadingRemove, setLoadingRemove] = useState(false);
+  const [loadingHelp, setLoadingHelp] = useState(false);
 
   const canHelp = () => {
+    setLoadingHelp(true);
     customAxios(auth.token)
       .patch(`/help/help/${help._id}`)
       .then(res => {
@@ -31,13 +34,14 @@ export default function HelpCard({ help, handleRemove }) {
           id: auth.user._id,
           text: ``,
           recipients: [help.userId._id],
-          url: `/help/my?id=${help._id}`,
+          url: `/help/${help._id}`,
           content: `${auth.user.fullname} sẽ đến giúp bạn!`,
           image: `${auth.user.avatar}`
         };
 
         dispatch(createNotify(dataNotify, auth.token, socket));
         dispatch(updateHelp(res.data.help));
+        setLoadingHelp(false);
         dispatch(
           success({
             message:
@@ -45,18 +49,26 @@ export default function HelpCard({ help, handleRemove }) {
           })
         );
       })
-      .catch(err => dispatch(error({ message: 'Có lỗi xảy ra!' })));
+      .catch(err => {
+        dispatch(error({ message: 'Có lỗi xảy ra!' }));
+        setLoadingHelp(false);
+      });
   };
 
   const removeHelp = () => {
+    setLoadingRemove(true);
     customAxios(auth.token)
       .delete(`/help/${help._id}`)
       .then(res => {
         socket.emit('deleteHelp', help._id);
         handleRemove(help._id);
+        setLoadingRemove(false);
         dispatch(success({ message: 'Xóa yêu cầu thành công!' }));
       })
-      .catch(err => dispatch(error({ message: 'Có lỗi xảy ra!' })));
+      .catch(err => {
+        dispatch(error({ message: 'Có lỗi xảy ra!' }));
+        setLoadingRemove(false);
+      });
   };
 
   useEffect(() => {
@@ -105,13 +117,23 @@ export default function HelpCard({ help, handleRemove }) {
           style={{ display: 'flex', justifyContent: 'space-between' }}
         >
           {own ? (
-            <Button size="small" variant="outlined" onClick={removeHelp}>
+            <Button
+              size="small"
+              variant="outlined"
+              onClick={removeHelp}
+              disabled={loadingRemove}
+            >
               Xóa yêu cầu trợ giúp
             </Button>
           ) : (
             <>
               {!helped && (
-                <Button size="small" variant="outlined" onClick={canHelp}>
+                <Button
+                  size="small"
+                  variant="outlined"
+                  onClick={canHelp}
+                  disabled={loadingHelp}
+                >
                   Tôi có thể giúp
                 </Button>
               )}

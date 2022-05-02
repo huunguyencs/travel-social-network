@@ -8,7 +8,7 @@ export default function AdminEventContributeDetailPage(props) {
   return (
     <Grid container>
       <Grid item md={3} sm={2} xs={2}>
-        <LeftBar menuList={adminListMenu} />
+        <LeftBar menuList={adminListMenu} showHelp={false} />
       </Grid>
       <Grid item md={9} sm={10} xs={10}>
         <AdminEventContributeDetail />

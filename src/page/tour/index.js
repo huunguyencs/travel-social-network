@@ -47,13 +47,6 @@ export default function TourPage(props) {
           <Grid item md={9} sm={9} xs={10} className={classes.content}>
             <FeedTour />
           </Grid>
-          {/* <Grid item md={3} className={classes.rightbar}>
-                        <FilterTour/>
-                        <RightBar ref={ref}>
-                            <Calendar />
-                            <FriendRecommendCard />
-                        </RightBar>
-                    </Grid> */}
         </Grid>
       </Grid>
     </>

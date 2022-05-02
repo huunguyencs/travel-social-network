@@ -24,7 +24,7 @@ export default function FeedUserTour(props) {
   };
 
   return (
-    <div style={{ marginTop: 100 }}>
+    <div style={{ marginTop: 80, marginInline: 10 }}>
       {tour.loadingFirst ? (
         <div
           style={{ display: 'flex', justifyContent: 'center', marginTop: 150 }}
