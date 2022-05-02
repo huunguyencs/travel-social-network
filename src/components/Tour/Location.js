@@ -772,39 +772,6 @@ export default function Location(props) {
             />
           </Collapse>
         </Grid>
-        {/* <Collapse in={showDetail} style={{ width: "100%" }}>
-                    <Grid item md={12} sm={12} xs={12}>
-                        <Detail
-                            location={location}
-                            isEdit={isEdit}
-                            indexDate={indexDate}
-                            indexLocation={indexLocation}
-                        />
-                    </Grid>
-                </Collapse> */}
-        {/* <Modal
-                    aria-labelledby="transition-modal-detail"
-                    aria-describedby="transition-modal-detail-description"
-                    open={showDetail}
-                    className={classes.modal}
-                    onClose={handleCloseDetail}
-                    BackdropComponent={Backdrop}
-                    BackdropProps={{
-                        timeout: 500,
-                    }}
-                >
-                    <Fade in={showDetail}>
-                        <DetailRef
-                            ref={refDetail}
-                            location={location}
-                            isEdit={isEdit}
-                            indexDate={indexDate}
-                            indexLocation={indexLocation}
-                            handleClose={handleCloseDetail}
-                            joined={joined}
-                        />
-                    </Fade>
-                </Modal> */}
       </Grid>
     </Card>
   );

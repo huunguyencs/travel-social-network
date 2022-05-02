@@ -109,7 +109,9 @@ export default function FeedHot(props) {
               </div>
             ) : (
               locations &&
-              locations.map(item => <Location location={item} key={item._id} />)
+              locations.map(item => (
+                <Location location={item.location[0]} key={item._id} />
+              ))
             )}
           </div>
         </div>

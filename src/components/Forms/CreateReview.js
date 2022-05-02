@@ -109,6 +109,7 @@ export default function CreateReviewForm(props) {
             loading: false,
             error: false
           });
+          console.log('yes');
           handleClose();
           // history.push(`/location/${location.name}`);
         },
@@ -119,7 +120,9 @@ export default function CreateReviewForm(props) {
           });
         },
         id => {
-          addReview(id, indexLocation, tourDateId);
+          if (addReview) {
+            addReview(id, indexLocation, tourDateId);
+          }
         }
       )
     );
@@ -155,7 +158,7 @@ export default function CreateReviewForm(props) {
                 <Rating
                   name="rate"
                   value={rate}
-                  onChange={e => setRate(e.target.value)}
+                  onChange={e => setRate(parseInt(e.target.value))}
                 />
               </div>
               <div className={classes.postContentInput}>
