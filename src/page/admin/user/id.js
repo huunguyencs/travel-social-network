@@ -52,7 +52,7 @@ export default function AdminUserDetailPage(props) {
   return (
     <Grid container>
       <Grid item md={3} className={classes.smHidden}>
-        <LeftBar menuList={adminListMenu} />
+        <LeftBar menuList={adminListMenu} showHelp={false} />
       </Grid>
       <Grid item md={9} sm={12} xs={12}>
         <>

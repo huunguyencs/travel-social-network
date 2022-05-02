@@ -1,10 +1,10 @@
 import { Button, Container, Grid, Typography } from '@material-ui/core';
+import { AccessibilityNew } from '@material-ui/icons';
 import GoogleMapReact from 'google-map-react';
 import React, { useEffect, useState } from 'react';
 import { useSelector } from 'react-redux';
 import { Link, useParams } from 'react-router-dom';
 import HelpCard from '../../components/Help/HelpCard';
-import LocationIcon from '../../components/Icons/Location';
 import Loading from '../../components/Loading';
 import KEY from '../../key/googlemap';
 import customAxios from '../../utils/fetchData';
@@ -35,7 +35,14 @@ export default function HelpDetailPage() {
       });
   }, [id, token]);
 
-  if (loading) return <Loading />;
+  if (loading)
+    return (
+      <div
+        style={{ display: 'flex', justifyContent: 'center', marginTop: 150 }}
+      >
+        <Loading />
+      </div>
+    );
   if (notFound) return <NotFound />;
   if (error)
     return (
@@ -72,11 +79,15 @@ export default function HelpDetailPage() {
                   }}
                   defaultZoom={15}
                 >
-                  <LocationIcon lng={help.position[0]} lat={help.position[1]} />
+                  <AccessibilityNew
+                    style={{ color: 'red', fontSize: 32 }}
+                    lng={help.position[0]}
+                    lat={help.position[1]}
+                  />
                 </GoogleMapReact>
               ) : (
                 <div>
-                  <Typography>Lỗi tải map</Typography>
+                  <Typography>Không có vị trí của người yêu cầu</Typography>
                 </div>
               )}
             </div>
