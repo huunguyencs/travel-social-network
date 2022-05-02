@@ -18,6 +18,7 @@ const SocketClient = () => {
   //connect
   useEffect(() => {
     if (auth.user) {
+      // socket.emit('joinUser', auth.user);
       navigator.geolocation.getCurrentPosition(
         position => {
           socket.emit('joinUser', {
@@ -67,7 +68,6 @@ const SocketClient = () => {
   //like
   useEffect(() => {
     socket.on('likeToClient', data => {
-      // console.log(newPost);
       switch (data.type) {
         case 'post':
           dispatch(postAction.updateLike({ id: data.id, likes: data.likes }));
@@ -164,6 +164,28 @@ const SocketClient = () => {
     });
     return () => socket.off('createCommentToClient');
   }, [socket, dispatch]);
+
+  // delete Comment
+  useEffect(() => {
+    socket.on("deleteCommentToClient", data => {
+      switch (data.type) {
+        case 'post':
+          dispatch(commentAction.deleteCommentPost({ id: data.id, postId: data.postId }));
+          break;
+        case 'tour':
+          dispatch(commentAction.deleteCommentTour({ id: data.id, tourId: data.tourId }));
+          break;
+        case 'volunteer':
+          dispatch(commentAction.deleteCommentVolunteer({ id: data.id, volunteerId: data.volunteerId }));
+          break;
+        default:
+          break;
+      }
+    });
+    return () => {
+        socket.off("removeCommentToClient");
+    }
+  }, [socket, dispatch])
 
   //follow
   useEffect(() => {

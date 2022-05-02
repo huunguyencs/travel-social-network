@@ -217,6 +217,7 @@ export default function ProfileAvatar(props) {
                   <Tooltip
                     title={'Tài khoản đã được xác thực'}
                     aria-label="verified"
+                    style={{marginLeft:10}}
                   >
                     <VerifiedUser color="primary" fontSize="small" />
                   </Tooltip>

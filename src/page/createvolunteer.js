@@ -84,15 +84,12 @@ export default function CreateVolunteer() {
   return (
     <Grid container style={{ display: 'flex', justifyContent: 'center' }}>
       <SpeedDialButton />
-      {/* <Grid item md={3} sm={2} xs={2}>
-                <LeftBar menuList={homeMenu} />
-            </Grid> */}
       <Grid
         item
         md={9}
         sm={10}
         xs={10}
-        style={{ marginTop: 80, border: '1px solid black' }}
+        style={{ marginTop: 80, border: '1px solid black', marginBottom: 50 }}
       >
         {state.notFound || (volunteer && !isOwn) ? (
           <NotFound />

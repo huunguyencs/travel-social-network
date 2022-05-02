@@ -93,6 +93,7 @@ const profileStyles = makeStyles(
       display: 'flex',
       marginTop: 70,
       flexDirection: 'column',
+      marginBottom: -20,
       [theme.breakpoints.down('sm')]: {
         height: 450,
       }

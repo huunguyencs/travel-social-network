@@ -73,7 +73,7 @@ export default function ProvincePage() {
         <Grid item md={3} sm={2} xs={2} className={classes.leftbar}>
           <LeftBar menuList={homeMenu} />
         </Grid>
-        <Grid item md={9} sm={10} xs={10} className={classes.content}>
+        <Grid item md={9} sm={10} xs={10}>
           {loadingProvinces ? (
             <div className={classes.center}>
               <Loading />

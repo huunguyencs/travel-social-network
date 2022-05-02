@@ -559,7 +559,7 @@ function BaseContent(props) {
         <CardMedia>
           <img
             src={tour.image}
-            className={classes.image}
+            className={classes.imageTour}
             width="100%"
             alt="Can not load"
             onClick={handleOpenImage}
