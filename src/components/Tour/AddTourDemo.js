@@ -1,21 +1,21 @@
-import { Button, Grid, Modal, Typography, Backdrop, Fade, Dialog, DialogActions, DialogTitle, CircularProgress, Paper, IconButton, TextField, InputAdornment } from "@material-ui/core";
+import { Button, Grid, Typography, Paper, IconButton, TextField, InputAdornment } from "@material-ui/core";
 import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 
 import { tourdetailStyles } from "../../style";
 // import AddLocationForm from "../Forms/AddLocation";
-import Location from './Location';
+// import Location from './Location';
 import * as tourAction from '../../redux/actions/createTourAction';
 import { useHistory } from "react-router-dom";
 import UpdateDateForm from "../Forms/UpdateDate";
 import UpdateTourInfo from "../Forms/UpdateInfoCreateTour";
 import { convertDateToStr } from "../../utils/date";
 import { saveTour, updateTour } from "../../redux/callApi/tourCall";
-import AddLocation from "./AddLocation";
+// import AddLocation from "./AddLocation";
 import { getLocations, getProvinces } from '../../redux/callApi/locationCall';
 import AddService, { ServiceCard } from "./AddService";
-import { AddCircle, Close, Save, Update } from "@material-ui/icons";
-import ChangeImageTour from "./ChangeImageTour";
+import { Close } from "@material-ui/icons";
+// import ChangeImageTour from "./ChangeImageTour";
 import { error } from "../../redux/actions/alertAction";
 import * as alertAction from '../../redux/actions/alertAction'
 import SpeedDialButton from '../SpeedDialBtn';

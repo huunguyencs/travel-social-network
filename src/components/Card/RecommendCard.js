@@ -1,12 +1,10 @@
 import React, { useEffect }  from "react";
 import { Card, List, Typography} from "@material-ui/core";
-import {PersonAddOutlined} from "@material-ui/icons";
 import { friendCardStyles } from "../../style";
 import { useHistory } from "react-router-dom";
 import { useSelector } from 'react-redux';
 import { getTours } from "../../redux/callApi/tourCall";
 import { useDispatch } from "react-redux";
-import { Link } from 'react-router-dom';
 export default function RecommendCard(props) {
 
     const { tour } = useSelector(state => state);
