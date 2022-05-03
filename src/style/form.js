@@ -76,6 +76,13 @@ const formStyles = makeStyles(
         },
         transition: "color 0.25s ease-in",
     },
+    user:{
+      width: '100%',
+      marginBottom: 15,
+      border: `1px solid ${color.background}`,
+      borderRadius: attr.borderRadius.sm,
+      padding: "5px 10px 5px 10px"
+    },
     hashtag: {
       width: '100%',
       marginBottom: 15

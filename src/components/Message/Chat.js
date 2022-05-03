@@ -29,7 +29,7 @@ export default function Chat() {
 
   const { auth, message, socket } = useSelector(state => state);
   const dispatch = useDispatch();
-  const [user, setUser] = useState('');
+  const [conversation, setConversation] = useState();
   const [text, setText] = useState('');
   const { id } = useParams();
   const refDisplay = useRef();
@@ -38,15 +38,23 @@ export default function Chat() {
     loading: false,
     error: false
   });
+
+  useEffect(() => {
+    const currentConversation = message.conversations.find(conversation => conversation._id === id);
+    console.log("cay",currentConversation)
+    if (currentConversation) setConversation(currentConversation);
+  }, [id, message.conversations]);
+
   const handleSubmit = async e => {
     e.preventDefault();
     if (!text.trim()) return;
     setText('');
     const msg = {
-      sender: auth.user._id,
-      recipient: id,
+      conversation: id,
       text: text,
-      createdAt: new Date().toISOString()
+      createdAt: new Date().toISOString(),
+      sender: auth.user,
+      recipients: conversation.isGroup ? conversation.members.map(member => member._id) : [conversation.members[0]._id] 
     };
     dispatch(addMessage(msg, auth, socket));
     if (refDisplay.current) {
@@ -64,11 +72,6 @@ export default function Chat() {
   }, [id, dispatch, auth, socket]);
 
   useEffect(() => {
-    const currentUser = message.users.find(user => user._id === id);
-    if (currentUser) setUser(currentUser);
-  }, [id, message.users]);
-
-  useEffect(() => {
     document.title = 'Tin nhắn';
   }, []);
   const handleDelete = () => {
@@ -77,7 +80,7 @@ export default function Chat() {
       error: false
     });
     dispatch(
-      deleteConversation(user, auth, () => {
+      deleteConversation(id, auth, () => {
         setState({
           loading: false,
           error: false
@@ -101,16 +104,24 @@ export default function Chat() {
           <div className={classes.message_box}>
             <div className={classes.message_box_header}>
               <div className={classes.message_box_header_left}>
-                <Avatar alt="avatar" src={user.avatar}>
-                  {' '}
+                {console.log("data",conversation)}
+                <Avatar alt="avatar" src={conversation?.members[0].avatar}>
                 </Avatar>
-                <Typography
-                  className={classes.message_box_header_text}
-                  component={Link}
-                  to={`/u/${user._id}`}
-                >
-                  {user.fullname}
-                </Typography>
+                {
+                  conversation?.isGroup ? 
+                  <Typography
+                    className={classes.message_box_header_text}
+                  >
+                    {conversation?.name}
+                  </Typography>:
+                  <Typography
+                    className={classes.message_box_header_text}
+                    component={Link}
+                    to={`/u/${conversation?.members[0]._id}`}
+                  >
+                    {conversation?.name}
+                  </Typography> 
+                }
               </div>
               <div className={classes.message_box_header_right}>
                 <IconButton>
@@ -152,13 +163,18 @@ export default function Chat() {
               <div className={classes.message_chats} ref={refDisplay}>
                 {message.data.map((item, index) => (
                   <div key={index}>
-                    {item.sender !== auth.user._id ? (
+                    {item.sender._id !== auth.user._id ? (
                       <div className={classes.message_yourchat}>
                         <div className={classes.message_display}>
                           <div className={classes.message_content_your}>
+                            {
+                              conversation?.isGroup && 
+                              <Typography style={{marginLeft: 35}} className={classes.chat_date}> {item.sender.fullname.slice(0,5)}</Typography>
+                            }
                             <div style={{ display: 'flex' }}>
                               <Avatar
                                 className={classes.chat_your_user}
+                                src= {item.sender.avatar}
                               ></Avatar>
                               <Typography className={classes.chat_your_content}>
                                 {item.text}

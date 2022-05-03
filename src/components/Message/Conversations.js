@@ -1,19 +1,20 @@
-import { Avatar, Grid, List, ListItem, ListItemText, ListItemAvatar, ListItemIcon, Typography, IconButton } from "@material-ui/core";
-import { FiberManualRecord } from "@material-ui/icons";
+import { Avatar, Modal, Backdrop, Fade, Grid, List, ListItem, ListItemText, ListItemAvatar, ListItemIcon, Typography, IconButton } from "@material-ui/core";
+import { FiberManualRecord, GroupAdd } from "@material-ui/icons";
 import React, { useEffect, useState } from "react";
 import { Search, Cancel } from "@material-ui/icons";
 import { messageStyles } from "../../style";
-import { useDispatch, useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux"; 
 import customAxios from '../../utils/fetchData';
 import { useHistory } from "react-router-dom";
 import { addUser, getConversations } from '../../redux/callApi/messageCall';
 // import { useParams } from "react-router-dom";
+import CreateGroupChat from '../Forms/CreateGroupChat';
+
 
 export default function Conversations() {
     const classes = messageStyles();
 
     const { auth, message, socket } = useSelector(state => state);
-    // const { id } = useParams();
     const dispatch = useDispatch();
     const history = useHistory();
 
@@ -36,8 +37,13 @@ export default function Conversations() {
     const handleAddChat = (user) => {
         setSearchUsers([]);
         setSearch('');
-        dispatch(addUser(user, message, socket));
-        return history.push(`/message/${user._id}`);
+        dispatch(addUser(auth, user, message, socket,
+            (id) => {
+              history.push(`/message/${id}`);
+            }));
+    }
+    const handleChooseGroup = (id) => {
+        history.push(`/message/${id}`);
     }
     useEffect(() => {
         document.title = "Tin nhắn";
@@ -47,7 +53,20 @@ export default function Conversations() {
         if (message.firstLoad) return;
         dispatch(getConversations(auth, socket));
     }, [message.firstLoad, dispatch, auth, socket])
+    
 
+    const [show, setShow] = useState(false);
+    const handleShow = () => {
+        setShow(true);
+    };
+    const handleCloseCreate = () => {
+        setShow(false);
+    };
+    const ref = React.createRef();
+
+    const CreateGroupChatRef = React.forwardRef((props, ref) => (
+        <CreateGroupChat {...props} innerRef={ref} />
+    ));
 
     return (
         <>
@@ -55,6 +74,25 @@ export default function Conversations() {
                 <div className={classes.message_conversations}>
                     <div className={classes.message_header}>
                         <Typography className={classes.message_header_title}>TIN NHẮN</Typography>
+                        <IconButton className={classes.groupButton} onClick={handleShow} >
+                            <GroupAdd/>
+                        </IconButton>
+                        <Modal
+                            aria-labelledby="create-tour"
+                            aria-describedby="create-tour-modal"
+                            className={classes.modal}
+                            open={show}
+                            onClose={handleCloseCreate}
+                            closeAfterTransition
+                            BackdropComponent={Backdrop}
+                            BackdropProps={{
+                            timeout: 500
+                            }}
+                        >
+                            <Fade in={show}>
+                                <CreateGroupChatRef ref={ref} handleClose={handleCloseCreate} />
+                            </Fade>
+                        </Modal>
                     </div>
                     <div className={classes.message_search}>
                         <form className={classes.message_search_form} onSubmit={handleSearch}>
@@ -84,19 +122,19 @@ export default function Conversations() {
 
                         <List className={classes.message_card_list} >
                             {
-                                message.users.length > 0 && searchUsers.length === 0 ? <>
+                                message.conversations.length > 0 && searchUsers.length === 0 ? <>
                                     {
-                                        message.users.map(user => (
-                                            <ListItem button key={user._id} onClick={() => handleAddChat(user)}>
+                                        message.conversations.map(conversation => (
+                                            <ListItem button key={conversation._id} onClick={conversation.isGroup ? ()=>handleChooseGroup(conversation._id) : () => handleAddChat(conversation.members[0])}>
                                                 <ListItemAvatar>
-                                                    <Avatar alt="avatar" src={user.avatar}>
+                                                    <Avatar alt="avatar" src={conversation.members[0].avatar}>
                                                     </Avatar>
                                                 </ListItemAvatar>
-                                                <ListItemText className={classes.message_card_text} primary={user.fullname} secondary={
-                                                    user.text ? (user.text.length > 20 ? user.text.slice(0, 20) : user.text) : user.fullname
+                                                <ListItemText className={classes.message_card_text} primary={conversation.name} secondary={
+                                                    conversation.latestMessage.text ? (conversation.latestMessage.text.length > 20 ? conversation.latestMessage.text.slice(0, 20) : conversation.latestMessage.text) : ""
                                                 } />
                                                 <ListItemIcon>
-                                                    {!user.seen && <FiberManualRecord style={{ color: "#a5dec8" }} />}
+                                                    {!conversation.latestMessage.seen && <FiberManualRecord style={{ color: "#a5dec8" }} />}
                                                 </ListItemIcon>
                                             </ListItem>
                                         ))

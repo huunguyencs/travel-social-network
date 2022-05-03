@@ -226,17 +226,17 @@ const SocketClient = () => {
   useEffect(() => {
     socket.on('addMessageToClient', data => {
       // console.log(data);
-      dispatch(messageAction.addMessage(data.msg));
+      dispatch(messageAction.addMessage(data));
 
-      const user = {
-        _id: data.user._id,
-        fullname: data.user.fullname,
-        username: data.user.username,
-        avatar: data.user.avatar,
-        text: data.msg.text,
-        seen: false
-      };
-      dispatch(messageAction.addUser(user));
+      // const user = {
+      //   _id: data.user._id,
+      //   fullname: data.user.fullname,
+      //   username: data.user.username,
+      //   avatar: data.user.avatar,
+      //   text: data.msg.text,
+      //   seen: false
+      // };
+      // dispatch(messageAction.addUser(user));
     });
     return () => socket.off('addMessageToClient');
   }, [socket, dispatch]);
