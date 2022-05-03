@@ -183,7 +183,7 @@ export default function ShareUpdateForm(props) {
           </div>
         </Paper>
       ) : (
-        <LoginModal />
+        <LoginModal handleClose={handleClose} />
       )}
     </>
   );

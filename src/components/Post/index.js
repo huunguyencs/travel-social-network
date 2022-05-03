@@ -303,7 +303,7 @@ export default function Post(props) {
               timeout: 500
             }}
           >
-            <Login ref={refLogin} />
+            <Login ref={refLogin} handleClose={handleCloseLogin} />
           </Modal>
           <Modal
             aria-labelledby="share"

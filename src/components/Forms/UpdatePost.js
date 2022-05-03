@@ -251,7 +251,7 @@ export default function UpdatePostForm(props) {
           </div>
         </Paper>
       ) : (
-        <LoginModal />
+        <LoginModal handleClose={handleClose} />
       )}
     </>
   );

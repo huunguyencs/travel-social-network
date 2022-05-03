@@ -262,7 +262,7 @@ export default function UpdateReviewForm(props) {
           </div>
         </Paper>
       ) : (
-        <LoginModal />
+        <LoginModal handleClose={handleClose} />
       )}
     </>
   );

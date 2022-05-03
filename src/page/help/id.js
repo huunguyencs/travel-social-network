@@ -66,7 +66,7 @@ export default function HelpDetailPage() {
       {help && (
         <Grid container spacing={5}>
           <Grid item lg={4} md={4} sm={12}>
-            <HelpCard help={help} />
+            <HelpCard help={help} detail />
           </Grid>
           <Grid item lg={8} md={8} sm={12}>
             <div style={{ height: 500 }}>

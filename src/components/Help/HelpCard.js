@@ -15,7 +15,7 @@ import { createNotify } from '../../redux/callApi/notifyCall';
 import { timeAgo } from '../../utils/date';
 import customAxios from '../../utils/fetchData';
 
-export default function HelpCard({ help, handleRemove }) {
+export default function HelpCard({ help, handleRemove, detail }) {
   const { auth, socket } = useSelector(state => state);
   const dispatch = useDispatch();
 
@@ -110,9 +110,11 @@ export default function HelpCard({ help, handleRemove }) {
             ? 'Chưa có ai giúp đỡ'
             : `Đã có ${help.state.length} người giúp`}
         </Typography>
-        <Button component={Link} to={`/help/${help._id}`} variant="contained">
-          Chi tiết
-        </Button>
+        {!detail && (
+          <Button component={Link} to={`/help/${help._id}`} variant="contained">
+            Chi tiết
+          </Button>
+        )}
       </CardContent>
       {auth.user && (
         <CardActions
