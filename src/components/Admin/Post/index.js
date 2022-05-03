@@ -1,33 +1,22 @@
-import React, { useEffect, useState } from 'react';
-import {
-  Container,
-  Typography,
-  Card,
-  Grid,
-  Box,
-  CardHeader
-} from '@material-ui/core';
-import { PostAdd } from '@material-ui/icons';
-import { tableStyles } from '../../../style';
-import {
-  BarChart,
-  Bar,
-  XAxis,
-  YAxis,
-  CartesianGrid,
-  Tooltip,
-  Legend
-} from 'recharts';
-import { useSelector } from 'react-redux';
-import customAxios from '../../../utils/fetchData';
+import React, { useEffect, useState } from "react";
+import { Container, Typography, Card, Grid, Box, CardHeader } from "@material-ui/core";
+import { PostAdd } from "@material-ui/icons";
+import { tableStyles } from "../../../style";
+import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, Legend } from 'recharts';
+import { useSelector } from "react-redux";
+import customAxios from "../../../utils/fetchData";
 
 function filterPostReview(arr) {
-  let postReview = arr.filter(element => element.isPostReview);
+  let postReview = arr.filter((element) => {
+    return element.isPostReview === true;
+  })
   return postReview;
 }
 
 function filterPost(arr) {
-  let postReview = arr.filter(element => !element.isPostReview);
+  let postReview = arr.filter((element) => {
+    return element.isPostReview === false;
+  })
   return postReview;
 }
 
@@ -36,7 +25,7 @@ function handling(arr) {
   arr.forEach(element => {
     let d = new Date(element.createdAt);
     let mon = d.getMonth();
-    if (d.getFullYear() === new Date().getFullYear()) {
+    if (d.getFullYear() === (new Date()).getFullYear()) {
       post[mon] += 1;
     }
   });
@@ -44,69 +33,69 @@ function handling(arr) {
 }
 
 function getData(arr) {
+  console.log(arr);
   const data = [
     {
       name: 'Tháng 1',
-      post: 4000,
-      review: 2400
+      post: 0,
+      review: 0,
     },
     {
       name: 'Tháng 2',
-      post: 3000,
-      review: 1398
+      post: 0,
+      review: 0,
     },
     {
       name: 'Tháng 3',
-      post: 2000,
-      review: 9800
+      post: 0,
+      review: 0,
     },
     {
       name: 'Tháng 4',
-      post: 2780,
-      review: 3908
+      post: 0,
+      review: 0,
     },
     {
       name: 'Tháng 5',
-      post: 1890,
-      review: 4800
+      post: 0,
+      review: 0,
     },
     {
       name: 'Tháng 6',
-      post: 2390,
-      review: 3800
+      post: 0,
+      review: 0,
     },
     {
       name: 'Tháng 7',
-      post: 3490,
-      review: 4300
+      post: 0,
+      review: 0,
     },
     {
       name: 'Tháng 8',
-      post: 2490,
-      review: 3300
+      post: 0,
+      review: 0,
     },
     {
       name: 'Tháng 9',
-      post: 3490,
-      review: 6300
+      post: 0,
+      review: 0,
     },
     {
       name: 'Tháng 10',
-      post: 4090,
-      review: 4300
+      post: 0,
+      review: 0,
     },
     {
       name: 'Tháng 11',
-      post: 3090,
-      review: 3300
+      post: 0,
+      review: 0,
     },
     {
       name: 'Tháng 12',
-      post: 4490,
-      review: 5080
-    }
+      post: 0,
+      review: 0,
+    },
   ];
-
   let post = filterPost(arr);
   let postReview = filterPostReview(arr);
   let statisticalPost = handling(post);
@@ -125,20 +114,17 @@ function AdminPosts(props) {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
 
-  const getAllPosts = async token => {
+  const getAllPosts = async (token) => {
     setLoading(true);
     setError(null);
-    await customAxios(token)
-      .get(`/post/posts`)
-      .then(res => {
-        setPosts(res.data.posts);
-        setLoading(false);
-      })
-      .catch(err => {
-        setLoading(false);
-        setError('Có lỗi xảy ra');
-      });
-  };
+    await customAxios(token).get(`/post/all`).then(res => {
+      setPosts(res.data.posts);
+      setLoading(false);
+    }).catch(err => {
+      setLoading(false);
+      setError('Có lỗi xảy ra')
+    })
+  }
 
   useEffect(() => {
     getAllPosts(token);
@@ -148,18 +134,22 @@ function AdminPosts(props) {
     <Container className={classes.container}>
       <div>
         <Grid container>
-          <Grid item md={6}>
+          <Grid item md={6} >
             <Card className={classes.cardInfo}>
-              <Typography variant="h5">Tổng số bài viết</Typography>
+              <Typography variant="h5">
+                Tổng số bài viết
+              </Typography>
               <Typography variant="h3" className={classes.cardValue}>
                 <PostAdd className={classes.cardIcon} />
                 {filterPost(posts).length}
               </Typography>
             </Card>
           </Grid>
-          <Grid item md={6}>
+          <Grid item md={6} >
             <Card className={classes.cardInfo}>
-              <Typography variant="h5">Tổng số review</Typography>
+              <Typography variant="h5">
+                Tổng số review
+              </Typography>
               <Typography variant="h3" className={classes.cardValue}>
                 <PostAdd className={classes.cardIcon} />
                 {filterPostReview(posts).length}
@@ -170,32 +160,31 @@ function AdminPosts(props) {
       </div>
       <div>
         <Card>
-          <CardHeader
-            title="Thống kê"
-            subheader={'Biến động năm ' + new Date().getFullYear().toString()}
-          />
+          <CardHeader title="Thống kê" subheader={"Biến động năm " + (new Date()).getFullYear().toString()} />
           <Box>
             <div
               style={{
-                display: 'flex',
-                justifyContent: 'center',
-                marginTop: '20px'
-              }}
-            >
+                display: "flex",
+                justifyContent: "center",
+                marginTop: "20px"
+              }}>
+
               <div
                 style={{
-                  backgroundColor: '#FFFFFF',
-                  paddingTop: '20px',
-                  borderRadius: '15px',
-                  width: '90%',
-                  justifyContent: 'center',
-                  display: 'flex'
+                  backgroundColor: "#FFFFFF",
+                  paddingTop: "20px",
+                  borderRadius: "15px",
+                  width: "90%",
+                  justifyContent: "center",
+                  display: "flex",
                 }}
               >
                 <BarChart
                   width={1000}
                   height={500}
                   data={getData(posts)}
+                  loading={loading}
+                  error={error}
                   margin={{
                     top: 20,
                     right: 30,
@@ -208,25 +197,15 @@ function AdminPosts(props) {
                   <CartesianGrid strokeDasharray="3 3" />
                   <Tooltip />
                   <Legend />
-                  <Bar
-                    dataKey="post"
-                    stackId="a"
-                    fill="#8884d8"
-                    name="Bài viết"
-                  />
-                  <Bar
-                    dataKey="review"
-                    stackId="a"
-                    fill="#82ca9d"
-                    name="Bài review"
-                  />
+                  <Bar dataKey="post" stackId="a" fill="#8884d8" name="Bài viết" />
+                  <Bar dataKey="review" stackId="a" fill="#82ca9d" name="Bài review" />
                 </BarChart>
               </div>
             </div>
           </Box>
         </Card>
       </div>
-    </Container>
+    </Container >
   );
 }
 

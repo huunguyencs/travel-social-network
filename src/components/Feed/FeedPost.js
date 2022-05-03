@@ -10,8 +10,7 @@ import Post from '../Post';
 import { feedStyles } from '../../style';
 import CreatePostForm from '../Forms/CreatePost';
 import { useDispatch, useSelector } from 'react-redux';
-import { getPosts } from '../../redux/callApi/postCall';
-import { getMorePost } from '../../redux/actions/postAction';
+import { getMorePost, getPosts } from '../../redux/callApi/postCall';
 import Loading from '../Loading';
 
 export default function FeedPost(props) {
@@ -38,7 +37,11 @@ export default function FeedPost(props) {
   };
 
   const tryAgain = () => {
-    dispatch(getPosts(auth.token));
+    if (post.page === 0) {
+      dispatch(getPosts(auth.token));
+      return;
+    }
+    dispatch(getMorePost({ postId: post.postId }));
   };
 
   const CreatePostRef = React.forwardRef((props, ref) => (

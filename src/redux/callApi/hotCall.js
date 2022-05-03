@@ -27,14 +27,11 @@ export const getEvent = (resolve, reject) => dispatch => {
 export const getHotLocation = (resolve, reject) => dispatch => {
   try {
     customAxios()
-      .get('location/hot')
+      .get('/location/hot')
       .then(res => {
         // setLocations(res.data.locations);
-        dispatch(hotAction.getHotLocation(res.data.locations));
-        // setStateLocation({
-        //   loading: false,
-        //   error: false
-        // });
+        dispatch(hotAction.getHotLocation(res.data.hot));
+        console.log(res.data.hot);
         resolve();
       })
       .catch(err => {
