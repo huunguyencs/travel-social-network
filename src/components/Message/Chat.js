@@ -8,10 +8,13 @@ import {
   DialogContent,
   DialogTitle,
   CircularProgress,
-  Button
+  Button,
+  Modal,
+  Fade,
+  Backdrop
 } from '@material-ui/core';
 import React, { useEffect, useState, useRef } from 'react';
-import { Call, Delete, Send } from '@material-ui/icons';
+import { Call, Delete, Send, InfoOutlined } from '@material-ui/icons';
 import { messageStyles } from '../../style';
 import { useDispatch, useSelector } from 'react-redux';
 import { useParams, useHistory } from 'react-router-dom';
@@ -23,6 +26,8 @@ import {
 import { timeAgo } from '../../utils/date';
 import EmojiPicker from '../Input/EmojiPicker';
 import { Link } from 'react-router-dom';
+import CreateGroupChat from '../Forms/CreateGroupChat';
+
 
 export default function Chat() {
   const classes = messageStyles();
@@ -97,6 +102,21 @@ export default function Chat() {
   const handleShowDelete = () => {
     setShowDelete(true);
   };
+
+  const [showInfo, setShowInfo] = useState(false);
+  const handleCloseInfo = () => {
+    setShowInfo(false);
+  };
+  const handleShowInfo = () => {
+    setShowInfo(true);
+  };
+
+  const ref = React.createRef();
+
+  const CreateGroupChatRef = React.forwardRef((props, ref) => (
+      <CreateGroupChat {...props} innerRef={ref} />
+  ));
+
   return (
     <>
       <Grid item md={9} sm={10} xs={10}>
@@ -130,6 +150,25 @@ export default function Chat() {
                 <IconButton onClick={handleShowDelete}>
                   <Delete style={{ color: 'red' }} />
                 </IconButton>
+                <IconButton onClick={handleShowInfo}>
+                  <InfoOutlined />
+                </IconButton>
+                <Modal
+                    aria-labelledby="create-tour"
+                    aria-describedby="create-tour-modal"
+                    className={classes.modal}
+                    open={showInfo}
+                    onClose={handleCloseInfo}
+                    closeAfterTransition
+                    BackdropComponent={Backdrop}
+                    BackdropProps={{
+                    timeout: 500
+                    }}
+                >
+                    <Fade in={showInfo}>
+                        <CreateGroupChatRef update={true} conversation={conversation} ref={ref} handleClose={handleCloseInfo} />
+                    </Fade>
+                </Modal>
                 <Dialog
                   open={showDelete}
                   onClose={handleCloseDelete}

@@ -90,7 +90,7 @@ export default function Conversations() {
                             }}
                         >
                             <Fade in={show}>
-                                <CreateGroupChatRef ref={ref} handleClose={handleCloseCreate} />
+                                <CreateGroupChatRef update={false} ref={ref} handleClose={handleCloseCreate} />
                             </Fade>
                         </Modal>
                     </div>
