@@ -29,7 +29,7 @@ export default function PostDetail() {
     if (
       post.posts?.length > 0 &&
       post.posts[0]?.userId &&
-      id === post.posts[0]
+      id === post.posts[0]._id
     ) {
       document.title = 'Bài viết của ' + post.posts[0].userId.fullname;
     }
