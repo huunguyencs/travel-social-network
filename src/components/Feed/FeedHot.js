@@ -1,16 +1,25 @@
 import { Button, Container, Typography } from '@material-ui/core';
-import React, { useEffect, useState } from 'react';
+import React, { useCallback, useEffect, useState } from 'react';
 
 import { feedStyles } from '../../style';
 import Event from '../Event';
-import Location from '../Location';
 import Loading from '../Loading';
 import { useDispatch, useSelector } from 'react-redux';
-import { getEvent, getHotLocation } from '../../redux/callApi/hotCall';
+import {
+  getEvent,
+  getHotLocation,
+  getRecommendLocation
+} from '../../redux/callApi/hotCall';
+import {
+  LocationHotScrollList,
+  LocationRecommendScrollList
+} from '../Location/LocationScrollList';
 
 export default function FeedHot(props) {
   const classes = feedStyles();
-  const { events, locations } = useSelector(state => state.hot);
+  const { hot, auth } = useSelector(state => state);
+
+  const { events, locations, locationRe } = hot;
   const dispatch = useDispatch();
 
   const [stateEvent, setStateEvent] = useState({
@@ -18,7 +27,12 @@ export default function FeedHot(props) {
     error: false
   });
 
-  const [stateLocation, setStateLocation] = useState({
+  const [stateLocationHot, setStateLocationHot] = useState({
+    loading: false,
+    error: false
+  });
+
+  const [stateLocationRecommend, setStateLocationRecommend] = useState({
     loading: false,
     error: false
   });
@@ -45,19 +59,19 @@ export default function FeedHot(props) {
   };
 
   const getHotLocations = dispatch => {
-    setStateLocation({
+    setStateLocationHot({
       loading: true,
       error: false
     });
     dispatch(
       getHotLocation(
         () =>
-          setStateLocation({
+          setStateLocationHot({
             loading: false,
             error: false
           }),
         () =>
-          setStateLocation({
+          setStateLocationHot({
             loading: false,
             error: true
           })
@@ -65,15 +79,59 @@ export default function FeedHot(props) {
     );
   };
 
+  const getRecommendLocations = useCallback(
+    dispatch => {
+      setStateLocationRecommend({
+        loading: true,
+        error: false
+      });
+      dispatch(
+        getRecommendLocation(
+          auth.token,
+          () => {
+            setStateLocationRecommend({
+              loading: false,
+              error: false
+            });
+          },
+          () => {
+            setStateLocationRecommend({
+              loading: false,
+              error: true
+            });
+          }
+        )
+      );
+    },
+    [auth?.token]
+  );
+
   useEffect(() => {
-    if (stateLocation.loading || stateLocation.error || locations) return;
+    if (stateLocationHot.loading || stateLocationHot.error || locations) return;
     getHotLocations(dispatch);
-  }, [dispatch, stateLocation, locations]);
+  }, [dispatch, stateLocationHot, locations]);
 
   useEffect(() => {
     if (stateEvent.loading || stateEvent.error || events) return;
     getCurrentEvent(dispatch);
   }, [dispatch, stateEvent, events]);
+
+  useEffect(() => {
+    if (
+      stateLocationRecommend.loading ||
+      stateLocationRecommend.error ||
+      locationRe ||
+      !auth.token
+    )
+      return;
+    getRecommendLocations(dispatch);
+  }, [
+    dispatch,
+    stateLocationRecommend,
+    locationRe,
+    getRecommendLocations,
+    auth.token
+  ]);
 
   return (
     <Container className={classes.container}>
@@ -99,19 +157,36 @@ export default function FeedHot(props) {
             <Typography variant="h4">Địa điểm hot</Typography>
           </div>
           <div className={classes.hotFeed}>
-            {stateLocation.loading ? (
+            {stateLocationHot.loading ? (
               <div className={classes.centerMarginTop}>
                 <Loading />
               </div>
-            ) : stateLocation.error ? (
+            ) : stateLocationHot.error ? (
               <div className={classes.centerMarginTop}>
                 <Button onClick={getHotLocations}>Thử lại</Button>
               </div>
             ) : (
-              locations &&
-              locations.map(item => (
-                <Location location={item.location[0]} key={item._id} />
-              ))
+              locations && <LocationHotScrollList locations={locations} />
+            )}
+          </div>
+        </div>
+        <div className={classes.hot}>
+          <div className={classes.title}>
+            <Typography variant="h4">Địa điểm gợi ý</Typography>
+          </div>
+          <div className={classes.hotFeed}>
+            {stateLocationRecommend.loading ? (
+              <div className={classes.centerMarginTop}>
+                <Loading />
+              </div>
+            ) : stateLocationRecommend.error ? (
+              <div className={classes.centerMarginTop}>
+                <Button onClick={getHotLocations}>Thử lại</Button>
+              </div>
+            ) : (
+              locationRe && (
+                <LocationRecommendScrollList locations={locationRe} />
+              )
             )}
           </div>
         </div>

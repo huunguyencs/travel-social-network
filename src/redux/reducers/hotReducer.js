@@ -2,7 +2,8 @@ import * as HOT_TYPES from '../constants/hotConstant';
 
 const INIT_STATE = {
   events: null,
-  locations: null
+  locations: null,
+  locationRe: null
 };
 
 const alertReducer = (state = INIT_STATE, action) => {
@@ -17,6 +18,12 @@ const alertReducer = (state = INIT_STATE, action) => {
       return {
         ...state,
         locations: action.payload
+      };
+    }
+    case HOT_TYPES.GET_RECOMMEND_LOCATION: {
+      return {
+        ...state,
+        locationRe: action.payload
       };
     }
     default: {

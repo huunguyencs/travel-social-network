@@ -363,3 +363,23 @@ export const removejoinLocation =
       error();
     }
   };
+
+export const getTourRecommend = (token, next, error) => dispatch => {
+  customAxios(token)
+    .get('/tour/foryou')
+    .then(res => {
+      dispatch(tourAction.getTourRecommend(res.data.tours));
+      next();
+    })
+    .catch(() => error());
+};
+
+export const getTourHot = (next, error) => dispatch => {
+  customAxios()
+    .get('/tour/hot')
+    .then(res => {
+      dispatch(tourAction.getTourHot(res.data.tours));
+      next();
+    })
+    .catch(() => error());
+};
