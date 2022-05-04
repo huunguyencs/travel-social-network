@@ -1,7 +1,7 @@
 import * as MESSAGE_TYPES from "../constants/messageConstant";
 
 const INIT_STATE = {
-    users: [],
+    conversations: [],
     data: [],
     firstLoad: false
 }
@@ -9,10 +9,10 @@ const INIT_STATE = {
 const messageReducer = (state = INIT_STATE, action) => {
     switch (action.type) {
         case MESSAGE_TYPES.ADD_USER:
-            if (state.users.every(item => item._id !== action.payload._id)) {
+            if (state.conversations.every(item => item._id !== action.payload._id)) {
                 return {
                     ...state,
-                    users: [action.payload, ...state.users]
+                    conversations: [action.payload, ...state.conversations]
                 };
             }
             return state;
@@ -20,16 +20,21 @@ const messageReducer = (state = INIT_STATE, action) => {
             return {
                 ...state,
                 data: [...state.data, action.payload],
-                users: state.users.map(user =>
-                    user._id === action.payload.recipient || user._id === action.payload.sender
-                        ? { ...user, text: action.payload.text }
-                        : user
+                conversations: state.conversations.map(item =>
+                    item._id === action.payload.conversation
+                        ? { ...item, latestMessage: {
+                            text: action.payload.text,
+                            seen: false,
+                            createAt: action.payload.createdAt,
+                            sender: action.payload.sender
+                        } }
+                        : item
                 )
             }
         case MESSAGE_TYPES.GET_CONVERSATIONS:
             return {
                 ...state,
-                users: action.payload,
+                conversations: action.payload,
                 firstLoad: true
             }
         case MESSAGE_TYPES.GET_MESSAGES:
@@ -40,7 +45,7 @@ const messageReducer = (state = INIT_STATE, action) => {
         case MESSAGE_TYPES.DELETE_CONVERSATION:
             return {
                 ...state,
-                users: state.users.filter(user => user._id !== action.payload._id),
+                conversations: state.conversations.filter(user => user._id !== action.payload),
                 data: []
             };
         default:

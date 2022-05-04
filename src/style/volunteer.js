@@ -9,7 +9,18 @@ const volunteerStyles = makeStyles(
       borderRadius: attr.borderRadius.md
     },
     media: {
-      height: 200
+      height: 200,
+      position: "relative"
+    },
+    volunteerState:{
+      position: "absolute",
+      top: 0,
+      right:0,
+      backgroundColor: "#da5858",
+      color: color.white,
+      borderBottomLeftRadius: attr.borderRadius.md,
+      boxShadow: "0 2px 8px #0000009c",
+      padding: "10px 15px 10px 15px"
     },
     name: {
       fontWeight: 500,

@@ -8,10 +8,13 @@ import {
   DialogContent,
   DialogTitle,
   CircularProgress,
-  Button
+  Button,
+  Modal,
+  Fade,
+  Backdrop
 } from '@material-ui/core';
 import React, { useEffect, useState, useRef } from 'react';
-import { Call, Delete, Send } from '@material-ui/icons';
+import { Call, Delete, Send, InfoOutlined } from '@material-ui/icons';
 import { messageStyles } from '../../style';
 import { useDispatch, useSelector } from 'react-redux';
 import { useParams, useHistory } from 'react-router-dom';
@@ -23,13 +26,15 @@ import {
 import { timeAgo } from '../../utils/date';
 import EmojiPicker from '../Input/EmojiPicker';
 import { Link } from 'react-router-dom';
+import CreateGroupChat from '../Forms/CreateGroupChat';
+
 
 export default function Chat() {
   const classes = messageStyles();
 
   const { auth, message, socket } = useSelector(state => state);
   const dispatch = useDispatch();
-  const [user, setUser] = useState('');
+  const [conversation, setConversation] = useState();
   const [text, setText] = useState('');
   const { id } = useParams();
   const refDisplay = useRef();
@@ -38,15 +43,26 @@ export default function Chat() {
     loading: false,
     error: false
   });
+
+  useEffect(() => {
+    const currentConversation = message.conversations.find(conversation => conversation._id === id);
+    console.log("cay",currentConversation)
+    if (currentConversation) setConversation(currentConversation);
+  }, [id, message.conversations]);
+
   const handleSubmit = async e => {
     e.preventDefault();
     if (!text.trim()) return;
     setText('');
     const msg = {
-      sender: auth.user._id,
-      recipient: id,
+      isGroup: conversation.isGroup,
+      conversation: id,
       text: text,
-      createdAt: new Date().toISOString()
+      createdAt: new Date().toISOString(),
+      sender: auth.user,
+      members: conversation.members,
+      name: conversation.name,
+      recipients: conversation.isGroup ? conversation.members.map(member => member._id) : [conversation.members[0]._id] 
     };
     dispatch(addMessage(msg, auth, socket));
     if (refDisplay.current) {
@@ -64,11 +80,6 @@ export default function Chat() {
   }, [id, dispatch, auth, socket]);
 
   useEffect(() => {
-    const currentUser = message.users.find(user => user._id === id);
-    if (currentUser) setUser(currentUser);
-  }, [id, message.users]);
-
-  useEffect(() => {
     document.title = 'Tin nhắn';
   }, []);
   const handleDelete = () => {
@@ -77,7 +88,7 @@ export default function Chat() {
       error: false
     });
     dispatch(
-      deleteConversation(user, auth, () => {
+      deleteConversation(id, auth, () => {
         setState({
           loading: false,
           error: false
@@ -94,6 +105,21 @@ export default function Chat() {
   const handleShowDelete = () => {
     setShowDelete(true);
   };
+
+  const [showInfo, setShowInfo] = useState(false);
+  const handleCloseInfo = () => {
+    setShowInfo(false);
+  };
+  const handleShowInfo = () => {
+    setShowInfo(true);
+  };
+
+  const ref = React.createRef();
+
+  const CreateGroupChatRef = React.forwardRef((props, ref) => (
+      <CreateGroupChat {...props} innerRef={ref} />
+  ));
+
   return (
     <>
       <Grid item md={9} sm={10} xs={10}>
@@ -101,16 +127,24 @@ export default function Chat() {
           <div className={classes.message_box}>
             <div className={classes.message_box_header}>
               <div className={classes.message_box_header_left}>
-                <Avatar alt="avatar" src={user.avatar}>
-                  {' '}
+                {console.log("data",conversation)}
+                <Avatar alt="avatar" src={conversation?.members[0].avatar}>
                 </Avatar>
-                <Typography
-                  className={classes.message_box_header_text}
-                  component={Link}
-                  to={`/u/${user._id}`}
-                >
-                  {user.fullname}
-                </Typography>
+                {
+                  conversation?.isGroup ? 
+                  <Typography
+                    className={classes.message_box_header_text}
+                  >
+                    {conversation?.name}
+                  </Typography>:
+                  <Typography
+                    className={classes.message_box_header_text}
+                    component={Link}
+                    to={`/u/${conversation?.members[0]._id}`}
+                  >
+                    {conversation?.name}
+                  </Typography> 
+                }
               </div>
               <div className={classes.message_box_header_right}>
                 <IconButton>
@@ -119,6 +153,27 @@ export default function Chat() {
                 <IconButton onClick={handleShowDelete}>
                   <Delete style={{ color: 'red' }} />
                 </IconButton>
+                {conversation?.isGroup  && 
+                  <IconButton onClick={handleShowInfo}>
+                    <InfoOutlined />
+                  </IconButton>
+                }
+                <Modal
+                    aria-labelledby="create-tour"
+                    aria-describedby="create-tour-modal"
+                    className={classes.modal}
+                    open={showInfo}
+                    onClose={handleCloseInfo}
+                    closeAfterTransition
+                    BackdropComponent={Backdrop}
+                    BackdropProps={{
+                    timeout: 500
+                    }}
+                >
+                    <Fade in={showInfo}>
+                        <CreateGroupChatRef update={true} conversation={conversation} ref={ref} handleClose={handleCloseInfo} />
+                    </Fade>
+                </Modal>
                 <Dialog
                   open={showDelete}
                   onClose={handleCloseDelete}
@@ -152,13 +207,18 @@ export default function Chat() {
               <div className={classes.message_chats} ref={refDisplay}>
                 {message.data.map((item, index) => (
                   <div key={index}>
-                    {item.sender !== auth.user._id ? (
+                    {item.sender._id !== auth.user._id ? (
                       <div className={classes.message_yourchat}>
                         <div className={classes.message_display}>
                           <div className={classes.message_content_your}>
+                            {
+                              conversation?.isGroup && 
+                              <Typography style={{marginLeft: 35}} className={classes.chat_date}> {item.sender.fullname.slice(0,5)}</Typography>
+                            }
                             <div style={{ display: 'flex' }}>
                               <Avatar
                                 className={classes.chat_your_user}
+                                src= {item.sender.avatar}
                               ></Avatar>
                               <Typography className={classes.chat_your_content}>
                                 {item.text}
@@ -175,10 +235,11 @@ export default function Chat() {
                         <div className={classes.message_display}>
                           <div className={classes.message_content_my}>
                             <div style={{ display: 'flex' }}>
-                              <Typography className={classes.chat_my_content}>
+                              <Typography className={classes.chat_my_content}
+                              >
                                 {item.text}
                               </Typography>
-                              <Avatar className={classes.chat_my_user}></Avatar>
+                              <Avatar className={classes.chat_my_user} src= {item.sender.avatar}></Avatar>
                             </div>
                             <div className={classes.chat_date}>
                               {timeAgo(new Date(item.createdAt))}

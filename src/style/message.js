@@ -1,4 +1,5 @@
 import { makeStyles } from '@material-ui/core';
+import color from './color';
 
 const messageStyles = makeStyles(
   theme => ({
@@ -7,10 +8,25 @@ const messageStyles = makeStyles(
       height: '80vh',
       paddingTop: '75px'
     },
+    modal: {
+      display: 'flex',
+      alignItems: 'center',
+      justifyContent: 'center'
+    },
     message_header: {
       height: '50px',
       borderBottom: '1px solid #d2d0d0',
-      width: '100%'
+      width: '100%',
+      display: "flex",
+      justifyContent: "space-between",
+      alignItems: "center"
+    },
+    groupButton:{
+      height:30, 
+      width: 30,
+      marginRight: 30,
+      backgroundColor: color.turquoise,
+      color: color.white
     },
     message_header_title: {
       marginLeft: '20px',
