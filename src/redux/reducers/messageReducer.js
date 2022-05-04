@@ -25,7 +25,7 @@ const messageReducer = (state = INIT_STATE, action) => {
                         ? { ...item, latestMessage: {
                             text: action.payload.text,
                             seen: false,
-                            createAt: action.payload.createdAt,
+                            createdAt: action.payload.createdAt,
                             sender: action.payload.sender
                         } }
                         : item

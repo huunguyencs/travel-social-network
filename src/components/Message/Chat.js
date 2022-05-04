@@ -29,12 +29,11 @@ import { Link } from 'react-router-dom';
 import CreateGroupChat from '../Forms/CreateGroupChat';
 
 
-export default function Chat() {
+export default function Chat(props) {
   const classes = messageStyles();
-
+  const { conversation } = props;
   const { auth, message, socket } = useSelector(state => state);
   const dispatch = useDispatch();
-  const [conversation, setConversation] = useState();
   const [text, setText] = useState('');
   const { id } = useParams();
   const refDisplay = useRef();
@@ -43,12 +42,6 @@ export default function Chat() {
     loading: false,
     error: false
   });
-
-  useEffect(() => {
-    const currentConversation = message.conversations.find(conversation => conversation._id === id);
-    console.log("cay",currentConversation)
-    if (currentConversation) setConversation(currentConversation);
-  }, [id, message.conversations]);
 
   const handleSubmit = async e => {
     e.preventDefault();
@@ -127,7 +120,6 @@ export default function Chat() {
           <div className={classes.message_box}>
             <div className={classes.message_box_header}>
               <div className={classes.message_box_header_left}>
-                {console.log("data",conversation)}
                 <Avatar alt="avatar" src={conversation?.members[0].avatar}>
                 </Avatar>
                 {
