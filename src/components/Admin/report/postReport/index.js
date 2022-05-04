@@ -4,7 +4,7 @@ import { useSelector } from 'react-redux';
 
 import Typography from '@material-ui/core/Typography';
 import Paper from '@material-ui/core/Paper';
-import { MoreVert } from '@material-ui/icons';
+import { Visibility } from '@material-ui/icons';
 import { Link, useHistory } from 'react-router-dom';
 import {
   DataGrid,
@@ -12,7 +12,6 @@ import {
   GridToolbarExport
 } from '@mui/x-data-grid';
 import customAxios from '../../../../utils/fetchData';
-// import { getStar, totalNumRate } from "../../../../utils/utils";
 import { tableStyles } from '../../../../style';
 
 const columns = [
@@ -43,11 +42,8 @@ const columns = [
     headerName: 'Trạng thái',
     width: 175,
     valueGetter: report =>
-      report.row.state === 0
-        ? 'Chưa xử lý'
-        : report.row.state === 1
-        ? 'Đang xử lý'
-        : 'Đã xử lý'
+      report.row.state === 2
+        ? 'Đã xử lý' : 'Chưa xử lý'
   },
   {
     field: 'action',
@@ -55,14 +51,15 @@ const columns = [
     width: 150,
     sortable: false,
     renderCell: report => (
+      report.row.state === 1 || report.row.state === 0 ? 
       <IconButton
         size="small"
         component={Link}
         to={`/admin/postReport/${report.row._id}`}
         title={'Chi tiết'}
       >
-        <MoreVert />
-      </IconButton>
+        <Visibility />
+      </IconButton> : <div></div>
     )
   }
 ];

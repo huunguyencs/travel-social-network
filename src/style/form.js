@@ -76,6 +76,13 @@ const formStyles = makeStyles(
         },
         transition: "color 0.25s ease-in",
     },
+    user:{
+      width: '100%',
+      marginBottom: 15,
+      border: `1px solid ${color.background}`,
+      borderRadius: attr.borderRadius.sm,
+      padding: "5px 10px 5px 10px"
+    },
     hashtag: {
       width: '100%',
       marginBottom: 15
@@ -233,26 +240,6 @@ const formStyles = makeStyles(
         marginInline: 0,
         width: 300
       }
-    },
-    imageService: {
-      width: 100,
-      height: 100
-    },
-    serviceInfo: {
-      marginLeft: 15,
-      width: '100%'
-    },
-    changeContainer: {
-      position: 'relative'
-    },
-    removeButton: {
-      position: 'absolute',
-      top: 0,
-      right: 0
-    },
-    sizeImageAvatar: {
-      width: '300px',
-      height: '300px'
     },
     sizeImageBg: {
       width: '500px',

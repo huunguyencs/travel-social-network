@@ -1,5 +1,5 @@
 import { Button } from '@material-ui/core';
-import React, { useEffect, useState } from 'react';
+import React, { useCallback, useEffect, useState } from 'react';
 import { feedStyles } from '../../style';
 import Loading from '../Loading';
 
@@ -9,25 +9,36 @@ export default function Feed(props) {
   const [fetch, setFetch] = useState(false);
 
   useEffect(() => {
-    if (fetch) {
+    if (fetch && !loading) {
       if (hasMore) loadMore();
       setFetch(false);
     }
-  }, [fetch, hasMore, loadMore]);
+  }, [fetch, hasMore, loadMore, loading]);
+
+  const handleScroll = useCallback(() => {
+    if (
+      window.innerHeight + document.documentElement.scrollTop ===
+        document.documentElement.offsetHeight &&
+      !loading
+    ) {
+      setFetch(true);
+    }
+  }, [loading]);
 
   useEffect(() => {
     window.addEventListener('scroll', handleScroll);
     return () => window.removeEventListener('scroll', handleScroll);
-  }, []);
+  }, [handleScroll]);
 
-  function handleScroll() {
-    if (
-      window.innerHeight + document.documentElement.scrollTop ===
-      document.documentElement.offsetHeight
-    ) {
-      setFetch(true);
-    }
-  }
+  // function handleScroll() {
+  //   if (
+  //     window.innerHeight + document.documentElement.scrollTop ===
+  //       document.documentElement.offsetHeight &&
+  //     !loading
+  //   ) {
+  //     setFetch(true);
+  //   }
+  // }
   return (
     <>
       {type && type === 'review' ? (

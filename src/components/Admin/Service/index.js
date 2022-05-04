@@ -97,27 +97,30 @@ function AdminServices(props) {
                     {services.length} dịch vụ
                 </Typography>
             </div>
-            <Paper className={classes.paper}>
-                <DataGrid
-                    rows={services}
-                    columns={columns}
-                    pageSize={pageSize}
-                    rowsPerPageOptions={[5, 10, 25]}
-                    onPageSizeChange={(newPageSize) => setPageSize(newPageSize)}
-                    pagination
-                    onRowDoubleClick={(e) => {
-                        history.push(`/u/${e.row.cooperator._id}`)
-                    }}
-                    autoHeight
-                    loading={loading}
-                    error={error}
-                    getRowId={row => row._id}
-                    disableSelectionOnClick
-                    components={{
-                        Toolbar: ExportToolbar
-                    }}
-                />
-            </Paper>
+
+            <div>
+                <Paper className={classes.paper}>
+                    <DataGrid
+                        rows={services}
+                        columns={columns}
+                        pageSize={pageSize}
+                        rowsPerPageOptions={[5, 10, 25]}
+                        onPageSizeChange={(newPageSize) => setPageSize(newPageSize)}
+                        pagination
+                        onRowDoubleClick={(e) => {
+                            history.push(`/u/${e.row.cooperator._id}`)
+                        }}
+                        autoHeight
+                        loading={loading}
+                        error={error}
+                        getRowId={row => row._id}
+                        disableSelectionOnClick
+                        components={{
+                            Toolbar: ExportToolbar
+                        }}
+                    />
+                </Paper>
+            </div>
         </Container>
     );
 }

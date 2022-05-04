@@ -114,7 +114,6 @@ export default function MapCard(props) {
           defaultZoom={8}
           center={center}
           zoom={zoom}
-          // onGoogleApiLoaded={({ map, maps }) => renderMarkers(map, maps)}
         >
           {locations &&
             locations.map(item => (
