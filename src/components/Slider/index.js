@@ -3,7 +3,6 @@ import { IconButton, Typography, useTheme } from '@material-ui/core';
 import { autoPlay } from 'react-swipeable-views-utils';
 import SwipeableViews from 'react-swipeable-views';
 import { ChevronLeft, ChevronRight } from '@material-ui/icons';
-import Typewriter from 'typewriter-effect';
 import { sliderStyles } from '../../style';
 
 const AutoPlaySwipeableViews = autoPlay(SwipeableViews);
@@ -87,14 +86,7 @@ export default function Slider() {
 
                 <div className={classes.textCover}>
                   <Typography variant="h2" className={classes.title}>
-                    {/* <Typewriter
-                                            options={{
-                                                strings: [step.title],
-                                                autoStart: true,
-                                                loop: true,
-                                                delay: 100
-                                            }}
-                                        /> */}
+                    {step.title}
                   </Typography>
                   <Typography variant="h4" className={classes.subtitle}>
                     {step.subtitle}
