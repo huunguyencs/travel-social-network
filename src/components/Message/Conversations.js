@@ -9,7 +9,7 @@ import { useHistory } from "react-router-dom";
 import { addUser, getConversations } from '../../redux/callApi/messageCall';
 // import { useParams } from "react-router-dom";
 import CreateGroupChat from '../Forms/CreateGroupChat';
-
+import { timeAgo } from '../../utils/date';
 
 export default function Conversations() {
     const classes = messageStyles();
@@ -131,7 +131,7 @@ export default function Conversations() {
                                                     </Avatar>
                                                 </ListItemAvatar>
                                                 <ListItemText className={classes.message_card_text} primary={conversation.name} secondary={
-                                                    conversation.latestMessage.text ? (conversation.latestMessage.text.length > 20 ? conversation.latestMessage.text.slice(0, 20) : conversation.latestMessage.text) : ""
+                                                    conversation.latestMessage.text ? (conversation.latestMessage.text.length > 20 ? conversation.latestMessage.text.slice(0, 20) + "---" + timeAgo(new Date(conversation.latestMessage.createdAt)) : conversation.latestMessage.text + "---" + timeAgo(new Date(conversation.latestMessage.createdAt))) : ""
                                                 } />
                                                 <ListItemIcon>
                                                     {!conversation.latestMessage.seen && <FiberManualRecord style={{ color: "#a5dec8" }} />}

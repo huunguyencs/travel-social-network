@@ -55,10 +55,13 @@ export default function Chat() {
     if (!text.trim()) return;
     setText('');
     const msg = {
+      isGroup: conversation.isGroup,
       conversation: id,
       text: text,
       createdAt: new Date().toISOString(),
       sender: auth.user,
+      members: conversation.members,
+      name: conversation.name,
       recipients: conversation.isGroup ? conversation.members.map(member => member._id) : [conversation.members[0]._id] 
     };
     dispatch(addMessage(msg, auth, socket));
@@ -150,9 +153,11 @@ export default function Chat() {
                 <IconButton onClick={handleShowDelete}>
                   <Delete style={{ color: 'red' }} />
                 </IconButton>
-                <IconButton onClick={handleShowInfo}>
-                  <InfoOutlined />
-                </IconButton>
+                {conversation?.isGroup  && 
+                  <IconButton onClick={handleShowInfo}>
+                    <InfoOutlined />
+                  </IconButton>
+                }
                 <Modal
                     aria-labelledby="create-tour"
                     aria-describedby="create-tour-modal"
@@ -230,10 +235,11 @@ export default function Chat() {
                         <div className={classes.message_display}>
                           <div className={classes.message_content_my}>
                             <div style={{ display: 'flex' }}>
-                              <Typography className={classes.chat_my_content}>
+                              <Typography className={classes.chat_my_content}
+                              >
                                 {item.text}
                               </Typography>
-                              <Avatar className={classes.chat_my_user}></Avatar>
+                              <Avatar className={classes.chat_my_user} src= {item.sender.avatar}></Avatar>
                             </div>
                             <div className={classes.chat_date}>
                               {timeAgo(new Date(item.createdAt))}

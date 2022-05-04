@@ -20,10 +20,15 @@ const messageReducer = (state = INIT_STATE, action) => {
             return {
                 ...state,
                 data: [...state.data, action.payload],
-                conversations: state.conversations.map(user =>
-                    user._id === action.payload.recipient || user._id === action.payload.sender
-                        ? { ...user, text: action.payload.text }
-                        : user
+                conversations: state.conversations.map(item =>
+                    item._id === action.payload.conversation
+                        ? { ...item, latestMessage: {
+                            text: action.payload.text,
+                            seen: false,
+                            createAt: action.payload.createdAt,
+                            sender: action.payload.sender
+                        } }
+                        : item
                 )
             }
         case MESSAGE_TYPES.GET_CONVERSATIONS:

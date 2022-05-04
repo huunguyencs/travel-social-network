@@ -74,7 +74,7 @@ import {createGroupChat} from '../../redux/callApi/messageCall';
             setError("Cần điền tên nhóm!")
             return;
         }
-        if(users.length <= 2){
+        if(users.length < 2){
             setError("Cần thêm ít nhất 2 thành viên!")
             return;
         }

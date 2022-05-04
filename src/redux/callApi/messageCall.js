@@ -6,7 +6,7 @@ import * as alertAction from '../actions/alertAction';
 export const addUser = (auth, user, message, socket, next) => async (dispatch) => {
     try {
         // console.log("user",user)
-        const res = await customAxios(auth.token).post('/message/access_conversation', {userId:user._id})
+        const res = await customAxios(auth.token).post('/message/access_conversation', {userId:user._id, userName: user.fullname})
         if(message.conversations.every(item => item._id !== res.data.conversation._id)){
             const data ={
                     isGroup:res.data.conversation.isGroup,
