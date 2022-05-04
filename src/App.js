@@ -8,7 +8,7 @@ import Scroll, { WithRouterScroll } from './components/Scroll';
 import CustomRouter from './router/CustomRouter';
 import HomePage from './page/home';
 import './App.css';
-import { useLocation, useHistory } from 'react-router-dom';
+import { useLocation } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 import { getFriendRecommend, refreshToken } from './redux/callApi/authCall';
 import { io } from 'socket.io-client';
@@ -21,7 +21,6 @@ import Loading from './components/Loading';
 
 function App() {
   const location = useLocation();
-  const history = useHistory();
 
   const { auth } = useSelector(state => state);
   const dispatch = useDispatch();
@@ -37,7 +36,7 @@ function App() {
     const socket = io(process.env.REACT_APP_HOST_SOCKET);
     dispatch({ type: SOCKET_TYPES.SOCKET, payload: socket });
     return () => socket.close();
-  }, [dispatch, history]);
+  }, [dispatch]);
 
   useEffect(() => {
     if (auth.token) {

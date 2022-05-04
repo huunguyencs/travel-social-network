@@ -30,15 +30,6 @@ export default function Feed(props) {
     return () => window.removeEventListener('scroll', handleScroll);
   }, [handleScroll]);
 
-  // function handleScroll() {
-  //   if (
-  //     window.innerHeight + document.documentElement.scrollTop ===
-  //       document.documentElement.offsetHeight &&
-  //     !loading
-  //   ) {
-  //     setFetch(true);
-  //   }
-  // }
   return (
     <>
       {type && type === 'review' ? (
