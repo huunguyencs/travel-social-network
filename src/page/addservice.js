@@ -117,7 +117,8 @@ export default function AddServicePage() {
         auth.user._id,
         {
           ...context,
-          attribute: { ...detail }
+          attribute: { ...detail },
+          position: [context.position.lng, context.position.lat]
         },
         images,
         () => {
