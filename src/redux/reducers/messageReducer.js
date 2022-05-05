@@ -24,7 +24,11 @@ const messageReducer = (state = INIT_STATE, action) => {
                     item._id === action.payload.conversation
                         ? { ...item, latestMessage: {
                             text: action.payload.text,
-                            seen: false,
+                            seen: [action.payload.sender].concat(action.payload.members)
+                                    .map(item => item._id === action.payload.sender._id ? {
+                                    member: item._id,
+                                    isSeen: true
+                                }: {member: item._id, isSeen: false}),
                             createdAt: action.payload.createdAt,
                             sender: action.payload.sender
                         } }
@@ -36,6 +40,25 @@ const messageReducer = (state = INIT_STATE, action) => {
                 ...state,
                 conversations: action.payload,
                 firstLoad: true
+            }
+        case MESSAGE_TYPES.SEEN_MESSAGE:
+            return {
+                ...state,
+                conversations: state.conversations.map(conversation =>
+                    conversation._id === action.payload.id
+                        ? { ...conversation, latestMessage: {
+                            ...conversation.latestMessage,
+                            seen: conversation.latestMessage.seen?.map(item =>
+                                item.member === action.payload.member ?
+                                {
+                                    ...item,
+                                    isSeen: true
+                                }:
+                                    item
+                                )
+                        } }
+                        : conversation
+                )
             }
         case MESSAGE_TYPES.GET_MESSAGES:
             return {

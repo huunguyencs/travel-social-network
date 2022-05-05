@@ -93,7 +93,7 @@ export default function Conversation(props) {
                         ) : (
                             <Grid container style={{ margin: 0, padding: 0 }}>
                                 <Conversations />
-                                {conversation && <Chat conversation={conversation} />}
+                                {conversation && <Chat/>}
                             </Grid>
                         )
                 :

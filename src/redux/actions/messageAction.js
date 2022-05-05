@@ -34,3 +34,10 @@ export const deleteConversation = (props) =>{
         payload: props
     }
 }
+
+export const seenMessage = (props) =>{
+    return{
+        type: MESSAGE_TYPES.SEEN_MESSAGE,
+        payload: props
+    }
+}

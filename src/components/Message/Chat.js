@@ -21,7 +21,8 @@ import { useParams, useHistory } from 'react-router-dom';
 import {
   addMessage,
   getMessages,
-  deleteConversation
+  deleteConversation,
+  seenMessage
 } from '../../redux/callApi/messageCall';
 import { timeAgo } from '../../utils/date';
 import EmojiPicker from '../Input/EmojiPicker';
@@ -29,9 +30,9 @@ import { Link } from 'react-router-dom';
 import CreateGroupChat from '../Forms/CreateGroupChat';
 
 
-export default function Chat(props) {
+export default function Chat() {
   const classes = messageStyles();
-  const { conversation } = props;
+  const [conversation , setConversation] = useState();
   const { auth, message, socket } = useSelector(state => state);
   const dispatch = useDispatch();
   const [text, setText] = useState('');
@@ -42,6 +43,12 @@ export default function Chat(props) {
     loading: false,
     error: false
   });
+
+
+  useEffect(() => {
+    const currentConversation = message.conversations.find(conversation => conversation._id === id);
+    if (currentConversation) setConversation(currentConversation);
+  }, [id, message.conversations]);
 
   const handleSubmit = async e => {
     e.preventDefault();
@@ -54,7 +61,7 @@ export default function Chat(props) {
       createdAt: new Date().toISOString(),
       sender: auth.user,
       members: conversation.members,
-      name: conversation.name,
+      name: conversation.isGroup ? conversation.name : auth.user.fullname,
       recipients: conversation.isGroup ? conversation.members.map(member => member._id) : [conversation.members[0]._id] 
     };
     dispatch(addMessage(msg, auth, socket));
@@ -71,6 +78,12 @@ export default function Chat(props) {
       }
     }
   }, [id, dispatch, auth, socket]);
+
+  useEffect(() => {
+    if (id) {
+      dispatch(seenMessage(id, auth));
+    }
+  }, [id, dispatch, auth]);
 
   useEffect(() => {
     document.title = 'Tin nhắn';
@@ -115,26 +128,28 @@ export default function Chat(props) {
 
   return (
     <>
-      <Grid item md={9} sm={10} xs={10}>
+      {
+        conversation &&
+        <Grid item md={9} sm={10} xs={10}>
         <div className={classes.message_conversation}>
           <div className={classes.message_box}>
             <div className={classes.message_box_header}>
               <div className={classes.message_box_header_left}>
-                <Avatar alt="avatar" src={conversation?.members[0].avatar}>
-                </Avatar>
+                {console.log("conversation",conversation)}
+                <Avatar alt="avatar" src={conversation.members[0].avatar}></Avatar>
                 {
-                  conversation?.isGroup ? 
+                  conversation.isGroup ? 
                   <Typography
                     className={classes.message_box_header_text}
                   >
-                    {conversation?.name}
+                    {conversation.name}
                   </Typography>:
                   <Typography
                     className={classes.message_box_header_text}
                     component={Link}
-                    to={`/u/${conversation?.members[0]._id}`}
+                    to={`/u/${conversation.members[0]._id}`}
                   >
-                    {conversation?.name}
+                    {conversation.name}
                   </Typography> 
                 }
               </div>
@@ -145,7 +160,7 @@ export default function Chat(props) {
                 <IconButton onClick={handleShowDelete}>
                   <Delete style={{ color: 'red' }} />
                 </IconButton>
-                {conversation?.isGroup  && 
+                {conversation.isGroup  && 
                   <IconButton onClick={handleShowInfo}>
                     <InfoOutlined />
                   </IconButton>
@@ -204,7 +219,7 @@ export default function Chat(props) {
                         <div className={classes.message_display}>
                           <div className={classes.message_content_your}>
                             {
-                              conversation?.isGroup && 
+                              conversation.isGroup && 
                               <Typography style={{marginLeft: 35}} className={classes.chat_date}> {item.sender.fullname.slice(0,5)}</Typography>
                             }
                             <div style={{ display: 'flex' }}>
@@ -272,7 +287,8 @@ export default function Chat(props) {
             </div>
           </div>
         </div>
-      </Grid>
+      </Grid> 
+      }
     </>
   );
 }

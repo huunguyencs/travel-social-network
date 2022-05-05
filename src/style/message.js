@@ -33,7 +33,6 @@ const messageStyles = makeStyles(
       fontSize: '17px',
       fontWeight: 800,
       color: '#0f1419',
-      lineHeight: '50px',
       [theme.breakpoints.down('sm')]: {
         marginLeft: '10px'
       },

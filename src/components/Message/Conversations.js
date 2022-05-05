@@ -6,8 +6,7 @@ import { messageStyles } from "../../style";
 import { useDispatch, useSelector } from "react-redux"; 
 import customAxios from '../../utils/fetchData';
 import { useHistory } from "react-router-dom";
-import { addUser, getConversations } from '../../redux/callApi/messageCall';
-// import { useParams } from "react-router-dom";
+import { addUser } from '../../redux/callApi/messageCall';
 import CreateGroupChat from '../Forms/CreateGroupChat';
 import { timeAgo } from '../../utils/date';
 
@@ -48,13 +47,6 @@ export default function Conversations() {
     useEffect(() => {
         document.title = "Tin nhắn";
     }, []);
-
-    useEffect(() => {
-        if (message.firstLoad) return;
-        dispatch(getConversations(auth, socket));
-    }, [message.firstLoad, dispatch, auth, socket])
-    
-
     const [show, setShow] = useState(false);
     const handleShow = () => {
         setShow(true);
@@ -134,7 +126,9 @@ export default function Conversations() {
                                                     conversation.latestMessage.text ? (conversation.latestMessage.text.length > 20 ? conversation.latestMessage.text.slice(0, 20) + "---" + timeAgo(new Date(conversation.latestMessage.createdAt)) : conversation.latestMessage.text + "---" + timeAgo(new Date(conversation.latestMessage.createdAt))) : ""
                                                 } />
                                                 <ListItemIcon>
-                                                    {!conversation.latestMessage.seen && <FiberManualRecord style={{ color: "#a5dec8" }} />}
+                                                    { conversation.latestMessage.seen 
+                                                    && 
+                                                    ! conversation.latestMessage.seen.filter(item => item.member === auth.user._id)[0].isSeen && <FiberManualRecord style={{ color: "#a5dec8" }} />}
                                                 </ListItemIcon>
                                             </ListItem>
                                         ))

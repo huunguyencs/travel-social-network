@@ -24,17 +24,26 @@ export const addUser = (auth, user, message, socket, next) => async (dispatch) =
     }
 }
 
+export const seenMessage = (id, auth) => async(dispatch) =>{
+    try{
+        dispatch(messageAction.seenMessage({id,member: auth.user._id}));
+        await customAxios(auth.token).patch('/message/seen_message', {id})
+    }catch(err){
+        console.log(err);
+    }
+}
+
 export const addMessage = (msg, auth, socket) => async(dispatch) =>{
     try{
         dispatch(messageAction.addMessage(msg));
-        await customAxios(auth.token).post('/message/create_message', {conversationId: msg.conversation, text: msg.text})
+        await customAxios(auth.token).post('/message/create_message', {conversationId: msg.conversation, text: msg.text, members: [msg.sender._id].concat(msg.members.map(item=> item._id))})
         socket.emit('addMessage', msg);
     }catch(err){
         console.log(err);
     }
 }
 
-export const getConversations = (auth, socket) => async(dispatch)=>{
+export const getConversations = (auth) => async(dispatch)=>{
     try {
         const res = await customAxios(auth.token).get('/message/get_conversations');
     //    console.log("data",res.data.conversations);
