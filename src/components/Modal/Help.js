@@ -7,13 +7,15 @@ import {
   TextField,
   Typography
 } from '@material-ui/core';
-import { Close } from '@material-ui/icons';
+import { CameraAltOutlined, Close } from '@material-ui/icons';
 import { Autocomplete, createFilterOptions } from '@material-ui/lab';
 import React, { useEffect, useState } from 'react';
+import { ScrollMenu } from 'react-horizontal-scrolling-menu';
 import { useDispatch, useSelector } from 'react-redux';
 import { error, success } from '../../redux/actions/alertAction';
 import { modalStyles } from '../../style';
 import customAxios from '../../utils/fetchData';
+import { checkImage, uploadImages } from '../../utils/uploadImage';
 
 const type = [
   'Phương tiện, xe cộ',
@@ -38,6 +40,9 @@ export default function Help({ handleClose }) {
     contact: ''
   });
 
+  const [imageUpload, setImageUpload] = useState([]);
+  const [errorImg, setErrorImg] = useState(null);
+
   const [loading, setLoading] = useState(false);
 
   const handleChange = e => {
@@ -54,9 +59,34 @@ export default function Help({ handleClose }) {
     }));
   };
 
+  const handleChangeImageUpload = e => {
+    let error = '';
+    setErrorImg(null);
+    for (const file of e.target.files) {
+      const check = checkImage(file);
+      if (check !== '') {
+        error = check;
+        break;
+      }
+    }
+    if (error === '') {
+      setImageUpload(oldImage => [...oldImage, ...e.target.files]);
+    } else setErrorImg(error);
+  };
+
+  const removeImage = index => {
+    setImageUpload(oldImage => [
+      ...oldImage.slice(0, index),
+      ...oldImage.slice(index + 1)
+    ]);
+  };
+
   const handleSubmit = async () => {
     setLoading(true);
     const payload = context;
+    if (imageUpload.length > 0) {
+      payload.images = await uploadImages(imageUpload);
+    }
     if (!context.position) {
       const response = await fetch('https://geolocation-db.com/json/');
       const data = await response.json();
@@ -208,6 +238,38 @@ export default function Help({ handleClose }) {
                 đích trợ giúp.
               </Typography>
             </div>
+          </div>
+        </div>
+        <div>
+          <input
+            accept="image/*"
+            className={classes.input}
+            style={{ display: 'none' }}
+            id="input-image"
+            name="images"
+            multiple
+            type="file"
+            onChange={handleChangeImageUpload}
+          />
+          <label className={classes.composeOption} htmlFor="input-image">
+            <CameraAltOutlined style={{ cursor: 'pointer' }} />
+          </label>
+          <span style={{ color: 'red', fontSize: 12 }}>{errorImg}</span>
+          <div className={classes.imageInputContainer}>
+            {imageUpload.length > 0 && (
+              <ScrollMenu height="300px">
+                {imageUpload.map((item, index) => (
+                  <img
+                    key={index}
+                    alt="Error"
+                    style={{ width: 150, height: 150, margin: 5 }}
+                    onClick={() => removeImage(index)}
+                    src={URL.createObjectURL(item)}
+                    title={'Xoá'}
+                  />
+                ))}
+              </ScrollMenu>
+            )}
           </div>
         </div>
         <div className={classes.button}>
