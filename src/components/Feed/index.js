@@ -1,4 +1,5 @@
-import { Button } from '@material-ui/core';
+import { Button, Typography } from '@material-ui/core';
+import { CheckCircleOutline } from '@material-ui/icons';
 import React, { useCallback, useEffect, useState } from 'react';
 import { feedStyles } from '../../style';
 import Loading from '../Loading';
@@ -61,6 +62,18 @@ export default function Feed(props) {
               </div>
             )}
           </div>
+        </div>
+      )}
+      {!hasMore && (
+        <div
+          style={{
+            display: 'flex',
+            justifyContent: 'center',
+            margin: 40
+          }}
+        >
+          <CheckCircleOutline style={{ marginRight: 10 }} />
+          <Typography>Hết bảng tin</Typography>
         </div>
       )}
     </>

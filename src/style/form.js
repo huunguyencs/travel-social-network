@@ -11,27 +11,27 @@ const formStyles = makeStyles(
       width: '100%'
     },
     paperContainer: {
-        padding: 16,
-        width: 550,
-        display: 'flex',
-        flexDirection: 'column',
-        overflow: "hidden",
-        borderRadius: attr.borderRadius.md,
-        [theme.breakpoints.down("sm")]: {
-            padding: 10,
-            width: 400
-        }
+      padding: 16,
+      width: 550,
+      display: 'flex',
+      flexDirection: 'column',
+      overflow: 'hidden',
+      borderRadius: attr.borderRadius.md,
+      [theme.breakpoints.down('sm')]: {
+        padding: 10,
+        width: 400
+      }
     },
-    paperUpdateInfoContainer:{
-        paddingTop: 16,
-        width: "100%",
-        display: 'flex',
-        flexDirection: 'column',
-        overflow: "hidden",
-        borderRadius: attr.borderRadius.md,
-        [theme.breakpoints.down("sm")]: {
-            paddingTop: 10
-        }
+    paperUpdateInfoContainer: {
+      paddingTop: 16,
+      width: '100%',
+      display: 'flex',
+      flexDirection: 'column',
+      overflow: 'hidden',
+      borderRadius: attr.borderRadius.md,
+      [theme.breakpoints.down('sm')]: {
+        paddingTop: 10
+      }
     },
     formContainer: {
       padding: 30
@@ -45,43 +45,43 @@ const formStyles = makeStyles(
       justifyContent: 'space-between'
     },
     button: {
-        position: "relative",
-        isolation: "isolate",
-        backgroundColor: color.turquoise,
-        padding: 10,
-        paddingInline: 20,
+      position: 'relative',
+      isolation: 'isolate',
+      backgroundColor: color.turquoise,
+      padding: 10,
+      paddingInline: 20,
+      borderRadius: attr.borderRadius.md,
+      [theme.breakpoints.down('sm')]: {
+        padding: 5,
+        paddingInline: 10,
+        marginBlock: 10
+      },
+      '&::before': {
+        content: "''",
+        height: '100%',
+        width: 0,
+        position: 'absolute',
+        top: 0,
+        left: 0,
+        backgroundColor: '#77a694',
+        zIndex: -1,
         borderRadius: attr.borderRadius.md,
-        [theme.breakpoints.down("sm")]: {
-            padding: 5,
-            paddingInline: 10,
-            marginBlock: 10,
-        },
-        "&::before": {
-            content: "''",
-            height: "100%",
-            width: 0,
-            position: "absolute",
-            top: 0,
-            left: 0,
-            backgroundColor: "#77a694",
-            zIndex: -1,
-            borderRadius: attr.borderRadius.md,
-            transition: "width 0.25s ease-in",
-        },
-        "&:hover::before": {
-            width: "100%"
-        },
-        "&:hover": {
-           color: color.white
-        },
-        transition: "color 0.25s ease-in",
+        transition: 'width 0.25s ease-in'
+      },
+      '&:hover::before': {
+        width: '100%'
+      },
+      '&:hover': {
+        color: color.white
+      },
+      transition: 'color 0.25s ease-in'
     },
-    user:{
+    user: {
       width: '100%',
       marginBottom: 15,
       border: `1px solid ${color.background}`,
       borderRadius: attr.borderRadius.sm,
-      padding: "5px 10px 5px 10px"
+      padding: '5px 10px 5px 10px'
     },
     hashtag: {
       width: '100%',
@@ -132,19 +132,19 @@ const formStyles = makeStyles(
       justifyContent: 'center'
     },
     autocomplete: {
-      width: "100%",
-      marginTop: 10,
+      width: '100%',
+      marginTop: 10
     },
-    autocompleteProvince:{
-      width: "100%",
+    autocompleteProvince: {
+      width: '100%',
       marginRight: 5
     },
     imageInputContainer: {
-        // marginInline: "20px",
-        maxWidth: "100%",
-        [theme.breakpoints.down("sm")]: {
-            maxWidth: "100%"
-        }
+      // marginInline: "20px",
+      maxWidth: '100%',
+      [theme.breakpoints.down('sm')]: {
+        maxWidth: '100%'
+      }
     },
     imageInput: {
       width: '150px',
@@ -196,18 +196,30 @@ const formStyles = makeStyles(
       border: '2px dashed #000',
       display: 'flex',
       justifyContent: 'center',
-      position: 'relative'
+      position: 'relative',
+      height: 400,
+      width: 400
     },
     borderDashHover: {
       border: '3px dashed #aaa',
       display: 'flex',
       justifyContent: 'center',
-      position: 'relative'
+      position: 'relative',
+      height: 400,
+      width: 400
     },
     buttonWrap: {
       margin: 20,
       display: 'flex',
       justifyContent: 'right'
+    },
+    changeContainer: {
+      position: 'relative'
+    },
+    removeButton: {
+      right: '-10px',
+      top: '-10px',
+      position: 'absolute'
     },
     uploadWrap: {
       // alignContent: 'center'
@@ -246,11 +258,11 @@ const formStyles = makeStyles(
       height: '250px'
     },
 
-    modal_header:{
-        display: "flex",
-        alignItems: "center",
-        justifyContent: "space-between",
-        borderBottom: "1px solid #f1f1f1"
+    modal_header: {
+      display: 'flex',
+      alignItems: 'center',
+      justifyContent: 'space-between',
+      borderBottom: '1px solid #f1f1f1'
     },
     modal_header_closeIcon: {
       color: color.gray,
@@ -259,67 +271,82 @@ const formStyles = makeStyles(
       height: '25px'
     },
     create: {
-        marginTop: 20,
-        marginBottom: 20,
-        background: "#fff",
-        borderRadius: attr.borderRadius.md,
-        boxShadow: "none"
+      marginTop: 20,
+      marginBottom: 20,
+      background: '#fff',
+      borderRadius: attr.borderRadius.md,
+      boxShadow: 'none'
     },
-    createWrapper:{
-        borderRadius: attr.borderRadius.md,
+    createWrapper: {
+      borderRadius: attr.borderRadius.md
     },
-    compose:{
-        padding: "16px 10px 16px 0px",
-        borderBottom: "1px solid #e8e8e8",
-        height: 100
+    compose: {
+      padding: '16px 10px 16px 0px',
+      borderBottom: '1px solid #e8e8e8',
+      height: 100
     },
-    composeTour:{
-        padding: "16px 10px 16px 0px",
-        borderBottom: "1px solid #e8e8e8",
-        height: 60
+    composeTour: {
+      padding: '16px 10px 16px 0px',
+      borderBottom: '1px solid #e8e8e8',
+      height: 60
     },
-    composeForm:{
-        display: "flex",
-        justifyContent: "flex-start",
-        alignItems: "stretch"
+    composeForm: {
+      display: 'flex',
+      justifyContent: 'flex-start',
+      alignItems: 'stretch'
     },
-    composeFormImage:{
-        height: 42,
-        width: 42,
-        borderRadius: "50%"
+    composeFormImage: {
+      height: 42,
+      width: 42,
+      borderRadius: '50%'
     },
-    composeOptions:{
-        display: "flex",
-        justifyContent: "flex-start",
-        alignItems: "center",
-        borderRadius: `0 0 ${attr.borderRadius.md}px ${attr.borderRadius.md}px`,
-        background: color.white,
-        cursor: "pointer"
+    composeOptions: {
+      display: 'flex',
+      justifyContent: 'flex-start',
+      alignItems: 'center',
+      borderRadius: `0 0 ${attr.borderRadius.md}px ${attr.borderRadius.md}px`,
+      background: color.white,
+      cursor: 'pointer'
     },
-    composeOption:{
-        position: "relative",
-        display: "flex",
-        justifyContent: "flex-start",
-        alignItems: "center",
-        padding: "6px 16px",
-        marginRight: 10,
-        background: "#f7f7f7",
-        borderRadius: 500,
-        fontSize: 15,
-        color: "#888da8",
-        transition: "all 0.3s",
-        cursor: "pointer"
+    composeOption: {
+      position: 'relative',
+      display: 'flex',
+      justifyContent: 'flex-start',
+      alignItems: 'center',
+      padding: '6px 16px',
+      marginRight: 10,
+      background: '#f7f7f7',
+      borderRadius: 500,
+      fontSize: 15,
+      color: '#888da8',
+      transition: 'all 0.3s',
+      cursor: 'pointer'
     },
-    composeIcon:{
-        height: 20,
-        width: 20,
-        transition: "all 0.3s",
-        marginRight: 5
+    composeIcon: {
+      height: 20,
+      width: 20,
+      transition: 'all 0.3s',
+      marginRight: 5
     },
     createText: {
-        marginLeft: 15,
-        width: "100%",
+      marginLeft: 15,
+      width: '100%'
+    },
+    sizeAvatarInfo: {
+      height: 300
+    },
+    sizeBgInfo: {
+      height: 300
+    },
+    fullfieldInput: {
+      width: '100%',
+      marginBlock: 10
+    },
+    fieldInput: {
+      marginBlock: 10
     }
-}), {index: 1});
+  }),
+  { index: 1 }
+);
 
 export default formStyles;

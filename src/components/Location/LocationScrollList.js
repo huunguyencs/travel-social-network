@@ -73,7 +73,7 @@ export function LocationRecommendScrollList(props) {
   const classes = eventStyles();
 
   return (
-    <div>
+    <div style={{ marginBottom: 30 }}>
       {locations.length > 0 ? (
         <ScrollMenu LeftArrow={LeftArrow} RightArrow={RightArrow}>
           {locations.map(item => (

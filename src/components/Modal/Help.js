@@ -28,7 +28,7 @@ const type = [
 
 const filter = createFilterOptions();
 
-export default function Help({ handleClose }) {
+export default function Help({ help, handleClose }) {
   const { auth, socket } = useSelector(state => state);
   const dispatch = useDispatch();
 
@@ -36,7 +36,6 @@ export default function Help({ handleClose }) {
     description: '',
     type: null,
     positionStr: '',
-    position: null,
     contact: ''
   });
 
@@ -87,10 +86,28 @@ export default function Help({ handleClose }) {
     if (imageUpload.length > 0) {
       payload.images = await uploadImages(imageUpload);
     }
-    if (!context.position) {
+
+    navigator.geolocation.getCurrentPosition(position => {
+      payload.position = [position.coords.longitude, position.coords.latitude];
+    });
+    if (!payload.position) {
       const response = await fetch('https://geolocation-db.com/json/');
       const data = await response.json();
       payload.ip = data.IPv4;
+    }
+    if (help) {
+      await customAxios(auth.token)
+        .put(`/help/${help._id}`, payload)
+        .then(res => {
+          socket.emit('updateHelp', res.data.help);
+          setLoading(false);
+          handleClose();
+          dispatch(
+            success({ message: 'Cập nhật yêu cầu trợ giúp thành công!' })
+          );
+        })
+        .catch(() => dispatch(error({ message: 'Có lỗi xảy ra' })));
+      return;
     }
     await customAxios(auth.token)
       .post('/help', payload)
@@ -106,13 +123,11 @@ export default function Help({ handleClose }) {
   };
 
   useEffect(() => {
-    navigator.geolocation.getCurrentPosition(position => {
-      setContext(state => ({
-        ...state,
-        position: [position.coords.longitude, position.coords.latitude]
-      }));
-    });
-  }, []);
+    if (help) {
+      setContext(help);
+      setImageUpload(help.images);
+    }
+  }, [help]);
 
   const classes = modalStyles();
   return (
@@ -264,7 +279,11 @@ export default function Help({ handleClose }) {
                     alt="Error"
                     style={{ width: 150, height: 150, margin: 5 }}
                     onClick={() => removeImage(index)}
-                    src={URL.createObjectURL(item)}
+                    src={
+                      typeof item === 'string'
+                        ? item
+                        : URL.createObjectURL(item)
+                    }
                     title={'Xoá'}
                   />
                 ))}
@@ -279,7 +298,7 @@ export default function Help({ handleClose }) {
             startIcon={loading && <CircularProgress size="15" />}
             disabled={loading}
           >
-            Tạo yêu cầu trợ giúp
+            {help ? 'Chỉnh sửa yêu cầu trợ giúp' : 'Tạo yêu cầu trợ giúp'}
           </Button>
         </div>
       </div>

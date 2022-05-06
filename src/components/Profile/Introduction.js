@@ -50,6 +50,13 @@ function a11yProps(index) {
     'aria-controls': `vertical-tabpanel-${index}`
   };
 }
+
+const GENDER = {
+  male: 'Name',
+  female: 'Nữ',
+  other: 'Khác'
+};
+
 export default function Introduction(props) {
   const { user } = props;
   const classes = profileStyles();
@@ -153,7 +160,7 @@ export default function Introduction(props) {
                       <Typography>
                         Giới tính{' '}
                         <span style={{ fontWeight: 600 }}>
-                          {user.gender === 'male' ? 'Nam' : 'Nữ'}
+                          {GENDER[user.gender]}
                         </span>
                       </Typography>
                     </div>

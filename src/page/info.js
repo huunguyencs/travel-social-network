@@ -3,7 +3,12 @@ import {
   Chip,
   CircularProgress,
   Container,
+  FormControl,
+  FormControlLabel,
+  FormLabel,
   Grid,
+  Radio,
+  RadioGroup,
   TextField
 } from '@material-ui/core';
 import { Autocomplete } from '@material-ui/lab';
@@ -18,7 +23,7 @@ import { formStyles } from '../style';
 import customAxios from '../utils/fetchData';
 import { useDispatch, useSelector } from 'react-redux';
 import { uploadImages } from '../utils/uploadImage';
-import { useHistory } from 'react-router-dom';
+import { useHistory, Redirect } from 'react-router-dom';
 import { getUserInfo } from '../redux/actions/userAction';
 
 const hobbiesOption = [
@@ -32,7 +37,7 @@ const hobbiesOption = [
 ];
 
 export default function InfoPage() {
-  const { token } = useSelector(state => state.auth);
+  const auth = useSelector(state => state.auth);
   const history = useHistory();
   const dispatch = useDispatch();
 
@@ -41,6 +46,7 @@ export default function InfoPage() {
   const [hobbies, setHobbies] = useState([]);
   const [birthday, setBirthday] = useState(null);
   const [andress, setAndress] = useState(null);
+  const [gender, setGender] = useState('male');
   const [state, setState] = useState({
     loading: false,
     error: false
@@ -58,8 +64,12 @@ export default function InfoPage() {
     // console.log(e);
   };
 
+  const handleChangeGender = e => {
+    setGender(e.target.value);
+  };
+
   const handlePass = () => {
-    customAxios(token)
+    customAxios(auth?.token)
       .patch('/user/change_new', {})
       .then(res => {
         setState({
@@ -87,7 +97,7 @@ export default function InfoPage() {
 
     let parseHobbies = hobbies.join(',');
 
-    customAxios(token)
+    customAxios(auth?.token)
       .patch('/user/change_new', {
         avatar: urlAvatar,
         background: urlBg,
@@ -110,6 +120,8 @@ export default function InfoPage() {
       });
   };
 
+  if (!auth?.user?.is_new) return <Redirect to={'/changeinfo'} />;
+
   return (
     <Container style={{ marginTop: 150 }}>
       <Grid container spacing={8}>
@@ -117,7 +129,7 @@ export default function InfoPage() {
           <ChangeImage
             src={avatar}
             setSrc={setAvatar}
-            textSize={20}
+            textSize={16}
             className={classes.sizeAvatarInfo}
           />
         </Grid>
@@ -125,11 +137,73 @@ export default function InfoPage() {
           <ChangeImage
             src={bg}
             setSrc={setBg}
-            textSize={20}
+            textSize={16}
             className={classes.sizeBgInfo}
           />
         </Grid>
       </Grid>
+      <Grid container>
+        <Grid item md={6} sm={12} xs={12}>
+          <MuiPickersUtilsProvider utils={DateFnsUtils}>
+            <KeyboardDatePicker
+              name="birthday"
+              disableToolbar
+              variant="inline"
+              format="dd/MM/yyyy"
+              margin="normal"
+              id="birthday"
+              label="Ngày sinh"
+              KeyboardButtonProps={{
+                'aria-label': 'change date'
+              }}
+              onChange={handleChangeDate}
+              value={birthday}
+              className={classes.fieldInput}
+            />
+          </MuiPickersUtilsProvider>
+        </Grid>
+        <Grid item md={6} sm={12} xs={12}>
+          <FormControl component="fieldset" className={classes.fieldInput}>
+            <FormLabel component="legend">Giới tính</FormLabel>
+            <RadioGroup
+              aria-label="gender"
+              name="gender1"
+              value={gender}
+              onChange={handleChangeGender}
+              row
+            >
+              <FormControlLabel
+                value="male"
+                control={<Radio />}
+                label="Nam"
+                labelPlacement="end"
+              />
+              <FormControlLabel
+                value="female"
+                control={<Radio />}
+                label="Nữ"
+                labelPlacement="end"
+              />
+              <FormControlLabel
+                value="other"
+                control={<Radio />}
+                label="Khác"
+                labelPlacement="end"
+              />
+            </RadioGroup>
+          </FormControl>
+        </Grid>
+      </Grid>
+      <div>
+        <TextField
+          label="Địa chỉ"
+          variant="outlined"
+          name="andress"
+          onChange={e => setAndress(e.target.value)}
+          value={andress}
+          className={classes.fullfieldInput}
+        />
+      </div>
       <Autocomplete
         multiple
         id="tags-filled"
@@ -150,36 +224,16 @@ export default function InfoPage() {
             placeholder="Favorites"
           />
         )}
+        className={classes.fullfieldInput}
       />
-      <div>
-        <TextField
-          label="Địa chỉ"
-          variant="outlined"
-          name="andress"
-          onChange={e => setAndress(e.target.value)}
-          value={andress}
-          className={classes.fullField}
-        />
-      </div>
-      <MuiPickersUtilsProvider utils={DateFnsUtils}>
-        <KeyboardDatePicker
-          name="birthday"
-          disableToolbar
-          variant="inline"
-          format="dd/MM/yyyy"
-          margin="normal"
-          id="birthday"
-          label="Ngày sinh"
-          KeyboardButtonProps={{
-            'aria-label': 'change date'
-          }}
-          onChange={handleChangeDate}
-          value={birthday}
-          // className={classes.fullField}
-        />
-      </MuiPickersUtilsProvider>
       {state.error && <span>Có lỗi xảy ra!</span>}
-      <div style={{ display: 'flex', justifyContent: 'space-between' }}>
+      <div
+        style={{
+          display: 'flex',
+          justifyContent: 'space-between',
+          marginTop: 50
+        }}
+      >
         <div>
           <Button
             variant="contained"

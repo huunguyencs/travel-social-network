@@ -1,10 +1,12 @@
 import { Container, makeStyles } from '@material-ui/core';
 import React, { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
+import { Redirect } from 'react-router-dom';
 
 import FeedTourSave from '../components/Feed/FeedTourSave';
 import SpeedDialButton from '../components/SpeedDialBtn';
 import { getTourSaved } from '../redux/callApi/tourCall';
+import { getToken } from '../utils/token';
 
 const useStyle = makeStyles(theme => ({
   container: {
@@ -42,6 +44,9 @@ export default function TourSavedPage() {
   useEffect(() => {
     document.title = 'Đã lưu';
   }, []);
+
+  const rfToken = getToken();
+  if (!rfToken) return <Redirect to="/login" />;
 
   return (
     <>
