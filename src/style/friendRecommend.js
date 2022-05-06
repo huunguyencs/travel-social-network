@@ -11,6 +11,12 @@ const friendCardStyles = makeStyles(
       backgroundColor: color.white,
       padding: 10
     },
+    tourRecommend:{
+      borderRadius: attr.borderRadius.md,
+      color: color.text,
+      backgroundColor: color.white,
+      padding: 10
+    },
     friendHeader: {
       borderBottom: `1px solid ${color.gray}`,
       padding: 5
@@ -67,16 +73,18 @@ const friendCardStyles = makeStyles(
 
     //recommend tour card
     list:{
-
+      paddingBottom: 0
     },
     itemWrapper:{
       marginBottom: 5,
-      height: 190,
+      height: 170,
+      border: "1px solid #0000001f",
+      borderRadius: attr.borderRadius.md
     },
     itemImage:{
       cursor: "pointer",
       position: "relative",
-      height: "100%",
+      height: "70%",
       overflow:"hidden"
     },
     image:{
@@ -107,6 +115,18 @@ const friendCardStyles = makeStyles(
       lineHeight: 1.75,
       fontSize: 20,
       backgroundImage: "linear-gradient(to top, rgba(0, 0, 0, 0.3) 0, rgba(0, 0, 0, 0.25) 50%, rgba(0, 0, 0, 0.1) 75%, rgba(0, 0, 0, 0) 100%)"
+    },
+    username:{
+      fontSize: 16,
+      fontWeight: 500,
+      cursor: 'pointer'
+    },
+    subheader:{
+      fontSize: '13px',
+      color:"#0000008a",
+      [theme.breakpoints.down('sm')]: {
+        fontSize: '10px'
+      }
     }
   }),
   { index: 1 }

@@ -42,7 +42,7 @@ import ChatIcon from '../Icons/Chat';
 import Help from '../Modal/Help';
 
 export default function Header(props) {
-  const { auth, notify } = useSelector(state => state);
+  const { auth, notify, message } = useSelector(state => state);
   const user = auth.user;
   const dispatch = useDispatch();
   const history = useHistory();
@@ -94,6 +94,12 @@ export default function Header(props) {
   const calculateUnSeen = notify => {
     return notify.filter(item => !isSeen(item)).length;
   };
+  const calculateMessageUnSeen = conversations => {
+    console.log("conversations", conversations)
+    return conversations?.filter(conversation  => 
+         ! conversation.latestMessage.seen?.find(item => item.member === auth.user._id)?.isSeen
+        ).length;
+  };
 
   const markAllReadClick = () => {
     // console.log("remove");
@@ -119,7 +125,7 @@ export default function Header(props) {
   ));
 
   return (
-    <AppBar style={{ zIndex: 2 }}>
+    <AppBar style={{ zIndex: 100 }}>
       <Toolbar className={classes.toolbar}>
         <Link to="/" style={{ display: 'flex', alignItems: 'center' }}>
           {/* <Typography variant="h6" className={classes.logo}>
@@ -412,7 +418,10 @@ export default function Header(props) {
                 to="/message"
                 title="Tin nhắn"
               >
-                <Badge>
+                <Badge
+                  badgeContent={calculateMessageUnSeen(message.conversations)}
+                  color="secondary"
+                >
                   <ChatIcon />
                 </Badge>
               </IconButton>
