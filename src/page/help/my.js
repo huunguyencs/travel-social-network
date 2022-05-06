@@ -1,9 +1,11 @@
 import { Container, Grid } from '@material-ui/core';
 import React, { useEffect, useState } from 'react';
 import { useSelector } from 'react-redux';
+import { Redirect } from 'react-router-dom';
 import HelpCard from '../../components/Help/HelpCard';
 import Loading from '../../components/Loading';
 import customAxios from '../../utils/fetchData';
+import { getToken } from '../../utils/token';
 
 export default function MyHelpPage() {
   const { token } = useSelector(state => state.auth);
@@ -34,6 +36,9 @@ export default function MyHelpPage() {
       getList(token);
     }
   }, [token]);
+
+  const rfToken = getToken();
+  if (!rfToken) return <Redirect to="/login" />;
 
   if (loading)
     return (

@@ -26,10 +26,14 @@ export default function PostDetail() {
   }, [id, dispatch, auth.token]);
 
   useEffect(() => {
-    if (post.posts?.length > 0 && post.posts[0]?.userId) {
+    if (
+      post.posts?.length > 0 &&
+      post.posts[0]?.userId &&
+      id === post.posts[0]._id
+    ) {
       document.title = 'Bài viết của ' + post.posts[0].userId.fullname;
     }
-  }, [post.posts]);
+  }, [post.posts, id]);
 
   const tryAgain = () => {
     if (id) {
@@ -67,7 +71,7 @@ export default function PostDetail() {
                     Có lỗi vui lòng thử lại
                   </Typography>
                 ) : (
-                  <Post post={post.posts[0]} />
+                  post?.posts?.length === 1 && <Post post={post.posts[0]} />
                 )}
               </div>
             </div>

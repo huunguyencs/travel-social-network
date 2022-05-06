@@ -45,7 +45,6 @@ export default function AdminEventContributeDetail() {
 
   useEffect(() => {
     getEvent(subpage);
-    console.log(subpage);
   }, [subpage]);
 
   useEffect(() => {

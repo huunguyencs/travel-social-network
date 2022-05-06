@@ -6,6 +6,7 @@ import { useSelector } from 'react-redux';
 import { Link, useParams } from 'react-router-dom';
 import HelpCard from '../../components/Help/HelpCard';
 import Loading from '../../components/Loading';
+import ImageLightBox from '../../components/Modal/ImageLightBox';
 import KEY from '../../key/googlemap';
 import customAxios from '../../utils/fetchData';
 import { NotFound } from '../404';
@@ -66,7 +67,7 @@ export default function HelpDetailPage() {
       {help && (
         <Grid container spacing={5}>
           <Grid item lg={4} md={4} sm={12}>
-            <HelpCard help={help} />
+            <HelpCard help={help} detail />
           </Grid>
           <Grid item lg={8} md={8} sm={12}>
             <div style={{ height: 500 }}>
@@ -92,6 +93,26 @@ export default function HelpDetailPage() {
               )}
             </div>
           </Grid>
+
+          {help.images && (
+            <Grid item lg={12} md={12} sm={12}>
+              <div style={{ display: 'flex' }}>
+                {help.images.map(item => (
+                  <ImageLightBox
+                    src={item}
+                    key={item}
+                    style={{
+                      margin: 10,
+                      width: 250,
+                      height: 200,
+                      cursor: 'pointer'
+                    }}
+                    alt="Lỗi"
+                  />
+                ))}
+              </div>
+            </Grid>
+          )}
         </Grid>
       )}
     </Container>

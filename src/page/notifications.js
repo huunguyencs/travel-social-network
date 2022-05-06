@@ -1,11 +1,13 @@
 import { Box, Container, List, Typography } from '@material-ui/core';
 import React, { useEffect, useState } from 'react';
 import { useSelector } from 'react-redux';
+import { Redirect } from 'react-router-dom';
 import Loading from '../components/Loading';
 
 import NotificationItem from '../components/Notifications';
 import { notificationStyles } from '../style';
 import customAxios from '../utils/fetchData';
+import { getToken } from '../utils/token';
 
 export default function NotificationPage(props) {
   const classes = notificationStyles();
@@ -83,6 +85,9 @@ export default function NotificationPage(props) {
       getNotifications(token);
     }
   }, [token]);
+
+  const rfToken = getToken();
+  if (!rfToken) return <Redirect to="/login" />;
 
   return (
     <Box className={classes.container}>

@@ -10,7 +10,7 @@ import {
 import { CheckCircle } from '@material-ui/icons';
 import React, { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { useHistory } from 'react-router-dom';
+import { Redirect, useHistory } from 'react-router-dom';
 
 import {
   BasicServiceInfo,
@@ -19,7 +19,7 @@ import {
 import { getProvinces } from '../redux/callApi/locationCall';
 import { createService } from '../redux/callApi/serviceCall';
 import { addServiceStyles } from '../style';
-import Blank from './blank';
+import { getToken } from '../utils/token';
 
 function getStep() {
   return ['Thông tin cơ bản', 'Thông tin chi tiết', 'Hoàn thành'];
@@ -117,7 +117,8 @@ export default function AddServicePage() {
         auth.user._id,
         {
           ...context,
-          attribute: { ...detail }
+          attribute: { ...detail },
+          position: [context.position.lng, context.position.lat]
         },
         images,
         () => {
@@ -141,9 +142,14 @@ export default function AddServicePage() {
     document.title = 'Thêm dịch vụ';
   }, []);
 
+  const rfToken = getToken();
+  if (!rfToken) return <Redirect to="/login" />;
+
+  if (auth?.user && auth?.user.role !== 1) return <Redirect to="/" />;
+
   return (
     <>
-      {auth.user && auth.user.role === 1 ? (
+      {auth?.user && (
         <Container className={classes.root}>
           <Stepper activeStep={activeStep}>
             {step.map(label => (
@@ -194,8 +200,6 @@ export default function AddServicePage() {
             </div>
           </div>
         </Container>
-      ) : (
-        <Blank />
       )}
     </>
   );

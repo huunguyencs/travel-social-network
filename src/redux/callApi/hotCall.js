@@ -47,3 +47,21 @@ export const getHotLocation = (resolve, reject) => dispatch => {
     reject();
   }
 };
+
+export const getRecommendLocation = (token, resolve, reject) => dispatch => {
+  try {
+    customAxios(token)
+      .get('/location/foryou')
+      .then(res => {
+        dispatch(hotAction.getRecommendLocation(res.data.locations));
+        resolve();
+      })
+      .catch(() => {
+        dispatch(hotAction.getRecommendLocation([]));
+        reject();
+      });
+  } catch (error) {
+    dispatch(hotAction.getHotLocation([]));
+    reject();
+  }
+};

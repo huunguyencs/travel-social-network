@@ -260,7 +260,7 @@ export default function CreatePostForm(props) {
           </div>
         </Paper>
       ) : (
-        <LoginModal />
+        <LoginModal handleClose={handleClose} />
       )}
     </>
   );

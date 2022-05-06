@@ -32,6 +32,7 @@ function HomePage() {
     )
       return;
     dispatch(getPosts(auth.token));
+    console.log('get post');
   }, [dispatch, auth.token, post]);
 
   useEffect(() => {

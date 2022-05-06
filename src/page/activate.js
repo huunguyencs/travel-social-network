@@ -51,6 +51,7 @@ export default function ActivatePage() {
       });
     }
   }, [token]);
+
   return (
     <Grid container style={{ margin: 0, padding: 0 }}>
       <SpeedDialButton />

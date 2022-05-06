@@ -1,8 +1,10 @@
 import {
+  Backdrop,
   Button,
   Card,
   CardActions,
   CardContent,
+  Modal,
   Typography
 } from '@material-ui/core';
 import { Message } from '@material-ui/icons';
@@ -14,8 +16,9 @@ import { updateHelp } from '../../redux/actions/helpAction';
 import { createNotify } from '../../redux/callApi/notifyCall';
 import { timeAgo } from '../../utils/date';
 import customAxios from '../../utils/fetchData';
+import Help from '../Modal/Help';
 
-export default function HelpCard({ help, handleRemove }) {
+export default function HelpCard({ help, handleRemove, detail }) {
   const { auth, socket } = useSelector(state => state);
   const dispatch = useDispatch();
 
@@ -23,6 +26,7 @@ export default function HelpCard({ help, handleRemove }) {
   const [own, setOwn] = useState(false);
   const [loadingRemove, setLoadingRemove] = useState(false);
   const [loadingHelp, setLoadingHelp] = useState(false);
+  const [showUpdate, setShowUpdate] = useState(false);
 
   const canHelp = () => {
     setLoadingHelp(true);
@@ -83,6 +87,12 @@ export default function HelpCard({ help, handleRemove }) {
     }
   }, [auth.user, help.state, own]);
 
+  const ref = React.createRef();
+
+  const UpdateHelpRef = React.forwardRef((props, ref) => (
+    <Help innerRef={ref} {...props} />
+  ));
+
   return (
     <Card>
       <CardContent>
@@ -110,23 +120,55 @@ export default function HelpCard({ help, handleRemove }) {
             ? 'Chưa có ai giúp đỡ'
             : `Đã có ${help.state.length} người giúp`}
         </Typography>
-        <Button component={Link} to={`/help/${help._id}`} variant="contained">
-          Chi tiết
-        </Button>
+        {!detail && (
+          <Button component={Link} to={`/help/${help._id}`} variant="contained">
+            Chi tiết
+          </Button>
+        )}
       </CardContent>
       {auth.user && (
         <CardActions
           style={{ display: 'flex', justifyContent: 'space-between' }}
         >
           {own ? (
-            <Button
-              size="small"
-              variant="outlined"
-              onClick={removeHelp}
-              disabled={loadingRemove}
-            >
-              Xóa yêu cầu trợ giúp
-            </Button>
+            <>
+              <Button
+                size="small"
+                variant="outlined"
+                onClick={removeHelp}
+                disabled={loadingRemove}
+              >
+                Xóa yêu cầu trợ giúp
+              </Button>
+              <Button
+                size="small"
+                variant="outlined"
+                onClick={() => setShowUpdate(true)}
+              >
+                Cập nhật yêu cầu trợ giúp
+              </Button>
+              <Modal
+                aria-labelledby="create-post"
+                aria-describedby="create-post-modal"
+                style={{
+                  display: 'flex',
+                  alignItems: 'center',
+                  justifyContent: 'center'
+                }}
+                open={showUpdate}
+                onClose={() => setShowUpdate(false)}
+                closeAfterTransition
+                BackdropComponent={Backdrop}
+                BackdropProps={{
+                  timeout: 500
+                }}
+              >
+                <UpdateHelpRef
+                  ref={ref}
+                  handleClose={() => setShowUpdate(false)}
+                />
+              </Modal>
+            </>
           ) : (
             <>
               {!helped && (

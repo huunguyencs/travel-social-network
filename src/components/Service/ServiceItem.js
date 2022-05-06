@@ -381,7 +381,10 @@ function ServiceDetail(props) {
           {service.position && (
             <div style={{ margin: 20 }}>
               <MapCard
-                position={service.position}
+                position={{
+                  lng: service.position[0],
+                  lat: service.position[1]
+                }}
                 zoom={12}
                 name={service.name}
                 height={300}

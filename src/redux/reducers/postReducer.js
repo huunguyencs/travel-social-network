@@ -22,7 +22,7 @@ const postRecuder = (state = INIT_STATE, action) => {
         page: 1,
         loadingFirst: false,
         error: null,
-        hasMore: action.payload.posts.length >= 5,
+        hasMore: action.payload.posts.length >= 10,
         postId: action.payload.postId,
         id: action.payload.id
       };
@@ -44,14 +44,13 @@ const postRecuder = (state = INIT_STATE, action) => {
       };
     }
     case POST_TYPES.GET_MORE_POSTS: {
-      console.log(action.payload.posts);
       return {
         ...state,
         posts: [...state.posts, ...action.payload.posts],
         page: state.page + 1,
         loading: false,
         error: null,
-        hasMore: action.payload.posts.length >= 5,
+        hasMore: action.payload.posts.length >= 10,
         postId: state.postId.slice(10)
       };
     }

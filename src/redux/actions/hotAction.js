@@ -13,3 +13,10 @@ export const getHotLocation = props => {
     payload: props
   };
 };
+
+export const getRecommendLocation = props => {
+  return {
+    type: HOT_ACTION.GET_RECOMMEND_LOCATION,
+    payload: props
+  };
+};

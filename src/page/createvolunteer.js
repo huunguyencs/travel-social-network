@@ -4,11 +4,12 @@ import { NotFound } from './404';
 import { Grid, Button, Typography } from '@material-ui/core';
 import SpeedDialButton from '../components/SpeedDialBtn';
 // import { homeMenu } from '../constant/menu';
-import { useLocation } from 'react-router-dom';
+import { Redirect, useLocation } from 'react-router-dom';
 import customAxios from '../utils/fetchData';
 import { useSelector } from 'react-redux';
 import AddVolunteer from '../components/Volunteer/AddVolunteer';
 import Loading from '../components/Loading';
+import { getToken } from '../utils/token';
 
 export default function CreateVolunteer() {
   const [state, setState] = useState({
@@ -80,6 +81,9 @@ export default function CreateVolunteer() {
   const tryAgain = () => {
     if (id != null) getVolunteerDetail(id);
   };
+
+  const rfToken = getToken();
+  if (!rfToken) return <Redirect to="/login" />;
 
   return (
     <Grid container style={{ display: 'flex', justifyContent: 'center' }}>
