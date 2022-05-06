@@ -8,10 +8,10 @@ import { NotFound } from '../../../../page/404';
 import customAxios from '../../../../utils/fetchData';
 
 import Feed from '../../../Feed';
-import Post from '../../../Post';
 import { tableStyles } from "../../../../style"
 import Loading from '../../../Loading';
 import { id } from 'date-fns/locale';
+import PostReport from './post';
 
 
 function formatTime(time) {
@@ -200,7 +200,7 @@ function AdminPostReportDetail() {
               Chi tiết
             </Typography>
             <div>
-              <Post
+              <PostReport
                 post={post}
               />
             </div>
