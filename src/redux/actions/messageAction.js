@@ -48,3 +48,17 @@ export const changeName = (props) =>{
         payload: props
     }
 }
+
+export const groupAdd = (props) =>{
+    return{
+        type: MESSAGE_TYPES.GROUP_ADD,
+        payload: props
+    }
+}
+
+export const groupMove = (props) =>{
+    return{
+        type: MESSAGE_TYPES.GROUP_MOVE,
+        payload: props
+    }
+}

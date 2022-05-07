@@ -66,6 +66,7 @@ export const getConversations = (auth) => async(dispatch)=>{
                     _id: conversation._id, 
                     name: conversation.name,
                     members: conversation.members.filter(member => member._id !== auth.user._id),
+                    groupAdmin: conversation.groupAdmin,
                     latestMessage: {
                         text: conversation.latestMessage?.text,
                         seen: conversation.latestMessage?.seen,
@@ -109,12 +110,43 @@ export const getMessages = (id,auth, socket) => async(dispatch)=>{
 
 export const deleteConversation = (data, auth, next, error) => async(dispatch) =>{ 
     try {
-        await customAxios(auth.token).delete(`/message/delete_conversation/${data}`);
         dispatch(messageAction.deleteConversation(data))
+        await customAxios(auth.token).delete(`/message/delete_conversation/${data}`);
         dispatch(alertAction.success({ message: "Xóa cuộc trò chuyện thành công!" }))
         next();
     } catch (err) {
         error();
+    }
+}
+
+export const moveGroup = (id, auth, next, error) => async(dispatch) =>{ 
+    try {
+        dispatch(messageAction.deleteConversation(id));
+        await customAxios(auth.token).patch(`/message/group_move`,{conversationId: id, userId: auth.user._id});
+        dispatch(alertAction.success({ message: "Rời cuộc trò chuyện!" }));
+        next();
+    } catch (err) {
+        error();
+    }
+}
+export const moveGroupByAdmin = (user, id, auth, next, error) => async(dispatch) =>{ 
+    try {
+        dispatch(messageAction.groupMove({user, id}));
+        await customAxios(auth.token).patch(`/message/group_move`,{conversationId: id, userId: user._id});
+        dispatch(alertAction.success({ message: "Xóa thành công" }));
+        next();
+    } catch (err) {
+        error();
+    }
+}
+export const groupAdd = (user, id, auth) => async(dispatch) =>{ 
+    try {
+        console.log("user",user)
+        dispatch(messageAction.groupAdd({id, user}));
+        await customAxios(auth.token).patch(`/message/group_add`,{conversationId: id, userId: user._id});
+        // dispatch(alertAction.success({ message: "Rời cuộc trò chuyện!" }));
+    } catch (err) {
+       console.log(err)
     }
 }
 
@@ -124,14 +156,15 @@ export const createGroupChat = (users, name, auth, next, error) => async(dispatc
             name,
             members: users.map(item => item._id)
         }
-        console.log("data", data)
+        // console.log("data", data)
         const res = await customAxios(auth.token).post('/message/create_group', data);
-        console.log("data", res.data.conversation)
+        // console.log("data", res.data.conversation)
         const dataConversation ={
             isGroup: res.data.conversation.isGroup,
             _id: res.data.conversation._id, 
             name: res.data.conversation.name,
             members: res.data.conversation.members.filter(member => member._id !== auth.user._id),
+            groupAdmin: res.data.conversation.groupAdmin,
             latestMessage: { }
         }
         dispatch(messageAction.addUser(dataConversation))

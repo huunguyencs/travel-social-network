@@ -22,7 +22,7 @@ import customAxios from '../../utils/fetchData';
 import {createGroupChat} from '../../redux/callApi/messageCall'; 
 
   export default function CreateGroupChat(props) {
-    const { handleClose, update, conversation } = props;
+    const { handleClose } = props;
   
     const dispatch = useDispatch();
   
@@ -35,10 +35,10 @@ import {createGroupChat} from '../../redux/callApi/messageCall';
     const { auth} = useSelector(state => state);
   
 
-    const [name, setName] = useState(update ? conversation.name : "");
+    const [name, setName] = useState("");
     const [search, setSearch] = useState("");
     const [searchResult, setSearchResult] = useState([]);
-    const [users, setUsers] = useState(update ? conversation.members : []);
+    const [users, setUsers] = useState([]);
     
     const classes = formStyles();
 
@@ -54,14 +54,13 @@ import {createGroupChat} from '../../redux/callApi/messageCall';
         }
     }
     const handleAdd = (user) => {
-        users.forEach(item => {
-            if(item._id === user._id) {
-                setError("Đã thêm thành viên!")
-                return;
-            }
-        });
-        setUsers([...users, user]);
-        
+        const isVail = users.filter(item => item._id === user._id)
+        if(isVail.length > 0){
+          setError("Đã thêm thành viên!")
+          return;
+        }else{
+          setUsers([...users, user]);
+        }
     }
 
     const removeUser = index => {
@@ -98,7 +97,7 @@ import {createGroupChat} from '../../redux/callApi/messageCall';
           <Paper className={classes.paperContainer}>
             <div className={classes.modal_header}>
               <Typography variant="h5" style={{ marginLeft: '35%' }}>
-                 {update ? `${conversation.name}` : "Tạo nhóm trò chuyện"}
+                  Tạo nhóm trò chuyện
               </Typography>
               <IconButton size="small" onClick={handleClose}>
                 <Close className={classes.modal_header_closeIcon} />
@@ -109,30 +108,6 @@ import {createGroupChat} from '../../redux/callApi/messageCall';
                   <Typography variant='body1' style={{color:"red"}} >{error}</Typography>
               }
               <div className={classes.createWrapper}>
-                {
-                  update ? 
-                  <div style={{display: "flex",}}>
-                    <InputBase
-                        placeholder="Tên nhóm trò chuyện"
-                        title="name"
-                        variant="outlined"
-                        name="name"
-                        id="name"
-                        required
-                        className={classes.user}
-                        value={name}
-                        onChange={e => setName(e.target.value)}
-                    />
-                    <Button
-                        className={classes.button}
-                        onClick={handleSubmit}
-                        disabled={state.loading}
-                        style={{padding: 20,height:40, fontSize: 12, marginLeft:10}}
-                    >
-                        Cập nhập
-                    </Button>
-                  </div>
-                  :
                   <InputBase
                       placeholder="Tên nhóm trò chuyện"
                       title="name"
@@ -144,7 +119,6 @@ import {createGroupChat} from '../../redux/callApi/messageCall';
                       value={name}
                       onChange={e => setName(e.target.value)}
                   />
-                }
                 <form onSubmit={handleSearch}>
                     <InputBase
                         placeholder="Tìm tên thành viên"
@@ -199,7 +173,7 @@ import {createGroupChat} from '../../redux/callApi/messageCall';
               ) : (
                 <>
                   <Create style={{ marginRight: 10 }} />
-                    {update ? "Rời khỏi nhóm" : "Tạo"}
+                   Tạo
                 </>
               )}
             </Button>

@@ -82,6 +82,30 @@ const messageReducer = (state = INIT_STATE, action) => {
                         conversation
                     )
             };
+        case MESSAGE_TYPES.GROUP_ADD:
+            return {
+                ...state,
+                conversations: state.conversations.map(conversation => conversation._id === action.payload.id ?
+                        {
+                            ...conversation,
+                            members: [...conversation.members, action.payload.user]
+                        }:
+                        conversation
+                    )
+            };
+        case MESSAGE_TYPES.GROUP_MOVE:
+            return {
+                ...state,
+                conversations: state.conversations.map(conversation => conversation._id === action.payload.id ?
+                        {
+                            ...conversation,
+                            members: conversation.members.filter(
+                                member => member._id !== action.payload.user._id
+                              )
+                        }:
+                        conversation
+                    )
+            };
         default:
             return state;
 

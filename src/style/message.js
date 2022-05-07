@@ -94,7 +94,10 @@ const messageStyles = makeStyles(
       minHeight: '90vh',
       borderRight: '1px solid #d2d0d0',
       paddingTop: '75px',
-      display: "flex"
+      display: "flex",
+      [theme.breakpoints.down('sm')]: {
+        marginRight: 0,
+      }
     },
     message_box: {
       display: 'flex',

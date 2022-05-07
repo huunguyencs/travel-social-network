@@ -9,19 +9,16 @@ import {
   DialogTitle,
   CircularProgress,
   Button,
-  Modal,
-  Fade,
-  Backdrop,
   List,
   ListItem,
   ListItemText,
   Collapse,
   InputBase,
-  CardHeader,
-  ListItemIcon
+  ListItemIcon,
+  ListItemAvatar
 } from '@material-ui/core';
 import React, { useEffect, useState, useRef } from 'react';
-import { Call, Delete, Send, InfoOutlined, ExpandLess, ExpandMore, Close } from '@material-ui/icons';
+import { Call, Send, InfoOutlined, ExpandLess, ExpandMore, Close, ExitToAppOutlined, DeleteForeverOutlined } from '@material-ui/icons';
 import { messageStyles } from '../../style';
 import { useDispatch, useSelector } from 'react-redux';
 import { useParams, useHistory } from 'react-router-dom';
@@ -30,13 +27,15 @@ import {
   getMessages,
   deleteConversation,
   seenMessage,
-  changeNameConversation
+  changeNameConversation,
+  moveGroup,
+  groupAdd,
+  moveGroupByAdmin
 } from '../../redux/callApi/messageCall';
 import { timeAgo } from '../../utils/date';
 import EmojiPicker from '../Input/EmojiPicker';
 import { Link } from 'react-router-dom';
-import CreateGroupChat from '../Forms/CreateGroupChat';
-
+import customAxios from '../../utils/fetchData';
 
 export default function Chat() {
   const classes = messageStyles();
@@ -109,7 +108,36 @@ export default function Chat() {
           error: false
         });
         handleCloseDelete();
-      })
+      },
+      () => {
+        setState({
+          loading: false,
+          error: true
+        });}
+      )
+    );
+    history.push('/message');
+  };
+
+  const handleMoveGroup = () => {
+    setState({
+      loading: true,
+      error: false
+    });
+    dispatch(
+      moveGroup(id, auth, () => {
+        setState({
+          loading: false,
+          error: false
+        });
+        handleCloseMoveGroup();
+      },
+      () => {
+        setState({
+          loading: false,
+          error: true
+        });}
+      )
     );
     history.push('/message');
   };
@@ -121,19 +149,18 @@ export default function Chat() {
     setShowDelete(true);
   };
 
-  const [showInfo, setShowInfo] = useState(false);
-  // const handleCloseInfo = () => {
-  //   setShowInfo(false);
-  // };
+  const [showMoveGroup, setShowMoveGroup] = useState(false);
+  const handleCloseMoveGroup = () => {
+    setShowMoveGroup(false);
+  };
+  const handleShowMoveGroup = () => {
+    setShowMoveGroup(true);
+  };
+
+  const [showInfo, setShowInfo] = useState(true);
   const handleShowInfo = () => {
     setShowInfo((prev) => !prev);
   };
-
-  // const ref = React.createRef();
-
-  // const CreateGroupChatRef = React.forwardRef((props, ref) => (
-  //     <CreateGroupChat {...props} innerRef={ref} />
-  // ));
   const [openName, setOpenName] = useState(true);
   const [openMembers, setOpenMembers] = useState(false);
   const [openMove, setOpenMove] = useState(false);
@@ -153,7 +180,6 @@ export default function Chat() {
         setError("Cần điền tên nhóm!")
         return;
     }
-    console.log("name",name)
     setState({
         loading: true,
         error: null
@@ -172,6 +198,53 @@ export default function Chat() {
       }
     ));
   };
+
+  const [search, setSearch] = useState("");
+  const [searchResult, setSearchResult] = useState([]);
+  const handleSearch = async (e) => {
+    e.preventDefault();
+    if (!search) return setSearchResult([]);
+    try {
+        const res = await customAxios().get(`/user/search_by_name?fullname=${search}`)
+        const tempData = res.data.users.filter(item => item._id !== auth.user._id)
+        setSearchResult(tempData);
+    } catch (err) {
+        console.log(err)
+    }
+  }
+
+  const handleAdd = (user) => {
+    const isVail = conversation.members.filter(item => item._id === user._id)
+    if(isVail.length > 0){
+      setError("Đã thêm thành viên!")
+      return;
+    }else{
+      dispatch(groupAdd(user, id, auth));
+    }
+  }
+
+  const handleRemoveByAdmin = (member) => {
+    if(auth.user._id === conversation.groupAdmin._id){
+      setState({
+        loading: true,
+        error: false
+      });
+      dispatch(moveGroupByAdmin(member, id , auth, () => {
+          setState({
+            loading: false,
+            error: false
+          });
+        },
+        () => {
+          setState({
+            loading: false,
+            error: true
+          });
+          setError("Xóa không thành công");
+        }
+      ));
+    }
+  }
   return (
     <>
       {
@@ -202,57 +275,9 @@ export default function Chat() {
                 <IconButton>
                   <Call style={{ cursor: 'pointer' }} />
                 </IconButton>
-                <IconButton onClick={handleShowDelete}>
-                  <Delete style={{ color: 'red' }} />
+                <IconButton onClick={handleShowInfo}>
+                  <InfoOutlined />
                 </IconButton>
-                {conversation.isGroup  && 
-                  <IconButton onClick={handleShowInfo}>
-                    <InfoOutlined />
-                  </IconButton>
-                }
-                {/* <Modal
-                    aria-labelledby="create-tour"
-                    aria-describedby="create-tour-modal"
-                    className={classes.modal}
-                    open={showInfo}
-                    onClose={handleCloseInfo}
-                    closeAfterTransition
-                    BackdropComponent={Backdrop}
-                    BackdropProps={{
-                    timeout: 500
-                    }}
-                >
-                    <Fade in={showInfo}>
-                        <CreateGroupChatRef update={true} conversation={conversation} ref={ref} handleClose={handleCloseInfo} />
-                    </Fade>
-                </Modal> */}
-                <Dialog
-                  open={showDelete}
-                  onClose={handleCloseDelete}
-                  aria-labelledby="show-delete-dialog"
-                  aria-describedby="show-delete-dialog-description"
-                >
-                  <DialogTitle id="alert-dialog-title">
-                    {'Bạn có chắc chắn muốn xóa?'}
-                  </DialogTitle>
-                  <DialogContent>
-                    Bạn sẽ không thể khôi phục lại dữ liệu sau khi xóa!
-                  </DialogContent>
-                  <DialogActions>
-                    <Button onClick={handleCloseDelete}>Hủy</Button>
-                    <Button
-                      onClick={handleDelete}
-                      className={classes.buttonDelete}
-                      disabled={state.loading}
-                    >
-                      {state.loading ? (
-                        <CircularProgress size={15} color="inherit" />
-                      ) : (
-                        'Xóa'
-                      )}{' '}
-                    </Button>
-                  </DialogActions>
-                </Dialog>
               </div>
             </div>
             <div className={classes.message_container}>
@@ -369,6 +394,7 @@ export default function Chat() {
                       </Button>
                   </div>
                 </Collapse>
+                {conversation.isGroup && <>
                 <ListItem button onClick={handleClickMembers} className={classes.infoOption}>
                   <ListItemText style={{ fontWeight: 500 }} primary="Thành viên trò chuyện" />
                   {openMembers ? <ExpandLess /> : <ExpandMore />}
@@ -376,91 +402,62 @@ export default function Chat() {
                 <Collapse in={openMembers} timeout="auto" unmountOnExit style={{marginLeft: 15}}>
                   <List component="nav" >
                     {
-                      conversation.members.map(
+                      conversation.members.concat([auth.user]).map(
                         (member, idx) => (
-                          <ListItem 
-                            key={idx}
-                            style={{padding:0}}
-                          >
-                            <CardHeader
-                              style={{padding:0}}
-                              avatar={
-                                  <Avatar
-                                      alt={member.fullname}
-                                      src={member.avatar}
-                                      aria-label='avatar'
-                                  />
+                          <ListItem button key={idx} style={{padding: 0}}>
+                              <ListItemAvatar>
+                                  <Avatar alt="avatar" src={member.avatar}>
+                                  </Avatar>
+                              </ListItemAvatar>
+                              <ListItemText className={classes.message_card_text} primary={member.fullname} secondary={
+                                 member._id === conversation.groupAdmin._id ? "Người tạo nhóm" : "Thành viên"
+                              } 
+                                component={Link} to={`/u/${member._id}`}
+                              />
+                              {
+                                conversation.groupAdmin._id === auth.user._id &&
+                                  <ListItemIcon>
+                                    <IconButton onClick={() => handleRemoveByAdmin(member)}>
+                                      <Close/>
+                                    </IconButton>
+                                  </ListItemIcon>
                               }
-                              action={
-                                  <>
-                                      {
-                                          auth.user && auth.user._id === conversation.groupAdmin && <>
-                                              <IconButton
-                                                  aria-label="settings"
-                                                  // onClick={handleShowMenu}
-                                                  className={classes.action}
-                                                  size='small'
-                                                  // controls={anchorEl ? "post-menu" : undefined}
-                                              >
-                                                  <Close />
-                                              </IconButton>
-                                              {/* <Popper
-                                                  open={Boolean(anchorEl)}
-                                                  anchorEl={anchorEl}
-                                                  onClose={handleCloseMenu}
-                                                  disablePortal
-                                              >
-                                                  <ClickAwayListener onClickAway={handleCloseMenu}>
-                                                      <Paper>
-                                                          <MenuList>
-                                                              <MenuItem component={Link} to={'?edit=true'}><Edit className={classes.menuIcon}/> Chỉnh sửa hành trình</MenuItem>
-                                                              <MenuItem onClick={handleShowDelete}> <Delete className={classes.menuIcon}/>Xóa hành trình</MenuItem>
-                                                              <Dialog
-                                                                  open={showDelete}
-                                                                  onClose={handleCloseDelete}
-                                                                  aria-labelledby="show-delete-dialog"
-                                                                  aria-describedby="show-delete-dialog-description"
-                                                              >
-                                                                  <DialogTitle id="alert-dialog-title">{"Bạn có chắc chắn muốn xóa?"}</DialogTitle>
-                                                                  <DialogContent>Bạn sẽ không thể khôi phục lại dữ liệu sau khi xóa!</DialogContent>
-                                                                  <DialogActions>
-                                                                      <Button onClick={handleCloseDelete}>
-                                                                          Hủy
-                                                                      </Button>
-                                                                      <Button onClick={handleDeleteTour} className={classes.delete}>
-                                                                          {
-                                                                              state.loading ?
-                                                                                  <CircularProgress size={15} color='inherit' /> : "Xóa"
-                                                                          }
-                                                                      </Button>
-                                                                  </DialogActions>
-                                                              </Dialog>
-                                                          </MenuList>
-                                                      </Paper>
-                                                  </ClickAwayListener>
-                                              </Popper> */}
-                                          </>
-                                      }
-                                  </>
-                              }
-                              title={
-                                  <Typography className={classes.username} component={Link} to={`/u/${member._id}`}>
-                                      {member.fullname}
-                                  </Typography>
-                              }
-                              subheader={
-                                  <Typography className={classes.subheader}>
-                                      {conversation.groupAdmin === auth.user._id ? "Người tạo nhóm" : "Thành viên"}
-                                  </Typography>
-                              }
-                          />
                           </ListItem>
                         )
                       )
                     }
-                      
+                  </List>
+                  <form onSubmit={handleSearch}>
+                      <InputBase
+                          placeholder="Thêm thành viên"
+                          title="search"
+                          variant="outlined"
+                          name="search"
+                          id="search"
+                          className={classes.userNameInput}
+                          style={{width: "90%"}}
+                          value={search}
+                          onChange={e => setSearch(e.target.value)}
+                      />
+                  </form>
+                  <List className={classes.message_users_list}>
+                    {
+                    searchResult.length > 0 ? <>
+                          {searchResult.map(user => 
+                              <ListItem button key={user._id} onClick={() => handleAdd(user)}>
+                                  <ListItemAvatar>
+                                      <Avatar alt="avatar" src={user.avatar}>
+                                      </Avatar>
+                                  </ListItemAvatar>
+                                  <ListItemText primary={user.fullname} />
+                              </ListItem>
+                          )}
+                      </> : <></>
+                    }
                   </List>
                 </Collapse>
+                </>
+                }
                 <ListItem button onClick={handleClickMove} className={classes.infoOption}>
                   <ListItemText style={{ fontWeight: 500 }} primary="Quyền riêng tư" />
                   {openMove ? <ExpandLess /> : <ExpandMore />}
@@ -468,19 +465,75 @@ export default function Chat() {
                 <Collapse in={openMove} timeout="auto" unmountOnExit>
                     {
                       conversation.isGroup && 
-                      <ListItem button>
+                      <>
+                      <ListItem button onClick={handleShowMoveGroup}>
                         <ListItemIcon>
-                          <ExpandLess />
+                          <ExitToAppOutlined />
                         </ListItemIcon>
-                        <ListItemText primary="Rời khỏi nhóm" />
+                        <ListItemText primary="Rời khỏi nhóm" style={{marginLeft: -15 }}/>
                       </ListItem>
+                      <Dialog
+                        open={showMoveGroup}
+                        onClose={handleCloseMoveGroup}
+                        aria-labelledby="show-delete-dialog"
+                        aria-describedby="show-delete-dialog-description"
+                      >
+                        <DialogTitle id="alert-dialog-title">
+                          {'Bạn có chắc chắn muốn rời khỏi nhóm?'}
+                        </DialogTitle>
+                        <DialogContent>
+                          Bạn sẽ không thể hoàn tác
+                        </DialogContent>
+                        <DialogActions>
+                          <Button onClick={handleCloseMoveGroup}>Hủy</Button>
+                          <Button
+                            onClick={handleMoveGroup}
+                            className={classes.buttonDelete}
+                            disabled={state.loading}
+                          >
+                            {state.loading ? (
+                              <CircularProgress size={15} color="inherit" />
+                            ) : (
+                              'Rời'
+                            )}{' '}
+                          </Button>
+                        </DialogActions>
+                      </Dialog>
+                      </>
                     }
-                    <ListItem button>
+                    <ListItem button onClick={handleShowDelete}>
                         <ListItemIcon>
-                          <ExpandLess />
+                          <DeleteForeverOutlined style={{ color: 'red' }}/>
                         </ListItemIcon>
-                        <ListItemText primary="Xóa trò chuyện" />
-                      </ListItem>
+                        <ListItemText primary="Xóa trò chuyện" style={{ color: 'red',marginLeft: -15 }} />
+                    </ListItem>
+                    <Dialog
+                      open={showDelete}
+                      onClose={handleCloseDelete}
+                      aria-labelledby="show-delete-dialog"
+                      aria-describedby="show-delete-dialog-description"
+                    >
+                      <DialogTitle id="alert-dialog-title">
+                        {'Bạn có chắc chắn muốn xóa?'}
+                      </DialogTitle>
+                      <DialogContent>
+                        Bạn sẽ không thể khôi phục lại dữ liệu sau khi xóa!
+                      </DialogContent>
+                      <DialogActions>
+                        <Button onClick={handleCloseDelete}>Hủy</Button>
+                        <Button
+                          onClick={handleDelete}
+                          className={classes.buttonDelete}
+                          disabled={state.loading}
+                        >
+                          {state.loading ? (
+                            <CircularProgress size={15} color="inherit" />
+                          ) : (
+                            'Xóa'
+                          )}{' '}
+                        </Button>
+                      </DialogActions>
+                    </Dialog>
                 </Collapse>
               </List>
           </div>
