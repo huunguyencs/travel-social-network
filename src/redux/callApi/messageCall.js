@@ -43,6 +43,17 @@ export const addMessage = (msg, auth, socket) => async(dispatch) =>{
     }
 }
 
+export const changeNameConversation = (name, id, auth, next, error) => async(dispatch) =>{
+    try{
+        dispatch(messageAction.changeName({id, name}));
+        await customAxios(auth.token).patch('/message/rename', {conversationId: id, name});
+        next();
+    }catch(err){
+        console.log(err);
+        error();
+    }
+}
+
 export const getConversations = (auth) => async(dispatch)=>{
     try {
         const res = await customAxios(auth.token).get('/message/get_conversations');

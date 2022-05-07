@@ -11,10 +11,17 @@ import {
   Button,
   Modal,
   Fade,
-  Backdrop
+  Backdrop,
+  List,
+  ListItem,
+  ListItemText,
+  Collapse,
+  InputBase,
+  CardHeader,
+  ListItemIcon
 } from '@material-ui/core';
 import React, { useEffect, useState, useRef } from 'react';
-import { Call, Delete, Send, InfoOutlined } from '@material-ui/icons';
+import { Call, Delete, Send, InfoOutlined, ExpandLess, ExpandMore, Close } from '@material-ui/icons';
 import { messageStyles } from '../../style';
 import { useDispatch, useSelector } from 'react-redux';
 import { useParams, useHistory } from 'react-router-dom';
@@ -22,7 +29,8 @@ import {
   addMessage,
   getMessages,
   deleteConversation,
-  seenMessage
+  seenMessage,
+  changeNameConversation
 } from '../../redux/callApi/messageCall';
 import { timeAgo } from '../../utils/date';
 import EmojiPicker from '../Input/EmojiPicker';
@@ -39,6 +47,7 @@ export default function Chat() {
   const { id } = useParams();
   const refDisplay = useRef();
   const history = useHistory();
+  const [error, setError] = useState("")
   const [state, setState] = useState({
     loading: false,
     error: false
@@ -113,19 +122,56 @@ export default function Chat() {
   };
 
   const [showInfo, setShowInfo] = useState(false);
-  const handleCloseInfo = () => {
-    setShowInfo(false);
-  };
+  // const handleCloseInfo = () => {
+  //   setShowInfo(false);
+  // };
   const handleShowInfo = () => {
-    setShowInfo(true);
+    setShowInfo((prev) => !prev);
   };
 
-  const ref = React.createRef();
+  // const ref = React.createRef();
 
-  const CreateGroupChatRef = React.forwardRef((props, ref) => (
-      <CreateGroupChat {...props} innerRef={ref} />
-  ));
-
+  // const CreateGroupChatRef = React.forwardRef((props, ref) => (
+  //     <CreateGroupChat {...props} innerRef={ref} />
+  // ));
+  const [openName, setOpenName] = useState(true);
+  const [openMembers, setOpenMembers] = useState(false);
+  const [openMove, setOpenMove] = useState(false);
+  const handleClickName = () => {
+    setOpenName(!openName);
+  };
+  const handleClickMembers = () => {
+    setOpenMembers(!openMembers);
+  };
+  const handleClickMove = () => {
+    setOpenMove(!openMove);
+  };
+  const [name, setName] = useState(conversation?.name);
+  const handleSubmitName = e => {
+    e.preventDefault();
+    if (name === "") {
+        setError("Cần điền tên nhóm!")
+        return;
+    }
+    console.log("name",name)
+    setState({
+        loading: true,
+        error: null
+    });
+    dispatch(changeNameConversation(name, id , auth, () => {
+        setState({
+          loading: false,
+          error: false
+        });
+      },
+      () => {
+        setState({
+          loading: false,
+          error: true
+        });
+      }
+    ));
+  };
   return (
     <>
       {
@@ -135,7 +181,6 @@ export default function Chat() {
           <div className={classes.message_box}>
             <div className={classes.message_box_header}>
               <div className={classes.message_box_header_left}>
-                {console.log("conversation",conversation)}
                 <Avatar alt="avatar" src={conversation.members[0].avatar}></Avatar>
                 {
                   conversation.isGroup ? 
@@ -165,7 +210,7 @@ export default function Chat() {
                     <InfoOutlined />
                   </IconButton>
                 }
-                <Modal
+                {/* <Modal
                     aria-labelledby="create-tour"
                     aria-describedby="create-tour-modal"
                     className={classes.modal}
@@ -180,7 +225,7 @@ export default function Chat() {
                     <Fade in={showInfo}>
                         <CreateGroupChatRef update={true} conversation={conversation} ref={ref} handleClose={handleCloseInfo} />
                     </Fade>
-                </Modal>
+                </Modal> */}
                 <Dialog
                   open={showDelete}
                   onClose={handleCloseDelete}
@@ -286,8 +331,161 @@ export default function Chat() {
               </form>
             </div>
           </div>
+          <div className={showInfo ? classes.conversationInfo : classes.conversationInfoHidden} >
+              <Avatar alt="avatar" src={conversation.members[0].avatar} className={classes.infoImage}></Avatar>
+              <Typography variant='h6'>
+                {conversation.name}
+              </Typography>
+              {error !== "" &&
+                  <Typography variant='body1' style={{color:"red"}} >{error}</Typography>
+              }
+              <List component="nav" className={classes.infoOptions}>
+                <ListItem button onClick={handleClickName} className={classes.infoOption}>
+                  <ListItemText style={{ fontWeight: 500 }} primary="Thay đổi tên trò chuyện" />
+                  {openName ? <ExpandLess /> : <ExpandMore />}
+                </ListItem>
+                <Collapse in={openName} timeout="auto" unmountOnExit>
+                  <div style={{display: "flex",}}>
+                      <InputBase
+                          placeholder="Tên nhóm trò chuyện"
+                          title="name"
+                          variant="outlined"
+                          name="name"
+                          id="name"
+                          required
+                          className={classes.userNameInput}
+                          value={name}
+                          onChange={e => setName(e.target.value)}
+                      />
+                      <Button
+                          className={classes.button}
+                          onClick={handleSubmitName}
+                          disabled={state.loading}
+                          style={{padding: 20,height:40, fontSize: 12, marginLeft:10}}
+                      >
+                          {state.loading ? (
+                              <CircularProgress size={15} color="inherit" />
+                            ):"Cập nhập"}
+                      </Button>
+                  </div>
+                </Collapse>
+                <ListItem button onClick={handleClickMembers} className={classes.infoOption}>
+                  <ListItemText style={{ fontWeight: 500 }} primary="Thành viên trò chuyện" />
+                  {openMembers ? <ExpandLess /> : <ExpandMore />}
+                </ListItem>
+                <Collapse in={openMembers} timeout="auto" unmountOnExit style={{marginLeft: 15}}>
+                  <List component="nav" >
+                    {
+                      conversation.members.map(
+                        (member, idx) => (
+                          <ListItem 
+                            key={idx}
+                            style={{padding:0}}
+                          >
+                            <CardHeader
+                              style={{padding:0}}
+                              avatar={
+                                  <Avatar
+                                      alt={member.fullname}
+                                      src={member.avatar}
+                                      aria-label='avatar'
+                                  />
+                              }
+                              action={
+                                  <>
+                                      {
+                                          auth.user && auth.user._id === conversation.groupAdmin && <>
+                                              <IconButton
+                                                  aria-label="settings"
+                                                  // onClick={handleShowMenu}
+                                                  className={classes.action}
+                                                  size='small'
+                                                  // controls={anchorEl ? "post-menu" : undefined}
+                                              >
+                                                  <Close />
+                                              </IconButton>
+                                              {/* <Popper
+                                                  open={Boolean(anchorEl)}
+                                                  anchorEl={anchorEl}
+                                                  onClose={handleCloseMenu}
+                                                  disablePortal
+                                              >
+                                                  <ClickAwayListener onClickAway={handleCloseMenu}>
+                                                      <Paper>
+                                                          <MenuList>
+                                                              <MenuItem component={Link} to={'?edit=true'}><Edit className={classes.menuIcon}/> Chỉnh sửa hành trình</MenuItem>
+                                                              <MenuItem onClick={handleShowDelete}> <Delete className={classes.menuIcon}/>Xóa hành trình</MenuItem>
+                                                              <Dialog
+                                                                  open={showDelete}
+                                                                  onClose={handleCloseDelete}
+                                                                  aria-labelledby="show-delete-dialog"
+                                                                  aria-describedby="show-delete-dialog-description"
+                                                              >
+                                                                  <DialogTitle id="alert-dialog-title">{"Bạn có chắc chắn muốn xóa?"}</DialogTitle>
+                                                                  <DialogContent>Bạn sẽ không thể khôi phục lại dữ liệu sau khi xóa!</DialogContent>
+                                                                  <DialogActions>
+                                                                      <Button onClick={handleCloseDelete}>
+                                                                          Hủy
+                                                                      </Button>
+                                                                      <Button onClick={handleDeleteTour} className={classes.delete}>
+                                                                          {
+                                                                              state.loading ?
+                                                                                  <CircularProgress size={15} color='inherit' /> : "Xóa"
+                                                                          }
+                                                                      </Button>
+                                                                  </DialogActions>
+                                                              </Dialog>
+                                                          </MenuList>
+                                                      </Paper>
+                                                  </ClickAwayListener>
+                                              </Popper> */}
+                                          </>
+                                      }
+                                  </>
+                              }
+                              title={
+                                  <Typography className={classes.username} component={Link} to={`/u/${member._id}`}>
+                                      {member.fullname}
+                                  </Typography>
+                              }
+                              subheader={
+                                  <Typography className={classes.subheader}>
+                                      {conversation.groupAdmin === auth.user._id ? "Người tạo nhóm" : "Thành viên"}
+                                  </Typography>
+                              }
+                          />
+                          </ListItem>
+                        )
+                      )
+                    }
+                      
+                  </List>
+                </Collapse>
+                <ListItem button onClick={handleClickMove} className={classes.infoOption}>
+                  <ListItemText style={{ fontWeight: 500 }} primary="Quyền riêng tư" />
+                  {openMove ? <ExpandLess /> : <ExpandMore />}
+                </ListItem>
+                <Collapse in={openMove} timeout="auto" unmountOnExit>
+                    {
+                      conversation.isGroup && 
+                      <ListItem button>
+                        <ListItemIcon>
+                          <ExpandLess />
+                        </ListItemIcon>
+                        <ListItemText primary="Rời khỏi nhóm" />
+                      </ListItem>
+                    }
+                    <ListItem button>
+                        <ListItemIcon>
+                          <ExpandLess />
+                        </ListItemIcon>
+                        <ListItemText primary="Xóa trò chuyện" />
+                      </ListItem>
+                </Collapse>
+              </List>
+          </div>
         </div>
-      </Grid> 
+        </Grid> 
       }
     </>
   );

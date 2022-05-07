@@ -24,7 +24,8 @@ export default function Conversations() {
         if (!search) return setSearchUsers([]);
         try {
             const res = await customAxios().get(`/user/search_by_name?fullname=${search}`)
-            setSearchUsers(res.data.users);
+            const tempData = res.data.users.filter(item => item._id !== auth.user._id)
+            setSearchUsers(tempData);
         } catch (err) {
             console.log(err)
         }

@@ -71,6 +71,17 @@ const messageReducer = (state = INIT_STATE, action) => {
                 conversations: state.conversations.filter(user => user._id !== action.payload),
                 data: []
             };
+        case MESSAGE_TYPES.CHANGE_NAME:
+            return {
+                ...state,
+                conversations: state.conversations.map(conversation => conversation._id === action.payload.id ?
+                        {
+                            ...conversation,
+                            name: action.payload.name
+                        }:
+                        conversation
+                    )
+            };
         default:
             return state;
 

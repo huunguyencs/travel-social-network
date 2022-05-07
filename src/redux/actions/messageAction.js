@@ -41,3 +41,10 @@ export const seenMessage = (props) =>{
         payload: props
     }
 }
+
+export const changeName = (props) =>{
+    return{
+        type: MESSAGE_TYPES.CHANGE_NAME,
+        payload: props
+    }
+}

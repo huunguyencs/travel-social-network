@@ -47,7 +47,8 @@ import {createGroupChat} from '../../redux/callApi/messageCall';
         if (!search) return setSearchResult([]);
         try {
             const res = await customAxios().get(`/user/search_by_name?fullname=${search}`)
-            setSearchResult(res.data.users);
+            const tempData = res.data.users.filter(item => item._id !== auth.user._id)
+            setSearchResult(tempData);
         } catch (err) {
             console.log(err)
         }

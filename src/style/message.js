@@ -1,5 +1,6 @@
 import { makeStyles } from '@material-ui/core';
 import color from './color';
+import attr from './attr';
 
 const messageStyles = makeStyles(
   theme => ({
@@ -89,18 +90,19 @@ const messageStyles = makeStyles(
     },
 
     message_conversation: {
-      width: '90%',
+      marginRight: 30,
       minHeight: '90vh',
       borderRight: '1px solid #d2d0d0',
       paddingTop: '75px',
-      [theme.breakpoints.down('sm')]: {
-        width: '98%'
-      }
+      display: "flex"
     },
     message_box: {
       display: 'flex',
       justifyContent: 'space-between',
-      flexDirection: 'column'
+      flexDirection: 'column',
+      minWidth: "70%",
+      flexGrow: 1,
+      borderRight: '1px solid #d2d0d0'
     },
     message_box_header: {
       display: 'flex',
@@ -229,7 +231,68 @@ const messageStyles = makeStyles(
       [theme.breakpoints.down('sm')]: {
         display: 'none'
       }
-    }
+    },
+    conversationInfo:{
+      width: 400,
+      height: "100%",
+      padding: 10,
+      display:" flex",
+      flexDirection: "column",
+      alignItems: "center"
+    },
+    conversationInfoHidden:{
+      display: "none"
+    },
+    infoImage:{
+      height: 70,
+      width: 70
+    },
+    infoOptions:{
+      width: "100%"
+    },
+    userNameInput:{
+      width: '100%',
+      marginBottom: 15,
+      border: `1px solid #c1c1c1 `,
+      borderRadius: attr.borderRadius.sm,
+      padding: '5px 10px 5px 10px',
+      marginLeft: 10
+    },
+    infoOption:{
+      padding: 10
+    },
+    button: {
+      position: 'relative',
+      isolation: 'isolate',
+      backgroundColor: color.turquoise,
+      padding: 10,
+      paddingInline: 20,
+      borderRadius: attr.borderRadius.md,
+      [theme.breakpoints.down('sm')]: {
+        padding: 5,
+        paddingInline: 10,
+        marginBlock: 10
+      },
+      '&::before': {
+        content: "''",
+        height: '100%',
+        width: 0,
+        position: 'absolute',
+        top: 0,
+        left: 0,
+        backgroundColor: '#77a694',
+        zIndex: -1,
+        borderRadius: attr.borderRadius.md,
+        transition: 'width 0.25s ease-in'
+      },
+      '&:hover::before': {
+        width: '100%'
+      },
+      '&:hover': {
+        color: color.white
+      },
+      transition: 'color 0.25s ease-in'
+    },
 }), {index: 1});
 
 export default messageStyles;
