@@ -28,6 +28,13 @@ function AdminLocationDetail() {
       .get(`/location/${id}`)
       .then(res => {
         setLocation(res.data.location);
+        // setLocation({
+        //   ...res.data.location,
+        //   position: {
+        //     lng: res.data.location.position[0],
+        //     lat: res.data.location.position[1]
+        //   }
+        // });
         setState({
           notFound: false,
           loading: false,

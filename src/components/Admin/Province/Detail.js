@@ -231,6 +231,13 @@ export default function DetailProvinceAdmin() {
         })
         .then(res => {
           setProvince(res.data.province);
+          // setProvince({
+          //   ...res.data.province,
+          //   position: {
+          //     lng: res.data.province.position[0],
+          //     lat: res.data.province.position[1]
+          //   }
+          // });
           setSrc(res.data.province.image);
           setLoading(false);
           dispatch(success({ message: 'Cập nhật thành công!' }));

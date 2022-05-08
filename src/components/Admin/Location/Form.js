@@ -139,14 +139,17 @@ export default function FormLocationAdmin(props) {
 
     const imageUpload = await uploadImages(imgs);
 
+    const data = {
+      ...location,
+      images: imageUpload,
+      province: provinceOpt._id,
+      position: [location.position.lng, location.position.lat]
+    };
+
     if (Object.keys(err).length === 0 && Object.keys(errPos).length === 0) {
       if (mode === 'edit') {
         await customAxios(token)
-          .patch(`/location/${location._id}`, {
-            ...location,
-            images: imageUpload,
-            province: provinceOpt._id
-          })
+          .patch(`/location/${location._id}`, data)
           .then(res => {
             setLocation(res.data.location);
             dispatch(success({ message: 'Cập nhật địa điểm thành công' }));
@@ -156,10 +159,7 @@ export default function FormLocationAdmin(props) {
           });
       } else if (mode === 'add') {
         await customAxios(token)
-          .post(`/location/create`, {
-            ...location,
-            province: provinceOpt._id
-          })
+          .post(`/location/create`, data)
           .then(res => {
             dispatch(success({ message: 'Thêm địa điểm thành công' }));
           })
