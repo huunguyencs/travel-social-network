@@ -12,7 +12,7 @@ import {
 import { ArrowBack, HighlightOff, Update } from '@material-ui/icons';
 import React, { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { Link, useParams } from 'react-router-dom';
+import { Link } from 'react-router-dom';
 import {
     error as errorAlert,
     success
@@ -24,7 +24,6 @@ import Validator, { nameid } from '../../utils/validator';
 import Loading from '../../components/Loading';
 import MapPicker from '../../components/Map/MapPicker';
 import { NotFound } from '../404';
-import qs from 'query-string';
 import {useLocation} from 'react-router-dom';
 
 function useQuery() {
