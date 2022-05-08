@@ -192,7 +192,7 @@ export default function Province(props) {
     getEvent(province._id);
   };
 
-  const tryAgainService = () => {};
+  const tryAgainService = () => { };
 
   return (
     <>
@@ -234,6 +234,11 @@ export default function Province(props) {
                         <Typography variant="h5">
                           Thông tin về {province.fullname}
                         </Typography>
+                        <div className={classes.contribute}>
+                          <Button component={Link} to={`/province/contribute/${province.name}`}>
+                            Đóng góp Địa điểm
+                          </Button>
+                        </div>
                       </div>
                       <div className={classes.desContent}>
                         <Typography>{province.information}</Typography>

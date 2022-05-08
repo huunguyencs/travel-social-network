@@ -167,6 +167,18 @@ export default function FormLocationAdmin(props) {
             dispatch(error({ message: 'Có lỗi xảy ra' }));
           });
       } else if (mode === 'contribute') {
+        console.log("Contribue");
+        await customAxios(token)
+          .post(`/location_contribute/create`, {
+            ...location,
+            province: provinceOpt._id
+          })
+          .then(res => {
+            dispatch(success({ message: 'Đóng góp địa điểm thành công' }));
+          })
+          .catch(err => {
+            dispatch(error({ message: 'Có lỗi xảy ra' }));
+          });
       }
     }
     setLoading(false);
@@ -181,8 +193,8 @@ export default function FormLocationAdmin(props) {
           {mode === 'edit'
             ? 'Chỉnh sửa thông tin địa điểm'
             : mode === 'add'
-            ? 'Thêm địa điểm'
-            : 'Đóng góp địa điểm'}
+              ? 'Thêm địa điểm'
+              : 'Đóng góp địa điểm'}
         </Typography>
       </div>
       <div>
