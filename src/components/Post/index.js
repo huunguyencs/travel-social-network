@@ -452,7 +452,7 @@ export default function Post(props) {
               !loadingComment &&
               post.commentDetail?.length < post.comments?.length && (
                 <Typography
-                  variant="body2"
+                  variant="body1"
                   className={classes.loadMoreComment}
                   onClick={loadMoreComment}
                 >

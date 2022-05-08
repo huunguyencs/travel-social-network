@@ -12,6 +12,7 @@ import { useSelector, useDispatch } from 'react-redux';
 import { getMoreTours } from '../../redux/callApi/tourCall';
 import { Timeline, Favorite } from '@material-ui/icons';
 import FilterTour from '../../components/Tour/FilterTour';
+import FilterTourHot from '../../components/Tour/FilterTourHot';
 import Loading from '../Loading';
 
 export default function FeedTour(props) {
@@ -21,6 +22,9 @@ export default function FeedTour(props) {
   const [cost, setCost] = useState([0, 100]);
   const [text, setText] = useState('');
   const [isFiltering, setIsFiltering] = useState(false);
+  const [costHot, setCostHot] = useState([0, 100]);
+  const [textHot, setTextHot] = useState('');
+  const [isFilteringHot, setIsFilteringHot] = useState(false);
   const classes = feedStyles();
   const loadTour = () => {
     if (tour.hasMore) {
@@ -40,16 +44,20 @@ export default function FeedTour(props) {
       );
     }
   };
-
   const tryAgain = () => {
     loadTour(tour.page, dispatch, tour.hasMore);
   };
 
   const refFilter = React.createRef();
+  const refFilterHot = React.createRef();
 
   const FilterTourRef = React.forwardRef((props, ref) => (
     <FilterTour innerRef={ref} {...props} />
   ));
+  const FilterTourHotRef = React.forwardRef((props, ref) => (
+    <FilterTourHot innerRef={ref} {...props} />
+  ));
+
   const [value, setValue] = useState(0);
   return (
     <Grid container className={classes.container}>
@@ -85,7 +93,8 @@ export default function FeedTour(props) {
               >
                 <Loading />
               </div>
-            ) : (
+            ) : 
+            value === 0 ? 
               <Feed
                 loadMore={loadTour}
                 tryAgain={tryAgain}
@@ -96,21 +105,46 @@ export default function FeedTour(props) {
                 {tour.tours &&
                   tour.tours.map(tour => <Tour tour={tour} key={tour._id} />)}
               </Feed>
-            )}
+              :
+              <Feed
+                // loadMore={loadTour}
+                // tryAgain={tryAgain}
+                loading={tour.loading}
+                error={tour.error}
+                hasMore={tour.hasMore}
+              >
+                {tour.tourHot &&
+                  tour.tourHot.map(tour => <Tour tour={tour} key={tour._id} />)}
+              </Feed>
+            }
           </div>
         </div>
       </Grid>
-      <Grid item md={4} className={classes.filterTour}>
-        <FilterTourRef
-          ref={refFilter}
-          costParent={cost}
-          setCostParent={setCost}
-          textParent={text}
-          setTextParent={setText}
-          isFiltering={isFiltering}
-          setIsFiltering={setIsFiltering}
-        />
-      </Grid>
+      {
+        value === 0 ? 
+        <Grid item md={4} className={classes.filterTour}>
+          <FilterTourRef
+            ref={refFilter}
+            costParent={cost}
+            setCostParent={setCost}
+            textParent={text}
+            setTextParent={setText}
+            isFiltering={isFiltering}
+            setIsFiltering={setIsFiltering}
+          />
+        </Grid>:
+        <Grid item md={4} className={classes.filterTour}>
+          <FilterTourHotRef
+            ref={refFilterHot}
+            costParent={costHot}
+            setCostParent={setCostHot}
+            textParent={textHot}
+            setTextParent={setTextHot}
+            isFiltering={isFilteringHot}
+            setIsFiltering={setIsFilteringHot}
+          />
+        </Grid>
+      }
     </Grid>
   );
 }

@@ -3,21 +3,28 @@ import { Card, List, Typography, CardHeader, Avatar } from '@material-ui/core';
 import { friendCardStyles } from '../../style';
 import { useHistory } from 'react-router-dom';
 import { useSelector } from 'react-redux';
+// import { getTourSimilar } from '../../redux/callApi/tourCall';
 import { getTours } from '../../redux/callApi/tourCall';
 import { useDispatch } from 'react-redux';
 import { timeAgo } from "../../utils/date";
 import { Link } from "react-router-dom";
 
 export default function TourRecommendCard(props) {
-  const { tour } = useSelector(state => state);
-
+  // const {id} = props;
+  const {tour} = useSelector(state=>state);
   const history = useHistory();
   const dispatch = useDispatch();
   const classes = friendCardStyles();
-
+  // const [tours, setTours] = useState([])
+  // useEffect(() => {
+  //   dispatch(getTourSimilar(id),(data)=>{
+  //     setTours(data)
+  //   });
+  // }, [dispatch, id]);
   useEffect(() => {
     dispatch(getTours());
   }, [dispatch]);
+
 
   return (
     <Card className={classes.tourRecommend}>
@@ -29,7 +36,7 @@ export default function TourRecommendCard(props) {
       <div>
         <List className={classes.list}>
           {tour?.tours?.length > 0 ? (
-            tour.tours?.slice(0, 4).map(
+            tour?.tours?.slice(0, 4).map(
               item =>
                 !item.shareId && (
                   <div

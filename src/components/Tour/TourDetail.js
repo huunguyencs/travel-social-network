@@ -537,7 +537,7 @@ export default function TourDetail(props) {
                                         </CardContent>
                                     </Card>
                                     <div className={classes.tourRecommend}>
-                                        <TourRecommendCard /> 
+                                        <TourRecommendCard id={tour._id}/> 
                                     </div>
                                     
                                 </Grid>

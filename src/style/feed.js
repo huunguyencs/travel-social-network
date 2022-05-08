@@ -141,7 +141,7 @@ const feedStyles = makeStyles(
     },
     contentSubNav: {
       position: 'sticky',
-      zIndex: 1,
+      zIndex: 2,
       top: 64,
       marginBottom: 10,
       boxShadow: '0px 5px 25px 0px #08070717',
