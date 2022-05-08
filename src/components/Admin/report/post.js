@@ -13,11 +13,11 @@ import {
     InsertLink,
     ChatBubbleOutlineSharp
 } from '@material-ui/icons';
-import InputComment from '../../../Input/Comment';
-import UserList from '../../../Modal/UserList';
-import { likePost, unlikePost } from '../../../../redux/callApi/postCall';
-import ImageList from '../../../Modal/ImageList';
-import { postStyles } from '../../../../style';
+import InputComment from '../../Input/Comment';
+import UserList from '../../Modal/UserList';
+import { likePost, unlikePost } from '../../../redux/callApi/postCall';
+import ImageList from '../../Modal/ImageList';
+import { postStyles } from '../../../style';
 
 
 
@@ -29,8 +29,8 @@ import {
 } from '@material-ui/core';
 import { Rating } from '@material-ui/lab';
 
-import { timeAgo } from '../../../../utils/date';
-import { SeeMoreText } from '../../../SeeMoreText';
+import { timeAgo } from '../../../utils/date';
+import { SeeMoreText } from '../../SeeMoreText';
 
 function Header(props) {
     const { post, share } = props;

@@ -4,13 +4,12 @@ import { ArrowBack } from '@material-ui/icons';
 import React, { useEffect, useState } from 'react';
 import { Link, useHistory, useParams } from 'react-router-dom';
 import { useSelector } from 'react-redux';
-import { NotFound } from '../../../../page/404';
-import customAxios from '../../../../utils/fetchData';
+import { NotFound } from '../../../page/404';
+import customAxios from '../../../utils/fetchData';
 
-import Feed from '../../../Feed';
-import { tableStyles } from "../../../../style"
-import Loading from '../../../Loading';
-import { id } from 'date-fns/locale';
+import { tableStyles } from "../../../style"
+import Loading from '../../Loading';
+
 import PostReport from './post';
 
 

@@ -2,16 +2,16 @@ import React from 'react';
 import { Grid } from '@material-ui/core';
 import LeftBar from '../../../components/Leftbar';
 import { adminListMenu } from '../../../constant/adminMenu';
-import AdminPostReportDetail from '../../../components/Admin/report/postReport/id';
+import AdminContribute from '../../../components/Admin/contribute';
 
-export default function AdminPostReportDetailPage(props) {
+export default function AdminContributePage() {
   return (
     <Grid container>
-      <Grid item md={3} sm={2} xs={2}>
+      <Grid item md={3}>
         <LeftBar menuList={adminListMenu} showHelp={false} />
       </Grid>
-      <Grid item md={9} sm={10} xs={10}>
-        <AdminPostReportDetail />
+      <Grid item md={9}>
+        <AdminContribute />
       </Grid>
     </Grid>
   );

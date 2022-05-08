@@ -64,7 +64,7 @@ export default function AdminLocationContribute(props) {
     const getAllLocations = async (token) => {
         setLoading(true);
         setError(null);
-        await customAxios(token).get('/location/all?admin=true').then(res => {
+        await customAxios(token).get('/location_contribute/all').then(res => {
             setLocations([]);
             setLoading(false);
         }).catch(err => {

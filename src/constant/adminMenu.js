@@ -1,5 +1,5 @@
 
-import { Accessibility, Dashboard, Event, Explore, LocationCity, LocationOn, Person, PostAdd, HowToReg } from '@material-ui/icons';
+import { Accessibility, Dashboard, Event, Explore, LocationCity, LocationOn, Person, PostAdd, HowToReg, ReportProblem } from '@material-ui/icons';
 
 
 export const adminListMenu = {
@@ -48,6 +48,11 @@ export const adminListMenu = {
         {
             icon: HowToReg,
             name: "Ý kiến đóng góp",
+            link: "/admin/contribute",
+        },
+        {
+            icon: ReportProblem,
+            name: "Báo cáo",
             link: "/admin/report",
         },
     ]

@@ -25,7 +25,7 @@ export default function AdminEventContributeDetail() {
       error: false
     });
     await customAxios()
-      .get(`/event/${id}`)
+      .get(`/event_contribute/${id}`)
       .then(res => {
         setEvent(res.data.event);
         setState({

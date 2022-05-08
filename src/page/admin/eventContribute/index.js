@@ -2,7 +2,7 @@ import React from 'react';
 import { Grid } from '@material-ui/core';
 import LeftBar from '../../../components/Leftbar';
 import { adminListMenu } from '../../../constant/adminMenu';
-import AdminEventContribute from '../../../components/Admin/report/eventContribute';
+import AdminEventContribute from '../../../components/Admin/contribute/eventContribute';
 
 export default function AdminLocationContributePage() {
   return (
