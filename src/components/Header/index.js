@@ -96,9 +96,12 @@ export default function Header(props) {
   };
   const calculateMessageUnSeen = conversations => {
     // console.log("conversations", conversations)
-    return conversations?.filter(conversation  => 
-         ! conversation.latestMessage.seen?.find(item => item.member === auth.user._id)?.isSeen
-        ).length;
+    return conversations?.filter(
+      conversation =>
+        !conversation.latestMessage.seen?.find(
+          item => item.member === auth.user._id
+        )?.isSeen
+    ).length;
   };
 
   const markAllReadClick = () => {
@@ -125,7 +128,7 @@ export default function Header(props) {
   ));
 
   return (
-    <AppBar style={{ zIndex: 100 }}>
+    <AppBar style={{ zIndex: 10 }}>
       <Toolbar className={classes.toolbar}>
         <Link to="/" style={{ display: 'flex', alignItems: 'center' }}>
           {/* <Typography variant="h6" className={classes.logo}>

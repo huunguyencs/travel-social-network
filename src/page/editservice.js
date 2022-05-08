@@ -8,21 +8,30 @@ import {
   Typography
 } from '@material-ui/core';
 import { CheckCircle } from '@material-ui/icons';
-import React, { useEffect, useState } from 'react';
+import React, { useCallback, useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { Redirect, useHistory } from 'react-router-dom';
+import { Redirect, useHistory, useLocation } from 'react-router-dom';
 
 import {
   BasicServiceInfo,
   DetailServiceInfo
 } from '../components/Service/AddService';
 import { getProvinces } from '../redux/callApi/locationCall';
-import { createService } from '../redux/callApi/serviceCall';
+import { updateService } from '../redux/callApi/serviceCall';
 import { addServiceStyles } from '../style';
+import customAxios from '../utils/fetchData';
 import { getToken } from '../utils/token';
+import * as alertAction from '../redux/actions/alertAction';
+import Loading from '../components/Loading';
 
 function getStep() {
   return ['Thông tin cơ bản', 'Thông tin chi tiết', 'Hoàn thành'];
+}
+
+function useQuery() {
+  const { search } = useLocation();
+
+  return React.useMemo(() => new URLSearchParams(search), [search]);
 }
 
 function Complele(props) {
@@ -53,10 +62,13 @@ function getStepContent(step, props) {
   }
 }
 
-export default function AddServicePage() {
+export default function EditServicePage() {
   const classes = addServiceStyles();
   const [error, setError] = useState('');
   const [loading, setLoading] = useState(false);
+  const [loadingService, setLoadingService] = useState(false);
+
+  const id = useQuery().get('id');
 
   const { auth, location } = useSelector(state => state);
   const dispatch = useDispatch();
@@ -111,10 +123,12 @@ export default function AddServicePage() {
       return;
     }
     setLoading(true);
+    console.log(detail);
     dispatch(
-      createService(
+      updateService(
         auth.token,
         auth.user._id,
+        context._id,
         {
           ...context,
           attribute: { ...detail },
@@ -139,6 +153,36 @@ export default function AddServicePage() {
     }
   }, [dispatch, location.provinces]);
 
+  const getService = useCallback(() => {
+    setLoadingService(true);
+    customAxios()
+      .get(`/service/${id}`)
+      .then(res => {
+        console.log(res.data.service);
+        setContext({
+          ...res.data.service,
+          position: {
+            lng: res.data.service.position[0],
+            lat: res.data.service.position[1]
+          }
+        });
+        setDetail(res.data.service?.attribute);
+        setImages(res.data.service?.images);
+        setLoadingService(false);
+      })
+      .catch(() => {
+        setLoadingService(false);
+        history.push('/');
+        dispatch(alertAction.error({ message: 'Có lỗi xảy ra' }));
+      });
+  }, [id, history, dispatch]);
+
+  useEffect(() => {
+    if (id) {
+      getService();
+    }
+  }, [id, getService]);
+
   useEffect(() => {
     document.title = 'Thêm dịch vụ';
   }, []);
@@ -147,6 +191,8 @@ export default function AddServicePage() {
   if (!rfToken) return <Redirect to="/login" />;
 
   if (auth?.user && auth?.user.role !== 1) return <Redirect to="/" />;
+
+  if (loadingService) return <Loading />;
 
   return (
     <>

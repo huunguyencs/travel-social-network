@@ -52,7 +52,7 @@ function a11yProps(index) {
 }
 
 const GENDER = {
-  male: 'Name',
+  male: 'Nam',
   female: 'Nữ',
   other: 'Khác'
 };
@@ -201,10 +201,7 @@ export default function Introduction(props) {
                     ) : (
                       <>
                         <LibraryMusic className={classes.introTabPanelIcon} />
-                        <Typography>
-                          {' '}
-                          Không có Sở thích để hiển thị nào khác để hiển thị
-                        </Typography>
+                        <Typography> Không có Sở thích để hiển thị.</Typography>
                       </>
                     )}
                   </div>

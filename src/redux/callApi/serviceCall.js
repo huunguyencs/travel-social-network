@@ -3,90 +3,120 @@ import * as serviceAction from '../actions/serviceAction';
 import * as alertAction from '../actions/alertAction';
 import * as imageUtils from '../../utils/uploadImage';
 
-export const getServices = (id, page) => async (dispatch) => {
-    dispatch(serviceAction.loading());
-    try {
-        var res;
-        if (id) {
-            res = await customAxios().get(`/service/get_by_coop/${id}?offset=${page}`);
-        }
-        else {
-            res = await customAxios().get(`/service/services?offset=${page}`)
-        }
-        if (page === 0) {
-            dispatch(serviceAction.getServices({ services: res.data.services }))
-        }
-        else {
-            dispatch(serviceAction.getMoreServices({ services: res.data.services }))
-        }
-    } catch (error) {
-        // console.log(error);
-        dispatch(serviceAction.error())
+export const getServices = (id, page) => async dispatch => {
+  dispatch(serviceAction.loading());
+  try {
+    var res;
+    if (id) {
+      res = await customAxios().get(
+        `/service/get_by_coop/${id}?offset=${page}`
+      );
+    } else {
+      res = await customAxios().get(`/service/services?offset=${page}`);
     }
-}
-
-export const getDetail = (id, next, error) => async (dispatch) => {
-    try {
-        const res = await customAxios().get(`/service/get_detail/${id}`);
-        // console.log(res);
-        dispatch(serviceAction.getDetail({ rate: res.data.rate, attribute: res.data.attribute, id: id }))
-        // console.log(res.data.rate);
-        next();
-    } catch (err) {
-        error();
+    if (page === 0) {
+      dispatch(serviceAction.getServices({ services: res.data.services }));
+    } else {
+      dispatch(serviceAction.getMoreServices({ services: res.data.services }));
     }
-}
+  } catch (error) {
+    // console.log(error);
+    dispatch(serviceAction.error());
+  }
+};
 
-export const reviewService = (id, auth, rate, content, images) => async (dispatch) => {
+export const getDetail = (id, next, error) => async dispatch => {
+  try {
+    const res = await customAxios().get(`/service/get_detail/${id}`);
+    // console.log(res);
+    dispatch(
+      serviceAction.getDetail({
+        rate: res.data.rate,
+        attribute: res.data.attribute,
+        id: id
+      })
+    );
+    // console.log(res.data.rate);
+    next();
+  } catch (err) {
+    error();
+  }
+};
+
+export const reviewService =
+  (id, auth, rate, content, images) => async dispatch => {
     try {
-        let arrImage = [];
+      let arrImage = [];
 
-        if (images && images.length > 0) {
-            arrImage = await imageUtils.uploadImages(images);
-        }
+      if (images && images.length > 0) {
+        arrImage = await imageUtils.uploadImages(images);
+      }
 
-        // console.log(arrImage);
+      // console.log(arrImage);
 
-        const res = await customAxios(auth.token).post(`/service/review/${id}`, {
-            rate, content,
-            images: arrImage
-        });
+      const res = await customAxios(auth.token).post(`/service/review/${id}`, {
+        rate,
+        content,
+        images: arrImage
+      });
 
+      const newReview = {
+        userId: {
+          _id: auth.user._id,
+          fullname: auth.user.fullname,
+          avatar: auth.user.avatar
+        },
+        content: content,
+        rate: rate,
+        images: arrImage
+      };
 
-
-        const newReview = {
-            userId: {
-                _id: auth.user._id,
-                fullname: auth.user.fullname,
-                avatar: auth.user.avatar
-            },
-            content: content,
-            rate: rate,
-            images: arrImage
-        }
-
-        dispatch(serviceAction.reviewService({ id: id, review: newReview, star: res.data.star }))
-
-    } catch (err) {
-        dispatch(alertAction.error({ message: "Có lỗi xảy ra!" }))
-    }
-}
-
-export const createService = (token, userId, data, images_data, next, error) => async (dispatch) => {
-    try {
-        let images = await imageUtils.uploadImages(images_data);
-        const res = await customAxios(token).post('/service/create', {
-            ...data,
-            images: images
+      dispatch(
+        serviceAction.reviewService({
+          id: id,
+          review: newReview,
+          star: res.data.star
         })
-        next();
-        if (userId === res.data.newService.cooperator) {
-            dispatch(serviceAction.addService({ newService: res.data.newService }))
-        }
+      );
+    } catch (err) {
+      dispatch(alertAction.error({ message: 'Có lỗi xảy ra!' }));
+    }
+  };
 
+export const createService =
+  (token, userId, data, images_data, next, error) => async dispatch => {
+    try {
+      let images = await imageUtils.uploadImages(images_data);
+      const res = await customAxios(token).post('/service/create', {
+        ...data,
+        images: images
+      });
+      next();
+      if (userId === res.data.newService.cooperator) {
+        dispatch(serviceAction.addService({ newService: res.data.newService }));
+      }
+    } catch (err) {
+      error();
+      dispatch(alertAction.error({ message: 'Có lỗi xảy ra!' }));
     }
-    catch (err) {
-        error();
-        dispatch(alertAction.error({ message: "Có lỗi xảy ra!" }))
+  };
+
+export const updateService =
+  (token, userId, serviceId, data, images_data, next, error) =>
+  async dispatch => {
+    try {
+      let images = await imageUtils.uploadImages(images_data);
+      const res = await customAxios(token).put(`/service/${serviceId}`, {
+        ...data,
+        images: images
+      });
+      dispatch(alertAction.success({ message: 'Cập nhật thành công!' }));
+      next();
+      if (userId === res.data.service.cooperator) {
+        dispatch(serviceAction.updateService({ service: res.data.service }));
+      }
+    } catch (err) {
+      error();
+      dispatch(alertAction.error({ message: 'Có lỗi xảy ra!' }));
     }
-}
+  };

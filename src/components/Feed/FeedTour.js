@@ -67,6 +67,11 @@ export default function FeedTour(props) {
             <BottomNavigation
               value={value}
               onChange={(event, newValue) => {
+                window.scrollTo({
+                  top: 0,
+                  left: 0,
+                  behavior: 'smooth'
+                });
                 setValue(newValue);
               }}
               showLabels
@@ -93,8 +98,7 @@ export default function FeedTour(props) {
               >
                 <Loading />
               </div>
-            ) : 
-            value === 0 ? 
+            ) : value === 0 ? (
               <Feed
                 loadMore={loadTour}
                 tryAgain={tryAgain}
@@ -105,23 +109,14 @@ export default function FeedTour(props) {
                 {tour.tours &&
                   tour.tours.map(tour => <Tour tour={tour} key={tour._id} />)}
               </Feed>
-              :
-              <Feed
-                // loadMore={loadTour}
-                // tryAgain={tryAgain}
-                loading={tour.loading}
-                error={tour.error}
-                hasMore={tour.hasMore}
-              >
-                {tour.tourHot &&
-                  tour.tourHot.map(tour => <Tour tour={tour} key={tour._id} />)}
-              </Feed>
-            }
+            ) : (
+              tour.tourHot &&
+              tour.tourHot.map(tour => <Tour tour={tour} key={tour._id} />)
+            )}
           </div>
         </div>
       </Grid>
-      {
-        value === 0 ? 
+      {value === 0 ? (
         <Grid item md={4} className={classes.filterTour}>
           <FilterTourRef
             ref={refFilter}
@@ -132,7 +127,8 @@ export default function FeedTour(props) {
             isFiltering={isFiltering}
             setIsFiltering={setIsFiltering}
           />
-        </Grid>:
+        </Grid>
+      ) : (
         <Grid item md={4} className={classes.filterTour}>
           <FilterTourHotRef
             ref={refFilterHot}
@@ -144,7 +140,7 @@ export default function FeedTour(props) {
             setIsFiltering={setIsFilteringHot}
           />
         </Grid>
-      }
+      )}
     </Grid>
   );
 }
