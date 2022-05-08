@@ -4,18 +4,14 @@ import { useDispatch, useSelector } from 'react-redux';
 
 import LeftBar from '../../components/Leftbar';
 import FeedTour from '../../components/Feed/FeedTour';
-// import RightBar from "../../components/Rightbar";
 import useStyles from '../../style';
 import { homeMenu } from '../../constant/menu';
 import SpeedDialButton from '../../components/SpeedDialBtn';
-// import Calendar from '../../components/Calendar';
-// import FriendRecommendCard from '../../components/Card/FriendRecommend';
-import { getTours } from '../../redux/callApi/tourCall';
-// import FilterTour from "../../components/Tour/FilterTour";
+import { getTours, getTourHot } from '../../redux/callApi/tourCall';
 
 export default function TourPage(props) {
   const classes = useStyles();
-  const { loading, error, tours, id, loadingFirst } = useSelector(
+  const { loading, error, tours, tourHot, id, loadingFirst } = useSelector(
     state => state.tour
   );
 
@@ -27,10 +23,14 @@ export default function TourPage(props) {
   }, [dispatch, loading, error, tours, id, loadingFirst]);
 
   useEffect(() => {
+    if (loading || loadingFirst || error || tourHot) return;
+    dispatch(getTourHot());
+  }, [dispatch, loading, error, tourHot, loadingFirst]);
+
+  useEffect(() => {
     document.title = 'Hành trình | Triple H';
   }, []);
 
-  // const ref = createRef();
 
   return (
     <>

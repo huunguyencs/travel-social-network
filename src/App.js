@@ -11,6 +11,7 @@ import './App.css';
 import { useLocation } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 import { getFriendRecommend, refreshToken } from './redux/callApi/authCall';
+import { getConversations } from './redux/callApi/messageCall';
 import { io } from 'socket.io-client';
 import SocketClient from './SocketClient';
 import * as SOCKET_TYPES from './redux/constants/index';
@@ -22,7 +23,7 @@ import Loading from './components/Loading';
 function App() {
   const location = useLocation();
 
-  const { auth } = useSelector(state => state);
+  const { auth, message } = useSelector(state => state);
   const dispatch = useDispatch();
 
   const displayHeader = () => {
@@ -43,7 +44,12 @@ function App() {
       dispatch(getNotifies(auth.token));
     }
   }, [dispatch, auth.token]);
-
+  useEffect(() => {
+      if(auth.token){
+        if (message.firstLoad) return;
+        dispatch(getConversations(auth));
+      }
+  }, [message.firstLoad, dispatch, auth])
   useEffect(() => {
     if (auth.token) {
       dispatch(getFriendRecommend(auth.token, 5));

@@ -242,17 +242,16 @@ const SocketClient = () => {
   //add Message
   useEffect(() => {
     socket.on('addMessageToClient', data => {
-      // console.log(data);
       dispatch(messageAction.addMessage(data));
 
       const conversation ={
           isGroup: data.isGroup,
           _id: data.conversation, 
           name: data.name,
-          members: data.isGroup ? [data.senders].concat(data.members) : [data.sender],
+          members: data.isGroup ? [data.sender].concat(data.members.filter(item => item._id !== auth.user._id)) : [data.sender],
           latestMessage: { 
             text: data.text,
-            seen: false,
+            seen: data.members.map(item => ({member: item._id, isSeen:false})),
             createdAt: data.createdAt,
             sender: data.sender
           }
@@ -260,7 +259,7 @@ const SocketClient = () => {
       dispatch(messageAction.addUser(conversation))
     });
     return () => socket.off('addMessageToClient');
-  }, [socket, dispatch]);
+  }, [socket, dispatch, auth.user]);
 
   useEffect(() => {
     socket.on('addHelpToClient', data => {

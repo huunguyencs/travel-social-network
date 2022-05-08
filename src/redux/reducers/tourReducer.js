@@ -55,7 +55,8 @@ const tourReducer = (state = INIT_STATE, action) => {
       return {
         ...state,
         error: null,
-        tours: state.tours.filter(tour => tour._id !== action.payload.id)
+        tours: state.tours.filter(tour => tour._id !== action.payload.id),
+        tourHot: state.tourHot.filter(tour => tour._id !== action.payload.id)
       };
     }
     case TOUR_TYPES.UPDATE_TOUR: {
@@ -63,6 +64,9 @@ const tourReducer = (state = INIT_STATE, action) => {
         ...state,
         error: null,
         tours: state.tours.map(tour =>
+          tour._id === action.payload.tour._id ? action.payload.tour : tour
+        ),
+        tourHot: state.tourHot.map(tour =>
           tour._id === action.payload.tour._id ? action.payload.tour : tour
         )
       };
@@ -77,6 +81,14 @@ const tourReducer = (state = INIT_STATE, action) => {
                 likes: action.payload.likes
               }
             : item
+        ),
+        tourHot: state.tourHot.map(item =>
+          item._id === action.payload.id
+            ? {
+                ...item,
+                likes: action.payload.likes
+              }
+            : item
         )
       };
     }
@@ -84,9 +96,21 @@ const tourReducer = (state = INIT_STATE, action) => {
       let comment =
         state.tours.find(item => item._id === action.payload.id)
           ?.commentDetail || [];
+      if(comment.length === 0){
+        comment = state.tourHot.find(item => item._id === action.payload.id)
+        ?.commentDetail || [];
+      }
       return {
         ...state,
         tours: state.tours.map(item =>
+          item._id === action.payload.id
+            ? {
+                ...item,
+                commentDetail: [...comment, ...action.payload.comments]
+              }
+            : item
+        ),
+        tourHot: state.tourHot.map(item =>
           item._id === action.payload.id
             ? {
                 ...item,
@@ -100,9 +124,22 @@ const tourReducer = (state = INIT_STATE, action) => {
       let comment =
         state.tours.find(item => item._id === action.payload.id)
           ?.commentDetail || [];
+      if(comment.length === 0){
+        comment = state.tourHot.find(item => item._id === action.payload.id)
+        ?.commentDetail || [];
+      }
       return {
         ...state,
         tours: state.tours.map(item =>
+          item._id === action.payload.id
+            ? {
+                ...item,
+                commentDetail: [...comment, action.payload.comment],
+                comments: [...item.comments, action.payload.comment._id]
+              }
+            : item
+        ),
+        tourHot: state.tourHot.map(item =>
           item._id === action.payload.id
             ? {
                 ...item,
@@ -117,6 +154,18 @@ const tourReducer = (state = INIT_STATE, action) => {
       return {
         ...state,
         tours: state.tours.map(item =>
+          item._id === action.payload.tourId
+            ? {
+                ...item,
+                commentDetail: item.commentDetail.map(comment =>
+                  comment._id === action.payload.comment._id
+                    ? action.payload.comment
+                    : comment
+                )
+              }
+            : item
+        ),
+        tourHot: state.tourHot.map(item =>
           item._id === action.payload.tourId
             ? {
                 ...item,
@@ -145,6 +194,19 @@ const tourReducer = (state = INIT_STATE, action) => {
                 )
               }
             : item
+        ),
+        tourHot: state.tourHot.map(item =>
+          item._id === action.payload.tourId
+            ? {
+                ...item,
+                commentDetail: item.commentDetail.filter(
+                  comment => comment._id !== action.payload.id
+                ),
+                comments: item.comments.filter(
+                  comment => comment !== action.payload.id
+                )
+              }
+            : item
         )
       };
     }
@@ -157,7 +219,8 @@ const tourReducer = (state = INIT_STATE, action) => {
     case TOUR_TYPES.GET_TOURS_HOT: {
       return {
         ...state,
-        tourHot: action.payload
+        tourHot: action.payload,
+        loading: false,
       };
     }
     case TOUR_TYPES.ERROR_TOUR: {

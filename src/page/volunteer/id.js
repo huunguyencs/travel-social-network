@@ -57,9 +57,6 @@ export default function VolunteerDetail() {
 
   useEffect(() => {
     getVolunteer(id, auth.token);
-    // volunteer.volunteers.forEach(element => {
-    //     if (element._id === id) setVolunteerDetail(element)
-    // })
   }, [id, auth.token]);
 
   useEffect(() => {
@@ -70,19 +67,6 @@ export default function VolunteerDetail() {
 
   const tryAgain = () => {
     getVolunteer(id, auth.token);
-    // setState({
-    //     loading: true,
-    //     error: false,
-    //     notFound: false,
-    // })
-    // // volunteer.volunteers.forEach(element => {
-    // //     if (element._id === id) setVolunteerDetail(element)
-    // // })
-    // setState({
-    //     loading: false,
-    //     error: false,
-    //     notFound: false,
-    // })
   };
 
   return (
@@ -99,33 +83,34 @@ export default function VolunteerDetail() {
         style={{ padding: 30, backgroundColor: '#fafafa' }}
       >
         {state.notFound ? (
-          <NotFound />
-        ) : state.loading ? (
-          <div
-            style={{
-              display: 'flex',
-              justifyContent: 'center',
-              marginTop: 150
-            }}
-          >
-            <Loading />
-          </div>
-        ) : state.error ? (
-          <div
-            style={{
-              display: 'flex',
-              justifyContent: 'center',
-              marginTop: 150
-            }}
-          >
-            <>
-              <Typography>Có lỗi xảy ra</Typography>
-              <Button onClick={tryAgain}>Thử lại</Button>
-            </>
-          </div>
-        ) : (
-          volunteerDetail && <Volunteer volunteer={volunteerDetail} />
-        )}
+              <NotFound />
+            ) : state.loading ? (
+              <div
+                style={{
+                  display: 'flex',
+                  justifyContent: 'center',
+                  marginTop: 150
+                }}
+              >
+                <Loading />
+              </div>
+            ) : state.error ? (
+              <div
+                style={{
+                  display: 'flex',
+                  justifyContent: 'center',
+                  marginTop: 150
+                }}
+              >
+                <>
+                  <Typography>Có lỗi xảy ra</Typography>
+                  <Button onClick={tryAgain}>Thử lại</Button>
+                </>
+              </div>
+            ) : (
+              volunteerDetail && <Volunteer volunteer={volunteerDetail} />
+            )
+        }
       </Grid>
     </Grid>
   );

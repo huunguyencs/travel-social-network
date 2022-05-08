@@ -3,14 +3,13 @@ import { useLocation, useParams } from 'react-router-dom';
 import { Button, Typography } from '@material-ui/core';
 import { useDispatch, useSelector } from 'react-redux';
 
-import Tour from '../../components/Tour/TourDetailDemo';
+import Tour from '../../components/Tour/TourDetail';
 import customAxios from '../../utils/fetchData';
 import { NotFound } from '../404';
 import { loadTour } from '../../redux/actions/createTourAction';
-// import AddTour from '../../components/Tour/AddTour';
 import { sortTourDate } from '../../utils/utils';
 import Loading from '../../components/Loading';
-import AddTourDemo from '../../components/Tour/AddTourDemo';
+import AddTour from '../../components/Tour/AddTour';
 
 export default function TourDetail(props) {
   const location = useLocation();
@@ -93,9 +92,6 @@ export default function TourDetail(props) {
 
   useEffect(() => {
     if (auth.user && tour) {
-      // let temp = tour.tour.some(item =>
-      //     item.locations.some(item => item.joinIds.findIndex(join => join._id === auth.user._id))
-      // )
       var sum = 0;
       tour.tour.forEach(date => {
         var sumDate = 0;
@@ -106,7 +102,6 @@ export default function TourDetail(props) {
         sum += sumDate;
       });
       setJoinLoc(sum);
-      console.log(sum);
     }
   }, [tour, auth.user]);
 
@@ -142,7 +137,7 @@ export default function TourDetail(props) {
       ) : (
         tour &&
         (edit === 'true' && isOwn ? (
-          <AddTourDemo isUpdate={true} />
+          <AddTour isUpdate={true} />
         ) : (
           <Tour
             tour={tour}

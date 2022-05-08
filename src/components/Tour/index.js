@@ -395,7 +395,7 @@ export default function Tour(props) {
               {tour.commentDetail &&
                 !loadingComment &&
                 tour.commentDetail?.length < tour.comments?.length && (
-                  <Typography variant="body2" onClick={loadMoreComment}>
+                  <Typography variant="body1" onClick={loadMoreComment} className={classes.loadMoreComment}>
                     Xem thêm bình luận
                   </Typography>
                 )}
