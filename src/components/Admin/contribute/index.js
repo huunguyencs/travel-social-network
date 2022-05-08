@@ -19,7 +19,7 @@ function handling(arr) {
   return data;
 }
 
-function getData(reports, locationContributes, eventContributes) {
+function getData(provinceContributes, locationContributes, eventContributes) {
   const data = [
     {
       name: 'Tháng 1',
@@ -95,7 +95,7 @@ function getData(reports, locationContributes, eventContributes) {
     },
   ];
 
-  let report = handling(reports);
+  let report = handling(provinceContributes);
   let location = handling(locationContributes);
   let event = handling(eventContributes);
 
@@ -138,6 +138,7 @@ export default function AdminContribute() {
     await customAxios(token)
       .get('/event_contribute/all')
       .then(res => {
+        setEvents(res.data.events)
         setLoading(false);
       })
       .catch(err => {
@@ -152,7 +153,7 @@ export default function AdminContribute() {
     await customAxios(token)
       .get('/location_contribute/all')
       .then(res => {
-        setLocations([]);
+        setLocations(res.data.locations);
         setLoading(false);
       })
       .catch(err => {
@@ -258,7 +259,7 @@ export default function AdminContribute() {
                     <Legend />
                     <Bar dataKey="location" stackId="a" fill="#8884d8" name="Địa điểm" />
                     <Bar dataKey="event" stackId="a" fill="#82ca9d" name="Sự kiện" />
-                    <Bar dataKey="report" fill="#ffc658" name="Báo cáo" />
+                    <Bar dataKey="province" fill="#ffc658" name="Tỉnh/thành" />
                   </BarChart>
                 </Card>
               </div>

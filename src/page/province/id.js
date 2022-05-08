@@ -235,7 +235,7 @@ export default function Province(props) {
                           Thông tin về {province.fullname}
                         </Typography>
                         <div className={classes.contribute}>
-                          <Button component={Link} to={`/province/contribute/${province.name}`}>
+                          <Button component={Link} to={`/province/contribute?id=${province.name}`}>
                             Đóng góp Địa điểm
                           </Button>
                         </div>

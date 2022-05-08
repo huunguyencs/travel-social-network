@@ -115,7 +115,7 @@ function AdminPostReportDetail() {
           error: true
         });
       });
-    history.push('/admin/postReport')
+    history.push('/admin/report')
   }
 
   const cancelReport = async id => {
@@ -140,7 +140,7 @@ function AdminPostReportDetail() {
           error: true
         });
       });
-    history.push('/admin/postReport')
+    history.push('/admin/report')
   }
 
   useEffect(() => {
@@ -170,7 +170,7 @@ function AdminPostReportDetail() {
         <div>
           <IconButton
             component={Link}
-            to={`/admin/postReport`}
+            to={`/admin/report`}
             title="Quay lại"
           >
             <ArrowBack />

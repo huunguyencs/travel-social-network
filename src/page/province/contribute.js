@@ -24,6 +24,14 @@ import Validator, { nameid } from '../../utils/validator';
 import Loading from '../../components/Loading';
 import MapPicker from '../../components/Map/MapPicker';
 import { NotFound } from '../404';
+import qs from 'query-string';
+import {useLocation} from 'react-router-dom';
+
+function useQuery() {
+    const { search } = useLocation();
+  
+    return React.useMemo(() => new URLSearchParams(search), [search]);
+  }
 
 export default function ProvinceContributePage() {
     const { token } = useSelector(state => state.auth);
@@ -31,7 +39,8 @@ export default function ProvinceContributePage() {
 
     const classes = adminStyles();
 
-    const { subpage } = useParams();
+    const id = useQuery().get("id");
+    
     const [province, setProvince] = useState(null);
     const [state, setState] = useState({
         loading: false,
@@ -87,13 +96,14 @@ export default function ProvinceContributePage() {
     };
 
     useEffect(() => {
-        if (subpage) {
-            getProvince(subpage);
+        console.log(id);
+        if (id) {
+            getProvince(id);
         }
-    }, [subpage]);
+    }, [id]);
 
     useEffect(() => {
-        document.title = 'Chỉnh sửa thông tin tỉnh';
+        document.title = 'Đóng góp tỉnh/thành';
     }, []);
 
     const handleChange = e => {
@@ -260,7 +270,7 @@ export default function ProvinceContributePage() {
                 <Button
                     target={'_blank'}
                     component={Link}
-                    to={`/province/${subpage}`}
+                    to={`/province/${id}`}
                     style={{ margin: 20, textTransform: 'none' }}
                     color="primary"
                     variant="contained"
@@ -269,7 +279,7 @@ export default function ProvinceContributePage() {
                 </Button>
             </div>
             {notFound ? (
-                <NotFound/>
+                <NotFound />
             ) : state.loading ? (
                 <div
                     style={{ display: 'flex', justifyContent: 'center', marginTop: 60 }}
