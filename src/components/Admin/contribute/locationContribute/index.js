@@ -21,7 +21,7 @@ const columns = [
     {
         field: 'fullname',
         headerName: 'Tên đầy đủ',
-        width: 300
+        width: 240
     },
     {
         field: 'province',
@@ -30,12 +30,24 @@ const columns = [
         valueGetter: (location) => location.row.province.fullname
     },
     {
+        field: 'type',
+        headerName: 'Thể loại',
+        width: 200,
+        valueGetter: (location) => location?.contributeId ? "Chỉnh sửa địa điểm" : "Đóng góp địa điểm"
+    },
+    {
+        field: 'state',
+        headerName: 'Trạng thái',
+        width: 200,
+        valueGetter : (location) => location.state == true ? "Đã xử lý" : "Chưa xử lý"
+    },
+    {
         field: 'action',
         headerName: 'Chi tiết',
         width: 150,
         sortable: false,
         renderCell: (location) => (
-            <IconButton size='small' component={Link} to={`/admin/locationContribute/${location.row.name}`} title={'Chi tiết'}>
+            <IconButton size='small' component={Link} to={`/admin/locationContribute/${location.row._id}`} title={'Chi tiết'}>
                 <MoreVert />
             </IconButton>
         )
@@ -65,7 +77,7 @@ export default function AdminLocationContribute(props) {
         setLoading(true);
         setError(null);
         await customAxios(token).get('/location_contribute/all').then(res => {
-            setLocations([]);
+            setLocations(res.data.locations);
             setLoading(false);
         }).catch(err => {
             setLoading(false);
@@ -98,7 +110,7 @@ export default function AdminLocationContribute(props) {
                     onPageSizeChange={(newPageSize) => setPageSize(newPageSize)}
                     pagination
                     onRowDoubleClick={(location) => {
-                        history.push(`/admin/locationContribute/${location.row.name}`)
+                        history.push(`/admin/locationContribute/${location.row._id}`)
                     }}
                     autoHeight
                     loading={loading}

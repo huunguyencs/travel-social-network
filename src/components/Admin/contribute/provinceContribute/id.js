@@ -7,7 +7,8 @@ import {
     FormControlLabel,
     Switch,
     TextField,
-    Typography
+    Typography,
+    Grid
 } from '@material-ui/core';
 import { ArrowBack, HighlightOff, Update } from '@material-ui/icons';
 import React, { useEffect, useState } from 'react';
@@ -219,8 +220,8 @@ export default function DetailProvinceContributeAdmin() {
     };
 
     return (
-        <div className={classes.provinceContribute}>
-            <div className={classes.provinceContributeItem}>
+        <Grid container>
+            <Grid item md={6}>
                 <Paper
                     style={{
                         marginTop: 120,
@@ -426,8 +427,8 @@ export default function DetailProvinceContributeAdmin() {
                         )
                     )}
                 </Paper>
-            </div>
-            <div className={classes.provinceContributeItem}>
+            </Grid>
+            <Grid item md={6}>
                 <Paper
                     style={{
                         marginTop: 120,
@@ -693,8 +694,7 @@ export default function DetailProvinceContributeAdmin() {
                         )
                     )}
                 </Paper>
-            </div>
-        </div>
-
+            </Grid>
+        </Grid>
     );
 }

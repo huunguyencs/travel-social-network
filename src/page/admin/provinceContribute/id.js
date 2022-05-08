@@ -6,21 +6,21 @@ import { adminListMenu } from '../../../constant/adminMenu';
 import { adminStyles } from '../../../style';
 
 export default function AdminProvinceDetail() {
-    const classes = adminStyles();
+  const classes = adminStyles();
 
-    useEffect(() => {
-        document.title = 'Admin - Đóng góp ý kiến';
-    }, []);
+  useEffect(() => {
+    document.title = 'Admin - Đóng góp ý kiến';
+  }, []);
 
-    return (
-        <Grid container>
-            <DetailProvinceContributeAdmin />
-            {/* <Grid item md={3} className={classes.smHidden}>
+  return (
+    <Grid container>
+      {/* <DetailProvinceContributeAdmin /> */}
+      <Grid item md={3} className={classes.smHidden}>
         <LeftBar menuList={adminListMenu} showHelp={false} />
       </Grid>
       <Grid item md={9} sm={12} xs={12}>
-        <DetailProvinceContributeAdmin/>
-      </Grid> */}
-        </Grid>
-    );
+        <DetailProvinceContributeAdmin />
+      </Grid>
+    </Grid>
+  );
 }
