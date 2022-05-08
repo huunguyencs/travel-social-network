@@ -89,6 +89,13 @@ const adminStyles = makeStyles(
       justifyContent: 'right',
       margin: 20
     },
+    provinceContribute: {
+      display: 'flex',
+      justifyContent: 'space-between',
+    },
+    provinceContributeItem: {
+      
+    },
     button: {}
   }),
   { index: 1 }
