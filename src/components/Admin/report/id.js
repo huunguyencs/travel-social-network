@@ -7,19 +7,11 @@ import { useSelector } from 'react-redux';
 import { NotFound } from '../../../page/404';
 import customAxios from '../../../utils/fetchData';
 
-<<<<<<< HEAD
 import { tableStyles } from "../../../style"
-=======
-import { tableStyles } from '../../../style';
->>>>>>> 4b14e502662dd228e1df1c3be9708437485351b6
 import Loading from '../../Loading';
 
 import PostReport from './post';
 
-<<<<<<< HEAD
-
-=======
->>>>>>> 4b14e502662dd228e1df1c3be9708437485351b6
 function formatTime(time) {
   var tmp = new Date(time);
   var dd = String(tmp.getDate()).padStart(2, '0');
@@ -127,13 +119,8 @@ function AdminPostReportDetail() {
           error: true
         });
       });
-<<<<<<< HEAD
     history.push('/admin/report')
   }
-=======
-    history.push('/admin/report');
-  };
->>>>>>> 4b14e502662dd228e1df1c3be9708437485351b6
 
   const cancelReport = async id => {
     setState({
@@ -157,13 +144,8 @@ function AdminPostReportDetail() {
           error: true
         });
       });
-<<<<<<< HEAD
     history.push('/admin/report')
   }
-=======
-    history.push('/admin/report');
-  };
->>>>>>> 4b14e502662dd228e1df1c3be9708437485351b6
 
   useEffect(() => {
     getReport(subpage);
@@ -210,7 +192,6 @@ function AdminPostReportDetail() {
           Có lỗi xảy ra
         </div>
       ) : (
-<<<<<<< HEAD
         report &&
         <div className={classes.containerReport}>
           <div className={classes.cardPost}>
@@ -224,19 +205,6 @@ function AdminPostReportDetail() {
             </div>
           </div>
           <div className={classes.cardReport}>
-=======
-        report && (
-          <div className={classes.containerReport}>
-            <div className={classes.cardPost}>
-              <Typography variant="h4" gutterBottom>
-                Chi tiết
-              </Typography>
-              <div>
-                <PostReport post={post} />
-              </div>
-            </div>
-            <div className={classes.cardReport}>
->>>>>>> 4b14e502662dd228e1df1c3be9708437485351b6
               <div>
                 <Typography variant="h4" gutterBottom>
                   Thông tin report
