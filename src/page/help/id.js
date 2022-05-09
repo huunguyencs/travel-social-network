@@ -1,4 +1,4 @@
-import { Button, Container, Grid, Typography } from '@material-ui/core';
+import { Button, CardMedia, Grid, Typography } from '@material-ui/core';
 import { AccessibilityNew } from '@material-ui/icons';
 import GoogleMapReact from 'google-map-react';
 import React, { useEffect, useState } from 'react';
@@ -6,14 +6,16 @@ import { useSelector } from 'react-redux';
 import { Link, useParams } from 'react-router-dom';
 import HelpCard from '../../components/Help/HelpCard';
 import Loading from '../../components/Loading';
-import ImageLightBox from '../../components/Modal/ImageLightBox';
 import KEY from '../../key/googlemap';
 import customAxios from '../../utils/fetchData';
 import { NotFound } from '../404';
+import { helpStyles } from '../../style';
+import SpeedDialButton from '../../components/SpeedDialBtn';
+import ImageList from '../../components/Modal/ImageList';
 
 export default function HelpDetailPage() {
   const { id } = useParams();
-
+  const classes = helpStyles();
   const { token } = useSelector(state => state.auth);
 
   const [help, setHelp] = useState(null);
@@ -55,66 +57,60 @@ export default function HelpDetailPage() {
     );
 
   return (
-    <Container style={{ marginTop: 120 }}>
-      <Button
-        component={Link}
-        to="/help"
-        variant="contained"
-        style={{ marginBlock: 30 }}
-      >
-        Yêu cầu trợ giúp gần bạn
-      </Button>
-      {help && (
-        <Grid container spacing={5}>
-          <Grid item lg={4} md={4} sm={12}>
-            <HelpCard help={help} detail />
-          </Grid>
-          <Grid item lg={8} md={8} sm={12}>
-            <div style={{ height: 500 }}>
-              {help?.position?.length ? (
-                <GoogleMapReact
-                  bootstrapURLKeys={{ key: KEY }}
-                  defaultCenter={{
-                    lat: help.position[1],
-                    lng: help.position[0]
-                  }}
-                  defaultZoom={15}
-                >
-                  <AccessibilityNew
-                    style={{ color: 'red', fontSize: 32 }}
-                    lng={help.position[0]}
-                    lat={help.position[1]}
+    <Grid container className={classes.container}>
+      <SpeedDialButton />
+      <Grid container className={classes.helpDetailContainer}>
+        <Button
+          component={Link}
+          to="/help"
+          variant="outline"
+          style={{ marginBlock: 30 }}
+          className={classes.buttonDetailCard}
+        >
+          Yêu cầu trợ giúp gần bạn
+        </Button>
+        {help && (
+          <Grid container spacing={3}>
+            <Grid item lg={5} md={4} sm={12}>
+              <HelpCard help={help} detail />
+              {help.images &&
+                <CardMedia style={{marginTop: 15, borderRadius: 15}}>
+                  <ImageList
+                    imageList={help.images}
+                    show2Image={true}
+                    defaultHeight={300}
+                    isPost={false}
                   />
-                </GoogleMapReact>
-              ) : (
-                <div>
-                  <Typography>Không có vị trí của người yêu cầu</Typography>
-                </div>
-              )}
-            </div>
-          </Grid>
-
-          {help.images && (
-            <Grid item lg={12} md={12} sm={12}>
-              <div style={{ display: 'flex' }}>
-                {help.images.map(item => (
-                  <ImageLightBox
-                    src={item}
-                    key={item}
-                    style={{
-                      margin: 10,
-                      width: 250,
-                      height: 200,
-                      cursor: 'pointer'
+                </CardMedia>
+              }
+            </Grid>
+            <Grid item lg={7} md={8} sm={12}>
+              <div style={{ height: 600, borderRadius: 15 }}>
+                {help?.position?.length ? (
+                  <GoogleMapReact
+                    bootstrapURLKeys={{ key: KEY }}
+                    defaultCenter={{
+                      lat: help.position[1],
+                      lng: help.position[0]
                     }}
-                    alt="Lỗi"
-                  />
-                ))}
+                    defaultZoom={15}
+                  >
+                    <AccessibilityNew
+                      style={{ color: 'red', fontSize: 32 }}
+                      lng={help.position[0]}
+                      lat={help.position[1]}
+                    />
+                  </GoogleMapReact>
+                ) : (
+                  <div>
+                    <Typography>Không có vị trí của người yêu cầu</Typography>
+                  </div>
+                )}
               </div>
             </Grid>
-          )}
-        </Grid>
-      )}
-    </Container>
+          </Grid>
+        )}
+      </Grid>
+    </Grid>
   );
 }

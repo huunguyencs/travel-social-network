@@ -263,7 +263,8 @@ export default function Tour(props) {
                           color: 'black'
                         }}
                       >
-                        {item.fullname}
+                        {item.fullname.split(" ")[item.fullname.split(" ").length - 1]}
+                        {index !== tour.likes.slice(0, 5).length - 1 ? ", ": ""}
                       </Typography>
                     ))}
                 </p>
@@ -271,7 +272,7 @@ export default function Tour(props) {
                   <p style={{ margin: 0 }}>đã thích bài viết này</p>
                 ) : (
                   tour?.likes.length > 1 && (
-                    <p style={{ margin: 0 }}>
+                    <p style={{ margin: 0, cursor: "pointer" }} onClick={handleOpen}>
                       và những người khác đã thích bài này
                     </p>
                   )
