@@ -166,7 +166,6 @@ export default function FormLocationAdmin(props) {
           .catch(err => {
             dispatch(error({ message: 'Có lỗi xảy ra' }));
           });
-      } else if (mode === 'contribute') {
       }
     }
     setLoading(false);

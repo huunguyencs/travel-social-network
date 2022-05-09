@@ -1,174 +1,174 @@
+import React, { useEffect, useState } from 'react';
+import { Container, IconButton } from '@material-ui/core';
+import { useSelector } from 'react-redux';
+import { Card, Grid, Typography, Box, CardHeader } from '@material-ui/core';
+import Paper from '@material-ui/core/Paper';
+import { Visibility } from '@material-ui/icons';
+import { Link, useHistory } from 'react-router-dom';
 import {
-  Container,
-  Typography,
-  Card,
-  Grid,
-  Box,
-  CardHeader
-} from '@material-ui/core';
+  DataGrid,
+  GridToolbarContainer,
+  GridToolbarExport
+} from '@mui/x-data-grid';
+import customAxios from '../../../utils/fetchData';
 import { tableStyles } from '../../../style';
-import { AddLocation, Report, Event } from '@material-ui/icons';
 import {
-  BarChart,
-  Bar,
+  ResponsiveContainer,
+  LineChart,
+  Line,
   XAxis,
   YAxis,
   CartesianGrid,
-  Tooltip,
-  Legend
+  Legend,
+  Tooltip
 } from 'recharts';
-import React, { useEffect, useState } from 'react';
-import { useSelector } from 'react-redux';
-import { Link } from 'react-router-dom';
-import customAxios from '../../../utils/fetchData';
 
 function handling(arr) {
-  const data = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0];
+  const tour = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0];
   arr.forEach(element => {
     let d = new Date(element.createdAt);
     let mon = d.getMonth();
     if (d.getFullYear() === new Date().getFullYear()) {
-      data[mon] += 1;
+      tour[mon] += 1;
     }
   });
-  return data;
+  return tour;
 }
 
-function getData(reports, locationContributes, eventContributes) {
+function getData(arr) {
   const data = [
     {
       name: 'Tháng 1',
-      report: 0,
-      location: 0,
-      event: 0
+      report: 0
     },
     {
       name: 'Tháng 2',
-      report: 0,
-      location: 0,
-      event: 0
+      report: 0
     },
     {
       name: 'Tháng 3',
-      report: 0,
-      location: 0,
-      event: 0
+      report: 0
     },
     {
       name: 'Tháng 4',
-      report: 0,
-      location: 0,
-      event: 0
+      report: 0
     },
     {
       name: 'Tháng 5',
-      report: 0,
-      location: 0,
-      event: 0
+      report: 0
     },
     {
       name: 'Tháng 6',
-      report: 0,
-      location: 0,
-      event: 0
+      report: 0
     },
     {
       name: 'Tháng 7',
-      report: 0,
-      location: 0,
-      event: 0
+      report: 0
     },
     {
       name: 'Tháng 8',
-      report: 0,
-      location: 0,
-      event: 0
+      report: 0
     },
     {
       name: 'Tháng 9',
-      report: 0,
-      location: 0,
-      event: 0
+      report: 0
     },
     {
       name: 'Tháng 10',
-      report: 0,
-      location: 0,
-      event: 0
+      report: 0
     },
     {
       name: 'Tháng 11',
-      report: 0,
-      location: 0,
-      event: 0
+      report: 0
     },
     {
       name: 'Tháng 12',
-      report: 0,
-      location: 0,
-      event: 0
+      report: 0
     }
   ];
 
-  let report = handling(reports);
-  let location = handling(locationContributes);
-  let event = handling(eventContributes);
-
+  let reports = handling(arr);
   for (let i = 0; i < 12; i++) {
-    data.at(i).report = report.at(i);
-    data.at(i).event = event.at(i);
-    data.at(i).location = location.at(i);
+    data.at(i).report = reports.at(i);
   }
   return data;
 }
 
-export default function AdminReport() {
+const columns = [
+  {
+    field: '_id',
+    headerName: 'ID',
+    width: 230,
+    sortable: false
+  },
+  {
+    field: 'user',
+    headerName: 'Người báo cáo',
+    width: 200,
+    valueGetter: report => report.row.userId.fullname
+  },
+  {
+    field: 'type',
+    headerName: 'Lý do',
+    width: 175
+  },
+  {
+    field: 'content',
+    headerName: 'Nôi dung',
+    width: 175
+  },
+  {
+    field: 'status',
+    headerName: 'Trạng thái',
+    width: 175,
+    valueGetter: report => (report.row.state === 2 ? 'Đã xử lý' : 'Chưa xử lý')
+  },
+  {
+    field: 'action',
+    headerName: 'Chi tiết',
+    width: 150,
+    sortable: false,
+    renderCell: report =>
+      report.row.state === 1 || report.row.state === 0 ? (
+        <IconButton
+          size="small"
+          component={Link}
+          to={`/admin/report/${report.row._id}`}
+          title={'Chi tiết'}
+        >
+          <Visibility />
+        </IconButton>
+      ) : (
+        <div></div>
+      )
+  }
+];
+
+function ExportToolbar() {
+  return (
+    <GridToolbarContainer>
+      <GridToolbarExport />
+    </GridToolbarContainer>
+  );
+}
+
+export default function AdminPostReport(props) {
+  const history = useHistory();
   const classes = tableStyles();
   const { token } = useSelector(state => state.auth);
 
-  const [reports, setReports] = useState([]);
-  const [locations, setLocations] = useState([]);
-  const [events, setEvents] = useState([]);
+  const [reports, setLocations] = useState([]);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
+  const [pageSize, setPageSize] = useState(10);
 
   const getAllReports = async token => {
-    // setLoading(true);
-    // setError(null);
+    setLoading(true);
+    setError(null);
     await customAxios(token)
       .get('/report/all')
       .then(res => {
-        setReports(res.data.reports);
-        // setLoading(false);
-      })
-      .catch(err => {
-        // setLoading(false);
-        // setError(err);
-      });
-  };
-
-  const getAllEvents = async token => {
-    setLoading(true);
-    setError(null);
-    await customAxios(token)
-      .get('/eventContribute/all')
-      .then(res => {
-        setEvents(res.data.events);
-        setLoading(false);
-      })
-      .catch(err => {
-        setLoading(false);
-        setError(err);
-      });
-  };
-
-  const getAllLocations = async token => {
-    setLoading(true);
-    setError(null);
-    await customAxios(token)
-      .get('/locationContribute/all')
-      .then(res => {
-        setLocations(res.data.locations);
+        setLocations(res.data.reports);
         setLoading(false);
       })
       .catch(err => {
@@ -179,54 +179,23 @@ export default function AdminReport() {
 
   useEffect(() => {
     getAllReports(token);
-    getAllEvents(token);
-    getAllLocations(token);
   }, [token]);
 
   useEffect(() => {
-    document.title = 'Admin - Ý kiến đóng góp';
+    document.title = 'Admin - Bài viết bị báo cáo';
   }, []);
 
   return (
     <Container className={classes.container}>
-      <div>
-        <Grid container>
-          <Grid item md={4}>
-            <Link to={`/admin/postReport`}>
-              <Card className={classes.cardInfo}>
-                <Typography variant="h5">Số bài viết bị báo cáo</Typography>
-                <Typography variant="h3" className={classes.cardValue}>
-                  <Report className={classes.cardIcon} />
-                  {reports.length}
-                </Typography>
-              </Card>
-            </Link>
-          </Grid>
-          <Grid item md={4}>
-            <Link to={`/admin/locationContribute`}>
-              <Card className={classes.cardInfo}>
-                <Typography variant="h5">Số địa điểm được đóng góp</Typography>
-                <Typography variant="h3" className={classes.cardValue}>
-                  <AddLocation className={classes.cardIcon} />
-                  {locations.length}
-                </Typography>
-              </Card>
-            </Link>
-          </Grid>
-          <Grid item md={4}>
-            <Link to={`/admin/eventContribute`}>
-              <Card className={classes.cardInfo}>
-                <Typography variant="h5">Sự kiến được đóng góp</Typography>
-                <Typography variant="h3" className={classes.cardValue}>
-                  <Event className={classes.cardIcon} />
-                  {events.length}
-                </Typography>
-              </Card>
-            </Link>
-          </Grid>
-        </Grid>
+      <div className={classes.admin_location_header}>
+        <div>
+          <Typography variant="h4">
+            {reports.length} bài viết bị báo cáo
+          </Typography>
+        </div>
       </div>
-      <div>
+
+      <Grid>
         <Card>
           <CardHeader
             title="Thống kê"
@@ -250,45 +219,54 @@ export default function AdminReport() {
                   display: 'flex'
                 }}
               >
-                <Card>
-                  <BarChart
-                    width={1000}
-                    height={500}
-                    loading={loading}
-                    error={error}
-                    data={getData(reports, locations, events)}
-                    margin={{
-                      top: 20,
-                      right: 30,
-                      left: 20,
-                      bottom: 5
-                    }}
+                <ResponsiveContainer className="chart" height={300}>
+                  <LineChart
+                    width={400}
+                    height={300}
+                    data={getData(reports)}
+                    margin={{ top: 5, right: 20, left: 10, bottom: 5 }}
                   >
-                    <CartesianGrid strokeDasharray="3 3" />
-                    <XAxis dataKey="name" />
+                    <XAxis dataKey="month" />
                     <YAxis />
+                    <CartesianGrid strokeDasharray="3 3" />
                     <Tooltip />
                     <Legend />
-                    <Bar
-                      dataKey="location"
-                      stackId="a"
-                      fill="#8884d8"
-                      name="Địa điểm"
+                    <Line
+                      type="monotone"
+                      dataKey="report"
+                      stroke="#8884d8"
+                      name="Báo cáo"
+                      activeDot={{ r: 8 }}
                     />
-                    <Bar
-                      dataKey="event"
-                      stackId="a"
-                      fill="#82ca9d"
-                      name="Sự kiện"
-                    />
-                    <Bar dataKey="report" fill="#ffc658" name="Báo cáo" />
-                  </BarChart>
-                </Card>
+                  </LineChart>
+                </ResponsiveContainer>
               </div>
             </div>
           </Box>
         </Card>
-      </div>
+      </Grid>
+
+      <Paper className={classes.paper}>
+        <DataGrid
+          rows={reports}
+          columns={columns}
+          pageSize={pageSize}
+          rowsPerPageOptions={[5, 10, 25]}
+          onPageSizeChange={newPageSize => setPageSize(newPageSize)}
+          pagination
+          onRowDoubleClick={report => {
+            history.push(`/admin/report/${report.row._id}`);
+          }}
+          autoHeight
+          loading={loading}
+          error={error}
+          getRowId={row => row._id}
+          disableSelectionOnClick
+          components={{
+            Toolbar: ExportToolbar
+          }}
+        />
+      </Paper>
     </Container>
   );
 }

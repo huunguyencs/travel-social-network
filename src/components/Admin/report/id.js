@@ -4,12 +4,13 @@ import { ArrowBack } from '@material-ui/icons';
 import React, { useCallback, useEffect, useState } from 'react';
 import { Link, useHistory, useParams } from 'react-router-dom';
 import { useSelector } from 'react-redux';
-import { NotFound } from '../../../../page/404';
-import customAxios from '../../../../utils/fetchData';
+import { NotFound } from '../../../page/404';
+import customAxios from '../../../utils/fetchData';
 
-import Post from '../../../Post';
-import { tableStyles } from '../../../../style';
-import Loading from '../../../Loading';
+import { tableStyles } from '../../../style';
+import Loading from '../../Loading';
+
+import PostReport from './post';
 
 function formatTime(time) {
   var tmp = new Date(time);
@@ -118,7 +119,7 @@ function AdminPostReportDetail() {
           error: true
         });
       });
-    history.push('/admin/postReport');
+    history.push('/admin/report');
   };
 
   const cancelReport = async id => {
@@ -143,7 +144,7 @@ function AdminPostReportDetail() {
           error: true
         });
       });
-    history.push('/admin/postReport');
+    history.push('/admin/report');
   };
 
   useEffect(() => {
@@ -171,11 +172,7 @@ function AdminPostReportDetail() {
     >
       <div style={{ display: 'flex', justifyContent: 'space-between' }}>
         <div>
-          <IconButton
-            component={Link}
-            to={`/admin/postReport`}
-            title="Quay lại"
-          >
+          <IconButton component={Link} to={`/admin/report`} title="Quay lại">
             <ArrowBack />
           </IconButton>
         </div>
@@ -202,7 +199,7 @@ function AdminPostReportDetail() {
                 Chi tiết
               </Typography>
               <div>
-                <Post post={post} />
+                <PostReport post={post} />
               </div>
             </div>
             <div className={classes.cardReport}>

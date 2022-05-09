@@ -131,7 +131,7 @@ export default function FormAddEvent(props) {
           .catch(err => {
             dispatch(error({ message: 'Có lỗi xảy ra' }));
           });
-      } else {
+      } else if (mode === 'add') {
         await customAxios(token)
           .post(`/event/create`, {
             ...event,
