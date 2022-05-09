@@ -46,11 +46,6 @@ export const adminListMenu = {
             link: "/admin/tour",
         },
         {
-            icon: HowToReg,
-            name: "Ý kiến đóng góp",
-            link: "/admin/contribute",
-        },
-        {
             icon: ReportProblem,
             name: "Báo cáo",
             link: "/admin/report",

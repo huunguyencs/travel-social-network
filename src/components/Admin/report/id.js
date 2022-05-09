@@ -7,17 +7,11 @@ import { useSelector } from 'react-redux';
 import { NotFound } from '../../../page/404';
 import customAxios from '../../../utils/fetchData';
 
-<<<<<<< HEAD:src/components/Admin/report/id.js
 import { tableStyles } from "../../../style"
 import Loading from '../../Loading';
 
 import PostReport from './post';
 
-=======
-import Post from '../../../Post';
-import { tableStyles } from '../../../../style';
-import Loading from '../../../Loading';
->>>>>>> a915721d8edf30278d0553b852d0106b75fb444e:src/components/Admin/report/postReport/id.js
 
 function formatTime(time) {
   var tmp = new Date(time);
@@ -126,13 +120,8 @@ function AdminPostReportDetail() {
           error: true
         });
       });
-<<<<<<< HEAD:src/components/Admin/report/id.js
     history.push('/admin/report')
   }
-=======
-    history.push('/admin/postReport');
-  };
->>>>>>> a915721d8edf30278d0553b852d0106b75fb444e:src/components/Admin/report/postReport/id.js
 
   const cancelReport = async id => {
     setState({
@@ -156,13 +145,8 @@ function AdminPostReportDetail() {
           error: true
         });
       });
-<<<<<<< HEAD:src/components/Admin/report/id.js
     history.push('/admin/report')
   }
-=======
-    history.push('/admin/postReport');
-  };
->>>>>>> a915721d8edf30278d0553b852d0106b75fb444e:src/components/Admin/report/postReport/id.js
 
   useEffect(() => {
     getReport(subpage);
@@ -213,7 +197,6 @@ function AdminPostReportDetail() {
           Có lỗi xảy ra
         </div>
       ) : (
-<<<<<<< HEAD:src/components/Admin/report/id.js
         report &&
         <div className={classes.containerReport}>
           <div className={classes.cardPost}>
@@ -227,22 +210,6 @@ function AdminPostReportDetail() {
             </div>
           </div>
           <div className={classes.cardReport}>
-            <div>
-              <Typography variant='h4' gutterBottom>
-                Thông tin report
-=======
-        report && (
-          <div className={classes.containerReport}>
-            <div className={classes.cardPost}>
-              <Typography variant="h4" gutterBottom>
-                Chi tiết
->>>>>>> a915721d8edf30278d0553b852d0106b75fb444e:src/components/Admin/report/postReport/id.js
-              </Typography>
-              <div>
-                <Post post={post} />
-              </div>
-            </div>
-            <div className={classes.cardReport}>
               <div>
                 <Typography variant="h4" gutterBottom>
                   Thông tin report
@@ -295,8 +262,7 @@ function AdminPostReportDetail() {
                 </div>
               )}
             </div>
-          </div>
-        )
+        </div>
       )}
     </Paper>
   );
