@@ -15,7 +15,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { Link, useHistory } from 'react-router-dom';
 import { error, success } from '../../redux/actions/alertAction';
 import { updateHelp } from '../../redux/actions/helpAction';
-import { createNotify } from '../../redux/callApi/notifyCall';
+import { createNotify, deleteNotify } from '../../redux/callApi/notifyCall';
 import { timeAgo } from '../../utils/date';
 import customAxios from '../../utils/fetchData';
 import Help from '../Modal/Help';
@@ -55,6 +55,32 @@ export default function HelpCard({ help, handleRemove, detail }) {
           success({
             message:
               'Cảm ơn bạn đã tham gia giúp đỡ! Hãy liên hệ với người cần giúp'
+          })
+        );
+      })
+      .catch(err => {
+        dispatch(error({ message: 'Có lỗi xảy ra!' }));
+        setLoadingHelp(false);
+      });
+  };
+  const cancelHelp = () => {
+    setLoadingHelp(true);
+    customAxios(auth.token)
+      .patch(`/help/cancel/${help._id}`)
+      .then(res => {
+        socket.emit('updateHelp', res.data.help);
+
+        const dataNotify = {
+          id: auth.user._id,
+          url: `/help/${help._id}`,
+        }
+        dispatch(deleteNotify(dataNotify, auth.token, socket));
+        dispatch(updateHelp(res.data.help));
+        setLoadingHelp(false);
+        dispatch(
+          success({
+            message:
+              'Hủy thành công'
           })
         );
       })
@@ -181,14 +207,14 @@ export default function HelpCard({ help, handleRemove, detail }) {
                 onClick={removeHelp}
                 disabled={loadingRemove}
               >
-                Xóa yêu cầu trợ giúp
+                Xóa
               </Button>
               <Button
                 size="small"
                 variant="outlined"
                 onClick={() => setShowUpdate(true)}
               >
-                Cập nhật yêu cầu trợ giúp
+                Cập nhật
               </Button>
               <Modal
                 aria-labelledby="create-post"
@@ -208,6 +234,7 @@ export default function HelpCard({ help, handleRemove, detail }) {
               >
                 <UpdateHelpRef
                   ref={ref}
+                  help={help}
                   handleClose={() => setShowUpdate(false)}
                 />
               </Modal>
@@ -236,7 +263,17 @@ export default function HelpCard({ help, handleRemove, detail }) {
                   Tôi có thể giúp
                 </Button>
               )}
-
+              {helped && (
+                <Button
+                  size="small"
+                  variant="outlined"
+                  onClick={cancelHelp}
+                  className={classes.buttonDetailCard}
+                  disabled={loadingHelp}
+                >
+                  Hủy trợ giúp
+                </Button>
+              )}
               <Button
                 onClick={() => handleAddChat(help.userId)}
                 variant="outlined"
