@@ -34,23 +34,6 @@ export default function FeedReview(props) {
     }
   };
 
-  // function handleScroll() {
-  //     if (window.innerHeight + document.documentElement.scrollTop === document.documentElement.offsetHeight) {
-  //         setFetch(true);
-  //     }
-  // }
-
-  // useEffect(() => {
-  //     window.addEventListener('scroll', handleScroll);
-  //     return () => window.removeEventListener('scroll', handleScroll)
-  // }, []);
-
-  // useEffect(() => {
-  //     if (fetch) {
-  //         loadMorePost(location._id, post.page, dispatch, post.hasMore);
-  //     }
-  // }, [fetch, post.page, dispatch, post.hasMore, location._id])
-
   const tryAgain = () => {
     if (location) {
       dispatch(getPostsLocation(location._id, post.page));

@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import {
   makeStyles,
   Button,
@@ -12,6 +12,8 @@ import {
 } from '@material-ui/core';
 import { ArrowBack, Update } from '@material-ui/icons';
 import { useHistory } from 'react-router-dom';
+import { useSelector } from 'react-redux';
+import customAxios from '../../../utils/fetchData';
 
 const useStyles = makeStyles(theme => ({
   container: {
@@ -56,18 +58,30 @@ const useStyles = makeStyles(theme => ({
 
 function AdminUserDetail(props) {
   const classes = useStyles();
+  const { token } = useSelector(state => state.auth);
 
-  const { user, setUser } = props;
+  const { user } = props;
 
   const onChangeRole = e => {
-    setUser(oldState => ({
-      ...oldState,
-      role: e.target.value
-    }));
+    setRole(e.target.value);
   };
 
-  const updateUser = e => {
-    e.preventDefault();
+  const [status, setStatus] = useState(user?.confirmAccount?.state || 0);
+  const [role, setRole] = useState(user?.role || 0);
+  const [loading, setLoading] = useState(false);
+
+  const updateUser = async () => {
+    const updateData = {};
+    if (user?.confirmAccount?.state !== status) updateData.status = status;
+    if (user?.role !== role) updateData.role = role;
+    if (Object.keys(updateData).length === 0) return;
+    setLoading(true);
+    await customAxios(token).patch('/user/update_status', updateData);
+    setLoading(false);
+  };
+
+  const changeStatus = e => {
+    setStatus(parseInt(e.target.value));
   };
 
   const history = useHistory();
@@ -150,7 +164,7 @@ function AdminUserDetail(props) {
                   <Select
                     labelId="role-user-change-label"
                     label="role-user-change"
-                    value={user.role}
+                    value={role}
                     onChange={onChangeRole}
                   >
                     <MenuItem value={0}>Người dùng bình thường</MenuItem>
@@ -166,19 +180,42 @@ function AdminUserDetail(props) {
                       width={300}
                       src={user.confirmAccount.cmndFront}
                       alt="front"
+                      style={{ margin: 10 }}
                     />
                     <img
                       height={200}
                       width={300}
                       src={user.confirmAccount.cmndBack}
                       alt="back"
+                      style={{ margin: 10 }}
                     />
                     <img
                       height={200}
                       width={300}
                       src={user.confirmAccount.cmndFace}
                       alt="face"
+                      style={{ margin: 10 }}
                     />
+                    <div style={{ margin: 20 }}>
+                      <FormControl
+                        variant="outlined"
+                        className={classes.fullField}
+                      >
+                        <InputLabel id="status-user-change-label">
+                          Trạng thái xử lí
+                        </InputLabel>
+                        <Select
+                          labelId="status-user-change-label"
+                          label="status-user-change"
+                          value={status}
+                          onChange={changeStatus}
+                        >
+                          <MenuItem value={0}>Chưa xử lý</MenuItem>
+                          <MenuItem value={1}>Đã xác thực</MenuItem>
+                          <MenuItem value={2}>Từ chối</MenuItem>
+                        </Select>
+                      </FormControl>
+                    </div>
                   </div>
                 )}
 
@@ -190,6 +227,7 @@ function AdminUserDetail(props) {
                     type="submit"
                     className={classes.login_button}
                     onClick={updateUser}
+                    disabled={loading}
                   >
                     Cập nhật
                   </Button>

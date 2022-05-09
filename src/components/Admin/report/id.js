@@ -1,17 +1,23 @@
 import { Paper, Typography, Button } from '@material-ui/core';
 import { IconButton } from '@material-ui/core';
 import { ArrowBack } from '@material-ui/icons';
-import React, { useEffect, useState } from 'react';
+import React, { useCallback, useEffect, useState } from 'react';
 import { Link, useHistory, useParams } from 'react-router-dom';
 import { useSelector } from 'react-redux';
 import { NotFound } from '../../../page/404';
 import customAxios from '../../../utils/fetchData';
 
+<<<<<<< HEAD:src/components/Admin/report/id.js
 import { tableStyles } from "../../../style"
 import Loading from '../../Loading';
 
 import PostReport from './post';
 
+=======
+import Post from '../../../Post';
+import { tableStyles } from '../../../../style';
+import Loading from '../../../Loading';
+>>>>>>> a915721d8edf30278d0553b852d0106b75fb444e:src/components/Admin/report/postReport/id.js
 
 function formatTime(time) {
   var tmp = new Date(time);
@@ -24,7 +30,6 @@ function formatTime(time) {
 }
 
 function AdminPostReportDetail() {
-
   const classes = tableStyles();
 
   const { subpage } = useParams();
@@ -41,55 +46,61 @@ function AdminPostReportDetail() {
 
   const { token } = useSelector(state => state.auth);
 
-  const getReport = async (id, _token) => {
-    setState({
-      notFound: false,
-      loading: true,
-      error: false
-    });
-    await customAxios(token)
-      .get(`/report/${id}`)
-      .then(res => {
-        setReport(res.data.report);
-        setState({
-          notFound: false,
-          loading: false,
-          error: false
-        });
-      })
-      .catch(err => {
-        setState({
-          notFound: false,
-          loading: false,
-          error: true
-        });
+  const getReport = useCallback(
+    async (id, _token) => {
+      setState({
+        notFound: false,
+        loading: true,
+        error: false
       });
-  };
+      await customAxios(token)
+        .get(`/report/${id}`)
+        .then(res => {
+          setReport(res.data.report);
+          setState({
+            notFound: false,
+            loading: false,
+            error: false
+          });
+        })
+        .catch(err => {
+          setState({
+            notFound: false,
+            loading: false,
+            error: true
+          });
+        });
+    },
+    [token]
+  );
 
-  const getPost = async postId => {
-    setState({
-      notFound: false,
-      loading: true,
-      error: false
-    });
-    await customAxios(token)
-      .get(`/post/${postId}`)
-      .then(res => {
-        setPost(res.data.post);
-        setState({
-          notFound: false,
-          loading: false,
-          error: false
-        });
-      })
-      .catch(err => {
-        setState({
-          notFound: false,
-          loading: false,
-          error: true
-        });
+  const getPost = useCallback(
+    async postId => {
+      setState({
+        notFound: false,
+        loading: true,
+        error: false
       });
-  }
+      await customAxios(token)
+        .get(`/post/${postId}`)
+        .then(res => {
+          setPost(res.data.post);
+          setState({
+            notFound: false,
+            loading: false,
+            error: false
+          });
+        })
+        .catch(err => {
+          setState({
+            notFound: false,
+            loading: false,
+            error: true
+          });
+        });
+    },
+    [token]
+  );
 
   const deletePost = async postId => {
     setState({
@@ -115,8 +126,13 @@ function AdminPostReportDetail() {
           error: true
         });
       });
+<<<<<<< HEAD:src/components/Admin/report/id.js
     history.push('/admin/report')
   }
+=======
+    history.push('/admin/postReport');
+  };
+>>>>>>> a915721d8edf30278d0553b852d0106b75fb444e:src/components/Admin/report/postReport/id.js
 
   const cancelReport = async id => {
     setState({
@@ -140,18 +156,23 @@ function AdminPostReportDetail() {
           error: true
         });
       });
+<<<<<<< HEAD:src/components/Admin/report/id.js
     history.push('/admin/report')
   }
+=======
+    history.push('/admin/postReport');
+  };
+>>>>>>> a915721d8edf30278d0553b852d0106b75fb444e:src/components/Admin/report/postReport/id.js
 
   useEffect(() => {
     getReport(subpage);
-  }, [subpage]);
+  }, [subpage, getReport]);
 
   useEffect(() => {
     if (report?.postId) {
       getPost(report.postId);
     }
-  }, [report]);
+  }, [report, getPost]);
 
   useEffect(() => {
     document.title = 'Admin - Bài viết được báo cáo';
@@ -192,6 +213,7 @@ function AdminPostReportDetail() {
           Có lỗi xảy ra
         </div>
       ) : (
+<<<<<<< HEAD:src/components/Admin/report/id.js
         report &&
         <div className={classes.containerReport}>
           <div className={classes.cardPost}>
@@ -208,54 +230,73 @@ function AdminPostReportDetail() {
             <div>
               <Typography variant='h4' gutterBottom>
                 Thông tin report
+=======
+        report && (
+          <div className={classes.containerReport}>
+            <div className={classes.cardPost}>
+              <Typography variant="h4" gutterBottom>
+                Chi tiết
+>>>>>>> a915721d8edf30278d0553b852d0106b75fb444e:src/components/Admin/report/postReport/id.js
               </Typography>
-            </div>
-
-            <div className={classes.textReport}>
-              Người báo cáo: {report.userId.fullname}
-            </div>
-
-            <div className={classes.textReport}>
-              Thời gian báo cáo: {formatTime(report.createdAt)}
-            </div>
-
-            <div className={classes.textReport}>
-              Lý do báo cáo: {report.type}
-            </div>
-
-            <div className={classes.textReport}>
-              Nội dung báo cáo: {report.content}
-            </div>
-
-            <div className={classes.textReport}>
-              Trạng thái báo cáo: {report.state === 2 ? 'Đã xử lý' : 'Chưa xử lý'}
-            </div>
-
-            {report.state === 2 ?
-              <div></div> : <div className={classes.btnReport}>
-                <div>
-                  <Button
-                    variant="contained"
-                    className={classes.addBtn}
-                    onClick={() => cancelReport(report._id)}
-                  >
-                    Hủy báo cáo
-                  </Button>
-                </div>
-                <div>
-                  <Button
-                    variant="contained"
-                    className={classes.addBtn}
-                    onClick={() => deletePost(post._id)}
-                  >
-                    Xóa bài viết
-                  </Button>
-                </div>
+              <div>
+                <Post post={post} />
               </div>
-            }
+            </div>
+            <div className={classes.cardReport}>
+              <div>
+                <Typography variant="h4" gutterBottom>
+                  Thông tin report
+                </Typography>
+              </div>
 
+              <div className={classes.textReport}>
+                Người báo cáo: {report.userId.fullname}
+              </div>
+
+              <div className={classes.textReport}>
+                Thời gian báo cáo: {formatTime(report.createdAt)}
+              </div>
+
+              <div className={classes.textReport}>
+                Lý do báo cáo: {report.type}
+              </div>
+
+              <div className={classes.textReport}>
+                Nội dung báo cáo: {report.content}
+              </div>
+
+              <div className={classes.textReport}>
+                Trạng thái báo cáo:{' '}
+                {report.state === 2 ? 'Đã xử lý' : 'Chưa xử lý'}
+              </div>
+
+              {report.state === 2 ? (
+                <div></div>
+              ) : (
+                <div className={classes.btnReport}>
+                  <div>
+                    <Button
+                      variant="contained"
+                      className={classes.addBtn}
+                      onClick={() => cancelReport(report._id)}
+                    >
+                      Hủy báo cáo
+                    </Button>
+                  </div>
+                  <div>
+                    <Button
+                      variant="contained"
+                      className={classes.addBtn}
+                      onClick={() => deletePost(post._id)}
+                    >
+                      Xóa bài viết
+                    </Button>
+                  </div>
+                </div>
+              )}
+            </div>
           </div>
-        </div>
+        )
       )}
     </Paper>
   );

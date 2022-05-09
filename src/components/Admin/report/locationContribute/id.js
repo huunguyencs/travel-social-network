@@ -1,14 +1,14 @@
-import { Button, IconButton, Paper } from '@material-ui/core';
+import { IconButton, Paper } from '@material-ui/core';
 import { ArrowBack } from '@material-ui/icons';
 import React, { useEffect, useState } from 'react';
 import { Link, useParams } from 'react-router-dom';
 
-import FormLocationAdmin from './Form';
-import { NotFound } from '../../../page/404';
-import customAxios from '../../../utils/fetchData';
-import Loading from '../../Loading';
+import { NotFound } from '../../../../page/404';
+import customAxios from '../../../../utils/fetchData';
+import Loading from '../../../Loading';
+import FormLocationAdmin from '../../Location/Form';
 
-function AdminLocationDetail() {
+function AdminLocationContributeDetail() {
   const { subpage } = useParams();
 
   const [location, setLocation] = useState(null);
@@ -55,7 +55,7 @@ function AdminLocationDetail() {
   }, [subpage]);
 
   useEffect(() => {
-    document.title = 'Admin - Chỉnh sửa địa điểm';
+    document.title = 'Admin - Địa điểm được đóng góp';
   }, []);
 
   return (
@@ -69,20 +69,14 @@ function AdminLocationDetail() {
     >
       <div style={{ display: 'flex', justifyContent: 'space-between' }}>
         <div>
-          <IconButton component={Link} to={`/admin/location`} title="Quay lại">
+          <IconButton
+            component={Link}
+            to={`/admin/locationContribute`}
+            title="Quay lại"
+          >
             <ArrowBack />
           </IconButton>
         </div>
-        <Button
-          target={'_blank'}
-          component={Link}
-          to={`/location/${subpage}`}
-          style={{ margin: 20, textTransform: 'none' }}
-          color="primary"
-          variant="contained"
-        >
-          Xem trang chi tiết
-        </Button>
       </div>
       {state.notFound ? (
         <NotFound />
@@ -103,7 +97,7 @@ function AdminLocationDetail() {
           <FormLocationAdmin
             location={location}
             setLocation={setLocation}
-            mode="edit"
+            mode="add"
           />
         )
       )}
@@ -111,4 +105,4 @@ function AdminLocationDetail() {
   );
 }
 
-export default AdminLocationDetail;
+export default AdminLocationContributeDetail;

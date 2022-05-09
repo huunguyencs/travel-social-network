@@ -9,7 +9,7 @@ import useStyles from '../../style'
 export default function Volunteers(props) {
 
     const { volunteer } = useSelector(state => state);
-    const classes = useStyles();
+    const classes = useStyles(); 
     const [cost, setCost] = useState([0, 100]);
     const [text, setText] = useState('');
     const [isFiltering, setIsFiltering] = useState(false);

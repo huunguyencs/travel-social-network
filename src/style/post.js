@@ -99,9 +99,10 @@ const postStyles = makeStyles(
       }
     },
     loadMoreComment: {
+      color: "#8e8e8e",
       marginInline: 20,
-      color: color.blue,
       cursor: 'pointer',
+      fontWeight: 500,
       '&:hover': {
         textDecoration: 'underline'
       }

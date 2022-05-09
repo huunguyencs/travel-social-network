@@ -5,9 +5,13 @@ import color from './color';
 const locationCardStyles = makeStyles(
   theme => ({
     locationCardContainer: {
-        margin: "20px 0",
-        borderRadius: attr.borderRadius.md,
-        backgroundColor: color.white,
+      margin: 10,
+      borderRadius: attr.borderRadius.md,
+      backgroundColor: color.white,
+      width: 400,
+      [theme.breakpoints.down('sm')]: {
+        width: 200
+      }
     },
     seeMoreBtn: {
       paddingInline: 10,
@@ -18,9 +22,9 @@ const locationCardStyles = makeStyles(
       }
     },
     media: {
-      height: 500,
+      height: 300,
       [theme.breakpoints.down('sm')]: {
-        height: 300
+        height: 150
       }
     },
     content: {
@@ -40,6 +44,8 @@ const locationCardStyles = makeStyles(
         textDecorationLine: 'underline'
       }
     }
-}), {index: 1});
+  }),
+  { index: 1 }
+);
 
 export default locationCardStyles;

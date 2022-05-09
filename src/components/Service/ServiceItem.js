@@ -11,7 +11,7 @@ import {
   Typography
 } from '@material-ui/core';
 import { Rating } from '@material-ui/lab';
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useMemo, useState } from 'react';
 import { serviceStyles } from '../../style';
 import { getStar } from '../../utils/utils';
 import { SeeMoreText } from '../SeeMoreText';
@@ -381,7 +381,10 @@ function ServiceDetail(props) {
           {service.position && (
             <div style={{ margin: 20 }}>
               <MapCard
-                position={service.position}
+                position={{
+                  lng: service.position[0],
+                  lat: service.position[1]
+                }}
                 zoom={12}
                 name={service.name}
                 height={300}
@@ -449,6 +452,7 @@ function ServiceDetail(props) {
 
 export default function ServiceItem(props) {
   const { service } = props;
+  const { user } = useSelector(state => state.auth);
   const [open, setOpen] = useState(false);
   const [state, setState] = useState({
     loading: false,
@@ -472,6 +476,12 @@ export default function ServiceItem(props) {
       getServiceDetail(service, dispatch);
     }
   }, [open, service, dispatch]);
+
+  const isOwn = useMemo(() => {
+    console.log(user?._id);
+    console.log(service?.cooperator);
+    return user?._id === service?.cooperator;
+  }, [user, service]);
 
   const getServiceDetail = (service, dispatch) => {
     if (!service.rate) {
@@ -542,10 +552,19 @@ export default function ServiceItem(props) {
               ))}
             </ul>
           </CardContent>
-          <div>
+          <div style={{ display: 'flex', justifyContent: 'space-between' }}>
             <Button className={classes.seeReview} onClick={toggleDrawer(true)}>
               Xem chi tiết
             </Button>
+            {isOwn && (
+              <Button
+                className={classes.seeReview}
+                component={Link}
+                to={`/editservice?id=${service._id}`}
+              >
+                Chỉnh sửa
+              </Button>
+            )}
           </div>
         </div>
       </Card>

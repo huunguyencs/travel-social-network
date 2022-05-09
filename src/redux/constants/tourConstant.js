@@ -1,4 +1,6 @@
 export const GET_TOURS = 'GET_TOURS';
+export const GET_TOURS_RECOMMEND = 'GET_TOURS_RECOMMEND';
+export const GET_TOURS_HOT = 'GET_TOURS_HOT';
 export const GET_MORE_TOUR = 'GET_MORE_TOUR';
 export const ADD_TOUR = 'ADD_TOUR';
 export const UPDATE_TOUR = 'UPDATE_TOUR';

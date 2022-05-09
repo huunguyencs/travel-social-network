@@ -193,71 +193,6 @@ export default function Tour(props) {
         {tour && (
           <>
             <TourContent tour={tour} setTour={setTour} />
-
-            {/* <CardActions>
-                        <div className={classes.iconWrap}>
-                            {
-                                like ? <HeartFillIcon className={classes.likedIcon} onClick={likePress} /> : <HeartIcon className={classes.iconButton} onClick={likePress} />
-                            }
-                        </div>
-                        <Modal
-                            aria-labelledby="login"
-                            aria-describedby="must-login"
-                            className={classes.modal}
-                            open={login}
-                            onClose={handleCloseLogin}
-                            closeAfterTransition
-                            BackdropComponent={Backdrop}
-                            BackdropProps={{
-                                timeout: 500,
-                            }}
-                        >
-                            <LoginRef ref={refLogin} />
-                        </Modal>
-
-                        <Typography className={classes.numLike} onClick={handleOpen}>
-                            {tour?.likes.length}
-                        </Typography>
-                        <Modal
-                            aria-labelledby="like"
-                            aria-describedby="user-like-this-tour"
-                            className={classes.modal}
-                            open={showLike}
-                            onClose={handleClose}
-                            closeAfterTransition
-                            BackdropComponent={Backdrop}
-                            BackdropProps={{
-                                timeout: 500,
-                            }}
-                        >
-                            <UserListRef ref={refUser} listUser={tour.likes} title={"Đã thích"} handleClose={handleClose} />
-                        </Modal>
-                        <div className={classes.iconWrap}>
-                            <CommentIcon onClick={handleShowCmt} className={classes.iconButton} />
-                        </div>
-
-                        <Typography className={classes.numCmt}>
-                            {tour.comments.length}
-                        </Typography>
-                        <div className={classes.iconWrap}>
-                            <ShareIcon onClick={handleShowShare} className={classes.iconButton} />
-                        </div>
-
-                        <Modal
-                            aria-labelledby="share"
-                            aria-describedby="share-this-tour"
-                            className={classes.modal}
-                            open={share}
-                            onClose={handleCloseShare}
-                            closeAfterTransition
-                            BackdropComponent={Backdrop}
-                            BackdropProps={{
-                                timeout: 500,
-                            }}
-                        >
-                            <ShareRef ref={refShare} object={tour.shareId ? tour.shareId : tour} type="tour" handleClose={handleCloseShare} />
-                        </Modal>
-                    </CardActions> */}
             <div className={classes.postActions} style={{ marginTop: -80 }}>
               <div className={classes.likeWrapperNotImage} onClick={likePress}>
                 {like ? (
@@ -402,7 +337,7 @@ export default function Tour(props) {
                 timeout: 500
               }}
             >
-              <LoginRef ref={refLogin} />
+              <LoginRef ref={refLogin} handleClose={handleCloseLogin} />
             </Modal>
             <Modal
               aria-labelledby="share"
@@ -460,7 +395,7 @@ export default function Tour(props) {
               {tour.commentDetail &&
                 !loadingComment &&
                 tour.commentDetail?.length < tour.comments?.length && (
-                  <Typography variant="body2" onClick={loadMoreComment}>
+                  <Typography variant="body1" onClick={loadMoreComment} className={classes.loadMoreComment}>
                     Xem thêm bình luận
                   </Typography>
                 )}

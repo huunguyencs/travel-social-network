@@ -27,11 +27,6 @@ export default function VolunteerCard(props) {
     setAnchorEl(null);
   };
 
-  // const handleCloseEdit = () => {
-  //     setShowEdit(false);
-  //     handleCloseMenu();
-  // }
-
   const handleShowDelete = () => {
     setShowDelete(true);
   };
@@ -75,7 +70,9 @@ export default function VolunteerCard(props) {
                 image={volunteer.images[0]}
                 title={volunteer.name}
                 className={classes.media}
-            />
+            >
+                <div className={classes.volunteerState}> Đã diễn ra</div>
+            </CardMedia>
             <CardHeader
                 avatar={
                     <Avatar

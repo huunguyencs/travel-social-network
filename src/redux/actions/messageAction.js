@@ -34,3 +34,31 @@ export const deleteConversation = (props) =>{
         payload: props
     }
 }
+
+export const seenMessage = (props) =>{
+    return{
+        type: MESSAGE_TYPES.SEEN_MESSAGE,
+        payload: props
+    }
+}
+
+export const changeName = (props) =>{
+    return{
+        type: MESSAGE_TYPES.CHANGE_NAME,
+        payload: props
+    }
+}
+
+export const groupAdd = (props) =>{
+    return{
+        type: MESSAGE_TYPES.GROUP_ADD,
+        payload: props
+    }
+}
+
+export const groupMove = (props) =>{
+    return{
+        type: MESSAGE_TYPES.GROUP_MOVE,
+        payload: props
+    }
+}

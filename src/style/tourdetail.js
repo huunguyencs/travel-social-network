@@ -365,10 +365,6 @@ const tourdetailStyles = makeStyles(
         overflow: "hidden",
     },
 
-
-
-
-
     container:{
         margin: 0,
         paddingTop: 64
@@ -395,6 +391,8 @@ const tourdetailStyles = makeStyles(
         borderRadius: attr.borderRadius.md,
         boxShadow: "0 2px 8px #00000026",
         backgroundColor: color.white,
+        maxHeight: 770,
+        overflow: "hidden",
         [theme.breakpoints.down('sm')]: {
           margin:"0",
         }
@@ -411,11 +409,61 @@ const tourdetailStyles = makeStyles(
         fontSize: 25,
         letterSpacing: 1
     },
+
+
     tourTime:{
-        height: 100,
-        width: "100%",
-        borderBottom: "1px solid black"
+      padding: 8,
+      display: "flex",
+      borderBottom: "1px solid #0000001f",
+      marginBottom: 20
     },
+    timeItem:{
+      width: "50%",
+      textAlign: "center",
+    },
+    timeItemTitle:{
+      fontWeight: 500,
+      fontSize: 18
+    },
+    connectLine:{
+      position: "relative",
+      "&::before":{
+        top: 24,
+        left: "calc(-44%)",
+        width: "calc(100% - 50px)",
+        content: "''",
+        display: "inline-block",
+        position: "absolute",
+        borderBottom: "3px dotted #e0e0e0"
+      }
+    },
+    iconStart:{
+      color: "#63B191",
+      border: "1px solid #63B191",
+      margin: "4px 0px",
+      backgroundColor: color.white,
+      borderRadius: "50%",
+      padding: 6
+    },
+    iconEnd:{
+      color: "#f44336",
+      border: "1px solid #f44336",
+      margin: "4px 0px",
+      backgroundColor: color.white,
+      borderRadius: "50%",
+      padding: 6
+    },
+    timeItemDate:{
+      fontWeight: 500,
+      fontSize: 16,
+      color: "#0000008a"
+    },
+    timeItemLocation:{
+      fontWeight: 400,
+      fontSize: 16,
+    },
+
+
     tourDates:{
         padding: 0,
         flexGrow: 1,

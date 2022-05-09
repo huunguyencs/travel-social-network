@@ -7,13 +7,15 @@ import {
   TextField,
   Typography
 } from '@material-ui/core';
-import { Close } from '@material-ui/icons';
+import { CameraAltOutlined, Close } from '@material-ui/icons';
 import { Autocomplete, createFilterOptions } from '@material-ui/lab';
 import React, { useEffect, useState } from 'react';
+import { ScrollMenu } from 'react-horizontal-scrolling-menu';
 import { useDispatch, useSelector } from 'react-redux';
 import { error, success } from '../../redux/actions/alertAction';
 import { modalStyles } from '../../style';
 import customAxios from '../../utils/fetchData';
+import { checkImage, uploadImages } from '../../utils/uploadImage';
 
 const type = [
   'Phương tiện, xe cộ',
@@ -26,7 +28,7 @@ const type = [
 
 const filter = createFilterOptions();
 
-export default function Help({ handleClose }) {
+export default function Help({ help, handleClose }) {
   const { auth, socket } = useSelector(state => state);
   const dispatch = useDispatch();
 
@@ -34,9 +36,11 @@ export default function Help({ handleClose }) {
     description: '',
     type: null,
     positionStr: '',
-    position: null,
     contact: ''
   });
+
+  const [imageUpload, setImageUpload] = useState([]);
+  const [errorImg, setErrorImg] = useState(null);
 
   const [loading, setLoading] = useState(false);
 
@@ -54,13 +58,56 @@ export default function Help({ handleClose }) {
     }));
   };
 
+  const handleChangeImageUpload = e => {
+    let error = '';
+    setErrorImg(null);
+    for (const file of e.target.files) {
+      const check = checkImage(file);
+      if (check !== '') {
+        error = check;
+        break;
+      }
+    }
+    if (error === '') {
+      setImageUpload(oldImage => [...oldImage, ...e.target.files]);
+    } else setErrorImg(error);
+  };
+
+  const removeImage = index => {
+    setImageUpload(oldImage => [
+      ...oldImage.slice(0, index),
+      ...oldImage.slice(index + 1)
+    ]);
+  };
+
   const handleSubmit = async () => {
     setLoading(true);
     const payload = context;
-    if (!context.position) {
+    if (imageUpload.length > 0) {
+      payload.images = await uploadImages(imageUpload);
+    }
+
+    navigator.geolocation.getCurrentPosition(position => {
+      payload.position = [position.coords.longitude, position.coords.latitude];
+    });
+    if (!payload.position) {
       const response = await fetch('https://geolocation-db.com/json/');
       const data = await response.json();
       payload.ip = data.IPv4;
+    }
+    if (help) {
+      await customAxios(auth.token)
+        .put(`/help/${help._id}`, payload)
+        .then(res => {
+          socket.emit('updateHelp', res.data.help);
+          setLoading(false);
+          handleClose();
+          dispatch(
+            success({ message: 'Cập nhật yêu cầu trợ giúp thành công!' })
+          );
+        })
+        .catch(() => dispatch(error({ message: 'Có lỗi xảy ra' })));
+      return;
     }
     await customAxios(auth.token)
       .post('/help', payload)
@@ -76,13 +123,11 @@ export default function Help({ handleClose }) {
   };
 
   useEffect(() => {
-    navigator.geolocation.getCurrentPosition(position => {
-      setContext(state => ({
-        ...state,
-        position: [position.coords.longitude, position.coords.latitude]
-      }));
-    });
-  }, []);
+    if (help) {
+      setContext(help);
+      setImageUpload(help.images);
+    }
+  }, [help]);
 
   const classes = modalStyles();
   return (
@@ -210,6 +255,42 @@ export default function Help({ handleClose }) {
             </div>
           </div>
         </div>
+        <div>
+          <input
+            accept="image/*"
+            className={classes.input}
+            style={{ display: 'none' }}
+            id="input-image"
+            name="images"
+            multiple
+            type="file"
+            onChange={handleChangeImageUpload}
+          />
+          <label className={classes.composeOption} htmlFor="input-image">
+            <CameraAltOutlined style={{ cursor: 'pointer' }} />
+          </label>
+          <span style={{ color: 'red', fontSize: 12 }}>{errorImg}</span>
+          <div className={classes.imageInputContainer}>
+            {imageUpload.length > 0 && (
+              <ScrollMenu height="300px">
+                {imageUpload.map((item, index) => (
+                  <img
+                    key={index}
+                    alt="Error"
+                    style={{ width: 150, height: 150, margin: 5 }}
+                    onClick={() => removeImage(index)}
+                    src={
+                      typeof item === 'string'
+                        ? item
+                        : URL.createObjectURL(item)
+                    }
+                    title={'Xoá'}
+                  />
+                ))}
+              </ScrollMenu>
+            )}
+          </div>
+        </div>
         <div className={classes.button}>
           <Button
             onClick={handleSubmit}
@@ -217,7 +298,7 @@ export default function Help({ handleClose }) {
             startIcon={loading && <CircularProgress size="15" />}
             disabled={loading}
           >
-            Tạo yêu cầu trợ giúp
+            {help ? 'Chỉnh sửa yêu cầu trợ giúp' : 'Tạo yêu cầu trợ giúp'}
           </Button>
         </div>
       </div>

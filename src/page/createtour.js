@@ -1,23 +1,23 @@
-import React, { useEffect } from "react";
-import { useSelector } from "react-redux";
-import { Redirect } from "react-router";
+import React, { useEffect } from 'react';
+import { useSelector } from 'react-redux';
+import { Redirect } from 'react-router-dom';
 
-import AddTourDemo from '../components/Tour/AddTourDemo';
+import AddTour from '../components/Tour/AddTour';
+import { getToken } from '../utils/token';
 
 export default function CreateTour(props) {
+  useEffect(() => {
+    document.title = 'Tạo tour';
+  }, []);
 
-    useEffect(() => {
-        document.title = "Tạo tour";
-    }, [])
+  const { createTour } = useSelector(state => state);
 
-    const { createTour } = useSelector(state => state);
-    if (createTour.tour.length === 0) {
-        return (
-            <Redirect to="/" />
-        )
-    }
+  const rfToken = getToken();
+  if (!rfToken) return <Redirect to="/login" />;
 
-    return (
-        <AddTourDemo isUpdate={false} />
-    )
+  if (createTour.tour.length === 0) {
+    return <Redirect to="/" />;
+  }
+
+  return <AddTour isUpdate={false} />;
 }
