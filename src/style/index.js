@@ -37,6 +37,7 @@ import volunteerStyles from "./volunteer";
 import tableStyles from "./table";
 import addVolunteerStyles from "./addVolunteer";
 import feedReviewStyles from "./feedReview";
+import helpStyles from "./help";
 
 const useStyles = makeStyles((theme) => ({
     container:{
@@ -133,5 +134,6 @@ export {
     volunteerStyles,
     tableStyles,
     addVolunteerStyles,
-    feedReviewStyles
+    feedReviewStyles,
+    helpStyles
 };

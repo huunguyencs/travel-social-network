@@ -346,7 +346,8 @@ export default function Post(props) {
                       to={`/u/${item._id}`}
                       style={{ fontSize: 14, fontWeight: 500, color: 'black' }}
                     >
-                      {item.fullname}
+                      {item.fullname.split(" ")[item.fullname.split(" ").length - 1]}
+                      {index !== post.likes.slice(0, 5).length - 1 ? ", ": ""}
                     </Typography>
                   ))}
               </p>
@@ -354,7 +355,7 @@ export default function Post(props) {
                 <p style={{ margin: 0 }}>đã thích bài viết này</p>
               ) : (
                 post?.likes.length > 1 && (
-                  <p style={{ margin: 0 }}>
+                  <p style={{ margin: 0 }} onClick={handleOpen}>
                     và những người khác đã thích bài này
                   </p>
                 )
