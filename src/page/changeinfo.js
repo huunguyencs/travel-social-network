@@ -92,11 +92,6 @@ export default function Change_info(props) {
                   label="Xác nhận tài khoản"
                   {...a11yProps(2)}
                 />
-                <Tab
-                  className={classes.tab}
-                  label="Bảo mật và riêng tư"
-                  {...a11yProps(3)}
-                />
               </Tabs>
             </div>
           </Grid>
@@ -109,9 +104,6 @@ export default function Change_info(props) {
             </TabPanel>
             <TabPanel value={value} index={2} className={classes.tabPanel}>
               <ConfirmAccount />
-            </TabPanel>
-            <TabPanel value={value} index={3} className={classes.tabPanel}>
-              404
             </TabPanel>
           </Grid>
         </Grid>

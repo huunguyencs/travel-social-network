@@ -90,8 +90,12 @@ export default function InfoPage() {
       ...state,
       loading: true
     }));
-    let urlAvatar = [''],
-      urlBg = [''];
+    let urlAvatar = [
+        'https://res.cloudinary.com/huunguyencs/image/upload/v1648397898/default-avatar_np2xqa.webp'
+      ],
+      urlBg = [
+        'https://res.cloudinary.com/huunguyencs/image/upload/v1648397899/MF1esV_rzs9vx.webp'
+      ];
     if (avatar) urlAvatar = await uploadImages([avatar]);
     if (bg) urlBg = await uploadImages([bg]);
 
