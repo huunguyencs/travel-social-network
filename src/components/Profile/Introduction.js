@@ -21,7 +21,7 @@ import {
 } from '@material-ui/core';
 import PropTypes from 'prop-types';
 import { profileStyles } from '../../style';
-import { timeAgoShort } from '../../utils/date';
+import { convertDateToStr, timeAgoShort } from '../../utils/date';
 function TabPanel(props) {
   const { children, value, index, ...other } = props;
 
@@ -173,7 +173,7 @@ export default function Introduction(props) {
                         {' '}
                         Sinh nhật{' '}
                         <span style={{ fontWeight: 600 }}>
-                          convertDateToStr(user?.birthday)
+                          {convertDateToStr(user?.birthday)}
                         </span>
                       </Typography>
                     </div>
