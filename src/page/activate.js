@@ -1,10 +1,7 @@
-import { Grid, Button } from '@material-ui/core';
+import { Button, Container } from '@material-ui/core';
 import React, { useEffect, useState } from 'react';
 import { useLocation, Link } from 'react-router-dom';
-import LeftBar from '../components/Leftbar';
 import Loading from '../components/Loading';
-import SpeedDialButton from '../components/SpeedDialBtn';
-import { homeMenu } from '../constant/menu';
 import customAxios from '../utils/fetchData';
 
 export default function ActivatePage() {
@@ -12,7 +9,7 @@ export default function ActivatePage() {
   const token = new URLSearchParams(location.search).get('token');
   const [state, setState] = useState({
     error: false,
-    loading: true
+    loading: false
   });
   useEffect(() => {
     document.title = 'Kích hoạt';
@@ -46,49 +43,49 @@ export default function ActivatePage() {
       activateToken(token);
     } else {
       setState({
-        error: true,
-        loading: false
+        loading: false,
+        error: true
       });
     }
   }, [token]);
 
   return (
-    <Grid container style={{ margin: 0, padding: 0 }}>
-      <SpeedDialButton />
-      <Grid item md={3} sm={2} xs={2}>
-        <LeftBar menuList={homeMenu} />
-      </Grid>
-      <Grid item md={9} sm={10} xs={10} style={{ marginTop: 70 }}>
-        {state.loading ? (
-          <div
-            style={{
-              display: 'flex',
-              justifyContent: 'center',
-              margin: 50
-            }}
-          >
-            <Loading />
-          </div>
-        ) : state.error ? (
-          <div
-            style={{
-              display: 'flex',
-              justifyContent: 'center',
-              margin: 50
-            }}
-          >
-            <Button onClick={activateToken}>Thử lại</Button>
-          </div>
-        ) : (
-          <div style={{ marginTop: 80, fontSize: 25 }}>
-            <p>Tài khoản của bạn đã được kích hoạt.</p>
-            <p>Hãy đăng nhập và cùng trải nghiệm Tripple H nào!</p>
-            <Link to="/login" style={{ color: 'green' }}>
-              Đăng nhập
-            </Link>
-          </div>
-        )}
-      </Grid>
-    </Grid>
+    <Container style={{ marginTop: 70 }}>
+      {state.loading ? (
+        <div
+          style={{
+            display: 'flex',
+            justifyContent: 'center',
+            margin: 50
+          }}
+        >
+          <Loading />
+        </div>
+      ) : state.error ? (
+        <div
+          style={{
+            display: 'flex',
+            justifyContent: 'center',
+            margin: 50
+          }}
+        >
+          <Button onClick={activateToken}>Thử lại</Button>
+        </div>
+      ) : (
+        <div
+          style={{
+            marginTop: 80,
+            fontSize: 25,
+            textAlign: 'center'
+          }}
+        >
+          <p>Tài khoản của bạn đã được kích hoạt.</p>
+          <p>Hãy đăng nhập và cùng trải nghiệm Tripple H nào!</p>
+          <Link to="/login" style={{ color: 'green' }}>
+            Đăng nhập
+          </Link>
+        </div>
+      )}
+    </Container>
   );
 }
