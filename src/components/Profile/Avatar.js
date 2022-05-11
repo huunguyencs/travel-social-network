@@ -43,6 +43,7 @@ export default function ProfileAvatar(props) {
   });
   const { message } = useSelector(state => state);
   const handleMessage = async () => {
+    if (!user) return;
     const dataUser = {
       _id: user._id,
       fullname: user.fullname,
@@ -213,11 +214,11 @@ export default function ProfileAvatar(props) {
             <div className={classes.infoUsers}>
               <Typography variant="body1" className={classes.fullname}>
                 {user.fullname}
-                {user.confirmAccount && user.confirmAccount.state !== 0 && (
+                {user.confirmAccount?.state !== 0 && (
                   <Tooltip
                     title={'Tài khoản đã được xác thực'}
                     aria-label="verified"
-                    style={{marginLeft:10}}
+                    style={{ marginLeft: 10 }}
                   >
                     <VerifiedUser color="primary" fontSize="small" />
                   </Tooltip>
@@ -228,7 +229,7 @@ export default function ProfileAvatar(props) {
                   className={classes.followInfo}
                   onClick={handleOpenFollowing}
                 >
-                  {user.followings.length} đang theo dõi
+                  {user.followings?.length} đang theo dõi
                 </Typography>
                 <Modal
                   aria-labelledby="transition-modal-title"
@@ -253,7 +254,7 @@ export default function ProfileAvatar(props) {
                   className={classes.followInfo}
                   onClick={handleOpenFollower}
                 >
-                  {user.followers.length} người theo dõi
+                  {user.followers?.length} người theo dõi
                 </Typography>
                 <Modal
                   aria-labelledby="transition-modal-title"
@@ -277,7 +278,7 @@ export default function ProfileAvatar(props) {
               </div>
             </div>
             <div className={classes.profile_button}>
-              {user._id !== auth.user?._id ? (
+              {user?._id !== auth.user?._id ? (
                 <>
                   <Button
                     startIcon={<RssFeed />}

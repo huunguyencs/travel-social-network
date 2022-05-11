@@ -127,7 +127,7 @@ export default function Introduction(props) {
                     <Typography>
                       Có{' '}
                       <span style={{ fontWeight: 600 }}>
-                        {user.followings.length}
+                        {user.followings?.length}
                       </span>{' '}
                       người theo dõi
                     </Typography>
@@ -185,14 +185,13 @@ export default function Introduction(props) {
                   className={classes.introTabPanel}
                 >
                   <div className={classes.introTabPanelItem}>
-                    {user?.hobbies ? (
+                    {user.hobbies ? (
                       <div>
-                        {user.hobbies.split(',').map((item, index) => (
-                          <div>
+                        {user.hobbies?.split(',').map((item, index) => (
+                          <div key={index}>
                             <Chip
                               color="primary"
                               label={item}
-                              key={index}
                               style={{ margin: 5 }}
                             />
                           </div>

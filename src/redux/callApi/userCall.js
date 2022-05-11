@@ -21,10 +21,10 @@ export const getUser = (id, callback) => async dispatch => {
   }
 };
 
-export const follow = (follow, token, socket, next) => async dispatch => {
+export const follow = (follow, token, socket, next) => dispatch => {
   try {
     // A follow B(follow.id)
-    await customAxios(token)
+    customAxios(token)
       .put(`/user/${follow._id}/follow`)
       .then(res => {
         dispatch(userAction.updateFollower({ followers: res.data.followers }));
@@ -39,16 +39,16 @@ export const follow = (follow, token, socket, next) => async dispatch => {
       });
   } catch (err) {
     next();
-    if (err.response && err.response.data && err.response.data.message)
+    if (err?.response?.data?.message)
       dispatch(alertAction.error({ message: err.response.data.message }));
     else dispatch(alertAction.error({ message: 'Có lỗi xảy ra' }));
   }
 };
 
-export const unfollow = (follow, token, socket, next) => async dispatch => {
+export const unfollow = (follow, token, socket, next) => dispatch => {
   try {
     // A unfollow B(follow.id)
-    await customAxios(token)
+    customAxios(token)
       .put(`/user/${follow._id}/unfollow`)
       .then(res => {
         dispatch(userAction.updateFollower({ followers: res.data.followers }));
@@ -63,7 +63,7 @@ export const unfollow = (follow, token, socket, next) => async dispatch => {
       });
   } catch (err) {
     next();
-    if (err.response && err.response.data && err.response.data.message)
+    if (err?.response?.data?.message)
       dispatch(alertAction.error({ message: err.response.data.message }));
     else dispatch(alertAction.error({ message: 'Có lỗi xảy ra' }));
   }

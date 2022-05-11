@@ -17,7 +17,7 @@ const SocketClient = () => {
 
   //connect
   useEffect(() => {
-    if (auth.user) {
+    if (auth.user?._id) {
       console.log('join');
       // socket.emit('joinUser', auth.user);
       navigator.geolocation.getCurrentPosition(
@@ -44,11 +44,10 @@ const SocketClient = () => {
         }
       );
     }
-  }, [socket, auth.user]);
+  }, [socket, auth.user?._id]);
 
   useEffect(() => {
-    if (auth.user) {
-      console.log('get help');
+    if (auth.user?._id) {
       navigator.geolocation.getCurrentPosition(
         position => {
           dispatch(
@@ -65,7 +64,7 @@ const SocketClient = () => {
         }
       );
     }
-  }, [dispatch, auth.user]);
+  }, [dispatch, auth.user?._id]);
 
   //like
   useEffect(() => {
@@ -244,19 +243,23 @@ const SocketClient = () => {
     socket.on('addMessageToClient', data => {
       dispatch(messageAction.addMessage(data));
 
-      const conversation ={
-          isGroup: data.isGroup,
-          _id: data.conversation, 
-          name: data.name,
-          members: data.isGroup ? [data.sender].concat(data.members.filter(item => item._id !== auth.user._id)) : [data.sender],
-          latestMessage: { 
-            text: data.text,
-            seen: data.members.map(item => ({member: item._id, isSeen:false})),
-            createdAt: data.createdAt,
-            sender: data.sender
-          }
-      }
-      dispatch(messageAction.addUser(conversation))
+      const conversation = {
+        isGroup: data.isGroup,
+        _id: data.conversation,
+        name: data.name,
+        members: data.isGroup
+          ? [data.sender].concat(
+              data.members.filter(item => item._id !== auth.user._id)
+            )
+          : [data.sender],
+        latestMessage: {
+          text: data.text,
+          seen: data.members.map(item => ({ member: item._id, isSeen: false })),
+          createdAt: data.createdAt,
+          sender: data.sender
+        }
+      };
+      dispatch(messageAction.addUser(conversation));
     });
     return () => socket.off('addMessageToClient');
   }, [socket, dispatch, auth.user]);

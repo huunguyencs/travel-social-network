@@ -27,7 +27,7 @@ function InfoProfile() {
   const { id } = useParams();
 
   useEffect(() => {
-    if (!user.user || user.user._id !== id) {
+    if (!user?.user || user.user?._id !== id) {
       setNotFound(false);
       dispatch(
         getUser(id, () => {
@@ -36,7 +36,7 @@ function InfoProfile() {
       );
       dispatch(getServices(id, 0));
     }
-  }, [user.user, id, dispatch, setNotFound]);
+  }, [user?.user, id, dispatch, setNotFound]);
 
   const classes = useStyles();
 
@@ -50,9 +50,9 @@ function InfoProfile() {
         <>
           <Scroll showBelow={500} />
           <SpeedDialButton />
-          <ProfileAvatar user={user.user} />
+          <ProfileAvatar user={user?.user} />
           <Grid container className={classes.containerHome}>
-            {user.user && (
+            {user?.user && (
               <>
                 <Grid item md={3} sm={2} xs={2}>
                   <LeftBar
