@@ -1,7 +1,9 @@
 import { Button } from '@material-ui/core';
 import React, { useEffect, useState } from 'react';
 import GoogleMapPicker from 'react-google-map-picker';
-import KEY from '../../key/googlemap';
+// import KEY from '../../key/googlemap';
+
+const KEY = process.env.REACT_APP_GOOGLE_MAP;
 
 const DefaultLocation = { lat: 18, lng: 106 };
 const DefaultZoom = 8;

@@ -8,11 +8,13 @@ import {
   Typography
 } from '@material-ui/core';
 
-import KEY from '../../key/googlemap';
+// import KEY from '../../key/googlemap';
 import { Link } from 'react-router-dom';
 import { cardStyles } from '../../style';
 import LocationIcon from '../Icons/Location';
 import Loading from '../Loading';
+
+const KEY = process.env.REACT_APP_GOOGLE_MAP;
 
 function MapLocation(props) {
   const [anchorEl, setAnchorEl] = useState(null);

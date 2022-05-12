@@ -6,12 +6,14 @@ import { useSelector } from 'react-redux';
 import { Link, useParams } from 'react-router-dom';
 import HelpCard from '../../components/Help/HelpCard';
 import Loading from '../../components/Loading';
-import KEY from '../../key/googlemap';
+// import KEY from '../../key/googlemap';
 import customAxios from '../../utils/fetchData';
 import { NotFound } from '../404';
 import { helpStyles } from '../../style';
 import SpeedDialButton from '../../components/SpeedDialBtn';
 import ImageList from '../../components/Modal/ImageList';
+
+const KEY = process.env.REACT_APP_GOOGLE_MAP;
 
 export default function HelpDetailPage() {
   const { id } = useParams();
@@ -73,8 +75,8 @@ export default function HelpDetailPage() {
           <Grid container spacing={3}>
             <Grid item lg={5} md={4} sm={12}>
               <HelpCard help={help} detail />
-              {help.images &&
-                <CardMedia style={{marginTop: 15, borderRadius: 15}}>
+              {help.images && (
+                <CardMedia style={{ marginTop: 15, borderRadius: 15 }}>
                   <ImageList
                     imageList={help.images}
                     show2Image={true}
@@ -82,7 +84,7 @@ export default function HelpDetailPage() {
                     isPost={false}
                   />
                 </CardMedia>
-              }
+              )}
             </Grid>
             <Grid item lg={7} md={8} sm={12}>
               <div style={{ height: 600, borderRadius: 15 }}>
