@@ -8,7 +8,9 @@ import {
   Remove,
   Edit,
   Cancel,
-  HourglassFull
+  HourglassFull,
+  Lock,
+  LockOpen
 } from '@material-ui/icons';
 import {
   DataGrid,
@@ -36,88 +38,6 @@ function ExportToolbar() {
     </GridToolbarContainer>
   );
 }
-
-const columns = [
-  {
-    field: 'avatar',
-    headerName: 'Avatar',
-    width: 130,
-    sortable: false,
-    renderCell: user => <Avatar alt={user.row.username} src={user.row.avatar} />
-  },
-  {
-    field: 'fullname',
-    headerName: 'Tên đầy đủ',
-    width: 220
-  },
-  {
-    field: 'email',
-    headerName: 'Email',
-    width: 250
-  },
-  {
-    field: 'join',
-    headerName: 'Ngày tham gia',
-    width: 200,
-    valueGetter: user =>
-      new Date(user.row.createdAt).toLocaleDateString('vi-VN')
-  },
-  {
-    field: 'role',
-    headerName: 'Role',
-    width: 130,
-    valueGetter: user =>
-      user.row.role === 0
-        ? 'Bt'
-        : user.row.role === 1
-        ? 'Co-op'
-        : user.row.role === 2
-        ? 'Admin'
-        : 'Unknown'
-  },
-  {
-    field: 'status',
-    headerName: 'Trạng thái',
-    width: 150,
-    sortable: false,
-    renderCell: user =>
-      user.row.confirmAccount ? (
-        user.row.confirmAccount.state === 0 ? (
-          <Tooltip title="Đang đợi xác thực">
-            <HourglassFull style={{ color: '#ffc107' }} />
-          </Tooltip>
-        ) : user.row.confirmAccount.state === 1 ? (
-          <Tooltip title="Đã xác thực">
-            <CheckCircle style={{ color: '#357a38' }} />
-          </Tooltip>
-        ) : (
-          <Tooltip title="Đã từ chối">
-            <Cancel style={{ color: '#ba000d' }} />
-          </Tooltip>
-        )
-      ) : (
-        <Tooltip title="Chưa xác thực">
-          <Remove />
-        </Tooltip>
-      )
-  },
-  {
-    field: 'action',
-    headerName: 'Chi tiết',
-    width: 150,
-    sortable: false,
-    renderCell: user => (
-      <IconButton
-        size="small"
-        component={Link}
-        to={`/admin/user/${user.row._id}`}
-        title="Chi tiết"
-      >
-        <Edit />
-      </IconButton>
-    )
-  }
-];
 
 function handling(arr) {
   const newusers = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0];
@@ -149,7 +69,6 @@ function getData(users) {
     { month: 'Tháng 12', newuser: 0, user: 0 }
   ];
   let tmp = handling(users);
-  console.log(tmp);
   for (let i = 0; i < 12; i++) {
     data.at(i).newuser = tmp.newusers[i];
     data.at(i).user = tmp.users[i];
@@ -167,6 +86,118 @@ function AdminUsers(props) {
   const [error, setError] = useState(null);
   const [pageSize, setPageSize] = useState(10);
 
+  const columns = [
+    {
+      field: 'avatar',
+      headerName: 'Avatar',
+      width: 130,
+      sortable: false,
+      renderCell: user => <Avatar alt={user.row.username} src={user.row.avatar} />
+    },
+    {
+      field: 'fullname',
+      headerName: 'Tên đầy đủ',
+      width: 220
+    },
+    {
+      field: 'email',
+      headerName: 'Email',
+      width: 250
+    },
+    {
+      field: 'join',
+      headerName: 'Ngày tham gia',
+      width: 170,
+      valueGetter: user =>
+        new Date(user.row.createdAt).toLocaleDateString('vi-VN')
+    },
+    {
+      field: 'role',
+      headerName: 'Role',
+      width: 130,
+      valueGetter: user =>
+        user.row.role === 0
+          ? 'Bt'
+          : user.row.role === 1
+            ? 'Co-op'
+            : user.row.role === 2
+              ? 'Admin'
+              : 'Unknown'
+    },
+    {
+      field: 'status',
+      headerName: 'Trạng thái',
+      width: 150,
+      sortable: false,
+      renderCell: user => (
+        user.row.confirmAccount ? (
+          user.row.confirmAccount.state === 0 ? (
+            <Tooltip title="Đang đợi xác thực">
+              <HourglassFull style={{ color: '#ffc107' }} />
+            </Tooltip>
+          ) : user.row.confirmAccount.state === 1 ? (
+            <Tooltip title="Đã xác thực">
+              <CheckCircle style={{ color: '#357a38' }} />
+            </Tooltip>
+          ) : (
+            <Tooltip title="Đã từ chối">
+              <Cancel style={{ color: '#ba000d' }} />
+            </Tooltip>
+          )
+        ) : (
+          <Tooltip title="Chưa xác thực">
+            <Remove />
+          </Tooltip>
+        )
+      )
+    },
+    {
+      field: 'state',
+      headerName: 'Tình trạng',
+      with: 150,
+      sortable: false,
+      renderCell: user => (
+        user.row.state == false ? (
+          <div>
+            <IconButton
+              size="small"
+              title="Bỏ cấm tài khoản"
+              onClick={() => banUser(user.row._id, false)}
+            >
+              <LockOpen />
+            </IconButton>
+          </div>
+        ) : (
+          <div>
+            <IconButton
+              size="small"
+              title="Cấm tài khoản"
+              onClick={() => banUser(user.row._id, true)}
+            >
+              <Lock />
+            </IconButton>
+          </div>
+        )
+      )
+    },
+    {
+      field: 'action',
+      headerName: 'Chi tiết',
+      width: 150,
+      sortable: false,
+      renderCell: user => (
+        <IconButton
+          size="small"
+          component={Link}
+          to={`/admin/user/${user.row._id}`}
+          title="Chi tiết"
+        >
+          <Edit />
+        </IconButton>
+      )
+    }
+  ];
+
   const getAllUsers = async token => {
     setLoading(true);
     setError(null);
@@ -175,13 +206,29 @@ function AdminUsers(props) {
       .then(res => {
         setUsers(res.data.users);
         setLoading(false);
-        //handlingDataUsers(res.data.users);
       })
       .catch(err => {
         setLoading(false);
         setError('Có lỗi xảy ra');
       });
   };
+
+  const banUser = async (userId, state) => {
+    console.log(state);
+    setError(null);
+    await customAxios(token)
+      .patch(`/user/ban/${userId}`, {
+        state
+      })
+      .then(res => {
+        setLoading(false);
+      })
+      .catch(err => {
+        setLoading(false);
+        setError('Có lỗi xảy ra');
+      });
+    history.push('/admin/user')
+  }
 
   useEffect(() => {
     getAllUsers(token);
@@ -207,7 +254,7 @@ function AdminUsers(props) {
         <Card>
           <CardHeader
             title="Người tham gia"
-            subheader="(+43%) so với tháng trước"
+            subheader={'Biến động năm ' + new Date().getFullYear().toString()}
           />
           <Box>
             <div
