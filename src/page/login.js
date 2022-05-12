@@ -107,7 +107,7 @@ export default function Login(props) {
             },
             err => {
               setLoading(false);
-              setErrorServer(err);
+              setErrorServer(err.message);
             }
           )
         );
