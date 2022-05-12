@@ -156,29 +156,22 @@ function AdminUsers(props) {
       headerName: 'Tình trạng',
       with: 150,
       sortable: false,
-      renderCell: user => (
-        user.row.state == false ? (
-          <div>
-            <IconButton
-              size="small"
-              title="Bỏ cấm tài khoản"
-              onClick={() => banUser(user.row._id, false)}
-            >
-              <LockOpen />
-            </IconButton>
-          </div>
-        ) : (
-          <div>
-            <IconButton
-              size="small"
-              title="Cấm tài khoản"
-              onClick={() => banUser(user.row._id, true)}
-            >
-              <Lock />
-            </IconButton>
-          </div>
-        )
-      )
+      renderCell: user =>
+        user.row.state === true ?
+          <IconButton
+            size="small"
+            title="Bỏ cấm tài khoản"
+            onClick={() => banUser(user.row._id, false)}
+          >
+            <LockOpen />
+          </IconButton> :
+          <IconButton
+            size="small"
+            title="Cấm tài khoản"
+            onClick={() => banUser(user.row._id, true)}
+          >
+            <Lock />
+          </IconButton>
     },
     {
       field: 'action',
