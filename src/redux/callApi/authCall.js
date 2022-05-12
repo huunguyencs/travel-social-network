@@ -126,7 +126,7 @@ export const follow = (token, userId, socket, next) => async dispatch => {
     await customAxios(token)
       .put(`/user/${userId}/follow`)
       .then(res => {
-        // console.log(res.data);
+        console.log(res.data);
         dispatch(
           authAction.updateFollowing({ followings: res.data.followings })
         );
@@ -147,6 +147,7 @@ export const unfollow = (token, userId, socket, next) => async dispatch => {
     await customAxios(token)
       .put(`/user/${userId}/unfollow`)
       .then(res => {
+        console.log(res.data);
         dispatch(
           authAction.updateFollowing({ followings: res.data.followings })
         );
@@ -160,6 +161,34 @@ export const unfollow = (token, userId, socket, next) => async dispatch => {
   } catch (err) {
     next();
   }
+};
+
+export const followInList = (token, userId, socket, next) => dispatch => {
+  customAxios(token)
+    .put(`/user/${userId}/follow`)
+    .then(res => {
+      dispatch(authAction.updateFollowing({ followings: res.data.followings }));
+      socket.emit('follow', {
+        id: userId,
+        followers: res.data.followers,
+        followings: res.data.followings
+      });
+    })
+    .catch(() => next());
+};
+
+export const unfollowInList = (token, userId, socket, next) => dispatch => {
+  customAxios(token)
+    .put(`/user/${userId}/unfollow`)
+    .then(res => {
+      dispatch(authAction.updateFollowing({ followings: res.data.followings }));
+      socket.emit('unfollow', {
+        id: userId,
+        followers: res.data.followers,
+        followings: res.data.followings
+      });
+    })
+    .catch(() => next());
 };
 
 export const changePassword = (token, data, next, error) => async dispatch => {

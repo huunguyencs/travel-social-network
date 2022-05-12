@@ -14,6 +14,7 @@ const userReducer = (state = INIT_STATE, action) => {
       };
     }
     case USER_TYPES.UPDATE_FOLLOW: {
+      console.log(action.payload.followers);
       return {
         ...state,
         user: {

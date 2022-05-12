@@ -9,7 +9,7 @@ import React, { useEffect, useState } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { Link } from 'react-router-dom';
 
-import { follow, unfollow } from '../../redux/callApi/authCall';
+import { followInList, unfollowInList } from '../../redux/callApi/authCall';
 import { modalListStyles } from '../../style';
 
 export default function UserList(props) {
@@ -33,7 +33,7 @@ export default function UserList(props) {
         error: false
       });
       dispatch(
-        unfollow(auth.token, userId, socket, () => {
+        unfollowInList(auth.token, userId, socket, () => {
           setStateFollow({
             id: userId,
             loading: false,
@@ -53,7 +53,7 @@ export default function UserList(props) {
         error: false
       });
       dispatch(
-        follow(auth.token, userId, socket, () => {
+        followInList(auth.token, userId, socket, () => {
           setStateFollow({
             id: userId,
             loading: false,

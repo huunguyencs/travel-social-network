@@ -24,7 +24,7 @@ import customAxios from '../utils/fetchData';
 import { useDispatch, useSelector } from 'react-redux';
 import { uploadImages } from '../utils/uploadImage';
 import { useHistory, Redirect } from 'react-router-dom';
-import { getUserInfo } from '../redux/actions/userAction';
+import { updateInfo } from '../redux/actions/authAction';
 
 const hobbiesOption = [
   'Biển',
@@ -90,8 +90,12 @@ export default function InfoPage() {
       ...state,
       loading: true
     }));
-    let urlAvatar = '',
-      urlBg = '';
+    let urlAvatar = [
+        'https://res.cloudinary.com/huunguyencs/image/upload/v1648397898/default-avatar_np2xqa.webp'
+      ],
+      urlBg = [
+        'https://res.cloudinary.com/huunguyencs/image/upload/v1648397899/MF1esV_rzs9vx.webp'
+      ];
     if (avatar) urlAvatar = await uploadImages([avatar]);
     if (bg) urlBg = await uploadImages([bg]);
 
@@ -99,8 +103,8 @@ export default function InfoPage() {
 
     customAxios(auth?.token)
       .patch('/user/change_new', {
-        avatar: urlAvatar,
-        background: urlBg,
+        avatar: urlAvatar[0],
+        background: urlBg[0],
         hobbies: parseHobbies,
         birthday,
         andress
@@ -109,7 +113,8 @@ export default function InfoPage() {
         setState({
           loading: false
         });
-        dispatch(getUserInfo({ user: res.data.user }));
+        // dispatch(getUserInfo({ user: res.data.user }));
+        dispatch(updateInfo({ user: res.data.user }));
         history.push('/');
       })
       .catch(() => {

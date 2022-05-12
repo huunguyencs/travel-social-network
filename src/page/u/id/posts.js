@@ -25,7 +25,7 @@ function ProfilePosts() {
   const dispatch = useDispatch();
 
   useEffect(() => {
-    if (!user.user || user.user._id !== id) {
+    if (!user?.user || user.user?._id !== id) {
       setNotFound(false);
       dispatch(
         getUser(id, () => {
@@ -33,7 +33,7 @@ function ProfilePosts() {
         })
       );
     }
-  }, [user.user, id, dispatch, setNotFound]);
+  }, [user?.user, id, dispatch, setNotFound]);
 
   useEffect(() => {
     if (
@@ -66,7 +66,7 @@ function ProfilePosts() {
             <Grid item md={3} sm={2} xs={2}>
               {user.user && (
                 <LeftBar
-                  menuList={user.user.role === 1 ? serviceMenu : profileMenu}
+                  menuList={user.user?.role === 1 ? serviceMenu : profileMenu}
                 />
               )}
             </Grid>
