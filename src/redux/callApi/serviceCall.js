@@ -8,11 +8,9 @@ export const getServices = (id, page) => async dispatch => {
   try {
     var res;
     if (id) {
-      res = await customAxios().get(
-        `/service/get_by_coop/${id}?offset=${page}`
-      );
+      res = await customAxios().get(`/service/coop/${id}?offset=${page}`);
     } else {
-      res = await customAxios().get(`/service/services?offset=${page}`);
+      res = await customAxios().get(`/service/list?offset=${page}`);
     }
     if (page === 0) {
       dispatch(serviceAction.getServices({ services: res.data.services }));
@@ -27,7 +25,7 @@ export const getServices = (id, page) => async dispatch => {
 
 export const getDetail = (id, next, error) => async dispatch => {
   try {
-    const res = await customAxios().get(`/service/get_detail/${id}`);
+    const res = await customAxios().get(`/service/rate/${id}`);
     // console.log(res);
     dispatch(
       serviceAction.getDetail({
@@ -120,3 +118,13 @@ export const updateService =
       dispatch(alertAction.error({ message: 'Có lỗi xảy ra!' }));
     }
   };
+
+export const deleteService = (token, id, next, error) => async dispatch => {
+  customAxios(token)
+    .delete(`/service/${id}`)
+    .then(() => {
+      dispatch(serviceAction.deleteService({ id }));
+      next();
+    })
+    .catch(() => error());
+};

@@ -25,7 +25,7 @@ export const follow = (follow, token, socket, next) => dispatch => {
   try {
     // A follow B(follow.id)
     customAxios(token)
-      .put(`/user/${follow._id}/follow`)
+      .patch(`/user/${follow._id}/follow`)
       .then(res => {
         dispatch(userAction.updateFollower({ followers: res.data.followers }));
         dispatch(
@@ -49,7 +49,7 @@ export const unfollow = (follow, token, socket, next) => dispatch => {
   try {
     // A unfollow B(follow.id)
     customAxios(token)
-      .put(`/user/${follow._id}/unfollow`)
+      .patch(`/user/${follow._id}/unfollow`)
       .then(res => {
         dispatch(userAction.updateFollower({ followers: res.data.followers }));
         dispatch(

@@ -55,3 +55,10 @@ export const updateService = props => {
     payload: props
   };
 };
+
+export const deleteService = props => {
+  return {
+    type: SERVICE_TYPES.DELETE_SERVICE,
+    payload: props
+  };
+};

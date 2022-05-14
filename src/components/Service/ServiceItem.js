@@ -5,6 +5,11 @@ import {
   CardContent,
   CardMedia,
   Chip,
+  CircularProgress,
+  Dialog,
+  DialogActions,
+  DialogContent,
+  DialogTitle,
   Drawer,
   IconButton,
   InputBase,
@@ -16,7 +21,11 @@ import { serviceStyles } from '../../style';
 import { getStar } from '../../utils/utils';
 import { SeeMoreText } from '../SeeMoreText';
 import ImageList from '../Modal/ImageList';
-import { getDetail, reviewService } from '../../redux/callApi/serviceCall';
+import {
+  deleteService,
+  getDetail,
+  reviewService
+} from '../../redux/callApi/serviceCall';
 import { useDispatch, useSelector } from 'react-redux';
 import EmojiPicker from '../Input/EmojiPicker';
 import { AddAPhoto, Close, Send } from '@material-ui/icons';
@@ -25,6 +34,7 @@ import MapCard from '../Map/MapCard';
 import { checkImage } from '../../utils/uploadImage';
 import Lightbox from 'react-image-lightbox';
 import Loading from '../Loading';
+import { error, success } from '../../redux/actions/alertAction';
 
 function Image(props) {
   const { image, index, handleRemove } = props;
@@ -452,12 +462,14 @@ function ServiceDetail(props) {
 
 export default function ServiceItem(props) {
   const { service } = props;
-  const { user } = useSelector(state => state.auth);
+  const { user, token } = useSelector(state => state.auth);
   const [open, setOpen] = useState(false);
   const [state, setState] = useState({
     loading: false,
     error: false
   });
+  const [showDelete, setShowDelete] = useState(false);
+  const [loadingDelete, setLoadingDelete] = useState(false);
 
   const dispatch = useDispatch();
 
@@ -469,6 +481,34 @@ export default function ServiceItem(props) {
     )
       return;
     setOpen(open);
+  };
+
+  const handleShowDelete = () => {
+    setShowDelete(true);
+  };
+
+  const handleCloseDelete = () => {
+    setShowDelete(false);
+  };
+
+  const handleDelete = () => {
+    setLoadingDelete(true);
+    dispatch(
+      deleteService(
+        token,
+        service._id,
+        () => {
+          dispatch(success({ message: 'Xóa thành công' }));
+          setLoadingDelete(false);
+          handleCloseDelete();
+        },
+        () => {
+          dispatch(error({ message: 'Có lỗi xảy ra' }));
+          setLoadingDelete(false);
+          handleCloseDelete();
+        }
+      )
+    );
   };
 
   useEffect(() => {
@@ -557,13 +597,49 @@ export default function ServiceItem(props) {
               Xem chi tiết
             </Button>
             {isOwn && (
-              <Button
-                className={classes.seeReview}
-                component={Link}
-                to={`/editservice?id=${service._id}`}
-              >
-                Chỉnh sửa
-              </Button>
+              <>
+                <Button
+                  className={classes.seeReview}
+                  component={Link}
+                  to={`/editservice?id=${service._id}`}
+                >
+                  Chỉnh sửa
+                </Button>
+                <Button
+                  className={classes.seeReview}
+                  onClick={handleShowDelete}
+                >
+                  Xóa dịch vụ
+                </Button>
+                <Dialog
+                  open={showDelete}
+                  onClose={handleCloseDelete}
+                  aria-labelledby="show-delete-dialog"
+                  aria-describedby="show-delete-dialog-description"
+                >
+                  <DialogTitle id="alert-dialog-title">
+                    {'Bạn có chắc chắn muốn xóa?'}
+                  </DialogTitle>
+
+                  <DialogContent>
+                    Bạn sẽ không thể khôi phục lại dữ liệu sau khi xóa!
+                  </DialogContent>
+                  <DialogActions>
+                    <Button onClick={handleCloseDelete}>Hủy</Button>
+                    <Button
+                      onClick={handleDelete}
+                      className={classes.delete}
+                      disabled={loadingDelete}
+                    >
+                      {loadingDelete ? (
+                        <CircularProgress size={15} color="inherit" />
+                      ) : (
+                        'Xóa'
+                      )}
+                    </Button>
+                  </DialogActions>
+                </Dialog>
+              </>
             )}
           </div>
         </div>

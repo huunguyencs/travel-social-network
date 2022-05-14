@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React, { useCallback, useEffect, useRef, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import * as postAction from './redux/actions/postAction';
 import * as commentAction from './redux/actions/commentAction';
@@ -14,37 +14,81 @@ import getIp from './utils/getIp';
 const SocketClient = () => {
   const { auth, socket } = useSelector(state => state);
   const dispatch = useDispatch();
+  const watchLocation = useRef();
 
-  //connect
-  useEffect(() => {
-    if (auth.user?._id) {
-      console.log('join');
-      // socket.emit('joinUser', auth.user);
-      navigator.geolocation.getCurrentPosition(
-        position => {
-          socket.emit('joinUser', {
-            id: auth.user._id,
-            position: {
-              latitude: position.coords.latitude,
-              longitude: position.coords.longitude
-            }
-          });
-        },
-        () => {
-          getIp()
-            .then(res => {
-              socket.emit('joinUser', {
-                id: auth.user._id,
-                ipv4: res
-              });
-            })
-            .catch(err => {
-              socket.emit('joinUser', { id: auth.user._id });
-            });
+  const [hasAccessLocation, setHasAccessLocation] = useState(false);
+
+  const locationResolve = useCallback(
+    position => {
+      setHasAccessLocation(true);
+      socket.emit('joinUser', {
+        id: auth.user._id,
+        position: {
+          latitude: position.coords.latitude,
+          longitude: position.coords.longitude
         }
-      );
+      });
+    },
+    [socket, auth.user._id]
+  );
+
+  const locationReject = useCallback(() => {
+    getIp()
+      .then(res => {
+        setHasAccessLocation(!!res);
+        socket.emit('joinUser', {
+          id: auth.user._id,
+          ipv4: res
+        });
+      })
+      .catch(err => {
+        setHasAccessLocation(false);
+        socket.emit('joinUser', { id: auth.user._id });
+      });
+  }, [socket, auth.user._id]);
+
+  const positionChange = useCallback(
+    position => {
+      socket.emit('position-change', {
+        id: auth.user._id,
+        position: {
+          latitude: position.coords.latitude,
+          longitude: position.coords.longitude
+        }
+      });
+    },
+    [socket, auth.user._id]
+  );
+
+  const initUser = useCallback(() => {
+    if (!navigator.geolocation) return;
+    navigator.geolocation.getCurrentPosition(locationResolve, locationReject);
+  }, [locationResolve, locationReject]);
+
+  useEffect(() => {
+    if (socket && auth.user?._id) {
+      initUser();
+
+      if (hasAccessLocation) {
+        watchLocation.current = navigator.geolocation.watchPosition(
+          positionChange,
+          locationReject
+        );
+      }
+
+      return () => {
+        navigator.geolocation.clearWatch(watchLocation.current);
+      };
     }
-  }, [socket, auth.user?._id]);
+  }, [
+    initUser,
+    socket,
+    auth.user?._id,
+    hasAccessLocation,
+    watchLocation,
+    locationReject,
+    positionChange
+  ]);
 
   useEffect(() => {
     if (auth.user?._id) {

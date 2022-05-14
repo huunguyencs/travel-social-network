@@ -34,9 +34,12 @@ function App() {
 
   useEffect(() => {
     dispatch(refreshToken());
+  }, [dispatch]);
+
+  useEffect(() => {
     const socket = io(process.env.REACT_APP_HOST_SOCKET);
     dispatch({ type: SOCKET_TYPES.SOCKET, payload: socket });
-    return () => socket.close();
+    return () => socket.emit('disconnect');
   }, [dispatch]);
 
   useEffect(() => {
@@ -45,11 +48,11 @@ function App() {
     }
   }, [dispatch, auth.token]);
   useEffect(() => {
-      if(auth.token){
-        if (message.firstLoad) return;
-        dispatch(getConversations(auth));
-      }
-  }, [message.firstLoad, dispatch, auth])
+    if (auth.token) {
+      if (message.firstLoad) return;
+      dispatch(getConversations(auth));
+    }
+  }, [message.firstLoad, dispatch, auth]);
   useEffect(() => {
     if (auth.token) {
       dispatch(getFriendRecommend(auth.token, 5));

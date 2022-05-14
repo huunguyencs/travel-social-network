@@ -171,7 +171,7 @@ function AdminUsers(props) {
     setLoading(true);
     setError(null);
     await customAxios(token)
-      .get(`/user/all`)
+      .get(`/user/list`)
       .then(res => {
         setUsers(res.data.users);
         setLoading(false);

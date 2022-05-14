@@ -88,6 +88,12 @@ const serviceReducer = (state = INIT_STATE, action) => {
         )
       };
     }
+    case SERVICE_TYPES.DELETE_SERVICE: {
+      return {
+        ...state,
+        services: state.services.filter(item => item._id !== action.payload.id)
+      };
+    }
     default: {
       return state;
     }

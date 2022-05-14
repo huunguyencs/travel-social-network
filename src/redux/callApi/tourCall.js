@@ -34,8 +34,6 @@ export const getTours = query => async dispatch => {
   }
 };
 
-
-
 export const getMoreTours = (page, query) => async dispatch => {
   dispatch(tourAction.loading());
   try {
@@ -147,6 +145,7 @@ export const saveTour =
       dispatch(createNotify(dataNotify, token, socket));
       dispatch(alertAction.success({ message: 'Lưu lịch trình thành công!' }));
       dispatch(resetTour());
+      dispatch(tourAction.addTour({ tour: res.data.newTour }));
       next();
     } catch (err) {
       error();
@@ -310,7 +309,7 @@ export const removeReview =
 
 export const getTourSaved = token => async dispatch => {
   try {
-    const res = await customAxios(token).get(`/user/get_tour_saved`);
+    const res = await customAxios(token).get(`/user/tour_saved`);
     var tours = res.data.tours.map(item => sortTourDate(item));
     // console.log(res.data.tours);
     dispatch(tourAction.getTours({ tours: tours, id: -1 }));
@@ -368,7 +367,7 @@ export const removejoinLocation =
 
 export const getTourRecommend = (token, next, error) => async dispatch => {
   try {
-    const res = await  customAxios(token).get('/tour/foryou')
+    const res = await customAxios(token).get('/tour/foryou');
     dispatch(tourAction.getTourRecommend(res.data.tours));
     next();
   } catch (err) {
@@ -387,15 +386,21 @@ export const getTourHot = () => async dispatch => {
     dispatch(tourAction.error({ error: 'Có lỗi xảy ra' }));
   }
 };
-export const searchTourHot = (query) => async dispatch => {
+export const searchTourHot = query => async dispatch => {
   dispatch(tourAction.loading());
   try {
     var res;
     const { maxCost, minCost, q } = query;
     var que = '';
-    if (maxCost && maxCost !== 100) {que += `max=${maxCost}&`};
-    if (minCost && minCost !== 0) {que += `min=${minCost}&`};
-    if (q && q !== '') {que += `q=${q}`};
+    if (maxCost && maxCost !== 100) {
+      que += `max=${maxCost}&`;
+    }
+    if (minCost && minCost !== 0) {
+      que += `min=${minCost}&`;
+    }
+    if (q && q !== '') {
+      que += `q=${q}`;
+    }
     res = await customAxios().get(`/tour/search_hot?${que}`);
 
     var tours = res.data.tours.map(item => sortTourDate(item));
@@ -404,11 +409,11 @@ export const searchTourHot = (query) => async dispatch => {
     dispatch(tourAction.error({ error: 'Có lỗi xảy ra' }));
   }
 };
-export const getTourSimilar = (id, next, error) =>async dispatch => {
+export const getTourSimilar = (id, next, error) => async dispatch => {
   try {
     // const res = await customAxios().get(`/tour/similar/${id}`);
     // next(res.data.tours);
-    next([])
+    next([]);
   } catch (err) {
     dispatch(tourAction.error({ error: 'Có lỗi xảy ra' }));
     error();

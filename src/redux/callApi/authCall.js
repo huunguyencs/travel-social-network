@@ -72,7 +72,8 @@ export const refreshToken = () => async dispatch => {
       // return res.data.accessToken
     } catch (err) {
       dispatch(authAction.loginFailed());
-      dispatch(alertAction.error({ message: 'Đăng nhập không thành công!' }));
+      dispatch(alertAction.error({ message: err.message }));
+
       // console.log(err.response.data.message);
       // callback();
       // dispatch(notifyAction.callFail({ error: err.response.data.message }));
@@ -124,7 +125,7 @@ export const logout = data => async dispatch => {
 export const follow = (token, userId, socket, next) => async dispatch => {
   try {
     await customAxios(token)
-      .put(`/user/${userId}/follow`)
+      .patch(`/user/${userId}/follow`)
       .then(res => {
         console.log(res.data);
         dispatch(
@@ -145,7 +146,7 @@ export const follow = (token, userId, socket, next) => async dispatch => {
 export const unfollow = (token, userId, socket, next) => async dispatch => {
   try {
     await customAxios(token)
-      .put(`/user/${userId}/unfollow`)
+      .patch(`/user/${userId}/unfollow`)
       .then(res => {
         console.log(res.data);
         dispatch(
@@ -165,7 +166,7 @@ export const unfollow = (token, userId, socket, next) => async dispatch => {
 
 export const followInList = (token, userId, socket, next) => dispatch => {
   customAxios(token)
-    .put(`/user/${userId}/follow`)
+    .patch(`/user/${userId}/follow`)
     .then(res => {
       dispatch(authAction.updateFollowing({ followings: res.data.followings }));
       socket.emit('follow', {
@@ -179,7 +180,7 @@ export const followInList = (token, userId, socket, next) => dispatch => {
 
 export const unfollowInList = (token, userId, socket, next) => dispatch => {
   customAxios(token)
-    .put(`/user/${userId}/unfollow`)
+    .patch(`/user/${userId}/unfollow`)
     .then(res => {
       dispatch(authAction.updateFollowing({ followings: res.data.followings }));
       socket.emit('unfollow', {
@@ -205,7 +206,7 @@ export const changePassword = (token, data, next, error) => async dispatch => {
 
 export const changeInfo = (token, data, next, error) => async dispatch => {
   try {
-    const res = await customAxios(token).patch('/user/change_info', data);
+    const res = await customAxios(token).put('/user/change_info', data);
     dispatch(
       alertAction.success({ message: 'Cập nhật thông tin thành công!' })
     );
@@ -234,7 +235,7 @@ export const changeBackground = (token, src, next, error) => async dispatch => {
     const image = await imageUtils.uploadImages([src]);
     if (image?.length > 0) {
       const url = image[0];
-      await customAxios(token).patch('/user/change_background', {
+      await customAxios(token).put('/user/change_info', {
         background: url
       });
 
@@ -258,7 +259,7 @@ export const changeAvatar = (token, src, next, error) => async dispatch => {
     const image = await imageUtils.uploadImages([src]);
     if (image?.length > 0) {
       const url = image[0];
-      await customAxios(token).patch('/user/change_avatar', {
+      await customAxios(token).put('/user/change_info', {
         avatar: url
       });
 
@@ -279,7 +280,7 @@ export const changeAvatar = (token, src, next, error) => async dispatch => {
 
 export const saveTour = (tourId, token) => async dispatch => {
   try {
-    const res = await customAxios(token).put('/user/save_tour', {
+    const res = await customAxios(token).patch('/user/save_tour', {
       tour: tourId
     });
 
@@ -292,7 +293,7 @@ export const saveTour = (tourId, token) => async dispatch => {
 
 export const unsavedTour = (tourId, token) => async dispatch => {
   try {
-    const res = await customAxios(token).put('/user/unsave_tour', {
+    const res = await customAxios(token).patch('/user/unsave_tour', {
       tour: tourId
     });
     dispatch(authAction.saveTour({ tourSaved: res.data.tourSaved }));
@@ -304,9 +305,7 @@ export const unsavedTour = (tourId, token) => async dispatch => {
 
 export const getFriendRecommend = (token, limit) => async dispatch => {
   try {
-    const res = await customAxios(token).get(
-      `/user/get_friend_recommend?limit=${limit}`
-    );
+    const res = await customAxios(token).get(`/user/recommend?limit=${limit}`);
     dispatch(
       authAction.getFriendRecommend({ friendsRecommend: res.data.recommend })
     );
