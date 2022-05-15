@@ -28,7 +28,8 @@ import {
   AccessibilityNew,
   Bookmark,
   ReportProblem,
-  Warning
+  Warning,
+  Star
 } from '@material-ui/icons';
 import { Link, useHistory } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
@@ -270,6 +271,19 @@ export default function Header(props) {
                             <Bookmark fontSize="small" />
                           </ListItemIcon>
                           <Typography variant="inherit">Tour đã lưu</Typography>
+                        </MenuItem>
+                        <MenuItem
+                          aria-label="reviews"
+                          component={Link}
+                          to={`/myreview`}
+                          onClick={handleCloseUser}
+                        >
+                          <ListItemIcon>
+                            <Star fontSize="small" />
+                          </ListItemIcon>
+                          <Typography variant="inherit">
+                            Review của tôi
+                          </Typography>
                         </MenuItem>
                         <MenuItem
                           aria-label="myhelp"
