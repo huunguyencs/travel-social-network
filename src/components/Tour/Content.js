@@ -28,7 +28,7 @@ import {
   Delete
 } from '@material-ui/icons';
 import { AvatarGroup } from '@material-ui/lab';
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useMemo, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { Link } from 'react-router-dom';
 import { saveTour, unsavedTour } from '../../redux/callApi/authCall';
@@ -386,6 +386,12 @@ function BaseContent(props) {
     }
   };
 
+  const isOld = useMemo(() => {
+    const startDate = new Date(tour.tour[0].date);
+    const now = new Date();
+    return startDate < now;
+  }, [tour.tour]);
+
   const handleDeleteTour = () => {
     setState({
       loadingDelete: true,
@@ -575,7 +581,7 @@ function BaseContent(props) {
       <CardContent>
         <div>
           {tour.userId._id !== auth.user?._id && (
-            <Button onClick={joinClick} disabled={state.loadingJoin}>
+            <Button onClick={joinClick} disabled={state.loadingJoin || isOld}>
               {state.loadingJoin ? (
                 <CircularProgress size={18} color="inherit" />
               ) : join ? (
