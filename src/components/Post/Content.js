@@ -412,7 +412,12 @@ function ShareContent({ post }) {
         <SeeMoreText variant="body1" maxText={100} text={post.content} />
         <div className={classes.hashtagWrap}>
           {post.hashtags.map((item, index) => (
-            <Typography className={classes.hashtag} key={index}>
+            <Typography
+              className={classes.hashtag}
+              key={index}
+              component={Link}
+              to={`/post/hashtag?hashtag=${item}`}
+            >
               #{item}
             </Typography>
           ))}
@@ -470,7 +475,12 @@ function BaseContent(props) {
         <SeeMoreText variant="body1" maxText={100} text={post.content} />
         <div className={classes.hashtagWrap}>
           {post.hashtags.map((item, index) => (
-            <Typography className={classes.hashtag} key={index}>
+            <Typography
+              className={classes.hashtag}
+              key={index}
+              component={Link}
+              to={`/post/hashtag?hashtag=${item}`}
+            >
               #{item}
             </Typography>
           ))}

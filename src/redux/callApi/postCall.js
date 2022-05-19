@@ -91,6 +91,20 @@ export const getMorePost = data => async dispatch => {
   }
 };
 
+export const getPostHashtag = (page, hashtag) => dispatch => {
+  if (!hashtag) return;
+  if (page > 0) dispatch(postAction.loading());
+  return customAxios()
+    .get(`/post/hashtag?hashtag=${hashtag}&page=${page}`)
+    .then(res => {
+      if (page > 0) dispatch(postAction.getMorePost({ posts: res.data.posts }));
+      else dispatch(postAction.getPosts({ posts: res.data.posts }));
+    })
+    .catch(err => {
+      dispatch(postAction.error({ error: 'Có lỗi xảy ra' }));
+    });
+};
+
 export const getPostById = (id, token, next) => async dispatch => {
   // dispatch(postAction.getPosts({ posts: [] }));
   dispatch(postAction.loadingFirst());

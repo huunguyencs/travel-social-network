@@ -56,6 +56,23 @@ export const getMoreTours = (page, query) => async dispatch => {
   }
 };
 
+export const getTourHashtag = (page, hashtag) => async dispatch => {
+  if (!hashtag) return;
+  if (page > 0) dispatch(tourAction.loading());
+
+  return customAxios()
+    .get(`/tour/hashtag?hashtag=${hashtag}&offset=${page}`)
+    .then(res => {
+      const tours = res.data.tours.map(item => sortTourDate(item));
+      if (page > 0) {
+        dispatch(tourAction.getMoreTour({ tours: tours }));
+      } else dispatch(tourAction.getTours({ tours: tours }));
+    })
+    .catch(err => {
+      dispatch(tourAction.error({ error: 'Có lỗi xảy ra' }));
+    });
+};
+
 export const getUserTour = (id, token, page) => async dispatch => {
   // dispatch(tourAction.getTours({ tour: [] }));
   if (page === 0) {

@@ -489,7 +489,12 @@ export default function TourDetail(props) {
                   </div>
                   <div className={classes.hashtagWrap}>
                     {tour.hashtags.map((hashtag, index) => (
-                      <Typography className={classes.hashtag} key={index}>
+                      <Typography
+                        className={classes.hashtag}
+                        key={index}
+                        component={Link}
+                        to={`/tour/hashtag?hashtag=${hashtag}`}
+                      >
                         #{hashtag}
                       </Typography>
                     ))}
@@ -732,6 +737,7 @@ export default function TourDetail(props) {
                               isOwn={isOwn}
                               updateJoinLocation={updateJoinLocation}
                               joinLoc={joinLoc}
+                              isOld={isOld}
                             />
                           ))}
                         </TabPanel>

@@ -6,7 +6,7 @@ import NotFound from '../page/404';
 
 const GeneratePage = pageName => {
   const component = () => require(`../page/${pageName}`).default;
-
+  console.log(pageName);
   try {
     return React.createElement(component());
   } catch (err) {
@@ -39,7 +39,7 @@ const PageRender = () => {
       if (subpage) {
         pageName = `${page}/id/${subpage}`;
       } else {
-        if (id === 'add' || id === 'my') {
+        if (id === 'add' || id === 'my' || id === 'hashtag') {
           pageName = `${page}/${id}`;
         } else pageName = `${page}/id`;
       }

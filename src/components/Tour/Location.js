@@ -337,7 +337,8 @@ export default function Location(props) {
     joined,
     joinIds,
     isOwn,
-    updateJoinLocation
+    updateJoinLocation,
+    isOld
   } = props;
 
   const [showDetail, setShowDetail] = useState(false);
@@ -588,6 +589,7 @@ export default function Location(props) {
                             <Button
                               onClick={joinedLoc ? handleUnJoin : handleJoin}
                               className={classes.reviewBtn}
+                              disabled={isOld}
                             >
                               {joinedLoc ? 'Huỷ tham gia' : 'Tham gia'}
                             </Button>

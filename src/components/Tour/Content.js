@@ -227,7 +227,12 @@ function ShareContent({ tour }) {
         <SeeMoreText variant="body1" maxText={100} text={tour.content} />
         <div className={classes.hashtagWrap}>
           {tour.hashtags.map((item, index) => (
-            <Typography className={classes.hashtag} key={index}>
+            <Typography
+              className={classes.hashtag}
+              key={index}
+              component={Link}
+              to={`/tour/hashtag?hashtag=${item}`}
+            >
               #{item}
             </Typography>
           ))}
@@ -669,7 +674,12 @@ function BaseContent(props) {
 
         <div className={classes.hashtagWrap}>
           {tour.hashtags.map((item, index) => (
-            <Typography className={classes.hashtag} key={index}>
+            <Typography
+              className={classes.hashtag}
+              key={index}
+              component={Link}
+              to={`/tour/hashtag?hashtag=${item}`}
+            >
               #{item}
             </Typography>
           ))}

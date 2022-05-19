@@ -210,6 +210,16 @@ const feedStyles = makeStyles(
       [theme.breakpoints.down('sm')]: {
         display: 'none'
       }
+    },
+    hashtagContainer: {
+      marginTop: 120,
+      width: '60%',
+      [theme.breakpoints.down('md')]: {
+        width: '80%'
+      },
+      [theme.breakpoints.down('sm')]: {
+        width: '100%'
+      }
     }
   }),
   { index: 1 }
