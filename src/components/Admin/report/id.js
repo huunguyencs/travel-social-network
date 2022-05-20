@@ -7,7 +7,7 @@ import { useSelector } from 'react-redux';
 import { NotFound } from '../../../page/404';
 import customAxios from '../../../utils/fetchData';
 
-import { tableStyles } from '../../../style';
+import { tableStyles } from "../../../style"
 import Loading from '../../Loading';
 
 import PostReport from './post';
@@ -119,8 +119,8 @@ function AdminPostReportDetail() {
           error: true
         });
       });
-    history.push('/admin/report');
-  };
+    history.push('/admin/report')
+  }
 
   const cancelReport = async id => {
     setState({
@@ -144,8 +144,8 @@ function AdminPostReportDetail() {
           error: true
         });
       });
-    history.push('/admin/report');
-  };
+    history.push('/admin/report')
+  }
 
   useEffect(() => {
     getReport(subpage);
@@ -192,17 +192,19 @@ function AdminPostReportDetail() {
           Có lỗi xảy ra
         </div>
       ) : (
-        report && (
-          <div className={classes.containerReport}>
-            <div className={classes.cardPost}>
-              <Typography variant="h4" gutterBottom>
-                Chi tiết
-              </Typography>
-              <div>
-                <PostReport post={post} />
-              </div>
+        report &&
+        <div className={classes.containerReport}>
+          <div className={classes.cardPost}>
+            <Typography variant='h4' gutterBottom>
+              Chi tiết
+            </Typography>
+            <div>
+              <PostReport
+                post={post}
+              />
             </div>
-            <div className={classes.cardReport}>
+          </div>
+          <div className={classes.cardReport}>
               <div>
                 <Typography variant="h4" gutterBottom>
                   Thông tin report
@@ -255,8 +257,7 @@ function AdminPostReportDetail() {
                 </div>
               )}
             </div>
-          </div>
-        )
+        </div>
       )}
     </Paper>
   );

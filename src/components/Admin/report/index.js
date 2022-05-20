@@ -28,7 +28,7 @@ function handling(arr) {
   arr.forEach(element => {
     let d = new Date(element.createdAt);
     let mon = d.getMonth();
-    if (d.getFullYear() === new Date().getFullYear()) {
+    if (d.getFullYear() === (new Date()).getFullYear()) {
       tour[mon] += 1;
     }
   });
@@ -38,52 +38,52 @@ function handling(arr) {
 function getData(arr) {
   const data = [
     {
-      name: 'Tháng 1',
-      report: 0
+      name: "Tháng 1",
+      report: 0,
     },
     {
-      name: 'Tháng 2',
-      report: 0
+      name: "Tháng 2",
+      report: 0,
     },
     {
-      name: 'Tháng 3',
-      report: 0
+      name: "Tháng 3",
+      report: 0,
     },
     {
-      name: 'Tháng 4',
-      report: 0
+      name: "Tháng 4",
+      report: 0,
     },
     {
-      name: 'Tháng 5',
-      report: 0
+      name: "Tháng 5",
+      report: 0,
     },
     {
-      name: 'Tháng 6',
-      report: 0
+      name: "Tháng 6",
+      report: 0,
     },
     {
-      name: 'Tháng 7',
-      report: 0
+      name: "Tháng 7",
+      report: 0,
     },
     {
-      name: 'Tháng 8',
-      report: 0
+      name: "Tháng 8",
+      report: 0,
     },
     {
-      name: 'Tháng 9',
-      report: 0
+      name: "Tháng 9",
+      report: 0,
     },
     {
-      name: 'Tháng 10',
-      report: 0
+      name: "Tháng 10",
+      report: 0,
     },
     {
-      name: 'Tháng 11',
-      report: 0
+      name: "Tháng 11",
+      report: 0,
     },
     {
-      name: 'Tháng 12',
-      report: 0
+      name: "Tháng 12",
+      report: 0,
     }
   ];
 
