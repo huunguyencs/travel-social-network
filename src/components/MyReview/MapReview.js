@@ -8,12 +8,11 @@ import LocationIcon from '../Icons/Location';
 const KEY = process.env.REACT_APP_GOOGLE_MAP;
 
 const K_WIDTH = 300;
-const K_HEIGHT = 250;
+// const K_HEIGHT = 300;
 
 const greatePlaceStyle = {
   position: 'absolute',
   width: K_WIDTH,
-  height: K_HEIGHT,
   left: -K_WIDTH / 2 + 10,
   top: -K_WIDTH + 50
 };
@@ -38,7 +37,7 @@ function LocationInfo({ review, setShowInfo }) {
         height={200}
         title={review.review.locationId.fullname}
       />
-      <div style={{ display: 'flex', justifyContent: 'center' }}>
+      <div style={{ display: 'flex', justifyContent: 'center',alignItems:'center', flexDirection:'column', padding:"0 10px 10px 10px" }}>
         <Typography
           component={Link}
           to={`/posts/${review.review._id}`}
@@ -93,14 +92,21 @@ const LocationMarker = ({ location }) => {
       >
         <Card
           style={{
-            width: 200,
-            height: 30,
+            width: 300,
             display: 'flex',
-            justifyContent: 'center',
+            flexDirection:'column',
+            alignItems: "center",
             marginTop: 10
           }}
         >
-          {location?.fullname}
+          <Typography variant='body1'>{location?.fullname}</Typography>
+          <img
+            src={location?.images[0]
+            }
+            alt={'Đang tải...'}
+            width={300}
+            height={200}
+          />
         </Card>
       </Popover>
     </>
@@ -115,7 +121,7 @@ export default function MapReview({
   setShowInfo
 }) {
   return (
-    <Card style={{ height: '90vh' }}>
+    <Card style={{ height: "100%" }}>
       <GoogleMapReact
         bootstrapURLKeys={{ key: KEY }}
         defaultCenter={{ lat: 15, lng: 108 }}

@@ -4,8 +4,18 @@ import React, { useState } from 'react'
 import { Link } from 'react-router-dom';
 import { deleteVolunteer } from '../../redux/callApi/volunteerCall';
 import { volunteerStyles } from '../../style';
-import { convertDateToStr, timeAgo } from '../../utils/date';
+import { convertDateToStr, convertDateFormat, timeAgo } from '../../utils/date';
 import { useDispatch, useSelector } from 'react-redux';
+
+function check_state (dates){
+    if (convertDateFormat(dates[dates.length -1].date).valueOf() < convertDateFormat(new Date()).getTime()){
+        return 0  //đã diễn ra
+    }
+    else if(convertDateFormat(dates[0].date).valueOf() > convertDateFormat(new Date()).getTime()){
+        return 1 //sắp diễn ra
+    }
+    else return 2 //đang diễn ra
+}
 
 export default function VolunteerCard(props) {
   const { volunteer } = props;
@@ -13,7 +23,7 @@ export default function VolunteerCard(props) {
   const classes = volunteerStyles();
   const dispatch = useDispatch();
   const [anchorEl, setAnchorEl] = useState(null);
-  // const [showEdit, setShowEdit] = useState(false);
+  const checkState = check_state(volunteer.date);
   const [showDelete, setShowDelete] = useState(false);
   const [state, setState] = useState({
     loading: false,
@@ -71,7 +81,14 @@ export default function VolunteerCard(props) {
                 title={volunteer.name}
                 className={classes.media}
             >
-                <div className={classes.volunteerState}> Đã diễn ra</div>
+                { checkState === 2 ?
+                    <div className={classes.volunteerState} style={{backgroundColor: "#db8a55"}}> Đang diễn ra</div>
+                :
+                checkState === 1 ?
+                    <div className={classes.volunteerState} style={{backgroundColor: "#2c9a18"}}>Sắp diễn ra</div>
+                :
+                    <div className={classes.volunteerState} style={{backgroundColor: "#da5858"}}>Đã  diễn ra</div>
+                }
             </CardMedia>
             <CardHeader
                 avatar={

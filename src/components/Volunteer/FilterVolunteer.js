@@ -5,7 +5,7 @@ import {
     Input,
     Popover,
     Button, 
-    Typography
+    Typography,
 } from '@material-ui/core';
 import React, { useState} from 'react';
 import { Link } from 'react-router-dom';
@@ -100,19 +100,20 @@ export default function FilterVolunteer(props) {
 
     const open_text = Boolean(anchorEl_text);
     const id_text = open ? "text-popover" : undefined;
-
     return (
         
         <div>
-            <Button
+            {auth.token &&
+                <Button
                 component={Link}
                 to={'/createvolunteer'}
-                disabled={!auth.token && !auth.user?.confirmAccount.state===1}
+                disabled={!(auth.user.confirmAccount && auth.user.confirmAccount.state === 1)}
                 className={classes.buttonCreate}
                 variant="contained"
-            >
-                Hãy tạo hoạt động tình nguyện của bạn
-            </Button>
+                >
+                    Hãy tạo hoạt động tình nguyện của bạn
+                </Button>
+            }
             <div className={classes.filterWrapper} >
                 <Typography variant='body1'>Lọc theo: </Typography>
                 <div className={classes.filterCost} aria-describedby={id} onClick={handleClick}>

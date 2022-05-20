@@ -11,6 +11,11 @@ export function convertDateToStrShort(date) {
     return temp.getDate() + '/' + (temp.getMonth() + 1);
 }
 
+export function convertDateFormat(date) {
+    let temp = new Date(date);
+    return new Date(temp.getFullYear() + '-' + (temp.getMonth() + 1) + '-'+ temp.getDate());
+}
+
 export function getTime(date) {
     let temp = new Date(date);
     return ('0' + temp.getHours()).slice(-2) + ":" + ('0' + temp.getMinutes()).slice(-2);

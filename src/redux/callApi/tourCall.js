@@ -234,17 +234,19 @@ export const likeTour = (id, auth, socket, next) => async dispatch => {
     // console.log(res.data.likes);
     socket.emit('like', { type: 'tour', id: id, likes: res.data.likes });
 
-    // console.log(res.data.tour);
+    
     //notify
-    const dataNotify = {
-      id: auth.user._id,
-      text: ' thích hành trình của bạn',
-      recipients: [res.data.tour.userId],
-      content: res.data.tour.name,
-      image: res.data.tour.image,
-      url: `/tour/${id}`
-    };
-    dispatch(createNotify(dataNotify, auth.token, socket));
+    if (auth.user._id !== res.data.tour.userId) {
+      const dataNotify = {
+        id: auth.user._id,
+        text: ' thích hành trình của bạn',
+        recipients: [res.data.tour.userId],
+        content: res.data.tour.name,
+        image: res.data.tour.image,
+        url: `/tour/${id}`
+      };
+      dispatch(createNotify(dataNotify, auth.token, socket));
+    }
   } catch (err) {
     next();
     if (err.response && err.response.data && err.response.data.message)
@@ -398,6 +400,7 @@ export const getTourHot = () => async dispatch => {
   try {
     const res = await customAxios().get('/tour/hot');
     var tours = res.data.tours.map(item => sortTourDate(item));
+    console.log("data_tour_hot",tours)
     dispatch(tourAction.getTourHot(tours));
   } catch (err) {
     dispatch(tourAction.error({ error: 'Có lỗi xảy ra' }));
@@ -426,13 +429,12 @@ export const searchTourHot = query => async dispatch => {
     dispatch(tourAction.error({ error: 'Có lỗi xảy ra' }));
   }
 };
-export const getTourSimilar = (id, next, error) => async dispatch => {
+export const getTourSimilar = (auth, id, next) => async dispatch => {
   try {
-    // const res = await customAxios().get(`/tour/similar/${id}`);
-    // next(res.data.tours);
-    next([]);
+    const res = await customAxios(auth?.token).get(`/tour/similar/${id}`);
+    console.log("data_tour_similar",res.data.tours)
+    next(res.data.tours);
   } catch (err) {
     dispatch(tourAction.error({ error: 'Có lỗi xảy ra' }));
-    error();
   }
 };
