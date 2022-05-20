@@ -5,12 +5,14 @@ import customAxios from '../utils/fetchData';
 import LocationList from '../components/MyReview/LocationList';
 import MapReview from '../components/MyReview/MapReview';
 import Loading from '../components/Loading';
+import useStyles from "../style";
+
 
 const REVIEWS = [
   {
     _id: 1,
     review: {
-      content: 'abc',
+      content: 'Chổ này tuyệt đẹp Chổ này tuyệt đẹp Chổ này tuyệt đẹp',
       rate: 4,
       locationId: {
         fullname: 'Quảng Ngãi 1',
@@ -29,7 +31,67 @@ const REVIEWS = [
     _id: 2,
     review: {
       rate: 5,
-      content: 'abc',
+      content: 'Chổ này tuyệt đẹp Chổ này tuyệt đẹp Chổ này tuyệt đẹp',
+      images: [
+        'https://vtv1.mediacdn.vn/zoom/550_339/2018/11/13/photo-11-15421149127921523173283.jpg'
+      ],
+      locationId: {
+        fullname: 'Quảng Ngãi 2',
+        position: {
+          lat: 17.5,
+          lng: 108
+        },
+        images: [
+          'https://statics.vinpearl.com/canh-dep-viet-nam-15_1634999578.jpg'
+        ]
+      }
+    }
+  },
+  {
+    _id: 2,
+    review: {
+      rate: 5,
+      content: 'Chổ này tuyệt đẹp Chổ này tuyệt đẹp Chổ này tuyệt đẹp',
+      images: [
+        'https://vtv1.mediacdn.vn/zoom/550_339/2018/11/13/photo-11-15421149127921523173283.jpg'
+      ],
+      locationId: {
+        fullname: 'Quảng Ngãi 2',
+        position: {
+          lat: 17.5,
+          lng: 108
+        },
+        images: [
+          'https://statics.vinpearl.com/canh-dep-viet-nam-15_1634999578.jpg'
+        ]
+      }
+    }
+  },
+  {
+    _id: 2,
+    review: {
+      rate: 5,
+      content: 'Chổ này tuyệt đẹp Chổ này tuyệt đẹp Chổ này tuyệt đẹp',
+      images: [
+        'https://vtv1.mediacdn.vn/zoom/550_339/2018/11/13/photo-11-15421149127921523173283.jpg'
+      ],
+      locationId: {
+        fullname: 'Quảng Ngãi 2',
+        position: {
+          lat: 17.5,
+          lng: 108
+        },
+        images: [
+          'https://statics.vinpearl.com/canh-dep-viet-nam-15_1634999578.jpg'
+        ]
+      }
+    }
+  },
+  {
+    _id: 2,
+    review: {
+      rate: 5,
+      content: 'Chổ này tuyệt đẹp Chổ này tuyệt đẹp Chổ này tuyệt đẹp',
       images: [
         'https://vtv1.mediacdn.vn/zoom/550_339/2018/11/13/photo-11-15421149127921523173283.jpg'
       ],
@@ -58,7 +120,7 @@ export default function MyReviewPage() {
     lng: 108
   });
   const [zoom, setZoom] = useState(8);
-
+  const classes = useStyles();
   useEffect(() => {
     if (token) {
       // setLoading(true);
@@ -81,7 +143,7 @@ export default function MyReviewPage() {
   if (error)
     return (
       <div
-        style={{ marginTop: 150, display: 'flex', justifyContent: 'center' }}
+        className={classes.center}
       >
         Có lỗi xảy ra
       </div>
@@ -89,8 +151,8 @@ export default function MyReviewPage() {
 
   return (
     <div style={{ marginTop: 80, marginInline: 80, alignContent: 'center' }}>
-      <Grid container spacing={10}>
-        <Grid item md={9} xs={10}>
+      <Grid container spacing={5}>
+        <Grid item md={8} sm={8} xs={12}>
           <MapReview
             reviews={reviews}
             showInfo={showInfo}
@@ -99,7 +161,7 @@ export default function MyReviewPage() {
             zoom={zoom}
           />
         </Grid>
-        <Grid item md={3} xs={2}>
+        <Grid item md={4} sm={4} xs={12}>
           <LocationList
             reviews={reviews}
             showInfo={showInfo}

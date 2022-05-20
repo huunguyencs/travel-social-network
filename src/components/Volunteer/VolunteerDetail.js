@@ -943,9 +943,13 @@ export default function VolunteerDetail(props) {
                                     <Typography variant="body2" onClick={loadMoreComment}>Xem thêm bình luận</Typography>
                                 } */}
             </Collapse>
-            <div className={classes.wrapInput}>
-              <InputComment type="volunteer" id={volunteer._id} />
-            </div>
+            {
+              auth.user &&
+              <div className={classes.wrapInput}>
+                <InputComment type="volunteer" id={volunteer._id} />
+              </div>
+            }
+            
           </div>
         </div>
       ) : (

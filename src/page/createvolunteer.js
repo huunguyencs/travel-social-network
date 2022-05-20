@@ -72,6 +72,13 @@ export default function CreateVolunteer() {
         notFound: true
       });
     }
+    if(!(auth.user?.confirmAccount && auth.user?.confirmAccount.state === 1)){
+      setState({
+        loading: false,
+        error: false,
+        notFound: true
+      });
+    }
   }, [setIsOwn, volunteer, auth]);
 
   useEffect(() => {
