@@ -1,6 +1,6 @@
-import { Card, CardContent, Grid, Typography } from '@material-ui/core';
+import { Card, Grid, Typography } from '@material-ui/core';
 import React from 'react';
-import {myReviewStyles} from "../../style";
+import { myReviewStyles } from '../../style';
 
 function LocationItem({ review, onClick }) {
   const classes = myReviewStyles();
@@ -35,7 +35,9 @@ export default function LocationList({
 
   return (
     <div className={classes.listReview}>
-      <Typography variant='h6' className={classes.title}>Những địa điểm bạn đã review</Typography>
+      <Typography variant="h6" className={classes.title}>
+        Những địa điểm bạn đã review
+      </Typography>
       <div style={{ height: '80vh', overflowY: 'auto' }}>
         {!reviews.length && (
           <div
@@ -44,12 +46,22 @@ export default function LocationList({
             <Typography>Bạn chưa có review</Typography>
           </div>
         )}
-        <Grid container >
-        {reviews.map(item => (
-          <Grid  item  md={6} sm={12} xs={12} key={item._id} style={{cursor: 'pointer' }}>
-            <LocationItem review={item.review} onClick={e => handleClick(item)} />
-          </Grid>
-        ))}
+        <Grid container>
+          {reviews.map(item => (
+            <Grid
+              item
+              md={6}
+              sm={12}
+              xs={12}
+              key={item._id}
+              style={{ cursor: 'pointer' }}
+            >
+              <LocationItem
+                review={item.review}
+                onClick={e => handleClick(item)}
+              />
+            </Grid>
+          ))}
         </Grid>
       </div>
     </div>

@@ -6,27 +6,31 @@ import { useSelector } from 'react-redux';
 import { getTourSimilar } from '../../redux/callApi/tourCall';
 // import { getTours } from '../../redux/callApi/tourCall';
 import { useDispatch } from 'react-redux';
-import { timeAgo } from "../../utils/date";
-import { Link } from "react-router-dom";
+import { timeAgo } from '../../utils/date';
+import { Link } from 'react-router-dom';
 
 export default function TourRecommendCard(props) {
-  const {id} = props;
-  const {auth} = useSelector(state=>state);
+  const { id } = props;
+  const { auth } = useSelector(state => state);
   const history = useHistory();
   const dispatch = useDispatch();
   const classes = friendCardStyles();
-  const [tours, setTours] = useState([])
+  const [tours, setTours] = useState([]);
   useEffect(() => {
-    dispatch(getTourSimilar(auth, id, (data)=>{
-      setTours(data)
-    }));
-  }, [dispatch, id]);
-
+    dispatch(
+      getTourSimilar(auth, id, data => {
+        setTours(data);
+      })
+    );
+  }, [dispatch, id, auth]);
 
   return (
     <Card className={classes.tourRecommend}>
       <div className={classes.friendHeader}>
-        <Typography  className={classes.text} style={{ fontSize: 18, fontWeight: 500  }}>
+        <Typography
+          className={classes.text}
+          style={{ fontSize: 18, fontWeight: 500 }}
+        >
           Hành trình liên quan
         </Typography>
       </div>
@@ -36,11 +40,11 @@ export default function TourRecommendCard(props) {
             tours?.slice(0, 4).map(
               item =>
                 !item.shareId && (
-                  <div
-                    key={item._id}
-                    className={classes.itemWrapper}
-                  >
-                    <div className={classes.itemImage} onClick={() => history.push(`/tour/${item._id}`)}>
+                  <div key={item._id} className={classes.itemWrapper}>
+                    <div
+                      className={classes.itemImage}
+                      onClick={() => history.push(`/tour/${item._id}`)}
+                    >
                       <img
                         className={classes.image}
                         src={item.image}
@@ -51,25 +55,29 @@ export default function TourRecommendCard(props) {
                       </Typography>
                     </div>
                     <div className={classes.userInfo}>
-                        <CardHeader
-                          style={{padding:0}}
-                          avatar={
-                              <Avatar
-                                  alt={item.userId.fullname}
-                                  src={item.userId.avatar}
-                                  aria-label='avatar'
-                              />
-                          }
-                          title={
-                              <Typography className={classes.username} component={Link} to={`/u/${item.userId._id}`}>
-                                  {item.userId?.fullname}
-                              </Typography>
-                          }
-                          subheader={
-                              <Typography className={classes.subheader}>
-                                  {timeAgo(new Date(item.createdAt))}
-                              </Typography>
-                          }
+                      <CardHeader
+                        style={{ padding: 0 }}
+                        avatar={
+                          <Avatar
+                            alt={item.userId.fullname}
+                            src={item.userId.avatar}
+                            aria-label="avatar"
+                          />
+                        }
+                        title={
+                          <Typography
+                            className={classes.username}
+                            component={Link}
+                            to={`/u/${item.userId._id}`}
+                          >
+                            {item.userId?.fullname}
+                          </Typography>
+                        }
+                        subheader={
+                          <Typography className={classes.subheader}>
+                            {timeAgo(new Date(item.createdAt))}
+                          </Typography>
+                        }
                       />
                     </div>
                   </div>

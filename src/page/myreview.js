@@ -5,109 +5,7 @@ import customAxios from '../utils/fetchData';
 import LocationList from '../components/MyReview/LocationList';
 import MapReview from '../components/MyReview/MapReview';
 import Loading from '../components/Loading';
-import useStyles from "../style";
-
-
-const REVIEWS = [
-  {
-    _id: 1,
-    review: {
-      content: 'Chổ này tuyệt đẹp Chổ này tuyệt đẹp Chổ này tuyệt đẹp',
-      rate: 4,
-      locationId: {
-        fullname: 'Quảng Ngãi 1',
-        position: {
-          lat: 15.5,
-          lng: 108
-        },
-        images: [
-          'https://statics.vinpearl.com/canh-dep-viet-nam-15_1634999578.jpg'
-        ]
-      },
-      images: []
-    }
-  },
-  {
-    _id: 2,
-    review: {
-      rate: 5,
-      content: 'Chổ này tuyệt đẹp Chổ này tuyệt đẹp Chổ này tuyệt đẹp',
-      images: [
-        'https://vtv1.mediacdn.vn/zoom/550_339/2018/11/13/photo-11-15421149127921523173283.jpg'
-      ],
-      locationId: {
-        fullname: 'Quảng Ngãi 2',
-        position: {
-          lat: 17.5,
-          lng: 108
-        },
-        images: [
-          'https://statics.vinpearl.com/canh-dep-viet-nam-15_1634999578.jpg'
-        ]
-      }
-    }
-  },
-  {
-    _id: 2,
-    review: {
-      rate: 5,
-      content: 'Chổ này tuyệt đẹp Chổ này tuyệt đẹp Chổ này tuyệt đẹp',
-      images: [
-        'https://vtv1.mediacdn.vn/zoom/550_339/2018/11/13/photo-11-15421149127921523173283.jpg'
-      ],
-      locationId: {
-        fullname: 'Quảng Ngãi 2',
-        position: {
-          lat: 17.5,
-          lng: 108
-        },
-        images: [
-          'https://statics.vinpearl.com/canh-dep-viet-nam-15_1634999578.jpg'
-        ]
-      }
-    }
-  },
-  {
-    _id: 2,
-    review: {
-      rate: 5,
-      content: 'Chổ này tuyệt đẹp Chổ này tuyệt đẹp Chổ này tuyệt đẹp',
-      images: [
-        'https://vtv1.mediacdn.vn/zoom/550_339/2018/11/13/photo-11-15421149127921523173283.jpg'
-      ],
-      locationId: {
-        fullname: 'Quảng Ngãi 2',
-        position: {
-          lat: 17.5,
-          lng: 108
-        },
-        images: [
-          'https://statics.vinpearl.com/canh-dep-viet-nam-15_1634999578.jpg'
-        ]
-      }
-    }
-  },
-  {
-    _id: 2,
-    review: {
-      rate: 5,
-      content: 'Chổ này tuyệt đẹp Chổ này tuyệt đẹp Chổ này tuyệt đẹp',
-      images: [
-        'https://vtv1.mediacdn.vn/zoom/550_339/2018/11/13/photo-11-15421149127921523173283.jpg'
-      ],
-      locationId: {
-        fullname: 'Quảng Ngãi 2',
-        position: {
-          lat: 17.5,
-          lng: 108
-        },
-        images: [
-          'https://statics.vinpearl.com/canh-dep-viet-nam-15_1634999578.jpg'
-        ]
-      }
-    }
-  }
-];
+import useStyles from '../style';
 
 export default function MyReviewPage() {
   const { token } = useSelector(state => state.auth);
@@ -123,31 +21,23 @@ export default function MyReviewPage() {
   const classes = useStyles();
   useEffect(() => {
     if (token) {
-      // setLoading(true);
-      // customAxios(token)
-      //   .get('/user/review')
-      //   .then(res => {
-      //     setReviews(res.data.reviews);
-      //     setLoading(false);
-      //   })
-      //   .catch(err => {
-      //     setLoading(false);
-      //     setError(true);
-      //   });
-      setReviews(REVIEWS);
+      setLoading(true);
+      customAxios(token)
+        .get('/user/review')
+        .then(res => {
+          setReviews(res.data.reviews);
+          setLoading(false);
+        })
+        .catch(err => {
+          setLoading(false);
+          setError(true);
+        });
     }
   }, [token]);
 
   if (loading) return <Loading style={{ marginTop: 150 }} />;
 
-  if (error)
-    return (
-      <div
-        className={classes.center}
-      >
-        Có lỗi xảy ra
-      </div>
-    );
+  if (error) return <div className={classes.center}>Có lỗi xảy ra</div>;
 
   return (
     <div style={{ marginTop: 80, marginInline: 80, alignContent: 'center' }}>
