@@ -145,7 +145,7 @@ export default function ConfirmAccount(props) {
               textSize={14}
             />
           </div>
-          <Typography>Chụp ảnh cùng CMND/CCCD/Hộ chiếu: </Typography>
+          <Typography>Chụp ảnh mặt của bạn: </Typography>
           <div className={classes.cmnd_front}>
             <ChangeImage
               src={imageFace}
@@ -154,11 +154,6 @@ export default function ConfirmAccount(props) {
               textSize={14}
             />
           </div>
-          {/* <div>
-                        {
-
-                        }
-                    </div> */}
           <div className={classes.btnWrap}>
             <Button
               variant="contained"

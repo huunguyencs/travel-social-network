@@ -49,7 +49,7 @@ const SocketClient = () => {
 
   const positionChange = useCallback(
     position => {
-      socket.emit('position-change', {
+      socket.emit('positionChange', {
         id: auth.user._id,
         position: {
           latitude: position.coords.latitude,

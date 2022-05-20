@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { Container, IconButton } from '@material-ui/core';
 import { Card, Grid, Typography, Box, CardHeader } from '@material-ui/core';
-import { Paper, Avatar } from '@material-ui/core';
+import { Paper, Avatar, Tooltip } from '@material-ui/core';
 import { Link, useHistory } from 'react-router-dom';
 import {
   CheckCircle,
@@ -27,8 +27,7 @@ import {
   XAxis,
   YAxis,
   CartesianGrid,
-  Legend,
-  Tooltip
+  Legend
 } from 'recharts';
 
 function ExportToolbar() {
@@ -92,7 +91,9 @@ function AdminUsers(props) {
       headerName: 'Avatar',
       width: 130,
       sortable: false,
-      renderCell: user => <Avatar alt={user.row.username} src={user.row.avatar} />
+      renderCell: user => (
+        <Avatar alt={user.row.username} src={user.row.avatar} />
+      )
     },
     {
       field: 'fullname',
@@ -119,17 +120,17 @@ function AdminUsers(props) {
         user.row.role === 0
           ? 'Bt'
           : user.row.role === 1
-            ? 'Co-op'
-            : user.row.role === 2
-              ? 'Admin'
-              : 'Unknown'
+          ? 'Co-op'
+          : user.row.role === 2
+          ? 'Admin'
+          : 'Unknown'
     },
     {
       field: 'status',
       headerName: 'Trạng thái',
       width: 150,
       sortable: false,
-      renderCell: user => (
+      renderCell: user =>
         user.row.confirmAccount ? (
           user.row.confirmAccount.state === 0 ? (
             <Tooltip title="Đang đợi xác thực">
@@ -149,7 +150,6 @@ function AdminUsers(props) {
             <Remove />
           </Tooltip>
         )
-      )
     },
     {
       field: 'state',
@@ -157,14 +157,15 @@ function AdminUsers(props) {
       with: 150,
       sortable: false,
       renderCell: user =>
-        user.row.state === true ?
+        user.row.state ? (
           <IconButton
             size="small"
             title="Bỏ cấm tài khoản"
             onClick={() => banUser(user.row._id, false)}
           >
             <LockOpen />
-          </IconButton> :
+          </IconButton>
+        ) : (
           <IconButton
             size="small"
             title="Cấm tài khoản"
@@ -172,6 +173,7 @@ function AdminUsers(props) {
           >
             <Lock />
           </IconButton>
+        )
     },
     {
       field: 'action',
@@ -220,8 +222,8 @@ function AdminUsers(props) {
         setLoading(false);
         setError('Có lỗi xảy ra');
       });
-    history.push('/admin/user')
-  }
+    history.push('/admin/user');
+  };
 
   useEffect(() => {
     getAllUsers(token);

@@ -71,8 +71,11 @@ function AdminUserDetail(props) {
   const [loading, setLoading] = useState(false);
 
   const updateUser = async () => {
-    const updateData = {};
-    if (user?.confirmAccount?.state !== status) updateData.status = status;
+    const updateData = { id: user._id };
+    if (user?.confirmAccount?.state !== status) {
+      updateData.status = status;
+      updateData.idConfirm = user.confirmAccount?._id;
+    }
     if (user?.role !== role) updateData.role = role;
     if (Object.keys(updateData).length === 0) return;
     setLoading(true);
