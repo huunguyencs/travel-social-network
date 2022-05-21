@@ -1,6 +1,5 @@
 import {
   Button,
-  CircularProgress,
   IconButton,
   InputBase,
   Paper,
@@ -87,9 +86,22 @@ export default function Help({ help, handleClose }) {
       payload.images = await uploadImages(imageUpload);
     }
 
-    navigator.geolocation.getCurrentPosition(position => {
-      payload.position = [position.coords.longitude, position.coords.latitude];
-    });
+    if (navigator.geolocation) {
+      navigator.geolocation.getCurrentPosition(
+        position => {
+          console.log('POSITION', position);
+          payload.position = [
+            position.coords.longitude,
+            position.coords.latitude
+          ];
+        },
+        err => {
+          console.log('Error', err);
+        },
+        { maximumAge: 60000, timeout: 5000, enableHighAccuracy: true }
+      );
+    }
+
     if (!payload.position) {
       const response = await fetch('https://geolocation-db.com/json/');
       const data = await response.json();
@@ -292,12 +304,7 @@ export default function Help({ help, handleClose }) {
           </div>
         </div>
         <div className={classes.button}>
-          <Button
-            onClick={handleSubmit}
-            variant="contained"
-            startIcon={loading && <CircularProgress size="15" />}
-            disabled={loading}
-          >
+          <Button onClick={handleSubmit} variant="contained" disabled={loading}>
             {help ? 'Chỉnh sửa yêu cầu trợ giúp' : 'Tạo yêu cầu trợ giúp'}
           </Button>
         </div>

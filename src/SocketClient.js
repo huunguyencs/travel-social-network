@@ -15,6 +15,7 @@ const SocketClient = () => {
   const { auth, socket } = useSelector(state => state);
   const dispatch = useDispatch();
   const watchLocation = useRef();
+  const [joined, setJoined] = useState(false);
 
   const [hasAccessLocation, setHasAccessLocation] = useState(false);
 
@@ -61,9 +62,10 @@ const SocketClient = () => {
   );
 
   const initUser = useCallback(() => {
-    if (!navigator.geolocation) return;
+    if (!navigator.geolocation || joined) return;
     navigator.geolocation.getCurrentPosition(locationResolve, locationReject);
-  }, [locationResolve, locationReject]);
+    setJoined(true);
+  }, [locationResolve, locationReject, joined]);
 
   useEffect(() => {
     if (socket && auth.user?._id) {
