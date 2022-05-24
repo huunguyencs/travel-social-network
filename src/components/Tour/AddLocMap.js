@@ -14,6 +14,7 @@ import { useDispatch } from 'react-redux';
 import * as tourAction from '../../redux/actions/createTourAction';
 import { cardStyles } from '../../style';
 import LocationIcon from '../Icons/Location';
+import { getRecommend } from '../../redux/callApi/serviceCall';
 
 const KEY = process.env.REACT_APP_GOOGLE_MAP;
 
@@ -40,6 +41,8 @@ function Location(props) {
       tourAction.addLocation({ location: location, indexDate: indexDate })
     );
     handlePopoverClose();
+    const position = location.position;
+    if (position) dispatch(getRecommend(position));
   };
 
   return (
