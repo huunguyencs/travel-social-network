@@ -237,6 +237,7 @@ export function DetailServiceInfo(props) {
   const [tempStop, setTempStop] = useState('');
 
   const handleChange = (e, value) => {
+    if (!value) value = e.target.value;
     setDetail({
       ...detail,
       [e.target.name]: value

@@ -2,6 +2,7 @@ import customAxios from '../../utils/fetchData';
 import * as serviceAction from '../actions/serviceAction';
 import * as alertAction from '../actions/alertAction';
 import * as imageUtils from '../../utils/uploadImage';
+import { getRecommendService } from '../actions/createTourAction';
 
 export const getServices = (id, page) => async dispatch => {
   dispatch(serviceAction.loading());
@@ -127,4 +128,14 @@ export const deleteService = (token, id, next, error) => async dispatch => {
       next();
     })
     .catch(() => error());
+};
+
+export const getRecommend = position => dispatch => {
+  const { lat, lng } = position;
+  if (!lat || !lng) return;
+  customAxios()
+    .get(`/service/top_near?lat=${lat}&lng=${lng}`)
+    .then(res => {
+      dispatch(getRecommendService(res.data.services));
+    });
 };

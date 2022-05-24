@@ -110,6 +110,11 @@ export default function AddServicePage() {
       setError('Cần thêm ít nhất 1 ảnh');
       return;
     }
+
+    if (!context.position?.lng || !context.position?.lat) {
+      setError('Thiếu vị trí');
+      return;
+    }
     setLoading(true);
     dispatch(
       createService(
