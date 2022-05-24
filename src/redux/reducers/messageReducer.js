@@ -16,10 +16,20 @@ const messageReducer = (state = INIT_STATE, action) => {
                 };
             }
             return state;
-        case MESSAGE_TYPES.ADD_MESSAGE:
+        case MESSAGE_TYPES.ADD_MESSAGE:{
+            var tempData= [];
+            if(state.data.length >0){
+                if(state.data[0].conversation === action.payload.conversation){
+                    tempData = [...state.data, action.payload];
+                }else{
+                    tempData = [...state.data]
+                }
+            }else{
+                tempData = [action.payload]
+            }
             return {
                 ...state,
-                data: [...state.data, action.payload],
+                data: tempData,
                 conversations: state.conversations.map(item =>
                     item._id === action.payload.conversation
                         ? { ...item, latestMessage: {
@@ -35,6 +45,7 @@ const messageReducer = (state = INIT_STATE, action) => {
                         : item
                 )
             }
+        }
         case MESSAGE_TYPES.GET_CONVERSATIONS:
             return {
                 ...state,

@@ -326,7 +326,7 @@ export default function Chat() {
                                   className={classes.chat_date}
                                 >
                                   {' '}
-                                  {item.sender.fullname.slice(0, 5)}
+                                  {item.sender.fullname.split(" ")[item.sender.fullname.split(" ").length - 1]}
                                 </Typography>
                               )}
                               <div style={{ display: 'flex' }}>

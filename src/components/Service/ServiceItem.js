@@ -388,6 +388,15 @@ function ServiceDetail(props) {
             </>
           )}
           <DetailService attribute={service.attribute} type={service.type} />
+          <div>
+            <Typography>
+              <b>Nhà cung cấp:</b>
+            </Typography>
+            <div style={{display:"flex", alignItems:"center"}}>
+              <Avatar src={service.cooperator.avatar} alt="loading..." style={{marginRight: 10}}/>
+              <Typography variant='body1' component={Link} to={`/u/${service.cooperator._id}`}>{service.cooperator.fullname}</Typography> 
+            </div>
+          </div>
           {service.position && (
             <div style={{ margin: 20 }}>
               <MapCard

@@ -24,22 +24,6 @@ export default function FeedService(props) {
         }
     }
 
-    // useEffect(() => {
-    //     if (fetch) {
-    //         loadPost(service.page, service.hasMore, dispatch)
-    //     }
-    // }, [fetch, service.page, service.hasMore, dispatch])
-
-    // useEffect(() => {
-    //     window.addEventListener('scroll', handleScroll);
-    //     return () => window.removeEventListener('scroll', handleScroll)
-    // }, []);
-
-    // function handleScroll() {
-    //     if (window.innerHeight + document.documentElement.scrollTop === document.documentElement.offsetHeight) {
-    //         setFetch(true);
-    //     }
-    // }
 
     return (
         <div className={classes.container}>
@@ -59,29 +43,5 @@ export default function FeedService(props) {
                 }
             </Feed>
         </div>
-        // <Container className={classes.container}>
-        //     <div className={classes.content}>
-
-        //         <div>
-        //             {
-        //                 service.services.map((item) => (
-        //                     <ServiceItem key={item._id} service={item} />
-        //                 ))
-        //             }
-        //             {
-        //                 service.loading &&
-        //                 <div className={classes.centerMarginTop}>
-        //                     <CircularProgress />
-        //                 </div>
-        //             }
-        //             {
-        //                 service.error &&
-        //                 <div className={classes.centerMarginTop}>
-        //                     <Button onClick={tryAgain}>Thử lại</Button>
-        //                 </div>
-        //             }
-        //         </div>
-        //     </div>
-        // </Container>
     )
 }

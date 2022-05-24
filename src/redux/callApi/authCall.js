@@ -25,10 +25,11 @@ export const login = (data, next, callback) => async dispatch => {
   } catch (err) {
     // console.log(err);
 
-    if (err.response && err.response.data && err.response.data.message)
+    if (err.response && err.response.data && err.response.data.message){
       callback(err.response.data.message);
+      dispatch(alertAction.error({ message: err.response.data.message }));
+    }
     else callback('Lỗi không rõ');
-    // dispatch(notifyAction.callFail({ error: err.response.data.message }));
   }
 };
 

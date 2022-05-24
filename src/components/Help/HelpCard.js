@@ -129,7 +129,7 @@ export default function HelpCard({ help, handleRemove, detail }) {
         (id) => {
           history.push(`/message/${id}`);
         }));
-}
+  }
   return (
     <Card>
       <CardHeader

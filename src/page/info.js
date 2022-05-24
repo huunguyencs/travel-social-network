@@ -9,7 +9,8 @@ import {
   Grid,
   Radio,
   RadioGroup,
-  TextField
+  TextField,
+  Typography
 } from '@material-ui/core';
 import { Autocomplete } from '@material-ui/lab';
 import {
@@ -128,9 +129,11 @@ export default function InfoPage() {
   if (!auth?.user?.is_new) return <Redirect to={'/changeinfo'} />;
 
   return (
-    <Container style={{ marginTop: 150 }}>
-      <Grid container spacing={8}>
+    <Container className={classes.infoWrapper}>
+      <Typography variant='h5' style={{marginBottom: 10, display: 'flex', justifyContent:'center'}}>Hãy thêm thông tin của bạn</Typography>
+      <Grid container spacing={8} style={{display:'flex', justifyContent:'center'}}>
         <Grid item md={4} sm={12}>
+          <Typography variant='body1'>Ảnh đại diện</Typography>
           <ChangeImage
             src={avatar}
             setSrc={setAvatar}
@@ -138,7 +141,8 @@ export default function InfoPage() {
             className={classes.sizeAvatarInfo}
           />
         </Grid>
-        <Grid item md={8} sm={12}>
+        <Grid item md={4} sm={12}>
+          <Typography variant='body1'>Ảnh bìa</Typography>
           <ChangeImage
             src={bg}
             setSrc={setBg}
@@ -147,8 +151,8 @@ export default function InfoPage() {
           />
         </Grid>
       </Grid>
-      <Grid container>
-        <Grid item md={6} sm={12} xs={12}>
+      <Grid container spacing={8} style={{display:'flex', justifyContent:'center'}}> 
+        <Grid item md={4} sm={12} xs={12} style={{marginTop:-40}}>
           <MuiPickersUtilsProvider utils={DateFnsUtils}>
             <KeyboardDatePicker
               name="birthday"
@@ -167,7 +171,7 @@ export default function InfoPage() {
             />
           </MuiPickersUtilsProvider>
         </Grid>
-        <Grid item md={6} sm={12} xs={12}>
+        <Grid item md={4} sm={12} xs={12} style={{marginTop:-40}}>
           <FormControl component="fieldset" className={classes.fieldInput}>
             <FormLabel component="legend">Giới tính</FormLabel>
             <RadioGroup

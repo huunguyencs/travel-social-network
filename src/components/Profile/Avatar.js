@@ -18,7 +18,7 @@ import { useSelector, useDispatch } from 'react-redux';
 import { useParams, useHistory, Link } from 'react-router-dom';
 import { follow, unfollow } from '../../redux/callApi/userCall';
 import ChatIcon from '../Icons/Chat';
-import { addUser, getConversations } from '../../redux/callApi/messageCall';
+import { addUser} from '../../redux/callApi/messageCall';
 import { Skeleton } from '@material-ui/lab';
 
 export default function ProfileAvatar(props) {
@@ -27,7 +27,7 @@ export default function ProfileAvatar(props) {
   const { id } = useParams();
   const history = useHistory();
 
-  const { auth, socket } = useSelector(state => state);
+  const { auth, socket, message } = useSelector(state => state);
 
   const dispatch = useDispatch();
 
@@ -41,20 +41,13 @@ export default function ProfileAvatar(props) {
     loading: false,
     error: false
   });
-  const { message } = useSelector(state => state);
-  const handleMessage = async () => {
-    if (!user) return;
-    const dataUser = {
-      _id: user._id,
-      fullname: user.fullname,
-      username: user.username,
-      avatar: user.avatar,
-      role: user.role,
-      text: ''
-    };
-    console.log('message', message);
-    await dispatch(addUser(dataUser, message, socket));
-  };
+
+  const handleAddChat = (user) => {
+    dispatch(addUser(auth, user, message, socket,
+        (id) => {
+          history.push(`/message/${id}`);
+        }));
+  }
 
   const handleOpenFollowing = () => {
     setOpenFollowing(true);
@@ -149,10 +142,7 @@ export default function ProfileAvatar(props) {
     if (user?.fullname) {
       document.title = user.fullname;
     }
-    if (auth.token && !message.firstLoad) {
-      dispatch(getConversations(auth, socket));
-    }
-  }, [dispatch, message.firstLoad, auth, socket, user]);
+  }, [dispatch, user]);
 
   const refFollowing = React.createRef();
   const refFollower = React.createRef();
@@ -298,9 +288,7 @@ export default function ProfileAvatar(props) {
                     startIcon={<ChatIcon />}
                     className={classes.button}
                     disabled={!auth.token}
-                    component={Link}
-                    to={`/message/${user._id}`}
-                    onClick={handleMessage}
+                    onClick={() => handleAddChat(user)}
                   >
                     Nhắn tin
                   </Button>

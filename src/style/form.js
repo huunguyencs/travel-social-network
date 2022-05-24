@@ -344,6 +344,13 @@ const formStyles = makeStyles(
     },
     fieldInput: {
       marginBlock: 10
+    },
+    infoWrapper:{
+      marginTop: 70, 
+      backgroundColor: "white",
+      border: `1px solid ${color.darkgray}`, 
+      padding: 20,
+      boxShadow: '0 2px 8px #00000026'
     }
   }),
   { index: 1 }

@@ -129,7 +129,7 @@ export default function Conversations() {
                                                 <ListItemIcon>
                                                     { conversation.latestMessage.seen 
                                                     && 
-                                                    ! conversation.latestMessage.seen.filter(item => item.member === auth.user._id)[0].isSeen && <FiberManualRecord style={{ color: "#a5dec8" }} />}
+                                                    ! conversation.latestMessage.seen.filter(item => item.member === auth.user._id)[0]?.isSeen && <FiberManualRecord style={{ color: "#a5dec8" }} />}
                                                 </ListItemIcon>
                                             </ListItem>
                                         ))
