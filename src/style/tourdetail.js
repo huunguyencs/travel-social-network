@@ -65,7 +65,8 @@ const tourdetailStyles = makeStyles(
     },
     locationContentContainer: {
       display: 'flex',
-      justifyContent: 'space-between'
+      justifyContent: 'space-between',
+      padding: 10
     },
     reviewBtn: {
         marginRight: 5,
@@ -99,7 +100,7 @@ const tourdetailStyles = makeStyles(
         },
     },
     locationName: {
-      marginTop: 10,
+      // marginTop: 10,
       cursor: 'pointer'
     },
     activeTimeline: {
@@ -520,6 +521,7 @@ const tourdetailStyles = makeStyles(
       top: 64,
       marginTop:16,
       marginRight:10,
+      marginBottom: 30,
       [theme.breakpoints.down('sm')]: {
           marginTop:10,
           marginInline:10
@@ -576,7 +578,32 @@ const tourdetailStyles = makeStyles(
       },
       transition: "color 0.25s ease-in",
   },
-
+  servicesWrapper:{
+    height: 520,
+    overflow:'hidden',
+    overflowY: 'auto',
+    padding: 10
+  },
+  servicesWrapperMaxHeight:{
+    maxHeight: 520,
+    overflow:'hidden',
+    overflowY: 'auto'
+  },
+  serviceRecommendWrapper:{
+    display:'flex'
+  },
+  root: {
+    maxWidth: 345
+  },
+  media: {
+    height: 140
+  },
+  buttonWrapper:{
+    display: 'flex',
+    justifyContent: 'center',
+    marginTop: -10,
+    padding:0
+  }
 
 }), {index: 1})
 

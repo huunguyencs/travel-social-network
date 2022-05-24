@@ -76,7 +76,6 @@ function DetailDate(props) {
           </Typography>
         </Grid>
         <Grid item md={12} sm={12} xs={12}>
-          <div>
             <div style={{ display: 'flex', justifyContent: 'space-between' }}>
               <Typography
                 variant="h6"
@@ -85,18 +84,19 @@ function DetailDate(props) {
                 Danh sách dịch vụ
               </Typography>
             </div>
-            {tourDate.services.map((item, index) => (
-              <ServiceCard
-                joined={joined}
-                type="date"
-                key={index}
-                service={item}
-                index={index}
-                isEdit={false}
-                indexDate={date}
-              />
-            ))}
-          </div>
+            <div className={classes.servicesWrapperMaxHeight}>
+              {tourDate.services.map((item, index) => (
+                <ServiceCard
+                  joined={joined}
+                  type="date"
+                  key={index}
+                  service={item}
+                  index={index}
+                  isEdit={false}
+                  indexDate={date}
+                />
+              ))}
+            </div>
         </Grid>
       </Grid>
     </Paper>

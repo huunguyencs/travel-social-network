@@ -1,7 +1,6 @@
 import {
   Button,
   Card,
-  CardContent,
   CardMedia,
   ClickAwayListener,
   Collapse,
@@ -269,7 +268,7 @@ function DetailService(props) {
   const classes = tourdetailStyles();
 
   return (
-    <div style={{ padding: 15 }}>
+    <div style={{ padding: 5 }}>
       {isEdit ? (
         <div>
           <InputBase
@@ -298,8 +297,8 @@ function DetailService(props) {
           <div className={classes.btnWrap}>
             <Button
               onClick={handleUpdate}
-              variant="contained"
-              className={classes.button}
+              // variant="contained"
+              className={classes.reviewBtn}
             >
               Cập nhật
             </Button>
@@ -391,16 +390,16 @@ export function ServiceCard(props) {
           </CardMedia>
         </Grid>
         <Grid item md={7} sm={9} xs={12}>
-          <CardContent className={classes.contentContainer}>
+          <div className={classes.contentContainer}>
             <div className={classes.locationContentContainer}>
               <div>
                 <div>
                   {service.serviceName ? (
-                    <Typography variant="h5" className={classes.locationName}>
+                    <Typography variant="h6" className={classes.locationName}>
                       {service.serviceName}
                     </Typography>
                   ) : (
-                    <Typography variant="h5" className={classes.locationName}>
+                    <Typography variant="h6" className={classes.locationName}>
                       {service.service.name}
                     </Typography>
                   )}
@@ -434,9 +433,6 @@ export function ServiceCard(props) {
                       onClose={handleCloseMenu}
                       disablePortal
                     >
-                      {/* <Grow
-                                                style={{ transformOrigin: "center bottom" }}
-                                            > */}
                       <ClickAwayListener onClickAway={handleCloseMenu}>
                         <Paper>
                           <MenuList>
@@ -463,13 +459,12 @@ export function ServiceCard(props) {
                           </MenuList>
                         </Paper>
                       </ClickAwayListener>
-                      {/* </Grow> */}
                     </Popper>
                   </div>
                 )}
               </div>
             </div>
-          </CardContent>
+          </div>
         </Grid>
         <Grid item md={12} sm={12} xs={12}>
           <Collapse in={showDetail} style={{ width: '100%' }}>

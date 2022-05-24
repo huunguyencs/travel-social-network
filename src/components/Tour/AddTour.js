@@ -128,8 +128,7 @@ function EditDetailDate(props) {
           </div>
         </Grid>
         <Grid item md={6} sm={12} xs={12}>
-          <div>
-            <div style={{ display: 'flex', justifyContent: 'space-between' }}>
+            <div style={{ display: 'flex', justifyContent: 'center' }}>
               <Typography
                 variant="h6"
                 style={{ textAlign: 'center', marginTop: 10 }}
@@ -137,19 +136,19 @@ function EditDetailDate(props) {
                 Danh sách dịch vụ
               </Typography>
             </div>
-
-            {tourDate.services.map((item, index) => (
-              <ServiceCard
-                isOwn={false}
-                type="date"
-                key={index}
-                service={item}
-                index={index}
-                isEdit={true}
-                indexDate={date}
-              />
-            ))}
-          </div>
+            <div className={classes.servicesWrapper}>
+              {tourDate.services.map((item, index) => (
+                <ServiceCard
+                  isOwn={false}
+                  type="date"
+                  key={index}
+                  service={item}
+                  index={index}
+                  isEdit={true}
+                  indexDate={date}
+                />
+              ))}
+            </div>
         </Grid>
       </Grid>
     </Paper>

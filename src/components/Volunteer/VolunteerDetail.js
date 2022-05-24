@@ -54,7 +54,7 @@ import {
   joinVolunteerOne,
   unJoinVolunteerOne
 } from '../../redux/callApi/volunteerCall';
-import { convertDateToStr } from '../../utils/date';
+import { convertDateToStr, convertDateFormat } from '../../utils/date';
 import { Link } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 import InputComment from '../Input/Comment';
@@ -88,6 +88,16 @@ function a11yProps(index) {
     id: `vertical-tab-${index}`,
     'aria-controls': `vertical-tabpanel-${index}`
   };
+}
+
+function check_state (dates){
+  if (convertDateFormat(dates[dates.length -1].date).valueOf() < convertDateFormat(new Date()).getTime()){
+      return 0  //đã diễn ra
+  }
+  else if(convertDateFormat(dates[0].date).valueOf() > convertDateFormat(new Date()).getTime()){
+      return 1 //sắp diễn ra
+  }
+  else return 2 //đang diễn ra
 }
 
 export default function VolunteerDetail(props) {
@@ -164,6 +174,7 @@ export default function VolunteerDetail(props) {
   const [showCmt, setShowCmt] = useState(false);
   // const [pageComment, setPageComment] = useState(0);
   const [errorComment, setErrorComment] = useState(false);
+  const checkState = check_state(volunteer.date);
   const handleShowCmt = async () => {
     if (!showCmt) {
       if (!volunteer.comments) {
@@ -640,6 +651,7 @@ export default function VolunteerDetail(props) {
                             <Button
                               className={classes.registerTableBookingButton}
                               onClick={handleShowJoin}
+                              disabled={!(checkState !==0)}
                             >
                               Đăng ký ngay
                             </Button>
@@ -647,6 +659,7 @@ export default function VolunteerDetail(props) {
                             <Button
                               className={classes.registerTableBookingButton}
                               onClick={handleShowJoin}
+                              disabled={!(checkState !==0)}
                             >
                               Hủy đăng ký
                             </Button>
@@ -826,6 +839,7 @@ export default function VolunteerDetail(props) {
                           <Button
                             className={classes.registerTableBookingButton}
                             onClick={handleShowJoinOne}
+                            disabled={!(checkState !==0)}
                           >
                             Đăng ký ngay
                           </Button>
@@ -833,6 +847,7 @@ export default function VolunteerDetail(props) {
                           <Button
                             className={classes.registerTableBookingButton}
                             onClick={handleShowJoinOne}
+                            disabled={!(checkState !==0)}
                           >
                             Hủy đăng ký
                           </Button>

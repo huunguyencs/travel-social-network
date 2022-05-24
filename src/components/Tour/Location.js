@@ -295,23 +295,25 @@ function Detail(props) {
         </Grid>
         {location.services?.length > 0 && (
           <Grid item md={6} sm={12} xs={12} style={{ padding: 10 }}>
-            <div style={{ display: 'flex', justifyContent: 'space-between' }}>
-              <Typography variant="h5" style={{ textAlign: 'center' }}>
+            <div style={{ display: 'flex', justifyContent: 'center' }}>
+              <Typography variant="h5" >
                 Danh sách dịch vụ
               </Typography>
             </div>
-            {location.services.map((item, index) => (
-              <ServiceCard
-                joined={joined}
-                type="location"
-                key={index}
-                service={item}
-                index={index}
-                isEdit={isEdit}
-                indexDate={indexDate}
-                indexLocation={indexLocation}
-              />
-            ))}
+            <div className={classes.servicesWrapperMaxHeight}>
+              {location.services.map((item, index) => (
+                <ServiceCard
+                  joined={joined}
+                  type="location"
+                  key={index}
+                  service={item}
+                  index={index}
+                  isEdit={isEdit}
+                  indexDate={indexDate}
+                  indexLocation={indexLocation}
+                />
+              ))}
+            </div>
           </Grid>
         )}
       </Grid>
