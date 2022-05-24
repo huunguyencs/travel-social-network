@@ -136,6 +136,6 @@ export const getRecommend = position => dispatch => {
   customAxios()
     .get(`/service/top_near?lat=${lat}&lng=${lng}`)
     .then(res => {
-      dispatch(getRecommendService(res.services));
+      dispatch(getRecommendService(res.data.services));
     });
 };

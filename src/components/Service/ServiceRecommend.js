@@ -25,9 +25,13 @@ function ServiceRecommendItem({ service, indexDate }) {
   const dispatch = useDispatch();
 
   const addToDate = () => {
+    // console.log(service);
     dispatch(
       tourAction.addServiceDate({
-        service,
+        service: {
+          service,
+          cost: 0
+        },
         indexDate: indexDate
       })
     );
@@ -63,7 +67,7 @@ function ServiceRecommendItem({ service, indexDate }) {
 
 export default function ServiceRecommend({ services, indexDate }) {
   return (
-    <div>
+    <div style={{ display: 'flex', overflowX: 'auto' }}>
       {services.map(item => (
         <ServiceRecommendItem
           key={item._id}
