@@ -65,7 +65,7 @@ function ShareContent({ post }) {
           }}
         >
           <BaseContent post={post.shareId} share={true} />
-          {post.shareId.images.length > 0 && (
+          {post.shareId?.images?.length > 0 && (
             <CardMedia>
               <ImageList
                 imageList={post.shareId.images}
@@ -116,6 +116,14 @@ function BaseContent(props) {
             </Typography>
           ))}
         </div>
+        <CardMedia>
+          <ImageList
+            imageList={post.images}
+            show2Image={true}
+            defaultHeight={500}
+            isPost={true}
+          />
+        </CardMedia>
       </CardContent>
     </>
   );
