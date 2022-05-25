@@ -428,7 +428,7 @@ function ShareContent({ post }) {
             borderBottomColor: 'transparent'
           }}
         >
-          <BaseContent post={post.shareId} share={true} />
+          {post.shareId?.userId? <BaseContent post={post.shareId} share={true} /> : 'Bài viết không tồn tại'}
           {post.shareId.images.length > 0 && (
             <CardMedia>
               <ImageList
