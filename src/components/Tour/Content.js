@@ -392,7 +392,7 @@ function BaseContent(props) {
   };
 
   const isOld = useMemo(() => {
-    const startDate = new Date(tour.tour[0].date);
+    const startDate = new Date(tour.tour[0]?.date);
     const now = new Date();
     return startDate < now;
   }, [tour.tour]);

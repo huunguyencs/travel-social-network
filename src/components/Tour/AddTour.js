@@ -128,27 +128,27 @@ function EditDetailDate(props) {
           </div>
         </Grid>
         <Grid item md={6} sm={12} xs={12}>
-            <div style={{ display: 'flex', justifyContent: 'center' }}>
-              <Typography
-                variant="h6"
-                style={{ textAlign: 'center', marginTop: 10 }}
-              >
-                Danh sách dịch vụ
-              </Typography>
-            </div>
-            <div className={classes.servicesWrapper}>
-              {tourDate.services.map((item, index) => (
-                <ServiceCard
-                  isOwn={false}
-                  type="date"
-                  key={index}
-                  service={item}
-                  index={index}
-                  isEdit={true}
-                  indexDate={date}
-                />
-              ))}
-            </div>
+          <div style={{ display: 'flex', justifyContent: 'center' }}>
+            <Typography
+              variant="h6"
+              style={{ textAlign: 'center', marginTop: 10 }}
+            >
+              Danh sách dịch vụ
+            </Typography>
+          </div>
+          <div className={classes.servicesWrapper}>
+            {tourDate.services.map((item, index) => (
+              <ServiceCard
+                isOwn={false}
+                type="date"
+                key={index}
+                service={item}
+                index={index}
+                isEdit={true}
+                indexDate={date}
+              />
+            ))}
+          </div>
         </Grid>
       </Grid>
     </Paper>
@@ -228,8 +228,6 @@ function a11yProps(index) {
     'aria-controls': `vertical-tabpanel-${index}`
   };
 }
-
-
 
 export default function AddTour(props) {
   const { isUpdate } = props;
@@ -415,7 +413,7 @@ export default function AddTour(props) {
     dispatch(
       tourAction.createTour({
         name: createTour.name,
-        date: createTour.tour[0].date
+        date: createTour.tour[0]?.date
       })
     );
     handleCloseReset();

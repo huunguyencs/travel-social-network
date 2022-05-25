@@ -76,27 +76,27 @@ function DetailDate(props) {
           </Typography>
         </Grid>
         <Grid item md={12} sm={12} xs={12}>
-            <div style={{ display: 'flex', justifyContent: 'space-between' }}>
-              <Typography
-                variant="h6"
-                style={{ textAlign: 'center', marginTop: 10 }}
-              >
-                Danh sách dịch vụ
-              </Typography>
-            </div>
-            <div className={classes.servicesWrapperMaxHeight}>
-              {tourDate.services.map((item, index) => (
-                <ServiceCard
-                  joined={joined}
-                  type="date"
-                  key={index}
-                  service={item}
-                  index={index}
-                  isEdit={false}
-                  indexDate={date}
-                />
-              ))}
-            </div>
+          <div style={{ display: 'flex', justifyContent: 'space-between' }}>
+            <Typography
+              variant="h6"
+              style={{ textAlign: 'center', marginTop: 10 }}
+            >
+              Danh sách dịch vụ
+            </Typography>
+          </div>
+          <div className={classes.servicesWrapperMaxHeight}>
+            {tourDate.services.map((item, index) => (
+              <ServiceCard
+                joined={joined}
+                type="date"
+                key={index}
+                service={item}
+                index={index}
+                isEdit={false}
+                indexDate={date}
+              />
+            ))}
+          </div>
         </Grid>
       </Grid>
     </Paper>
@@ -217,7 +217,7 @@ export default function TourDetail(props) {
   };
 
   const isOld = useMemo(() => {
-    const startDate = new Date(tour.tour[0].date);
+    const startDate = new Date(tour.tour[0]?.date);
     const now = new Date();
     return startDate < now;
   }, [tour.tour]);
@@ -451,7 +451,7 @@ export default function TourDetail(props) {
                         {tour.locations[0]}
                       </Typography>
                       <Typography className={classes.timeItemDate}>
-                        {convertDateToStr(tour.tour[0].date)}
+                        {convertDateToStr(tour.tour[0]?.date)}
                       </Typography>
                     </div>
                     <div className={classes.timeItem}>

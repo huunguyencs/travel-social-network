@@ -234,7 +234,6 @@ export const likeTour = (id, auth, socket, next) => async dispatch => {
     // console.log(res.data.likes);
     socket.emit('like', { type: 'tour', id: id, likes: res.data.likes });
 
-    
     //notify
     if (auth.user._id !== res.data.tour.userId) {
       const dataNotify = {
@@ -384,13 +383,12 @@ export const removejoinLocation =
     }
   };
 
-
 export const getTourHot = () => async dispatch => {
   dispatch(tourAction.loading());
   try {
     const res = await customAxios().get('/tour/hot');
     var tours = res.data.tours.map(item => sortTourDate(item));
-    console.log("data_tour_hot",tours)
+    console.log('data_tour_hot', tours);
     dispatch(tourAction.getTourHot(tours));
   } catch (err) {
     dispatch(tourAction.error({ error: 'Có lỗi xảy ra' }));
@@ -423,7 +421,7 @@ export const searchTourHot = query => async dispatch => {
 export const getTourSimilar = (auth, id, next) => async dispatch => {
   try {
     const res = await customAxios(auth?.token).get(`/tour/similar/${id}`);
-    console.log("data_tour_similar",res.data.tours)
+    console.log('data_tour_similar', res.data.tours);
     next(res.data.tours);
   } catch (err) {
     dispatch(tourAction.error({ error: 'Có lỗi xảy ra' }));
