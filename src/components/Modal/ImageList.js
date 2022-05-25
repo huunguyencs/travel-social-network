@@ -206,6 +206,7 @@ export default function ImageList(props) {
                   src={imageList[1]}
                   alt="loading..."
                   className={isPost && classes.image}
+                  style={{top:0, objectFit: "cover"}}
                 />
               </ImageListItem>
               <ImageListItem
@@ -219,6 +220,7 @@ export default function ImageList(props) {
                   src={imageList[2]}
                   alt="loading..."
                   className={isPost && classes.image}
+                  style={{top:0, objectFit: "cover"}}
                 />
               </ImageListItem>
             </ImgList>

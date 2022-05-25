@@ -185,12 +185,13 @@ const postStyles = makeStyles(
 
     //images
     postImage: {
+      width: "100%",
       position: 'relative',
       margin: '10px 0'
     },
     masonryGrid: {
       position: 'relative',
-      display: 'flex',
+      // display: 'flex',
       alignItems: 'center'
     },
 
