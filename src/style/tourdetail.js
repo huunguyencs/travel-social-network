@@ -603,6 +603,9 @@ const tourdetailStyles = makeStyles(
     justifyContent: 'center',
     marginTop: -10,
     padding:0
+  },
+  serviceName:{
+    cursor: 'pointer'
   }
 
 }), {index: 1})

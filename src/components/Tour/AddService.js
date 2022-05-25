@@ -28,7 +28,7 @@ import Autocomplete, {
 import { formStyles, tourdetailStyles } from '../../style';
 // import { Link } from 'react-router-dom';
 import { AddCircle, MoreVert, Label } from '@material-ui/icons';
-import { ReviewArea } from '../Service/ServiceItem';
+import { ReviewArea } from '../Service/ServiceDetail';
 import { success } from '../../redux/actions/alertAction';
 
 const filter = createFilterOptions();

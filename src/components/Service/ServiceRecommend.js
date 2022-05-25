@@ -1,4 +1,4 @@
-import React,{useState} from 'react';
+import React,{useState, useEffect} from 'react';
 import {
   Button,
   Card,
@@ -7,7 +7,8 @@ import {
   CardMedia,
   IconButton,
   Typography,
-  useTheme
+  useTheme,
+  Drawer
 } from '@material-ui/core';
 import { ChevronLeft, ChevronRight } from '@material-ui/icons';
 import * as tourAction from '../../redux/actions/createTourAction';
@@ -15,6 +16,8 @@ import { useDispatch } from 'react-redux';
 import { tourdetailStyles } from '../../style';
 import SwipeableViews from 'react-swipeable-views';
 import { autoPlay } from 'react-swipeable-views-utils';
+import { ServiceDetail } from './ServiceDetail';
+import {getDetail} from '../../redux/callApi/serviceCall';
 
 
 const AutoPlaySwipeableViews = autoPlay(SwipeableViews);
@@ -23,8 +26,22 @@ function ServiceRecommendItem({ service, indexDate }) {
   const classes = tourdetailStyles();
   const dispatch = useDispatch();
 
+  const [state, setState] = useState({
+    loading: false,
+    error: false
+  });
+  const [open, setOpen] = useState(false);
+  const toggleDrawer = open => event => {
+    if (
+      event &&
+      event.type === 'keydown' &&
+      (event.key === 'Tab' || event.key === 'Shift')
+    )
+      return;
+    setOpen(open);
+  };
+
   const addToDate = () => {
-    // console.log(service);
     dispatch(
       tourAction.addServiceDate({
         service: {
@@ -36,31 +53,77 @@ function ServiceRecommendItem({ service, indexDate }) {
     );
   };
 
-  return (
-    <Card>
-      <CardMedia
-        className={classes.media}
-        image={service?.images[0]}
-        title={service?.name}
-      />
+  const getServiceDetail = (service, dispatch) => {
+    if (!service.rate) {
+      setState({
+        loading: true,
+        error: false
+      });
+      dispatch(
+        getDetail(
+          service._id,
+          () => {
+            setState({
+              loading: false,
+              error: false
+            });
+          },
+          () => {
+            setState({
+              loading: false,
+              error: true
+            });
+          }
+        )
+      );
+    }
+  };
 
-      <CardContent>
-        <Typography gutterBottom variant="h5" >
-          {service?.name}
-        </Typography>
-        <Typography variant="body2" color="textSecondary" component="p">
-          {service?.andress}
-        </Typography>
-        <Typography variant="body2" color="textSecondary" component="p">
-          {service?.cost}
-        </Typography>
-      </CardContent>
-      <CardActions className={classes.buttonWrapper}>
-        <Button size="small" onClick={addToDate} className={classes.reviewBtn}>
-          Thêm dịch vụ
-        </Button>
-      </CardActions>
-    </Card>
+  useEffect(() => {
+    if (open && !service.rate) {
+      getServiceDetail(service, dispatch);
+    }
+  }, [open, service, dispatch]);
+  return (
+    <>
+      <Card>
+        <CardMedia
+          className={classes.media}
+          image={service?.images[0]}
+          title={service?.name}
+        />
+
+        <CardContent>
+          <Typography gutterBottom variant="h5" onClick={toggleDrawer(true)} className={classes.serviceName}>
+            {service?.name}
+          </Typography>
+          <Typography variant="body2" color="textSecondary" component="p">
+            {service?.andress}
+          </Typography>
+          <Typography variant="body2" color="textSecondary" component="p">
+            {service?.cost}
+          </Typography>
+        </CardContent>
+        <CardActions className={classes.buttonWrapper}>
+          <Button size="small" onClick={addToDate} className={classes.reviewBtn}>
+            Thêm dịch vụ
+          </Button>
+        </CardActions>
+      </Card>
+      <Drawer
+        anchor={'right'}
+        open={open}
+        onClose={toggleDrawer(false)}
+        style={{ zIndex: 10 }}
+      >
+        <ServiceDetail
+          service={service}
+          state={state}
+          getServiceDetail={getServiceDetail}
+          handleClose={toggleDrawer}
+        />
+      </Drawer>
+    </>
   );
 }
 

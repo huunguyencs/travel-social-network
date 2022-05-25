@@ -7,7 +7,8 @@ const serviceStyles = makeStyles(
     centerMarginTop: {
       display: 'flex',
       justifyContent: 'center',
-      marginBlock: 20
+      marginBlock: 20,
+      marginInline: 30
     },
     listContainer: {
       marginInline: 20,
