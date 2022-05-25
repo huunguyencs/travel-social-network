@@ -266,13 +266,13 @@ function Detail(props) {
             </>
           ) : (
             <div>
-              <div className={classes.locationImages}>
+              {/* <div className={classes.locationImages}>
                 <img
                   style={{ width: '100%', height: '100%' }}
                   src="https://res.cloudinary.com/dqxvfu5k1/image/upload/v1649898282/k4hoq9jblhx65msx64c8.jpg"
                   alt="loading ..."
                 ></img>
-              </div>
+              </div> */}
               <div style={{ padding: 20 }}>
                 <Typography>
                   <Label style={{ fontSize: 15 }} />
@@ -296,9 +296,7 @@ function Detail(props) {
         {location.services?.length > 0 && (
           <Grid item md={6} sm={12} xs={12} style={{ padding: 10 }}>
             <div style={{ display: 'flex', justifyContent: 'center' }}>
-              <Typography variant="h5" >
-                Danh sách dịch vụ
-              </Typography>
+              <Typography variant="h5">Danh sách dịch vụ</Typography>
             </div>
             <div className={classes.servicesWrapperMaxHeight}>
               {location.services.map((item, index) => (

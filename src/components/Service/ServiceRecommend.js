@@ -1,4 +1,4 @@
-import React,{useState, useEffect} from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import {
   Button,
   Card,
@@ -17,14 +17,15 @@ import { tourdetailStyles } from '../../style';
 import SwipeableViews from 'react-swipeable-views';
 import { autoPlay } from 'react-swipeable-views-utils';
 import { ServiceDetail } from './ServiceDetail';
-import {getDetail} from '../../redux/callApi/serviceCall';
-
+import customAxios from '../../utils/fetchData';
 
 const AutoPlaySwipeableViews = autoPlay(SwipeableViews);
 
 function ServiceRecommendItem({ service, indexDate }) {
   const classes = tourdetailStyles();
   const dispatch = useDispatch();
+
+  const [ser, setSer] = useState(service);
 
   const [state, setState] = useState({
     loading: false,
@@ -53,59 +54,61 @@ function ServiceRecommendItem({ service, indexDate }) {
     );
   };
 
-  const getServiceDetail = (service, dispatch) => {
-    if (!service.rate) {
+  const getServiceDetail = useCallback(() => {
+    if (!ser.rate) {
       setState({
         loading: true,
         error: false
       });
-      dispatch(
-        getDetail(
-          service._id,
-          () => {
-            setState({
-              loading: false,
-              error: false
-            });
-          },
-          () => {
-            setState({
-              loading: false,
-              error: true
-            });
-          }
-        )
-      );
+      customAxios()
+        .get(`/service/rate/${ser._id}`)
+        .then(res => {
+          setSer({
+            ...ser,
+            rate: res.data.rate,
+            attribute: res.data.attribute,
+            id: ser._id
+          });
+        });
     }
-  };
+  }, [ser]);
 
   useEffect(() => {
-    if (open && !service.rate) {
-      getServiceDetail(service, dispatch);
+    if (open && !ser.rate) {
+      getServiceDetail();
     }
-  }, [open, service, dispatch]);
+  }, [open, getServiceDetail, ser]);
   return (
     <>
       <Card>
         <CardMedia
           className={classes.media}
-          image={service?.images[0]}
-          title={service?.name}
+          image={ser?.images[0]}
+          title={ser?.name}
         />
 
         <CardContent>
-          <Typography gutterBottom variant="h5" onClick={toggleDrawer(true)} className={classes.serviceName}>
-            {service?.name}
+          <Typography
+            gutterBottom
+            variant="h5"
+            onClick={toggleDrawer(true)}
+            className={classes.serviceName}
+          >
+            {ser?.name}
           </Typography>
           <Typography variant="body2" color="textSecondary" component="p">
-            {service?.andress}
+            {ser?.andress}
           </Typography>
           <Typography variant="body2" color="textSecondary" component="p">
-            {service?.cost}
+            {ser?.cost}
           </Typography>
         </CardContent>
         <CardActions className={classes.buttonWrapper}>
-          <Button size="small" onClick={addToDate} className={classes.reviewBtn}>
+          <Button
+            size="small"
+            onClick={addToDate}
+            className={classes.reviewBtn}
+          >
             Thêm dịch vụ
           </Button>
         </CardActions>
@@ -117,7 +120,7 @@ function ServiceRecommendItem({ service, indexDate }) {
         style={{ zIndex: 10 }}
       >
         <ServiceDetail
-          service={service}
+          service={ser}
           state={state}
           getServiceDetail={getServiceDetail}
           handleClose={toggleDrawer}
@@ -147,32 +150,36 @@ export default function ServiceRecommend({ services, indexDate }) {
     setActiveStep(step);
   };
   return (
-      <div className={classes.serviceRecommendWrapper}>
-          {services.length > 1 &&
-            <IconButton onClick={handleBack} size="small">
-              <ChevronLeft />
-            </IconButton>
-          }
-          <AutoPlaySwipeableViews
-            axis={theme.direction === 'rtl' ? 'x-reverse' : 'x'}
-            index={activeStep}
-            onChangeIndex={handleStepChange}
-            enableMouseEvents
-            interval={5000}
-          >
-            {services.map(item => (
-              <ServiceRecommendItem
-                key={item._id}
-                service={item}
-                indexDate={indexDate}
-              />
-            ))}
-          </AutoPlaySwipeableViews>
-          {services.length > 1 &&
-            <IconButton onClick={handleNext} size="small">
-              <ChevronRight />
-            </IconButton>
-          }
+    <div className={classes.serviceRecommendWrapper}>
+      <div style={{ top: '50%' }}>
+        {services.length > 1 && (
+          <IconButton onClick={handleBack} size="small">
+            <ChevronLeft />
+          </IconButton>
+        )}
+      </div>
+      <AutoPlaySwipeableViews
+        axis={theme.direction === 'rtl' ? 'x-reverse' : 'x'}
+        index={activeStep}
+        onChangeIndex={handleStepChange}
+        enableMouseEvents
+        interval={5000}
+      >
+        {services.map(item => (
+          <ServiceRecommendItem
+            key={item._id}
+            service={item}
+            indexDate={indexDate}
+          />
+        ))}
+      </AutoPlaySwipeableViews>
+      <div style={{ top: '50%' }}>
+        {services.length > 1 && (
+          <IconButton onClick={handleNext} size="small">
+            <ChevronRight />
+          </IconButton>
+        )}
+      </div>
     </div>
   );
 }

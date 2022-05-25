@@ -428,16 +428,22 @@ function ShareContent({ post }) {
             borderBottomColor: 'transparent'
           }}
         >
-          {post.shareId?.userId? <BaseContent post={post.shareId} share={true} /> : 'Bài viết không tồn tại'}
-          {post.shareId.images.length > 0 && (
-            <CardMedia>
-              <ImageList
-                imageList={post.shareId.images}
-                show2Image={true}
-                defaultHeight={500}
-                isPost={true}
-              />
-            </CardMedia>
+          {post.shareId ? (
+            <>
+              <BaseContent post={post.shareId} share={true} />
+              {post.shareId.images?.length > 0 && (
+                <CardMedia>
+                  <ImageList
+                    imageList={post.shareId.images}
+                    show2Image={true}
+                    defaultHeight={500}
+                    isPost={true}
+                  />
+                </CardMedia>
+              )}
+            </>
+          ) : (
+            'Bài viết không tồn tại'
           )}
         </Box>
       </CardContent>
@@ -499,7 +505,7 @@ function BaseContent(props) {
 export default function PostContent({ post }) {
   return (
     <>
-      {post && post.shareId ? (
+      {post && post.isShare ? (
         <ShareContent post={post} />
       ) : (
         <BaseContent post={post} share={false} />
