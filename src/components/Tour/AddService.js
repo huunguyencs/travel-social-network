@@ -30,6 +30,7 @@ import { formStyles, tourdetailStyles } from '../../style';
 import { AddCircle, MoreVert, Label } from '@material-ui/icons';
 import { ReviewArea } from '../Service/ServiceDetail';
 import { success } from '../../redux/actions/alertAction';
+import customAxios from '../../utils/fetchData';
 
 const filter = createFilterOptions();
 
@@ -47,14 +48,19 @@ function ServiceItemAddForm(props) {
 
   useEffect(() => {
     setLoading(true);
-    if (province) {
+    if (province?._id) {
       // console.log(location.services);
-      setServices(
-        location.services.filter(item => item.province._id === province._id)
-      );
+      // setServices(
+      //   location.services.filter(item => item.province._id === province._id)
+      // );
+      customAxios()
+        .get(`/province/service/${province._id}`)
+        .then(res => {
+          setServices(res.data.services);
+        });
     }
     setLoading(false);
-  }, [province, location.services]);
+  }, [province?._id]);
 
   const changeProvince = province => {
     setProvince(province);
