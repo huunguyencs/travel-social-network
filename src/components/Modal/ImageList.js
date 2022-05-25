@@ -157,10 +157,10 @@ export default function ImageList(props) {
           </ImageListItem>
         </ImgList>
       ) : imageList.length === 2 ? (
-        <ImgList rowHeight={heightRow} cols={2} className={classes.imageList}>
+        <ImgList rowHeight={heightRow} cols={8} className={classes.imageList}>
           {imageList.map((item, index) => (
             <ImageListItem
-              cols={1}
+              cols={4}
               rows={6}
               className={classes.imageItem}
               key={item}
@@ -206,7 +206,7 @@ export default function ImageList(props) {
                   src={imageList[1]}
                   alt="loading..."
                   className={isPost && classes.image}
-                  style={{top:0, objectFit: "cover"}}
+                  style={{ top: 0, objectFit: 'cover' }}
                 />
               </ImageListItem>
               <ImageListItem
@@ -220,7 +220,7 @@ export default function ImageList(props) {
                   src={imageList[2]}
                   alt="loading..."
                   className={isPost && classes.image}
-                  style={{top:0, objectFit: "cover"}}
+                  style={{ top: 0, objectFit: 'cover' }}
                 />
               </ImageListItem>
             </ImgList>
