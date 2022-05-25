@@ -17,10 +17,7 @@ import { serviceStyles } from '../../style';
 import { getStar } from '../../utils/utils';
 import { SeeMoreText } from '../SeeMoreText';
 import ImageList from '../Modal/ImageList';
-import {
-  deleteService,
-  getDetail
-} from '../../redux/callApi/serviceCall';
+import { deleteService, getDetail } from '../../redux/callApi/serviceCall';
 import { useDispatch, useSelector } from 'react-redux';
 import { Link } from 'react-router-dom';
 import { error, success } from '../../redux/actions/alertAction';
@@ -84,9 +81,7 @@ export default function ServiceItem(props) {
   }, [open, service, dispatch]);
 
   const isOwn = useMemo(() => {
-    console.log(user?._id);
-    console.log(service?.cooperator);
-    return user?._id === service?.cooperator;
+    return user?._id === service?.cooperator._id;
   }, [user, service]);
 
   const getServiceDetail = (service, dispatch) => {
