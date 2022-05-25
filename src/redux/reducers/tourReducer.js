@@ -3,7 +3,6 @@ import * as TOUR_TYPES from '../constants/tourConstant';
 const INIT_STATE = {
   id: 0,
   tours: null,
-  tourRecommend: null,
   tourHot: null,
   loading: false,
   loadingFirst: false,
@@ -208,12 +207,6 @@ const tourReducer = (state = INIT_STATE, action) => {
               }
             : item
         )
-      };
-    }
-    case TOUR_TYPES.GET_TOURS_RECOMMEND: {
-      return {
-        ...state,
-        tourRecommend: action.payload
       };
     }
     case TOUR_TYPES.GET_TOURS_HOT: {

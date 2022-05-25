@@ -7,9 +7,8 @@ import RightBar from "../components/Rightbar";
 import SpeedDialButton from "../components/SpeedDialBtn";
 import { homeMenu } from "../constant/menu";
 import useStyles from "../style";
-import Calendar from '../components/Calendar';
 import FriendRecommendCard from '../components/Card/FriendRecommend';
-
+import TourRecommendCardForYou from "../components/Card/TourForYou";
 
 
 export default function HotPage(props) {
@@ -35,7 +34,7 @@ export default function HotPage(props) {
                 </Grid>
                 <Grid item md={3} className={classes.rightbar}>
                     <RightBar ref={ref}>
-                        <Calendar />
+                        <TourRecommendCardForYou />
                         <FriendRecommendCard />
                     </RightBar>
                 </Grid>

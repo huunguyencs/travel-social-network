@@ -251,6 +251,37 @@ const volunteerDetailStyles = makeStyles(
             fontSize: "14px",
         },
     },
+    reviewBtn: {
+      marginRight: 5,
+      color: "#63b696",
+      borderRadius: 5,
+      backgroundColor: "transparent",
+      cursor: "pointer",
+      fontWeight: 500,
+      outline: "none",
+      border: `1px solid ${color.turquoise}`,
+      fontSize: 12,
+      position: "relative",
+      isolation: "isolate",
+      "&::before": {
+          content: "''",
+          height: "100%",
+          width: 0,
+          position: "absolute",
+          top: 0,
+          left: 0,
+          backgroundColor: "#63b696",
+          zIndex: -1,
+          transition: "width 0.25s ease-in",
+          color:color.white
+      },
+      "&:hover::before": {
+          width: "100%"
+      },
+      "&:hover": {
+          color: color.white
+      },
+    },
 }), {index: 1})
 
 export default volunteerDetailStyles;

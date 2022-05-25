@@ -22,7 +22,8 @@ import {
   Backdrop,
   Tabs,
   Tab,
-  CardMedia
+  CardMedia,
+  Fade
 } from '@material-ui/core';
 import {
   Timeline,
@@ -42,7 +43,8 @@ import {
   ArrowDropDown,
   ArrowDropUp,
   Close,
-  CheckCircle
+  CheckCircle,
+  Label
 } from '@material-ui/icons';
 import React, { useState, useEffect } from 'react';
 import { Button, Typography } from '@material-ui/core';
@@ -60,6 +62,8 @@ import { useDispatch, useSelector } from 'react-redux';
 import InputComment from '../Input/Comment';
 import Comment from '../Comment';
 import { loadComment } from '../../redux/callApi/commentCall';
+import CreateGroupChat from '../Forms/CreateGroupChat';
+
 
 function TabPanel(props) {
   const { children, value, index, ...other } = props;
@@ -111,11 +115,24 @@ export default function VolunteerDetail(props) {
   const [showJoin, setShowJoin] = useState(false);
   const [loadingJoinAll, setLoadingJoinAll] = useState(false);
   const [isOwn, setIsOwn] = useState(false);
+  const [memberJoin, setMemberJoin] = useState([])
   useEffect(() => {
     if (auth.user && volunteer) {
       setIsOwn(volunteer.userId._id === auth.user._id);
     }
   }, [isOwn, volunteer, auth]);
+
+  useEffect(() => {
+    if (auth.user && volunteer) {
+      var temp = volunteer.users;
+      volunteer.location.forEach(element => {
+          temp.concat(element.users);
+      });
+      temp = [...new Set(temp)];
+      setMemberJoin(temp);
+    }
+  }, [ volunteer, auth]);
+
   const handleShowJoin = () => {
     setShowJoin(true);
   };
@@ -198,16 +215,6 @@ export default function VolunteerDetail(props) {
     }
     setShowCmt(!showCmt);
   };
-  // const loadMoreComment = () => {
-  //     setLoadingComment(true);
-  //     dispatch(loadComment(volunteer._id, "volunteer", () => {
-  //         setLoadingComment(false);
-  //         setPageComment(state => state + 1);
-  //     }, () => {
-  //         setLoadingComment(false);
-  //         setErrorComment(true);
-  //     }, pageComment))
-  // }
 
   const [accommodation, setAccommodation] = useState('true');
   const handleAccommodation = e => {
@@ -291,6 +298,20 @@ export default function VolunteerDetail(props) {
   const handleChange = (event, newValue) => {
     setValue(newValue);
   };
+
+
+  const [show, setShow] = useState(false);
+  const handleShow = () => {
+      setShow(true);
+  };
+  const handleCloseCreate = () => {
+      setShow(false);
+  };
+  const ref = React.createRef();
+
+  const CreateGroupChatRef = React.forwardRef((props, ref) => (
+      <CreateGroupChat {...props} innerRef={ref} />
+  ));
   return (
     <>
       {volunteer ? (
@@ -353,7 +374,7 @@ export default function VolunteerDetail(props) {
                   </ListItemIcon>
                   <ListItemText
                     primary="Lịch Trình "
-                    secondary="2 Ngày - 2 đêm"
+                    secondary={volunteer.date.length+"ngày"}
                   />
                 </ListItem>
               </List>
@@ -484,7 +505,7 @@ export default function VolunteerDetail(props) {
                     </td>
                     <td className={classes.registerTableData}>
                       <div className={classes.registerTableBooking}>
-                        <p>{volunteer.cost}</p>
+                        <p>{volunteer.cost}000 VNĐ</p>
                       </div>
                     </td>
                     {isOwn ? (
@@ -498,6 +519,7 @@ export default function VolunteerDetail(props) {
                           >
                             Danh sách
                           </Button>
+                          
                           <Modal
                             aria-labelledby="transition-modal-title"
                             aria-describedby="transition-modal-description"
@@ -515,6 +537,33 @@ export default function VolunteerDetail(props) {
                                 <h2 className={classes.modal_header_left}>
                                   Danh sách người tham gia:{' '}
                                 </h2>
+                                {
+                                  memberJoin.length === 2 &&
+                                  <>
+                                    <Button
+                                      className={classes.reviewBtn}
+                                      onClick={handleShow}
+                                    >
+                                      Tạo nhóm trò chuyện
+                                    </Button>
+                                    <Modal
+                                        aria-labelledby="create-tour"
+                                        aria-describedby="create-tour-modal"
+                                        className={classes.modal}
+                                        open={show}
+                                        onClose={handleCloseCreate}
+                                        closeAfterTransition
+                                        BackdropComponent={Backdrop}
+                                        BackdropProps={{
+                                        timeout: 500
+                                        }}
+                                    >
+                                        <Fade in={show}>
+                                            <CreateGroupChatRef ref={ref} handleClose={handleCloseCreate} usersParent={memberJoin} nameParent={volunteer.name} />
+                                        </Fade>
+                                    </Modal>
+                                  </>  
+                                }
                                 <div className={classes.modal_header_right}>
                                   <IconButton
                                     onClick={handleCloseDS}
@@ -782,28 +831,53 @@ export default function VolunteerDetail(props) {
                     </div>
                   </div>
                 </Grid>
-                <Grid item md={9}>
-                  <Typography>Thông tin: </Typography>
-                  <List component="nav" aria-label="main folders">
-                    {volunteer.location[idxLocation] &&
-                      volunteer.location[idxLocation].description.map(
-                        (item, index) => (
-                          <ListItem
-                            key={index}
-                            button
-                            className={classes.scheduleItem}
+                <Grid item md={9} style={{maxWidth: 700}}>
+                  {volunteer.location[idxLocation] &&
+                      volunteer.location[idxLocation].activities.length > 0 &&
+                      <>
+                        <Typography style={{fontWeight: 500}}>Thông tin: </Typography>
+                        {volunteer.location[idxLocation] &&
+                            volunteer.location[idxLocation].description.map(
+                              (item, index) => (
+                                <Typography
+                                  key={index}
+                                >
+                                  <Label style={{ fontSize: 15 }} />{' '}
+                                  {item}
+                                </Typography>
+                              )
+                        )}
+                      </>
+                  }
+                  
+                  {volunteer.location[idxLocation] &&
+                      volunteer.location[idxLocation].activities.length > 0 &&
+                      <>
+                          <Typography style={{fontWeight: 500}}>Hoạt động chi tiết: </Typography>
+                          {volunteer.location[idxLocation] &&
+                              volunteer.location[idxLocation].activities.map(
+                                (item, index) => (
+                                  <Typography
+                                    key={index}
+                                  >
+                                    <Label style={{ fontSize: 15 }} />{' '}
+                                    {item}
+                                  </Typography>
+                                )
+                          )}
+                      </>
+                  }
+                  {volunteer.location[idxLocation] &&
+                      volunteer.location[idxLocation].ageUser !== "" &&
+                      <>
+                          <Typography style={{fontWeight: 500}}>Độ tuổi tham gia: </Typography>
+                          <Typography
                           >
-                            <ListItemIcon>
-                              <RadioButtonUnchecked
-                                style={{ color: '#A5DEC8' }}
-                              />
-                            </ListItemIcon>
-                            <ListItemText primary={item} />
-                          </ListItem>
-                        )
-                      )}
-                  </List>
-
+                            <Label style={{ fontSize: 15 }} />{' '}
+                            {volunteer.location[idxLocation].ageUser}
+                          </Typography>
+                      </>
+                  }
                   {!isJoinAll && !isOwn && (
                     <div className={classes.registerItemBooking}>
                       {!isJoinOne && (

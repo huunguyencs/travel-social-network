@@ -3,13 +3,12 @@ import { Card, List, Typography, CardHeader, Avatar } from '@material-ui/core';
 import { friendCardStyles } from '../../style';
 import { useHistory } from 'react-router-dom';
 import { useSelector } from 'react-redux';
-import { getTourSimilar } from '../../redux/callApi/tourCall';
+import { getTourRecommend } from '../../redux/callApi/tourCall';
 import { useDispatch } from 'react-redux';
 import { timeAgo } from '../../utils/date';
 import { Link } from 'react-router-dom';
 
-export default function TourRecommendCard(props) {
-  const { id } = props;
+export default function TourRecommendCardForYou() {
   const { auth } = useSelector(state => state);
   const history = useHistory();
   const dispatch = useDispatch();
@@ -17,26 +16,27 @@ export default function TourRecommendCard(props) {
   const [tours, setTours] = useState([]);
   useEffect(() => {
     dispatch(
-      getTourSimilar(auth, id, data => {
+      getTourRecommend(auth.token, data => {
         setTours(data);
       })
     );
-  }, [dispatch, id, auth]);
+  }, [dispatch, auth]);
 
   return (
+    tours?.length > 0 && 
     <Card className={classes.tourRecommend}>
       <div className={classes.friendHeader}>
         <Typography
           className={classes.text}
           style={{ fontSize: 18, fontWeight: 500 }}
         >
-          Hành trình liên quan
+          Hành trình gợi ý
         </Typography>
       </div>
       <div>
         <List className={classes.list}>
           {tours?.length > 0 ? (
-            tours?.slice(0, 4).map(
+            tours?.slice(0, 3).map(
               item =>
                 !item.shareId && (
                   <div key={item._id} className={classes.itemWrapper}>

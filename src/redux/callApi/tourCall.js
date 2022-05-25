@@ -384,16 +384,6 @@ export const removejoinLocation =
     }
   };
 
-export const getTourRecommend = (token, next, error) => async dispatch => {
-  try {
-    const res = await customAxios(token).get('/tour/foryou');
-    dispatch(tourAction.getTourRecommend(res.data.tours));
-    next();
-  } catch (err) {
-    dispatch(tourAction.error({ error: 'Có lỗi xảy ra' }));
-    error();
-  }
-};
 
 export const getTourHot = () => async dispatch => {
   dispatch(tourAction.loading());
@@ -429,10 +419,20 @@ export const searchTourHot = query => async dispatch => {
     dispatch(tourAction.error({ error: 'Có lỗi xảy ra' }));
   }
 };
+
 export const getTourSimilar = (auth, id, next) => async dispatch => {
   try {
     const res = await customAxios(auth?.token).get(`/tour/similar/${id}`);
     console.log("data_tour_similar",res.data.tours)
+    next(res.data.tours);
+  } catch (err) {
+    dispatch(tourAction.error({ error: 'Có lỗi xảy ra' }));
+  }
+};
+
+export const getTourRecommend = (token, next) => async dispatch => {
+  try {
+    const res = await customAxios(token).get('/tour/foryou');
     next(res.data.tours);
   } catch (err) {
     dispatch(tourAction.error({ error: 'Có lỗi xảy ra' }));

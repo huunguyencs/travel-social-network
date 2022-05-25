@@ -69,12 +69,6 @@ export const loadingFirst = props => {
   };
 };
 
-export const getTourRecommend = props => {
-  return {
-    type: TOUR_TYPES.GET_TOURS_RECOMMEND,
-    payload: props
-  };
-};
 
 export const getTourHot = props => {
   return {

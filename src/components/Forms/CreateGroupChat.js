@@ -22,7 +22,7 @@ import customAxios from '../../utils/fetchData';
 import {createGroupChat} from '../../redux/callApi/messageCall'; 
 
   export default function CreateGroupChat(props) {
-    const { handleClose } = props;
+    const { handleClose, usersParent, nameParent } = props;
   
     const dispatch = useDispatch();
   
@@ -35,10 +35,10 @@ import {createGroupChat} from '../../redux/callApi/messageCall';
     const { auth} = useSelector(state => state);
   
 
-    const [name, setName] = useState("");
+    const [name, setName] = useState(nameParent || "");
     const [search, setSearch] = useState("");
     const [searchResult, setSearchResult] = useState([]);
-    const [users, setUsers] = useState([]);
+    const [users, setUsers] = useState(usersParent|| []);
     
     const classes = formStyles();
 
