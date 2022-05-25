@@ -157,10 +157,10 @@ export default function ImageList(props) {
           </ImageListItem>
         </ImgList>
       ) : imageList.length === 2 ? (
-        <ImgList rowHeight={heightRow} cols={8} className={classes.imageList}>
+        <ImgList rowHeight={heightRow} cols={2} className={classes.imageList}>
           {imageList.map((item, index) => (
             <ImageListItem
-              cols={4}
+              cols={1}
               rows={6}
               className={classes.imageItem}
               key={item}
