@@ -55,7 +55,6 @@ function EditDetailDate(props) {
   const [addLocation, setAddLocation] = useState(false);
   const [currentProvince, setCurrentProvince] = useState(null);
   const [locations, setLocations] = useState([]);
-  const [services, setServices] = useState([]);
 
   const showAddService = () => {
     setAddService(true);
@@ -477,11 +476,11 @@ export default function AddTour(props) {
 
   const classes = tourdetailStyles();
 
-  const [value, setValue] = React.useState(0);
+  // const [value, setValue] = React.useState(0);
 
-  const handleChange = (event, newValue) => {
-    setValue(newValue);
-  };
+  // const handleChange = (event, newValue) => {
+  //   setValue(newValue);
+  // };
   return (
     <>
       {(!isUpdate || (isUpdate && createTour.tour && createTour.tour[0])) && (
