@@ -1,8 +1,12 @@
 import React, { useEffect, useState } from 'react';
-import { Container, Paper } from '@material-ui/core';
-
-import Typography from '@material-ui/core/Typography';
-
+import { Container, TextField, Paper, Button, Tooltip } from '@material-ui/core';
+import Autocomplete from '@material-ui/lab/Autocomplete';
+import {
+  CheckCircle,
+  Cancel
+} from '@material-ui/icons';
+import FormControlLabel from '@material-ui/core/FormControlLabel';
+import Checkbox from '@material-ui/core/Checkbox';
 import { tableStyles } from '../../../style';
 import { getStar, totalNumRate } from '../../../utils/utils';
 import {
@@ -23,24 +27,38 @@ const columns = [
   {
     field: 'type',
     headerName: 'Loại',
-    width: 250
+    width: 200
   },
   {
-    field: 'cooperator',
-    headerName: 'Sở hữu',
+    field: 'provice',
+    headerName: 'Tỉnh',
     width: 250,
-    valueGetter: service => service.row.cooperator.fullname
+    valueGetter: service => service.row.province.fullname
+  },
+  {
+    field: 'contribute',
+    headerName: 'Được đóng góp',
+    width: 150,
+    renderCell: service => service.row.isContribute ? (
+      <Tooltip title="Được đóng góp">
+        <CheckCircle style={{ color: '#357a38' }} />
+      </Tooltip>
+    ) : (
+      <Tooltip title="Do nhà cung cấp">
+        <Cancel style={{ color: '#E51544' }} />
+      </Tooltip>
+    )
   },
   {
     field: 'rate',
     headerName: 'Đánh giá (/5)',
-    width: 200,
+    width: 150,
     valueGetter: service => getStar(service.row.star)
   },
   {
     field: 'numRate',
     headerName: 'Lượt đánh giá',
-    width: 200,
+    width: 150,
     valueGetter: service => totalNumRate(service.row.star)
   }
 ];
@@ -63,11 +81,31 @@ function AdminServices(props) {
   const [error, setError] = useState(null);
   const [pageSize, setPageSize] = useState(10);
 
+  const [province, setProvince] = useState(null);
+  const [provinces, setProvinces] = useState([]);
+  const [isContribute, setContribute] = useState(false);
+
+  const getAllProvinces = async () => {
+    setLoading(true);
+    setError(null);
+    await customAxios()
+      .get('/province/provinces')
+      .then(res => {
+        setProvinces(res.data.provinces);
+        setLoading(false);
+      })
+      .catch(err => {
+        setLoading(false);
+        setError(err);
+      });
+  };
+
   const getAllServices = async token => {
     setLoading(true);
     setError(null);
+    console.log(isContribute);
     await customAxios(token)
-      .get(`/service/all`)
+      .get(`/service/all?province=${province._id}&isContribute=${isContribute}`)
       .then(res => {
         setServices(res.data.services);
         setLoading(false);
@@ -78,8 +116,12 @@ function AdminServices(props) {
       });
   };
 
+  const handleChange = (event) => {
+    setContribute(event.target.checked);
+  };
+
   useEffect(() => {
-    getAllServices(token);
+    getAllProvinces(token);
   }, [token]);
 
   useEffect(() => {
@@ -88,7 +130,7 @@ function AdminServices(props) {
 
   return (
     <Container className={classes.container}>
-      <div
+      {/* <div
         className={classes.admin_location_header}
         style={{
           display: 'flex',
@@ -98,8 +140,45 @@ function AdminServices(props) {
         <Typography variant="h4" gutterBottom>
           {services.length} dịch vụ
         </Typography>
+      </div> */}
+      <div className={classes.formSearch}>
+        <div>
+          <Autocomplete
+            id="choose-province"
+            options={provinces}
+            loading={loading}
+            getOptionLabel={option => option?.fullname}
+            className={classes.autocompleteProvince}
+            onChange={(e, value) => setProvince(value)}
+            value={province}
+            renderInput={params => (
+              <TextField
+                {...params}
+                name="provinces"
+                label="Chọn tỉnh thành"
+                variant="outlined"
+              />
+            )}
+          />
+        </div>
+        <div>
+          <FormControlLabel
+            value={isContribute}
+            control={<Checkbox checked={isContribute} onChange={handleChange} color="primary" />}
+            label="Được đóng góp"
+            labelPlacement="end"
+          />
+        </div>
+        <div>
+          <Button
+            variant="contained"
+            className={classes.sreachBtn}
+            onClick={() => getAllServices(token)}
+          >
+            Tìm kiếm
+          </Button>
+        </div>
       </div>
-
       <div>
         <Paper className={classes.paper}>
           <DataGrid
