@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
-import { Container, Button, IconButton } from "@material-ui/core";
+import { Container, Button, IconButton, TextField, FormControlLabel, Checkbox } from "@material-ui/core";
 import { useSelector } from 'react-redux';
-import Typography from '@material-ui/core/Typography';
+import Autocomplete from '@material-ui/lab/Autocomplete';
 import Paper from '@material-ui/core/Paper';
 import { Link, useHistory } from "react-router-dom";
 import { AddCircle, Edit } from "@material-ui/icons";
@@ -71,20 +71,47 @@ function AdminLocations(props) {
   const [error, setError] = useState(null);
   const [pageSize, setPageSize] = useState(10);
 
-  const getAllLocations = (token) => {
+  const [province, setProvince] = useState(null);
+  const [provinces, setProvinces] = useState([]);
+  const [isContribute, setContribute] = useState(false);
+
+  const getAllProvinces = async () => {
     setLoading(true);
     setError(null);
-    customAxios(token).get('/location/all?admin=true').then(res => {
-      setLocations(res.data.locations);
-      setLoading(false);
-    }).catch(err => {
-      setLoading(false);
-      setError(err);
-    })
+    await customAxios()
+      .get('/province/provinces')
+      .then(res => {
+        setProvinces(res.data.provinces);
+        setLoading(false);
+      })
+      .catch(err => {
+        setLoading(false);
+        setError(err);
+      });
+  };
+
+  const getAllLocations = (token) => {
+    console.log(province);
+    setLoading(true);
+    setError(null);
+    customAxios(token)
+      .get(`/location/all?admin=true?province=${province?._id}`)
+      .then(res => {
+        setLocations(res.data.locations);
+        setLoading(false);
+      }).catch(err => {
+        setLoading(false);
+        setError(err);
+      });
   }
 
+  const handleChange = (event) => {
+    setContribute(event.target.checked);
+  };
+
+
   useEffect(() => {
-    getAllLocations(token);
+    getAllProvinces(token);
   }, [token])
 
   useEffect(() => {
@@ -94,9 +121,9 @@ function AdminLocations(props) {
   return (
     <Container className={classes.container}>
       <div className={classes.admin_location_header}>
-        <div>
+        {/* <div>
           <Typography variant="h4">{locations.length} địa điểm du lịch</Typography>
-        </div>
+        </div> */}
         <div>
           <Button
             variant="contained"
@@ -111,7 +138,46 @@ function AdminLocations(props) {
           </Button>
         </div>
       </div>
-      
+
+      <div className={classes.formSearch}>
+        <div>
+          <Autocomplete
+            id="choose-province"
+            options={provinces}
+            loading={loading}
+            getOptionLabel={option => option?.fullname}
+            className={classes.autocompleteProvince}
+            onChange={(e, value) => setProvince(value)}
+            value={province}
+            renderInput={params => (
+              <TextField
+                {...params}
+                name="provinces"
+                label="Chọn tỉnh thành"
+                variant="outlined"
+              />
+            )}
+          />
+        </div>
+        <div>
+          <FormControlLabel
+            value={isContribute}
+            control={<Checkbox checked={isContribute} onChange={handleChange} color="primary" />}
+            label="Được đóng góp"
+            labelPlacement="end"
+          />
+        </div>
+        <div>
+          <Button
+            variant="contained"
+            className={classes.sreachBtn}
+            onClick={() => getAllLocations(token)}
+          >
+            Tìm kiếm
+          </Button>
+        </div>
+      </div>
+
       <div>
         <Paper className={classes.paper}>
           <DataGrid

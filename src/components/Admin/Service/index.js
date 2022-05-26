@@ -1,12 +1,10 @@
 import React, { useEffect, useState } from 'react';
-import { Container, TextField, Paper, Button, Tooltip } from '@material-ui/core';
+import { Container, TextField, Paper, Button, Tooltip, FormControlLabel, Checkbox } from '@material-ui/core';
 import Autocomplete from '@material-ui/lab/Autocomplete';
 import {
   CheckCircle,
   Cancel
 } from '@material-ui/icons';
-import FormControlLabel from '@material-ui/core/FormControlLabel';
-import Checkbox from '@material-ui/core/Checkbox';
 import { tableStyles } from '../../../style';
 import { getStar, totalNumRate } from '../../../utils/utils';
 import {
@@ -105,7 +103,7 @@ function AdminServices(props) {
     setError(null);
     console.log(isContribute);
     await customAxios(token)
-      .get(`/service/all?province=${province._id}&isContribute=${isContribute}`)
+      .get(`/service/all?province=${province?._id}&isContribute=${isContribute}`)
       .then(res => {
         setServices(res.data.services);
         setLoading(false);
