@@ -62,6 +62,7 @@ function Location(props) {
         disablePortal={false}
         transition
         onClose={handlePopoverClose}
+        style={{ zIndex: 9999 }}
       >
         <ClickAwayListener onClickAway={handlePopoverClose}>
           <Paper className={classes.locationPopper}>

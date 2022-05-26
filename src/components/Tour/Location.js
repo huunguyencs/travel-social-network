@@ -27,7 +27,7 @@ import {
 } from '@material-ui/core';
 import React, { useEffect, useState } from 'react';
 import { Close, MoreVert, Label } from '@material-ui/icons';
-import { useDispatch, useSelector } from 'react-redux';
+import { useDispatch } from 'react-redux';
 import { Link } from 'react-router-dom';
 
 import { tourdetailStyles } from '../../style';
@@ -37,12 +37,10 @@ import * as tourAction from '../../redux/actions/createTourAction';
 import { success } from '../../redux/actions/alertAction';
 import customAxios from '../../utils/fetchData';
 import { timeAgo } from '../../utils/date';
-import { AvatarGroup, Rating } from '@material-ui/lab';
+import { Rating } from '@material-ui/lab';
 import { SeeMoreText } from '../SeeMoreText';
 import ImageList from '../Modal/ImageList';
-import AddService, { ServiceCard } from './AddService';
-import UserList from '../Modal/UserList';
-import { joinLocation, unjoinLocation } from '../../redux/callApi/tourCall';
+// import { ServiceCard } from './AddService';
 
 function ReviewList(props) {
   const { reviews, handleClose } = props;
@@ -175,7 +173,7 @@ function Detail(props) {
   const classes = tourdetailStyles();
   const dispatch = useDispatch();
 
-  const { location, isEdit, indexDate, indexLocation, joined } = props;
+  const { location, isEdit, indexDate, indexLocation } = props;
 
   const [description, setDescription] = useState();
   const [time, setTime] = useState(location.time);
@@ -221,14 +219,18 @@ function Detail(props) {
                     onChange={e => setDescription(e.target.value)}
                   />
                   <TextField
-                    label="Thời gian"
-                    title="Thời gian"
-                    variant="outlined"
-                    name="time"
                     id="time"
-                    className={classes.fullField}
-                    value={time}
+                    label="Thời gian"
+                    type="time"
+                    variant="outlined"
+                    defaultValue={time}
                     onChange={e => setTime(e.target.value)}
+                    InputLabelProps={{
+                      shrink: true
+                    }}
+                    inputProps={{
+                      step: 300 // 5 min
+                    }}
                   />
                   <TextField
                     label="Chi phí"
@@ -257,11 +259,6 @@ function Detail(props) {
                     </Button>
                   </div>
                 </div>
-                <AddService
-                  type="location"
-                  indexDate={indexDate}
-                  indexLocation={indexLocation}
-                />
               </div>
             </>
           ) : (
@@ -293,27 +290,6 @@ function Detail(props) {
             </div>
           )}
         </Grid>
-        {location.services?.length > 0 && (
-          <Grid item md={6} sm={12} xs={12} style={{ padding: 10 }}>
-            <div style={{ display: 'flex', justifyContent: 'center' }}>
-              <Typography variant="h5">Danh sách dịch vụ</Typography>
-            </div>
-            <div className={classes.servicesWrapperMaxHeight}>
-              {location.services.map((item, index) => (
-                <ServiceCard
-                  joined={joined}
-                  type="location"
-                  key={index}
-                  service={item}
-                  index={index}
-                  isEdit={isEdit}
-                  indexDate={indexDate}
-                  indexLocation={indexLocation}
-                />
-              ))}
-            </div>
-          </Grid>
-        )}
       </Grid>
     </Paper>
   );
@@ -321,8 +297,6 @@ function Detail(props) {
 
 export default function Location(props) {
   const classes = tourdetailStyles();
-
-  const { user, token } = useSelector(state => state.auth);
 
   const dispatch = useDispatch();
 
@@ -334,11 +308,7 @@ export default function Location(props) {
     indexDate,
     indexLocation,
     addReview,
-    joined,
-    joinIds,
-    isOwn,
-    updateJoinLocation,
-    isOld
+    joined
   } = props;
 
   const [showDetail, setShowDetail] = useState(false);
@@ -347,81 +317,6 @@ export default function Location(props) {
   const [editLoc, setEditLoc] = useState(false);
   const [showDeleteLocation, setShowDeleteLocation] = useState(false);
   const [showReview, setShowReview] = useState(false);
-  const [showJoin, setShowJoin] = useState(false);
-  const [loadingJoin, setLoadingJoin] = useState();
-  const [joinedLoc, setJoinedLoc] = useState(false);
-
-  const handleJoin = () => {
-    setLoadingJoin(true);
-    setJoinedLoc(true);
-    var prevJoin = location.joinIds;
-    updateJoinLocation([...prevJoin, user], tourDateId, location._id);
-    dispatch(
-      joinLocation(
-        token,
-        tourDateId,
-        location._id,
-        () => {
-          setLoadingJoin(false);
-          setJoinedLoc(true);
-        },
-        () => {
-          setLoadingJoin(false);
-          if (joinLocation) {
-            setJoinedLoc(false);
-            updateJoinLocation(prevJoin, tourDateId, location._id);
-          }
-        }
-      )
-    );
-  };
-
-  const handleUnJoin = () => {
-    setLoadingJoin(true);
-    setJoinedLoc(false);
-    var prevJoin = location.joinIds;
-    var newJoin = prevJoin.filter(item => item._id !== user._id);
-    updateJoinLocation(newJoin, tourDateId, location._id);
-    dispatch(
-      unjoinLocation(
-        token,
-        tourDateId,
-        location._id,
-        () => {
-          setLoadingJoin(false);
-          setJoinedLoc(false);
-        },
-        () => {
-          setLoadingJoin(false);
-          if (!joined) {
-            setJoinedLoc(true);
-            updateJoinLocation(prevJoin, tourDateId, location._id);
-          }
-        }
-      )
-    );
-  };
-
-  const handleShowJoin = () => {
-    setShowJoin(true);
-  };
-
-  const handleCloseJoin = () => {
-    setShowJoin(false);
-  };
-
-  const checkJoinLocation = () => {
-    let find = location.joinIds.findIndex(ele => ele._id === user?._id);
-    return find >= 0;
-  };
-
-  // const joinLocation = checkJoinLocation();
-  useEffect(() => {
-    if (isSave) {
-      let find = location.joinIds.findIndex(ele => ele._id === user?._id);
-      setJoinedLoc(find >= 0);
-    }
-  }, [location.joinIds, user?._id, isSave]);
 
   useEffect(() => {
     setShowDetail(false);
@@ -461,7 +356,7 @@ export default function Location(props) {
 
   const handleDeleteLocation = () => {
     dispatch(
-      tourAction.deleteLocation({
+      tourAction.deleteEvent({
         indexDate: indexDate,
         indexLocation: indexLocation
       })
@@ -486,7 +381,6 @@ export default function Location(props) {
   const refCr = React.createRef();
   const ref = React.createRef();
   const refDetail = React.createRef();
-  const refUser = React.createRef();
 
   const EditLocationRef = React.forwardRef((props, ref) => (
     <EditLocationForm {...props} innerRef={ref} />
@@ -502,10 +396,6 @@ export default function Location(props) {
 
   const DetailRef = React.forwardRef((props, ref) => (
     <Detail {...props} innerRef={ref} />
-  ));
-
-  const UserListRef = React.forwardRef((props, ref) => (
-    <UserList {...props} innerRef={ref} />
   ));
 
   return (
@@ -562,15 +452,14 @@ export default function Location(props) {
                 {isSave && (
                   <>
                     <div style={{ display: 'flex' }}>
-                      {location.location && (joined || checkJoinLocation()) && (
+                      {location.location && (
                         <div>
-                          {' '}
                           <Button
                             className={classes.reviewBtn}
                             onClick={handleShow}
                           >
                             Tạo Review
-                          </Button>{' '}
+                          </Button>
                         </div>
                       )}
                       {location.postId?.length > 0 && (
@@ -581,56 +470,7 @@ export default function Location(props) {
                           Xem review
                         </Button>
                       )}
-                      {!joined && !isOwn && (
-                        <>
-                          {loadingJoin ? (
-                            <CircularProgress />
-                          ) : (
-                            <Button
-                              onClick={joinedLoc ? handleUnJoin : handleJoin}
-                              className={classes.reviewBtn}
-                              disabled={isOld}
-                            >
-                              {joinedLoc ? 'Huỷ tham gia' : 'Tham gia'}
-                            </Button>
-                          )}
-                        </>
-                      )}
                     </div>
-                    <Typography>Thành viên tham gia :</Typography>
-                    <AvatarGroup
-                      max={4}
-                      onClick={handleShowJoin}
-                      style={{ cursor: 'pointer' }}
-                    >
-                      {joinIds.concat(location.joinIds).map(user => (
-                        <Avatar
-                          src={user.avatar}
-                          alt={'A'}
-                          key={user._id}
-                          style={{ height: 20, width: 20 }}
-                        />
-                      ))}
-                    </AvatarGroup>
-                    <Modal
-                      aria-labelledby="like"
-                      aria-describedby="user-like-this-post"
-                      className={classes.modal}
-                      open={showJoin}
-                      onClose={handleCloseJoin}
-                      closeAfterTransition
-                      BackdropComponent={Backdrop}
-                      BackdropProps={{
-                        timeout: 500
-                      }}
-                    >
-                      <UserListRef
-                        ref={refUser}
-                        listUser={joinIds.concat(location.joinIds)}
-                        title={'Đã tham gia'}
-                        handleClose={handleCloseJoin}
-                      />
-                    </Modal>
                   </>
                 )}
                 <Button

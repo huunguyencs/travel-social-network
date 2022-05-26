@@ -9,7 +9,7 @@ export const getServices = (id, page) => async dispatch => {
   try {
     var res;
     if (id) {
-      res = await customAxios().get(`/service/coop/${id}?offset=${page}`);
+      res = await customAxios().get(`/service/all?province=${id}&page=${page}`);
     } else {
       res = await customAxios().get(`/service/list?offset=${page}`);
     }

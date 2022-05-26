@@ -21,6 +21,13 @@ export const addLocation = props => {
   };
 };
 
+export const addService = props => {
+  return {
+    type: CREATE_TOUR_TYPES.ADD_NEW_SERVICE,
+    payload: props
+  };
+};
+
 export const deleteDate = props => {
   return {
     type: CREATE_TOUR_TYPES.DELETE_DATE,
@@ -28,9 +35,9 @@ export const deleteDate = props => {
   };
 };
 
-export const deleteLocation = props => {
+export const deleteEvent = props => {
   return {
-    type: CREATE_TOUR_TYPES.DELETE_LOCATION,
+    type: CREATE_TOUR_TYPES.DELETE_EVENT,
     payload: props
   };
 };
@@ -49,6 +56,13 @@ export const updateLocation = props => {
   };
 };
 
+export const updateService = props => {
+  return {
+    type: CREATE_TOUR_TYPES.UPDATE_SERVICE,
+    payload: props
+  };
+};
+
 export const resetTour = props => {
   return {
     type: CREATE_TOUR_TYPES.RESET_TOUR,
@@ -59,48 +73,6 @@ export const resetTour = props => {
 export const updateInfo = props => {
   return {
     type: CREATE_TOUR_TYPES.UPDATE_INFO_TOUR,
-    payload: props
-  };
-};
-
-export const addServiceDate = props => {
-  return {
-    type: CREATE_TOUR_TYPES.ADD_SERVICE_DATE,
-    payload: props
-  };
-};
-
-export const updateServiceDate = props => {
-  return {
-    type: CREATE_TOUR_TYPES.UPDATE_SERVICE_DATE,
-    payload: props
-  };
-};
-
-export const deleteServiceDate = props => {
-  return {
-    type: CREATE_TOUR_TYPES.DELETE_SERVICE_DATE,
-    payload: props
-  };
-};
-
-export const addServiceLocation = props => {
-  return {
-    type: CREATE_TOUR_TYPES.ADD_SERVICE_LOCATION,
-    payload: props
-  };
-};
-
-export const updateServiceLocation = props => {
-  return {
-    type: CREATE_TOUR_TYPES.UPDATE_SERVICE_LOCATION,
-    payload: props
-  };
-};
-
-export const deleteServiceLocation = props => {
-  return {
-    type: CREATE_TOUR_TYPES.DELETE_SERVICE_LOCATION,
     payload: props
   };
 };

@@ -20,7 +20,7 @@ import {
 } from '@material-ui/core';
 import React, { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-
+import GoogleMapPicker from 'react-google-map-picker';
 import * as tourAction from '../../redux/actions/createTourAction';
 import Autocomplete, {
   createFilterOptions
@@ -32,29 +32,207 @@ import { ReviewArea } from '../Service/ServiceDetail';
 import { success } from '../../redux/actions/alertAction';
 import customAxios from '../../utils/fetchData';
 
+const KEY = process.env.REACT_APP_GOOGLE_MAP;
+
 const filter = createFilterOptions();
+
+function MapPicker({ setPosition, position }) {
+  const [show, setShow] = useState(false);
+  const [zoom, setZoom] = useState(8);
+
+  const defaultPosition = position || { lat: 15, lng: 108 };
+
+  useEffect(() => {
+    let timer = setTimeout(() => setShow(true), 1000);
+    return () => {
+      clearTimeout(timer);
+    };
+  }, []);
+
+  function handleChangeLocation(lat, lng) {
+    setPosition({ lat: lat, lng: lng });
+  }
+
+  function handleChangeZoom(newZoom) {
+    setZoom(newZoom);
+  }
+
+  if (!show) {
+    return 'Loading map...';
+  }
+  return (
+    <GoogleMapPicker
+      defaultLocation={defaultPosition}
+      zoom={zoom}
+      defaultZoom={8}
+      mapTypeId="roadmap"
+      style={{ height: 450 }}
+      onChangeLocation={handleChangeLocation}
+      onChangeZoom={handleChangeZoom}
+      apiKey={KEY}
+    />
+  );
+}
+
+function ServiceAddContributeForm(props) {
+  const dispatch = useDispatch();
+  const { location, auth } = useSelector(state => state);
+
+  const { indexDate, indexLocation, cProvince, cName, handleClose, time } =
+    props;
+  const [service, setService] = useState({
+    name: cName,
+    description: '',
+    address: ''
+  });
+  const [position, setPosition] = useState({
+    lat: 15,
+    lng: 108
+  });
+  const [loading, setLoading] = useState(location.loadingServices);
+  const [province, setProvince] = useState(cProvince);
+
+  const changeProvince = province => {
+    setProvince(province);
+  };
+
+  const handleSubmit = () => {
+    // console.log(service);
+    setLoading(true);
+    console.log(service);
+    console.log(province);
+    console.log(position);
+    // customAxios(auth.token)
+    //   .post('/service/contribute', {
+    //     ...service,
+    //     position: [position.lng, position.lng],
+    //     province: province._id
+    //   })
+    //   .then(res => {
+    //     const service = {
+    //       service: res.data.service,
+    //       cost: 0,
+    //       description: '',
+    //       time: time
+    //     };
+    //     dispatch(
+    //       tourAction.addService({
+    //         service: service,
+    //         indexDate: indexDate
+    //       })
+    //     );
+    //     setLoading(false);
+    //     handleClose();
+    //   });
+  };
+
+  const handleChange = e => {
+    setService(state => ({
+      ...state,
+      [e.target.name]: e.target.value
+    }));
+  };
+
+  const classes = formStyles();
+
+  return (
+    <div>
+      <div className={classes.center}>
+        <Typography variant="h6">Thêm dịch vụ</Typography>
+      </div>
+      <Grid container>
+        <Grid item md={6}>
+          <Autocomplete
+            id="choose-province"
+            freeSolo
+            options={location.provinces}
+            loading={location.loading}
+            getOptionLabel={option => option?.fullname}
+            className={classes.autocomplete}
+            onChange={(e, value) => changeProvince(value)}
+            value={province}
+            renderInput={params => (
+              <TextField
+                {...params}
+                name="provinces"
+                label="Chọn tỉnh thành"
+                variant="outlined"
+              />
+            )}
+          />
+          <TextField
+            value={service.name}
+            onChange={handleChange}
+            variant="outlined"
+            label="Tên"
+            name="name"
+            id="name"
+          />
+          <TextField
+            value={service.address}
+            onChange={handleChange}
+            variant="outlined"
+            label="Mô tả vị trí"
+            name="address"
+            id="address"
+          />
+          <InputBase
+            placeholder="Mô tả"
+            rows={7}
+            name="description"
+            id="description"
+            multiline
+            className={classes.input}
+            value={service.description}
+            onChange={handleChange}
+          />
+        </Grid>
+        <Grid item md={6}>
+          <MapPicker setPosition={setPosition} position={position} />
+        </Grid>
+      </Grid>
+
+      <div style={{ marginTop: 10 }} className={classes.center}>
+        <Button
+          className={classes.button}
+          type="submit"
+          onClick={handleSubmit}
+          startIcon={<AddCircle />}
+          disabled={!service || loading}
+        >
+          Thêm
+        </Button>
+      </div>
+    </div>
+  );
+}
 
 function ServiceItemAddForm(props) {
   const dispatch = useDispatch();
 
   const { location } = useSelector(state => state);
 
-  const { type, indexDate, indexLocation } = props;
+  const {
+    indexDate,
+    province,
+    setProvince,
+    setName,
+    setContribute,
+    handleClose,
+    setTime,
+    time
+  } = props;
   const [services, setServices] = useState([]);
   const [service, setService] = useState(null);
   const [loading, setLoading] = useState(location.loadingServices);
-  const [province, setProvince] = useState(null);
+  // const [province, setProvince] = useState(null);
   const [cost, setCost] = useState(0);
 
   useEffect(() => {
     setLoading(true);
     if (province?._id) {
-      // console.log(location.services);
-      // setServices(
-      //   location.services.filter(item => item.province._id === province._id)
-      // );
       customAxios()
-        .get(`/province/service/${province._id}`)
+        .get(`/service/all?province=${province._id}`)
         .then(res => {
           setServices(res.data.services);
         });
@@ -68,34 +246,24 @@ function ServiceItemAddForm(props) {
 
   const handleSubmit = () => {
     if (service) {
-      let sv = service?._id
-        ? {
-            service: service,
-            cost: parseInt(cost) || 0,
-            description: ''
-          }
-        : {
-            serviceName: service.name,
-            cost: parseInt(cost) || 0,
-            description: ''
-          };
-      if (type === 'date') {
-        dispatch(
-          tourAction.addServiceDate({
-            service: sv,
-            indexDate: indexDate
-          })
-        );
-      } else {
-        dispatch(
-          tourAction.addServiceLocation({
-            service: sv,
-            indexDate: indexDate,
-            indexLocation: indexLocation
-          })
-        );
+      if (service.isContribute) {
+        setName(service.name);
+        setContribute(true);
+        return;
       }
+      const sv = {
+        service: service,
+        cost: parseInt(cost) || 0,
+        time: time
+      };
+      dispatch(
+        tourAction.addService({
+          ...sv,
+          indexDate: indexDate
+        })
+      );
     }
+    handleClose();
     // console.log(service);
   };
 
@@ -138,13 +306,17 @@ function ServiceItemAddForm(props) {
               setService({
                 name: value,
                 description: '',
-                images: ['/default1.jpg']
+                images: ['/default1.jpg'],
+                province: province,
+                isContribute: true
               });
             } else if (value && value.inputValue) {
               setService({
                 name: value.inputValue,
                 description: '',
-                images: ['/default1.jpg']
+                images: ['/default1.jpg'],
+                province: province,
+                isContribute: true
               });
             } else {
               setService(value);
@@ -210,6 +382,23 @@ function ServiceItemAddForm(props) {
           }}
         />
       </div>
+      <div className={classes.center}>
+        <TextField
+          id="time"
+          label="Thời gian"
+          type="time"
+          defaultValue="07:00"
+          className={classes.textField}
+          onChange={e => setTime(e.target.value)}
+          InputLabelProps={{
+            shrink: true
+          }}
+          inputProps={{
+            step: 300 // 5 min
+          }}
+        />
+      </div>
+
       {service && (
         <div className={classes.description}>
           <Typography variant="body2">{service.description}</Typography>
@@ -231,43 +420,25 @@ function ServiceItemAddForm(props) {
 }
 
 function DetailService(props) {
-  const {
-    service,
-    isEdit,
-    type,
-    indexService,
-    indexDate,
-    indexLocation,
-    joined
-  } = props;
+  const { service, isEdit, indexService, indexDate, joined } = props;
 
   const [cost, setCost] = useState(service.cost);
   const [description, setDescription] = useState(service.description);
+  const [time, setTime] = useState(service.time);
 
   const dispatch = useDispatch();
 
   const handleUpdate = () => {
     // console.log(cost);
-    if (type === 'date') {
-      dispatch(
-        tourAction.updateServiceDate({
-          cost: parseInt(cost),
-          description: description,
-          indexDate: indexDate,
-          indexService: indexService
-        })
-      );
-    } else {
-      dispatch(
-        tourAction.updateServiceLocation({
-          cost: parseInt(cost),
-          description: description,
-          indexDate: indexDate,
-          indexLocation: indexLocation,
-          indexService: indexService
-        })
-      );
-    }
+    dispatch(
+      tourAction.updateService({
+        cost: parseInt(cost),
+        description: description,
+        indexDate: indexDate,
+        index: indexService,
+        time: time
+      })
+    );
     dispatch(success({ message: 'Cập nhật thành công!' }));
   };
 
@@ -300,6 +471,19 @@ function DetailService(props) {
             value={cost}
             onChange={e => setCost(e.target.value)}
           />
+          <TextField
+            id="time"
+            label="Thời gian"
+            type="time"
+            defaultValue={service.time}
+            onChange={e => setTime(e.target.value)}
+            InputLabelProps={{
+              shrink: true
+            }}
+            inputProps={{
+              step: 300 // 5 min
+            }}
+          />
           <div className={classes.btnWrap}>
             <Button
               onClick={handleUpdate}
@@ -331,8 +515,7 @@ function DetailService(props) {
 }
 
 export function ServiceCard(props) {
-  const { service, index, isEdit, type, indexLocation, indexDate, joined } =
-    props;
+  const { service, index, isEdit, indexDate, joined } = props;
 
   const classes = tourdetailStyles();
   const [anchorEl, setAnchorEl] = useState(null);
@@ -362,22 +545,12 @@ export function ServiceCard(props) {
   };
 
   const handleDelete = () => {
-    if (type === 'date') {
-      dispatch(
-        tourAction.deleteServiceDate({
-          indexService: index,
-          indexDate: indexDate
-        })
-      );
-    } else {
-      dispatch(
-        tourAction.deleteServiceLocation({
-          indexService: index,
-          indexDate: indexDate,
-          indexLocation: indexLocation
-        })
-      );
-    }
+    dispatch(
+      tourAction.deleteEvent({
+        indexService: index,
+        indexDate: indexDate
+      })
+    );
     // dispatch(tourAction.deleteService({ index: index }))
   };
 
@@ -388,7 +561,9 @@ export function ServiceCard(props) {
           <CardMedia style={{ height: '100%' }}>
             <img
               src={
-                service.service ? service.service.images[0] : '/default1.jpg'
+                service?.service?.images
+                  ? service.service.images[0]
+                  : '/default1.jpg'
               }
               alt="Service"
               className={classes.img}
@@ -400,15 +575,9 @@ export function ServiceCard(props) {
             <div className={classes.locationContentContainer}>
               <div>
                 <div>
-                  {service.serviceName ? (
-                    <Typography variant="h6" className={classes.locationName}>
-                      {service.serviceName}
-                    </Typography>
-                  ) : (
-                    <Typography variant="h6" className={classes.locationName}>
-                      {service.service.name}
-                    </Typography>
-                  )}
+                  <Typography variant="h6" className={classes.locationName}>
+                    {service.service?.name}
+                  </Typography>
                 </div>
                 <div>
                   <Typography>
@@ -477,10 +646,8 @@ export function ServiceCard(props) {
             <DetailService
               service={service}
               isEdit={isEdit}
-              type={type}
               indexService={index}
               indexDate={indexDate}
-              indexLocation={indexLocation}
               joined={joined}
             />
           </Collapse>
@@ -493,17 +660,33 @@ export function ServiceCard(props) {
 export default function AddService(props) {
   const classes = tourdetailStyles();
 
-  const ref = React.createRef();
-
-  const ServiceItemAddRef = React.forwardRef((props, ref) => (
-    <ServiceItemAddForm innerRef={ref} {...props} />
-  ));
+  const [contribute, setContribute] = useState(false);
+  const [province, setProvince] = useState(null);
+  const [name, setName] = useState('');
+  const [time, setTime] = useState('07:00');
 
   return (
-    <div className={classes.paperContainer}>
+    <Paper className={classes.paperContainer}>
       <div style={{ marginTop: 10, borderTop: '1px solid #ded9d9' }}>
-        <ServiceItemAddRef ref={ref} {...props} />
+        {contribute ? (
+          <ServiceAddContributeForm
+            {...props}
+            cProvince={province}
+            cName={name}
+            time={time}
+          />
+        ) : (
+          <ServiceItemAddForm
+            {...props}
+            province={province}
+            setProvince={setProvince}
+            setName={setName}
+            setContribute={setContribute}
+            time={time}
+            setTime={setTime}
+          />
+        )}
       </div>
-    </div>
+    </Paper>
   );
 }

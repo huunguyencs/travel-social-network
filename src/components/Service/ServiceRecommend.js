@@ -44,7 +44,7 @@ function ServiceRecommendItem({ service, indexDate }) {
 
   const addToDate = () => {
     dispatch(
-      tourAction.addServiceDate({
+      tourAction.addService({
         service: {
           service,
           cost: 0

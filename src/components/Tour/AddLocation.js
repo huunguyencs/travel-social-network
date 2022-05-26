@@ -1,27 +1,209 @@
-import { Button, Paper, TextField } from '@material-ui/core';
+import {
+  Button,
+  Grid,
+  InputBase,
+  Paper,
+  TextField,
+  Typography
+} from '@material-ui/core';
 import Autocomplete, {
   createFilterOptions
 } from '@material-ui/lab/Autocomplete';
-import React, { useEffect, useState } from 'react';
+import React, { useCallback, useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-
+import GoogleMapPicker from 'react-google-map-picker';
 import { formStyles } from '../../style';
 import AddLocMap from './AddLocMap';
 import * as tourAction from '../../redux/actions/createTourAction';
 import { AddCircle } from '@material-ui/icons';
 import ServiceRecommend from '../Service/ServiceRecommend';
 import { getRecommend } from '../../redux/callApi/serviceCall';
+import customAxios from '../../utils/fetchData';
 
 const filter = createFilterOptions();
 
-export default function AddLocation(props) {
+const KEY = process.env.REACT_APP_GOOGLE_MAP;
+
+function MapPicker({ setPosition, position }) {
+  const [show, setShow] = useState(false);
+  const [zoom, setZoom] = useState(8);
+
+  const defaultPosition = position || { lat: 15, lng: 108 };
+
+  useEffect(() => {
+    let timer = setTimeout(() => setShow(true), 1000);
+    return () => {
+      clearTimeout(timer);
+    };
+  }, []);
+
+  function handleChangeLocation(lat, lng) {
+    setPosition({ lat: lat, lng: lng });
+  }
+
+  function handleChangeZoom(newZoom) {
+    setZoom(newZoom);
+  }
+
+  if (!show) {
+    return 'Loading map...';
+  }
+  return (
+    <GoogleMapPicker
+      defaultLocation={defaultPosition}
+      zoom={zoom}
+      defaultZoom={8}
+      mapTypeId="roadmap"
+      style={{ height: 450 }}
+      onChangeLocation={handleChangeLocation}
+      onChangeZoom={handleChangeZoom}
+      apiKey={KEY}
+    />
+  );
+}
+
+function AddLocationContribute(props) {
+  const dispatch = useDispatch();
+  const { location, auth } = useSelector(state => state);
+
+  const { indexDate, indexLocation, currentProvince, name, handleClose, time } =
+    props;
+  const [loc, setLoc] = useState({
+    name: name,
+    description: ''
+  });
+  const [position, setPosition] = useState({
+    lat: 15,
+    lng: 108
+  });
+  const [loading, setLoading] = useState(location.loadingServices);
+  const [province, setProvince] = useState(currentProvince);
+
+  const changeProvince = province => {
+    setProvince(province);
+  };
+
+  const handleSubmit = () => {
+    // console.log(service);
+    setLoading(true);
+    console.log(loc);
+    console.log(province);
+    console.log(position);
+    customAxios(auth.token)
+      .post('/location/contribute', {
+        ...loc,
+        position: [position.lng, position.lng],
+        province: province._id
+      })
+      .then(res => {
+        const tLoc = {
+          location: res.data.location,
+          cost: 0,
+          description: '',
+          time: time
+        };
+        dispatch(
+          tourAction.addLocation({
+            location: tLoc,
+            indexDate: indexDate
+          })
+        );
+        setLoading(false);
+        handleClose();
+      });
+  };
+
+  const handleChange = e => {
+    setLoc(state => ({
+      ...state,
+      [e.target.name]: e.target.value
+    }));
+  };
+
+  const classes = formStyles();
+  return (
+    <div>
+      <div className={classes.center}>
+        <Typography variant="h6">Thêm dịch vụ</Typography>
+      </div>
+      <Grid container>
+        <Grid item md={6}>
+          <Autocomplete
+            id="choose-province"
+            freeSolo
+            options={location.provinces}
+            loading={location.loading}
+            getOptionLabel={option => option?.fullname}
+            className={classes.autocomplete}
+            onChange={(e, value) => changeProvince(value)}
+            value={province}
+            renderInput={params => (
+              <TextField
+                {...params}
+                name="provinces"
+                label="Chọn tỉnh thành"
+                variant="outlined"
+              />
+            )}
+          />
+          <TextField
+            value={loc.name}
+            onChange={handleChange}
+            variant="outlined"
+            label="Tên"
+            name="name"
+            id="name"
+          />
+          <InputBase
+            placeholder="Mô tả"
+            rows={7}
+            name="description"
+            id="description"
+            multiline
+            className={classes.input}
+            value={loc.description}
+            onChange={handleChange}
+          />
+        </Grid>
+        <Grid item md={6}>
+          <MapPicker setPosition={setPosition} position={position} />
+        </Grid>
+      </Grid>
+
+      <div style={{ marginTop: 10 }} className={classes.center}>
+        <Button
+          className={classes.button}
+          type="submit"
+          onClick={handleSubmit}
+          startIcon={<AddCircle />}
+          disabled={loading}
+        >
+          Thêm
+        </Button>
+      </div>
+    </div>
+  );
+}
+
+function AddLocationDefault(props) {
   const classes = formStyles();
 
   const dispatch = useDispatch();
-  const { location, createTour } = useSelector(state => state);
-  const { currentProvince, setCurrentProvince, indexDate } = props;
+  const { location, createTour, auth } = useSelector(state => state);
+  const {
+    indexDate,
+    handleClose,
+    currentProvince,
+    setCurrentProvince,
+    locations,
+    setLocations,
+    setIsContribute,
+    setName,
+    time,
+    setTime
+  } = props;
   const [loading, setLoading] = useState(location.loadingLocations);
-  const [locations, setLocations] = useState([]);
+
   const [loc, setLoc] = useState(null);
 
   const [state, setState] = useState({
@@ -39,48 +221,59 @@ export default function AddLocation(props) {
     }
   };
 
-  useEffect(() => {
-    setLoading(true);
-    if (currentProvince) {
-      setLocations(
-        location.locations.filter(
-          item => item.province._id === currentProvince._id
-        )
-      );
+  const getLocation = useCallback(
+    province => {
+      customAxios(auth.token)
+        .get(`/location/all?province=${province._id}`)
+        .then(res => {
+          setLocations(res.data.locations);
+        });
       setState({
         zoom: 11,
-        center: currentProvince.position
+        center: province?.position
       });
+    },
+    [setLocations, auth.token]
+  );
+
+  useEffect(() => {
+    setLoading(true);
+    if (currentProvince && locations?.length === 0) {
+      getLocation(currentProvince);
     }
     setLoading(false);
-  }, [currentProvince, location.locations]);
+  }, [getLocation, currentProvince, locations]);
 
   const setProvince = province => {
-    setCurrentProvince(province);
+    if (!currentProvince || province?._id !== currentProvince._id) {
+      setCurrentProvince(province);
+      getLocation(province);
+    }
   };
 
   const handleSubmit = e => {
-    e.preventDefault();
     if (loc) {
       if (loc._id) {
-        dispatch(
-          tourAction.addLocation({ location: loc, indexDate: indexDate })
-        );
-        const position = loc.position;
-        if (position) dispatch(getRecommend(position));
-      } else {
+        console.log(indexDate);
         dispatch(
           tourAction.addLocation({
-            locationName: loc.fullname,
-            indexDate: indexDate
+            location: loc,
+            indexDate: indexDate,
+            time: time
           })
         );
+        handleClose();
+        // const position = loc.position;
+        // if (position) dispatch(getRecommend(position));
+      } else {
+        setName(loc?.fullname);
+        setIsContribute(true);
       }
     }
   };
 
   return (
-    <Paper className={classes.addLocationContainer}>
+    <Paper style={{ width: '60%' }}>
       <div className={classes.addLocationForm}>
         <div style={{ display: 'flex' }}>
           <Autocomplete
@@ -110,12 +303,14 @@ export default function AddLocation(props) {
               if (typeof value === 'string') {
                 setLoc({
                   fullname: value,
-                  image: ''
+                  image: '',
+                  isContribute: true
                 });
               } else if (value && value.inputValue) {
                 setLoc({
                   fullname: value.inputValue,
-                  image: ''
+                  image: '',
+                  isContribute: true
                 });
               } else changeLoc(value);
             }}
@@ -154,6 +349,20 @@ export default function AddLocation(props) {
               />
             )}
           />
+          <TextField
+            id="time"
+            label="Thời gian"
+            variant="outlined"
+            type="time"
+            defaultValue={time}
+            onChange={e => setTime(e.target.value)}
+            InputLabelProps={{
+              shrink: true
+            }}
+            inputProps={{
+              step: 300 // 5 min
+            }}
+          />
         </div>
         <div>
           <Button
@@ -175,7 +384,7 @@ export default function AddLocation(props) {
           setState={setState}
           indexDate={props.indexDate}
         />
-        {createTour.recommendService?.length && (
+        {createTour.recommendService?.length > 0 && (
           <ServiceRecommend
             indexDate={props.indexDate}
             services={createTour.recommendService}
@@ -183,5 +392,22 @@ export default function AddLocation(props) {
         )}
       </div>
     </Paper>
+  );
+}
+
+export default function AddLocation(props) {
+  const [isContribute, setIsContribute] = useState(false);
+  const [name, setName] = useState('');
+  const [time, setTime] = useState('07:00');
+  return isContribute ? (
+    <AddLocationContribute {...props} name={name} time={time} />
+  ) : (
+    <AddLocationDefault
+      {...props}
+      setName={setName}
+      time={time}
+      setTime={setTime}
+      setIsContribute={setIsContribute}
+    />
   );
 }

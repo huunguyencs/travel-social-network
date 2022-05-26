@@ -45,10 +45,9 @@ const tourdetailStyles = makeStyles(
       }
     },
     serviceContainer: {
-        marginTop: 10,
-        width: "100%",
-        borderRadius: attr.borderRadius.sm
-
+      marginTop: 10,
+      width: '100%',
+      borderRadius: attr.borderRadius.sm
     },
     detailInfo: {
       // marginTop: 30
@@ -59,9 +58,9 @@ const tourdetailStyles = makeStyles(
       display: 'flex'
     },
     img: {
-        height: "100%",
-        width: "100%",
-        objectFit: "cover"
+      height: '100%',
+      width: '100%',
+      objectFit: 'cover'
     },
     locationContentContainer: {
       display: 'flex',
@@ -69,35 +68,35 @@ const tourdetailStyles = makeStyles(
       padding: 10
     },
     reviewBtn: {
-        marginRight: 5,
-        color: "#63b696",
-        borderRadius: 5,
-        backgroundColor: "transparent",
-        cursor: "pointer",
-        fontWeight: 500,
-        outline: "none",
-        border: `1px solid ${color.turquoise}`,
-        fontSize: 12,
-        position: "relative",
-        isolation: "isolate",
-        "&::before": {
-            content: "''",
-            height: "100%",
-            width: 0,
-            position: "absolute",
-            top: 0,
-            left: 0,
-            backgroundColor: "#63b696",
-            zIndex: -1,
-            transition: "width 0.25s ease-in",
-            color:color.white
-        },
-        "&:hover::before": {
-            width: "100%"
-        },
-        "&:hover": {
-            color: color.white
-        },
+      marginRight: 5,
+      color: '#63b696',
+      borderRadius: 5,
+      backgroundColor: 'transparent',
+      cursor: 'pointer',
+      fontWeight: 500,
+      outline: 'none',
+      border: `1px solid ${color.turquoise}`,
+      fontSize: 12,
+      position: 'relative',
+      isolation: 'isolate',
+      '&::before': {
+        content: "''",
+        height: '100%',
+        width: 0,
+        position: 'absolute',
+        top: 0,
+        left: 0,
+        backgroundColor: '#63b696',
+        zIndex: -1,
+        transition: 'width 0.25s ease-in',
+        color: color.white
+      },
+      '&:hover::before': {
+        width: '100%'
+      },
+      '&:hover': {
+        color: color.white
+      }
     },
     locationName: {
       // marginTop: 10,
@@ -167,12 +166,12 @@ const tourdetailStyles = makeStyles(
       justifyContent: 'center'
     },
     addDay: {
-      color: "#63b696",
+      color: '#63b696',
       borderRadius: 5,
-      backgroundColor: "transparent",
-      cursor: "pointer",
+      backgroundColor: 'transparent',
+      cursor: 'pointer',
       fontWeight: 500,
-      outline: "none",
+      outline: 'none',
       border: `1px solid ${color.turquoise}`,
       fontSize: 12,
       marginTop: 10,
@@ -215,10 +214,10 @@ const tourdetailStyles = makeStyles(
       }
     },
     image: {
-        objectFit: "cover",
-        cursor: 'pointer',
-        height: "100%",
-        borderRadius: attr.borderRadius.md
+      objectFit: 'cover',
+      cursor: 'pointer',
+      height: '100%',
+      borderRadius: attr.borderRadius.md
     },
     tabsMenu: {
       display: 'flex',
@@ -358,129 +357,127 @@ const tourdetailStyles = makeStyles(
       }
     },
     paperDetailDate: {
-        width: "100%"
+      width: '100%'
     },
-    locationImages:{
-        padding: 10,
-        height: 250,
-        overflow: "hidden",
-    },
-
-    container:{
-        margin: 0,
-        paddingTop: 64
-    },
-    tourDetailContainer:{
-        maxWidth: 1280,
-        flexGrow: 1, 
-        padding: 0,
-        margin: "0 auto",
-    },
-    tourInfos:{
-        maxWidth: 1280,
-        padding: 0,
-        flexGrow: 1,
-        marginTop: 16,
-        marginInline: 16
-    },
-    tourInfoLeftImage:{
-        height: 500,
-        width: "100%"
-    },
-    tourRecommend:{
-        margin:"0 0 20px 10px",
-        borderRadius: attr.borderRadius.md,
-        boxShadow: "0 2px 8px #00000026",
-        backgroundColor: color.white,
-        maxHeight: 770,
-        overflow: "hidden",
-        [theme.breakpoints.down('sm')]: {
-          margin:"0",
-        }
-    },
-    tourLeftInfo:{
-        marginTop: 10,
-        padding: 10,
-        borderRadius: attr.borderRadius.md,
-        boxShadow: "0 2px 8px #00000026",
-        backgroundColor: color.white
-    },
-    tourName:{
-        fontWeight: 500,
-        fontSize: 25,
-        letterSpacing: 1
+    locationImages: {
+      padding: 10,
+      height: 250,
+      overflow: 'hidden'
     },
 
+    container: {
+      margin: 0,
+      paddingTop: 64
+    },
+    tourDetailContainer: {
+      maxWidth: 1280,
+      flexGrow: 1,
+      padding: 0,
+      margin: '0 auto'
+    },
+    tourInfos: {
+      maxWidth: 1280,
+      padding: 0,
+      flexGrow: 1,
+      marginTop: 16,
+      marginInline: 16
+    },
+    tourInfoLeftImage: {
+      height: 500,
+      width: '100%'
+    },
+    tourRecommend: {
+      margin: '0 0 20px 10px',
+      borderRadius: attr.borderRadius.md,
+      boxShadow: '0 2px 8px #00000026',
+      backgroundColor: color.white,
+      maxHeight: 770,
+      overflow: 'hidden',
+      [theme.breakpoints.down('sm')]: {
+        margin: '0'
+      }
+    },
+    tourLeftInfo: {
+      marginTop: 10,
+      padding: 10,
+      borderRadius: attr.borderRadius.md,
+      boxShadow: '0 2px 8px #00000026',
+      backgroundColor: color.white
+    },
+    tourName: {
+      fontWeight: 500,
+      fontSize: 25,
+      letterSpacing: 1
+    },
 
-    tourTime:{
+    tourTime: {
       padding: 8,
-      display: "flex",
-      borderBottom: "1px solid #0000001f",
+      display: 'flex',
+      borderBottom: '1px solid #0000001f',
       marginBottom: 20
     },
-    timeItem:{
-      width: "50%",
-      textAlign: "center",
+    timeItem: {
+      width: '50%',
+      textAlign: 'center'
     },
-    timeItemTitle:{
+    timeItemTitle: {
       fontWeight: 500,
       fontSize: 18
     },
-    connectLine:{
-      position: "relative",
-      "&::before":{
+    connectLine: {
+      position: 'relative',
+      '&::before': {
         top: 24,
-        left: "calc(-44%)",
-        width: "calc(100% - 50px)",
+        left: 'calc(-44%)',
+        width: 'calc(100% - 50px)',
         content: "''",
-        display: "inline-block",
-        position: "absolute",
-        borderBottom: "3px dotted #e0e0e0"
+        display: 'inline-block',
+        position: 'absolute',
+        borderBottom: '3px dotted #e0e0e0'
       }
     },
-    iconStart:{
-      color: "#63B191",
-      border: "1px solid #63B191",
-      margin: "4px 0px",
+    iconStart: {
+      color: '#63B191',
+      border: '1px solid #63B191',
+      margin: '4px 0px',
       backgroundColor: color.white,
-      borderRadius: "50%",
+      borderRadius: '50%',
       padding: 6
     },
-    iconEnd:{
-      color: "#f44336",
-      border: "1px solid #f44336",
-      margin: "4px 0px",
+    iconEnd: {
+      color: '#f44336',
+      border: '1px solid #f44336',
+      margin: '4px 0px',
       backgroundColor: color.white,
-      borderRadius: "50%",
+      borderRadius: '50%',
       padding: 6
     },
-    timeItemDate:{
+    timeItemDate: {
       fontWeight: 500,
       fontSize: 16,
-      color: "#0000008a"
+      color: '#0000008a'
     },
-    timeItemLocation:{
+    timeItemLocation: {
       fontWeight: 400,
-      fontSize: 16,
+      fontSize: 16
     },
 
-
-    tourDates:{
-        padding: 0,
-        flexGrow: 1,
-        marginTop: 10,
-        marginInline: 16
+    tourDates: {
+      padding: 0,
+      flexGrow: 1,
+      marginTop: 10,
+      marginInline: 16
     },
-    map:{
-        position: "sticky" ,
-        top: 74,
-        borderRadius: attr.borderRadius.md,
-        boxShadow: "0 2px 8px #00000026",
-        margin:"0 0 0 10px",
-        overflow:"hidden"
+    map: {
+      position: 'sticky',
+      top: 74,
+      borderRadius: attr.borderRadius.md,
+      boxShadow: '0 2px 8px #00000026',
+      margin: '0 0 0 10px',
+      overflow: 'hidden'
     },
-    datesWrapper:{
-        borderRadius: attr.borderRadius.md
+    datesWrapper: {
+      borderRadius: attr.borderRadius.md
     },
     username: {
       fontSize: 18,
@@ -499,35 +496,36 @@ const tourdetailStyles = makeStyles(
     menuIcon: {
       marginRight: 5
     },
-    cardInfoUser:{
-        margin:"0 0 10px 10px",
-        borderRadius: attr.borderRadius.md,
-        boxShadow: "0 2px 8px #00000026",
-        [theme.breakpoints.down('sm')]: {
-            margin:"10px 0 0 0",
-        }
+    cardInfoUser: {
+      margin: '0 0 10px 10px',
+      borderRadius: attr.borderRadius.md,
+      boxShadow: '0 2px 8px #00000026',
+      [theme.breakpoints.down('sm')]: {
+        margin: '10px 0 0 0'
+      }
     },
 
     //createTour
-    tourInfoGeneral:{
-        borderRadius: attr.borderRadius.md,
-        boxShadow: "0 2px 8px #00000026",
-        marginTop: 16,
-        backgroundColor: color.white,
-        marginInline: 10
+    tourInfoGeneral: {
+      borderRadius: attr.borderRadius.md,
+      boxShadow: '0 2px 8px #00000026',
+      marginTop: 16,
+      backgroundColor: color.white,
+      marginInline: 10,
+      width: '100%'
     },
-    tourRight:{
-      position: "sticky",
+    tourRight: {
+      position: 'sticky',
       top: 64,
-      marginTop:16,
-      marginRight:10,
+      marginTop: 16,
+      marginRight: 10,
       marginBottom: 30,
       [theme.breakpoints.down('sm')]: {
-          marginTop:10,
-          marginInline:10
+        marginTop: 10,
+        marginInline: 10
       }
     },
-    createTourDates:{
+    createTourDates: {
       padding: 0,
       flexGrow: 1,
       marginTop: 10,
@@ -535,79 +533,80 @@ const tourdetailStyles = makeStyles(
       marginBottom: 30,
       backgroundColor: color.white,
       borderRadius: attr.borderRadius.md,
-      boxShadow: "0 2px 8px #00000026",
+      boxShadow: '0 2px 8px #00000026'
     },
-    tourButtons:{
-      display: "flex",
-      alignItems: "center",
-      justifyContent: "center",
+    tourButtons: {
+      display: 'flex',
+      alignItems: 'center',
+      justifyContent: 'center',
       backgroundColor: color.white,
       borderTopLeftRadius: attr.borderRadius.md,
       borderTopRightRadius: attr.borderRadius.md,
       padding: 5
     },
     button: {
-      position: "relative",
-      isolation: "isolate",
+      position: 'relative',
+      isolation: 'isolate',
       backgroundColor: color.turquoise,
       padding: 10,
       paddingInline: 20,
       borderRadius: attr.borderRadius.md,
-      [theme.breakpoints.down("sm")]: {
-          padding: 5,
-          paddingInline: 10,
-          marginBlock: 10,
+      [theme.breakpoints.down('sm')]: {
+        padding: 5,
+        paddingInline: 10,
+        marginBlock: 10
       },
-      "&::before": {
-          content: "''",
-          height: "100%",
-          width: 0,
-          position: "absolute",
-          top: 0,
-          left: 0,
-          backgroundColor: "#77a694",
-          zIndex: -1,
-          borderRadius: attr.borderRadius.md,
-          transition: "width 0.25s ease-in",
+      '&::before': {
+        content: "''",
+        height: '100%',
+        width: 0,
+        position: 'absolute',
+        top: 0,
+        left: 0,
+        backgroundColor: '#77a694',
+        zIndex: -1,
+        borderRadius: attr.borderRadius.md,
+        transition: 'width 0.25s ease-in'
       },
-      "&:hover::before": {
-          width: "100%"
+      '&:hover::before': {
+        width: '100%'
       },
-      "&:hover": {
-         color: color.white
+      '&:hover': {
+        color: color.white
       },
-      transition: "color 0.25s ease-in",
-  },
-  servicesWrapper:{
-    height: 520,
-    overflow:'hidden',
-    overflowY: 'auto',
-    padding: 10
-  },
-  servicesWrapperMaxHeight:{
-    maxHeight: 520,
-    overflow:'hidden',
-    overflowY: 'auto'
-  },
-  serviceRecommendWrapper:{
-    display:'flex'
-  },
-  root: {
-    maxWidth: 345
-  },
-  media: {
-    height: 140
-  },
-  buttonWrapper:{
-    display: 'flex',
-    justifyContent: 'center',
-    marginTop: -10,
-    padding:0
-  },
-  serviceName:{
-    cursor: 'pointer'
-  }
-
-}), {index: 1})
+      transition: 'color 0.25s ease-in'
+    },
+    servicesWrapper: {
+      height: 520,
+      overflow: 'hidden',
+      overflowY: 'auto',
+      padding: 10
+    },
+    servicesWrapperMaxHeight: {
+      maxHeight: 520,
+      overflow: 'hidden',
+      overflowY: 'auto'
+    },
+    serviceRecommendWrapper: {
+      display: 'flex'
+    },
+    root: {
+      maxWidth: 345
+    },
+    media: {
+      height: 140
+    },
+    buttonWrapper: {
+      display: 'flex',
+      justifyContent: 'center',
+      marginTop: -10,
+      padding: 0
+    },
+    serviceName: {
+      cursor: 'pointer'
+    }
+  }),
+  { index: 1 }
+);
 
 export default tourdetailStyles;

@@ -1,37 +1,37 @@
 import {
   InputBase,
   Typography,
-  Button,
   Paper,
   TextField,
-  Chip,
-  InputAdornment
+  Chip
 } from '@material-ui/core';
 
 import React, { useState } from 'react';
-import { useDispatch } from 'react-redux';
 
 import { formStyles } from '../../style';
-import { updateInfo } from '../../redux/actions/createTourAction';
 import EmojiPicker from '../Input/EmojiPicker';
 
-export default function UpdateTourInfo({ name, content, hashtags, cost }) {
-  const dispatch = useDispatch();
+export default function UpdateTourInfo({ tourInfo, setTourInfo, image, cost }) {
+  const { name, hashtags, content } = tourInfo;
 
-  const [state, setState] = useState({
-    name: name,
-    cost: cost
-  });
+  // const [state, setState] = useState({
+  //   name: name,
+  //   cost: cost
+  // });
   const [hashtagArr, setHashtagArr] = useState(hashtags);
   const [hashtag, setHashtag] = useState('');
 
   const [text, setText] = useState(content);
 
   const handleInput = e => {
-    setState({
+    // setState({
+    //   ...state,
+    //   [e.target.name]: e.target.value
+    // });
+    setTourInfo(state => ({
       ...state,
       [e.target.name]: e.target.value
-    });
+    }));
   };
 
   const hashtagSplit = text => {
@@ -39,18 +39,13 @@ export default function UpdateTourInfo({ name, content, hashtags, cost }) {
     return ht.filter(item => item !== '');
   };
 
-  const handleSubmit = () => {
-    // console.log(state);
+  const changeHashtags = () => {
     let ht = hashtagSplit(hashtag);
     ht = [...hashtagArr, ...ht];
-    dispatch(
-      updateInfo({
-        name: state.name,
-        content: text,
-        hashtags: ht,
-        cost: parseInt(state.cost)
-      })
-    );
+    setTourInfo(state => ({
+      ...state,
+      hashtags: ht
+    }));
   };
 
   const addHashtag = e => {
@@ -59,6 +54,7 @@ export default function UpdateTourInfo({ name, content, hashtags, cost }) {
     arr = [...hashtagArr, ...arr];
     setHashtagArr(arr);
     setHashtag('');
+    changeHashtags();
   };
 
   const changeHashtag = e => {
@@ -69,6 +65,7 @@ export default function UpdateTourInfo({ name, content, hashtags, cost }) {
     let temp = [...hashtagArr];
     temp.splice(index, 1);
     setHashtagArr(temp);
+    changeHashtags();
   };
 
   const classes = formStyles();
@@ -85,11 +82,15 @@ export default function UpdateTourInfo({ name, content, hashtags, cost }) {
             id="name"
             label="Tên tour"
             variant="outlined"
-            value={state.name}
+            value={name}
             className={classes.tourNameInput}
             onChange={handleInput}
           />
-          <TextField
+          <Typography>
+            <b>Tổng chi phí:</b>
+            {cost}.000 VND
+          </Typography>
+          {/* <TextField
             type={'number'}
             name="cost"
             id="cost"
@@ -103,7 +104,7 @@ export default function UpdateTourInfo({ name, content, hashtags, cost }) {
                 <InputAdornment position="end">.000 VND</InputAdornment>
               )
             }}
-          />
+          /> */}
           <div className={classes.postContentInput}>
             <InputBase
               placeholder="Nội dung tour ..."
@@ -112,7 +113,7 @@ export default function UpdateTourInfo({ name, content, hashtags, cost }) {
               id="content"
               multiline
               className={classes.input}
-              value={text}
+              value={content}
               onChange={e => setText(e.target.value)}
             />
           </div>
@@ -142,11 +143,6 @@ export default function UpdateTourInfo({ name, content, hashtags, cost }) {
           <div className={classes.formAction}>
             <div>
               <EmojiPicker content={text} setContent={setText} />
-            </div>
-            <div>
-              <Button className={classes.button} onClick={handleSubmit}>
-                Cập nhật
-              </Button>
             </div>
           </div>
         </div>
