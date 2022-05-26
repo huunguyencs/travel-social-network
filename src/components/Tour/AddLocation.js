@@ -66,11 +66,10 @@ function AddLocationContribute(props) {
   const dispatch = useDispatch();
   const { location, auth } = useSelector(state => state);
 
-  const { indexDate, indexLocation, currentProvince, name, handleClose, time } =
-    props;
+  const { indexDate, currentProvince, name, handleClose, time } = props;
   const [loc, setLoc] = useState({
-    name: name,
-    description: ''
+    fullname: name,
+    information: ''
   });
   const [position, setPosition] = useState({
     lat: 15,
@@ -93,7 +92,8 @@ function AddLocationContribute(props) {
       .post('/location/contribute', {
         ...loc,
         position: [position.lng, position.lng],
-        province: province._id
+        province: province._id,
+        province_name: province.fullname
       })
       .then(res => {
         const tLoc = {
@@ -147,21 +147,21 @@ function AddLocationContribute(props) {
             )}
           />
           <TextField
-            value={loc.name}
+            value={loc.fullname}
             onChange={handleChange}
             variant="outlined"
             label="Tên"
-            name="name"
-            id="name"
+            name="fullname"
+            id="fullname"
           />
           <InputBase
             placeholder="Mô tả"
             rows={7}
-            name="description"
-            id="description"
+            name="information"
+            id="information"
             multiline
             className={classes.input}
-            value={loc.description}
+            value={loc.information}
             onChange={handleChange}
           />
         </Grid>
@@ -224,7 +224,7 @@ function AddLocationDefault(props) {
   const getLocation = useCallback(
     province => {
       customAxios(auth.token)
-        .get(`/location/all?province=${province._id}`)
+        .get(`/location/province/${province._id}`)
         .then(res => {
           setLocations(res.data.locations);
         });
