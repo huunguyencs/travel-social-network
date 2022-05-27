@@ -119,22 +119,19 @@ function AddLocationContribute(props) {
     customAxios(auth.token)
       .post('/location/contribute', {
         ...loc,
-        position: [position.lng, position.lat],
+        position,
         province: province._id,
         province_name: province.fullname,
         images: imgUploads
       })
       .then(res => {
-        const tLoc = {
-          location: res.data.location,
-          cost: 0,
-          description: '',
-          time: time
-        };
         dispatch(
           tourAction.addLocation({
-            location: tLoc,
-            indexDate: indexDate
+            location: res.data.location,
+            indexDate: indexDate,
+            cost: 0,
+            description: '',
+            time: time
           })
         );
         setLoading(false);
@@ -290,7 +287,7 @@ function AddLocationDefault(props) {
   useEffect(() => {
     if (province?._id) {
       customAxios(auth.token)
-        .get(`/location/province/${province._id}`)
+        .get(`/location/province/${province._id}?isContribute=true`)
         .then(res => {
           setLocations(res.data.locations);
         });
