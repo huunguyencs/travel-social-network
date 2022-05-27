@@ -92,8 +92,8 @@ export default function UpdateTourInfo({ tourInfo, setTourInfo, image, cost }) {
             onChange={handleInput}
           />
           <Typography>
-            <b>Tổng chi phí:</b>
-            {cost}.000 VND
+            <b>Tổng chi phí: </b>
+            {new Intl.NumberFormat().format(cost * 1000)} VND
           </Typography>
           {/* <TextField
             type={'number'}

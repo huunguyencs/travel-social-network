@@ -31,7 +31,7 @@ import UpdateTourInfo from '../Forms/UpdateInfoCreateTour';
 import { convertDateToStr } from '../../utils/date';
 import { saveTour, updateTour } from '../../redux/callApi/tourCall';
 import { getProvinces } from '../../redux/callApi/locationCall';
-import AddService, { ServiceCard } from './AddService';
+import AddService from './AddService';
 import AddLocation from './AddLocation';
 import {
   AddCircle,
@@ -46,6 +46,7 @@ import * as alertAction from '../../redux/actions/alertAction';
 import { makeStyles } from '@material-ui/core';
 import clsx from 'clsx';
 import PropTypes from 'prop-types';
+import ServiceCard from './Service';
 
 function EditDetailDate(props) {
   const { indexDate } = props;

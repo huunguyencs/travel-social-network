@@ -156,7 +156,7 @@ function AddLocationContribute(props) {
   return (
     <Paper style={{ width: '60%' }}>
       <div className={classes.center}>
-        <Typography variant="h6">Thêm địa điểm</Typography>
+        <Typography variant="h6">Chia sẻ địa điểm với mọi người</Typography>
       </div>
       <Grid container>
         <Grid item md={6} lg={6}>
@@ -201,13 +201,16 @@ function AddLocationContribute(props) {
               accept="image/*"
               className={classes.input}
               style={{ display: 'none' }}
-              id="input-image"
-              name="images"
+              id="input-image-contribute"
+              name="images-contribute"
               multiple
               type="file"
               onChange={handleChangeImageUpload}
             />
-            <label className={classes.composeOption} htmlFor="input-image">
+            <label
+              className={classes.composeOption}
+              htmlFor="input-image-contribute"
+            >
               <CameraAltOutlined className={classes.composeIcon} />
               <span>Hình ảnh</span>
             </label>

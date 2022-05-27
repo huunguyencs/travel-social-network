@@ -28,11 +28,11 @@ import {
   Delete
 } from '@material-ui/icons';
 import { AvatarGroup } from '@material-ui/lab';
-import React, { useEffect, useMemo, useState } from 'react';
+import React, { useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { Link } from 'react-router-dom';
 import { saveTour, unsavedTour } from '../../redux/callApi/authCall';
-import { deleteTour, joinTour, unJoinTour } from '../../redux/callApi/tourCall';
+import { deleteTour } from '../../redux/callApi/tourCall';
 
 import { postStyles } from '../../style';
 import { convertDateToStr, timeAgo } from '../../utils/date';
@@ -144,7 +144,6 @@ function ShareContent({ tour }) {
                     <Paper>
                       <MenuList>
                         <MenuItem onClick={handleShowEdit}>
-                          {' '}
                           <Edit className={classes.menuIcon} />
                           Chỉnh sửa bài viết
                         </MenuItem>
@@ -288,7 +287,7 @@ function BaseContent(props) {
     handleCloseMenu();
   };
 
-  const [join, setJoin] = useState(false);
+  // const [join, setJoin] = useState(false);
   const [openJoin, setOpenJoin] = useState(false);
 
   const classes = postStyles();
@@ -300,80 +299,80 @@ function BaseContent(props) {
     });
   };
 
-  useEffect(() => {
-    if (
-      auth.user &&
-      tour.joinIds.findIndex(join => join._id === auth.user._id) >= 0
-    ) {
-      setJoin(true);
-    }
-  }, [tour, auth.user]);
+  // useEffect(() => {
+  //   if (
+  //     auth.user &&
+  //     tour.joinIds.findIndex(join => join._id === auth.user._id) >= 0
+  //   ) {
+  //     setJoin(true);
+  //   }
+  // }, [tour, auth.user]);
 
-  const handleJoin = async () => {
-    setState({
-      loadingJoin: true,
-      error: false
-    });
-    setJoin(true);
-    var prevJoin = tour.joinIds;
-    updateJoin([...prevJoin, auth.user]);
-    dispatch(
-      joinTour(
-        tour._id,
-        auth.token,
-        () => {
-          setState({
-            loadingJoin: false,
-            error: false
-          });
-        },
-        () => {
-          setState({
-            loadingJoin: false,
-            error: true
-          });
-          if (join) {
-            setJoin(false);
-            updateJoin(prevJoin);
-          }
-        }
-      )
-    );
-  };
+  // const handleJoin = async () => {
+  //   setState({
+  //     loadingJoin: true,
+  //     error: false
+  //   });
+  //   setJoin(true);
+  //   var prevJoin = tour.joinIds;
+  //   updateJoin([...prevJoin, auth.user]);
+  //   dispatch(
+  //     joinTour(
+  //       tour._id,
+  //       auth.token,
+  //       () => {
+  //         setState({
+  //           loadingJoin: false,
+  //           error: false
+  //         });
+  //       },
+  //       () => {
+  //         setState({
+  //           loadingJoin: false,
+  //           error: true
+  //         });
+  //         if (join) {
+  //           setJoin(false);
+  //           updateJoin(prevJoin);
+  //         }
+  //       }
+  //     )
+  //   );
+  // };
 
-  const handleUnJoin = () => {
-    setState({
-      loadingJoin: true,
-      error: false
-    });
-    setJoin(false);
-    var prevJoin = tour.joinIds;
-    var newJoin = prevJoin.filter(user => user._id !== auth.user._id);
-    updateJoin(newJoin);
+  // const handleUnJoin = () => {
+  //   setState({
+  //     loadingJoin: true,
+  //     error: false
+  //   });
+  //   setJoin(false);
+  //   var prevJoin = tour.joinIds;
+  //   var newJoin = prevJoin.filter(user => user._id !== auth.user._id);
+  //   updateJoin(newJoin);
 
-    dispatch(
-      unJoinTour(
-        tour._id,
-        auth.token,
-        () => {
-          setState({
-            loadingJoin: false,
-            error: false
-          });
-        },
-        () => {
-          setState({
-            loadingJoin: false,
-            error: true
-          });
-          if (!join) {
-            setJoin(true);
-            updateJoin(prevJoin);
-          }
-        }
-      )
-    );
-  };
+  //   dispatch(
+  //     unJoinTour(
+  //       tour._id,
+  //       auth.token,
+  //       () => {
+  //         setState({
+  //           loadingJoin: false,
+  //           error: false
+  //         });
+  //       },
+  //       () => {
+  //         setState({
+  //           loadingJoin: false,
+  //           error: true
+  //         });
+  //         if (!join) {
+  //           setJoin(true);
+  //           updateJoin(prevJoin);
+  //         }
+  //       }
+  //     )
+  //   );
+  // };
 
   const handleShowJoin = () => {
     setOpenJoin(true);
@@ -383,19 +382,19 @@ function BaseContent(props) {
     setOpenJoin(false);
   };
 
-  const joinClick = () => {
-    if (auth.user) {
-      if (join) {
-        handleUnJoin();
-      } else handleJoin();
-    }
-  };
+  // const joinClick = () => {
+  //   if (auth.user) {
+  //     if (join) {
+  //       handleUnJoin();
+  //     } else handleJoin();
+  //   }
+  // };
 
-  const isOld = useMemo(() => {
-    const startDate = new Date(tour.tour[0]?.date);
-    const now = new Date();
-    return startDate < now;
-  }, [tour.tour]);
+  // const isOld = useMemo(() => {
+  //   const startDate = new Date(tour.tour[0]?.date);
+  //   const now = new Date();
+  //   return startDate < now;
+  // }, [tour.tour]);
 
   const handleDeleteTour = () => {
     setState({
@@ -584,7 +583,7 @@ function BaseContent(props) {
       )}
 
       <CardContent>
-        <div>
+        {/* <div>
           {tour.userId._id !== auth.user?._id && (
             <Button onClick={joinClick} disabled={state.loadingJoin || isOld}>
               {state.loadingJoin ? (
@@ -596,7 +595,7 @@ function BaseContent(props) {
               )}
             </Button>
           )}
-        </div>
+        </div> */}
         <Typography
           variant="h6"
           className={classes.title}

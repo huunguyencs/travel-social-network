@@ -43,7 +43,6 @@ import {
   Edit,
   FlagOutlined
 } from '@material-ui/icons';
-import { ServiceCard } from './AddService';
 import { Link } from 'react-router-dom';
 import UserList from '../Modal/UserList';
 import { useDispatch, useSelector } from 'react-redux';
@@ -54,6 +53,7 @@ import clsx from 'clsx';
 import { deleteTour } from '../../redux/callApi/tourCall';
 import TourRecommendCard from '../Card/TourRecommendCard';
 import { SeeMoreText } from '../SeeMoreText';
+import ServiceCard from './Service';
 
 function DetailDate(props) {
   const { tourDate, date, joined } = props;
