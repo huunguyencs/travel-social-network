@@ -21,8 +21,6 @@ export default function UpdateTourInfo({ tourInfo, setTourInfo, image, cost }) {
   const [hashtagArr, setHashtagArr] = useState(hashtags);
   const [hashtag, setHashtag] = useState('');
 
-  const [text, setText] = useState(content);
-
   const handleInput = e => {
     // setState({
     //   ...state,
@@ -31,6 +29,13 @@ export default function UpdateTourInfo({ tourInfo, setTourInfo, image, cost }) {
     setTourInfo(state => ({
       ...state,
       [e.target.name]: e.target.value
+    }));
+  };
+
+  const setContent = value => {
+    setTourInfo(state => ({
+      ...state,
+      content: value
     }));
   };
 
@@ -114,7 +119,7 @@ export default function UpdateTourInfo({ tourInfo, setTourInfo, image, cost }) {
               multiline
               className={classes.input}
               value={content}
-              onChange={e => setText(e.target.value)}
+              onChange={handleInput}
             />
           </div>
           <div>
@@ -142,7 +147,7 @@ export default function UpdateTourInfo({ tourInfo, setTourInfo, image, cost }) {
           </div>
           <div className={classes.formAction}>
             <div>
-              <EmojiPicker content={text} setContent={setText} />
+              <EmojiPicker content={content} setContent={setContent} />
             </div>
           </div>
         </div>

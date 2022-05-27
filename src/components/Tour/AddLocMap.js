@@ -24,7 +24,7 @@ function Location(props) {
   const open = Boolean(anchorEl);
   const classes = cardStyles();
 
-  const { location, onClick, indexDate } = props;
+  const { location, onClick, indexDate, handleClose } = props;
 
   const handlePopoverOpen = event => {
     onClick();
@@ -41,8 +41,9 @@ function Location(props) {
       tourAction.addLocation({ location: location, indexDate: indexDate })
     );
     handlePopoverClose();
-    const position = location.position;
-    if (position) dispatch(getRecommend(position));
+    handleClose();
+    // const position = location.position;
+    // if (position) dispatch(getRecommend(position));
   };
 
   return (
@@ -97,8 +98,15 @@ function Location(props) {
 }
 
 export default function AddLocMap(props) {
-  const { locations, currentProvince, setLoc, state, setState, indexDate } =
-    props;
+  const {
+    locations,
+    currentProvince,
+    setLoc,
+    state,
+    setState,
+    indexDate,
+    handleClose
+  } = props;
 
   useEffect(() => {
     if (currentProvince) {
@@ -134,10 +142,11 @@ export default function AddLocMap(props) {
               <Location
                 location={item}
                 key={item._id}
-                lat={item.position.lat}
-                lng={item.position.lng}
+                lat={item.position?.lat}
+                lng={item.position?.lng}
                 onClick={() => locationClick(item)}
                 indexDate={indexDate}
+                handleClose={handleClose}
               />
             ))
           : null}

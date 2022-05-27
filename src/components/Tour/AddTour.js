@@ -447,14 +447,8 @@ export default function AddTour(props) {
     }
   }, [dispatch, location.provinces]);
 
-  const refInfo = React.createRef();
   const refUdDate = React.createRef();
-  // const refAddLoc = React.createRef();
   const refEditDetailDate = React.createRef();
-
-  const UpdateTourInfoRef = React.forwardRef((props, ref) => (
-    <UpdateTourInfo {...props} innerRef={ref} />
-  ));
 
   const UpdateDateRef = React.forwardRef((props, ref) => (
     <UpdateDateForm {...props} innerRef={ref} />
@@ -489,11 +483,7 @@ export default function AddTour(props) {
             <div className={classes.tourInfoGeneral}>
               <Grid container>
                 <Grid item md={8} sm={7} xs={12}>
-                  <UpdateTourInfoRef
-                    ref={refInfo}
-                    // name={createTour.name}
-                    // content={createTour.content}
-                    // hashtags={createTour.hashtags}
+                  <UpdateTourInfo
                     tourInfo={tourInfo}
                     setTourInfo={setTourInfo}
                     image={createTour.image}
@@ -609,7 +599,7 @@ export default function AddTour(props) {
                         </Grid>
                         <Grid item md={7}>
                           <EditDetailDate indexDate={idx} />
-                          {createTour.tour[idx].events.map((item, index) =>
+                          {createTour.tour[idx]?.events.map((item, index) =>
                             item.location ? (
                               <Location
                                 location={item}

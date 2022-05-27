@@ -27,10 +27,17 @@ import Autocomplete, {
 } from '@material-ui/lab/Autocomplete';
 import { formStyles, tourdetailStyles } from '../../style';
 // import { Link } from 'react-router-dom';
-import { AddCircle, MoreVert, Label } from '@material-ui/icons';
+import {
+  AddCircle,
+  MoreVert,
+  Label,
+  CameraAltOutlined
+} from '@material-ui/icons';
 import { ReviewArea } from '../Service/ServiceDetail';
 import { success } from '../../redux/actions/alertAction';
 import customAxios from '../../utils/fetchData';
+import { checkImage, uploadImages } from '../../utils/uploadImage';
+import { ScrollMenu } from 'react-horizontal-scrolling-menu';
 
 const KEY = process.env.REACT_APP_GOOGLE_MAP;
 
@@ -78,8 +85,7 @@ function ServiceAddContributeForm(props) {
   const dispatch = useDispatch();
   const { location, auth } = useSelector(state => state);
 
-  const { indexDate, indexLocation, cProvince, cName, handleClose, time } =
-    props;
+  const { indexDate, cProvince, cName, handleClose, time } = props;
   const [service, setService] = useState({
     name: cName,
     description: '',
@@ -91,39 +97,67 @@ function ServiceAddContributeForm(props) {
   });
   const [loading, setLoading] = useState(location.loadingServices);
   const [province, setProvince] = useState(cProvince);
+  const [images, setImages] = useState([]);
 
   const changeProvince = province => {
     setProvince(province);
   };
 
-  const handleSubmit = () => {
+  const handleChangeImageUpload = e => {
+    let error = '';
+    for (const file of e.target.files) {
+      const check = checkImage(file);
+      if (check !== '') {
+        error = check;
+        break;
+      }
+    }
+    if (error === '') {
+      setImages(oldImage => [...oldImage, ...e.target.files]);
+    }
+  };
+
+  const removeImage = index => {
+    setImages(oldImage => [
+      ...oldImage.slice(0, index),
+      ...oldImage.slice(index + 1)
+    ]);
+  };
+
+  const handleSubmit = async () => {
     // console.log(service);
+    let imgUploads = [];
     setLoading(true);
+    if (images.length > 0) {
+      imgUploads = await uploadImages(images);
+    }
+
     console.log(service);
     console.log(province);
     console.log(position);
-    // customAxios(auth.token)
-    //   .post('/service/contribute', {
-    //     ...service,
-    //     position: [position.lng, position.lng],
-    //     province: province._id
-    //   })
-    //   .then(res => {
-    //     const service = {
-    //       service: res.data.service,
-    //       cost: 0,
-    //       description: '',
-    //       time: time
-    //     };
-    //     dispatch(
-    //       tourAction.addService({
-    //         service: service,
-    //         indexDate: indexDate
-    //       })
-    //     );
-    //     setLoading(false);
-    //     handleClose();
-    //   });
+    customAxios(auth.token)
+      .post('/service/contribute', {
+        ...service,
+        position: [position.lng, position.lat],
+        province: province._id,
+        province_name: province.fullname,
+        images: imgUploads
+      })
+      .then(res => {
+        const service = {
+          service: res.data.service,
+          cost: 0,
+          description: '',
+          time: time,
+          indexDate: indexDate
+        };
+        dispatch(tourAction.addService(service));
+        setLoading(false);
+        handleClose();
+      })
+      .catch(() => {
+        setLoading(false);
+      });
   };
 
   const handleChange = e => {
@@ -186,6 +220,38 @@ function ServiceAddContributeForm(props) {
             value={service.description}
             onChange={handleChange}
           />
+          <div className={classes.composeOptions}>
+            <input
+              accept="image/*"
+              className={classes.input}
+              style={{ display: 'none' }}
+              id="input-image"
+              name="images"
+              multiple
+              type="file"
+              onChange={handleChangeImageUpload}
+            />
+            <label className={classes.composeOption} htmlFor="input-image">
+              <CameraAltOutlined className={classes.composeIcon} />
+              <span>Hình ảnh</span>
+            </label>
+          </div>
+          <div className={classes.imageInputContainer}>
+            {images.length > 0 && (
+              <ScrollMenu height="300px">
+                {images.map((item, index) => (
+                  <img
+                    key={index}
+                    alt="Error"
+                    className={classes.imageInput}
+                    onClick={() => removeImage(index)}
+                    src={URL.createObjectURL(item)}
+                    title={'Xoá'}
+                  />
+                ))}
+              </ScrollMenu>
+            )}
+          </div>
         </Grid>
         <Grid item md={6}>
           <MapPicker setPosition={setPosition} position={position} />
@@ -198,7 +264,7 @@ function ServiceAddContributeForm(props) {
           type="submit"
           onClick={handleSubmit}
           startIcon={<AddCircle />}
-          disabled={!service || loading}
+          disabled={loading}
         >
           Thêm
         </Button>
@@ -232,7 +298,7 @@ function ServiceItemAddForm(props) {
     setLoading(true);
     if (province?._id) {
       customAxios()
-        .get(`/service/all?province=${province._id}`)
+        .get(`/service/province/${province._id}`)
         .then(res => {
           setServices(res.data.services);
         });
@@ -246,7 +312,7 @@ function ServiceItemAddForm(props) {
 
   const handleSubmit = () => {
     if (service) {
-      if (service.isContribute) {
+      if (service.isNew) {
         setName(service.name);
         setContribute(true);
         return;
@@ -308,7 +374,7 @@ function ServiceItemAddForm(props) {
                 description: '',
                 images: ['/default1.jpg'],
                 province: province,
-                isContribute: true
+                isNew: true
               });
             } else if (value && value.inputValue) {
               setService({
@@ -316,7 +382,7 @@ function ServiceItemAddForm(props) {
                 description: '',
                 images: ['/default1.jpg'],
                 province: province,
-                isContribute: true
+                isNew: true
               });
             } else {
               setService(value);
@@ -547,10 +613,12 @@ export function ServiceCard(props) {
   const handleDelete = () => {
     dispatch(
       tourAction.deleteEvent({
-        indexService: index,
+        index: index,
         indexDate: indexDate
       })
     );
+    handleCloseMenu();
+    handleCloseDelete();
     // dispatch(tourAction.deleteService({ index: index }))
   };
 
@@ -666,7 +734,7 @@ export default function AddService(props) {
   const [time, setTime] = useState('07:00');
 
   return (
-    <Paper className={classes.paperContainer}>
+    <Paper className={classes.paperContainer} style={{ width: '60%' }}>
       <div style={{ marginTop: 10, borderTop: '1px solid #ded9d9' }}>
         {contribute ? (
           <ServiceAddContributeForm
