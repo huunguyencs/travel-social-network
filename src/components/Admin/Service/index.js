@@ -34,29 +34,15 @@ const columns = [
     valueGetter: service => service.row.province.fullname
   },
   {
-    field: 'contribute',
-    headerName: 'Được đóng góp',
-    width: 150,
-    renderCell: service => service.row.isContribute ? (
-      <Tooltip title="Được đóng góp">
-        <CheckCircle style={{ color: '#357a38' }} />
-      </Tooltip>
-    ) : (
-      <Tooltip title="Do nhà cung cấp">
-        <Cancel style={{ color: '#E51544' }} />
-      </Tooltip>
-    )
-  },
-  {
     field: 'rate',
     headerName: 'Đánh giá (/5)',
-    width: 150,
+    width: 250,
     valueGetter: service => getStar(service.row.star)
   },
   {
     field: 'numRate',
     headerName: 'Lượt đánh giá',
-    width: 150,
+    width: 250,
     valueGetter: service => totalNumRate(service.row.star)
   }
 ];
@@ -101,9 +87,13 @@ function AdminServices(props) {
   const getAllServices = async token => {
     setLoading(true);
     setError(null);
+    console.log(province);
     console.log(isContribute);
+    let query = '';
+    if(province) query += `province=${province._id}&`
+    if(isContribute) query += `isContribute=true`;
     await customAxios(token)
-      .get(`/service/all?province=${province?._id}&isContribute=${isContribute}`)
+      .get(`/service/all?${query}`)
       .then(res => {
         setServices(res.data.services);
         setLoading(false);

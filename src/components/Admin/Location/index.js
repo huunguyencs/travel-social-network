@@ -91,11 +91,16 @@ function AdminLocations(props) {
   };
 
   const getAllLocations = (token) => {
-    console.log(province);
     setLoading(true);
     setError(null);
+    console.log(province);
+    console.log(isContribute);
+    let query = '';
+    if(province) query += `province=${province._id}&`
+    if(isContribute) query += `isContribute=true`;
+
     customAxios(token)
-      .get(`/location/all?admin=true?province=${province?._id}`)
+      .get(`/location/all?${query}`)
       .then(res => {
         setLocations(res.data.locations);
         setLoading(false);
@@ -112,6 +117,18 @@ function AdminLocations(props) {
 
   useEffect(() => {
     getAllProvinces(token);
+  }, [token]);
+
+  useEffect(() => {
+    customAxios(token)
+      .get(`/location/all`)
+      .then(res => {
+        setLocations(res.data.locations);
+        setLoading(false);
+      }).catch(err => {
+        setLoading(false);
+        setError(err);
+      });
   }, [token])
 
   useEffect(() => {
