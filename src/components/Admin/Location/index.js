@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
-import { Container, Button, IconButton } from "@material-ui/core";
+import { Container, Button, IconButton, TextField, FormControlLabel, Checkbox } from "@material-ui/core";
 import { useSelector } from 'react-redux';
-import Typography from '@material-ui/core/Typography';
+import Autocomplete from '@material-ui/lab/Autocomplete';
 import Paper from '@material-ui/core/Paper';
 import { Link, useHistory } from "react-router-dom";
 import { AddCircle, Edit } from "@material-ui/icons";
@@ -67,25 +67,94 @@ function AdminLocations(props) {
   const { token } = useSelector(state => state.auth);
 
   const [locations, setLocations] = useState([]);
+  const [total, setTotal] = useState(0);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
+  
   const [pageSize, setPageSize] = useState(10);
+  const [page, setPage] = useState(0);
 
-  const getAllLocations = (token) => {
+  const [province, setProvince] = useState(null);
+  const [provinces, setProvinces] = useState([]);
+  const [isContribute, setContribute] = useState(false);
+
+  const getAllProvinces = async () => {
     setLoading(true);
     setError(null);
-    customAxios(token).get('/location/all?admin=true').then(res => {
-      setLocations(res.data.locations);
-      setLoading(false);
-    }).catch(err => {
-      setLoading(false);
-      setError(err);
-    })
+    await customAxios()
+      .get('/province/provinces')
+      .then(res => {
+        setProvinces(res.data.provinces);
+        setLoading(false);
+      })
+      .catch(err => {
+        setLoading(false);
+        setError(err);
+      });
+  };
+
+  const getAllLocations = (token, page, pageSize) => {
+    setLoading(true);
+    setError(null);
+    console.log(province);
+    console.log(isContribute);
+
+    let query = '';
+    if(pageSize) query += `limit=${pageSize}&`;
+    if(page) query +=`page=${page}&`;
+    if(province) query += `province=${province._id}&`
+    if(isContribute) query += `isContribute=true`;
+
+
+    customAxios(token)
+      .get(`/location/all?${query}`)
+      .then(res => {
+        setLocations(res.data.locations);
+        console.log(res.data.total)
+        setTotal(res.data.total);
+        setLoading(false);
+      }).catch(err => {
+        setLoading(false);
+        setError(err);
+      });
   }
 
+  const handleChange = (event) => {
+    setContribute(event.target.checked);
+  };
+
   useEffect(() => {
-    getAllLocations(token);
-  }, [token])
+    getAllProvinces(token);
+  }, [token]);
+
+  useEffect(() => {
+    customAxios(token)
+      .get(`/location/all`)
+      .then(res => {
+        setLocations(res.data.locations);
+        setTotal(res.data.total)
+        setLoading(false);
+      }).catch(err => {
+        setLoading(false);
+        setError(err);
+      });
+  }, [token]);
+
+  const handlePageChange = (page) => {
+    console.log(page);
+    setPage(page);
+    getAllLocations(token, page);
+  }
+
+  const handlePageSizeChange = (pageSize) => {
+    setPageSize(pageSize);
+    getAllLocations(token, page, pageSize);
+  }
+
+  const handleSearch = () => {
+    setPage(0);
+    getAllLocations(token, 0);
+  }
 
   useEffect(() => {
     document.title = 'Admin - Địa điểm';
@@ -94,9 +163,9 @@ function AdminLocations(props) {
   return (
     <Container className={classes.container}>
       <div className={classes.admin_location_header}>
-        <div>
+        {/* <div>
           <Typography variant="h4">{locations.length} địa điểm du lịch</Typography>
-        </div>
+        </div> */}
         <div>
           <Button
             variant="contained"
@@ -111,19 +180,61 @@ function AdminLocations(props) {
           </Button>
         </div>
       </div>
-      
+
+      <div className={classes.formSearch}>
+        <div>
+          <Autocomplete
+            id="choose-province"
+            options={provinces}
+            loading={loading}
+            getOptionLabel={option => option?.fullname}
+            className={classes.autocompleteProvince}
+            onChange={(e, value) => setProvince(value)}
+            value={province}
+            renderInput={params => (
+              <TextField
+                {...params}
+                name="provinces"
+                label="Chọn tỉnh thành"
+                variant="outlined"
+              />
+            )}
+          />
+        </div>
+        <div>
+          <FormControlLabel
+            value={isContribute}
+            control={<Checkbox checked={isContribute} onChange={handleChange} color="primary" />}
+            label="Được đóng góp"
+            labelPlacement="end"
+          />
+        </div>
+        <div>
+          <Button
+            variant="contained"
+            className={classes.sreachBtn}
+            onClick={handleSearch}
+          >
+            Tìm kiếm
+          </Button>
+        </div>
+      </div>
+
       <div>
         <Paper className={classes.paper}>
           <DataGrid
+            page={page}
             rows={locations}
             columns={columns}
             pageSize={pageSize}
+            onPageChange={(newPage) => handlePageChange(newPage)}
             rowsPerPageOptions={[5, 10, 25]}
-            onPageSizeChange={(newPageSize) => setPageSize(newPageSize)}
+            onPageSizeChange={(newPageSize) => handlePageSizeChange(newPageSize)}
             pagination
             onRowDoubleClick={(location) => {
               history.push(`/admin/location/${location.row.name}`)
             }}
+            paginationMode='server'
             autoHeight
             loading={loading}
             error={error}
@@ -132,6 +243,8 @@ function AdminLocations(props) {
             components={{
               Toolbar: ExportToolbar,
             }}
+            // rowLength={total}
+            rowCount={total}
           />
         </Paper>
       </div>
