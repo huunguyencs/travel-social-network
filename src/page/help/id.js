@@ -40,6 +40,10 @@ export default function HelpDetailPage() {
       });
   }, [id, token]);
 
+  useEffect(() => {
+    document.title = 'Trợ giúp';
+  }, []);
+
   if (loading)
     return (
       <div

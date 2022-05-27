@@ -179,8 +179,8 @@ function a11yProps(index) {
 }
 
 export default function TourDetail(props) {
-  const { tour, isOwn, setTour, joined, setJoined, joinLoc } = props;
-  
+  const { tour, isOwn, setTour } = props;
+
   const classes = tourdetailStyles();
 
   //   const dispatch = useDispatch();
@@ -254,99 +254,6 @@ export default function TourDetail(props) {
     }));
   };
 
-  const updateJoin = joins => {
-    setTour({
-      ...tour,
-      joinIds: joins
-    });
-  };
-
-  const updateJoinLocation = (joins, idDate, idLocation) => {
-    setTour(tour => ({
-      ...tour,
-      tour: tour.tour.map(item =>
-        item._id === idDate
-          ? {
-              ...item,
-              locations: item.locations.map(loc =>
-                loc._id === idLocation
-                  ? {
-                      ...loc,
-                      joinIds: joins
-                    }
-                  : loc
-              )
-            }
-          : item
-      )
-    }));
-  };
-
-  // const handleJoin = () => {
-  //   setState({
-  //     loadingJoin: true,
-  //     error: false
-  //   });
-  //   setJoined(true);
-  //   var prevJoin = tour.joinIds;
-  //   updateJoin([...prevJoin, auth.user]);
-  //   dispatch(
-  //     joinTour(
-  //       tour._id,
-  //       auth.token,
-  //       () => {
-  //         setState({
-  //           loadingJoin: false,
-  //           error: false
-  //         });
-  //       },
-  //       () => {
-  //         setState({
-  //           loadingJoin: false,
-  //           error: true
-  //         });
-  //         if (joined) {
-  //           setJoined(false);
-  //           updateJoin(prevJoin);
-  //         }
-  //       }
-  //     )
-  //   );
-  // };
-
-  // const handleUnJoin = () => {
-  //   setState({
-  //     loadingJoin: true,
-  //     error: false
-  //   });
-  //   setJoined(false);
-  //   var prevJoin = tour.joinIds;
-  //   var newJoin = prevJoin.filter(user => user._id !== auth.user._id);
-  //   updateJoin(newJoin);
-
-  //   dispatch(
-  //     unJoinTour(
-  //       tour._id,
-  //       auth.token,
-  //       () => {
-  //         setState({
-  //           loadingJoin: false,
-  //           error: false
-  //         });
-  //       },
-  //       () => {
-  //         setState({
-  //           loadingJoin: false,
-  //           error: true
-  //         });
-  //         if (!joined) {
-  //           setJoined(true);
-  //           updateJoin(prevJoin);
-  //         }
-  //       }
-  //     )
-  //   );
-  // };
   useEffect(() => {
     if (tour && tour.tour[idx].locations.length > 0) {
       setPosition(tour.tour[idx].locations[0].location.position);
@@ -540,7 +447,7 @@ export default function TourDetail(props) {
                       onClick={handleShowJoin}
                       style={{ cursor: 'pointer' }}
                     >
-                      {tour.joinIds.map((user,idx) => (
+                      {tour.joinIds.map((user, idx) => (
                         <Avatar
                           src={user.avatar}
                           alt={'A'}
@@ -603,11 +510,9 @@ export default function TourDetail(props) {
                               <ClickAwayListener onClickAway={handleCloseMenu}>
                                 <Paper>
                                   <MenuList>
-                                    <MenuItem
-                                       onClick={handleShowInvite}
-                                      >
-                                        <Edit className={classes.menuIcon} />{' '}
-                                        Mời thành viên
+                                    <MenuItem onClick={handleShowInvite}>
+                                      <Edit className={classes.menuIcon} /> Mời
+                                      thành viên
                                     </MenuItem>
                                     <Modal
                                       aria-labelledby="invite"
@@ -622,7 +527,12 @@ export default function TourDetail(props) {
                                       }}
                                     >
                                       <Fade in={showInvite}>
-                                        <InviteRef ref={refInvite}  handleClose={handleCloseInvite} usersParent={tour.joinIds} id={tour._id}/>
+                                        <InviteRef
+                                          ref={refInvite}
+                                          handleClose={handleCloseInvite}
+                                          usersParent={tour.joinIds}
+                                          id={tour._id}
+                                        />
                                       </Fade>
                                     </Modal>
                                     <MenuItem
@@ -751,7 +661,6 @@ export default function TourDetail(props) {
                             ref={refDetail}
                             date={idx}
                             tourDate={tour.tour[idx]}
-                            joined={joined}
                           />
                         </TabPanel>
                         <TabPanel
@@ -770,11 +679,8 @@ export default function TourDetail(props) {
                               isSave={true}
                               isEdit={false}
                               addReview={createReview}
-                              joined={joined}
                               joinIds={tour.joinIds}
                               isOwn={isOwn}
-                              updateJoinLocation={updateJoinLocation}
-                              joinLoc={joinLoc}
                               isOld={isOld}
                             />
                           ))}

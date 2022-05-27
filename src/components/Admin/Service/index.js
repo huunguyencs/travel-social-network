@@ -1,10 +1,13 @@
 import React, { useEffect, useState } from 'react';
-import { Container, TextField, Paper, Button, Tooltip, FormControlLabel, Checkbox } from '@material-ui/core';
-import Autocomplete from '@material-ui/lab/Autocomplete';
 import {
-  CheckCircle,
-  Cancel
-} from '@material-ui/icons';
+  Container,
+  TextField,
+  Paper,
+  Button,
+  FormControlLabel,
+  Checkbox
+} from '@material-ui/core';
+import Autocomplete from '@material-ui/lab/Autocomplete';
 import { tableStyles } from '../../../style';
 import { getStar, totalNumRate } from '../../../utils/utils';
 import {
@@ -97,7 +100,7 @@ function AdminServices(props) {
     let query = '';
     if (pageSize) query += `limit=${pageSize}&`;
     if (page) query += `page=${page}&`;
-    if (province) query += `province=${province._id}&`
+    if (province) query += `province=${province._id}&`;
     if (isContribute) query += `isContribute=true`;
 
     customAxios(token)
@@ -112,24 +115,24 @@ function AdminServices(props) {
       });
   };
 
-  const handleChange = (event) => {
+  const handleChange = event => {
     setContribute(event.target.checked);
   };
 
-  const handlePageChange = (page) => {
+  const handlePageChange = page => {
     setPage(page);
     getAllServices(token, page, pageSize);
-  }
+  };
 
-  const handlePageSizeChange = (pageSize) => {
+  const handlePageSizeChange = pageSize => {
     setPageSize(pageSize);
     getAllServices(token, page, pageSize);
-  }
+  };
 
-  const handleSearch = (event) => {
+  const handleSearch = event => {
     setPage(0);
     getAllServices(token);
-  }
+  };
 
   useEffect(() => {
     getAllProvinces(token);
@@ -189,7 +192,13 @@ function AdminServices(props) {
         <div>
           <FormControlLabel
             value={isContribute}
-            control={<Checkbox checked={isContribute} onChange={handleChange} color="primary" />}
+            control={
+              <Checkbox
+                checked={isContribute}
+                onChange={handleChange}
+                color="primary"
+              />
+            }
             label="Được đóng góp"
             labelPlacement="end"
           />
@@ -218,7 +227,7 @@ function AdminServices(props) {
             onRowDoubleClick={e => {
               history.push(`/u/${e.row.cooperator._id}`);
             }}
-            paginationMode='server'
+            paginationMode="server"
             autoHeight
             loading={loading}
             error={error}

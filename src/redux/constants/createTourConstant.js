@@ -7,7 +7,6 @@ export const RESET_TOUR = 'RESET_TOUR';
 export const UPDATE_DATE = 'UPDATE_DATE';
 export const UPDATE_LOCATION = 'UPDATE_LOCATION';
 export const UPDATE_SERVICE = 'UPDATE_SERVICE';
-export const UPDATE_INFO_TOUR = 'UPDATE_INFO_TOUR';
 export const LOAD_TOUR = 'LOAD_TOUR';
 export const CREATE_TOUR = 'CREATE_TOUR';
 export const CHANGE_IMAGE = 'CHANGE_IMAGE';

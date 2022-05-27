@@ -1,5 +1,5 @@
 import { Grid } from '@material-ui/core';
-import React from 'react';
+import React, { useEffect } from 'react';
 
 import LeftBar from '../../../components/Leftbar';
 import { adminListMenu } from '../../../constant/adminMenu';
@@ -8,6 +8,10 @@ import AdminLocationDetail from '../../../components/Admin/Location/Detail';
 
 export default function AdminLocationDetailPage() {
   const classes = adminStyles();
+
+  useEffect(() => {
+    document.title = 'Admin - Chi tiết địa điểm';
+  }, []);
 
   return (
     <Grid container>

@@ -35,6 +35,10 @@ export default function MyReviewPage() {
     }
   }, [token]);
 
+  useEffect(() => {
+    document.title = 'Review của tôi';
+  }, []);
+
   if (loading) return <Loading style={{ marginTop: 150 }} />;
 
   if (error) return <div className={classes.center}>Có lỗi xảy ra</div>;
