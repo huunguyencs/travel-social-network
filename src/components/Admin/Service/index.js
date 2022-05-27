@@ -61,9 +61,13 @@ function AdminServices(props) {
   const { token } = useSelector(state => state.auth);
 
   const [services, setServices] = useState([]);
+  const [total, setTotal] = useState(0);
+
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
+
   const [pageSize, setPageSize] = useState(10);
+  const [page, setPage] = useState(0);
 
   const [province, setProvince] = useState(null);
   const [provinces, setProvinces] = useState([]);
@@ -84,15 +88,19 @@ function AdminServices(props) {
       });
   };
 
-  const getAllServices = async token => {
+  const getAllServices = (token, page, pageSize) => {
     setLoading(true);
     setError(null);
     console.log(province);
     console.log(isContribute);
+
     let query = '';
-    if(province) query += `province=${province._id}&`
-    if(isContribute) query += `isContribute=true`;
-    await customAxios(token)
+    if (pageSize) query += `limit=${pageSize}&`;
+    if (page) query += `page=${page}&`;
+    if (province) query += `province=${province._id}&`
+    if (isContribute) query += `isContribute=true`;
+
+    customAxios(token)
       .get(`/service/all?${query}`)
       .then(res => {
         setServices(res.data.services);
@@ -108,8 +116,37 @@ function AdminServices(props) {
     setContribute(event.target.checked);
   };
 
+  const handlePageChange = (page) => {
+    setPage(page);
+    getAllServices(token, page, pageSize);
+  }
+
+  const handlePageSizeChange = (pageSize) => {
+    setPageSize(pageSize);
+    getAllServices(token, page, pageSize);
+  }
+
+  const handleSearch = (event) => {
+    setPage(0);
+    getAllServices(token);
+  }
+
   useEffect(() => {
     getAllProvinces(token);
+  }, [token]);
+
+  useEffect(() => {
+    customAxios(token)
+      .get(`/service/all`)
+      .then(res => {
+        setServices(res.data.services);
+        setTotal(res.data.total);
+        setLoading(false);
+      })
+      .catch(err => {
+        setLoading(false);
+        setError(err);
+      });
   }, [token]);
 
   useEffect(() => {
@@ -161,7 +198,7 @@ function AdminServices(props) {
           <Button
             variant="contained"
             className={classes.sreachBtn}
-            onClick={() => getAllServices(token)}
+            onClick={handleSearch}
           >
             Tìm kiếm
           </Button>
@@ -172,13 +209,16 @@ function AdminServices(props) {
           <DataGrid
             rows={services}
             columns={columns}
+            page={page}
             pageSize={pageSize}
+            onPageChange={newPage => handlePageChange(newPage)}
             rowsPerPageOptions={[5, 10, 25]}
-            onPageSizeChange={newPageSize => setPageSize(newPageSize)}
+            onPageSizeChange={newPageSize => handlePageSizeChange(newPageSize)}
             pagination
             onRowDoubleClick={e => {
               history.push(`/u/${e.row.cooperator._id}`);
             }}
+            paginationMode='server'
             autoHeight
             loading={loading}
             error={error}
@@ -187,6 +227,7 @@ function AdminServices(props) {
             components={{
               Toolbar: ExportToolbar
             }}
+            rowCount={total}
           />
         </Paper>
       </div>
