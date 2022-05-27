@@ -324,7 +324,7 @@ export const removeMemberTour = (id, user, token, socket, next, error) => async 
       id: id,
       url: `/tour/${id}`
     };
-    dispatch(deleteNotify(dataNotify, auth.token, socket));
+    dispatch(deleteNotify(dataNotify, token, socket));
 
   } catch (err) {
     error();

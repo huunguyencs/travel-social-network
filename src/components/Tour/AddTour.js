@@ -31,7 +31,7 @@ import UpdateTourInfo from '../Forms/UpdateInfoCreateTour';
 import { convertDateToStr } from '../../utils/date';
 import { saveTour, updateTour } from '../../redux/callApi/tourCall';
 import { getProvinces } from '../../redux/callApi/locationCall';
-import AddService, { ServiceCard } from './AddService';
+import AddService from './AddService';
 import AddLocation from './AddLocation';
 import {
   AddCircle,
@@ -46,6 +46,7 @@ import * as alertAction from '../../redux/actions/alertAction';
 import { makeStyles } from '@material-ui/core';
 import clsx from 'clsx';
 import PropTypes from 'prop-types';
+import ServiceCard from './Service';
 
 function EditDetailDate(props) {
   const { indexDate } = props;
@@ -184,7 +185,7 @@ function EditBaseDate(props) {
               width: '100%'
             }}
             multiline
-            rows={4}
+            minRows={4}
           />
           <TextField
             label="Chi phí"
@@ -447,14 +448,8 @@ export default function AddTour(props) {
     }
   }, [dispatch, location.provinces]);
 
-  const refInfo = React.createRef();
   const refUdDate = React.createRef();
-  // const refAddLoc = React.createRef();
   const refEditDetailDate = React.createRef();
-
-  const UpdateTourInfoRef = React.forwardRef((props, ref) => (
-    <UpdateTourInfo {...props} innerRef={ref} />
-  ));
 
   const UpdateDateRef = React.forwardRef((props, ref) => (
     <UpdateDateForm {...props} innerRef={ref} />
@@ -489,11 +484,7 @@ export default function AddTour(props) {
             <div className={classes.tourInfoGeneral}>
               <Grid container>
                 <Grid item md={8} sm={7} xs={12}>
-                  <UpdateTourInfoRef
-                    ref={refInfo}
-                    // name={createTour.name}
-                    // content={createTour.content}
-                    // hashtags={createTour.hashtags}
+                  <UpdateTourInfo
                     tourInfo={tourInfo}
                     setTourInfo={setTourInfo}
                     image={createTour.image}
@@ -609,7 +600,7 @@ export default function AddTour(props) {
                         </Grid>
                         <Grid item md={7}>
                           <EditDetailDate indexDate={idx} />
-                          {createTour.tour[idx].events.map((item, index) =>
+                          {createTour.tour[idx]?.events.map((item, index) =>
                             item.location ? (
                               <Location
                                 location={item}

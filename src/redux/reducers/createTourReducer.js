@@ -106,9 +106,8 @@ const createTourReducer = (state = INIT_STATE, action) => {
     }
     case TOUR_TYPES.DELETE_EVENT: {
       let oldCostLoc =
-        state.tour[action.payload.indexDate].events[
-          action.payload.indexLocation
-        ]?.cost || 0;
+        state.tour[action.payload.indexDate].events[action.payload.index]
+          ?.cost || 0;
       let newCost = state.cost - oldCostLoc;
       let newCostDate = state.tour[action.payload.indexDate]?.cost - oldCostLoc;
 
@@ -120,8 +119,8 @@ const createTourReducer = (state = INIT_STATE, action) => {
                 ...date,
                 cost: newCostDate,
                 events: [
-                  ...date.events.slice(0, action.payload.indexLocation),
-                  ...date.events.slice(action.payload.indexLocation + 1)
+                  ...date.events.slice(0, action.payload.index),
+                  ...date.events.slice(action.payload.index + 1)
                 ]
               }
             : date

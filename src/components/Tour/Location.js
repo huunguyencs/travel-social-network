@@ -358,7 +358,7 @@ export default function Location(props) {
     dispatch(
       tourAction.deleteEvent({
         indexDate: indexDate,
-        indexLocation: indexLocation
+        index: indexLocation
       })
     );
     handleCloseDelete();

@@ -44,7 +44,6 @@ import {
   Edit,
   FlagOutlined
 } from '@material-ui/icons';
-import { ServiceCard } from './AddService';
 import { Link } from 'react-router-dom';
 import UserList from '../Modal/UserList';
 import { useDispatch, useSelector } from 'react-redux';
@@ -56,6 +55,7 @@ import { deleteTour } from '../../redux/callApi/tourCall';
 import TourRecommendCard from '../Card/TourRecommendCard';
 import { SeeMoreText } from '../SeeMoreText';
 import InviteTour from '../Modal/InviteTour';
+import ServiceCard from './Service';
 
 function DetailDate(props) {
   const { tourDate, date, joined } = props;
@@ -540,11 +540,11 @@ export default function TourDetail(props) {
                       onClick={handleShowJoin}
                       style={{ cursor: 'pointer' }}
                     >
-                      {tour.joinIds.map(user => (
+                      {tour.joinIds.map((user,idx) => (
                         <Avatar
                           src={user.avatar}
                           alt={'A'}
-                          key={user._id}
+                          key={idx}
                           style={{ height: 30, width: 30 }}
                         />
                       ))}

@@ -28,11 +28,11 @@ import {
   Delete
 } from '@material-ui/icons';
 import { AvatarGroup } from '@material-ui/lab';
-import React, { useEffect, useMemo, useState } from 'react';
+import React, { useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { Link } from 'react-router-dom';
 import { saveTour, unsavedTour } from '../../redux/callApi/authCall';
-import { deleteTour} from '../../redux/callApi/tourCall';
+import { deleteTour } from '../../redux/callApi/tourCall';
 
 import { postStyles } from '../../style';
 import { convertDateToStr, timeAgo } from '../../utils/date';
@@ -144,7 +144,6 @@ function ShareContent({ tour }) {
                     <Paper>
                       <MenuList>
                         <MenuItem onClick={handleShowEdit}>
-                          {' '}
                           <Edit className={classes.menuIcon} />
                           Chỉnh sửa bài viết
                         </MenuItem>
@@ -288,7 +287,7 @@ function BaseContent(props) {
     handleCloseMenu();
   };
 
-  const [join, setJoin] = useState(false);
+  // const [join, setJoin] = useState(false);
   const [openJoin, setOpenJoin] = useState(false);
 
   const classes = postStyles();
@@ -300,14 +299,14 @@ function BaseContent(props) {
     });
   };
 
-  useEffect(() => {
-    if (
-      auth.user &&
-      tour.joinIds.findIndex(join => join._id === auth.user._id) >= 0
-    ) {
-      setJoin(true);
-    }
-  }, [tour, auth.user]);
+  // useEffect(() => {
+  //   if (
+  //     auth.user &&
+  //     tour.joinIds.findIndex(join => join._id === auth.user._id) >= 0
+  //   ) {
+  //     setJoin(true);
+  //   }
+  // }, [tour, auth.user]);
 
   // const handleJoin = async () => {
   //   setState({
@@ -391,11 +390,11 @@ function BaseContent(props) {
   //   }
   // };
 
-  const isOld = useMemo(() => {
-    const startDate = new Date(tour.tour[0]?.date);
-    const now = new Date();
-    return startDate < now;
-  }, [tour.tour]);
+  // const isOld = useMemo(() => {
+  //   const startDate = new Date(tour.tour[0]?.date);
+  //   const now = new Date();
+  //   return startDate < now;
+  // }, [tour.tour]);
 
   const handleDeleteTour = () => {
     setState({
@@ -584,6 +583,19 @@ function BaseContent(props) {
       )}
 
       <CardContent>
+        {/* <div>
+          {tour.userId._id !== auth.user?._id && (
+            <Button onClick={joinClick} disabled={state.loadingJoin || isOld}>
+              {state.loadingJoin ? (
+                <CircularProgress size={18} color="inherit" />
+              ) : join ? (
+                'Rời khỏi tour'
+              ) : (
+                'Tham gia tour'
+              )}
+            </Button>
+          )}
+        </div> */}
         <Typography
           variant="h6"
           className={classes.title}
