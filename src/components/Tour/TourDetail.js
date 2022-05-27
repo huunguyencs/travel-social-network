@@ -26,7 +26,8 @@ import {
   makeStyles,
   Box,
   Tab,
-  Tabs
+  Tabs,
+  Fade
 } from '@material-ui/core';
 import AvatarGroup from '@material-ui/lab/AvatarGroup';
 import React, { useEffect, useMemo, useState } from 'react';
@@ -46,13 +47,14 @@ import {
 import { Link } from 'react-router-dom';
 import UserList from '../Modal/UserList';
 import { useDispatch, useSelector } from 'react-redux';
-import { joinTour, unJoinTour } from '../../redux/callApi/tourCall';
+// import { joinTour, unJoinTour } from '../../redux/callApi/tourCall';
 import SpeedDialButton from '../SpeedDialBtn';
 import PropTypes from 'prop-types';
 import clsx from 'clsx';
 import { deleteTour } from '../../redux/callApi/tourCall';
 import TourRecommendCard from '../Card/TourRecommendCard';
 import { SeeMoreText } from '../SeeMoreText';
+import InviteTour from '../Modal/InviteTour';
 import ServiceCard from './Service';
 
 function DetailDate(props) {
@@ -178,7 +180,7 @@ function a11yProps(index) {
 
 export default function TourDetail(props) {
   const { tour, isOwn, setTour, joined, setJoined, joinLoc } = props;
-
+  
   const classes = tourdetailStyles();
 
   //   const dispatch = useDispatch();
@@ -195,6 +197,7 @@ export default function TourDetail(props) {
   const [locations, setLocations] = useState([]);
   const [showImage, setShowImage] = useState(false);
   const [showUserJoin, setShowUserJoin] = useState(false);
+  const [showInvite, setShowInvite] = useState(false);
   const [state, setState] = useState({
     loading: false,
     error: false
@@ -206,6 +209,14 @@ export default function TourDetail(props) {
 
   const handleCloseJoin = () => {
     setShowUserJoin(false);
+  };
+
+  const handleShowInvite = () => {
+    setShowInvite(true);
+  };
+
+  const handleCloseInvite = () => {
+    setShowInvite(false);
   };
 
   const handleShowImage = () => {
@@ -271,71 +282,71 @@ export default function TourDetail(props) {
     }));
   };
 
-  const handleJoin = () => {
-    setState({
-      loadingJoin: true,
-      error: false
-    });
-    setJoined(true);
-    var prevJoin = tour.joinIds;
-    updateJoin([...prevJoin, auth.user]);
-    dispatch(
-      joinTour(
-        tour._id,
-        auth.token,
-        () => {
-          setState({
-            loadingJoin: false,
-            error: false
-          });
-        },
-        () => {
-          setState({
-            loadingJoin: false,
-            error: true
-          });
-          if (joined) {
-            setJoined(false);
-            updateJoin(prevJoin);
-          }
-        }
-      )
-    );
-  };
+  // const handleJoin = () => {
+  //   setState({
+  //     loadingJoin: true,
+  //     error: false
+  //   });
+  //   setJoined(true);
+  //   var prevJoin = tour.joinIds;
+  //   updateJoin([...prevJoin, auth.user]);
+  //   dispatch(
+  //     joinTour(
+  //       tour._id,
+  //       auth.token,
+  //       () => {
+  //         setState({
+  //           loadingJoin: false,
+  //           error: false
+  //         });
+  //       },
+  //       () => {
+  //         setState({
+  //           loadingJoin: false,
+  //           error: true
+  //         });
+  //         if (joined) {
+  //           setJoined(false);
+  //           updateJoin(prevJoin);
+  //         }
+  //       }
+  //     )
+  //   );
+  // };
 
-  const handleUnJoin = () => {
-    setState({
-      loadingJoin: true,
-      error: false
-    });
-    setJoined(false);
-    var prevJoin = tour.joinIds;
-    var newJoin = prevJoin.filter(user => user._id !== auth.user._id);
-    updateJoin(newJoin);
+  // const handleUnJoin = () => {
+  //   setState({
+  //     loadingJoin: true,
+  //     error: false
+  //   });
+  //   setJoined(false);
+  //   var prevJoin = tour.joinIds;
+  //   var newJoin = prevJoin.filter(user => user._id !== auth.user._id);
+  //   updateJoin(newJoin);
 
-    dispatch(
-      unJoinTour(
-        tour._id,
-        auth.token,
-        () => {
-          setState({
-            loadingJoin: false,
-            error: false
-          });
-        },
-        () => {
-          setState({
-            loadingJoin: false,
-            error: true
-          });
-          if (!joined) {
-            setJoined(true);
-            updateJoin(prevJoin);
-          }
-        }
-      )
-    );
-  };
+  //   dispatch(
+  //     unJoinTour(
+  //       tour._id,
+  //       auth.token,
+  //       () => {
+  //         setState({
+  //           loadingJoin: false,
+  //           error: false
+  //         });
+  //       },
+  //       () => {
+  //         setState({
+  //           loadingJoin: false,
+  //           error: true
+  //         });
+  //         if (!joined) {
+  //           setJoined(true);
+  //           updateJoin(prevJoin);
+  //         }
+  //       }
+  //     )
+  //   );
+  // };
   useEffect(() => {
     if (tour && tour.tour[idx].locations.length > 0) {
       setPosition(tour.tour[idx].locations[0].location.position);
@@ -350,6 +361,7 @@ export default function TourDetail(props) {
 
   const refDetail = React.createRef();
   const refUser = React.createRef();
+  const refInvite = React.createRef();
 
   const DetailDateRef = React.forwardRef((props, ref) => (
     <DetailDate {...props} innerRef={ref} />
@@ -357,6 +369,10 @@ export default function TourDetail(props) {
 
   const UserListRef = React.forwardRef((props, ref) => (
     <UserList {...props} innerRef={ref} />
+  ));
+
+  const InviteRef = React.forwardRef((props, ref) => (
+    <InviteTour {...props} innerRef={ref} />
   ));
 
   const [value, setValue] = React.useState(0);
@@ -503,7 +519,7 @@ export default function TourDetail(props) {
                     Tổng chi phí:{' '}
                     {new Intl.NumberFormat().format(tour.cost * 1000)} VND
                   </Typography>
-                  {!isOwn && joinLoc === 0 && (
+                  {/* {!isOwn && joinLoc === 0 && (
                     <>
                       {state.loading ? (
                         <CircularProgress />
@@ -516,7 +532,7 @@ export default function TourDetail(props) {
                         </Button>
                       )}
                     </>
-                  )}
+                  )} */}
                   <div>
                     <Typography>Danh sách tham gia toàn bộ tour:</Typography>
                     <AvatarGroup
@@ -524,11 +540,11 @@ export default function TourDetail(props) {
                       onClick={handleShowJoin}
                       style={{ cursor: 'pointer' }}
                     >
-                      {tour.joinIds.map(user => (
+                      {tour.joinIds.map((user,idx) => (
                         <Avatar
                           src={user.avatar}
                           alt={'A'}
-                          key={user._id}
+                          key={idx}
                           style={{ height: 30, width: 30 }}
                         />
                       ))}
@@ -587,6 +603,28 @@ export default function TourDetail(props) {
                               <ClickAwayListener onClickAway={handleCloseMenu}>
                                 <Paper>
                                   <MenuList>
+                                    <MenuItem
+                                       onClick={handleShowInvite}
+                                      >
+                                        <Edit className={classes.menuIcon} />{' '}
+                                        Mời thành viên
+                                    </MenuItem>
+                                    <Modal
+                                      aria-labelledby="invite"
+                                      aria-describedby="user-invite"
+                                      className={classes.modal}
+                                      open={showInvite}
+                                      onClose={handleCloseInvite}
+                                      closeAfterTransition
+                                      BackdropComponent={Backdrop}
+                                      BackdropProps={{
+                                        timeout: 500
+                                      }}
+                                    >
+                                      <Fade in={showInvite}>
+                                        <InviteRef ref={refInvite}  handleClose={handleCloseInvite} usersParent={tour.joinIds} id={tour._id}/>
+                                      </Fade>
+                                    </Modal>
                                     <MenuItem
                                       component={Link}
                                       to={'?edit=true'}

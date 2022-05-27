@@ -185,7 +185,7 @@ function EditBaseDate(props) {
               width: '100%'
             }}
             multiline
-            rows={4}
+            minRows={4}
           />
           <TextField
             label="Chi phí"
