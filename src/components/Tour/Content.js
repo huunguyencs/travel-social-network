@@ -604,7 +604,8 @@ function BaseContent(props) {
         >
           {tour.name}
         </Typography>
-        <SeeMoreText variant="body1" maxText={100} text={tour.content} />
+        {/* <SeeMoreText variant="body1" maxText={100} text={tour.content} /> */}
+        <div dangerouslySetInnerHTML={{ __html: tour.content }} />
         <Typography style={{ marginTop: 5 }}>
           Tỉnh: {tour.provinces.join(', ')}
         </Typography>
@@ -628,15 +629,17 @@ function BaseContent(props) {
               onClick={handleShowJoin}
               style={{ cursor: 'pointer' }}
             >
-              {tour.joinIds.map((user, index) => (
-                 user.isJoin && 
-                <Avatar
-                  src={user.id.avatar}
-                  alt={'A'}
-                  key={index}
-                  style={{ height: 20, width: 20 }}
-                />
-              ))}
+              {tour.joinIds.map(
+                (user, index) =>
+                  user.isJoin && (
+                    <Avatar
+                      src={user.id.avatar}
+                      alt={'A'}
+                      key={index}
+                      style={{ height: 20, width: 20 }}
+                    />
+                  )
+              )}
             </AvatarGroup>
           </div>
 

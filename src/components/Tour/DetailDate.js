@@ -168,8 +168,8 @@ function TimeDetail({ event, indexDate, indexEvent }) {
   const [cost, setCost] = useState(0);
 
   useEffect(() => {
-    setDescription(event.description || '');
-    setCost(event.cost || 0);
+    setDescription(event?.description || '');
+    setCost(event?.cost || 0);
   }, [event]);
 
   const handleUpdateInfo = () => {

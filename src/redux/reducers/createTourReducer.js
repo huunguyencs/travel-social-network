@@ -87,7 +87,7 @@ const createTourReducer = (state = INIT_STATE, action) => {
       const oldCost =
         state.tour[action.payload.indexDate].events[action.payload.indexEvent]
           .cost;
-      const newCost = action.payload.cost;
+      const newCost = parseInt(action.payload.cost);
 
       return {
         ...state,
@@ -242,7 +242,7 @@ const createTourReducer = (state = INIT_STATE, action) => {
     }
     case TOUR_TYPES.UPDATE_DESCRIPTION_DATE: {
       let oldCost = state.tour[action.payload.indexDate]?.cost || 0;
-      const cost = action.payload?.cost || 0;
+      const cost = parseInt(action.payload?.cost) || 0;
       let newCost = state.cost - oldCost + cost;
       return {
         ...state,

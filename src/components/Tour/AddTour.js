@@ -12,11 +12,10 @@ import {
   CircularProgress,
   Paper,
   IconButton,
-  TextField,
-  InputAdornment,
   Stepper,
   StepContent,
-  StepLabel
+  StepLabel,
+  Typography
 } from '@material-ui/core';
 import React, { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
@@ -152,7 +151,6 @@ function EditBaseDate(props) {
   const { tourDate, date } = props;
 
   const [text, setText] = useState(tourDate.description || '');
-  const [cost, setCost] = useState(tourDate.cost || 0);
 
   // const handleChange = e => {
   //   setText(e.target.value);
@@ -164,8 +162,7 @@ function EditBaseDate(props) {
     dispatch(
       tourAction.updateDesciptionDate({
         indexDate: date,
-        description: text,
-        cost: parseInt(cost)
+        description: text
       })
     );
     dispatch(alertAction.success({ message: 'Cập nhật thành công!' }));
@@ -196,7 +193,7 @@ function EditBaseDate(props) {
             style={{ width: '100%' }}
             placeholder="Chi tiết"
           />
-          <TextField
+          {/* <TextField
             label="Chi phí"
             title="Chi phí"
             variant="outlined"
@@ -212,7 +209,11 @@ function EditBaseDate(props) {
                 <InputAdornment position="end">.000 VND</InputAdornment>
               )
             }}
-          />
+          /> */}
+          <Typography>
+            <b>Chi phí ngày: </b>
+            {new Intl.NumberFormat().format(tourDate.cost * 1000)} VND
+          </Typography>
           <div style={{ display: 'flex', justifyContent: 'center' }}>
             <Button
               variant="contained"
