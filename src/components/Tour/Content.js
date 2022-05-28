@@ -629,8 +629,9 @@ function BaseContent(props) {
               style={{ cursor: 'pointer' }}
             >
               {tour.joinIds.map((user, index) => (
+                 user.isJoin && 
                 <Avatar
-                  src={user.avatar}
+                  src={user.id.avatar}
                   alt={'A'}
                   key={index}
                   style={{ height: 20, width: 20 }}

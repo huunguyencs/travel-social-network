@@ -27,7 +27,13 @@ import {
   Box,
   Tab,
   Tabs,
-  Fade
+  Fade,
+  List,
+  ListItem,
+  ListItemAvatar,
+  ListItemText,
+  ListItemSecondaryAction,
+  Popover
 } from '@material-ui/core';
 import AvatarGroup from '@material-ui/lab/AvatarGroup';
 import React, { useEffect, useMemo, useState } from 'react';
@@ -42,12 +48,13 @@ import {
   Label,
   Delete,
   Edit,
-  FlagOutlined
+  FlagOutlined,
+  ChatBubbleOutlineOutlined
 } from '@material-ui/icons';
 import { Link } from 'react-router-dom';
 import UserList from '../Modal/UserList';
 import { useDispatch, useSelector } from 'react-redux';
-// import { joinTour, unJoinTour } from '../../redux/callApi/tourCall';
+import { acceptJoinTour, unAcceptJoinTour } from '../../redux/callApi/tourCall';
 import SpeedDialButton from '../SpeedDialBtn';
 import PropTypes from 'prop-types';
 import clsx from 'clsx';
@@ -56,6 +63,8 @@ import TourRecommendCard from '../Card/TourRecommendCard';
 import { SeeMoreText } from '../SeeMoreText';
 import InviteTour from '../Modal/InviteTour';
 import ServiceCard from './Service';
+import InputComment from '../Input/Comment';
+import Comment from '../Comment';
 
 function DetailDate(props) {
   const { tourDate, date, joined } = props;
@@ -179,8 +188,9 @@ function a11yProps(index) {
 }
 
 export default function TourDetail(props) {
-  const { tour, isOwn, setTour } = props;
-
+  const { tour, isOwn, setTour, isInvite, setIsInvite, memberIsEdit, isJoin } =
+    props;
+  console.log('+++++tour+++', tour);
   const classes = tourdetailStyles();
 
   //   const dispatch = useDispatch();
@@ -254,6 +264,92 @@ export default function TourDetail(props) {
     }));
   };
 
+  // const updateJoinLocation = (joins, idDate, idLocation) => {
+  //   setTour(tour => ({
+  //     ...tour,
+  //     tour: tour.tour.map(item =>
+  //       item._id === idDate
+  //         ? {
+  //             ...item,
+  //             locations: item.locations.map(loc =>
+  //               loc._id === idLocation
+  //                 ? {
+  //                     ...loc,
+  //                     joinIds: joins
+  //                   }
+  //                 : loc
+  //             )
+  //           }
+  //         : item
+  //     )
+  //   }));
+  // };
+
+  // const handleJoin = () => {
+  //   setState({
+  //     loadingJoin: true,
+  //     error: false
+  //   });
+  //   setJoined(true);
+  //   var prevJoin = tour.joinIds;
+  //   updateJoin([...prevJoin, auth.user]);
+  //   dispatch(
+  //     joinTour(
+  //       tour._id,
+  //       auth.token,
+  //       () => {
+  //         setState({
+  //           loadingJoin: false,
+  //           error: false
+  //         });
+  //       },
+  //       () => {
+  //         setState({
+  //           loadingJoin: false,
+  //           error: true
+  //         });
+  //         if (joined) {
+  //           setJoined(false);
+  //           updateJoin(prevJoin);
+  //         }
+  //       }
+  //     )
+  //   );
+  // };
+
+  // const handleUnJoin = () => {
+  //   setState({
+  //     loadingJoin: true,
+  //     error: false
+  //   });
+  //   setJoined(false);
+  //   var prevJoin = tour.joinIds;
+  //   var newJoin = prevJoin.filter(user => user._id !== auth.user._id);
+  //   updateJoin(newJoin);
+
+  //   dispatch(
+  //     unJoinTour(
+  //       tour._id,
+  //       auth.token,
+  //       () => {
+  //         setState({
+  //           loadingJoin: false,
+  //           error: false
+  //         });
+  //       },
+  //       () => {
+  //         setState({
+  //           loadingJoin: false,
+  //           error: true
+  //         });
+  //         if (!joined) {
+  //           setJoined(true);
+  //           updateJoin(prevJoin);
+  //         }
+  //       }
+  //     )
+  //   );
+  // };
   useEffect(() => {
     if (tour && tour.tour[idx].locations.length > 0) {
       setPosition(tour.tour[idx].locations[0].location.position);
@@ -331,6 +427,92 @@ export default function TourDetail(props) {
       )
     );
   };
+
+  const updateAccept = () => {
+    setTour(tour => ({
+      ...tour,
+      joinIds: tour.joinIds.map(item =>
+        item.id._id === auth.user._id
+          ? {
+              ...item,
+              isJoin: true
+            }
+          : item
+      )
+    }));
+  };
+
+  const handleAcceptInvite = () => {
+    setState({
+      loadingJoin: true,
+      error: false
+    });
+    dispatch(
+      acceptJoinTour(
+        tour._id,
+        auth.token,
+        () => {
+          setState({
+            loadingJoin: false,
+            error: false
+          });
+          setIsInvite(false);
+          updateAccept();
+        },
+        () => {
+          setState({
+            loadingJoin: false,
+            error: true
+          });
+        }
+      )
+    );
+  };
+
+  const updateUnAccept = () => {
+    setTour(tour => ({
+      ...tour,
+      joinIds: tour.joinIds.filter(item => item.id._id !== auth.user._id)
+    }));
+  };
+
+  const handleUnAcceptInvite = () => {
+    setState({
+      loadingJoin: true,
+      error: false
+    });
+    dispatch(
+      unAcceptJoinTour(
+        tour._id,
+        auth.token,
+        () => {
+          setState({
+            loadingJoin: false,
+            error: false
+          });
+          updateUnAccept();
+        },
+        () => {
+          setState({
+            loadingJoin: false,
+            error: true
+          });
+        }
+      )
+    );
+  };
+
+  const [anchorElFeedback, setAnchorElFeedback] = useState(null);
+
+  const handleClickFeedback = event => {
+    setAnchorElFeedback(event.currentTarget);
+  };
+
+  const handleCloseFeedback = () => {
+    setAnchorElFeedback(null);
+  };
+
+  const openFeedback = Boolean(anchorElFeedback);
   return (
     <>
       {tour ? (
@@ -353,6 +535,38 @@ export default function TourDetail(props) {
                     img={tour.image}
                   />
                 </div>
+                {isInvite && (
+                  <div className={classes.invitation}>
+                    <List>
+                      <ListItem>
+                        <ListItemAvatar>
+                          <Avatar
+                            alt="avatar"
+                            src={tour.userId.avatar}
+                          ></Avatar>
+                        </ListItemAvatar>
+                        <ListItemText
+                          primary={
+                            tour.userId.fullname +
+                            ' đã mời bạn tham gia hành trình này'
+                          }
+                          secondary={
+                            1 ? 'Với quyền chỉnh sửa' : 'Với quyền chỉnh sửa'
+                          }
+                        />
+                        <ListItemSecondaryAction>
+                          <Button onClick={() => handleAcceptInvite()}>
+                            Tham gia nhóm
+                          </Button>
+                          <Button onClick={() => handleUnAcceptInvite()}>
+                            Từ chối lời mời
+                          </Button>
+                        </ListItemSecondaryAction>
+                      </ListItem>
+                    </List>
+                  </div>
+                )}
+
                 <div className={classes.tourLeftInfo}>
                   <Typography variant="h6" className={classes.tourName}>
                     {tour.name}
@@ -426,35 +640,24 @@ export default function TourDetail(props) {
                     Tổng chi phí:{' '}
                     {new Intl.NumberFormat().format(tour.cost * 1000)} VND
                   </Typography>
-                  {/* {!isOwn && joinLoc === 0 && (
-                    <>
-                      {state.loading ? (
-                        <CircularProgress />
-                      ) : (
-                        <Button
-                          onClick={joined ? handleUnJoin : handleJoin}
-                          disabled={isOld}
-                        >
-                          {joined ? 'Hủy tham gia' : 'Tham gia'}
-                        </Button>
-                      )}
-                    </>
-                  )} */}
                   <div>
-                    <Typography>Danh sách tham gia toàn bộ tour:</Typography>
+                    <Typography>Thành viên hành trình: </Typography>
                     <AvatarGroup
                       max={4}
                       onClick={handleShowJoin}
                       style={{ cursor: 'pointer' }}
                     >
-                      {tour.joinIds.map((user, idx) => (
-                        <Avatar
-                          src={user.avatar}
-                          alt={'A'}
-                          key={idx}
-                          style={{ height: 30, width: 30 }}
-                        />
-                      ))}
+                      {tour.joinIds.map(
+                        (user, idx) =>
+                          user.isJoin && (
+                            <Avatar
+                              src={user.id.avatar}
+                              alt={'avatar'}
+                              key={idx}
+                              style={{ height: 30, width: 30 }}
+                            />
+                          )
+                      )}
                     </AvatarGroup>
                     <Modal
                       aria-labelledby="like"
@@ -470,7 +673,9 @@ export default function TourDetail(props) {
                     >
                       <UserListRef
                         ref={refUser}
-                        listUser={tour.joinIds}
+                        listUser={tour.joinIds
+                          .filter(item => item.isJoin === true)
+                          .map(item => item.id)}
                         title={'Đã tham gia'}
                         handleClose={handleCloseJoin}
                       />
@@ -490,7 +695,7 @@ export default function TourDetail(props) {
                     }
                     action={
                       <>
-                        {auth.user && auth.user._id === tour.userId._id && (
+                        {auth.user && memberIsEdit && (
                           <>
                             <IconButton
                               aria-label="settings"
@@ -531,7 +736,8 @@ export default function TourDetail(props) {
                                           ref={refInvite}
                                           handleClose={handleCloseInvite}
                                           usersParent={tour.joinIds}
-                                          id={tour._id}
+                                          tour={tour}
+                                          setTour={setTour}
                                         />
                                       </Fade>
                                     </Modal>
@@ -542,11 +748,13 @@ export default function TourDetail(props) {
                                       <Edit className={classes.menuIcon} />{' '}
                                       Chỉnh sửa hành trình
                                     </MenuItem>
-                                    <MenuItem onClick={handleShowDelete}>
-                                      {' '}
-                                      <Delete className={classes.menuIcon} />
-                                      Xóa hành trình
-                                    </MenuItem>
+                                    {isOwn && (
+                                      <MenuItem onClick={handleShowDelete}>
+                                        {' '}
+                                        <Delete className={classes.menuIcon} />
+                                        Xóa hành trình
+                                      </MenuItem>
+                                    )}
                                     <Dialog
                                       open={showDelete}
                                       onClose={handleCloseDelete}
@@ -637,7 +845,12 @@ export default function TourDetail(props) {
                       style={{ cursor: 'pointer' }}
                     >
                       <StepLabel StepIconComponent={ColorlibStepIcon}>
-                        Chi tiết lịch trình ngày {convertDateToStr(item.date)}
+                        <div style={{ display: 'flex', alignItems: 'center' }}>
+                          <Typography variant="body1">
+                            Chi tiết lịch trình ngày{' '}
+                            {convertDateToStr(item.date)}{' '}
+                          </Typography>
+                        </div>
                       </StepLabel>
                       <StepContent>
                         <Tabs
@@ -657,6 +870,56 @@ export default function TourDetail(props) {
                           index={0}
                           className={classes.tabPanel}
                         >
+                          {isJoin && (
+                            <>
+                              <IconButton
+                                style={{ marginLeft: 10 }}
+                                onClick={handleClickFeedback}
+                                aria-describedby={idx}
+                              >
+                                <ChatBubbleOutlineOutlined />
+                              </IconButton>
+                              <Popover
+                                id={idx}
+                                open={openFeedback}
+                                anchorEl={anchorElFeedback}
+                                onClose={handleCloseFeedback}
+                                anchorOrigin={{
+                                  vertical: 'top',
+                                  horizontal: 'right'
+                                }}
+                                transformOrigin={{
+                                  vertical: 'bottom',
+                                  horizontal: 'left'
+                                }}
+                              >
+                                <div className={classes.feedbacks}>
+                                  <Typography variant="h6">Nhận xét</Typography>
+                                  <hr className={classes.line} />
+                                  <div className={classes.listCmt}>
+                                    {item.comments &&
+                                      item.comments.map(cmt => (
+                                        <Comment
+                                          comment={cmt}
+                                          key={cmt._id}
+                                          id={item._id}
+                                          type="feedback"
+                                        />
+                                      ))}
+                                  </div>
+                                  {auth.user && (
+                                    <div className={classes.wrapInput}>
+                                      <InputComment
+                                        type="feedback"
+                                        id={item._id}
+                                      />
+                                    </div>
+                                  )}
+                                </div>
+                              </Popover>
+                            </>
+                          )}
+
                           <DetailDateRef
                             ref={refDetail}
                             date={idx}
