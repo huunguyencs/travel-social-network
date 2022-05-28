@@ -301,9 +301,33 @@ export const inviteJoinTour = (id, users, auth, socket, next, error) => async di
 
 export const changeIsEdit = (id, user, token, next, error) => async dispatch => {
   try {
+    console.log("data",user.id._id, "+", user.isEdit )
     await customAxios(token).patch(`/tour/${id}/change_isEdit`,{id:user.id._id, isEdit: user.isEdit});
-    // dispatch(tourAction.updateJoin({ id: id, joinIds: res.data.joinIds }));
-    // dispatch(alertAction.success({ message: 'Hủy tham gia thành công' }));
+    next();
+  } catch (err) {
+    error();
+    if (err.response && err.response.data && err.response.data.message)
+      dispatch(alertAction.error({ message: err.response.data.message }));
+    else dispatch(alertAction.error({ message: 'Có lỗi xảy ra' }));
+  }
+};
+
+
+export const acceptJoinTour = (id, token, next, error) => async dispatch => {
+  try {
+    await customAxios(token).patch(`/tour/${id}/accept`);
+    next();
+  } catch (err) {
+    error();
+    if (err.response && err.response.data && err.response.data.message)
+      dispatch(alertAction.error({ message: err.response.data.message }));
+    else dispatch(alertAction.error({ message: 'Có lỗi xảy ra' }));
+  }
+};
+
+export const unAcceptJoinTour = (id, token, next, error) => async dispatch => {
+  try {
+    await customAxios(token).patch(`/tour/${id}/unAccept`);
     next();
   } catch (err) {
     error();
@@ -315,7 +339,7 @@ export const changeIsEdit = (id, user, token, next, error) => async dispatch => 
 
 export const removeMemberTour = (id, user, token, socket, next, error) => async dispatch => {
   try {
-    await customAxios(token).patch(`/tour/${id}/remove_member`, user.id._id);
+    await customAxios(token).patch(`/tour/${id}/remove_member`, {id:user.id._id});
     // dispatch(tourAction.updateJoin({ id: tourId, joinIds: res.data.joinIds }));
     // dispatch(alertAction.success({ message: 'Loại bỏ thành công' }));
     next();

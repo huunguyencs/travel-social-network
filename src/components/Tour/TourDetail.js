@@ -27,7 +27,12 @@ import {
   Box,
   Tab,
   Tabs,
-  Fade
+  Fade,
+  List,
+  ListItem,
+  ListItemAvatar,
+  ListItemText,
+  ListItemSecondaryAction,
 } from '@material-ui/core';
 import AvatarGroup from '@material-ui/lab/AvatarGroup';
 import React, { useEffect, useMemo, useState } from 'react';
@@ -47,7 +52,7 @@ import {
 import { Link } from 'react-router-dom';
 import UserList from '../Modal/UserList';
 import { useDispatch, useSelector } from 'react-redux';
-// import { joinTour, unJoinTour } from '../../redux/callApi/tourCall';
+import { acceptJoinTour, unAcceptJoinTour } from '../../redux/callApi/tourCall';
 import SpeedDialButton from '../SpeedDialBtn';
 import PropTypes from 'prop-types';
 import clsx from 'clsx';
@@ -179,7 +184,7 @@ function a11yProps(index) {
 }
 
 export default function TourDetail(props) {
-  const { tour, isOwn, setTour, joined, setJoined, joinLoc } = props;
+  const { tour, isOwn, setTour, isInvite, setIsInvite, memberIsEdit, setMemberIsEdit, isMember } = props;
   
   const classes = tourdetailStyles();
 
@@ -254,33 +259,26 @@ export default function TourDetail(props) {
     }));
   };
 
-  const updateJoin = joins => {
-    setTour({
-      ...tour,
-      joinIds: joins
-    });
-  };
-
-  const updateJoinLocation = (joins, idDate, idLocation) => {
-    setTour(tour => ({
-      ...tour,
-      tour: tour.tour.map(item =>
-        item._id === idDate
-          ? {
-              ...item,
-              locations: item.locations.map(loc =>
-                loc._id === idLocation
-                  ? {
-                      ...loc,
-                      joinIds: joins
-                    }
-                  : loc
-              )
-            }
-          : item
-      )
-    }));
-  };
+  // const updateJoinLocation = (joins, idDate, idLocation) => {
+  //   setTour(tour => ({
+  //     ...tour,
+  //     tour: tour.tour.map(item =>
+  //       item._id === idDate
+  //         ? {
+  //             ...item,
+  //             locations: item.locations.map(loc =>
+  //               loc._id === idLocation
+  //                 ? {
+  //                     ...loc,
+  //                     joinIds: joins
+  //                   }
+  //                 : loc
+  //             )
+  //           }
+  //         : item
+  //     )
+  //   }));
+  // };
 
   // const handleJoin = () => {
   //   setState({
@@ -424,6 +422,80 @@ export default function TourDetail(props) {
       )
     );
   };
+
+  const updateAccept = () =>{
+    setTour( tour=>({
+        ...tour,
+        joinIds: tour.joinIds.map(item=>
+          item.id._id === auth.user._id ?
+          {
+            ...item,
+            isJoin: true
+          }:
+          item
+        )
+    }))
+  }
+
+  const handleAcceptInvite = () => {
+    setState({
+      loadingJoin: true,
+      error: false
+    });
+    dispatch(
+      acceptJoinTour(
+        tour._id,
+        auth.token,
+        () => {
+          setState({
+            loadingJoin: false,
+            error: false
+          });
+          setIsInvite(false);
+          updateAccept();
+        },
+        () => {
+          setState({
+            loadingJoin: false,
+            error: true
+          });
+        }
+      )
+    );
+  };
+
+  const updateUnAccept = () =>{
+    setTour( tour=>({
+        ...tour,
+        joinIds: tour.joinIds.filter(item => item.id._id !== auth.user._id )
+    }))
+  }
+
+  const handleUnAcceptInvite= ()=>{
+    setState({
+      loadingJoin: true,
+      error: false
+    });
+    dispatch(
+      unAcceptJoinTour(
+        tour._id,
+        auth.token,
+        () => {
+          setState({
+            loadingJoin: false,
+            error: false
+          });
+          updateUnAccept();
+        },
+        () => {
+          setState({
+            loadingJoin: false,
+            error: true
+          });
+        }
+      )
+    );
+  }
   return (
     <>
       {tour ? (
@@ -446,6 +518,33 @@ export default function TourDetail(props) {
                     img={tour.image}
                   />
                 </div>
+                {
+                  (isMember && isInvite) && 
+                  <div className={classes.invitation}> 
+                  <List>
+                    <ListItem>
+                        <ListItemAvatar>
+                            <Avatar alt="avatar" src={tour.userId.avatar}>
+                            </Avatar>
+                        </ListItemAvatar>
+                        <ListItemText primary={tour.userId.fullname + " đã mời bạn tham gia hành trình này"} secondary={1?"Với quyền chỉnh sửa":"Với quyền chỉnh sửa"}/>
+                        <ListItemSecondaryAction>
+                            <Button
+                              onClick={()=>handleAcceptInvite()}
+                            >
+                              Tham gia nhóm
+                            </Button>
+                            <Button
+                              onClick={()=>handleUnAcceptInvite()}
+                            >
+                              Từ chối lời mời
+                            </Button>
+                        </ListItemSecondaryAction>
+                    </ListItem>
+                  </List>
+                </div>
+                }
+                
                 <div className={classes.tourLeftInfo}>
                   <Typography variant="h6" className={classes.tourName}>
                     {tour.name}
@@ -519,35 +618,23 @@ export default function TourDetail(props) {
                     Tổng chi phí:{' '}
                     {new Intl.NumberFormat().format(tour.cost * 1000)} VND
                   </Typography>
-                  {/* {!isOwn && joinLoc === 0 && (
-                    <>
-                      {state.loading ? (
-                        <CircularProgress />
-                      ) : (
-                        <Button
-                          onClick={joined ? handleUnJoin : handleJoin}
-                          disabled={isOld}
-                        >
-                          {joined ? 'Hủy tham gia' : 'Tham gia'}
-                        </Button>
-                      )}
-                    </>
-                  )} */}
                   <div>
-                    <Typography>Danh sách tham gia toàn bộ tour:</Typography>
+                    <Typography>Thành viên hành trình: </Typography>
                     <AvatarGroup
                       max={4}
                       onClick={handleShowJoin}
                       style={{ cursor: 'pointer' }}
                     >
-                      {tour.joinIds.map((user,idx) => (
+                      {tour.joinIds.map((user,idx) =>(
+                        user.isJoin && 
                         <Avatar
-                          src={user.avatar}
-                          alt={'A'}
+                          src={user.id.avatar}
+                          alt={'avatar'}
                           key={idx}
                           style={{ height: 30, width: 30 }}
                         />
-                      ))}
+                      )
+                      )}
                     </AvatarGroup>
                     <Modal
                       aria-labelledby="like"
@@ -563,7 +650,7 @@ export default function TourDetail(props) {
                     >
                       <UserListRef
                         ref={refUser}
-                        listUser={tour.joinIds}
+                        listUser={tour.joinIds.filter(item=> item.isJoin === true).map(item=> item.id)}
                         title={'Đã tham gia'}
                         handleClose={handleCloseJoin}
                       />
@@ -583,7 +670,7 @@ export default function TourDetail(props) {
                     }
                     action={
                       <>
-                        {auth.user && auth.user._id === tour.userId._id && (
+                        {((auth.user && auth.user._id === tour.userId._id) ||(auth.user && memberIsEdit)) && (
                           <>
                             <IconButton
                               aria-label="settings"
@@ -622,7 +709,7 @@ export default function TourDetail(props) {
                                       }}
                                     >
                                       <Fade in={showInvite}>
-                                        <InviteRef ref={refInvite}  handleClose={handleCloseInvite} usersParent={tour.joinIds} id={tour._id}/>
+                                        <InviteRef ref={refInvite}  handleClose={handleCloseInvite} usersParent={tour.joinIds} tour={tour} setTour={setTour}/>
                                       </Fade>
                                     </Modal>
                                     <MenuItem
@@ -751,7 +838,6 @@ export default function TourDetail(props) {
                             ref={refDetail}
                             date={idx}
                             tourDate={tour.tour[idx]}
-                            joined={joined}
                           />
                         </TabPanel>
                         <TabPanel
@@ -770,11 +856,8 @@ export default function TourDetail(props) {
                               isSave={true}
                               isEdit={false}
                               addReview={createReview}
-                              joined={joined}
                               joinIds={tour.joinIds}
                               isOwn={isOwn}
-                              updateJoinLocation={updateJoinLocation}
-                              joinLoc={joinLoc}
                               isOld={isOld}
                             />
                           ))}

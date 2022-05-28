@@ -604,6 +604,9 @@ const tourdetailStyles = makeStyles(
     },
     serviceName: {
       cursor: 'pointer'
+    },
+    invitation:{
+      
     }
   }),
   { index: 1 }
