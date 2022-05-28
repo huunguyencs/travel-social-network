@@ -153,6 +153,13 @@ export default function LocationShared() {
 
   if (loading) return <Loading />;
 
+  if (locations?.length === 0)
+    return (
+      <div style={{ display: 'flex', justifyContent: 'center', marginTop: 50 }}>
+        Không có thông tin
+      </div>
+    );
+
   return (
     <Grid container spacing={3}>
       {locations.map(item => (
