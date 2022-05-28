@@ -36,39 +36,54 @@ const tableStyles = makeStyles(
       marginTop: 10
     },
     cardIcon: {
-        fontSize: "37px",
-        marginRight: 30,
+      fontSize: "37px",
+      marginRight: 30,
     },
-    containerReport:{
-        display: "flex",
-        flexDirection: "row",
-        justifyContent: "space-between",
+    containerReport: {
+      display: "flex",
+      flexDirection: "row",
+      justifyContent: "space-between",
     },
-    cardPost:{
-        width: "600px",
-        margin: 20,
-        padding: 20,
-        borderRadius: 10,
-        backgroundColor: "#a5dec8"
+    cardPost: {
+      width: "600px",
+      margin: 20,
+      padding: 20,
+      borderRadius: 10,
+      backgroundColor: "#a5dec8"
     },
-    cardReport:{
-        margin: 20,
-        padding: 20,
-        borderRadius: 10,
-        width: "400px",
-        backgroundColor: "#a5dec8",
-        height: '300px'
+    cardReport: {
+      margin: 20,
+      padding: 20,
+      borderRadius: 10,
+      width: "400px",
+      backgroundColor: "#a5dec8",
+      height: '300px'
     },
-    textReport:{
-        margin: 10,
+    textReport: {
+      margin: 10,
     },
-    btnReport:{
-        justifyItems: "center",
-        justifyContent: "space-between",
-        display: 'flex',
-        marginTop: 50,
-        marginLeft: 50,
-        marginRight: 50,
+    btnReport: {
+      justifyItems: "center",
+      justifyContent: "space-between",
+      display: 'flex',
+      marginTop: 50,
+      marginLeft: 50,
+      marginRight: 50,
+    },
+    formSearch: {
+      justifyItems: "center",
+      justifyContent: "space-between",
+      display: "flex",
+      margin: 50,
+    },
+    autocompleteProvince: {
+      width: '200%',
+      marginRight: 5
+    },
+    sreachBtn: {
+      backgroundColor: '#179250',
+      borderRadius: '10px',
+      textTransform: 'none'
     }
   }),
   { index: 1 }

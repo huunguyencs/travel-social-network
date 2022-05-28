@@ -31,6 +31,7 @@ export default function TourDetail(props) {
   // const [joined, setJoined] = useState(false);
   // const [joinLoc, setJoinLoc] = useState(false);
   const [isMember, setIsMember]= useState(false);
+  const [isJoin, setIsJoin] = useState(false);
   const [isInvite, setIsInvite] = useState(false); //isJoin: flase
   const [memberIsEdit, setMemberIsEdit] = useState(false); // isJoin: true; isEdit:true/false
   const getTourDetail = async (id, token) => {
@@ -82,6 +83,15 @@ export default function TourDetail(props) {
   }, [tour, auth.user]);
 
   useEffect(() => {
+    if (
+      auth.user &&
+      tour &&
+      tour.joinIds.findIndex(join => 
+        join.id._id === auth.user._id  && join.isJoin === true  
+      ) >= 0
+    ) {
+      setIsJoin(true);
+    }
     if (
       auth.user &&
       tour &&
@@ -152,6 +162,7 @@ export default function TourDetail(props) {
         (edit === 'true' && (isOwn || memberIsEdit) ? (
           <AddTour isUpdate={true} />
         ) : (
+          tour.isPublic || isMember ?
           <Tour
             tour={tour}
             setTour={setTour}
@@ -161,7 +172,9 @@ export default function TourDetail(props) {
             memberIsEdit={memberIsEdit}
             setMemberIsEdit={setMemberIsEdit}
             isMember={isMember}
-          />
+            isJoin={isJoin}
+          />:
+          <NotFound/>
         ))
       )}
     </>

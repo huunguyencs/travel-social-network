@@ -33,6 +33,7 @@ import {
   ListItemAvatar,
   ListItemText,
   ListItemSecondaryAction,
+  Popover,
 } from '@material-ui/core';
 import AvatarGroup from '@material-ui/lab/AvatarGroup';
 import React, { useEffect, useMemo, useState } from 'react';
@@ -47,7 +48,8 @@ import {
   Label,
   Delete,
   Edit,
-  FlagOutlined
+  FlagOutlined,
+  ChatBubbleOutlineOutlined
 } from '@material-ui/icons';
 import { Link } from 'react-router-dom';
 import UserList from '../Modal/UserList';
@@ -61,6 +63,8 @@ import TourRecommendCard from '../Card/TourRecommendCard';
 import { SeeMoreText } from '../SeeMoreText';
 import InviteTour from '../Modal/InviteTour';
 import ServiceCard from './Service';
+import InputComment from '../Input/Comment';
+import Comment from '../Comment';
 
 function DetailDate(props) {
   const { tourDate, date, joined } = props;
@@ -184,8 +188,8 @@ function a11yProps(index) {
 }
 
 export default function TourDetail(props) {
-  const { tour, isOwn, setTour, isInvite, setIsInvite, memberIsEdit, setMemberIsEdit, isMember } = props;
-  
+  const { tour, isOwn, setTour, isInvite, setIsInvite, memberIsEdit, isMember, isJoin } = props;
+  console.log("+++++tour+++", tour)
   const classes = tourdetailStyles();
 
   //   const dispatch = useDispatch();
@@ -496,6 +500,18 @@ export default function TourDetail(props) {
       )
     );
   }
+
+  const [anchorElFeedback, setAnchorElFeedback] = useState(null);
+
+  const handleClickFeedback = (event) => {
+    setAnchorElFeedback(event.currentTarget);
+  };
+
+  const handleCloseFeedback = () => {
+    setAnchorElFeedback(null);
+  };
+
+  const openFeedback = Boolean(anchorElFeedback);
   return (
     <>
       {tour ? (
@@ -519,7 +535,7 @@ export default function TourDetail(props) {
                   />
                 </div>
                 {
-                  (isMember && isInvite) && 
+                  isInvite && 
                   <div className={classes.invitation}> 
                   <List>
                     <ListItem>
@@ -670,7 +686,7 @@ export default function TourDetail(props) {
                     }
                     action={
                       <>
-                        {((auth.user && auth.user._id === tour.userId._id) ||(auth.user && memberIsEdit)) && (
+                        {(auth.user && memberIsEdit) && (
                           <>
                             <IconButton
                               aria-label="settings"
@@ -690,11 +706,9 @@ export default function TourDetail(props) {
                               <ClickAwayListener onClickAway={handleCloseMenu}>
                                 <Paper>
                                   <MenuList>
-                                    <MenuItem
-                                       onClick={handleShowInvite}
-                                      >
-                                        <Edit className={classes.menuIcon} />{' '}
-                                        Mời thành viên
+                                    <MenuItem onClick={handleShowInvite}>
+                                      <Edit className={classes.menuIcon} /> Mời
+                                      thành viên
                                     </MenuItem>
                                     <Modal
                                       aria-labelledby="invite"
@@ -709,7 +723,13 @@ export default function TourDetail(props) {
                                       }}
                                     >
                                       <Fade in={showInvite}>
-                                        <InviteRef ref={refInvite}  handleClose={handleCloseInvite} usersParent={tour.joinIds} tour={tour} setTour={setTour}/>
+                                        <InviteRef 
+                                          ref={refInvite}  
+                                          handleClose={handleCloseInvite} 
+                                          usersParent={tour.joinIds} 
+                                          tour={tour} 
+                                          setTour={setTour}
+                                        />
                                       </Fade>
                                     </Modal>
                                     <MenuItem
@@ -719,11 +739,14 @@ export default function TourDetail(props) {
                                       <Edit className={classes.menuIcon} />{' '}
                                       Chỉnh sửa hành trình
                                     </MenuItem>
-                                    <MenuItem onClick={handleShowDelete}>
-                                      {' '}
-                                      <Delete className={classes.menuIcon} />
-                                      Xóa hành trình
+                                    {
+                                      isOwn && 
+                                      <MenuItem onClick={handleShowDelete}>
+                                        {' '}
+                                        <Delete className={classes.menuIcon} />
+                                        Xóa hành trình
                                     </MenuItem>
+                                    }
                                     <Dialog
                                       open={showDelete}
                                       onClose={handleCloseDelete}
@@ -813,8 +836,11 @@ export default function TourDetail(props) {
                       onClick={() => setIdx(index)}
                       style={{ cursor: 'pointer' }}
                     >
-                      <StepLabel StepIconComponent={ColorlibStepIcon}>
-                        Chi tiết lịch trình ngày {convertDateToStr(item.date)}
+                      <StepLabel StepIconComponent={ColorlibStepIcon} >
+                        <div style={{display: 'flex', alignItems:'center'}}>
+                          <Typography variant='body1'>Chi tiết lịch trình ngày {convertDateToStr(item.date)} </Typography>
+                          
+                        </div>
                       </StepLabel>
                       <StepContent>
                         <Tabs
@@ -834,6 +860,54 @@ export default function TourDetail(props) {
                           index={0}
                           className={classes.tabPanel}
                         >
+                          {
+                            isJoin && <>
+                              <IconButton 
+                                style={{marginLeft: 10}}
+                                onClick={handleClickFeedback}
+                                aria-describedby={idx}
+                              >
+                                <ChatBubbleOutlineOutlined />
+                              </IconButton>
+                              <Popover
+                                id={idx}
+                                open={openFeedback}
+                                anchorEl={anchorElFeedback}
+                                onClose={handleCloseFeedback}
+                                anchorOrigin={{
+                                  vertical: 'top',
+                                  horizontal: 'right',
+                                }}
+                                transformOrigin={{
+                                  vertical: 'bottom',
+                                  horizontal: 'left',
+                                }}
+                              >
+                                <div className={classes.feedbacks}>
+                                    <Typography variant='h6'>Nhận xét</Typography>
+                                    <hr className={classes.line} />
+                                    <div className={classes.listCmt}>
+                                      {item.comments &&
+                                        item.comments.map(cmt => (
+                                          <Comment
+                                            comment={cmt}
+                                            key={cmt._id}
+                                            id={item._id}
+                                            type="feedback"
+                                          />
+                                        ))}
+                                    </div>
+                                    {
+                                      auth.user &&
+                                      <div className={classes.wrapInput}>
+                                        <InputComment type="feedback" id={item._id} />
+                                      </div>
+                                    }
+                                </div>
+                              </Popover>
+                            </>
+                          }
+                          
                           <DetailDateRef
                             ref={refDetail}
                             date={idx}

@@ -42,7 +42,7 @@ export default function TourSavedPage() {
   }, [dispatch, auth.token, tour]);
 
   useEffect(() => {
-    document.title = 'Đã lưu';
+    document.title = 'Tour đã lưu';
   }, []);
 
   const rfToken = getToken();

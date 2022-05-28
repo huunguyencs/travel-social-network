@@ -14,18 +14,10 @@ import EmojiPicker from '../Input/EmojiPicker';
 export default function UpdateTourInfo({ tourInfo, setTourInfo, image, cost }) {
   const { name, hashtags, content } = tourInfo;
 
-  // const [state, setState] = useState({
-  //   name: name,
-  //   cost: cost
-  // });
   const [hashtagArr, setHashtagArr] = useState(hashtags);
   const [hashtag, setHashtag] = useState('');
 
   const handleInput = e => {
-    // setState({
-    //   ...state,
-    //   [e.target.name]: e.target.value
-    // });
     setTourInfo(state => ({
       ...state,
       [e.target.name]: e.target.value

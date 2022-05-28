@@ -4,12 +4,12 @@ import * as alertAction from '../actions/alertAction';
 import * as imageUtils from '../../utils/uploadImage';
 import { getRecommendService } from '../actions/createTourAction';
 
-export const getServices = (id, page) => async dispatch => {
+export const getServices = (id, page, next) => async dispatch => {
   dispatch(serviceAction.loading());
   try {
     var res;
     if (id) {
-      res = await customAxios().get(`/service/all?province=${id}&page=${page}`);
+      res = await customAxios().get(`/service/coop/${id}?page=${page}`);
     } else {
       res = await customAxios().get(`/service/list?offset=${page}`);
     }
@@ -18,6 +18,7 @@ export const getServices = (id, page) => async dispatch => {
     } else {
       dispatch(serviceAction.getMoreServices({ services: res.data.services }));
     }
+    next();
   } catch (error) {
     // console.log(error);
     dispatch(serviceAction.error());

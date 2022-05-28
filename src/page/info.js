@@ -17,7 +17,7 @@ import {
   KeyboardDatePicker,
   MuiPickersUtilsProvider
 } from '@material-ui/pickers';
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import ChangeImage from '../components/Forms/ChangeImage';
 import DateFnsUtils from '@date-io/date-fns';
 import { formStyles } from '../style';
@@ -126,14 +126,27 @@ export default function InfoPage() {
       });
   };
 
+  useEffect(() => {
+    document.title = 'Welcome to Triple H';
+  }, []);
+
   if (!auth?.user?.is_new) return <Redirect to={'/changeinfo'} />;
 
   return (
     <Container className={classes.infoWrapper}>
-      <Typography variant='h5' style={{marginBottom: 10, display: 'flex', justifyContent:'center'}}>Hãy thêm thông tin của bạn</Typography>
-      <Grid container spacing={8} style={{display:'flex', justifyContent:'center'}}>
+      <Typography
+        variant="h5"
+        style={{ marginBottom: 10, display: 'flex', justifyContent: 'center' }}
+      >
+        Hãy thêm thông tin của bạn
+      </Typography>
+      <Grid
+        container
+        spacing={8}
+        style={{ display: 'flex', justifyContent: 'center' }}
+      >
         <Grid item md={4} sm={12}>
-          <Typography variant='body1'>Ảnh đại diện</Typography>
+          <Typography variant="body1">Ảnh đại diện</Typography>
           <ChangeImage
             src={avatar}
             setSrc={setAvatar}
@@ -142,7 +155,7 @@ export default function InfoPage() {
           />
         </Grid>
         <Grid item md={4} sm={12}>
-          <Typography variant='body1'>Ảnh bìa</Typography>
+          <Typography variant="body1">Ảnh bìa</Typography>
           <ChangeImage
             src={bg}
             setSrc={setBg}
@@ -151,8 +164,12 @@ export default function InfoPage() {
           />
         </Grid>
       </Grid>
-      <Grid container spacing={8} style={{display:'flex', justifyContent:'center'}}> 
-        <Grid item md={4} sm={12} xs={12} style={{marginTop:-40}}>
+      <Grid
+        container
+        spacing={8}
+        style={{ display: 'flex', justifyContent: 'center' }}
+      >
+        <Grid item md={4} sm={12} xs={12} style={{ marginTop: -40 }}>
           <MuiPickersUtilsProvider utils={DateFnsUtils}>
             <KeyboardDatePicker
               name="birthday"
@@ -171,7 +188,7 @@ export default function InfoPage() {
             />
           </MuiPickersUtilsProvider>
         </Grid>
-        <Grid item md={4} sm={12} xs={12} style={{marginTop:-40}}>
+        <Grid item md={4} sm={12} xs={12} style={{ marginTop: -40 }}>
           <FormControl component="fieldset" className={classes.fieldInput}>
             <FormLabel component="legend">Giới tính</FormLabel>
             <RadioGroup

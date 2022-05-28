@@ -70,13 +70,6 @@ export const resetTour = props => {
   };
 };
 
-export const updateInfo = props => {
-  return {
-    type: CREATE_TOUR_TYPES.UPDATE_INFO_TOUR,
-    payload: props
-  };
-};
-
 export const loadTour = props => {
   return {
     type: CREATE_TOUR_TYPES.LOAD_TOUR,

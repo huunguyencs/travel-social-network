@@ -16,28 +16,31 @@ import {
 import { Create, Close, CheckCircle } from '@material-ui/icons';
 import React, { useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-
 import { formStyles } from '../../style';
 import LoginModal from '../Modal/Login';
 import customAxios from '../../utils/fetchData';
-import { changeIsEdit, inviteJoinTour, removeMemberTour } from '../../redux/callApi/tourCall';
+import { 
+    changeIsEdit, 
+    inviteJoinTour, 
+    removeMemberTour 
+} from '../../redux/callApi/tourCall';
 
 export default function InviteTour(props) {
     const { handleClose, usersParent, tour, setTour } = props;
     const dispatch = useDispatch();
 
     const [state, setState] = useState({
-    loading: false,
-    error: null,
+        loading: false,
+        error: null,
     });
-    const [error, setError] = useState("")
+    const [error, setError] = useState("");
 
     const { auth, socket} = useSelector(state => state);
 
     const [search, setSearch] = useState("");
     const [searchResult, setSearchResult] = useState([]);
     const [users, setUsers] = useState(usersParent|| []);
-    const [usersInvite, setUsersInvite] =useState([])
+    const [usersInvite, setUsersInvite] =useState([]);
 
     const classes = formStyles();
 

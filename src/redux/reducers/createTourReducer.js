@@ -3,8 +3,6 @@ import * as TOUR_TYPES from '../constants/createTourConstant';
 
 const INIT_STATE = {
   name: '',
-  content: '',
-  hashtags: [],
   image: null,
   tour: [],
   isFetching: false,
@@ -16,8 +14,6 @@ const INIT_STATE = {
 const createTourReducer = (state = INIT_STATE, action) => {
   switch (action.type) {
     case TOUR_TYPES.CREATE_TOUR: {
-      // them tour (chua cap nhat len database)
-      // var dateStr = dateUtils.convertDateToStr(action.payload.date);
       return {
         ...INIT_STATE,
         name: action.payload.name,
@@ -227,16 +223,6 @@ const createTourReducer = (state = INIT_STATE, action) => {
         cost: newCost
       };
     }
-
-    case TOUR_TYPES.UPDATE_INFO_TOUR: {
-      return {
-        ...state,
-        name: action.payload.name,
-        hashtags: action.payload.hashtags,
-        content: action.payload.content,
-        cost: action.payload.cost
-      };
-    }
     case TOUR_TYPES.CHANGE_IMAGE: {
       return {
         ...state,
@@ -258,8 +244,6 @@ const createTourReducer = (state = INIT_STATE, action) => {
     case TOUR_TYPES.RESET_TOUR: {
       return {
         name: '',
-        content: '',
-        hashtags: [],
         image: null,
         tour: [],
         isFetching: false,
