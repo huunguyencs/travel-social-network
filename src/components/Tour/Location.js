@@ -18,11 +18,9 @@ import {
   ClickAwayListener,
   Paper,
   MenuList,
-  // TextField,
   CircularProgress,
   CardHeader,
   Avatar
-  // InputAdornment
 } from '@material-ui/core';
 import React, { useEffect, useState } from 'react';
 import { Close, MoreVert } from '@material-ui/icons';
@@ -33,13 +31,11 @@ import { tourdetailStyles } from '../../style';
 import CreateReviewForm from '../Forms/CreateReview';
 import EditLocationForm from '../Forms/EditLocation';
 import * as tourAction from '../../redux/actions/createTourAction';
-// import { success } from '../../redux/actions/alertAction';
 import customAxios from '../../utils/fetchData';
 import { timeAgo } from '../../utils/date';
 import { Rating } from '@material-ui/lab';
 import { SeeMoreText } from '../SeeMoreText';
 import ImageList from '../Modal/ImageList';
-// import ReactQuill from 'react-quill';
 import 'react-quill/dist/quill.snow.css';
 
 function ReviewList(props) {
@@ -168,127 +164,6 @@ function ReviewList(props) {
     </Paper>
   );
 }
-
-// function Detail(props) {
-//   const classes = tourdetailStyles();
-//   const dispatch = useDispatch();
-
-//   const { location, isEdit, indexDate, indexLocation } = props;
-
-//   const [description, setDescription] = useState();
-//   const [time, setTime] = useState(location.time);
-//   const [cost, setCost] = useState(location.cost);
-
-//   useEffect(() => {
-//     setDescription(location.description);
-//     setTime(location.time);
-//     setCost(location.cost);
-//   }, [location]);
-
-//   const handleUpdateInfo = () => {
-//     dispatch(
-//       tourAction.updateLocation({
-//         cost: parseInt(cost),
-//         description: description,
-//         indexDate: indexDate,
-//         indexLocation: indexLocation,
-//         time: time
-//       })
-//     );
-//     dispatch(success({ message: 'Cập nhật thành công!' }));
-//   };
-
-//   return (
-//     <Paper className={classes.paperDetailDate}>
-//       <Grid container>
-//         <Grid item md={6} sm={12} xs={12}>
-//           {isEdit ? (
-//             <>
-//               <div>
-//                 <div style={{ margin: 10 }}>
-//                   <ReactQuill
-//                     value={description}
-//                     onChange={e => setDescription(e)}
-//                     style={{ width: '100%' }}
-//                     placeholder="Mô tả"
-//                   />
-
-//                   <TextField
-//                     id="time"
-//                     label="Thời gian"
-//                     type="time"
-//                     variant="outlined"
-//                     defaultValue={time}
-//                     onChange={e => setTime(e.target.value)}
-//                     InputLabelProps={{
-//                       shrink: true
-//                     }}
-//                     inputProps={{
-//                       step: 300 // 5 min
-//                     }}
-//                   />
-//                   <TextField
-//                     label="Chi phí"
-//                     title="Chi phí"
-//                     variant="outlined"
-//                     name="cost"
-//                     id="cost"
-//                     type="number"
-//                     className={classes.fullField}
-//                     // className={classes.hashtag}
-//                     value={cost}
-//                     onChange={e => setCost(e.target.value)}
-//                     InputProps={{
-//                       endAdornment: (
-//                         <InputAdornment position="end">.000 VND</InputAdornment>
-//                       )
-//                     }}
-//                   />
-//                   <div className={classes.btnWrap}>
-//                     <Button
-//                       onClick={handleUpdateInfo}
-//                       variant="contained"
-//                       className={classes.button}
-//                     >
-//                       Cập nhật
-//                     </Button>
-//                   </div>
-//                 </div>
-//               </div>
-//             </>
-//           ) : (
-//             <div>
-//               {/* <div className={classes.locationImages}>
-//                 <img
-//                   style={{ width: '100%', height: '100%' }}
-//                   src="https://res.cloudinary.com/dqxvfu5k1/image/upload/v1649898282/k4hoq9jblhx65msx64c8.jpg"
-//                   alt="loading ..."
-//                 ></img>
-//               </div> */}
-//               <div style={{ padding: 20 }}>
-//                 <Typography>
-//                   <Label style={{ fontSize: 15 }} />
-//                   <span style={{ fontWeight: 500 }}>Chi phí: </span>{' '}
-//                   {new Intl.NumberFormat().format(location.cost * 1000)} VND
-//                 </Typography>
-//                 <Typography>
-//                   <Label style={{ fontSize: 15 }} />
-//                   <span style={{ fontWeight: 500 }}>Thời gian: </span>{' '}
-//                   {location.time}
-//                 </Typography>
-//                 <Typography>
-//                   <Label style={{ fontSize: 15 }} />
-//                   <span style={{ fontWeight: 500 }}>Mô tả: </span>{' '}
-//                   {location.description}
-//                 </Typography>
-//               </div>
-//             </div>
-//           )}
-//         </Grid>
-//       </Grid>
-//     </Paper>
-//   );
-// }
 
 export default function Location(props) {
   const classes = tourdetailStyles();

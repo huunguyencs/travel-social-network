@@ -45,136 +45,8 @@ import * as alertAction from '../../redux/actions/alertAction';
 import { makeStyles } from '@material-ui/core';
 import clsx from 'clsx';
 import PropTypes from 'prop-types';
-// import ServiceCard from './Service';
-import ReactQuill from 'react-quill';
-import 'react-quill/dist/quill.snow.css';
 import DetailDate from './DetailDate';
-
-// function EditDetailDate(props) {
-//   const { indexDate } = props;
-//   const classes = tourdetailStyles();
-
-//   const [addService, setAddService] = useState(false);
-//   const [addLocation, setAddLocation] = useState(false);
-//   const [currentProvince, setCurrentProvince] = useState(null);
-//   const [locations, setLocations] = useState([]);
-
-//   const showAddService = () => {
-//     setAddService(true);
-//   };
-
-//   const closeAddService = () => {
-//     setAddService(false);
-//   };
-
-//   const showAddLocation = () => {
-//     setAddLocation(true);
-//   };
-
-//   const closeAddLocation = () => {
-//     setAddLocation(false);
-//   };
-
-//   const refAddService = React.createRef();
-
-//   const refAddLoc = React.createRef();
-
-//   const AddServiceRef = React.forwardRef((props, ref) => (
-//     <AddService {...props} innerRef={ref} />
-//   ));
-
-//   const AddLocationRef = React.forwardRef((props, ref) => (
-//     <AddLocation {...props} innerRef={ref} />
-//   ));
-
-//   return (
-//     <div style={{ display: 'flex', justifyContent: 'center' }}>
-//       <Button
-//         variant="contained"
-//         onClick={showAddService}
-//         className={classes.button}
-//       >
-//         Thêm dịch vụ
-//       </Button>
-//       <Modal
-//         aria-labelledby="add-service"
-//         aria-describedby="add-service-modal"
-//         className={classes.modal}
-//         open={addService}
-//         onClose={closeAddService}
-//         closeAfterTransition
-//         BackdropComponent={Backdrop}
-//         BackdropProps={{
-//           timeout: 500
-//         }}
-//       >
-//         <AddServiceRef
-//           ref={refAddService}
-//           handleClose={closeAddService}
-//           indexDate={indexDate}
-//         />
-//       </Modal>
-//       <Button
-//         variant="contained"
-//         onClick={showAddLocation}
-//         className={classes.button}
-//       >
-//         Thêm địa điểm
-//       </Button>
-//       <Modal
-//         aria-labelledby="add-location"
-//         aria-describedby="add-location-modal"
-//         className={classes.modal}
-//         open={addLocation}
-//         onClose={closeAddLocation}
-//         closeAfterTransition
-//         BackdropComponent={Backdrop}
-//         BackdropProps={{
-//           timeout: 500
-//         }}
-//       >
-//         <AddLocationRef
-//           ref={refAddLoc}
-//           handleClose={closeAddLocation}
-//           indexDate={indexDate}
-//           currentProvince={currentProvince}
-//           locations={locations}
-//           setCurrentProvince={setCurrentProvince}
-//           setLocations={setLocations}
-//         />
-//       </Modal>
-//     </div>
-//   );
-// }
-
-const modules = {
-  toolbar: [
-    [{ header: [3, false] }],
-    ['bold', 'italic', 'underline', 'strike'],
-    [
-      { list: 'ordered' },
-      { list: 'bullet' },
-      { indent: '-1' },
-      { indent: '+1' },
-      { align: [] }
-    ],
-    ['link']
-  ]
-};
-
-const formats = [
-  'header',
-  'bold',
-  'italic',
-  'underline',
-  'strike',
-  'blockquote',
-  'list',
-  'bullet',
-  'indent',
-  'align',
-  'link'
-];
+import QuillEditor from '../QuillEditor';
 
 function EditBaseDate(props) {
   const { tourDate, date } = props;
@@ -203,44 +75,11 @@ function EditBaseDate(props) {
     <Paper className={classes.paperDetailDate}>
       <div style={{ padding: 5 }}>
         <div>
-          {/* <TextField
-            label="Ghi chú"
-            variant="outlined"
-            name="description"
-            onChange={handleChange}
+          <QuillEditor
             value={text}
-            // className={classes.fullField}
-            style={{
-              width: '100%'
-            }}
-            multiline
-            minRows={4}
-          /> */}
-          <ReactQuill
-            value={text}
-            onChange={e => setText(e)}
-            style={{ width: '100%' }}
+            setValue={e => setText(e)}
             placeholder="Chi tiết"
-            modules={modules}
-            formats={formats}
           />
-          {/* <TextField
-            label="Chi phí"
-            title="Chi phí"
-            variant="outlined"
-            name="cost"
-            id="cost"
-            type="number"
-            className={classes.fullField}
-            // className={classes.hashtag}
-            value={cost}
-            onChange={e => setCost(e.target.value)}
-            InputProps={{
-              endAdornment: (
-                <InputAdornment position="end">.000 VND</InputAdornment>
-              )
-            }}
-          /> */}
           <Typography>
             <b>Chi phí ngày: </b>
             {new Intl.NumberFormat().format(tourDate.cost * 1000)} VND

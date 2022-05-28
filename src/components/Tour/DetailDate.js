@@ -14,8 +14,6 @@ import {
 } from '@material-ui/core';
 import React, { useEffect, useState } from 'react';
 import { tourdetailStyles } from '../../style';
-import ReactQuill from 'react-quill';
-import 'react-quill/dist/quill.snow.css';
 import AddService from './AddService';
 import AddLocation from './AddLocation';
 import Location from './Location';
@@ -28,6 +26,7 @@ import {
   updateEvent,
   updateTimeEvent
 } from '../../redux/actions/createTourAction';
+import QuillEditor from '../QuillEditor';
 
 function UpdateTimeForm({ value, indexDate, indexEvent, handleClose }) {
   const dispatch = useDispatch();
@@ -160,35 +159,6 @@ function AddEventButtons({
   );
 }
 
-const modules = {
-  toolbar: [
-    [{ header: [3, false] }],
-    ['bold', 'italic', 'underline', 'strike'],
-    [
-      { list: 'ordered' },
-      { list: 'bullet' },
-      { indent: '-1' },
-      { indent: '+1' },
-      { align: [] }
-    ],
-    ['link']
-  ]
-};
-
-const formats = [
-  'header',
-  'bold',
-  'italic',
-  'underline',
-  'strike',
-  'blockquote',
-  'list',
-  'bullet',
-  'indent',
-  'align',
-  'link'
-];
-
 function TimeDetail({ event, indexDate, indexEvent }) {
   const classes = tourdetailStyles();
   const dispatch = useDispatch();
@@ -207,13 +177,10 @@ function TimeDetail({ event, indexDate, indexEvent }) {
 
   return (
     <div style={{ margin: 10 }}>
-      <ReactQuill
+      <QuillEditor
         value={description}
-        onChange={e => setDescription(e)}
-        style={{ width: '100%' }}
+        setValue={e => setDescription(e)}
         placeholder="Mô tả"
-        modules={modules}
-        formats={formats}
       />
       <TextField
         label="Chi phí"

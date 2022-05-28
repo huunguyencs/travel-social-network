@@ -5,41 +5,11 @@ import {
   TextField,
   Chip
 } from '@material-ui/core';
-import ReactQuill from 'react-quill';
-import 'react-quill/dist/quill.snow.css';
 import React, { useState } from 'react';
 
 import { formStyles } from '../../style';
 import EmojiPicker from '../Input/EmojiPicker';
-
-const modules = {
-  toolbar: [
-    [{ header: [3, false] }],
-    ['bold', 'italic', 'underline', 'strike'],
-    [
-      { list: 'ordered' },
-      { list: 'bullet' },
-      { indent: '-1' },
-      { indent: '+1' },
-      { align: [] }
-    ],
-    ['link']
-  ]
-};
-
-const formats = [
-  'header',
-  'bold',
-  'italic',
-  'underline',
-  'strike',
-  'blockquote',
-  'list',
-  'bullet',
-  'indent',
-  'align',
-  'link'
-];
+import QuillEditor from '../QuillEditor';
 
 export default function UpdateTourInfo({ tourInfo, setTourInfo, image, cost }) {
   const { name, hashtags, content } = tourInfo;
@@ -117,39 +87,19 @@ export default function UpdateTourInfo({ tourInfo, setTourInfo, image, cost }) {
             <b>Tổng chi phí: </b>
             {new Intl.NumberFormat().format(cost * 1000)} VND
           </Typography>
-          {/* <TextField
-            type={'number'}
-            name="cost"
-            id="cost"
-            label="Chi phí"
-            variant="outlined"
-            value={state.cost}
-            className={classes.tourNameInput}
-            onChange={handleInput}
-            InputProps={{
-              endAdornment: (
-                <InputAdornment position="end">.000 VND</InputAdornment>
-              )
-            }}
-          /> */}
           <div className={classes.postContentInput}>
-            {/* <InputBase
-              placeholder="Nội dung tour ..."
-              rows={7}
-              name="content"
-              id="content"
-              multiline
-              className={classes.input}
-              value={content}
-              onChange={handleInput}
-            /> */}
-            <ReactQuill
+            {/* <ReactQuill
               value={content}
               onChange={e => setTourInfo(state => ({ ...state, content: e }))}
               style={{ width: '100%' }}
               placeholder="Nội dung tour ..."
               modules={modules}
               formats={formats}
+            /> */}
+            <QuillEditor
+              value={content}
+              setValue={e => setTourInfo(state => ({ ...state, content: e }))}
+              placeholder="Nội dung tour ..."
             />
           </div>
           <div>
