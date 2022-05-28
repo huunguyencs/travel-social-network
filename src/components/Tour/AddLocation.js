@@ -68,7 +68,7 @@ function AddLocationContribute(props) {
   const dispatch = useDispatch();
   const { location, auth } = useSelector(state => state);
 
-  const { indexDate, currentProvince, name, handleClose, time } = props;
+  const { indexDate, currentProvince, name, handleClose, indexEvent } = props;
   const [loc, setLoc] = useState({
     fullname: name,
     information: ''
@@ -129,9 +129,7 @@ function AddLocationContribute(props) {
           tourAction.addLocation({
             location: res.data.location,
             indexDate: indexDate,
-            cost: 0,
-            description: '',
-            time: time
+            indexEvent: indexEvent
           })
         );
         setLoading(false);
@@ -259,10 +257,9 @@ function AddLocationDefault(props) {
     handleClose,
     setIsContribute,
     setName,
-    time,
-    setTime,
     province,
-    setProvince
+    setProvince,
+    indexEvent
   } = props;
 
   const [loc, setLoc] = useState(null);
@@ -304,15 +301,12 @@ function AddLocationDefault(props) {
         setName(loc?.fullname);
         setIsContribute(true);
         return;
-
-        // const position = loc.position;
-        // if (position) dispatch(getRecommend(position));
       }
       dispatch(
         tourAction.addLocation({
           location: loc,
           indexDate: indexDate,
-          time: time
+          indexEvent: indexEvent
         })
       );
       handleClose();
@@ -396,20 +390,6 @@ function AddLocationDefault(props) {
                 />
               )}
             />
-            <TextField
-              id="time"
-              label="Thời gian"
-              variant="outlined"
-              type="time"
-              defaultValue={time}
-              onChange={e => setTime(e.target.value)}
-              InputLabelProps={{
-                shrink: true
-              }}
-              inputProps={{
-                step: 300 // 5 min
-              }}
-            />
             <div>
               <Button
                 className={classes.button}
@@ -436,12 +416,12 @@ function AddLocationDefault(props) {
             />
           </Grid>
 
-          {createTour.recommendService?.length > 0 && (
+          {/* {createTour.recommendService?.length > 0 && (
             <ServiceRecommend
               indexDate={props.indexDate}
               services={createTour.recommendService}
             />
-          )}
+          )} */}
         </Grid>
       </div>
     </Paper>
@@ -451,21 +431,13 @@ function AddLocationDefault(props) {
 export default function AddLocation(props) {
   const [isContribute, setIsContribute] = useState(false);
   const [name, setName] = useState('');
-  const [time, setTime] = useState('07:00');
   const [province, setProvince] = useState(null);
   return isContribute ? (
-    <AddLocationContribute
-      {...props}
-      name={name}
-      time={time}
-      currentProvince={province}
-    />
+    <AddLocationContribute {...props} name={name} currentProvince={province} />
   ) : (
     <AddLocationDefault
       {...props}
       setName={setName}
-      time={time}
-      setTime={setTime}
       setIsContribute={setIsContribute}
       province={province}
       setProvince={setProvince}

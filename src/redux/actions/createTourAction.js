@@ -14,6 +14,27 @@ export const addDate = props => {
   };
 };
 
+export const addEvent = props => {
+  return {
+    type: CREATE_TOUR_TYPES.ADD_EVENT,
+    payload: props
+  };
+};
+
+export const updateTimeEvent = props => {
+  return {
+    type: CREATE_TOUR_TYPES.UPDATE_TIME_EVENT,
+    payload: props
+  };
+};
+
+export const updateEvent = props => {
+  return {
+    type: CREATE_TOUR_TYPES.UPDATE_EVENT,
+    payload: props
+  };
+};
+
 export const addLocation = props => {
   return {
     type: CREATE_TOUR_TYPES.ADD_NEW_LOCATION,
@@ -38,6 +59,20 @@ export const deleteDate = props => {
 export const deleteEvent = props => {
   return {
     type: CREATE_TOUR_TYPES.DELETE_EVENT,
+    payload: props
+  };
+};
+
+export const deleteLocation = props => {
+  return {
+    type: CREATE_TOUR_TYPES.DELETE_LOCATION,
+    payload: props
+  };
+};
+
+export const deleteService = props => {
+  return {
+    type: CREATE_TOUR_TYPES.DELETE_SERVICE,
     payload: props
   };
 };

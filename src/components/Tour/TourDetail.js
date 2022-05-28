@@ -987,11 +987,11 @@ export default function TourDetail(props) {
                               index={0}
                               className={classes.tabPanel}
                             >
-                              <div>
+                              <div className={classes.tourDateInfoWrapper}>
                                 <Typography>
                                   <Label style={{ fontSize: 15 }} />{' '}
                                   <span style={{ fontWeight: 500 }}> Mô tả: </span>{' '}
-                                  {"aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"}
+                                  {tourDate.description}
                                 </Typography>
                                 <Typography>
                                   <Label style={{ fontSize: 15 }} />

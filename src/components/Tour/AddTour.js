@@ -23,7 +23,7 @@ import { useDispatch, useSelector } from 'react-redux';
 
 import { tourdetailStyles } from '../../style';
 // import AddLocationForm from "../Forms/AddLocation";
-import Location from './Location';
+// import Location from './Location';
 import * as tourAction from '../../redux/actions/createTourAction';
 import { useHistory } from 'react-router-dom';
 import UpdateDateForm from '../Forms/UpdateDate';
@@ -31,8 +31,8 @@ import UpdateTourInfo from '../Forms/UpdateInfoCreateTour';
 import { convertDateToStr } from '../../utils/date';
 import { saveTour, updateTour } from '../../redux/callApi/tourCall';
 import { getProvinces } from '../../redux/callApi/locationCall';
-import AddService from './AddService';
-import AddLocation from './AddLocation';
+// import AddService from './AddService';
+// import AddLocation from './AddLocation';
 import {
   AddCircle,
   Close,
@@ -46,104 +46,107 @@ import * as alertAction from '../../redux/actions/alertAction';
 import { makeStyles } from '@material-ui/core';
 import clsx from 'clsx';
 import PropTypes from 'prop-types';
-import ServiceCard from './Service';
+// import ServiceCard from './Service';
+import ReactQuill from 'react-quill';
+import 'react-quill/dist/quill.snow.css';
+import DetailDate from './DetailDate';
 
-function EditDetailDate(props) {
-  const { indexDate } = props;
-  const classes = tourdetailStyles();
+// function EditDetailDate(props) {
+//   const { indexDate } = props;
+//   const classes = tourdetailStyles();
 
-  const [addService, setAddService] = useState(false);
-  const [addLocation, setAddLocation] = useState(false);
-  const [currentProvince, setCurrentProvince] = useState(null);
-  const [locations, setLocations] = useState([]);
+//   const [addService, setAddService] = useState(false);
+//   const [addLocation, setAddLocation] = useState(false);
+//   const [currentProvince, setCurrentProvince] = useState(null);
+//   const [locations, setLocations] = useState([]);
 
-  const showAddService = () => {
-    setAddService(true);
-  };
+//   const showAddService = () => {
+//     setAddService(true);
+//   };
 
-  const closeAddService = () => {
-    setAddService(false);
-  };
+//   const closeAddService = () => {
+//     setAddService(false);
+//   };
 
-  const showAddLocation = () => {
-    setAddLocation(true);
-  };
+//   const showAddLocation = () => {
+//     setAddLocation(true);
+//   };
 
-  const closeAddLocation = () => {
-    setAddLocation(false);
-  };
+//   const closeAddLocation = () => {
+//     setAddLocation(false);
+//   };
 
-  const refAddService = React.createRef();
+//   const refAddService = React.createRef();
 
-  const refAddLoc = React.createRef();
+//   const refAddLoc = React.createRef();
 
-  const AddServiceRef = React.forwardRef((props, ref) => (
-    <AddService {...props} innerRef={ref} />
-  ));
+//   const AddServiceRef = React.forwardRef((props, ref) => (
+//     <AddService {...props} innerRef={ref} />
+//   ));
 
-  const AddLocationRef = React.forwardRef((props, ref) => (
-    <AddLocation {...props} innerRef={ref} />
-  ));
+//   const AddLocationRef = React.forwardRef((props, ref) => (
+//     <AddLocation {...props} innerRef={ref} />
+//   ));
 
-  return (
-    <div style={{ display: 'flex', justifyContent: 'center' }}>
-      <Button
-        variant="contained"
-        onClick={showAddService}
-        className={classes.button}
-      >
-        Thêm dịch vụ
-      </Button>
-      <Modal
-        aria-labelledby="add-service"
-        aria-describedby="add-service-modal"
-        className={classes.modal}
-        open={addService}
-        onClose={closeAddService}
-        closeAfterTransition
-        BackdropComponent={Backdrop}
-        BackdropProps={{
-          timeout: 500
-        }}
-      >
-        <AddServiceRef
-          ref={refAddService}
-          handleClose={closeAddService}
-          indexDate={indexDate}
-        />
-      </Modal>
-      <Button
-        variant="contained"
-        onClick={showAddLocation}
-        className={classes.button}
-      >
-        Thêm địa điểm
-      </Button>
-      <Modal
-        aria-labelledby="add-location"
-        aria-describedby="add-location-modal"
-        className={classes.modal}
-        open={addLocation}
-        onClose={closeAddLocation}
-        closeAfterTransition
-        BackdropComponent={Backdrop}
-        BackdropProps={{
-          timeout: 500
-        }}
-      >
-        <AddLocationRef
-          ref={refAddLoc}
-          handleClose={closeAddLocation}
-          indexDate={indexDate}
-          currentProvince={currentProvince}
-          locations={locations}
-          setCurrentProvince={setCurrentProvince}
-          setLocations={setLocations}
-        />
-      </Modal>
-    </div>
-  );
-}
+//   return (
+//     <div style={{ display: 'flex', justifyContent: 'center' }}>
+//       <Button
+//         variant="contained"
+//         onClick={showAddService}
+//         className={classes.button}
+//       >
+//         Thêm dịch vụ
+//       </Button>
+//       <Modal
+//         aria-labelledby="add-service"
+//         aria-describedby="add-service-modal"
+//         className={classes.modal}
+//         open={addService}
+//         onClose={closeAddService}
+//         closeAfterTransition
+//         BackdropComponent={Backdrop}
+//         BackdropProps={{
+//           timeout: 500
+//         }}
+//       >
+//         <AddServiceRef
+//           ref={refAddService}
+//           handleClose={closeAddService}
+//           indexDate={indexDate}
+//         />
+//       </Modal>
+//       <Button
+//         variant="contained"
+//         onClick={showAddLocation}
+//         className={classes.button}
+//       >
+//         Thêm địa điểm
+//       </Button>
+//       <Modal
+//         aria-labelledby="add-location"
+//         aria-describedby="add-location-modal"
+//         className={classes.modal}
+//         open={addLocation}
+//         onClose={closeAddLocation}
+//         closeAfterTransition
+//         BackdropComponent={Backdrop}
+//         BackdropProps={{
+//           timeout: 500
+//         }}
+//       >
+//         <AddLocationRef
+//           ref={refAddLoc}
+//           handleClose={closeAddLocation}
+//           indexDate={indexDate}
+//           currentProvince={currentProvince}
+//           locations={locations}
+//           setCurrentProvince={setCurrentProvince}
+//           setLocations={setLocations}
+//         />
+//       </Modal>
+//     </div>
+//   );
+// }
 
 function EditBaseDate(props) {
   const { tourDate, date } = props;
@@ -151,9 +154,9 @@ function EditBaseDate(props) {
   const [text, setText] = useState(tourDate.description || '');
   const [cost, setCost] = useState(tourDate.cost || 0);
 
-  const handleChange = e => {
-    setText(e.target.value);
-  };
+  // const handleChange = e => {
+  //   setText(e.target.value);
+  // };
 
   const dispatch = useDispatch();
 
@@ -174,7 +177,7 @@ function EditBaseDate(props) {
     <Paper className={classes.paperDetailDate}>
       <div style={{ padding: 5 }}>
         <div>
-          <TextField
+          {/* <TextField
             label="Ghi chú"
             variant="outlined"
             name="description"
@@ -186,6 +189,12 @@ function EditBaseDate(props) {
             }}
             multiline
             minRows={4}
+          /> */}
+          <ReactQuill
+            value={text}
+            onChange={e => setText(e)}
+            style={{ width: '100%' }}
+            placeholder="Chi tiết"
           />
           <TextField
             label="Chi phí"
@@ -365,7 +374,7 @@ export default function AddTour(props) {
             loading: false,
             error: false
           });
-          dispatch(error({ error: 'Có lỗi xảy ra' }));
+          dispatch(error({ message: 'Có lỗi xảy ra' }));
         }
       )
     );
@@ -435,6 +444,7 @@ export default function AddTour(props) {
   };
 
   const handleShowDelete = index => {
+    if (createTour.tour?.length <= 1) return;
     setShowDeteleDate(index);
   };
 
@@ -599,81 +609,12 @@ export default function AddTour(props) {
                           />
                         </Grid>
                         <Grid item md={7}>
-                          <EditDetailDate indexDate={idx} />
-                          {createTour.tour[idx]?.events.map((item, index) =>
-                            item.location ? (
-                              <Location
-                                location={item}
-                                indexDate={idx}
-                                indexLocation={index}
-                                key={index}
-                                isSave={false}
-                                isEdit
-                              />
-                            ) : (
-                              <ServiceCard
-                                key={index}
-                                service={item}
-                                indexDate={idx}
-                                index={index}
-                                isSave={false}
-                                isEdit
-                              />
-                            )
-                          )}
+                          <DetailDate
+                            indexDate={idx}
+                            events={createTour.tour[idx].events}
+                          />
                         </Grid>
                       </Grid>
-                      {/* <Tabs
-                        value={value}
-                        onChange={handleChange}
-                        indicatorColor="primary"
-                        textColor="primary"
-                        variant="scrollable"
-                        scrollButtons="auto"
-                        aria-label="scrollable auto tabs example"
-                      >
-                        <Tab label="Tổng quan ngày" {...a11yProps(0)} />
-                        <Tab label="Chi tiết" {...a11yProps(1)} />
-                      </Tabs>
-                      <TabPanel
-                        value={value}
-                        index={0}
-                        className={classes.tabPanel}
-                      >
-                        <EditBaseDateRef
-                          ref={refEditDetailDate}
-                          date={idx}
-                          tourDate={createTour.tour[idx]}
-                        />
-                      </TabPanel>
-                      <TabPanel
-                        value={value}
-                        index={1}
-                        className={classes.tabPanel}
-                      >
-                        <EditDetailDate />
-                        {createTour.tour[idx].events.map((item, index) =>
-                          item.location ? (
-                            <Location
-                              location={item}
-                              indexDate={idx}
-                              indexLocation={index}
-                              key={index}
-                              isSave={false}
-                              isEdit
-                            />
-                          ) : (
-                            <ServiceCard
-                              key={index}
-                              service={item}
-                              indexDate={idx}
-                              indexService={index}
-                              isSave={false}
-                              isEdit
-                            />
-                          )
-                        )}
-                      </TabPanel> */}
                     </StepContent>
                   </Step>
                 ))}

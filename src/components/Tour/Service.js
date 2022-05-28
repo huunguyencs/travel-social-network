@@ -3,122 +3,116 @@ import {
   Card,
   CardMedia,
   ClickAwayListener,
-  Collapse,
+  // Collapse,
   Dialog,
   DialogActions,
   DialogTitle,
   Grid,
   IconButton,
-  InputBase,
   MenuItem,
   MenuList,
   Paper,
   Popper,
-  TextField,
+  // TextField,
   Typography
 } from '@material-ui/core';
-import { Label, MoreVert } from '@material-ui/icons';
+import { MoreVert } from '@material-ui/icons';
 import React, { useState } from 'react';
 import { useDispatch } from 'react-redux';
-import { success } from '../../redux/actions/alertAction';
+// import { success } from '../../redux/actions/alertAction';
 import * as tourAction from '../../redux/actions/createTourAction';
 import { tourdetailStyles } from '../../style';
 import { ReviewArea } from '../Service/ServiceDetail';
+// import ReactQuill from 'react-quill';
+import 'react-quill/dist/quill.snow.css';
 
-function DetailService(props) {
-  const { service, isEdit, indexService, indexDate, joined } = props;
+// function DetailService(props) {
+//   const { service, isEdit, indexService, indexDate, joined } = props;
 
-  const [cost, setCost] = useState(service.cost);
-  const [description, setDescription] = useState(service.description);
-  const [time, setTime] = useState(service.time);
+//   const [cost, setCost] = useState(service.cost);
+//   const [description, setDescription] = useState(service.description);
+//   const [time, setTime] = useState(service.time);
 
-  const dispatch = useDispatch();
+//   const dispatch = useDispatch();
 
-  const handleUpdate = () => {
-    // console.log(cost);
-    dispatch(
-      tourAction.updateService({
-        cost: parseInt(cost),
-        description: description,
-        indexDate: indexDate,
-        index: indexService,
-        time: time
-      })
-    );
-    dispatch(success({ message: 'Cập nhật thành công!' }));
-  };
+//   const handleUpdate = () => {
+//     // console.log(cost);
+//     dispatch(
+//       tourAction.updateService({
+//         cost: parseInt(cost),
+//         description: description,
+//         indexDate: indexDate,
+//         index: indexService,
+//         time: time
+//       })
+//     );
+//     dispatch(success({ message: 'Cập nhật thành công!' }));
+//   };
 
-  const classes = tourdetailStyles();
+//   const classes = tourdetailStyles();
 
-  return (
-    <div style={{ padding: 5 }}>
-      {isEdit ? (
-        <div>
-          <InputBase
-            placeholder="Mô tả"
-            title="Thông tin"
-            variant="outlined"
-            name="description"
-            id="description"
-            rows={5}
-            className={classes.descriptionInput}
-            // className={classes.hashtag}
-            multiline
-            value={description}
-            onChange={e => setDescription(e.target.value)}
-          />
-          <TextField
-            label="Chi phí (nghìn VND)"
-            variant="outlined"
-            name="cost"
-            id="cost"
-            className={classes.fullField}
-            type={'number'}
-            value={cost}
-            onChange={e => setCost(e.target.value)}
-          />
-          <TextField
-            id="time"
-            label="Thời gian"
-            type="time"
-            defaultValue={service.time}
-            onChange={e => setTime(e.target.value)}
-            InputLabelProps={{
-              shrink: true
-            }}
-            inputProps={{
-              step: 300 // 5 min
-            }}
-          />
-          <div className={classes.btnWrap}>
-            <Button
-              onClick={handleUpdate}
-              // variant="contained"
-              className={classes.reviewBtn}
-            >
-              Cập nhật
-            </Button>
-          </div>
-        </div>
-      ) : (
-        <div>
-          <Typography>
-            <Label style={{ fontSize: 15 }} />
-            <span style={{ fontWeight: 500 }}>Chi phí: </span>{' '}
-            {new Intl.NumberFormat().format(cost * 1000)} VND
-          </Typography>
-          <Typography>
-            <Label style={{ fontSize: 15 }} />{' '}
-            <span style={{ fontWeight: 500 }}> Mô tả: </span> {description}
-          </Typography>
-        </div>
-      )}
-      {!isEdit && joined && service?.service && (
-        <ReviewArea id={service.service._id} />
-      )}
-    </div>
-  );
-}
+//   return (
+//     <div style={{ padding: 5 }}>
+//       {isEdit ? (
+//         <div>
+//           <ReactQuill
+//             value={description}
+//             onChange={e => setDescription(e)}
+//             style={{ width: '100%' }}
+//             placeholder="Mô tả"
+//           />
+//           <TextField
+//             label="Chi phí (nghìn VND)"
+//             variant="outlined"
+//             name="cost"
+//             id="cost"
+//             className={classes.fullField}
+//             type={'number'}
+//             value={cost}
+//             onChange={e => setCost(e.target.value)}
+//           />
+//           <TextField
+//             id="time"
+//             label="Thời gian"
+//             type="time"
+//             defaultValue={service.time}
+//             onChange={e => setTime(e.target.value)}
+//             InputLabelProps={{
+//               shrink: true
+//             }}
+//             inputProps={{
+//               step: 300 // 5 min
+//             }}
+//           />
+//           <div className={classes.btnWrap}>
+//             <Button
+//               onClick={handleUpdate}
+//               // variant="contained"
+//               className={classes.reviewBtn}
+//             >
+//               Cập nhật
+//             </Button>
+//           </div>
+//         </div>
+//       ) : (
+//         <div>
+//           <Typography>
+//             <Label style={{ fontSize: 15 }} />
+//             <span style={{ fontWeight: 500 }}>Chi phí: </span>{' '}
+//             {new Intl.NumberFormat().format(cost * 1000)} VND
+//           </Typography>
+//           <Typography>
+//             <Label style={{ fontSize: 15 }} />{' '}
+//             <span style={{ fontWeight: 500 }}> Mô tả: </span> {description}
+//           </Typography>
+//         </div>
+//       )}
+//       {!isEdit && joined && service?.service && (
+//         <ReviewArea id={service.service._id} />
+//       )}
+//     </div>
+//   );
+// }
 
 export default function ServiceCard(props) {
   const { service, index, isEdit, indexDate, joined } = props;
@@ -126,11 +120,11 @@ export default function ServiceCard(props) {
   const classes = tourdetailStyles();
   const [anchorEl, setAnchorEl] = useState(null);
   const [showDelete, setShowDelete] = useState(false);
-  const [showDetail, setShowDetail] = useState(false);
+  // const [showDetail, setShowDetail] = useState(false);
 
-  const handleShowDetail = () => {
-    setShowDetail(state => !state);
-  };
+  // const handleShowDetail = () => {
+  //   setShowDetail(state => !state);
+  // };
 
   const dispatch = useDispatch();
 
@@ -169,7 +163,7 @@ export default function ServiceCard(props) {
           <CardMedia style={{ height: '100%' }}>
             <img
               src={
-                service?.service?.images
+                service.service?.images
                   ? service.service.images[0]
                   : '/default1.jpg'
               }
@@ -187,18 +181,9 @@ export default function ServiceCard(props) {
                     {service.service?.name}
                   </Typography>
                 </div>
-                <div>
-                  <Typography>
-                    Chi phí:{' '}
-                    {new Intl.NumberFormat().format(service.cost * 1000)} VND
-                  </Typography>
-                </div>
-                <Button
-                  onClick={handleShowDetail}
-                  className={classes.reviewBtn}
-                >
-                  Chi tiết
-                </Button>
+                {!isEdit && joined && service?.service && (
+                  <ReviewArea id={service.service._id} />
+                )}
               </div>
               <div>
                 {isEdit && (
@@ -249,7 +234,7 @@ export default function ServiceCard(props) {
             </div>
           </div>
         </Grid>
-        <Grid item md={12} sm={12} xs={12}>
+        {/* <Grid item md={12} sm={12} xs={12}>
           <Collapse in={showDetail} style={{ width: '100%' }}>
             <DetailService
               service={service}
@@ -259,7 +244,7 @@ export default function ServiceCard(props) {
               joined={joined}
             />
           </Collapse>
-        </Grid>
+        </Grid> */}
       </Grid>
     </Card>
   );
