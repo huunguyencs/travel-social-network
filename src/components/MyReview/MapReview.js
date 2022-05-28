@@ -28,29 +28,28 @@ function LocationInfo({ review, setShowInfo }) {
       </div>
       <img
         src={
-          review.review?.images?.length
-            ? review.review?.images[0]
-            : review.review?.locationId.images[0]
+          review?.images?.length
+            ? review?.images[0]
+            : review?.locationId.images[0]
         }
         alt={'Đang tải...'}
         width={300}
         height={200}
-        title={review.review.locationId.fullname}
+        title={review.locationId.fullname}
       />
-      <div style={{ display: 'flex', justifyContent: 'center',alignItems:'center', flexDirection:'column', padding:"0 10px 10px 10px" }}>
-        <Typography
-          component={Link}
-          to={`/posts/${review.review._id}`}
-          variant="body2"
-        >
-          {review.review.content}
+      <div
+        style={{
+          display: 'flex',
+          justifyContent: 'center',
+          alignItems: 'center',
+          flexDirection: 'column',
+          padding: '0 10px 10px 10px'
+        }}
+      >
+        <Typography component={Link} to={`/post/${review._id}`} variant="body2">
+          {review.content}
         </Typography>
-        <Rating
-          name="read-only"
-          value={review.review.rate}
-          readOnly
-          size="small"
-        />
+        <Rating name="read-only" value={review.rate} readOnly size="small" />
       </div>
     </Paper>
   );
@@ -94,15 +93,14 @@ const LocationMarker = ({ location }) => {
           style={{
             width: 300,
             display: 'flex',
-            flexDirection:'column',
-            alignItems: "center",
+            flexDirection: 'column',
+            alignItems: 'center',
             marginTop: 10
           }}
         >
-          <Typography variant='body1'>{location?.fullname}</Typography>
+          <Typography variant="body1">{location?.fullname}</Typography>
           <img
-            src={location?.images[0]
-            }
+            src={location?.images[0]}
             alt={'Đang tải...'}
             width={300}
             height={200}
@@ -121,7 +119,7 @@ export default function MapReview({
   setShowInfo
 }) {
   return (
-    <Card style={{ height: "100%" }}>
+    <Card style={{ height: '100%' }}>
       <GoogleMapReact
         bootstrapURLKeys={{ key: KEY }}
         defaultCenter={{ lat: 15, lng: 108 }}
@@ -132,15 +130,15 @@ export default function MapReview({
         {reviews.map(item => (
           <LocationMarker
             key={item._id}
-            lat={item.review?.locationId?.position.lat}
-            lng={item.review?.locationId?.position.lng}
-            location={item.review?.locationId}
+            lat={item?.locationId?.position.lat}
+            lng={item?.locationId?.position.lng}
+            location={item?.locationId}
           />
         ))}
         {showInfo && (
           <LocationInfo
-            lat={showInfo.review?.locationId?.position.lat}
-            lng={showInfo.review?.locationId?.position.lng}
+            lat={showInfo?.locationId?.position.lat}
+            lng={showInfo?.locationId?.position.lng}
             review={showInfo}
             setShowInfo={setShowInfo}
           />
