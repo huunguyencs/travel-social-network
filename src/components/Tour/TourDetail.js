@@ -33,7 +33,9 @@ import {
   ListItemAvatar,
   ListItemText,
   ListItemSecondaryAction,
-  Popover
+  Popover,
+  useMediaQuery,
+  useTheme,
 } from '@material-ui/core';
 import AvatarGroup from '@material-ui/lab/AvatarGroup';
 import React, { useEffect, useMemo, useState } from 'react';
@@ -65,7 +67,34 @@ import InviteTour from '../Modal/InviteTour';
 import ServiceCard from './Service';
 import InputComment from '../Input/Comment';
 import Comment from '../Comment';
+// const data={
+//   content: "Team mình bắt đầu đi từ Sài Gòn đêm thứ 6 về Qui Nhơn, nếu bạn chỉ đi Qui Nhơn thì chỉ cần 2 ngày 1 đêm là ok rồi; còn nếu muốn đi thêm Phú Yên thì thêm 2 ngày 1 đêm nữa.",
+//   name:"Quy Nhơn- Phú Yên đầy nắng gió", 
+//   cost: 10100, 
+//   createdAt: "2022-05-25T18:20:03.672Z",
+//   hashtags:["Quy nhơn, Phu yên","bien","gió"],
+//   image:"https://res.cloudinary.com/dqxvfu5k1/image/upload/v1653502802/b7l2onl5uowz38khlth0.jpg",
+//   isPublic: false,
+//   joinIds:[{
+//     id:{
+//       avatar: "https://res.cloudinary.com/huunguyencs/image/upload/v1653359438/k3rvnexrnyecdwrotew1.jpg",
+//       email: "huy.tran0207@hcmut.edu.vn",
+//       fullname: "Trần Quang Huy",
+//       _id: "627d09531961cd962ff8cdcf"
+//     },
+//     isEdit: true,
+//     isJoin: true
+//   }],
+//   likes:[],
+//   comments:[],
+//   userId:{
+//     avatar: "https://res.cloudinary.com/huunguyencs/image/upload/v1653359438/k3rvnexrnyecdwrotew1.jpg",
+//       email: "huy.tran0207@hcmut.edu.vn",
+//       fullname: "Trần Quang Huy",
+//       _id: "627d09531961cd962ff8cdcf"
+//   },
 
+// }
 function DetailDate(props) {
   const { tourDate, date, joined } = props;
 
@@ -73,8 +102,9 @@ function DetailDate(props) {
 
   return (
     <Paper className={classes.paperDetailDate}>
-      <Grid container style={{ padding: 16 }}>
+      <Grid container style={{ padding: 10 }}>
         <Grid item md={12} sm={12} xs={12}>
+          <Typography variant='h6'>Tổng quan ngày</Typography>
           <Typography>
             <Label style={{ fontSize: 15 }} />{' '}
             <span style={{ fontWeight: 500 }}> Mô tả: </span>{' '}
@@ -86,7 +116,7 @@ function DetailDate(props) {
             {new Intl.NumberFormat().format(tourDate.cost * 1000)} VND
           </Typography>
         </Grid>
-        <Grid item md={12} sm={12} xs={12}>
+        {/* <Grid item md={12} sm={12} xs={12}>
           <div style={{ display: 'flex', justifyContent: 'space-between' }}>
             <Typography
               variant="h6"
@@ -108,7 +138,7 @@ function DetailDate(props) {
               />
             ))}
           </div>
-        </Grid>
+        </Grid> */}
       </Grid>
     </Paper>
   );
@@ -351,12 +381,14 @@ export default function TourDetail(props) {
   //   );
   // };
   useEffect(() => {
-    if (tour && tour.tour[idx].locations.length > 0) {
-      setPosition(tour.tour[idx].locations[0].location.position);
+    if (tour && tour.tour[idx].events.length > 0) {
+      const temp = tour.tour[idx].events[0];
+      if(temp.location != null) setPosition(temp.location.position);
+      else if(temp.service != null && position != null) setPosition({lng: temp.service.position[0], lat:temp.service.position[1]});
     }
-  }, [tour, idx]);
+  }, [tour, idx, position]);
   useEffect(() => {
-    var locs = tour.tour[idx].locations
+    var locs = tour.tour[idx].events
       .filter(item => item.location)
       .map(item => item.location);
     setLocations(locs);
@@ -383,6 +415,8 @@ export default function TourDetail(props) {
   const handleChange = (event, newValue) => {
     setValue(newValue);
   };
+  const theme = useTheme();
+  const downSm = useMediaQuery(theme.breakpoints.down('sm'));
 
   const [anchorEl, setAnchorEl] = useState(null);
   const [showDelete, setShowDelete] = useState(false);
@@ -838,7 +872,7 @@ export default function TourDetail(props) {
                   orientation="vertical"
                   className={classes.datesWrapper}
                 >
-                  {tour.tour.map((item, index) => (
+                  {tour.tour.map((tourDate, index) => (
                     <Step
                       key={index}
                       onClick={() => setIdx(index)}
@@ -848,28 +882,37 @@ export default function TourDetail(props) {
                         <div style={{ display: 'flex', alignItems: 'center' }}>
                           <Typography variant="body1">
                             Chi tiết lịch trình ngày{' '}
-                            {convertDateToStr(item.date)}{' '}
+                            {convertDateToStr(tourDate.date)}{' '}
                           </Typography>
                         </div>
                       </StepLabel>
                       <StepContent>
-                        <Tabs
-                          value={value}
-                          onChange={handleChange}
-                          indicatorColor="primary"
-                          textColor="primary"
-                          variant="scrollable"
-                          scrollButtons="auto"
-                          aria-label="scrollable auto tabs example"
-                        >
-                          <Tab label="Tổng quan ngày" {...a11yProps(0)} />
-                          <Tab label="Các địa điểm" {...a11yProps(1)} />
-                        </Tabs>
-                        <TabPanel
-                          value={value}
-                          index={0}
-                          className={classes.tabPanel}
-                        >
+
+                          {/* {tour.tour[idx].locations?.map((item, index) => (
+                            <Location
+                              location={item}
+                              indexDate={idx}
+                              tourDateId={tour.tour[idx]._id}
+                              indexLocation={index}
+                              edit={false}
+                              key={index}
+                              isSave={true}
+                              isEdit={false}
+                              addReview={createReview}
+                              joinIds={tour.joinIds}
+                              isOwn={isOwn}
+                              isOld={isOld}
+                            />
+                          ))} */}
+                        <Grid container>
+                          <Grid item md={11} sm={11} xs={11}>
+                            <DetailDateRef
+                              ref={refDetail}
+                              date={idx}
+                              tourDate={tour.tour[idx]}
+                            />
+                          </Grid>
+                          <Grid item md={1} sm={1} xs={1}>
                           {isJoin && (
                             <>
                               <IconButton
@@ -897,12 +940,12 @@ export default function TourDetail(props) {
                                   <Typography variant="h6">Nhận xét</Typography>
                                   <hr className={classes.line} />
                                   <div className={classes.listCmt}>
-                                    {item.comments &&
-                                      item.comments.map(cmt => (
+                                    {tourDate.comments &&
+                                      tourDate.comments.map(cmt => (
                                         <Comment
                                           comment={cmt}
                                           key={cmt._id}
-                                          id={item._id}
+                                          id={tourDate._id}
                                           type="feedback"
                                         />
                                       ))}
@@ -911,7 +954,7 @@ export default function TourDetail(props) {
                                     <div className={classes.wrapInput}>
                                       <InputComment
                                         type="feedback"
-                                        id={item._id}
+                                        id={tourDate._id}
                                       />
                                     </div>
                                   )}
@@ -919,35 +962,73 @@ export default function TourDetail(props) {
                               </Popover>
                             </>
                           )}
+                          </Grid>
+                        </Grid>
+                        <Grid container>
+                          <Grid item md={2} sm={2} xs={12}> 
+                              <Tabs
+                                orientation={downSm ? 'horizontal' : 'vertical'}
+                                variant="scrollable"
+                                value={value}
+                                onChange={handleChange}
+                                aria-label="Vertical tabs example"
+                                className={classes.tabs}
+                                >
+                                  {/* { tourDate.events.map((event, index)=>(
+                                      <Tab label="7h30" {...a11yProps(index)} />
+                                  ))} */}
+                                  <Tab label="7h30" {...a11yProps(0)} />
+                                  <Tab label="8h30" {...a11yProps(1)} />
+                              </Tabs>
+                          </Grid>
+                          <Grid item md={10} sm={10} xs={12}>
+                            <TabPanel
+                              value={value}
+                              index={0}
+                              className={classes.tabPanel}
+                            >
+                              <div>
+                                <Typography>
+                                  <Label style={{ fontSize: 15 }} />{' '}
+                                  <span style={{ fontWeight: 500 }}> Mô tả: </span>{' '}
+                                  {"aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"}
+                                </Typography>
+                                <Typography>
+                                  <Label style={{ fontSize: 15 }} />
+                                  <span style={{ fontWeight: 500 }}>Chi phí: </span>{' '}
+                                  {new Intl.NumberFormat().format( 100* 1000)} VND
+                                </Typography>
+                              </div>
+                              <div>
+                                  {
+                                    tourDate.location && 
+                                    <Location
+                                    location={tourDate.location}
+                                    indexDate={idx}
+                                    tourDateId={tour.tour[idx]._id}
+                                    indexLocation={index=1}
+                                    edit={false}
+                                    key={index=1}
+                                    isSave={true}
+                                    isEdit={false}
+                                    addReview={createReview}
+                                    // joinIds={tour.joinIds}
+                                    isOwn={isOwn}
+                                    isOld={isOld}
+                                  />
+                                  }
+                              </div> 
+                            </TabPanel>
+                            <TabPanel
+                              value={value}
+                              index={1}
+                              className={classes.tabPanel}
+                            > 
+                              
+                            </TabPanel>
+                          </Grid>
+                        </Grid>
 
-                          <DetailDateRef
-                            ref={refDetail}
-                            date={idx}
-                            tourDate={tour.tour[idx]}
-                          />
-                        </TabPanel>
-                        <TabPanel
-                          value={value}
-                          index={1}
-                          className={classes.tabPanel}
-                        >
-                          {tour.tour[idx].locations.map((item, index) => (
-                            <Location
-                              location={item}
-                              indexDate={idx}
-                              tourDateId={tour.tour[idx]._id}
-                              indexLocation={index}
-                              edit={false}
-                              key={index}
-                              isSave={true}
-                              isEdit={false}
-                              addReview={createReview}
-                              joinIds={tour.joinIds}
-                              isOwn={isOwn}
-                              isOld={isOld}
-                            />
-                          ))}
-                        </TabPanel>
                       </StepContent>
                     </Step>
                   ))}

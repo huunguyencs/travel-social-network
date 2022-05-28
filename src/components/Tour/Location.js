@@ -297,7 +297,7 @@ function Detail(props) {
 
 export default function Location(props) {
   const classes = tourdetailStyles();
-
+  
   const dispatch = useDispatch();
 
   const {
@@ -310,7 +310,7 @@ export default function Location(props) {
     addReview,
     joined
   } = props;
-
+  console.log("location", location)
   const [showDetail, setShowDetail] = useState(false);
   const [showCreateRv, setShowCreateRv] = useState(false);
   const [anchorEl, setAnchorEl] = useState(null);
