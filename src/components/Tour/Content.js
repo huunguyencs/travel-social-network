@@ -583,19 +583,6 @@ function BaseContent(props) {
       )}
 
       <CardContent>
-        {/* <div>
-          {tour.userId._id !== auth.user?._id && (
-            <Button onClick={joinClick} disabled={state.loadingJoin || isOld}>
-              {state.loadingJoin ? (
-                <CircularProgress size={18} color="inherit" />
-              ) : join ? (
-                'Rời khỏi tour'
-              ) : (
-                'Tham gia tour'
-              )}
-            </Button>
-          )}
-        </div> */}
         <Typography
           variant="h6"
           className={classes.title}
@@ -604,8 +591,7 @@ function BaseContent(props) {
         >
           {tour.name}
         </Typography>
-        {/* <SeeMoreText variant="body1" maxText={100} text={tour.content} /> */}
-        <div dangerouslySetInnerHTML={{ __html: tour.content }} />
+        {/* <div dangerouslySetInnerHTML={{ __html: tour.content }} /> */}
         <Typography style={{ marginTop: 5 }}>
           Tỉnh: {tour.provinces.join(', ')}
         </Typography>

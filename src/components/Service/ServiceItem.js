@@ -12,25 +12,24 @@ import {
   Typography
 } from '@material-ui/core';
 import { Rating } from '@material-ui/lab';
-import React, { useEffect, useMemo, useState } from 'react';
+import React, { useMemo, useState } from 'react';
 import { serviceStyles } from '../../style';
 import { getStar } from '../../utils/utils';
 import { SeeMoreText } from '../SeeMoreText';
 import ImageList from '../Modal/ImageList';
-import { deleteService, getDetail } from '../../redux/callApi/serviceCall';
+import { deleteService } from '../../redux/callApi/serviceCall';
 import { useDispatch, useSelector } from 'react-redux';
 import { Link } from 'react-router-dom';
 import { error, success } from '../../redux/actions/alertAction';
 import { ServiceDetail } from './ServiceDetail';
 
-export default function ServiceItem(props) {
-  const { service } = props;
+export default function ServiceItem({ service }) {
   const { user, token } = useSelector(state => state.auth);
   const [open, setOpen] = useState(false);
-  const [state, setState] = useState({
-    loading: false,
-    error: false
-  });
+  // const [state, setState] = useState({
+  //   loading: false,
+  //   error: false
+  // });
   const [showDelete, setShowDelete] = useState(false);
   const [loadingDelete, setLoadingDelete] = useState(false);
 
@@ -74,41 +73,9 @@ export default function ServiceItem(props) {
     );
   };
 
-  useEffect(() => {
-    if (open && !service.rate) {
-      getServiceDetail(service, dispatch);
-    }
-  }, [open, service, dispatch]);
-
   const isOwn = useMemo(() => {
     return user?._id === service?.cooperator._id;
   }, [user, service]);
-
-  const getServiceDetail = (service, dispatch) => {
-    if (!service.rate) {
-      setState({
-        loading: true,
-        error: false
-      });
-      dispatch(
-        getDetail(
-          service._id,
-          () => {
-            setState({
-              loading: false,
-              error: false
-            });
-          },
-          () => {
-            setState({
-              loading: false,
-              error: true
-            });
-          }
-        )
-      );
-    }
-  };
 
   const classes = serviceStyles();
 
@@ -211,12 +178,7 @@ export default function ServiceItem(props) {
         onClose={toggleDrawer(false)}
         style={{ zIndex: 10 }}
       >
-        <ServiceDetail
-          service={service}
-          state={state}
-          getServiceDetail={getServiceDetail}
-          handleClose={toggleDrawer}
-        />
+        <ServiceDetail service={service} handleClose={toggleDrawer} />
       </Drawer>
     </>
   );

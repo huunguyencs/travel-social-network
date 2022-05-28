@@ -1,13 +1,12 @@
 import {
   Avatar,
-  Button,
   Chip,
   IconButton,
   InputBase,
   Typography
 } from '@material-ui/core';
 import { Rating } from '@material-ui/lab';
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { serviceStyles } from '../../style';
 import { getStar } from '../../utils/utils';
 import { reviewService } from '../../redux/callApi/serviceCall';
@@ -18,39 +17,28 @@ import { Link } from 'react-router-dom';
 import MapCard from '../Map/MapCard';
 import { checkImage } from '../../utils/uploadImage';
 import Lightbox from 'react-image-lightbox';
-import Loading from '../Loading';
-
-function Image(props) {
-  const { image, index, handleRemove } = props;
-
-  const remove = () => {
-    // console.log(index);
-    handleRemove(index);
-  };
-
-  return (
-    <div>
-      <img
-        src={URL.createObjectURL(image)}
-        alt="Error"
-        width={80}
-        height={80}
-      />
-      <IconButton size="small" onClick={remove}>
-        <Close />
-      </IconButton>
-    </div>
-  );
-}
+import customAxios from '../../utils/fetchData';
 
 export function ServiceDetail(props) {
-  const { service, state, getServiceDetail, handleClose } = props;
+  const { token } = useSelector(state => state.auth);
+  const { service, handleClose } = props;
   const classes = serviceStyles();
+  const [rates, setRates] = useState(null);
+  const [count, setCount] = useState(0);
+
+  useEffect(() => {
+    customAxios(token)
+      .get(`/service/rate/${service._id}`)
+      .then(res => {
+        setRates(res.data.rates);
+        setCount(res.data.count);
+      });
+  }, [token, service._id]);
 
   return (
     <div className={classes.reviewContainer}>
       <div className={classes.closeButton}>
-        <IconButton onClick={handleClose(false)} size="small">
+        <IconButton onClick={() => handleClose(false)} size="small">
           <Close />
         </IconButton>
       </div>
@@ -119,24 +107,18 @@ export function ServiceDetail(props) {
         </div>
 
         <div className={classes.center}>
-          {service.rate && (
-            <>
-              <Typography variant="body1">
-                Tổng số review: {service.rate?.length}
-              </Typography>
-              <Rating
-                name="read-only"
-                value={getStar(service.star)}
-                readOnly
-                size="medium"
-              />
-            </>
-          )}
+          <Typography variant="body1">Tổng số review: {count}</Typography>
+          <Rating
+            name="read-only"
+            value={getStar(service.star)}
+            readOnly
+            size="medium"
+          />
         </div>
 
         <div className={classes.contentReview}>
-          {service.rate &&
-            (service.rate.length === 0 ? (
+          {rates &&
+            (rates.length === 0 ? (
               <div className={classes.centerMarginTop}>
                 <Typography>
                   <i>Chưa có review cho dịch vụ này</i>
@@ -144,21 +126,11 @@ export function ServiceDetail(props) {
               </div>
             ) : (
               <div>
-                {service.rate.map((item, index) => (
+                {rates?.map((item, index) => (
                   <ReviewService key={index} review={item} />
                 ))}
               </div>
             ))}
-          {state.loading && (
-            <div className={classes.centerMarginTop}>
-              <Loading />
-            </div>
-          )}
-          {state.error && (
-            <div className={classes.centerMarginTop}>
-              <Button onClick={getServiceDetail(service)}>Thử lại</Button>
-            </div>
-          )}
         </div>
       </div>
 
@@ -169,8 +141,31 @@ export function ServiceDetail(props) {
             width: '60%'
           }}
         />
-        <ReviewArea id={service._id} />
+        <ReviewArea id={service._id} setRates={setRates} />
       </div>
+    </div>
+  );
+}
+
+function Image(props) {
+  const { image, index, handleRemove } = props;
+
+  const remove = () => {
+    // console.log(index);
+    handleRemove(index);
+  };
+
+  return (
+    <div>
+      <img
+        src={URL.createObjectURL(image)}
+        alt="Error"
+        width={80}
+        height={80}
+      />
+      <IconButton size="small" onClick={remove}>
+        <Close />
+      </IconButton>
     </div>
   );
 }
@@ -270,8 +265,7 @@ function ReviewService(props) {
   );
 }
 
-export function ReviewArea(props) {
-  const { id } = props;
+export function ReviewArea({ id, setRates }) {
   const [text, setText] = useState('');
   const { auth } = useSelector(state => state);
   const [rate, setRate] = useState(0);
@@ -285,7 +279,11 @@ export function ReviewArea(props) {
     e.preventDefault();
     if (rate && rate !== 0) {
       setError('');
-      dispatch(reviewService(id, auth, rate, text, images));
+      dispatch(
+        reviewService(id, auth, rate, text, images, rate => {
+          if (setRates) setRates(state => [rate, ...state]);
+        })
+      );
       setText('');
       setRate(0);
       setImages([]);

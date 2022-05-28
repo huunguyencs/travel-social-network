@@ -12,6 +12,35 @@ import React, { useState } from 'react';
 import { formStyles } from '../../style';
 import EmojiPicker from '../Input/EmojiPicker';
 
+const modules = {
+  toolbar: [
+    [{ header: [3, false] }],
+    ['bold', 'italic', 'underline', 'strike'],
+    [
+      { list: 'ordered' },
+      { list: 'bullet' },
+      { indent: '-1' },
+      { indent: '+1' },
+      { align: [] }
+    ],
+    ['link']
+  ]
+};
+
+const formats = [
+  'header',
+  'bold',
+  'italic',
+  'underline',
+  'strike',
+  'blockquote',
+  'list',
+  'bullet',
+  'indent',
+  'align',
+  'link'
+];
+
 export default function UpdateTourInfo({ tourInfo, setTourInfo, image, cost }) {
   const { name, hashtags, content } = tourInfo;
 
@@ -119,6 +148,8 @@ export default function UpdateTourInfo({ tourInfo, setTourInfo, image, cost }) {
               onChange={e => setTourInfo(state => ({ ...state, content: e }))}
               style={{ width: '100%' }}
               placeholder="Nội dung tour ..."
+              modules={modules}
+              formats={formats}
             />
           </div>
           <div>

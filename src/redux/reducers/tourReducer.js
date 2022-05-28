@@ -54,8 +54,8 @@ const tourReducer = (state = INIT_STATE, action) => {
       return {
         ...state,
         error: null,
-        tours: state.tours.filter(tour => tour._id !== action.payload.id),
-        tourHot: state.tourHot.filter(tour => tour._id !== action.payload.id)
+        tours: state.tours?.filter(tour => tour._id !== action.payload.id),
+        tourHot: state.tourHot?.filter(tour => tour._id !== action.payload.id)
       };
     }
     case TOUR_TYPES.UPDATE_TOUR: {
@@ -95,9 +95,10 @@ const tourReducer = (state = INIT_STATE, action) => {
       let comment =
         state.tours.find(item => item._id === action.payload.id)
           ?.commentDetail || [];
-      if(comment.length === 0){
-        comment = state.tourHot.find(item => item._id === action.payload.id)
-        ?.commentDetail || [];
+      if (comment.length === 0) {
+        comment =
+          state.tourHot.find(item => item._id === action.payload.id)
+            ?.commentDetail || [];
       }
       return {
         ...state,
@@ -123,9 +124,10 @@ const tourReducer = (state = INIT_STATE, action) => {
       let comment =
         state.tours.find(item => item._id === action.payload.id)
           ?.commentDetail || [];
-      if(comment.length === 0){
-        comment = state.tourHot.find(item => item._id === action.payload.id)
-        ?.commentDetail || [];
+      if (comment.length === 0) {
+        comment =
+          state.tourHot.find(item => item._id === action.payload.id)
+            ?.commentDetail || [];
       }
       return {
         ...state,
@@ -213,7 +215,7 @@ const tourReducer = (state = INIT_STATE, action) => {
       return {
         ...state,
         tourHot: action.payload,
-        loading: false,
+        loading: false
       };
     }
     case TOUR_TYPES.ERROR_TOUR: {

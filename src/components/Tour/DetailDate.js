@@ -160,6 +160,35 @@ function AddEventButtons({
   );
 }
 
+const modules = {
+  toolbar: [
+    [{ header: [3, false] }],
+    ['bold', 'italic', 'underline', 'strike'],
+    [
+      { list: 'ordered' },
+      { list: 'bullet' },
+      { indent: '-1' },
+      { indent: '+1' },
+      { align: [] }
+    ],
+    ['link']
+  ]
+};
+
+const formats = [
+  'header',
+  'bold',
+  'italic',
+  'underline',
+  'strike',
+  'blockquote',
+  'list',
+  'bullet',
+  'indent',
+  'align',
+  'link'
+];
+
 function TimeDetail({ event, indexDate, indexEvent }) {
   const classes = tourdetailStyles();
   const dispatch = useDispatch();
@@ -183,6 +212,8 @@ function TimeDetail({ event, indexDate, indexEvent }) {
         onChange={e => setDescription(e)}
         style={{ width: '100%' }}
         placeholder="Mô tả"
+        modules={modules}
+        formats={formats}
       />
       <TextField
         label="Chi phí"

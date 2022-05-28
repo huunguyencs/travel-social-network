@@ -7,7 +7,6 @@ import {
   Modal,
   Typography
 } from '@material-ui/core';
-import { Link } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 import {
   Favorite,
@@ -255,16 +254,22 @@ export default function Tour(props) {
                     tour.likes.slice(0, 5).map((item, index) => (
                       <Typography
                         key={index}
-                        component={Link}
-                        to={`/u/${item._id}`}
+                        onClick={handleOpen}
                         style={{
                           fontSize: 14,
                           fontWeight: 500,
-                          color: 'black'
+                          color: 'black',
+                          cursor: 'pointer'
                         }}
                       >
-                        {item.fullname.split(" ")[item.fullname.split(" ").length - 1]}
-                        {index !== tour.likes.slice(0, 5).length - 1 ? ", ": ""}
+                        {
+                          item.fullname.split(' ')[
+                            item.fullname.split(' ').length - 1
+                          ]
+                        }
+                        {index !== tour.likes.slice(0, 5).length - 1
+                          ? ', '
+                          : ''}
                       </Typography>
                     ))}
                 </p>
@@ -272,7 +277,10 @@ export default function Tour(props) {
                   <p style={{ margin: 0 }}>đã thích bài viết này</p>
                 ) : (
                   tour?.likes.length > 1 && (
-                    <p style={{ margin: 0, cursor: "pointer" }} onClick={handleOpen}>
+                    <p
+                      style={{ margin: 0, cursor: 'pointer' }}
+                      onClick={handleOpen}
+                    >
                       và những người khác đã thích bài này
                     </p>
                   )
@@ -396,7 +404,11 @@ export default function Tour(props) {
               {tour.commentDetail &&
                 !loadingComment &&
                 tour.commentDetail?.length < tour.comments?.length && (
-                  <Typography variant="body1" onClick={loadMoreComment} className={classes.loadMoreComment}>
+                  <Typography
+                    variant="body1"
+                    onClick={loadMoreComment}
+                    className={classes.loadMoreComment}
+                  >
                     Xem thêm bình luận
                   </Typography>
                 )}

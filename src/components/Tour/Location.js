@@ -302,8 +302,8 @@ export default function Location(props) {
     tourDateId,
     indexDate,
     indexLocation,
-    addReview,
-    joined
+    addReview
+    // joined
   } = props;
 
   // const [showDetail, setShowDetail] = useState(false);

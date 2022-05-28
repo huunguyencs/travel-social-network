@@ -16,8 +16,8 @@ import { formStyles } from '../../style';
 import AddLocMap from './AddLocMap';
 import * as tourAction from '../../redux/actions/createTourAction';
 import { AddCircle, CameraAltOutlined } from '@material-ui/icons';
-import ServiceRecommend from '../Service/ServiceRecommend';
-import { getRecommend } from '../../redux/callApi/serviceCall';
+// import ServiceRecommend from '../Service/ServiceRecommend';
+// import { getRecommend } from '../../redux/callApi/serviceCall';
 import customAxios from '../../utils/fetchData';
 import { checkImage, uploadImages } from '../../utils/uploadImage';
 import { ScrollMenu } from 'react-horizontal-scrolling-menu';
@@ -251,7 +251,7 @@ function AddLocationDefault(props) {
   const classes = formStyles();
 
   const dispatch = useDispatch();
-  const { location, createTour, auth } = useSelector(state => state);
+  const { location, auth } = useSelector(state => state);
   const {
     indexDate,
     handleClose,

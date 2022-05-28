@@ -9,7 +9,6 @@ import {
   CardMedia
 } from '@material-ui/core';
 import { useDispatch, useSelector } from 'react-redux';
-import { Link } from 'react-router-dom';
 import {
   Favorite,
   InsertLink,
@@ -342,12 +341,20 @@ export default function Post(props) {
                   post.likes.slice(0, 5).map((item, index) => (
                     <Typography
                       key={index}
-                      component={Link}
-                      to={`/u/${item._id}`}
-                      style={{ fontSize: 14, fontWeight: 500, color: 'black' }}
+                      onClick={handleOpen}
+                      style={{
+                        fontSize: 14,
+                        fontWeight: 500,
+                        color: 'black',
+                        cursor: 'pointer'
+                      }}
                     >
-                      {item.fullname.split(" ")[item.fullname.split(" ").length - 1]}
-                      {index !== post.likes.slice(0, 5).length - 1 ? ", ": ""}
+                      {
+                        item.fullname.split(' ')[
+                          item.fullname.split(' ').length - 1
+                        ]
+                      }
+                      {index !== post.likes.slice(0, 5).length - 1 ? ', ' : ''}
                     </Typography>
                   ))}
               </p>

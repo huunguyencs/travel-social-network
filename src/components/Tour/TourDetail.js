@@ -35,7 +35,7 @@ import {
   ListItemSecondaryAction,
   Popover,
   useMediaQuery,
-  useTheme,
+  useTheme
 } from '@material-ui/core';
 import AvatarGroup from '@material-ui/lab/AvatarGroup';
 import React, { useEffect, useMemo, useState } from 'react';
@@ -64,39 +64,11 @@ import { deleteTour } from '../../redux/callApi/tourCall';
 import TourRecommendCard from '../Card/TourRecommendCard';
 import { SeeMoreText } from '../SeeMoreText';
 import InviteTour from '../Modal/InviteTour';
-import ServiceCard from './Service';
 import InputComment from '../Input/Comment';
 import Comment from '../Comment';
-// const data={
-//   content: "Team mình bắt đầu đi từ Sài Gòn đêm thứ 6 về Qui Nhơn, nếu bạn chỉ đi Qui Nhơn thì chỉ cần 2 ngày 1 đêm là ok rồi; còn nếu muốn đi thêm Phú Yên thì thêm 2 ngày 1 đêm nữa.",
-//   name:"Quy Nhơn- Phú Yên đầy nắng gió", 
-//   cost: 10100, 
-//   createdAt: "2022-05-25T18:20:03.672Z",
-//   hashtags:["Quy nhơn, Phu yên","bien","gió"],
-//   image:"https://res.cloudinary.com/dqxvfu5k1/image/upload/v1653502802/b7l2onl5uowz38khlth0.jpg",
-//   isPublic: false,
-//   joinIds:[{
-//     id:{
-//       avatar: "https://res.cloudinary.com/huunguyencs/image/upload/v1653359438/k3rvnexrnyecdwrotew1.jpg",
-//       email: "huy.tran0207@hcmut.edu.vn",
-//       fullname: "Trần Quang Huy",
-//       _id: "627d09531961cd962ff8cdcf"
-//     },
-//     isEdit: true,
-//     isJoin: true
-//   }],
-//   likes:[],
-//   comments:[],
-//   userId:{
-//     avatar: "https://res.cloudinary.com/huunguyencs/image/upload/v1653359438/k3rvnexrnyecdwrotew1.jpg",
-//       email: "huy.tran0207@hcmut.edu.vn",
-//       fullname: "Trần Quang Huy",
-//       _id: "627d09531961cd962ff8cdcf"
-//   },
 
-// }
 function DetailDate(props) {
-  const { tourDate, date, joined } = props;
+  const { tourDate } = props;
 
   const classes = tourdetailStyles();
 
@@ -104,7 +76,7 @@ function DetailDate(props) {
     <Paper className={classes.paperDetailDate}>
       <Grid container style={{ padding: 10 }}>
         <Grid item md={12} sm={12} xs={12}>
-          <Typography variant='h6'>Tổng quan ngày</Typography>
+          <Typography variant="h6">Tổng quan ngày</Typography>
           <Typography>
             <Label style={{ fontSize: 15 }} />{' '}
             <span style={{ fontWeight: 500 }}> Mô tả: </span>{' '}
@@ -116,29 +88,6 @@ function DetailDate(props) {
             {new Intl.NumberFormat().format(tourDate.cost * 1000)} VND
           </Typography>
         </Grid>
-        {/* <Grid item md={12} sm={12} xs={12}>
-          <div style={{ display: 'flex', justifyContent: 'space-between' }}>
-            <Typography
-              variant="h6"
-              style={{ textAlign: 'center', marginTop: 10 }}
-            >
-              Danh sách dịch vụ
-            </Typography>
-          </div>
-          <div className={classes.servicesWrapperMaxHeight}>
-            {tourDate.services.map((item, index) => (
-              <ServiceCard
-                joined={joined}
-                type="date"
-                key={index}
-                service={item}
-                index={index}
-                isEdit={false}
-                indexDate={date}
-              />
-            ))}
-          </div>
-        </Grid> */}
       </Grid>
     </Paper>
   );
@@ -383,8 +332,12 @@ export default function TourDetail(props) {
   useEffect(() => {
     if (tour && tour.tour[idx].events.length > 0) {
       const temp = tour.tour[idx].events[0];
-      if(temp.location != null) setPosition(temp.location.position);
-      else if(temp.service != null && position != null) setPosition({lng: temp.service.position[0], lat:temp.service.position[1]});
+      if (temp.location != null) setPosition(temp.location.position);
+      else if (temp.service != null && position != null)
+        setPosition({
+          lng: temp.service.position[0],
+          lat: temp.service.position[1]
+        });
     }
   }, [tour, idx, position]);
   useEffect(() => {
@@ -848,9 +801,6 @@ export default function TourDetail(props) {
                     <Typography className={classes.tourName}>
                       {tour.name}
                     </Typography>
-                    {/* <Typography>Thời gian: {convertDateToStr(volunteer.date[0].date)}</Typography>
-                                            <Typography>Địa điểm xuất phát: {volunteer.location[0].location.fullname}</Typography>
-                                            <Typography>Thể loại: {volunteer.type}</Typography> */}
                   </CardContent>
                 </Card>
                 <div className={classes.tourRecommend}>
@@ -887,8 +837,7 @@ export default function TourDetail(props) {
                         </div>
                       </StepLabel>
                       <StepContent>
-
-                          {/* {tour.tour[idx].locations?.map((item, index) => (
+                        {/* {tour.tour[idx].locations?.map((item, index) => (
                             <Location
                               location={item}
                               indexDate={idx}
@@ -913,73 +862,75 @@ export default function TourDetail(props) {
                             />
                           </Grid>
                           <Grid item md={1} sm={1} xs={1}>
-                          {isJoin && (
-                            <>
-                              <IconButton
-                                style={{ marginLeft: 10 }}
-                                onClick={handleClickFeedback}
-                                aria-describedby={idx}
-                              >
-                                <ChatBubbleOutlineOutlined />
-                              </IconButton>
-                              <Popover
-                                id={idx}
-                                open={openFeedback}
-                                anchorEl={anchorElFeedback}
-                                onClose={handleCloseFeedback}
-                                anchorOrigin={{
-                                  vertical: 'top',
-                                  horizontal: 'right'
-                                }}
-                                transformOrigin={{
-                                  vertical: 'bottom',
-                                  horizontal: 'left'
-                                }}
-                              >
-                                <div className={classes.feedbacks}>
-                                  <Typography variant="h6">Nhận xét</Typography>
-                                  <hr className={classes.line} />
-                                  <div className={classes.listCmt}>
-                                    {tourDate.comments &&
-                                      tourDate.comments.map(cmt => (
-                                        <Comment
-                                          comment={cmt}
-                                          key={cmt._id}
-                                          id={tourDate._id}
-                                          type="feedback"
-                                        />
-                                      ))}
-                                  </div>
-                                  {auth.user && (
-                                    <div className={classes.wrapInput}>
-                                      <InputComment
-                                        type="feedback"
-                                        id={tourDate._id}
-                                      />
+                            {isJoin && (
+                              <>
+                                <IconButton
+                                  style={{ marginLeft: 10 }}
+                                  onClick={handleClickFeedback}
+                                  aria-describedby={idx}
+                                >
+                                  <ChatBubbleOutlineOutlined />
+                                </IconButton>
+                                <Popover
+                                  id={idx}
+                                  open={openFeedback}
+                                  anchorEl={anchorElFeedback}
+                                  onClose={handleCloseFeedback}
+                                  anchorOrigin={{
+                                    vertical: 'top',
+                                    horizontal: 'right'
+                                  }}
+                                  transformOrigin={{
+                                    vertical: 'bottom',
+                                    horizontal: 'left'
+                                  }}
+                                >
+                                  <div className={classes.feedbacks}>
+                                    <Typography variant="h6">
+                                      Nhận xét
+                                    </Typography>
+                                    <hr className={classes.line} />
+                                    <div className={classes.listCmt}>
+                                      {tourDate.comments &&
+                                        tourDate.comments.map(cmt => (
+                                          <Comment
+                                            comment={cmt}
+                                            key={cmt._id}
+                                            id={tourDate._id}
+                                            type="feedback"
+                                          />
+                                        ))}
                                     </div>
-                                  )}
-                                </div>
-                              </Popover>
-                            </>
-                          )}
+                                    {auth.user && (
+                                      <div className={classes.wrapInput}>
+                                        <InputComment
+                                          type="feedback"
+                                          id={tourDate._id}
+                                        />
+                                      </div>
+                                    )}
+                                  </div>
+                                </Popover>
+                              </>
+                            )}
                           </Grid>
                         </Grid>
                         <Grid container>
-                          <Grid item md={2} sm={2} xs={12}> 
-                              <Tabs
-                                orientation={downSm ? 'horizontal' : 'vertical'}
-                                variant="scrollable"
-                                value={value}
-                                onChange={handleChange}
-                                aria-label="Vertical tabs example"
-                                className={classes.tabs}
-                                >
-                                  {/* { tourDate.events.map((event, index)=>(
+                          <Grid item md={2} sm={2} xs={12}>
+                            <Tabs
+                              orientation={downSm ? 'horizontal' : 'vertical'}
+                              variant="scrollable"
+                              value={value}
+                              onChange={handleChange}
+                              aria-label="Vertical tabs example"
+                              className={classes.tabs}
+                            >
+                              {/* { tourDate.events.map((event, index)=>(
                                       <Tab label="7h30" {...a11yProps(index)} />
                                   ))} */}
-                                  <Tab label="7h30" {...a11yProps(0)} />
-                                  <Tab label="8h30" {...a11yProps(1)} />
-                              </Tabs>
+                              <Tab label="7h30" {...a11yProps(0)} />
+                              <Tab label="8h30" {...a11yProps(1)} />
+                            </Tabs>
                           </Grid>
                           <Grid item md={10} sm={10} xs={12}>
                             <TabPanel
@@ -989,26 +940,32 @@ export default function TourDetail(props) {
                             >
                               <div>
                                 <Typography>
-                                  <Label style={{ fontSize: 15 }} />{' '}
-                                  <span style={{ fontWeight: 500 }}> Mô tả: </span>{' '}
-                                  {"aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"}
+                                  <Label style={{ fontSize: 15 }} />
+                                  <span style={{ fontWeight: 500 }}>
+                                    Mô tả:
+                                  </span>
+                                  {
+                                    'aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa'
+                                  }
                                 </Typography>
                                 <Typography>
                                   <Label style={{ fontSize: 15 }} />
-                                  <span style={{ fontWeight: 500 }}>Chi phí: </span>{' '}
-                                  {new Intl.NumberFormat().format( 100* 1000)} VND
+                                  <span style={{ fontWeight: 500 }}>
+                                    Chi phí:
+                                  </span>
+                                  {new Intl.NumberFormat().format(100 * 1000)}
+                                  VND
                                 </Typography>
                               </div>
                               <div>
-                                  {
-                                    tourDate.location && 
-                                    <Location
+                                {tourDate.location && (
+                                  <Location
                                     location={tourDate.location}
                                     indexDate={idx}
                                     tourDateId={tour.tour[idx]._id}
-                                    indexLocation={index=1}
+                                    indexLocation={(index = 1)}
                                     edit={false}
-                                    key={index=1}
+                                    key={(index = 1)}
                                     isSave={true}
                                     isEdit={false}
                                     addReview={createReview}
@@ -1016,19 +973,16 @@ export default function TourDetail(props) {
                                     isOwn={isOwn}
                                     isOld={isOld}
                                   />
-                                  }
-                              </div> 
+                                )}
+                              </div>
                             </TabPanel>
                             <TabPanel
                               value={value}
                               index={1}
                               className={classes.tabPanel}
-                            > 
-                              
-                            </TabPanel>
+                            ></TabPanel>
                           </Grid>
                         </Grid>
-
                       </StepContent>
                     </Step>
                   ))}

@@ -25,26 +25,26 @@ export const getServices = (id, page, next) => async dispatch => {
   }
 };
 
-export const getDetail = (id, next, error) => async dispatch => {
-  try {
-    const res = await customAxios().get(`/service/rate/${id}`);
-    // console.log(res);
-    dispatch(
-      serviceAction.getDetail({
-        rate: res.data.rate,
-        attribute: res.data.attribute,
-        id: id
-      })
-    );
-    // console.log(res.data.rate);
-    next();
-  } catch (err) {
-    error();
-  }
-};
+// export const getDetail = (id, next, error) => async dispatch => {
+//   try {
+//     const res = await customAxios().get(`/service/rate/${id}`);
+//     // console.log(res);
+//     dispatch(
+//       serviceAction.getDetail({
+//         rate: res.data.rate,
+//         attribute: res.data.attribute,
+//         id: id
+//       })
+//     );
+//     // console.log(res.data.rate);
+//     next();
+//   } catch (err) {
+//     error();
+//   }
+// };
 
 export const reviewService =
-  (id, auth, rate, content, images) => async dispatch => {
+  (id, auth, rate, content, images, next) => async dispatch => {
     try {
       let arrImage = [];
 
@@ -78,6 +78,7 @@ export const reviewService =
           star: res.data.star
         })
       );
+      if (next) next(newReview);
     } catch (err) {
       dispatch(alertAction.error({ message: 'Có lỗi xảy ra!' }));
     }

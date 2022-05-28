@@ -147,6 +147,35 @@ import DetailDate from './DetailDate';
 //   );
 // }
 
+const modules = {
+  toolbar: [
+    [{ header: [3, false] }],
+    ['bold', 'italic', 'underline', 'strike'],
+    [
+      { list: 'ordered' },
+      { list: 'bullet' },
+      { indent: '-1' },
+      { indent: '+1' },
+      { align: [] }
+    ],
+    ['link']
+  ]
+};
+
+const formats = [
+  'header',
+  'bold',
+  'italic',
+  'underline',
+  'strike',
+  'blockquote',
+  'list',
+  'bullet',
+  'indent',
+  'align',
+  'link'
+];
+
 function EditBaseDate(props) {
   const { tourDate, date } = props;
 
@@ -192,6 +221,8 @@ function EditBaseDate(props) {
             onChange={e => setText(e)}
             style={{ width: '100%' }}
             placeholder="Chi tiết"
+            modules={modules}
+            formats={formats}
           />
           {/* <TextField
             label="Chi phí"

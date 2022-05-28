@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useCallback } from 'react';
+import React, { useState } from 'react';
 import {
   Button,
   Card,
@@ -17,7 +17,6 @@ import { tourdetailStyles } from '../../style';
 import SwipeableViews from 'react-swipeable-views';
 import { autoPlay } from 'react-swipeable-views-utils';
 import { ServiceDetail } from './ServiceDetail';
-import customAxios from '../../utils/fetchData';
 
 const AutoPlaySwipeableViews = autoPlay(SwipeableViews);
 
@@ -25,12 +24,12 @@ function ServiceRecommendItem({ service, indexDate }) {
   const classes = tourdetailStyles();
   const dispatch = useDispatch();
 
-  const [ser, setSer] = useState(service);
+  // const [ser, setSer] = useState(service);
 
-  const [state, setState] = useState({
-    loading: false,
-    error: false
-  });
+  // const [state, setState] = useState({
+  //   loading: false,
+  //   error: false
+  // });
   const [open, setOpen] = useState(false);
   const toggleDrawer = open => event => {
     if (
@@ -54,37 +53,37 @@ function ServiceRecommendItem({ service, indexDate }) {
     );
   };
 
-  const getServiceDetail = useCallback(() => {
-    if (!ser.rate) {
-      setState({
-        loading: true,
-        error: false
-      });
-      customAxios()
-        .get(`/service/rate/${ser._id}`)
-        .then(res => {
-          setSer({
-            ...ser,
-            rate: res.data.rate,
-            attribute: res.data.attribute,
-            id: ser._id
-          });
-        });
-    }
-  }, [ser]);
+  // const getServiceDetail = useCallback(() => {
+  //   if (!ser.rate) {
+  //     setState({
+  //       loading: true,
+  //       error: false
+  //     });
+  //     customAxios()
+  //       .get(`/service/rate/${ser._id}`)
+  //       .then(res => {
+  //         setSer({
+  //           ...ser,
+  //           rate: res.data.rate,
+  //           attribute: res.data.attribute,
+  //           id: ser._id
+  //         });
+  //       });
+  //   }
+  // }, [ser]);
 
-  useEffect(() => {
-    if (open && !ser.rate) {
-      getServiceDetail();
-    }
-  }, [open, getServiceDetail, ser]);
+  // useEffect(() => {
+  //   if (open && !ser.rate) {
+  //     getServiceDetail();
+  //   }
+  // }, [open, getServiceDetail, ser]);
   return (
     <>
       <Card>
         <CardMedia
           className={classes.media}
-          image={ser?.images[0]}
-          title={ser?.name}
+          image={service?.images[0]}
+          title={service?.name}
         />
 
         <CardContent>
@@ -94,13 +93,13 @@ function ServiceRecommendItem({ service, indexDate }) {
             onClick={toggleDrawer(true)}
             className={classes.serviceName}
           >
-            {ser?.name}
+            {service?.name}
           </Typography>
           <Typography variant="body2" color="textSecondary" component="p">
-            {ser?.andress}
+            {service?.andress}
           </Typography>
           <Typography variant="body2" color="textSecondary" component="p">
-            {ser?.cost}
+            {service?.cost}
           </Typography>
         </CardContent>
         <CardActions className={classes.buttonWrapper}>
@@ -120,9 +119,9 @@ function ServiceRecommendItem({ service, indexDate }) {
         style={{ zIndex: 10 }}
       >
         <ServiceDetail
-          service={ser}
-          state={state}
-          getServiceDetail={getServiceDetail}
+          service={service}
+          // state={state}
+          // getServiceDetail={getServiceDetail}
           handleClose={toggleDrawer}
         />
       </Drawer>
