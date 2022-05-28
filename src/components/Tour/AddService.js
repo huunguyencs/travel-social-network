@@ -1,7 +1,6 @@
 import {
   Button,
   Grid,
-  InputAdornment,
   InputBase,
   Paper,
   TextField,
