@@ -33,7 +33,7 @@ import {
   ListItemAvatar,
   ListItemText,
   ListItemSecondaryAction,
-  Popover,
+  Popover
 } from '@material-ui/core';
 import AvatarGroup from '@material-ui/lab/AvatarGroup';
 import React, { useEffect, useMemo, useState } from 'react';
@@ -188,8 +188,9 @@ function a11yProps(index) {
 }
 
 export default function TourDetail(props) {
-  const { tour, isOwn, setTour, isInvite, setIsInvite, memberIsEdit, isMember, isJoin } = props;
-  console.log("+++++tour+++", tour)
+  const { tour, isOwn, setTour, isInvite, setIsInvite, memberIsEdit, isJoin } =
+    props;
+  console.log('+++++tour+++', tour);
   const classes = tourdetailStyles();
 
   //   const dispatch = useDispatch();
@@ -427,19 +428,19 @@ export default function TourDetail(props) {
     );
   };
 
-  const updateAccept = () =>{
-    setTour( tour=>({
-        ...tour,
-        joinIds: tour.joinIds.map(item=>
-          item.id._id === auth.user._id ?
-          {
-            ...item,
-            isJoin: true
-          }:
-          item
-        )
-    }))
-  }
+  const updateAccept = () => {
+    setTour(tour => ({
+      ...tour,
+      joinIds: tour.joinIds.map(item =>
+        item.id._id === auth.user._id
+          ? {
+              ...item,
+              isJoin: true
+            }
+          : item
+      )
+    }));
+  };
 
   const handleAcceptInvite = () => {
     setState({
@@ -468,14 +469,14 @@ export default function TourDetail(props) {
     );
   };
 
-  const updateUnAccept = () =>{
-    setTour( tour=>({
-        ...tour,
-        joinIds: tour.joinIds.filter(item => item.id._id !== auth.user._id )
-    }))
-  }
+  const updateUnAccept = () => {
+    setTour(tour => ({
+      ...tour,
+      joinIds: tour.joinIds.filter(item => item.id._id !== auth.user._id)
+    }));
+  };
 
-  const handleUnAcceptInvite= ()=>{
+  const handleUnAcceptInvite = () => {
     setState({
       loadingJoin: true,
       error: false
@@ -499,11 +500,11 @@ export default function TourDetail(props) {
         }
       )
     );
-  }
+  };
 
   const [anchorElFeedback, setAnchorElFeedback] = useState(null);
 
-  const handleClickFeedback = (event) => {
+  const handleClickFeedback = event => {
     setAnchorElFeedback(event.currentTarget);
   };
 
@@ -534,33 +535,38 @@ export default function TourDetail(props) {
                     img={tour.image}
                   />
                 </div>
-                {
-                  isInvite && 
-                  <div className={classes.invitation}> 
-                  <List>
-                    <ListItem>
+                {isInvite && (
+                  <div className={classes.invitation}>
+                    <List>
+                      <ListItem>
                         <ListItemAvatar>
-                            <Avatar alt="avatar" src={tour.userId.avatar}>
-                            </Avatar>
+                          <Avatar
+                            alt="avatar"
+                            src={tour.userId.avatar}
+                          ></Avatar>
                         </ListItemAvatar>
-                        <ListItemText primary={tour.userId.fullname + " đã mời bạn tham gia hành trình này"} secondary={1?"Với quyền chỉnh sửa":"Với quyền chỉnh sửa"}/>
+                        <ListItemText
+                          primary={
+                            tour.userId.fullname +
+                            ' đã mời bạn tham gia hành trình này'
+                          }
+                          secondary={
+                            1 ? 'Với quyền chỉnh sửa' : 'Với quyền chỉnh sửa'
+                          }
+                        />
                         <ListItemSecondaryAction>
-                            <Button
-                              onClick={()=>handleAcceptInvite()}
-                            >
-                              Tham gia nhóm
-                            </Button>
-                            <Button
-                              onClick={()=>handleUnAcceptInvite()}
-                            >
-                              Từ chối lời mời
-                            </Button>
+                          <Button onClick={() => handleAcceptInvite()}>
+                            Tham gia nhóm
+                          </Button>
+                          <Button onClick={() => handleUnAcceptInvite()}>
+                            Từ chối lời mời
+                          </Button>
                         </ListItemSecondaryAction>
-                    </ListItem>
-                  </List>
-                </div>
-                }
-                
+                      </ListItem>
+                    </List>
+                  </div>
+                )}
+
                 <div className={classes.tourLeftInfo}>
                   <Typography variant="h6" className={classes.tourName}>
                     {tour.name}
@@ -641,15 +647,16 @@ export default function TourDetail(props) {
                       onClick={handleShowJoin}
                       style={{ cursor: 'pointer' }}
                     >
-                      {tour.joinIds.map((user,idx) =>(
-                        user.isJoin && 
-                        <Avatar
-                          src={user.id.avatar}
-                          alt={'avatar'}
-                          key={idx}
-                          style={{ height: 30, width: 30 }}
-                        />
-                      )
+                      {tour.joinIds.map(
+                        (user, idx) =>
+                          user.isJoin && (
+                            <Avatar
+                              src={user.id.avatar}
+                              alt={'avatar'}
+                              key={idx}
+                              style={{ height: 30, width: 30 }}
+                            />
+                          )
                       )}
                     </AvatarGroup>
                     <Modal
@@ -666,7 +673,9 @@ export default function TourDetail(props) {
                     >
                       <UserListRef
                         ref={refUser}
-                        listUser={tour.joinIds.filter(item=> item.isJoin === true).map(item=> item.id)}
+                        listUser={tour.joinIds
+                          .filter(item => item.isJoin === true)
+                          .map(item => item.id)}
                         title={'Đã tham gia'}
                         handleClose={handleCloseJoin}
                       />
@@ -686,7 +695,7 @@ export default function TourDetail(props) {
                     }
                     action={
                       <>
-                        {(auth.user && memberIsEdit) && (
+                        {auth.user && memberIsEdit && (
                           <>
                             <IconButton
                               aria-label="settings"
@@ -723,11 +732,11 @@ export default function TourDetail(props) {
                                       }}
                                     >
                                       <Fade in={showInvite}>
-                                        <InviteRef 
-                                          ref={refInvite}  
-                                          handleClose={handleCloseInvite} 
-                                          usersParent={tour.joinIds} 
-                                          tour={tour} 
+                                        <InviteRef
+                                          ref={refInvite}
+                                          handleClose={handleCloseInvite}
+                                          usersParent={tour.joinIds}
+                                          tour={tour}
                                           setTour={setTour}
                                         />
                                       </Fade>
@@ -739,14 +748,13 @@ export default function TourDetail(props) {
                                       <Edit className={classes.menuIcon} />{' '}
                                       Chỉnh sửa hành trình
                                     </MenuItem>
-                                    {
-                                      isOwn && 
+                                    {isOwn && (
                                       <MenuItem onClick={handleShowDelete}>
                                         {' '}
                                         <Delete className={classes.menuIcon} />
                                         Xóa hành trình
-                                    </MenuItem>
-                                    }
+                                      </MenuItem>
+                                    )}
                                     <Dialog
                                       open={showDelete}
                                       onClose={handleCloseDelete}
@@ -836,10 +844,12 @@ export default function TourDetail(props) {
                       onClick={() => setIdx(index)}
                       style={{ cursor: 'pointer' }}
                     >
-                      <StepLabel StepIconComponent={ColorlibStepIcon} >
-                        <div style={{display: 'flex', alignItems:'center'}}>
-                          <Typography variant='body1'>Chi tiết lịch trình ngày {convertDateToStr(item.date)} </Typography>
-                          
+                      <StepLabel StepIconComponent={ColorlibStepIcon}>
+                        <div style={{ display: 'flex', alignItems: 'center' }}>
+                          <Typography variant="body1">
+                            Chi tiết lịch trình ngày{' '}
+                            {convertDateToStr(item.date)}{' '}
+                          </Typography>
                         </div>
                       </StepLabel>
                       <StepContent>
@@ -860,10 +870,10 @@ export default function TourDetail(props) {
                           index={0}
                           className={classes.tabPanel}
                         >
-                          {
-                            isJoin && <>
-                              <IconButton 
-                                style={{marginLeft: 10}}
+                          {isJoin && (
+                            <>
+                              <IconButton
+                                style={{ marginLeft: 10 }}
                                 onClick={handleClickFeedback}
                                 aria-describedby={idx}
                               >
@@ -876,38 +886,40 @@ export default function TourDetail(props) {
                                 onClose={handleCloseFeedback}
                                 anchorOrigin={{
                                   vertical: 'top',
-                                  horizontal: 'right',
+                                  horizontal: 'right'
                                 }}
                                 transformOrigin={{
                                   vertical: 'bottom',
-                                  horizontal: 'left',
+                                  horizontal: 'left'
                                 }}
                               >
                                 <div className={classes.feedbacks}>
-                                    <Typography variant='h6'>Nhận xét</Typography>
-                                    <hr className={classes.line} />
-                                    <div className={classes.listCmt}>
-                                      {item.comments &&
-                                        item.comments.map(cmt => (
-                                          <Comment
-                                            comment={cmt}
-                                            key={cmt._id}
-                                            id={item._id}
-                                            type="feedback"
-                                          />
-                                        ))}
+                                  <Typography variant="h6">Nhận xét</Typography>
+                                  <hr className={classes.line} />
+                                  <div className={classes.listCmt}>
+                                    {item.comments &&
+                                      item.comments.map(cmt => (
+                                        <Comment
+                                          comment={cmt}
+                                          key={cmt._id}
+                                          id={item._id}
+                                          type="feedback"
+                                        />
+                                      ))}
+                                  </div>
+                                  {auth.user && (
+                                    <div className={classes.wrapInput}>
+                                      <InputComment
+                                        type="feedback"
+                                        id={item._id}
+                                      />
                                     </div>
-                                    {
-                                      auth.user &&
-                                      <div className={classes.wrapInput}>
-                                        <InputComment type="feedback" id={item._id} />
-                                      </div>
-                                    }
+                                  )}
                                 </div>
                               </Popover>
                             </>
-                          }
-                          
+                          )}
+
                           <DetailDateRef
                             ref={refDetail}
                             date={idx}
