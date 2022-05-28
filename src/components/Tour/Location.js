@@ -1,12 +1,11 @@
 import {
   Button,
   Card,
-  Collapse,
+  // Collapse,
   CardContent,
   CardMedia,
   Grid,
   IconButton,
-  InputBase,
   Modal,
   Typography,
   Backdrop,
@@ -19,14 +18,14 @@ import {
   ClickAwayListener,
   Paper,
   MenuList,
-  TextField,
+  // TextField,
   CircularProgress,
   CardHeader,
-  Avatar,
-  InputAdornment
+  Avatar
+  // InputAdornment
 } from '@material-ui/core';
 import React, { useEffect, useState } from 'react';
-import { Close, MoreVert, Label } from '@material-ui/icons';
+import { Close, MoreVert } from '@material-ui/icons';
 import { useDispatch } from 'react-redux';
 import { Link } from 'react-router-dom';
 
@@ -34,13 +33,14 @@ import { tourdetailStyles } from '../../style';
 import CreateReviewForm from '../Forms/CreateReview';
 import EditLocationForm from '../Forms/EditLocation';
 import * as tourAction from '../../redux/actions/createTourAction';
-import { success } from '../../redux/actions/alertAction';
+// import { success } from '../../redux/actions/alertAction';
 import customAxios from '../../utils/fetchData';
 import { timeAgo } from '../../utils/date';
 import { Rating } from '@material-ui/lab';
 import { SeeMoreText } from '../SeeMoreText';
 import ImageList from '../Modal/ImageList';
-// import { ServiceCard } from './AddService';
+// import ReactQuill from 'react-quill';
+import 'react-quill/dist/quill.snow.css';
 
 function ReviewList(props) {
   const { reviews, handleClose } = props;
@@ -169,131 +169,126 @@ function ReviewList(props) {
   );
 }
 
-function Detail(props) {
-  const classes = tourdetailStyles();
-  const dispatch = useDispatch();
+// function Detail(props) {
+//   const classes = tourdetailStyles();
+//   const dispatch = useDispatch();
 
-  const { location, isEdit, indexDate, indexLocation } = props;
+//   const { location, isEdit, indexDate, indexLocation } = props;
 
-  const [description, setDescription] = useState();
-  const [time, setTime] = useState(location.time);
-  const [cost, setCost] = useState(location.cost);
+//   const [description, setDescription] = useState();
+//   const [time, setTime] = useState(location.time);
+//   const [cost, setCost] = useState(location.cost);
 
-  useEffect(() => {
-    setDescription(location.description);
-    setTime(location.time);
-    setCost(location.cost);
-  }, [location]);
+//   useEffect(() => {
+//     setDescription(location.description);
+//     setTime(location.time);
+//     setCost(location.cost);
+//   }, [location]);
 
-  const handleUpdateInfo = () => {
-    dispatch(
-      tourAction.updateLocation({
-        cost: parseInt(cost),
-        description: description,
-        indexDate: indexDate,
-        indexLocation: indexLocation,
-        time: time
-      })
-    );
-    dispatch(success({ message: 'Cập nhật thành công!' }));
-  };
+//   const handleUpdateInfo = () => {
+//     dispatch(
+//       tourAction.updateLocation({
+//         cost: parseInt(cost),
+//         description: description,
+//         indexDate: indexDate,
+//         indexLocation: indexLocation,
+//         time: time
+//       })
+//     );
+//     dispatch(success({ message: 'Cập nhật thành công!' }));
+//   };
 
-  return (
-    <Paper className={classes.paperDetailDate}>
-      <Grid container>
-        <Grid item md={6} sm={12} xs={12}>
-          {isEdit ? (
-            <>
-              <div>
-                <div style={{ margin: 10 }}>
-                  <InputBase
-                    placeholder="Ghi chú"
-                    title="Ghi chú"
-                    variant="outlined"
-                    name="description"
-                    id="description"
-                    className={classes.descriptionInput}
-                    multiline
-                    rows={5}
-                    value={description}
-                    onChange={e => setDescription(e.target.value)}
-                  />
-                  <TextField
-                    id="time"
-                    label="Thời gian"
-                    type="time"
-                    variant="outlined"
-                    defaultValue={time}
-                    onChange={e => setTime(e.target.value)}
-                    InputLabelProps={{
-                      shrink: true
-                    }}
-                    inputProps={{
-                      step: 300 // 5 min
-                    }}
-                  />
-                  <TextField
-                    label="Chi phí"
-                    title="Chi phí"
-                    variant="outlined"
-                    name="cost"
-                    id="cost"
-                    type="number"
-                    className={classes.fullField}
-                    // className={classes.hashtag}
-                    value={cost}
-                    onChange={e => setCost(e.target.value)}
-                    InputProps={{
-                      endAdornment: (
-                        <InputAdornment position="end">.000 VND</InputAdornment>
-                      )
-                    }}
-                  />
-                  <div className={classes.btnWrap}>
-                    <Button
-                      onClick={handleUpdateInfo}
-                      variant="contained"
-                      className={classes.button}
-                    >
-                      Cập nhật
-                    </Button>
-                  </div>
-                </div>
-              </div>
-            </>
-          ) : (
-            <div>
-              {/* <div className={classes.locationImages}>
-                <img
-                  style={{ width: '100%', height: '100%' }}
-                  src="https://res.cloudinary.com/dqxvfu5k1/image/upload/v1649898282/k4hoq9jblhx65msx64c8.jpg"
-                  alt="loading ..."
-                ></img>
-              </div> */}
-              <div style={{ padding: 20 }}>
-                <Typography>
-                  <Label style={{ fontSize: 15 }} />
-                  <span style={{ fontWeight: 500 }}>Chi phí: </span>{' '}
-                  {new Intl.NumberFormat().format(location.cost * 1000)} VND
-                </Typography>
-                <Typography>
-                  <Label style={{ fontSize: 15 }} />
-                  <span style={{ fontWeight: 500 }}>Thời gian: </span>{' '}
-                  {location.time}
-                </Typography>
-                <Typography>
-                  <Label style={{ fontSize: 15 }} />
-                  <span style={{ fontWeight: 500 }}>Mô tả: </span>{' '}
-                  {location.description}
-                </Typography>
-              </div>
-            </div>
-          )}
-        </Grid>
-      </Grid>
-    </Paper>
-  );
-}
+//   return (
+//     <Paper className={classes.paperDetailDate}>
+//       <Grid container>
+//         <Grid item md={6} sm={12} xs={12}>
+//           {isEdit ? (
+//             <>
+//               <div>
+//                 <div style={{ margin: 10 }}>
+//                   <ReactQuill
+//                     value={description}
+//                     onChange={e => setDescription(e)}
+//                     style={{ width: '100%' }}
+//                     placeholder="Mô tả"
+//                   />
+
+//                   <TextField
+//                     id="time"
+//                     label="Thời gian"
+//                     type="time"
+//                     variant="outlined"
+//                     defaultValue={time}
+//                     onChange={e => setTime(e.target.value)}
+//                     InputLabelProps={{
+//                       shrink: true
+//                     }}
+//                     inputProps={{
+//                       step: 300 // 5 min
+//                     }}
+//                   />
+//                   <TextField
+//                     label="Chi phí"
+//                     title="Chi phí"
+//                     variant="outlined"
+//                     name="cost"
+//                     id="cost"
+//                     type="number"
+//                     className={classes.fullField}
+//                     // className={classes.hashtag}
+//                     value={cost}
+//                     onChange={e => setCost(e.target.value)}
+//                     InputProps={{
+//                       endAdornment: (
+//                         <InputAdornment position="end">.000 VND</InputAdornment>
+//                       )
+//                     }}
+//                   />
+//                   <div className={classes.btnWrap}>
+//                     <Button
+//                       onClick={handleUpdateInfo}
+//                       variant="contained"
+//                       className={classes.button}
+//                     >
+//                       Cập nhật
+//                     </Button>
+//                   </div>
+//                 </div>
+//               </div>
+//             </>
+//           ) : (
+//             <div>
+//               {/* <div className={classes.locationImages}>
+//                 <img
+//                   style={{ width: '100%', height: '100%' }}
+//                   src="https://res.cloudinary.com/dqxvfu5k1/image/upload/v1649898282/k4hoq9jblhx65msx64c8.jpg"
+//                   alt="loading ..."
+//                 ></img>
+//               </div> */}
+//               <div style={{ padding: 20 }}>
+//                 <Typography>
+//                   <Label style={{ fontSize: 15 }} />
+//                   <span style={{ fontWeight: 500 }}>Chi phí: </span>{' '}
+//                   {new Intl.NumberFormat().format(location.cost * 1000)} VND
+//                 </Typography>
+//                 <Typography>
+//                   <Label style={{ fontSize: 15 }} />
+//                   <span style={{ fontWeight: 500 }}>Thời gian: </span>{' '}
+//                   {location.time}
+//                 </Typography>
+//                 <Typography>
+//                   <Label style={{ fontSize: 15 }} />
+//                   <span style={{ fontWeight: 500 }}>Mô tả: </span>{' '}
+//                   {location.description}
+//                 </Typography>
+//               </div>
+//             </div>
+//           )}
+//         </Grid>
+//       </Grid>
+//     </Paper>
+//   );
+// }
 
 export default function Location(props) {
   const classes = tourdetailStyles();
@@ -311,16 +306,16 @@ export default function Location(props) {
     joined
   } = props;
 
-  const [showDetail, setShowDetail] = useState(false);
+  // const [showDetail, setShowDetail] = useState(false);
   const [showCreateRv, setShowCreateRv] = useState(false);
   const [anchorEl, setAnchorEl] = useState(null);
   const [editLoc, setEditLoc] = useState(false);
   const [showDeleteLocation, setShowDeleteLocation] = useState(false);
   const [showReview, setShowReview] = useState(false);
 
-  useEffect(() => {
-    setShowDetail(false);
-  }, [indexDate]);
+  // useEffect(() => {
+  //   setShowDetail(false);
+  // }, [indexDate]);
 
   const handleShowMenu = e => {
     setAnchorEl(e.currentTarget);
@@ -365,9 +360,9 @@ export default function Location(props) {
     handleCloseMenu();
   };
 
-  const handleShowDetail = () => {
-    setShowDetail(state => !state);
-  };
+  // const handleShowDetail = () => {
+  //   setShowDetail(state => !state);
+  // };
 
   const handleShowReview = () => {
     setShowReview(true);
@@ -380,7 +375,7 @@ export default function Location(props) {
   const refEdit = React.createRef();
   const refCr = React.createRef();
   const ref = React.createRef();
-  const refDetail = React.createRef();
+  // const refDetail = React.createRef();
 
   const EditLocationRef = React.forwardRef((props, ref) => (
     <EditLocationForm {...props} innerRef={ref} />
@@ -394,61 +389,49 @@ export default function Location(props) {
     <ReviewList {...props} innerRef={ref} />
   ));
 
-  const DetailRef = React.forwardRef((props, ref) => (
-    <Detail {...props} innerRef={ref} />
-  ));
+  // const DetailRef = React.forwardRef((props, ref) => (
+  //   <Detail {...props} innerRef={ref} />
+  // ));
 
   return (
     <Card className={classes.cardContainer}>
       <Grid container>
         <Grid item md={4} sm={3} className={classes.imageLocation}>
           <CardMedia style={{ height: '100%' }}>
-            {location.locationName ? (
-              <img
-                src={'/default2.jpg'}
-                alt="Đang tải..."
-                className={classes.img}
-              />
-            ) : (
-              <img
-                src={location.location.images[0]}
-                alt="Đang tải..."
-                className={classes.img}
-              />
-            )}
+            <img
+              src={
+                location.location.images
+                  ? location.location.images[0]
+                  : './default1.jpg'
+              }
+              alt="Đang tải..."
+              className={classes.img}
+            />
           </CardMedia>
         </Grid>
         <Grid item md={8} sm={9} xs={12}>
           <CardContent style={{ padding: 0 }}>
             <div className={classes.locationContentContainer}>
               <div style={{ margin: 20 }}>
-                {location.locationName ? (
-                  <Typography variant="h5" className={classes.locationName}>
-                    {location.locationName}
+                <div>
+                  <Typography
+                    variant="h5"
+                    className={classes.locationName}
+                    component={Link}
+                    to={`/location/${location.location.name}`}
+                  >
+                    {location.location.fullname}
                   </Typography>
-                ) : (
-                  <>
-                    <div>
-                      <Typography
-                        variant="h5"
-                        className={classes.locationName}
-                        component={Link}
-                        to={`/location/${location.location.name}`}
-                      >
-                        {location.location.fullname}
-                      </Typography>
-                    </div>
-                    <div>
-                      <Typography
-                        variant="h6"
-                        component={Link}
-                        to={'/province/' + location.location.province.name}
-                      >
-                        {location.location.province.fullname}
-                      </Typography>
-                    </div>
-                  </>
-                )}
+                </div>
+                <div>
+                  <Typography
+                    variant="h6"
+                    component={Link}
+                    to={'/province/' + location.location.province.name}
+                  >
+                    {location.location.province.fullname}
+                  </Typography>
+                </div>
                 {isSave && (
                   <>
                     <div style={{ display: 'flex' }}>
@@ -473,12 +456,12 @@ export default function Location(props) {
                     </div>
                   </>
                 )}
-                <Button
+                {/* <Button
                   className={classes.reviewBtn}
                   onClick={handleShowDetail}
                 >
                   Chi tiết
-                </Button>
+                </Button> */}
               </div>
               {isEdit && (
                 <div>
@@ -601,7 +584,7 @@ export default function Location(props) {
             </Modal>
           </CardContent>
         </Grid>
-        <Grid item md={12} sm={12} xs={12}>
+        {/* <Grid item md={12} sm={12} xs={12}>
           <Collapse in={showDetail} style={{ width: '100%' }}>
             <DetailRef
               ref={refDetail}
@@ -613,7 +596,7 @@ export default function Location(props) {
               joined={joined}
             />
           </Collapse>
-        </Grid>
+        </Grid> */}
       </Grid>
     </Card>
   );

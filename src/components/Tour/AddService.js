@@ -67,7 +67,7 @@ function ServiceAddContributeForm(props) {
   const dispatch = useDispatch();
   const { location, auth } = useSelector(state => state);
 
-  const { indexDate, cProvince, cName, handleClose, time } = props;
+  const { indexDate, cProvince, cName, handleClose, indexEvent } = props;
   const [service, setService] = useState({
     name: cName,
     description: '',
@@ -128,10 +128,8 @@ function ServiceAddContributeForm(props) {
       .then(res => {
         const service = {
           service: res.data.service,
-          cost: 0,
-          description: '',
-          time: time,
-          indexDate: indexDate
+          indexDate: indexDate,
+          indexEvent: indexEvent
         };
         dispatch(tourAction.addService(service));
         setLoading(false);
@@ -265,19 +263,17 @@ function ServiceItemAddForm(props) {
 
   const {
     indexDate,
+    indexEvent,
     province,
     setProvince,
     setName,
     setContribute,
-    handleClose,
-    setTime,
-    time
+    handleClose
   } = props;
   const [services, setServices] = useState([]);
   const [service, setService] = useState(null);
   const [loading, setLoading] = useState(location.loadingServices);
   // const [province, setProvince] = useState(null);
-  const [cost, setCost] = useState(0);
 
   useEffect(() => {
     setLoading(true);
@@ -302,15 +298,11 @@ function ServiceItemAddForm(props) {
         setContribute(true);
         return;
       }
-      const sv = {
-        service: service,
-        cost: parseInt(cost) || 0,
-        time: time
-      };
       dispatch(
         tourAction.addService({
-          ...sv,
-          indexDate: indexDate
+          service: service,
+          indexDate: indexDate,
+          indexEvent: indexEvent
         })
       );
     }
@@ -413,43 +405,6 @@ function ServiceItemAddForm(props) {
           )}
         />
       </div>
-      <div className={classes.center}>
-        <TextField
-          className={classes.autocomplete}
-          value={cost}
-          onChange={e => {
-            setCost(e.target.value);
-            // console.log(e.target.value);
-          }}
-          variant="outlined"
-          label="Chi phí"
-          type={'number'}
-          name="cost"
-          id="cost"
-          InputProps={{
-            endAdornment: (
-              <InputAdornment position="end">.000 VND</InputAdornment>
-            )
-          }}
-        />
-      </div>
-      <div className={classes.center}>
-        <TextField
-          id="time"
-          label="Thời gian"
-          type="time"
-          defaultValue="07:00"
-          variant="outlined"
-          className={classes.textField}
-          onChange={e => setTime(e.target.value)}
-          InputLabelProps={{
-            shrink: true
-          }}
-          inputProps={{
-            step: 300 // 5 min
-          }}
-        />
-      </div>
 
       {service && (
         <div className={classes.description}>
@@ -477,7 +432,6 @@ export default function AddService(props) {
   const [contribute, setContribute] = useState(false);
   const [province, setProvince] = useState(null);
   const [name, setName] = useState('');
-  const [time, setTime] = useState('07:00');
 
   return (
     <Paper className={classes.paperContainer} style={{ width: '60%' }}>
@@ -487,7 +441,6 @@ export default function AddService(props) {
             {...props}
             cProvince={province}
             cName={name}
-            time={time}
           />
         ) : (
           <ServiceItemAddForm
@@ -496,8 +449,6 @@ export default function AddService(props) {
             setProvince={setProvince}
             setName={setName}
             setContribute={setContribute}
-            time={time}
-            setTime={setTime}
           />
         )}
       </div>

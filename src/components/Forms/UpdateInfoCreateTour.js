@@ -5,7 +5,8 @@ import {
   TextField,
   Chip
 } from '@material-ui/core';
-
+import ReactQuill from 'react-quill';
+import 'react-quill/dist/quill.snow.css';
 import React, { useState } from 'react';
 
 import { formStyles } from '../../style';
@@ -103,7 +104,7 @@ export default function UpdateTourInfo({ tourInfo, setTourInfo, image, cost }) {
             }}
           /> */}
           <div className={classes.postContentInput}>
-            <InputBase
+            {/* <InputBase
               placeholder="Nội dung tour ..."
               rows={7}
               name="content"
@@ -112,6 +113,12 @@ export default function UpdateTourInfo({ tourInfo, setTourInfo, image, cost }) {
               className={classes.input}
               value={content}
               onChange={handleInput}
+            /> */}
+            <ReactQuill
+              value={content}
+              onChange={e => setTourInfo(state => ({ ...state, content: e }))}
+              style={{ width: '100%' }}
+              placeholder="Nội dung tour ..."
             />
           </div>
           <div>

@@ -27,20 +27,22 @@ export function sortTourDate(tour) {
 
 export function extractProvinceTour(tour) {
   var province = [];
-  tour.map(item => {
-    item.locations.map(location =>
-      province.push(location.location.province.fullname)
-    );
-    return true;
-  });
+  for (const date of tour) {
+    for (const event of date.events) {
+      if (event.location) province.push(event.location.province.fullname);
+      if (event.service) province.push(event.service.province.fullname);
+    }
+  }
   return new Set(province);
 }
 
-export function extractLocationTour(location) {
+export function extractLocationTour(tour) {
   var locations = [];
-  location.map(item => {
-    item.locations.map(loc => locations.push(loc.location.fullname));
-    return true;
-  });
+  for (const date of tour) {
+    for (const event of date.events) {
+      if (event.location) locations.push(event.location.fullname);
+      if (event.service) locations.push(event.service.name);
+    }
+  }
   return new Set(locations);
 }
