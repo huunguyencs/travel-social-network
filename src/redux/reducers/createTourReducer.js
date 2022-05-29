@@ -3,6 +3,9 @@ import * as TOUR_TYPES from '../constants/createTourConstant';
 
 const INIT_STATE = {
   name: '',
+  content: '',
+  hashtags: [],
+  isPublic: false,
   image: null,
   tour: [],
   isFetching: false,

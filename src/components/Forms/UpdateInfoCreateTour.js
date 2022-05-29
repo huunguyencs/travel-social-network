@@ -6,16 +6,21 @@ import {
   FormControlLabel,
   Switch
 } from '@material-ui/core';
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 
 import { formStyles } from '../../style';
 // import EmojiPicker from '../Input/EmojiPicker';
 import QuillEditor from '../QuillEditor';
 
-export default function UpdateTourInfo({ tourInfo, setTourInfo, image, cost }) {
+export default function UpdateTourInfo({ tourInfo, setTourInfo, cost }) {
   const { name, hashtags, content, isPublic } = tourInfo;
 
-  const [hashtagArr, setHashtagArr] = useState(hashtags);
+  const [hashtagArr, setHashtagArr] = useState([]);
+
+  useEffect(() => {
+    setHashtagArr(hashtags);
+  }, [hashtags]);
+
   const [hashtag, setHashtag] = useState('');
 
   const handleInput = e => {
@@ -25,24 +30,15 @@ export default function UpdateTourInfo({ tourInfo, setTourInfo, image, cost }) {
     }));
   };
 
-  // const setContent = value => {
-  //   setTourInfo(state => ({
-  //     ...state,
-  //     content: value
-  //   }));
-  // };
-
   const hashtagSplit = text => {
     var ht = text.split(' ');
     return ht.filter(item => item !== '');
   };
 
-  const changeHashtags = () => {
-    let ht = hashtagSplit(hashtag);
-    ht = [...hashtagArr, ...ht];
+  const changeHashtags = arr => {
     setTourInfo(state => ({
       ...state,
-      hashtags: ht
+      hashtags: arr
     }));
   };
 
@@ -50,9 +46,8 @@ export default function UpdateTourInfo({ tourInfo, setTourInfo, image, cost }) {
     e.preventDefault();
     let arr = hashtagSplit(hashtag);
     arr = [...hashtagArr, ...arr];
-    setHashtagArr(arr);
+    changeHashtags(arr);
     setHashtag('');
-    changeHashtags();
   };
 
   const changeHashtag = e => {
@@ -62,8 +57,8 @@ export default function UpdateTourInfo({ tourInfo, setTourInfo, image, cost }) {
   const removeHashtag = index => {
     let temp = [...hashtagArr];
     temp.splice(index, 1);
-    setHashtagArr(temp);
-    changeHashtags();
+    // setHashtagArr(temp);
+    changeHashtags(temp);
   };
 
   const classes = formStyles();
@@ -89,14 +84,6 @@ export default function UpdateTourInfo({ tourInfo, setTourInfo, image, cost }) {
             {new Intl.NumberFormat().format(cost * 1000)} VND
           </Typography>
           <div className={classes.postContentInput}>
-            {/* <ReactQuill
-              value={content}
-              onChange={e => setTourInfo(state => ({ ...state, content: e }))}
-              style={{ width: '100%' ,height: 200}}
-              placeholder="Nội dung tour ..."
-              modules={modules}
-              formats={formats}
-            /> */}
             <QuillEditor
               value={content}
               setValue={e => setTourInfo(state => ({ ...state, content: e }))}

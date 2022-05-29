@@ -271,13 +271,15 @@ export default function AddTour(props) {
       return;
     }
 
+    console.log(tourInfo);
+
     dispatch(
       updateTour(
         createTour._id,
         {
-          ...tourInfo,
           tour: createTour.tour,
-          cost: createTour.cost
+          cost: createTour.cost,
+          ...tourInfo
         },
         createTour.image,
         auth.token,
@@ -287,7 +289,7 @@ export default function AddTour(props) {
             loading: false,
             error: false
           });
-          history.push('/tour');
+          history.push(`/tour/${createTour._id}`);
         },
         () => {
           setState({
@@ -358,13 +360,18 @@ export default function AddTour(props) {
   const classes = tourdetailStyles();
 
   useEffect(() => {
-    setTourInfo(state => ({
-      ...state,
-      name: createTour.name,
-      description: createTour?.description || '',
+    setTourInfo({
+      isPubic: createTour.isPublic || false,
+      name: createTour.name || '',
+      content: createTour.content || '',
       hashtags: createTour.hashtags || []
-    }));
-  }, [createTour?.name, createTour?.description, createTour?.hashtags]);
+    });
+  }, [
+    createTour?.name,
+    createTour?.content,
+    createTour?.hashtags,
+    createTour?.isPublic
+  ]);
   return (
     <>
       {(!isUpdate || (isUpdate && createTour.tour && createTour.tour[0])) && (
@@ -376,7 +383,6 @@ export default function AddTour(props) {
                   <UpdateTourInfo
                     tourInfo={tourInfo}
                     setTourInfo={setTourInfo}
-                    image={createTour.image}
                     cost={createTour.cost}
                   />
                 </Grid>

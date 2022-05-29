@@ -170,10 +170,11 @@ export const updateTour =
       dispatch(resetTour());
     } catch (err) {
       // console.log(err);
+      console.log(err);
       error();
-      if (err.response && err.response.data && err.response.data.message)
-        dispatch(alertAction.error({ message: err.response.data.message }));
-      else dispatch(alertAction.error({ message: 'Có lỗi xảy ra' }));
+      // if (err.response && err.response.data && err.response.data.message)
+      //   dispatch(alertAction.error({ message: err.response.data.message }));
+      // else dispatch(alertAction.error({ message: 'Có lỗi xảy ra' }));
     }
   };
 
