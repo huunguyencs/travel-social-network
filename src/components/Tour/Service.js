@@ -34,12 +34,14 @@ import { Rating } from '@material-ui/lab';
 import { SeeMoreText } from '../SeeMoreText';
 import { useDispatch} from 'react-redux';
 import CreateRateForm from '../Forms/CreateRate';
+import { modalListStyles } from '../../style';
 
 function ReviewList(props) {
   const { reviews, handleClose } = props;
   const [rvs, setRvs] = useState([]);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(false);
+  const classes = modalListStyles();
 
   const getReview = async reviews => {
     setLoading(true);
@@ -64,24 +66,18 @@ function ReviewList(props) {
   }, [reviews]);
 
   return (
-    <Paper style={{ width: 700 }}>
-      <div style={{ display: 'flex', justifyContent: 'right' }}>
-        <IconButton size="small" onClick={handleClose}>
-          <Close />
-        </IconButton>
-      </div>
-      <div style={{ display: 'flex', justifyContent: 'center' }}>
-        <Typography variant="h5" style={{ marginBottom: 20 }}>
-          Review
+    <div className={classes.paper} style={{padding: 20}}>
+      <div className={classes.modal_header} style={{marginBottom:10}}>
+        <Typography variant="h5" className={classes.modal_header_left}>
+           Các Review
         </Typography>
+        <div className={classes.modal_header_right}>
+          <IconButton onClick={handleClose} size="small">
+            <Close className={classes.modal_header_closeIcon} />
+          </IconButton>
+        </div>
       </div>
-      <div style={{ display: 'flex', justifyContent: 'center' }}>
-        <div
-          style={{
-            height: '60vh',
-            overflowY: 'auto'
-          }}
-        >
+      <div style={{ position: 'relative', overflowY: 'auto' }}>
           {loading && (
             <div
               style={{
@@ -108,9 +104,10 @@ function ReviewList(props) {
             rvs.map(rv => (
               <Card
                 style={{
-                  width: 600,
+                  width: "98%",
                   borderRadius: 10,
-                  border: '1px solid #ddd'
+                  border: '1px solid #ddd',
+                  marginBottom: 10
                 }}
                 key={rv._id}
               >
@@ -153,9 +150,8 @@ function ReviewList(props) {
                 </CardContent>
               </Card>
             ))}
-        </div>
       </div>
-    </Paper>
+    </div>
   );
 }
 export default function ServiceCard(props) {

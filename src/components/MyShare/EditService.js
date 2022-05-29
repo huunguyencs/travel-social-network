@@ -49,7 +49,7 @@ function MapPicker({ setPosition, position }) {
       zoom={zoom}
       defaultZoom={8}
       mapTypeId="roadmap"
-      style={{ height: 450 }}
+      style={{ height: 580 }}
       onChangeLocation={handleChangeLocation}
       onChangeZoom={handleChangeZoom}
       apiKey={KEY}
@@ -136,111 +136,119 @@ export default function EditService({ service, handleClose }) {
   const classes = formStyles();
 
   return (
-    <Paper>
-      <div className={classes.center}>
-        <Typography variant="h6">Thêm dịch vụ</Typography>
-      </div>
-      <Grid container>
-        <Grid item md={6}>
-          <Autocomplete
-            id="choose-province"
-            freeSolo
-            options={location.provinces}
-            loading={location.loading}
-            getOptionLabel={option => option?.fullname}
-            className={classes.autocomplete}
-            onChange={(e, value) => changeProvince(value)}
-            value={province}
-            renderInput={params => (
-              <TextField
-                {...params}
-                name="provinces"
-                label="Chọn tỉnh thành"
-                variant="outlined"
-              />
-            )}
-          />
-          <TextField
-            value={ser.name}
-            onChange={handleChange}
-            variant="outlined"
-            label="Tên"
-            name="name"
-            id="name"
-          />
-          <TextField
-            value={ser.address}
-            onChange={handleChange}
-            variant="outlined"
-            label="Mô tả vị trí"
-            name="address"
-            id="address"
-          />
-          <InputBase
-            placeholder="Mô tả"
-            rows={7}
-            name="description"
-            id="description"
-            multiline
-            className={classes.input}
-            value={ser.description}
-            onChange={handleChange}
-          />
-          <div className={classes.composeOptions}>
-            <input
-              accept="image/*"
-              className={classes.input}
-              style={{ display: 'none' }}
-              id="input-image-contribute"
-              name="images-contribute"
-              multiple
-              type="file"
-              onChange={handleChangeImageUpload}
+    <Paper style={{borderRadius: 15,  maxHeight: 800, overflow:'hidden', overflowY:'auto'}}>
+      <div style={{ padding: 16, borderTop: '1px solid #ded9d9', borderRadius: 15 }}>
+      <div className={classes.addServiceContribute}>
+        <div className={classes.center} style={{borderBottom: "1px solid #eeeeee", marginBottom: 10}}>
+          <Typography variant="h6" >Thêm dịch vụ</Typography>
+        </div>
+        <Grid container>
+          <Grid item md={6} sm={12} xs={12} style={{paddingRight: 16}}>
+            <Autocomplete
+              id="choose-province"
+              freeSolo
+              options={location.provinces}
+              loading={location.loading}
+              getOptionLabel={option => option?.fullname}
+              className={classes.autocomplete}
+              style={{marginBottom:10}}
+              onChange={(e, value) => changeProvince(value)}
+              value={province}
+              renderInput={params => (
+                <TextField
+                  {...params}
+                  name="provinces"
+                  label="Chọn tỉnh thành"
+                  variant="outlined"
+                />
+              )}
             />
-            <label
-              className={classes.composeOption}
-              htmlFor="input-image-contribute"
-            >
-              <CameraAltOutlined className={classes.composeIcon} />
-              <span>Hình ảnh</span>
-            </label>
-          </div>
-          <div className={classes.imageInputContainer}>
-            {images.length > 0 && (
-              <ScrollMenu height="300px">
-                {images.map((item, index) => (
-                  <img
-                    key={index}
-                    alt="Error"
-                    className={classes.imageInput}
-                    onClick={() => removeImage(index)}
-                    src={
-                      typeof item === 'string'
-                        ? item
-                        : URL.createObjectURL(item)
-                    }
-                    title={'Xoá'}
-                  />
-                ))}
-              </ScrollMenu>
-            )}
-          </div>
+            <TextField
+              value={ser.name}
+              onChange={handleChange}
+              style={{marginBottom:10, width: "100%"}}
+              variant="outlined"
+              label="Tên"
+              name="name"
+              id="name"
+            />
+            <TextField
+              value={ser.address}
+              onChange={handleChange}
+              style={{marginBottom:10, width: "100%"}}
+              variant="outlined"
+              label="Mô tả vị trí"
+              name="address"
+              id="address"
+            />
+            <InputBase
+              placeholder="Mô tả"
+              rows={7}
+              name="description"
+              id="description"
+              multiline
+              className={classes.input}
+              value={ser.description}
+              onChange={handleChange}
+            />
+            <div className={classes.composeOptions}>
+              <input
+                accept="image/*"
+                className={classes.input}
+                style={{ display: 'none' }}
+                id="input-image-contribute"
+                name="images-contribute"
+                multiple
+                type="file"
+                onChange={handleChangeImageUpload}
+              />
+              <label
+                className={classes.composeOption}
+                htmlFor="input-image-contribute"
+              >
+                <CameraAltOutlined className={classes.composeIcon} />
+                <span>Hình ảnh</span>
+              </label>
+            </div>
+            <div className={classes.imageInputContainer}>
+              {images.length > 0 && (
+                <ScrollMenu height="300px">
+                  {images.map((item, index) => (
+                    <img
+                      key={index}
+                      alt="Error"
+                      className={classes.imageInput}
+                      onClick={() => removeImage(index)}
+                      src={
+                        typeof item === 'string'
+                          ? item
+                          : URL.createObjectURL(item)
+                      }
+                      title={'Xoá'}
+                    />
+                  ))}
+                </ScrollMenu>
+              )}
+            </div>
+          </Grid>
+          <Grid item md={6} sm={12} xs={12}>
+            <MapPicker setPosition={setPosition} position={position} />
+          </Grid>
         </Grid>
-        <Grid item md={6}>
-          <MapPicker setPosition={setPosition} position={position} />
-        </Grid>
-      </Grid>
 
-      <div style={{ marginTop: 10 }} className={classes.center}>
-        <Button
-          className={classes.button}
-          type="submit"
-          onClick={handleSubmit}
-          disabled={loading}
-        >
-          Cập nhật
-        </Button>
+        <div style={{ marginTop: 10 }} className={classes.center}>
+          <Button
+            className={classes.addDay}
+            type="submit"
+            onClick={handleSubmit}
+            disabled={loading}
+          >
+            Cập nhật
+          </Button>
+        </div>
+      </div>
       </div>
     </Paper>
+   
   );
 }

@@ -358,7 +358,6 @@ export default function DetailDate({ indexDate, events }) {
       <Grid
         container
         className={classes.tourDateWrapper}
-        style={{ borderLeft: '1px solid #a9a9a9' }}
       >
         <Grid item md={3} sm={12} xs={12}>
           <div className={classes.timelineTour}>

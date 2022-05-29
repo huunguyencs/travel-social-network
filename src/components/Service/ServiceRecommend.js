@@ -120,8 +120,8 @@ export default function ServiceRecommend({ services }) {
     setActiveStep(step);
   };
   return (
-    <div style={{ marginTop: 30 }}>
-      <Typography variant="h6">Gợi ý dịch vụ gần đó:</Typography>
+    <div style={{ marginTop: 30, borderTop:"1px solid #a9a9a9" }}>
+      <Typography variant="h6" style={{marginLeft: 30}}>Dịch vụ gần đó:</Typography>
       <div className={classes.serviceRecommendWrapper}>
         <div style={{ marginTop: 130 }}>
           {services.length > 1 && (
