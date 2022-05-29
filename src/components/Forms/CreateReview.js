@@ -156,7 +156,7 @@ export default function CreateReviewForm(props) {
             <div className={classes.formContainer}>
               <div className={classes.formCreateReview}>
                 <Rating
-                  name="rate"
+                  name="rate-location"
                   value={rate}
                   onChange={e => setRate(parseInt(e.target.value))}
                 />

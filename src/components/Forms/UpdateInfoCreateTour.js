@@ -2,7 +2,9 @@ import {
   InputBase,
   Typography,
   TextField,
-  Chip
+  Chip,
+  FormControlLabel,
+  Switch
 } from '@material-ui/core';
 import React, { useState } from 'react';
 
@@ -11,7 +13,7 @@ import EmojiPicker from '../Input/EmojiPicker';
 import QuillEditor from '../QuillEditor';
 
 export default function UpdateTourInfo({ tourInfo, setTourInfo, image, cost }) {
-  const { name, hashtags, content } = tourInfo;
+  const { name, hashtags, content, isPublic } = tourInfo;
 
   const [hashtagArr, setHashtagArr] = useState(hashtags);
   const [hashtag, setHashtag] = useState('');
@@ -124,10 +126,19 @@ export default function UpdateTourInfo({ tourInfo, setTourInfo, image, cost }) {
               />
             </form>
           </div>
-          <div className={classes.formAction}>
-            <div>
-              <EmojiPicker content={content} setContent={setContent} />
-            </div>
+          <div style={{display:'flex'}}>
+            <EmojiPicker content={content} setContent={setContent} />
+            <FormControlLabel
+                control={
+                  <Switch
+                    checked={isPublic}
+                    onChange={e => setTourInfo(state => ({ ...state, isPublic: !state.isPublic }))}
+                    name="isPublic"
+                    color="primary"
+                  />
+                }
+                label={isPublic ? 'Công khai' : 'Riêng tư'}
+            />
           </div>
         </div>
       </div>

@@ -15,6 +15,8 @@ import {
 } from '@material-ui/core';
 import React, { useEffect, useState } from 'react';
 import { tourdetailStyles } from '../../style';
+import ReactQuill from 'react-quill';
+import 'react-quill/dist/quill.snow.css';
 import AddService from './AddService';
 import AddLocation from './AddLocation';
 import Location from './Location';
@@ -27,7 +29,6 @@ import {
   updateEvent,
   updateTimeEvent
 } from '../../redux/actions/createTourAction';
-import QuillEditor from '../QuillEditor';
 
 function UpdateTimeForm({ value, indexDate, indexEvent, handleClose }) {
   const dispatch = useDispatch();
@@ -42,12 +43,11 @@ function UpdateTimeForm({ value, indexDate, indexEvent, handleClose }) {
     setTime(value);
   }, [value]);
   return (
-    <Paper style={{ padding: 20 }}>
+    <Paper style={{ padding: 50 }}>
       <TextField
         id="time"
-        label="Thời gian"
+        label="Alarm clock"
         type="time"
-        variant="outlined"
         value={time}
         onChange={e => setTime(e.target.value)}
         InputLabelProps={{
@@ -57,9 +57,7 @@ function UpdateTimeForm({ value, indexDate, indexEvent, handleClose }) {
           step: 300 // 5 min
         }}
       />
-      <div style={{ display: 'flex', justifyContent: 'center', marginTop: 20 }}>
-        <Button onClick={handleUpdate}>Xong</Button>
-      </div>
+      <Button onClick={handleUpdate}>Xong</Button>
     </Paper>
   );
 }
@@ -180,27 +178,39 @@ function TimeDetail({ event, indexDate, indexEvent }) {
   };
 
   return (
-    <div style={{ margin: 10 }}>
-      <QuillEditor
+    <div>
+      <ReactQuill
         value={description}
-        setValue={e => setDescription(e)}
+        onChange={e => setDescription(e)}
+        className={classes.reactQuillTour}
         placeholder="Mô tả"
       />
-      <TextField
-        label="Chi phí"
-        title="Chi phí"
-        variant="outlined"
-        name="cost"
-        id="cost"
-        type="number"
-        className={classes.fullField}
-        style={{ backgroundColor: 'white' }}
-        value={cost}
-        onChange={e => setCost(e.target.value)}
-        InputProps={{
-          endAdornment: <InputAdornment position="end">.000 VND</InputAdornment>
-        }}
-      />
+      <div className={classes.btnWrap}>
+        <TextField
+          label="Chi phí"
+          title="Chi phí"
+          variant="outlined"
+          name="cost"
+          id="cost"
+          type="number"
+          className={classes.fullField}
+          style={{ backgroundColor: 'white' }}
+          value={cost}
+          onChange={e => setCost(e.target.value)}
+          InputProps={{
+            endAdornment: (
+              <InputAdornment position="end">.000 VND</InputAdornment>
+            )
+          }}
+        />
+        <Button
+          onClick={handleUpdateInfo}
+          variant="contained"
+          className={classes.addDayCustom}
+        >
+          Cập nhật
+        </Button>
+      </div>
       <div className={classes.btnWrap}>
         <AddEventButtons
           indexDate={indexDate}
@@ -208,13 +218,6 @@ function TimeDetail({ event, indexDate, indexEvent }) {
           hideAddLocation={event?.location}
           hideAddService={event?.service}
         />
-        <Button
-          onClick={handleUpdateInfo}
-          variant="contained"
-          className={classes.addDay}
-        >
-          Cập nhật
-        </Button>
       </div>
       {event?.location && (
         <Location

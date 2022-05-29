@@ -229,6 +229,27 @@ export default function TourDetail(props) {
     }));
   };
 
+  const createRate = (id, index_ser, tourdate_id) => {
+    setTour(state => ({
+      ...state,
+      tour: state.tour.map(item =>
+        item._id === tourdate_id
+          ? {
+              ...item,
+              events: item.events.map(event =>
+                event._id === index_ser
+                  ? {
+                      ...event,
+                      rateIds: [...event.rateIds, id]
+                    }
+                  : event
+              )
+            }
+          : item
+      )
+    }));
+  };
+
   useEffect(() => {
     if (tour && tour.tour[indexDate].events.length > 0) {
       const temp = tour.tour[indexDate].events[0];
@@ -871,6 +892,7 @@ export default function TourDetail(props) {
                                 service={tourDate.events[indexEvent]}
                                 indexDate={indexDate}
                                 index={indexEvent}
+                                addRate={createRate}
                                 isSave={false}
                                 isEdit={false}
                               />

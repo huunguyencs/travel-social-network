@@ -188,6 +188,30 @@ const tourdetailStyles = makeStyles(
         color: 'black',
       }
     },
+    addDayCustom: {
+      color: 'white',
+      borderRadius: 5,
+      backgroundColor: "#63b191",
+      cursor: 'pointer',
+      fontWeight: 500,
+      outline: 'none',
+      border: `1px solid ${color.turquoise}`,
+      fontSize: 12,
+      marginTop: 20,
+      textTransform: 'none',
+      marginLeft: 10,
+      marginBottom: 10,
+      width: 120,
+      marginRight: 5,
+      height: 35,
+      [theme.breakpoints.down('md')]: {
+        marginLeft: 10
+      },
+      '&:hover': {
+        backgroundColor: "white",
+        color: 'black',
+      }
+    },
     content: {
       marginLeft: 10
     },
@@ -421,7 +445,7 @@ const tourdetailStyles = makeStyles(
       maxHeight: 770,
       overflow: 'hidden',
       [theme.breakpoints.down('sm')]: {
-        margin: '0'
+        margin: '10px 0 0 0',
       }
     },
     tourLeftInfo: {

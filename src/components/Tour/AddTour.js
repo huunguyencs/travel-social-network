@@ -91,7 +91,7 @@ function EditBaseDate(props) {
             <Button
               variant="contained"
               onClick={handleSubmit}
-              className={classes.addDay}
+              className={classes.addDayCustom}
             >
               Cập nhật
             </Button>
@@ -193,7 +193,8 @@ export default function AddTour(props) {
   const [tourInfo, setTourInfo] = useState({
     name: createTour.name,
     content: '',
-    hashtags: []
+    hashtags: [],
+    isPublic: false
   });
   const [idx, setIdx] = useState(0);
   const [showUpdateDate, setShowUpdateDate] = useState(false);
