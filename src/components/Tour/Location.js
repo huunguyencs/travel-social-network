@@ -177,8 +177,8 @@ export default function Location(props) {
     tourDateId,
     indexDate,
     indexLocation,
-    addReview
-    // joined
+    addReview,
+    isJoin
   } = props;
   // const [showDetail, setShowDetail] = useState(false);
   const [showCreateRv, setShowCreateRv] = useState(false);
@@ -305,10 +305,10 @@ export default function Location(props) {
                     {location.location.province.fullname}
                   </Typography>
                 </div>
-                {isSave && (
+                {isSave &&  (
                   <>
                     <div style={{ display: 'flex' }}>
-                      {location.location && (
+                      {location.location && isJoin && (
                         <div>
                           <Button
                             className={classes.reviewBtn}

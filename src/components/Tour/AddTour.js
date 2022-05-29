@@ -83,10 +83,10 @@ function EditBaseDate(props) {
             setValue={e => setText(e)}
             placeholder="Chi tiết"
           />
-          <Typography>
-            <b>Chi phí ngày: </b>
-            {new Intl.NumberFormat().format(tourDate.cost * 1000)} VND
-          </Typography>
+            <Typography className={classes.costTotalTour}>
+              <b>Chi phí ngày: </b>
+              {new Intl.NumberFormat().format(tourDate.cost * 1000)} VND
+            </Typography>
           <div style={{ display: 'flex', justifyContent: 'center' }}>
             <Button
               variant="contained"

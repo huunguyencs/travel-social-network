@@ -3,37 +3,189 @@ import {
   Card,
   CardContent,
   CardMedia,
-  ClickAwayListener,
-  // Collapse,
-  Dialog,
-  DialogActions,
-  DialogTitle,
   Grid,
   IconButton,
+  Modal,
+  Typography,
+  Backdrop,
+  Fade,
   MenuItem,
-  MenuList,
-  Paper,
+  Dialog,
+  DialogTitle,
+  DialogActions,
   Popper,
-  // TextField,
-  Typography
+  ClickAwayListener,
+  Paper,
+  MenuList,
+  CircularProgress,
+  CardHeader,
+  Avatar,
 } from '@material-ui/core';
-import { MoreVert } from '@material-ui/icons';
-import React, { useState } from 'react';
-import { useDispatch } from 'react-redux';
+import { MoreVert, Close } from '@material-ui/icons';
+import React, { useState, useEffect} from 'react';
 import * as tourAction from '../../redux/actions/createTourAction';
 import { tourdetailStyles } from '../../style';
-import { ReviewArea } from '../Service/ServiceDetail';
 import 'react-quill/dist/quill.snow.css';
 import { Link } from 'react-router-dom';
+import customAxios from '../../utils/fetchData';
+import { timeAgo } from '../../utils/date';
+import ImageList from '../Modal/ImageList';
+import { Rating } from '@material-ui/lab';
+import { SeeMoreText } from '../SeeMoreText';
+import { useDispatch} from 'react-redux';
+import CreateRateForm from '../Forms/CreateRate';
 
+function ReviewList(props) {
+  const { reviews, handleClose } = props;
+  const [posts, setPosts] = useState([]);
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState(false);
+
+  const getReview = async reviews => {
+    setLoading(true);
+    setError(false);
+    try {
+      await customAxios()
+        .post(`/post/list`, {
+          list: reviews
+        })
+        .then(res => {
+          setPosts(res.data.posts);
+          setLoading(false);
+        });
+    } catch (error) {
+      setLoading(false);
+      setError(false);
+    }
+  };
+
+  useEffect(() => {
+    getReview(reviews);
+  }, [reviews]);
+
+  return (
+    <Paper style={{ width: 700 }}>
+      <div style={{ display: 'flex', justifyContent: 'right' }}>
+        <IconButton size="small" onClick={handleClose}>
+          <Close />
+        </IconButton>
+      </div>
+      <div style={{ display: 'flex', justifyContent: 'center' }}>
+        <Typography variant="h5" style={{ marginBottom: 20 }}>
+          Review
+        </Typography>
+      </div>
+      <div style={{ display: 'flex', justifyContent: 'center' }}>
+        <div
+          style={{
+            height: '60vh',
+            overflowY: 'auto'
+          }}
+        >
+          {loading && (
+            <div
+              style={{
+                display: 'flex',
+                justifyContent: 'center',
+                marginTop: 100
+              }}
+            >
+              <CircularProgress />
+            </div>
+          )}
+          {error && (
+            <div
+              style={{
+                display: 'flex',
+                justifyContent: 'center',
+                marginTop: 100
+              }}
+            >
+              <Typography>Có lỗi xảy ra</Typography>
+            </div>
+          )}
+          {!error &&
+            posts.map(post => (
+              <Card
+                style={{
+                  width: 600,
+                  borderRadius: 10,
+                  border: '1px solid #ddd'
+                }}
+                key={post._id}
+              >
+                <CardHeader
+                  avatar={<Avatar alt="avatar" src={post.userId.avatar} />}
+                  title={
+                    <Typography
+                      style={{ fontWeight: 500 }}
+                      component={Link}
+                      to={`/u/${post.userId._id}`}
+                    >
+                      {post.userId.fullname}
+                    </Typography>
+                  }
+                  subheader={
+                    <Link to={`/post/${post._id}`}>
+                      {timeAgo(new Date(post.createdAt))}
+                    </Link>
+                  }
+                />
+                {post.images.length > 0 && (
+                  <CardMedia>
+                    <ImageList
+                      imageList={post.images}
+                      show2Image={true}
+                      defaultHeight={300}
+                      isPost={false}
+                    />
+                  </CardMedia>
+                )}
+                <Rating
+                  name="location-rating"
+                  value={post.rate}
+                  readOnly
+                  style={{ marginBottom: 10, marginInline: 20 }}
+                />
+                <CardContent style={{ marginInline: 10 }}>
+                  <SeeMoreText
+                    variant="body1"
+                    maxText={100}
+                    text={post.content}
+                  />
+                </CardContent>
+              </Card>
+            ))}
+        </div>
+      </div>
+    </Paper>
+  );
+}
 export default function ServiceCard(props) {
-  const { service, index, isEdit, indexDate } = props;
+  const { service, index, isEdit, indexDate, isSave, isJoin, tourDateId, addRate } = props;
 
   const classes = tourdetailStyles();
   const [anchorEl, setAnchorEl] = useState(null);
   const [showDelete, setShowDelete] = useState(false);
-
   const dispatch = useDispatch();
+  const [showCreateRv, setShowCreateRv] = useState(false);
+  const [showReview, setShowReview] = useState(false);
+
+  const handleShow = () => {
+    setShowCreateRv(true);
+  };
+
+  const handleClose = () => {
+    setShowCreateRv(false);
+  };
+  
+  const handleShowReview = () => {
+    setShowReview(true);
+  };
+
+  const handleCloseReview = () => {
+    setShowReview(false);
+  };
 
   const handleShowMenu = e => {
     setAnchorEl(e.currentTarget);
@@ -62,6 +214,18 @@ export default function ServiceCard(props) {
     handleCloseDelete();
     // dispatch(tourAction.deleteService({ index: index }))
   };
+
+  const refCr = React.createRef();
+  const ref = React.createRef();
+
+  const CreateReviewRef = React.forwardRef((props, ref) => (
+    <CreateRateForm {...props} innerRef={ref} />
+    // <ReviewArea id={service.service._id} />
+  ));
+
+  const ReviewRef = React.forwardRef((props, ref) => (
+    <ReviewList {...props} innerRef={ref} />
+  ));
 
   return (
     <Card className={classes.serviceContainer}>
@@ -97,10 +261,79 @@ export default function ServiceCard(props) {
                     {service.service?.province.fullname}
                   </Typography>
                 </div>
-                {!isEdit && service?.service && (
+                {/* {!isEdit && service?.service && (
                   <ReviewArea id={service.service._id} />
+                )} */}
+                {isSave &&  (
+                  <>
+                    <div style={{ display: 'flex' }}>
+                      {isJoin && service?.service &&  (
+                        <div>
+                          <Button
+                            className={classes.reviewBtn}
+                            onClick={handleShow}
+                          >
+                            Tạo Review
+                          </Button>
+                        </div>
+                      )}
+                      {service.rateIds?.length > 0 && (
+                        <Button
+                          className={classes.reviewBtn}
+                          onClick={handleShowReview}
+                        >
+                          Xem review
+                        </Button>
+                      )}
+                    </div>
+                  </>
                 )}
               </div>
+              <Modal
+                aria-labelledby="transition-modal-title"
+                aria-describedby="transition-modal-description"
+                open={showCreateRv}
+                className={classes.modal}
+                onClose={handleClose}
+                closeAfterTransition
+                BackdropComponent={Backdrop}
+                BackdropProps={{
+                  timeout: 500
+                }}
+              >
+                <Fade in={showCreateRv}>
+                  <CreateReviewRef
+                    ref={refCr}
+                    service={service.service}
+                    cost={service.cost}
+                    handleClose={handleClose}
+                    tourDateId={tourDateId}
+                    indexDate={indexDate}
+                    eventId={service._id}
+                    serviceId={service.service._id}
+                    addRate={addRate}
+                  />
+                </Fade>
+              </Modal>
+              <Modal
+                aria-labelledby="transition-modal-review"
+                aria-describedby="transition-modal-review-description"
+                open={showReview}
+                className={classes.modal}
+                onClose={handleCloseReview}
+                BackdropComponent={Backdrop}
+                BackdropProps={{
+                  timeout: 500
+                }}
+              >
+                <Fade in={showReview}>
+                  <ReviewRef
+                    ref={ref}
+                    reviews={service.rateIds}
+                    handleClose={handleCloseReview}
+                  />
+                </Fade>
+              </Modal>
               <div>
                 {isEdit && (
                   <div style={{ display: 'flex', justifyContent: 'right' }}>
