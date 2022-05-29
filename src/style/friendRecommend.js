@@ -25,6 +25,10 @@ const friendCardStyles = makeStyles(
       fontSize: '1.15em'
       // fontWeight: 500,
     },
+    tourRecommendTittle:{
+      fontSize: 18,
+      fontWeight: 500,
+    },
     item: {
       borderRadius: attr.borderRadius.md,
       paddingInline: theme.spacing(4)

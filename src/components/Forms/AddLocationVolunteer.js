@@ -51,7 +51,7 @@ export default function AddLocationForm(props) {
       setLoc(null);
       setLoading(true);
       await customAxios()
-        .get(`/location/locations/${province._id}`)
+        .get(`/location/all?province=${province._id}`)
         .then(req => {
           setLocations(req.data.locations);
           setLoading(false);

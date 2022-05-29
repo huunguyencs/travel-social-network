@@ -21,7 +21,7 @@ const PageRender = () => {
   var pageName = '';
 
   if (page === 'admin') {
-    if (user && user.role) {
+    if (user && user.role === 2) {
       if (id) {
         if (subpage) {
           if (subpage === 'add' || subpage === 'postReport') {

@@ -36,6 +36,10 @@ export default function HashtagTour() {
       });
   }, [dispatch, hashtag]);
 
+  useEffect(() => {
+    document.title = `Tìm kiếm hashtag ${hashtag}`;
+  }, [hashtag]);
+
   if (loading)
     return (
       <div style={{ marginTop: 150 }}>

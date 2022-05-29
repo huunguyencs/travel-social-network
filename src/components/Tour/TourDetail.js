@@ -24,12 +24,16 @@ import {
   StepLabel,
   StepContent,
   makeStyles,
-  Box,
-  Tab,
-  Tabs
+  Fade,
+  List,
+  ListItem,
+  ListItemAvatar,
+  ListItemText,
+  ListItemSecondaryAction,
+  Popover
 } from '@material-ui/core';
 import AvatarGroup from '@material-ui/lab/AvatarGroup';
-import React, { useEffect, useMemo, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { tourdetailStyles } from '../../style';
 import Location from './Location';
 import { convertDateToStr, timeAgo } from '../../utils/date';
@@ -41,33 +45,40 @@ import {
   Label,
   Delete,
   Edit,
-  FlagOutlined
+  FlagOutlined,
+  ChatBubbleOutlineOutlined
 } from '@material-ui/icons';
-import { ServiceCard } from './AddService';
-import { Link } from 'react-router-dom';
+import { Link, useHistory } from 'react-router-dom';
 import UserList from '../Modal/UserList';
 import { useDispatch, useSelector } from 'react-redux';
-import { joinTour, unJoinTour } from '../../redux/callApi/tourCall';
+import { acceptJoinTour, unAcceptJoinTour } from '../../redux/callApi/tourCall';
 import SpeedDialButton from '../SpeedDialBtn';
 import PropTypes from 'prop-types';
 import clsx from 'clsx';
 import { deleteTour } from '../../redux/callApi/tourCall';
 import TourRecommendCard from '../Card/TourRecommendCard';
-import { SeeMoreText } from '../SeeMoreText';
+import InviteTour from '../Modal/InviteTour';
+import ServiceCard from './Service';
+import InputCommentFeedBack from '../Input/CommentFeedBack';
+import Comment from '../Comment';
 
 function DetailDate(props) {
-  const { tourDate, date, joined } = props;
+  const { tourDate } = props;
 
   const classes = tourdetailStyles();
 
   return (
-    <Paper className={classes.paperDetailDate}>
-      <Grid container style={{ padding: 16 }}>
+    <div className={classes.infoTourDate}>
+      <Grid container style={{ padding: 10 }}>
         <Grid item md={12} sm={12} xs={12}>
+          <Typography style={{ fontSize: 16, fontWeight: 500 }}>
+            Tổng quan ngày
+          </Typography>
           <Typography>
             <Label style={{ fontSize: 15 }} />{' '}
             <span style={{ fontWeight: 500 }}> Mô tả: </span>{' '}
-            {tourDate.description}
+            {/* {tourDate.description} */}
+            <div dangerouslySetInnerHTML={{ __html: tourDate.description }} />
           </Typography>
           <Typography>
             <Label style={{ fontSize: 15 }} />
@@ -75,7 +86,7 @@ function DetailDate(props) {
             {new Intl.NumberFormat().format(tourDate.cost * 1000)} VND
           </Typography>
         </Grid>
-        <Grid item md={12} sm={12} xs={12}>
+        {/* <Grid item md={12} sm={12} xs={12}>
           <div style={{ display: 'flex', justifyContent: 'space-between' }}>
             <Typography
               variant="h6"
@@ -97,9 +108,9 @@ function DetailDate(props) {
               />
             ))}
           </div>
-        </Grid>
+        </Grid> */}
       </Grid>
-    </Paper>
+    </div>
   );
 }
 const useColorlibStepIconStyles = makeStyles({
@@ -147,54 +158,23 @@ ColorlibStepIcon.propTypes = {
   icon: PropTypes.node
 };
 
-function TabPanel(props) {
-  const { children, value, index, ...other } = props;
-
-  return (
-    <div
-      role="tabpanel"
-      hidden={value !== index}
-      id={`vertical-tabpanel-${index}`}
-      aria-labelledby={`vertical-tab-${index}`}
-      {...other}
-    >
-      {value === index && <Box>{children}</Box>}
-    </div>
-  );
-}
-
-TabPanel.propTypes = {
-  children: PropTypes.node,
-  index: PropTypes.any.isRequired,
-  value: PropTypes.any.isRequired
-};
-
-function a11yProps(index) {
-  return {
-    id: `vertical-tab-${index}`,
-    'aria-controls': `vertical-tabpanel-${index}`
-  };
-}
-
 export default function TourDetail(props) {
-  const { tour, isOwn, setTour, joined, setJoined, joinLoc } = props;
+  const { tour, isOwn, setTour, isInvite, setIsInvite, memberIsEdit, isJoin } =
+    props;
+
+  const history = useHistory();
 
   const classes = tourdetailStyles();
-
-  //   const dispatch = useDispatch();
-  // const { auth } = useSelector(state => state);
-
   const dispatch = useDispatch();
   const { auth, socket } = useSelector(state => state);
 
-  // const history = useHistory();
-  // const dispatch = useDispatch();
-
-  const [idx, setIdx] = useState(0);
+  const [indexDate, setIndexDate] = useState(0);
+  const [indexEvent, setIndexEvent] = useState(0);
   const [position, setPosition] = useState(null);
   const [locations, setLocations] = useState([]);
   const [showImage, setShowImage] = useState(false);
   const [showUserJoin, setShowUserJoin] = useState(false);
+  const [showInvite, setShowInvite] = useState(false);
   const [state, setState] = useState({
     loading: false,
     error: false
@@ -208,6 +188,14 @@ export default function TourDetail(props) {
     setShowUserJoin(false);
   };
 
+  const handleShowInvite = () => {
+    setShowInvite(true);
+  };
+
+  const handleCloseInvite = () => {
+    setShowInvite(false);
+  };
+
   const handleShowImage = () => {
     setShowImage(true);
   };
@@ -216,12 +204,6 @@ export default function TourDetail(props) {
     setShowImage(false);
   };
 
-  const isOld = useMemo(() => {
-    const startDate = new Date(tour.tour[0]?.date);
-    const now = new Date();
-    return startDate < now;
-  }, [tour.tour]);
-
   const createReview = (id, index_loc, tourdate_id) => {
     setTour(state => ({
       ...state,
@@ -229,13 +211,13 @@ export default function TourDetail(props) {
         item._id === tourdate_id
           ? {
               ...item,
-              locations: item.locations.map((location, index) =>
-                index === index_loc
+              events: item.events.map(event =>
+                event._id === index_loc
                   ? {
-                      ...location,
-                      postId: [...location.postId, id]
+                      ...event,
+                      reviewIds: [...event.reviewIds, id]
                     }
-                  : location
+                  : event
               )
             }
           : item
@@ -243,27 +225,20 @@ export default function TourDetail(props) {
     }));
   };
 
-  const updateJoin = joins => {
-    setTour({
-      ...tour,
-      joinIds: joins
-    });
-  };
-
-  const updateJoinLocation = (joins, idDate, idLocation) => {
-    setTour(tour => ({
-      ...tour,
-      tour: tour.tour.map(item =>
-        item._id === idDate
+  const createRate = (id, index_ser, tourdate_id) => {
+    setTour(state => ({
+      ...state,
+      tour: state.tour.map(item =>
+        item._id === tourdate_id
           ? {
               ...item,
-              locations: item.locations.map(loc =>
-                loc._id === idLocation
+              events: item.events.map(event =>
+                event._id === index_ser
                   ? {
-                      ...loc,
-                      joinIds: joins
+                      ...event,
+                      rateIds: [...event.rateIds, id]
                     }
-                  : loc
+                  : event
               )
             }
           : item
@@ -271,85 +246,29 @@ export default function TourDetail(props) {
     }));
   };
 
-  const handleJoin = () => {
-    setState({
-      loadingJoin: true,
-      error: false
-    });
-    setJoined(true);
-    var prevJoin = tour.joinIds;
-    updateJoin([...prevJoin, auth.user]);
-    dispatch(
-      joinTour(
-        tour._id,
-        auth.token,
-        () => {
-          setState({
-            loadingJoin: false,
-            error: false
-          });
-        },
-        () => {
-          setState({
-            loadingJoin: false,
-            error: true
-          });
-          if (joined) {
-            setJoined(false);
-            updateJoin(prevJoin);
-          }
-        }
-      )
-    );
-  };
-
-  const handleUnJoin = () => {
-    setState({
-      loadingJoin: true,
-      error: false
-    });
-    setJoined(false);
-    var prevJoin = tour.joinIds;
-    var newJoin = prevJoin.filter(user => user._id !== auth.user._id);
-    updateJoin(newJoin);
-
-    dispatch(
-      unJoinTour(
-        tour._id,
-        auth.token,
-        () => {
-          setState({
-            loadingJoin: false,
-            error: false
-          });
-        },
-        () => {
-          setState({
-            loadingJoin: false,
-            error: true
-          });
-          if (!joined) {
-            setJoined(true);
-            updateJoin(prevJoin);
-          }
-        }
-      )
-    );
-  };
   useEffect(() => {
-    if (tour && tour.tour[idx].locations.length > 0) {
-      setPosition(tour.tour[idx].locations[0].location.position);
+    if (tour?.tour[indexDate]?.events?.length > 0) {
+      const temp = tour.tour[indexDate].events[indexEvent];
+      if (temp.location) setPosition(temp.location.position);
+      else if (temp.service)
+        setPosition({
+          lng: temp.service.position[0],
+          lat: temp.service.position[1]
+        });
     }
-  }, [tour, idx]);
+  }, [tour, indexDate, indexEvent]);
   useEffect(() => {
-    var locs = tour.tour[idx].locations
-      .filter(item => item.location)
-      .map(item => item.location);
-    setLocations(locs);
-  }, [tour, idx]);
+    if (tour?.tour) {
+      var locs = tour.tour[indexDate].events
+        .filter(item => item.location)
+        .map(item => item.location);
+      setLocations(locs);
+    }
+  }, [tour?.tour, indexDate]);
 
   const refDetail = React.createRef();
   const refUser = React.createRef();
+  const refInvite = React.createRef();
 
   const DetailDateRef = React.forwardRef((props, ref) => (
     <DetailDate {...props} innerRef={ref} />
@@ -359,11 +278,9 @@ export default function TourDetail(props) {
     <UserList {...props} innerRef={ref} />
   ));
 
-  const [value, setValue] = React.useState(0);
-
-  const handleChange = (event, newValue) => {
-    setValue(newValue);
-  };
+  const InviteRef = React.forwardRef((props, ref) => (
+    <InviteTour {...props} innerRef={ref} />
+  ));
 
   const [anchorEl, setAnchorEl] = useState(null);
   const [showDelete, setShowDelete] = useState(false);
@@ -398,6 +315,7 @@ export default function TourDetail(props) {
           });
           setShowDelete(false);
           handleCloseMenu();
+          history.push('/tour');
         },
         () => {
           setState({
@@ -408,6 +326,99 @@ export default function TourDetail(props) {
       )
     );
   };
+
+  const updateAccept = () => {
+    setTour(tour => ({
+      ...tour,
+      joinIds: tour.joinIds.map(item =>
+        item.id._id === auth.user._id
+          ? {
+              ...item,
+              isJoin: true
+            }
+          : item
+      )
+    }));
+  };
+
+  const handleAcceptInvite = () => {
+    setState({
+      loadingJoin: true,
+      error: false
+    });
+    dispatch(
+      acceptJoinTour(
+        tour._id,
+        auth.token,
+        () => {
+          setState({
+            loadingJoin: false,
+            error: false
+          });
+          setIsInvite(false);
+          updateAccept();
+        },
+        () => {
+          setState({
+            loadingJoin: false,
+            error: true
+          });
+        }
+      )
+    );
+  };
+
+  const updateUnAccept = () => {
+    setTour(tour => ({
+      ...tour,
+      joinIds: tour.joinIds.filter(item => item.id._id !== auth.user._id)
+    }));
+  };
+
+  const handleUnAcceptInvite = () => {
+    setState({
+      loadingJoin: true,
+      error: false
+    });
+    dispatch(
+      unAcceptJoinTour(
+        tour._id,
+        auth.token,
+        () => {
+          setState({
+            loadingJoin: false,
+            error: false
+          });
+          updateUnAccept();
+        },
+        () => {
+          setState({
+            loadingJoin: false,
+            error: true
+          });
+        }
+      )
+    );
+  };
+
+  const handleChangeIndexDate = index => {
+    if (index !== indexDate) {
+      setIndexDate(index);
+      setIndexEvent(0);
+    }
+  };
+
+  const [anchorElFeedback, setAnchorElFeedback] = useState(null);
+
+  const handleClickFeedback = event => {
+    setAnchorElFeedback(event.currentTarget);
+  };
+
+  const handleCloseFeedback = () => {
+    setAnchorElFeedback(null);
+  };
+
+  const openFeedback = Boolean(anchorElFeedback);
   return (
     <>
       {tour ? (
@@ -430,6 +441,44 @@ export default function TourDetail(props) {
                     img={tour.image}
                   />
                 </div>
+                {isInvite && (
+                  <div className={classes.invitation}>
+                    <List>
+                      <ListItem>
+                        <ListItemAvatar>
+                          <Avatar
+                            alt="avatar"
+                            src={tour.userId.avatar}
+                          ></Avatar>
+                        </ListItemAvatar>
+                        <ListItemText
+                          primary={
+                            tour.userId.fullname +
+                            ' đã mời bạn tham gia hành trình này'
+                          }
+                          secondary={
+                            1 ? 'Với quyền chỉnh sửa' : 'Với quyền chỉnh sửa'
+                          }
+                        />
+                        <ListItemSecondaryAction>
+                          <Button
+                            onClick={() => handleAcceptInvite()}
+                            className={classes.reviewBtn}
+                          >
+                            Tham gia nhóm
+                          </Button>
+                          <Button
+                            onClick={() => handleUnAcceptInvite()}
+                            className={classes.reviewBtn}
+                          >
+                            Từ chối lời mời
+                          </Button>
+                        </ListItemSecondaryAction>
+                      </ListItem>
+                    </List>
+                  </div>
+                )}
+
                 <div className={classes.tourLeftInfo}>
                   <Typography variant="h6" className={classes.tourName}>
                     {tour.name}
@@ -481,11 +530,7 @@ export default function TourDetail(props) {
                       minHeight: 70
                     }}
                   >
-                    <SeeMoreText
-                      variant="body1"
-                      maxText={300}
-                      text={tour.content}
-                    />
+                    <div dangerouslySetInnerHTML={{ __html: tour.content }} />
                   </div>
                   <div className={classes.hashtagWrap}>
                     {tour.hashtags.map((hashtag, index) => (
@@ -503,35 +548,24 @@ export default function TourDetail(props) {
                     Tổng chi phí:{' '}
                     {new Intl.NumberFormat().format(tour.cost * 1000)} VND
                   </Typography>
-                  {!isOwn && joinLoc === 0 && (
-                    <>
-                      {state.loading ? (
-                        <CircularProgress />
-                      ) : (
-                        <Button
-                          onClick={joined ? handleUnJoin : handleJoin}
-                          disabled={isOld}
-                        >
-                          {joined ? 'Hủy tham gia' : 'Tham gia'}
-                        </Button>
-                      )}
-                    </>
-                  )}
                   <div>
-                    <Typography>Danh sách tham gia toàn bộ tour:</Typography>
+                    <Typography>Thành viên hành trình: </Typography>
                     <AvatarGroup
                       max={4}
                       onClick={handleShowJoin}
                       style={{ cursor: 'pointer' }}
                     >
-                      {tour.joinIds.map(user => (
-                        <Avatar
-                          src={user.avatar}
-                          alt={'A'}
-                          key={user._id}
-                          style={{ height: 30, width: 30 }}
-                        />
-                      ))}
+                      {tour.joinIds.map(
+                        (user, indexDate) =>
+                          user.isJoin && (
+                            <Avatar
+                              src={user.id.avatar}
+                              alt={'avatar'}
+                              key={indexDate}
+                              style={{ height: 30, width: 30 }}
+                            />
+                          )
+                      )}
                     </AvatarGroup>
                     <Modal
                       aria-labelledby="like"
@@ -547,7 +581,9 @@ export default function TourDetail(props) {
                     >
                       <UserListRef
                         ref={refUser}
-                        listUser={tour.joinIds}
+                        listUser={tour.joinIds
+                          .filter(item => item.isJoin === true)
+                          .map(item => item.id)}
                         title={'Đã tham gia'}
                         handleClose={handleCloseJoin}
                       />
@@ -567,7 +603,7 @@ export default function TourDetail(props) {
                     }
                     action={
                       <>
-                        {auth.user && auth.user._id === tour.userId._id && (
+                        {auth.user && memberIsEdit && (
                           <>
                             <IconButton
                               aria-label="settings"
@@ -587,6 +623,32 @@ export default function TourDetail(props) {
                               <ClickAwayListener onClickAway={handleCloseMenu}>
                                 <Paper>
                                   <MenuList>
+                                    <MenuItem onClick={handleShowInvite}>
+                                      <Edit className={classes.menuIcon} /> Mời
+                                      thành viên
+                                    </MenuItem>
+                                    <Modal
+                                      aria-labelledby="invite"
+                                      aria-describedby="user-invite"
+                                      className={classes.modal}
+                                      open={showInvite}
+                                      onClose={handleCloseInvite}
+                                      closeAfterTransition
+                                      BackdropComponent={Backdrop}
+                                      BackdropProps={{
+                                        timeout: 500
+                                      }}
+                                    >
+                                      <Fade in={showInvite}>
+                                        <InviteRef
+                                          ref={refInvite}
+                                          handleClose={handleCloseInvite}
+                                          usersParent={tour.joinIds}
+                                          tour={tour}
+                                          setTour={setTour}
+                                        />
+                                      </Fade>
+                                    </Modal>
                                     <MenuItem
                                       component={Link}
                                       to={'?edit=true'}
@@ -594,11 +656,13 @@ export default function TourDetail(props) {
                                       <Edit className={classes.menuIcon} />{' '}
                                       Chỉnh sửa hành trình
                                     </MenuItem>
-                                    <MenuItem onClick={handleShowDelete}>
-                                      {' '}
-                                      <Delete className={classes.menuIcon} />
-                                      Xóa hành trình
-                                    </MenuItem>
+                                    {isOwn && (
+                                      <MenuItem onClick={handleShowDelete}>
+                                        {' '}
+                                        <Delete className={classes.menuIcon} />
+                                        Xóa hành trình
+                                      </MenuItem>
+                                    )}
                                     <Dialog
                                       open={showDelete}
                                       onClose={handleCloseDelete}
@@ -658,9 +722,6 @@ export default function TourDetail(props) {
                     <Typography className={classes.tourName}>
                       {tour.name}
                     </Typography>
-                    {/* <Typography>Thời gian: {convertDateToStr(volunteer.date[0].date)}</Typography>
-                                            <Typography>Địa điểm xuất phát: {volunteer.location[0].location.fullname}</Typography>
-                                            <Typography>Thể loại: {volunteer.type}</Typography> */}
                   </CardContent>
                 </Card>
                 <div className={classes.tourRecommend}>
@@ -678,69 +739,179 @@ export default function TourDetail(props) {
                 className={classes.tourDatesLeft}
               >
                 <Stepper
-                  activeStep={idx}
+                  activeStep={indexDate}
                   orientation="vertical"
                   className={classes.datesWrapper}
                 >
-                  {tour.tour.map((item, index) => (
+                  {tour.tour.map((tourDate, index) => (
                     <Step
                       key={index}
-                      onClick={() => setIdx(index)}
+                      onClick={() => handleChangeIndexDate(index)}
                       style={{ cursor: 'pointer' }}
                     >
                       <StepLabel StepIconComponent={ColorlibStepIcon}>
-                        Chi tiết lịch trình ngày {convertDateToStr(item.date)}
+                        <div style={{ display: 'flex', alignItems: 'center' }}>
+                          <Typography variant="body1">
+                            Chi tiết lịch trình ngày{' '}
+                            {convertDateToStr(tourDate.date)}{' '}
+                          </Typography>
+                        </div>
                       </StepLabel>
                       <StepContent>
-                        <Tabs
-                          value={value}
-                          onChange={handleChange}
-                          indicatorColor="primary"
-                          textColor="primary"
-                          variant="scrollable"
-                          scrollButtons="auto"
-                          aria-label="scrollable auto tabs example"
-                        >
-                          <Tab label="Tổng quan ngày" {...a11yProps(0)} />
-                          <Tab label="Các địa điểm" {...a11yProps(1)} />
-                        </Tabs>
-                        <TabPanel
-                          value={value}
-                          index={0}
-                          className={classes.tabPanel}
-                        >
-                          <DetailDateRef
-                            ref={refDetail}
-                            date={idx}
-                            tourDate={tour.tour[idx]}
-                            joined={joined}
-                          />
-                        </TabPanel>
-                        <TabPanel
-                          value={value}
-                          index={1}
-                          className={classes.tabPanel}
-                        >
-                          {tour.tour[idx].locations.map((item, index) => (
-                            <Location
-                              location={item}
-                              indexDate={idx}
-                              tourDateId={tour.tour[idx]._id}
-                              indexLocation={index}
-                              edit={false}
-                              key={index}
-                              isSave={true}
-                              isEdit={false}
-                              addReview={createReview}
-                              joined={joined}
-                              joinIds={tour.joinIds}
-                              isOwn={isOwn}
-                              updateJoinLocation={updateJoinLocation}
-                              joinLoc={joinLoc}
-                              isOld={isOld}
+                        <Grid container className={classes.generalDate}>
+                          <Grid item md={11} sm={11} xs={11}>
+                            <DetailDateRef
+                              ref={refDetail}
+                              date={indexDate}
+                              tourDate={tour.tour[indexDate]}
                             />
-                          ))}
-                        </TabPanel>
+                          </Grid>
+                          <Grid
+                            item
+                            md={1}
+                            sm={1}
+                            xs={1}
+                            style={{ display: 'flex', alignItems: 'center' }}
+                          >
+                            {isJoin && (
+                              <>
+                                <IconButton
+                                  className={classes.buttonChat}
+                                  onClick={handleClickFeedback}
+                                  aria-describedby={indexDate}
+                                >
+                                  <ChatBubbleOutlineOutlined />
+                                </IconButton>
+                                <Popover
+                                  id={indexDate}
+                                  open={openFeedback}
+                                  anchorEl={anchorElFeedback}
+                                  onClose={handleCloseFeedback}
+                                  anchorOrigin={{
+                                    vertical: 'top',
+                                    horizontal: 'right'
+                                  }}
+                                  transformOrigin={{
+                                    vertical: 'bottom',
+                                    horizontal: 'left'
+                                  }}
+                                >
+                                  <div className={classes.feedbacks}>
+                                    <Typography
+                                      variant="h6"
+                                      style={{ padding: '5px 5px 5px 30px' }}
+                                    >
+                                      Nhận xét
+                                    </Typography>
+                                    <hr className={classes.line} />
+                                    <div className={classes.listCmt}>
+                                      {tourDate.comments &&
+                                        tourDate.comments.map(cmt => (
+                                          <Comment
+                                            comment={cmt}
+                                            key={cmt._id}
+                                            id={tourDate._id}
+                                            type="feedback"
+                                          />
+                                        ))}
+                                    </div>
+                                    {auth.user && (
+                                      <div className={classes.wrapInput}>
+                                        <InputCommentFeedBack
+                                          type="feedback"
+                                          id={tourDate._id}
+                                          setTour={setTour}
+                                          indexDate={indexDate}
+                                        />
+                                      </div>
+                                    )}
+                                  </div>
+                                </Popover>
+                              </>
+                            )}
+                          </Grid>
+                        </Grid>
+                        <Grid container className={classes.detailDate}>
+                          <Grid
+                            item
+                            md={2}
+                            sm={2}
+                            xs={12}
+                            className={classes.tourDateWrapper}
+                          >
+                            <div className={classes.timelineTour}>
+                              {tourDate.events.map((item, index) => (
+                                <div key={index}>
+                                  <Button
+                                    onClick={() => setIndexEvent(index)}
+                                    className={
+                                      index === indexEvent
+                                        ? classes.activeTimeline
+                                        : classes.unactiveTimeline
+                                    }
+                                  >
+                                    {item.time}
+                                  </Button>
+                                </div>
+                              ))}
+                            </div>
+                          </Grid>
+                          <Grid item md={10} sm={10} xs={12}>
+                            <div className={classes.tourDateInfoWrapper}>
+                              <Typography>
+                                <Label style={{ fontSize: 15 }} />{' '}
+                                <span style={{ fontWeight: 500 }}>
+                                  {' '}
+                                  Mô tả:{' '}
+                                </span>{' '}
+                                {/* {tourDate.events[indexEvent].description} */}
+                                <div
+                                  dangerouslySetInnerHTML={{
+                                    __html:
+                                      tourDate.events[indexEvent]?.description
+                                  }}
+                                />
+                              </Typography>
+                              <Typography>
+                                <Label style={{ fontSize: 15 }} />
+                                <span style={{ fontWeight: 500 }}>
+                                  Chi phí:{' '}
+                                </span>{' '}
+                                {new Intl.NumberFormat().format(
+                                  tourDate.events[indexEvent]?.cost * 1000
+                                )}{' '}
+                                VND
+                              </Typography>
+                            </div>
+                            {tourDate.events[indexEvent]?.location && (
+                              <Location
+                                location={tourDate.events[indexEvent]}
+                                indexDate={indexDate}
+                                tourDateId={tourDate._id}
+                                indexLocation={indexEvent}
+                                edit={false}
+                                key={indexEvent}
+                                isSave={true}
+                                isEdit={false}
+                                addReview={createReview}
+                                isJoin={isJoin}
+                                isOwn={isOwn}
+                              />
+                            )}
+                            {tourDate.events[indexEvent]?.service && (
+                              <ServiceCard
+                                service={tourDate.events[indexEvent]}
+                                indexDate={indexDate}
+                                index={indexEvent}
+                                tourDateId={tourDate._id}
+                                addRate={createRate}
+                                isSave={true}
+                                isEdit={false}
+                                isJoin={isJoin}
+                              />
+                            )}
+                          </Grid>
+                        </Grid>
                       </StepContent>
                     </Step>
                   ))}
@@ -755,14 +926,12 @@ export default function TourDetail(props) {
                 className={classes.tourDatesRight}
               >
                 <div className={classes.map}>
-                  {position ? (
+                  {position && (
                     <MapCard
                       position={position}
                       zoom={12}
                       locations={locations}
                     />
-                  ) : (
-                    <div></div>
                   )}
                 </div>
               </Grid>

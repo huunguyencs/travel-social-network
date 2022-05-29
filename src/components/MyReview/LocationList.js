@@ -28,7 +28,7 @@ export default function LocationList({
 }) {
   const handleClick = item => {
     setShowInfo(item);
-    setCenter(item.review.locationId?.position);
+    setCenter(item.locationId?.position);
     setZoom(11);
   };
   const classes = myReviewStyles();
@@ -56,10 +56,7 @@ export default function LocationList({
               key={item._id}
               style={{ cursor: 'pointer' }}
             >
-              <LocationItem
-                review={item.review}
-                onClick={e => handleClick(item)}
-              />
+              <LocationItem review={item} onClick={e => handleClick(item)} />
             </Grid>
           ))}
         </Grid>

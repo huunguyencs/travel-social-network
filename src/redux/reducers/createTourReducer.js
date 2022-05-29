@@ -5,26 +5,29 @@ const INIT_STATE = {
   name: '',
   content: '',
   hashtags: [],
+  isPublic: false,
   image: null,
   tour: [],
   isFetching: false,
   error: null,
   cost: 0,
-  recommendService: null
+  recommendService: {
+    list: null,
+    indexEvent: null,
+    indexDate: null
+  }
 };
 
 const createTourReducer = (state = INIT_STATE, action) => {
   switch (action.type) {
     case TOUR_TYPES.CREATE_TOUR: {
-      // them tour (chua cap nhat len database)
-      // var dateStr = dateUtils.convertDateToStr(action.payload.date);
       return {
         ...INIT_STATE,
         name: action.payload.name,
         tour: [
           {
             date: action.payload.date,
-            locations: [],
+            events: [{ time: '07:00', description: '', cost: 0 }],
             description: '',
             services: [],
             cost: 0
@@ -43,7 +46,7 @@ const createTourReducer = (state = INIT_STATE, action) => {
           ...state.tour,
           {
             date: newDate,
-            locations: [],
+            events: [{ time: '07:00', description: '', cost: 0 }],
             description: '',
             services: [],
             cost: 0
@@ -51,26 +54,145 @@ const createTourReducer = (state = INIT_STATE, action) => {
         ]
       };
     }
-    case TOUR_TYPES.ADD_NEW_LOCATION: {
-      var new_loc = {
-        description: '',
-        cost: 0,
-        time: '',
-        services: []
+    case TOUR_TYPES.ADD_EVENT: {
+      return {
+        ...state,
+        tour: state.tour.map((item, i) =>
+          i === action.payload.indexDate
+            ? {
+                ...item,
+                events: [
+                  ...item.events,
+                  { time: '07:00', description: '', cost: 0 }
+                ]
+              }
+            : item
+        )
       };
-      if (action.payload.location) {
-        new_loc.location = action.payload.location;
-      } else {
-        new_loc.locationName = action.payload.locationName;
-      }
+    }
+    case TOUR_TYPES.UPDATE_TIME_EVENT: {
+      return {
+        ...state,
+        tour: state.tour.map((item, i) =>
+          i === action.payload.indexDate
+            ? {
+                ...item,
+                events: item.events.map((event, j) =>
+                  j === action.payload.indexEvent
+                    ? {
+                        ...event,
+                        time: action.payload.time
+                      }
+                    : event
+                )
+              }
+            : item
+        )
+      };
+    }
+    case TOUR_TYPES.UPDATE_EVENT: {
+      const oldCost =
+        state.tour[action.payload.indexDate].events[action.payload.indexEvent]
+          .cost;
+      const newCost = parseInt(action.payload.cost);
 
+      return {
+        ...state,
+        tour: state.tour.map((item, i) =>
+          i === action.payload.indexDate
+            ? {
+                ...item,
+                cost: item.cost - oldCost + newCost,
+                events: item.events.map((event, j) =>
+                  j === action.payload.indexEvent
+                    ? {
+                        ...event,
+                        description: action.payload.description,
+                        cost: newCost
+                      }
+                    : event
+                )
+              }
+            : item
+        ),
+        cost: state.cost - oldCost + newCost
+      };
+    }
+    case TOUR_TYPES.ADD_NEW_LOCATION: {
       return {
         ...state,
         tour: state.tour.map((date, i) =>
           i === action.payload.indexDate
             ? {
                 ...date,
-                locations: [...date.locations, new_loc]
+                events: date.events.map((event, j) =>
+                  j === action.payload.indexEvent
+                    ? {
+                        ...event,
+                        location: action.payload?.location
+                      }
+                    : event
+                )
+              }
+            : date
+        )
+      };
+    }
+    case TOUR_TYPES.DELETE_LOCATION: {
+      return {
+        ...state,
+        tour: state.tour.map((date, i) =>
+          i === action.payload.indexDate
+            ? {
+                ...date,
+                events: date.events.map((event, j) =>
+                  j === action.payload.indexEvent
+                    ? {
+                        ...event,
+                        location: null
+                      }
+                    : event
+                )
+              }
+            : date
+        )
+      };
+    }
+    case TOUR_TYPES.ADD_NEW_SERVICE: {
+      return {
+        ...state,
+        tour: state.tour.map((date, i) =>
+          i === action.payload.indexDate
+            ? {
+                ...date,
+                events: date.events.map((event, j) =>
+                  j === action.payload.indexEvent
+                    ? {
+                        ...event,
+                        service: action.payload?.service
+                      }
+                    : event
+                )
+              }
+            : date
+        )
+      };
+    }
+    case TOUR_TYPES.DELETE_SERVICE: {
+      return {
+        ...state,
+        tour: state.tour.map((date, i) =>
+          i === action.payload.indexDate
+            ? {
+                ...date,
+                events: date.events.map((event, j) =>
+                  j === action.payload.indexEvent
+                    ? {
+                        ...event,
+                        service: null
+                      }
+                    : event
+                )
               }
             : date
         )
@@ -87,14 +209,12 @@ const createTourReducer = (state = INIT_STATE, action) => {
         cost: newCost
       };
     }
-    case TOUR_TYPES.DELETE_LOCATION: {
-      // console.log(action.payload)
+    case TOUR_TYPES.DELETE_EVENT: {
       let oldCostLoc =
-        state.tour[action.payload.indexDate].locations[
-          action.payload.indexLocation
-        ].cost;
+        state.tour[action.payload.indexDate].events[action.payload.index]
+          ?.cost || 0;
       let newCost = state.cost - oldCostLoc;
-      let newCostDate = state.tour[action.payload.indexDate].cost - oldCostLoc;
+      let newCostDate = state.tour[action.payload.indexDate]?.cost - oldCostLoc;
 
       return {
         ...state,
@@ -103,9 +223,9 @@ const createTourReducer = (state = INIT_STATE, action) => {
             ? {
                 ...date,
                 cost: newCostDate,
-                locations: [
-                  ...date.locations.slice(0, action.payload.indexLocation),
-                  ...date.locations.slice(action.payload.indexLocation + 1)
+                events: [
+                  ...date.events.slice(0, action.payload.index),
+                  ...date.events.slice(action.payload.index + 1)
                 ]
               }
             : date
@@ -128,8 +248,9 @@ const createTourReducer = (state = INIT_STATE, action) => {
       };
     }
     case TOUR_TYPES.UPDATE_DESCRIPTION_DATE: {
-      let oldCost = state.tour[action.payload.indexDate].cost;
-      let newCost = state.cost - oldCost + action.payload.cost;
+      let oldCost = state.tour[action.payload.indexDate]?.cost || 0;
+      const cost = parseInt(action.payload?.cost) || 0;
+      let newCost = state.cost - oldCost + cost;
       return {
         ...state,
         cost: newCost,
@@ -137,7 +258,7 @@ const createTourReducer = (state = INIT_STATE, action) => {
           i === action.payload.indexDate
             ? {
                 ...date,
-                cost: action.payload.cost,
+                cost: cost,
                 description: action.payload.description
               }
             : date
@@ -145,227 +266,49 @@ const createTourReducer = (state = INIT_STATE, action) => {
       };
     }
     case TOUR_TYPES.UPDATE_LOCATION: {
-      let oldCostLoc =
-        state.tour[action.payload.indexDate].locations[
-          action.payload.indexLocation
-        ].cost;
-
-      let newCost = state.cost - oldCostLoc + action.payload.cost;
-      let newCostDate =
-        state.tour[action.payload.indexDate].cost -
-        oldCostLoc +
-        action.payload.cost;
       return {
         ...state,
         tour: state.tour.map((date, i) =>
           i === action.payload.indexDate
             ? {
                 ...date,
-                cost: newCostDate,
-                locations: date.locations.map((loc, j) =>
-                  j === action.payload.indexLocation
+                events: date.events.map((loc, j) =>
+                  j === action.payload.indexEvent
                     ? {
                         ...loc,
-                        location: action.payload?.location || loc.location,
-                        cost: action.payload?.cost || loc.cost,
-                        description:
-                          action.payload?.description || loc.description,
-                        time: action.payload?.time || loc.time
+                        location: action.payload?.location || loc.location
                       }
                     : loc
                 )
               }
             : date
-        ),
-        cost: newCost
+        )
       };
     }
-
-    case TOUR_TYPES.UPDATE_INFO_TOUR: {
+    case TOUR_TYPES.UPDATE_SERVICE: {
       return {
         ...state,
-        name: action.payload.name,
-        hashtags: action.payload.hashtags,
-        content: action.payload.content,
-        cost: action.payload.cost
+        tour: state.tour.map((date, i) =>
+          i === action.payload.indexDate
+            ? {
+                ...date,
+                events: date.events.map((loc, j) =>
+                  j === action.payload.index
+                    ? {
+                        ...loc,
+                        service: action.payload?.service || loc.service
+                      }
+                    : loc
+                )
+              }
+            : date
+        )
       };
     }
     case TOUR_TYPES.CHANGE_IMAGE: {
       return {
         ...state,
         image: action.payload.image
-      };
-    }
-    case TOUR_TYPES.ADD_SERVICE_DATE: {
-      return {
-        ...state,
-        cost: state.cost + action.payload.service.cost,
-        tour: state.tour.map((date, i) =>
-          i === action.payload.indexDate
-            ? {
-                ...date,
-                cost: date.cost + action.payload.service.cost,
-                services: [...date.services, action.payload.service]
-              }
-            : date
-        )
-      };
-    }
-    case TOUR_TYPES.UPDATE_SERVICE_DATE: {
-      let oldCost =
-        state.tour[action.payload.indexDate].services[
-          action.payload.indexService
-        ].cost;
-      let newCost = state.cost - oldCost + action.payload.cost;
-      let newCostDate =
-        state.tour[action.payload.indexDate].cost -
-        oldCost +
-        action.payload.cost;
-
-      return {
-        ...state,
-        tour: state.tour.map((date, i) =>
-          i === action.payload.indexDate
-            ? {
-                ...date,
-                cost: newCostDate,
-                services: date.services.map((service, index) =>
-                  index === action.payload.indexService
-                    ? {
-                        ...service,
-                        cost: action.payload.cost,
-                        description: action.payload.description
-                      }
-                    : service
-                )
-              }
-            : date
-        ),
-        cost: newCost
-      };
-    }
-    case TOUR_TYPES.DELETE_SERVICE_DATE: {
-      let oldCost =
-        state.tour[action.payload.indexDate].services[
-          action.payload.indexService
-        ].cost;
-      let newCost = state.cost - oldCost;
-      let newCostDate = state.tour[action.payload.indexDate].cost - oldCost;
-
-      return {
-        ...state,
-        cost: newCost,
-        tour: state.tour.map((date, i) =>
-          i === action.payload.indexDate
-            ? {
-                ...date,
-                cost: newCostDate,
-                services: [
-                  ...date.services.slice(0, action.payload.indexService),
-                  ...date.services.slice(action.payload.indexService + 1)
-                ]
-              }
-            : date
-        )
-      };
-    }
-    case TOUR_TYPES.ADD_SERVICE_LOCATION: {
-      return {
-        ...state,
-        cost: state.cost + action.payload.service.cost,
-        tour: state.tour.map((date, i) =>
-          i === action.payload.indexDate
-            ? {
-                ...date,
-                cost: date.cost + action.payload.service.cost,
-                locations: date.locations.map((location, iLoc) =>
-                  iLoc === action.payload.indexLocation
-                    ? {
-                        ...location,
-                        services: [...location.services, action.payload.service]
-                      }
-                    : location
-                )
-              }
-            : date
-        )
-      };
-    }
-    case TOUR_TYPES.UPDATE_SERVICE_LOCATION: {
-      let oldCost =
-        state.tour[action.payload.indexDate].locations[
-          action.payload.indexLocation
-        ].services[action.payload.indexService].cost;
-      let newCost = state.cost - oldCost + action.payload.cost;
-      let newCostDate =
-        state.tour[action.payload.indexDate].cost -
-        oldCost +
-        action.payload.cost;
-
-      return {
-        ...state,
-        tour: state.tour.map((date, i) =>
-          i === action.payload.indexDate
-            ? {
-                ...date,
-                cost: newCostDate,
-                locations: date.locations.map((location, iLoc) =>
-                  iLoc === action.payload.indexLocation
-                    ? {
-                        ...location,
-                        services: location.services.map((service, iSer) =>
-                          iSer === action.payload.indexService
-                            ? {
-                                ...service,
-                                cost: action.payload.cost,
-                                description: action.payload.description
-                              }
-                            : service
-                        )
-                      }
-                    : location
-                )
-              }
-            : date
-        ),
-        cost: newCost
-      };
-    }
-    case TOUR_TYPES.DELETE_SERVICE_LOCATION: {
-      let oldCost =
-        state.tour[action.payload.indexDate].locations[
-          action.payload.indexLocation
-        ].services[action.payload.indexService].cost;
-      let newCost = state.cost - oldCost;
-      let newCostDate = state.tour[action.payload.indexDate].cost - oldCost;
-
-      return {
-        ...state,
-        cost: newCost,
-        tour: state.tour.map((date, i) =>
-          i === action.payload.indexDate
-            ? {
-                ...date,
-                cost: newCostDate,
-                locations: date.locations.map((location, iLoc) =>
-                  iLoc === action.payload.indexLocation
-                    ? {
-                        ...location,
-                        services: [
-                          ...date.services.slice(
-                            0,
-                            action.payload.indexService
-                          ),
-                          ...date.services.slice(
-                            action.payload.indexService + 1
-                          )
-                        ]
-                      }
-                    : location
-                )
-              }
-            : date
-        )
       };
     }
     case TOUR_TYPES.RECOMMEND_SERVICE: {
@@ -383,8 +326,6 @@ const createTourReducer = (state = INIT_STATE, action) => {
     case TOUR_TYPES.RESET_TOUR: {
       return {
         name: '',
-        content: '',
-        hashtags: [],
         image: null,
         tour: [],
         isFetching: false,

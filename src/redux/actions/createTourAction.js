@@ -14,9 +14,37 @@ export const addDate = props => {
   };
 };
 
+export const addEvent = props => {
+  return {
+    type: CREATE_TOUR_TYPES.ADD_EVENT,
+    payload: props
+  };
+};
+
+export const updateTimeEvent = props => {
+  return {
+    type: CREATE_TOUR_TYPES.UPDATE_TIME_EVENT,
+    payload: props
+  };
+};
+
+export const updateEvent = props => {
+  return {
+    type: CREATE_TOUR_TYPES.UPDATE_EVENT,
+    payload: props
+  };
+};
+
 export const addLocation = props => {
   return {
     type: CREATE_TOUR_TYPES.ADD_NEW_LOCATION,
+    payload: props
+  };
+};
+
+export const addService = props => {
+  return {
+    type: CREATE_TOUR_TYPES.ADD_NEW_SERVICE,
     payload: props
   };
 };
@@ -28,9 +56,23 @@ export const deleteDate = props => {
   };
 };
 
+export const deleteEvent = props => {
+  return {
+    type: CREATE_TOUR_TYPES.DELETE_EVENT,
+    payload: props
+  };
+};
+
 export const deleteLocation = props => {
   return {
     type: CREATE_TOUR_TYPES.DELETE_LOCATION,
+    payload: props
+  };
+};
+
+export const deleteService = props => {
+  return {
+    type: CREATE_TOUR_TYPES.DELETE_SERVICE,
     payload: props
   };
 };
@@ -49,59 +91,17 @@ export const updateLocation = props => {
   };
 };
 
+export const updateService = props => {
+  return {
+    type: CREATE_TOUR_TYPES.UPDATE_SERVICE,
+    payload: props
+  };
+};
+
 export const resetTour = props => {
   return {
     type: CREATE_TOUR_TYPES.RESET_TOUR,
     payload: null
-  };
-};
-
-export const updateInfo = props => {
-  return {
-    type: CREATE_TOUR_TYPES.UPDATE_INFO_TOUR,
-    payload: props
-  };
-};
-
-export const addServiceDate = props => {
-  return {
-    type: CREATE_TOUR_TYPES.ADD_SERVICE_DATE,
-    payload: props
-  };
-};
-
-export const updateServiceDate = props => {
-  return {
-    type: CREATE_TOUR_TYPES.UPDATE_SERVICE_DATE,
-    payload: props
-  };
-};
-
-export const deleteServiceDate = props => {
-  return {
-    type: CREATE_TOUR_TYPES.DELETE_SERVICE_DATE,
-    payload: props
-  };
-};
-
-export const addServiceLocation = props => {
-  return {
-    type: CREATE_TOUR_TYPES.ADD_SERVICE_LOCATION,
-    payload: props
-  };
-};
-
-export const updateServiceLocation = props => {
-  return {
-    type: CREATE_TOUR_TYPES.UPDATE_SERVICE_LOCATION,
-    payload: props
-  };
-};
-
-export const deleteServiceLocation = props => {
-  return {
-    type: CREATE_TOUR_TYPES.DELETE_SERVICE_LOCATION,
-    payload: props
   };
 };
 

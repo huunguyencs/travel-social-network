@@ -1,60 +1,287 @@
 import {
   Button,
-  Card,
-  CardMedia,
-  ClickAwayListener,
-  Collapse,
-  Dialog,
-  DialogActions,
-  DialogTitle,
   Grid,
-  IconButton,
-  InputAdornment,
   InputBase,
-  MenuItem,
-  MenuList,
   Paper,
-  Popper,
   TextField,
   Typography
 } from '@material-ui/core';
 import React, { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-
+import GoogleMapPicker from 'react-google-map-picker';
 import * as tourAction from '../../redux/actions/createTourAction';
 import Autocomplete, {
   createFilterOptions
 } from '@material-ui/lab/Autocomplete';
 import { formStyles, tourdetailStyles } from '../../style';
 // import { Link } from 'react-router-dom';
-import { AddCircle, MoreVert, Label } from '@material-ui/icons';
-import { ReviewArea } from '../Service/ServiceDetail';
-import { success } from '../../redux/actions/alertAction';
+import { AddCircle, CameraAltOutlined } from '@material-ui/icons';
 import customAxios from '../../utils/fetchData';
+import { checkImage, uploadImages } from '../../utils/uploadImage';
+import { ScrollMenu } from 'react-horizontal-scrolling-menu';
+
+const KEY = process.env.REACT_APP_GOOGLE_MAP;
 
 const filter = createFilterOptions();
+
+function MapPicker({ setPosition, position }) {
+  const [show, setShow] = useState(false);
+  const [zoom, setZoom] = useState(8);
+
+  const defaultPosition = position || { lat: 15, lng: 108 };
+
+  useEffect(() => {
+    let timer = setTimeout(() => setShow(true), 1000);
+    return () => {
+      clearTimeout(timer);
+    };
+  }, []);
+
+  function handleChangeLocation(lat, lng) {
+    setPosition({ lat: lat, lng: lng });
+  }
+
+  function handleChangeZoom(newZoom) {
+    setZoom(newZoom);
+  }
+
+  if (!show) {
+    return 'Loading map...';
+  }
+  return (
+    <GoogleMapPicker
+      defaultLocation={defaultPosition}
+      zoom={zoom}
+      defaultZoom={8}
+      mapTypeId="roadmap"
+      style={{ height: 580 }}
+      onChangeLocation={handleChangeLocation}
+      onChangeZoom={handleChangeZoom}
+      apiKey={KEY}
+    />
+  );
+}
+
+function ServiceAddContributeForm(props) {
+  const dispatch = useDispatch();
+  const { location, auth } = useSelector(state => state);
+
+  const { indexDate, cProvince, cName, handleClose, indexEvent } = props;
+  const [service, setService] = useState({
+    name: cName,
+    description: '',
+    address: ''
+  });
+  const [position, setPosition] = useState({
+    lat: 15,
+    lng: 108
+  });
+  const [loading, setLoading] = useState(location.loadingServices);
+  const [province, setProvince] = useState(cProvince);
+  const [images, setImages] = useState([]);
+
+  const changeProvince = province => {
+    setProvince(province);
+  };
+
+  const handleChangeImageUpload = e => {
+    let error = '';
+    for (const file of e.target.files) {
+      const check = checkImage(file);
+      if (check !== '') {
+        error = check;
+        break;
+      }
+    }
+    if (error === '') {
+      setImages(oldImage => [...oldImage, ...e.target.files]);
+    }
+  };
+
+  const removeImage = index => {
+    setImages(oldImage => [
+      ...oldImage.slice(0, index),
+      ...oldImage.slice(index + 1)
+    ]);
+  };
+
+  const handleSubmit = async () => {
+    // console.log(service);
+    let imgUploads = [];
+    setLoading(true);
+    if (images.length > 0) {
+      imgUploads = await uploadImages(images);
+    }
+
+    console.log(service);
+    console.log(province);
+    console.log(position);
+    customAxios(auth.token)
+      .post('/service/contribute', {
+        ...service,
+        position: [position.lng, position.lat],
+        province: province._id,
+        province_name: province.fullname,
+        images: imgUploads
+      })
+      .then(res => {
+        const service = {
+          service: res.data.service,
+          indexDate: indexDate,
+          indexEvent: indexEvent
+        };
+        dispatch(tourAction.addService(service));
+        setLoading(false);
+        handleClose();
+      })
+      .catch(() => {
+        setLoading(false);
+      });
+  };
+
+  const handleChange = e => {
+    setService(state => ({
+      ...state,
+      [e.target.name]: e.target.value
+    }));
+  };
+
+  const classes = formStyles();
+
+  return (
+    <div className={classes.addServiceContribute}>
+      <div className={classes.center} style={{borderBottom: "1px solid #eeeeee", marginBottom: 10}}>
+        <Typography variant="h6" >Thêm dịch vụ</Typography>
+      </div>
+      <Grid container>
+        <Grid item md={6} sm={12} xs={12} style={{paddingRight: 16}}>
+          <Autocomplete
+            id="choose-province"
+            freeSolo
+            options={location.provinces}
+            loading={location.loading}
+            getOptionLabel={option => option?.fullname}
+            className={classes.autocomplete}
+            style={{marginBottom:10}}
+            onChange={(e, value) => changeProvince(value)}
+            value={province}
+            renderInput={params => (
+              <TextField
+                {...params}
+                name="provinces"
+                label="Chọn tỉnh thành"
+                variant="outlined"
+              />
+            )}
+          />
+          <TextField
+            value={service.name}
+            onChange={handleChange}
+            style={{marginBottom:10, width: "100%"}}
+            variant="outlined"
+            label="Tên"
+            name="name"
+            id="name"
+          />
+          <TextField
+            value={service.address}
+            onChange={handleChange}
+            style={{marginBottom:10, width: "100%"}}
+            variant="outlined"
+            label="Mô tả vị trí"
+            name="address"
+            id="address"
+          />
+          <InputBase
+            placeholder="Mô tả"
+            rows={7}
+            name="description"
+            id="description"
+            multiline
+            className={classes.input}
+            value={service.description}
+            onChange={handleChange}
+          />
+          <div className={classes.composeOptions}>
+            <input
+              accept="image/*"
+              className={classes.input}
+              style={{ display: 'none' }}
+              id="input-image-contribute"
+              name="images-contribute"
+              multiple
+              type="file"
+              onChange={handleChangeImageUpload}
+            />
+            <label
+              className={classes.composeOption}
+              htmlFor="input-image-contribute"
+            >
+              <CameraAltOutlined className={classes.composeIcon} />
+              <span>Hình ảnh</span>
+            </label>
+          </div>
+          <div className={classes.imageInputContainer}>
+            {images.length > 0 && (
+              <ScrollMenu height="300px">
+                {images.map((item, index) => (
+                  <img
+                    key={index}
+                    alt="Error"
+                    className={classes.imageInput}
+                    onClick={() => removeImage(index)}
+                    src={URL.createObjectURL(item)}
+                    title={'Xoá'}
+                  />
+                ))}
+              </ScrollMenu>
+            )}
+          </div>
+        </Grid>
+        <Grid item md={6} sm={12} xs={12}>
+          <MapPicker setPosition={setPosition} position={position} />
+        </Grid>
+      </Grid>
+
+      <div style={{ marginTop: 10 }} className={classes.center}>
+        <Button
+          className={classes.addDay}
+          type="submit"
+          onClick={handleSubmit}
+          startIcon={<AddCircle />}
+          disabled={loading}
+        >
+          Thêm
+        </Button>
+      </div>
+    </div>
+  );
+}
 
 function ServiceItemAddForm(props) {
   const dispatch = useDispatch();
 
   const { location } = useSelector(state => state);
 
-  const { type, indexDate, indexLocation } = props;
+  const {
+    indexDate,
+    indexEvent,
+    province,
+    setProvince,
+    setName,
+    setContribute,
+    handleClose
+  } = props;
   const [services, setServices] = useState([]);
   const [service, setService] = useState(null);
   const [loading, setLoading] = useState(location.loadingServices);
-  const [province, setProvince] = useState(null);
-  const [cost, setCost] = useState(0);
+  // const [province, setProvince] = useState(null);
 
   useEffect(() => {
     setLoading(true);
     if (province?._id) {
-      // console.log(location.services);
-      // setServices(
-      //   location.services.filter(item => item.province._id === province._id)
-      // );
       customAxios()
-        .get(`/province/service/${province._id}`)
+        .get(`/service/province/${province._id}`)
         .then(res => {
           setServices(res.data.services);
         });
@@ -68,34 +295,20 @@ function ServiceItemAddForm(props) {
 
   const handleSubmit = () => {
     if (service) {
-      let sv = service?._id
-        ? {
-            service: service,
-            cost: parseInt(cost) || 0,
-            description: ''
-          }
-        : {
-            serviceName: service.name,
-            cost: parseInt(cost) || 0,
-            description: ''
-          };
-      if (type === 'date') {
-        dispatch(
-          tourAction.addServiceDate({
-            service: sv,
-            indexDate: indexDate
-          })
-        );
-      } else {
-        dispatch(
-          tourAction.addServiceLocation({
-            service: sv,
-            indexDate: indexDate,
-            indexLocation: indexLocation
-          })
-        );
+      if (service.isNew) {
+        setName(service.name);
+        setContribute(true);
+        return;
       }
+      dispatch(
+        tourAction.addService({
+          service: service,
+          indexDate: indexDate,
+          indexEvent: indexEvent
+        })
+      );
     }
+    handleClose();
     // console.log(service);
   };
 
@@ -106,7 +319,7 @@ function ServiceItemAddForm(props) {
   const classes = formStyles();
 
   return (
-    <div>
+    <div style={{width: '500px'}}>
       <div className={classes.center}>
         <Typography variant="h6">Thêm dịch vụ</Typography>
       </div>
@@ -138,13 +351,17 @@ function ServiceItemAddForm(props) {
               setService({
                 name: value,
                 description: '',
-                images: ['/default1.jpg']
+                images: ['/default1.jpg'],
+                province: province,
+                isNew: true
               });
             } else if (value && value.inputValue) {
               setService({
                 name: value.inputValue,
                 description: '',
-                images: ['/default1.jpg']
+                images: ['/default1.jpg'],
+                province: province,
+                isNew: true
               });
             } else {
               setService(value);
@@ -190,26 +407,7 @@ function ServiceItemAddForm(props) {
           )}
         />
       </div>
-      <div className={classes.center}>
-        <TextField
-          className={classes.autocomplete}
-          value={cost}
-          onChange={e => {
-            setCost(e.target.value);
-            // console.log(e.target.value);
-          }}
-          variant="outlined"
-          label="Chi phí"
-          type={'number'}
-          name="cost"
-          id="cost"
-          InputProps={{
-            endAdornment: (
-              <InputAdornment position="end">.000 VND</InputAdornment>
-            )
-          }}
-        />
-      </div>
+
       {service && (
         <div className={classes.description}>
           <Typography variant="body2">{service.description}</Typography>
@@ -217,7 +415,7 @@ function ServiceItemAddForm(props) {
       )}
       <div style={{ marginTop: 10 }} className={classes.center}>
         <Button
-          className={classes.button}
+          className={classes.addDay}
           type="submit"
           onClick={handleSubmit}
           startIcon={<AddCircle />}
@@ -230,280 +428,32 @@ function ServiceItemAddForm(props) {
   );
 }
 
-function DetailService(props) {
-  const {
-    service,
-    isEdit,
-    type,
-    indexService,
-    indexDate,
-    indexLocation,
-    joined
-  } = props;
-
-  const [cost, setCost] = useState(service.cost);
-  const [description, setDescription] = useState(service.description);
-
-  const dispatch = useDispatch();
-
-  const handleUpdate = () => {
-    // console.log(cost);
-    if (type === 'date') {
-      dispatch(
-        tourAction.updateServiceDate({
-          cost: parseInt(cost),
-          description: description,
-          indexDate: indexDate,
-          indexService: indexService
-        })
-      );
-    } else {
-      dispatch(
-        tourAction.updateServiceLocation({
-          cost: parseInt(cost),
-          description: description,
-          indexDate: indexDate,
-          indexLocation: indexLocation,
-          indexService: indexService
-        })
-      );
-    }
-    dispatch(success({ message: 'Cập nhật thành công!' }));
-  };
-
-  const classes = tourdetailStyles();
-
-  return (
-    <div style={{ padding: 5 }}>
-      {isEdit ? (
-        <div>
-          <InputBase
-            placeholder="Mô tả"
-            title="Thông tin"
-            variant="outlined"
-            name="description"
-            id="description"
-            rows={5}
-            className={classes.descriptionInput}
-            // className={classes.hashtag}
-            multiline
-            value={description}
-            onChange={e => setDescription(e.target.value)}
-          />
-          <TextField
-            label="Chi phí (nghìn VND)"
-            variant="outlined"
-            name="cost"
-            id="cost"
-            className={classes.fullField}
-            type={'number'}
-            value={cost}
-            onChange={e => setCost(e.target.value)}
-          />
-          <div className={classes.btnWrap}>
-            <Button
-              onClick={handleUpdate}
-              // variant="contained"
-              className={classes.reviewBtn}
-            >
-              Cập nhật
-            </Button>
-          </div>
-        </div>
-      ) : (
-        <div>
-          <Typography>
-            <Label style={{ fontSize: 15 }} />
-            <span style={{ fontWeight: 500 }}>Chi phí: </span>{' '}
-            {new Intl.NumberFormat().format(cost * 1000)} VND
-          </Typography>
-          <Typography>
-            <Label style={{ fontSize: 15 }} />{' '}
-            <span style={{ fontWeight: 500 }}> Mô tả: </span> {description}
-          </Typography>
-        </div>
-      )}
-      {!isEdit && joined && service?.service && (
-        <ReviewArea id={service.service._id} />
-      )}
-    </div>
-  );
-}
-
-export function ServiceCard(props) {
-  const { service, index, isEdit, type, indexLocation, indexDate, joined } =
-    props;
-
-  const classes = tourdetailStyles();
-  const [anchorEl, setAnchorEl] = useState(null);
-  const [showDelete, setShowDelete] = useState(false);
-  const [showDetail, setShowDetail] = useState(false);
-
-  const handleShowDetail = () => {
-    setShowDetail(state => !state);
-  };
-
-  const dispatch = useDispatch();
-
-  const handleShowMenu = e => {
-    setAnchorEl(e.currentTarget);
-  };
-
-  const handleCloseMenu = () => {
-    setAnchorEl(null);
-  };
-
-  const handleShowDelete = () => {
-    setShowDelete(true);
-  };
-
-  const handleCloseDelete = () => {
-    setShowDelete(false);
-  };
-
-  const handleDelete = () => {
-    if (type === 'date') {
-      dispatch(
-        tourAction.deleteServiceDate({
-          indexService: index,
-          indexDate: indexDate
-        })
-      );
-    } else {
-      dispatch(
-        tourAction.deleteServiceLocation({
-          indexService: index,
-          indexDate: indexDate,
-          indexLocation: indexLocation
-        })
-      );
-    }
-    // dispatch(tourAction.deleteService({ index: index }))
-  };
-
-  return (
-    <Card className={classes.serviceContainer}>
-      <Grid container>
-        <Grid item md={5} sm={3} className={classes.imageLocation}>
-          <CardMedia style={{ height: '100%' }}>
-            <img
-              src={
-                service.service ? service.service.images[0] : '/default1.jpg'
-              }
-              alt="Service"
-              className={classes.img}
-            />
-          </CardMedia>
-        </Grid>
-        <Grid item md={7} sm={9} xs={12}>
-          <div className={classes.contentContainer}>
-            <div className={classes.locationContentContainer}>
-              <div>
-                <div>
-                  {service.serviceName ? (
-                    <Typography variant="h6" className={classes.locationName}>
-                      {service.serviceName}
-                    </Typography>
-                  ) : (
-                    <Typography variant="h6" className={classes.locationName}>
-                      {service.service.name}
-                    </Typography>
-                  )}
-                </div>
-                <div>
-                  <Typography>
-                    Chi phí:{' '}
-                    {new Intl.NumberFormat().format(service.cost * 1000)} VND
-                  </Typography>
-                </div>
-                <Button
-                  onClick={handleShowDetail}
-                  className={classes.reviewBtn}
-                >
-                  Chi tiết
-                </Button>
-              </div>
-              <div>
-                {isEdit && (
-                  <div style={{ display: 'flex', justifyContent: 'right' }}>
-                    <IconButton
-                      size="small"
-                      onClick={handleShowMenu}
-                      controls={anchorEl ? 'service-item-menu' : undefined}
-                    >
-                      <MoreVert />
-                    </IconButton>
-                    <Popper
-                      open={Boolean(anchorEl)}
-                      anchorEl={anchorEl}
-                      onClose={handleCloseMenu}
-                      disablePortal
-                    >
-                      <ClickAwayListener onClickAway={handleCloseMenu}>
-                        <Paper>
-                          <MenuList>
-                            <MenuItem onClick={handleShowDelete}>Xóa</MenuItem>
-                            <Dialog
-                              open={showDelete}
-                              onClose={handleCloseDelete}
-                              aria-labelledby="alert-dialog-title"
-                              aria-describedby="alert-dialog-description"
-                            >
-                              <DialogTitle id="alert-dialog-title">
-                                {'Bạn có chắc chắn muốn xóa?'}
-                              </DialogTitle>
-                              <DialogActions>
-                                <Button onClick={handleCloseDelete}>Hủy</Button>
-                                <Button
-                                  onClick={handleDelete}
-                                  className={classes.delete}
-                                >
-                                  Xóa
-                                </Button>
-                              </DialogActions>
-                            </Dialog>
-                          </MenuList>
-                        </Paper>
-                      </ClickAwayListener>
-                    </Popper>
-                  </div>
-                )}
-              </div>
-            </div>
-          </div>
-        </Grid>
-        <Grid item md={12} sm={12} xs={12}>
-          <Collapse in={showDetail} style={{ width: '100%' }}>
-            <DetailService
-              service={service}
-              isEdit={isEdit}
-              type={type}
-              indexService={index}
-              indexDate={indexDate}
-              indexLocation={indexLocation}
-              joined={joined}
-            />
-          </Collapse>
-        </Grid>
-      </Grid>
-    </Card>
-  );
-}
-
 export default function AddService(props) {
   const classes = tourdetailStyles();
 
-  const ref = React.createRef();
-
-  const ServiceItemAddRef = React.forwardRef((props, ref) => (
-    <ServiceItemAddForm innerRef={ref} {...props} />
-  ));
+  const [contribute, setContribute] = useState(false);
+  const [province, setProvince] = useState(null);
+  const [name, setName] = useState('');
 
   return (
-    <div className={classes.paperContainer}>
-      <div style={{ marginTop: 10, borderTop: '1px solid #ded9d9' }}>
-        <ServiceItemAddRef ref={ref} {...props} />
+    <Paper className={classes.paperContainer} style={{borderRadius: 15,  maxHeight: 800, overflow:'hidden', overflowY:'auto'}}>
+      <div style={{ padding: 16, borderTop: '1px solid #ded9d9', borderRadius: 15 }}>
+        {contribute ? (
+          <ServiceAddContributeForm
+            {...props}
+            cProvince={province}
+            cName={name}
+          />
+        ) : (
+          <ServiceItemAddForm
+            {...props}
+            province={province}
+            setProvince={setProvince}
+            setName={setName}
+            setContribute={setContribute}
+          />
+        )}
       </div>
-    </div>
+    </Paper>
   );
 }

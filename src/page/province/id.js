@@ -89,7 +89,7 @@ export default function Province(props) {
         error: false
       });
       await customAxios()
-        .get(`/province/location/${id}`)
+        .get(`/location/province/${id}`)
         .then(res => {
           setLocations(res.data.locations);
           setStateLocation({
@@ -113,7 +113,7 @@ export default function Province(props) {
         error: false
       });
       await customAxios()
-        .get(`/province/event/${id}`)
+        .get(`/event/province/${id}`)
         .then(res => {
           setEvents(res.data.events);
           setStateEvent({
@@ -137,7 +137,7 @@ export default function Province(props) {
         error: false
       });
       await customAxios()
-        .get(`/province/service/${id}`)
+        .get(`/service/province/${id}`)
         .then(res => {
           setServices(res.data.services);
           setStateService({

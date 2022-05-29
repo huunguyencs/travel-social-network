@@ -12,7 +12,8 @@ export const createComment = (id, comment, auth, type, socket) => async (dispatc
             content: comment,
             postId: id,
             tourId: id,
-            volunteerId: id
+            volunteerId: id,
+            tourDateId: id
         })
 
         const newComment = {

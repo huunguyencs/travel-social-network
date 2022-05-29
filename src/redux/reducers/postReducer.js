@@ -36,9 +36,12 @@ const postRecuder = (state = INIT_STATE, action) => {
       };
     }
     case POST_TYPES.ADD_POST: {
+      let newPosts;
+      if (!state.posts) newPosts = [action.payload.post];
+      else newPosts = [action.payload.post, ...state.posts];
       return {
         ...state,
-        posts: [action.payload.post, ...state.posts],
+        posts: newPosts,
         loading: false,
         error: null
       };
@@ -64,6 +67,10 @@ const postRecuder = (state = INIT_STATE, action) => {
       };
     }
     case POST_TYPES.DELETE_POST: {
+      if (!state.posts)
+        return {
+          ...state
+        };
       return {
         ...state,
         error: null,
@@ -71,6 +78,10 @@ const postRecuder = (state = INIT_STATE, action) => {
       };
     }
     case POST_TYPES.UPDATE_POST: {
+      if (!state.posts)
+        return {
+          ...state
+        };
       return {
         ...state,
         error: null,

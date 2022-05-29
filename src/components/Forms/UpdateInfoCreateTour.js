@@ -1,37 +1,33 @@
 import {
   InputBase,
   Typography,
-  Button,
-  Paper,
   TextField,
   Chip,
-  InputAdornment
+  FormControlLabel,
+  Switch
 } from '@material-ui/core';
-
-import React, { useState } from 'react';
-import { useDispatch } from 'react-redux';
+import React, { useEffect, useState } from 'react';
 
 import { formStyles } from '../../style';
-import { updateInfo } from '../../redux/actions/createTourAction';
-import EmojiPicker from '../Input/EmojiPicker';
+// import EmojiPicker from '../Input/EmojiPicker';
+import QuillEditor from '../QuillEditor';
 
-export default function UpdateTourInfo({ name, content, hashtags, cost }) {
-  const dispatch = useDispatch();
+export default function UpdateTourInfo({ tourInfo, setTourInfo, cost }) {
+  const { name, hashtags, content, isPublic } = tourInfo;
 
-  const [state, setState] = useState({
-    name: name,
-    cost: cost
-  });
-  const [hashtagArr, setHashtagArr] = useState(hashtags);
+  const [hashtagArr, setHashtagArr] = useState([]);
+
+  useEffect(() => {
+    setHashtagArr(hashtags);
+  }, [hashtags]);
+
   const [hashtag, setHashtag] = useState('');
 
-  const [text, setText] = useState(content);
-
   const handleInput = e => {
-    setState({
+    setTourInfo(state => ({
       ...state,
       [e.target.name]: e.target.value
-    });
+    }));
   };
 
   const hashtagSplit = text => {
@@ -39,25 +35,18 @@ export default function UpdateTourInfo({ name, content, hashtags, cost }) {
     return ht.filter(item => item !== '');
   };
 
-  const handleSubmit = () => {
-    // console.log(state);
-    let ht = hashtagSplit(hashtag);
-    ht = [...hashtagArr, ...ht];
-    dispatch(
-      updateInfo({
-        name: state.name,
-        content: text,
-        hashtags: ht,
-        cost: parseInt(state.cost)
-      })
-    );
+  const changeHashtags = arr => {
+    setTourInfo(state => ({
+      ...state,
+      hashtags: arr
+    }));
   };
 
   const addHashtag = e => {
     e.preventDefault();
     let arr = hashtagSplit(hashtag);
     arr = [...hashtagArr, ...arr];
-    setHashtagArr(arr);
+    changeHashtags(arr);
     setHashtag('');
   };
 
@@ -68,62 +57,47 @@ export default function UpdateTourInfo({ name, content, hashtags, cost }) {
   const removeHashtag = index => {
     let temp = [...hashtagArr];
     temp.splice(index, 1);
-    setHashtagArr(temp);
+    // setHashtagArr(temp);
+    changeHashtags(temp);
   };
 
   const classes = formStyles();
 
   return (
-    <Paper className={classes.paperUpdateInfoContainer}>
+    <div className={classes.paperUpdateInfoContainer}>
       <div className={classes.textTitle}>
         <Typography variant="h5">Thông tin hành trình</Typography>
       </div>
       <div>
-        <div className={classes.formContainer}>
+        <div className={classes.formContainerTour}>
           <TextField
             name="name"
             id="name"
             label="Tên tour"
             variant="outlined"
-            value={state.name}
+            value={name}
             className={classes.tourNameInput}
             onChange={handleInput}
           />
-          <TextField
-            type={'number'}
-            name="cost"
-            id="cost"
-            label="Chi phí"
-            variant="outlined"
-            value={state.cost}
-            className={classes.tourNameInput}
-            onChange={handleInput}
-            InputProps={{
-              endAdornment: (
-                <InputAdornment position="end">.000 VND</InputAdornment>
-              )
-            }}
-          />
+          <Typography className={classes.costTotalTour}>
+            <b>Tổng chi phí: </b>
+            {new Intl.NumberFormat().format(cost * 1000)} VND
+          </Typography>
           <div className={classes.postContentInput}>
-            <InputBase
+            <QuillEditor
+              value={content}
+              setValue={e => setTourInfo(state => ({ ...state, content: e }))}
               placeholder="Nội dung tour ..."
-              rows={7}
-              name="content"
-              id="content"
-              multiline
-              className={classes.input}
-              value={text}
-              onChange={e => setText(e.target.value)}
             />
           </div>
-          <div>
+          <div style={{ marginTop: 50 }}>
             <div>
               {hashtagArr.map((value, idx) => (
                 <Chip
                   label={'#' + value}
                   onDelete={() => removeHashtag(idx)}
                   key={idx}
-                  style={{ marginInline: 5 }}
+                  style={{ marginInline: 5, backgroundColor: '#a5dec8' }}
                 />
               ))}
             </div>
@@ -139,18 +113,27 @@ export default function UpdateTourInfo({ name, content, hashtags, cost }) {
               />
             </form>
           </div>
-          <div className={classes.formAction}>
-            <div>
-              <EmojiPicker content={text} setContent={setText} />
-            </div>
-            <div>
-              <Button className={classes.button} onClick={handleSubmit}>
-                Cập nhật
-              </Button>
-            </div>
+          <div style={{ display: 'flex' }}>
+            {/* <EmojiPicker content={content} setContent={setContent} /> */}
+            <FormControlLabel
+              control={
+                <Switch
+                  checked={isPublic}
+                  onChange={e =>
+                    setTourInfo(state => ({
+                      ...state,
+                      isPublic: !state.isPublic
+                    }))
+                  }
+                  name="isPublic"
+                  color="primary"
+                />
+              }
+              label={isPublic ? 'Công khai' : 'Riêng tư'}
+            />
           </div>
         </div>
       </div>
-    </Paper>
+    </div>
   );
 }

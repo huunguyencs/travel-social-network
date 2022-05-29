@@ -60,6 +60,10 @@ export default function Conversation(props) {
     }
   }, [id, auth.token]);
 
+  useEffect(() => {
+    document.title = 'Tin nhắn';
+  }, []);
+
   const tryAgain = () => {
     getConversation(id, auth.token);
   };

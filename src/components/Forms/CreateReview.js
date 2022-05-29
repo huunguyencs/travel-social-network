@@ -24,7 +24,7 @@ export default function CreateReviewForm(props) {
   const dispatch = useDispatch();
   // const history = useHistory();
   const { auth, socket } = useSelector(state => state);
-  const { location, handleClose, tourDateId, indexLocation, addReview } = props;
+  const { location, handleClose, tourDateId, eventId, addReview } = props;
   const [state, setState] = useState({
     loading: false,
     error: ''
@@ -98,7 +98,7 @@ export default function CreateReviewForm(props) {
           rate: rate,
           locationId: location._id,
           tourDateId: tourDateId,
-          indexLocation: indexLocation,
+          eventId: eventId,
           isPublic: true
         },
         auth.token,
@@ -121,7 +121,7 @@ export default function CreateReviewForm(props) {
         },
         id => {
           if (addReview) {
-            addReview(id, indexLocation, tourDateId);
+            addReview(id, eventId, tourDateId);
           }
         }
       )
@@ -156,7 +156,7 @@ export default function CreateReviewForm(props) {
             <div className={classes.formContainer}>
               <div className={classes.formCreateReview}>
                 <Rating
-                  name="rate"
+                  name="rate-location"
                   value={rate}
                   onChange={e => setRate(parseInt(e.target.value))}
                 />

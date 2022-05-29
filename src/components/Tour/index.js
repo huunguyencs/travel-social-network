@@ -7,7 +7,6 @@ import {
   Modal,
   Typography
 } from '@material-ui/core';
-import { Link } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 import {
   Favorite,
@@ -239,7 +238,7 @@ export default function Tour(props) {
             </div>
             <div className={classes.postFooter}>
               <div className={classes.likers}>
-                {tour?.likes.length > 0 &&
+                {tour?.likes?.length > 0 &&
                   tour.likes.map((item, index) => (
                     <img
                       className={classes.liker}
@@ -251,28 +250,37 @@ export default function Tour(props) {
               </div>
               <div className={classes.likersText}>
                 <p style={{ color: '#888da8', margin: 0 }}>
-                  {tour?.likes.length > 0 &&
+                  {tour?.likes?.length > 0 &&
                     tour.likes.slice(0, 5).map((item, index) => (
                       <Typography
                         key={index}
-                        component={Link}
-                        to={`/u/${item._id}`}
+                        onClick={handleOpen}
                         style={{
                           fontSize: 14,
                           fontWeight: 500,
-                          color: 'black'
+                          color: 'black',
+                          cursor: 'pointer'
                         }}
                       >
-                        {item.fullname.split(" ")[item.fullname.split(" ").length - 1]}
-                        {index !== tour.likes.slice(0, 5).length - 1 ? ", ": ""}
+                        {
+                          item.fullname.split(' ')[
+                            item.fullname.split(' ')?.length - 1
+                          ]
+                        }
+                        {index !== tour.likes.slice(0, 5)?.length - 1
+                          ? ', '
+                          : ''}
                       </Typography>
                     ))}
                 </p>
-                {tour?.likes.length === 1 ? (
+                {tour?.likes?.length === 1 ? (
                   <p style={{ margin: 0 }}>đã thích bài viết này</p>
                 ) : (
-                  tour?.likes.length > 1 && (
-                    <p style={{ margin: 0, cursor: "pointer" }} onClick={handleOpen}>
+                  tour?.likes?.length > 1 && (
+                    <p
+                      style={{ margin: 0, cursor: 'pointer' }}
+                      onClick={handleOpen}
+                    >
                       và những người khác đã thích bài này
                     </p>
                   )
@@ -291,7 +299,7 @@ export default function Tour(props) {
                       margin: '0 5px'
                     }}
                   >
-                    {tour.likes.length}
+                    {tour.likes?.length}
                   </span>
                 </div>
                 <div className={classes.likeCount}>
@@ -306,7 +314,7 @@ export default function Tour(props) {
                       margin: '0 5px'
                     }}
                   >
-                    {tour.comments.length}
+                    {tour.comments?.length}
                   </span>
                 </div>
                 <div className={classes.likeCount}>
@@ -321,7 +329,7 @@ export default function Tour(props) {
                       margin: '0 5px'
                     }}
                   >
-                    {tour.likes.length}
+                    {tour.likes?.length}
                   </span>
                 </div>
               </div>
@@ -396,7 +404,11 @@ export default function Tour(props) {
               {tour.commentDetail &&
                 !loadingComment &&
                 tour.commentDetail?.length < tour.comments?.length && (
-                  <Typography variant="body1" onClick={loadMoreComment} className={classes.loadMoreComment}>
+                  <Typography
+                    variant="body1"
+                    onClick={loadMoreComment}
+                    className={classes.loadMoreComment}
+                  >
                     Xem thêm bình luận
                   </Typography>
                 )}

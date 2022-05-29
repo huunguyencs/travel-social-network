@@ -28,9 +28,12 @@ export default function TourDetail(props) {
   });
 
   const [isOwn, setIsOwn] = useState(false);
-  const [joined, setJoined] = useState(false);
-  const [joinLoc, setJoinLoc] = useState(false);
-
+  // const [joined, setJoined] = useState(false);
+  // const [joinLoc, setJoinLoc] = useState(false);
+  const [isMember, setIsMember] = useState(false);
+  const [isJoin, setIsJoin] = useState(false);
+  const [isInvite, setIsInvite] = useState(false); //isJoin: flase
+  const [memberIsEdit, setMemberIsEdit] = useState(false); // isJoin: true; isEdit:true/false
   const getTourDetail = async (id, token) => {
     setState({
       loading: true,
@@ -75,7 +78,6 @@ export default function TourDetail(props) {
 
   useEffect(() => {
     if (auth.user && tour) {
-      // setIsOwn(tour.joinIds.includes(auth.user._id));
       setIsOwn(tour.userId._id === auth.user._id);
     }
   }, [tour, auth.user]);
@@ -84,26 +86,49 @@ export default function TourDetail(props) {
     if (
       auth.user &&
       tour &&
-      tour.joinIds.findIndex(join => join._id === auth.user._id) >= 0
+      tour.joinIds.findIndex(
+        join => join.id._id === auth.user._id && join.isJoin
+      ) >= 0
     ) {
-      setJoined(true);
+      console.log('join');
+      setIsJoin(true);
+    }
+    if (
+      auth.user &&
+      tour &&
+      tour.joinIds.findIndex(join => join.id._id === auth.user._id) >= 0
+    ) {
+      console.log('member');
+      setIsMember(true);
+    }
+
+    if (
+      auth.user &&
+      tour &&
+      tour.joinIds.findIndex(
+        join => join.id._id === auth.user._id && !join.isJoin
+      ) >= 0
+    ) {
+      console.log('invite');
+      setIsInvite(true);
+    }
+    if (
+      auth.user &&
+      tour &&
+      tour.joinIds.findIndex(
+        join => join.id._id === auth.user._id && join.isJoin && join.isEdit
+      ) >= 0
+    ) {
+      console.log('isedit');
+      setMemberIsEdit(true);
     }
   }, [tour, auth.user]);
 
-  useEffect(() => {
-    if (auth.user && tour) {
-      var sum = 0;
-      tour.tour.forEach(date => {
-        var sumDate = 0;
-        date.locations.forEach(loc => {
-          if (loc.joinIds.findIndex(join => join._id === auth.user._id) >= 0)
-            sumDate += 1;
-        });
-        sum += sumDate;
-      });
-      setJoinLoc(sum);
-    }
-  }, [tour, auth.user]);
+  // useEffect(() => {
+  //   if (auth.user && tour) {
+
+  //   }
+  // }, [tour, auth.user]);
 
   useEffect(() => {
     if (edit === 'true' && tour) {
@@ -136,17 +161,22 @@ export default function TourDetail(props) {
         </div>
       ) : (
         tour &&
-        (edit === 'true' && isOwn ? (
+        (edit === 'true' && (isOwn || memberIsEdit) ? (
           <AddTour isUpdate={true} />
-        ) : (
+        ) : tour.isPublic || isMember ? (
           <Tour
             tour={tour}
             setTour={setTour}
             isOwn={isOwn}
-            joined={joined}
-            setJoined={setJoined}
-            joinLoc={joinLoc}
+            isInvite={isInvite}
+            setIsInvite={setIsInvite}
+            memberIsEdit={memberIsEdit}
+            setMemberIsEdit={setMemberIsEdit}
+            isMember={isMember}
+            isJoin={isJoin}
           />
+        ) : (
+          <NotFound />
         ))
       )}
     </>

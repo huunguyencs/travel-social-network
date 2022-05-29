@@ -38,6 +38,10 @@ export default function MyHelpPage() {
     }
   }, [token]);
 
+  useEffect(() => {
+    document.title = 'Trợ giúp của tôi';
+  }, []);
+
   const rfToken = getToken();
   if (!rfToken) return <Redirect to="/login" />;
 

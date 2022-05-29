@@ -1,12 +1,11 @@
 import {
   Button,
   Card,
-  Collapse,
+  // Collapse,
   CardContent,
   CardMedia,
   Grid,
   IconButton,
-  InputBase,
   Modal,
   Typography,
   Backdrop,
@@ -19,30 +18,25 @@ import {
   ClickAwayListener,
   Paper,
   MenuList,
-  TextField,
   CircularProgress,
   CardHeader,
-  Avatar,
-  InputAdornment
+  Avatar
 } from '@material-ui/core';
 import React, { useEffect, useState } from 'react';
-import { Close, MoreVert, Label } from '@material-ui/icons';
-import { useDispatch, useSelector } from 'react-redux';
+import { Close, MoreVert } from '@material-ui/icons';
+import { useDispatch } from 'react-redux';
 import { Link } from 'react-router-dom';
 
 import { tourdetailStyles } from '../../style';
 import CreateReviewForm from '../Forms/CreateReview';
 import EditLocationForm from '../Forms/EditLocation';
 import * as tourAction from '../../redux/actions/createTourAction';
-import { success } from '../../redux/actions/alertAction';
 import customAxios from '../../utils/fetchData';
 import { timeAgo } from '../../utils/date';
-import { AvatarGroup, Rating } from '@material-ui/lab';
+import { Rating } from '@material-ui/lab';
 import { SeeMoreText } from '../SeeMoreText';
 import ImageList from '../Modal/ImageList';
-import AddService, { ServiceCard } from './AddService';
-import UserList from '../Modal/UserList';
-import { joinLocation, unjoinLocation } from '../../redux/callApi/tourCall';
+import 'react-quill/dist/quill.snow.css';
 
 function ReviewList(props) {
   const { reviews, handleClose } = props;
@@ -171,158 +165,8 @@ function ReviewList(props) {
   );
 }
 
-function Detail(props) {
-  const classes = tourdetailStyles();
-  const dispatch = useDispatch();
-
-  const { location, isEdit, indexDate, indexLocation, joined } = props;
-
-  const [description, setDescription] = useState();
-  const [time, setTime] = useState(location.time);
-  const [cost, setCost] = useState(location.cost);
-
-  useEffect(() => {
-    setDescription(location.description);
-    setTime(location.time);
-    setCost(location.cost);
-  }, [location]);
-
-  const handleUpdateInfo = () => {
-    dispatch(
-      tourAction.updateLocation({
-        cost: parseInt(cost),
-        description: description,
-        indexDate: indexDate,
-        indexLocation: indexLocation,
-        time: time
-      })
-    );
-    dispatch(success({ message: 'Cập nhật thành công!' }));
-  };
-
-  return (
-    <Paper className={classes.paperDetailDate}>
-      <Grid container>
-        <Grid item md={6} sm={12} xs={12}>
-          {isEdit ? (
-            <>
-              <div>
-                <div style={{ margin: 10 }}>
-                  <InputBase
-                    placeholder="Ghi chú"
-                    title="Ghi chú"
-                    variant="outlined"
-                    name="description"
-                    id="description"
-                    className={classes.descriptionInput}
-                    multiline
-                    rows={5}
-                    value={description}
-                    onChange={e => setDescription(e.target.value)}
-                  />
-                  <TextField
-                    label="Thời gian"
-                    title="Thời gian"
-                    variant="outlined"
-                    name="time"
-                    id="time"
-                    className={classes.fullField}
-                    value={time}
-                    onChange={e => setTime(e.target.value)}
-                  />
-                  <TextField
-                    label="Chi phí"
-                    title="Chi phí"
-                    variant="outlined"
-                    name="cost"
-                    id="cost"
-                    type="number"
-                    className={classes.fullField}
-                    // className={classes.hashtag}
-                    value={cost}
-                    onChange={e => setCost(e.target.value)}
-                    InputProps={{
-                      endAdornment: (
-                        <InputAdornment position="end">.000 VND</InputAdornment>
-                      )
-                    }}
-                  />
-                  <div className={classes.btnWrap}>
-                    <Button
-                      onClick={handleUpdateInfo}
-                      variant="contained"
-                      className={classes.button}
-                    >
-                      Cập nhật
-                    </Button>
-                  </div>
-                </div>
-                <AddService
-                  type="location"
-                  indexDate={indexDate}
-                  indexLocation={indexLocation}
-                />
-              </div>
-            </>
-          ) : (
-            <div>
-              {/* <div className={classes.locationImages}>
-                <img
-                  style={{ width: '100%', height: '100%' }}
-                  src="https://res.cloudinary.com/dqxvfu5k1/image/upload/v1649898282/k4hoq9jblhx65msx64c8.jpg"
-                  alt="loading ..."
-                ></img>
-              </div> */}
-              <div style={{ padding: 20 }}>
-                <Typography>
-                  <Label style={{ fontSize: 15 }} />
-                  <span style={{ fontWeight: 500 }}>Chi phí: </span>{' '}
-                  {new Intl.NumberFormat().format(location.cost * 1000)} VND
-                </Typography>
-                <Typography>
-                  <Label style={{ fontSize: 15 }} />
-                  <span style={{ fontWeight: 500 }}>Thời gian: </span>{' '}
-                  {location.time}
-                </Typography>
-                <Typography>
-                  <Label style={{ fontSize: 15 }} />
-                  <span style={{ fontWeight: 500 }}>Mô tả: </span>{' '}
-                  {location.description}
-                </Typography>
-              </div>
-            </div>
-          )}
-        </Grid>
-        {location.services?.length > 0 && (
-          <Grid item md={6} sm={12} xs={12} style={{ padding: 10 }}>
-            <div style={{ display: 'flex', justifyContent: 'center' }}>
-              <Typography variant="h5">Danh sách dịch vụ</Typography>
-            </div>
-            <div className={classes.servicesWrapperMaxHeight}>
-              {location.services.map((item, index) => (
-                <ServiceCard
-                  joined={joined}
-                  type="location"
-                  key={index}
-                  service={item}
-                  index={index}
-                  isEdit={isEdit}
-                  indexDate={indexDate}
-                  indexLocation={indexLocation}
-                />
-              ))}
-            </div>
-          </Grid>
-        )}
-      </Grid>
-    </Paper>
-  );
-}
-
 export default function Location(props) {
   const classes = tourdetailStyles();
-
-  const { user, token } = useSelector(state => state.auth);
 
   const dispatch = useDispatch();
 
@@ -334,98 +178,18 @@ export default function Location(props) {
     indexDate,
     indexLocation,
     addReview,
-    joined,
-    joinIds,
-    isOwn,
-    updateJoinLocation,
-    isOld
+    isJoin
   } = props;
-
-  const [showDetail, setShowDetail] = useState(false);
+  // const [showDetail, setShowDetail] = useState(false);
   const [showCreateRv, setShowCreateRv] = useState(false);
   const [anchorEl, setAnchorEl] = useState(null);
   const [editLoc, setEditLoc] = useState(false);
   const [showDeleteLocation, setShowDeleteLocation] = useState(false);
   const [showReview, setShowReview] = useState(false);
-  const [showJoin, setShowJoin] = useState(false);
-  const [loadingJoin, setLoadingJoin] = useState();
-  const [joinedLoc, setJoinedLoc] = useState(false);
 
-  const handleJoin = () => {
-    setLoadingJoin(true);
-    setJoinedLoc(true);
-    var prevJoin = location.joinIds;
-    updateJoinLocation([...prevJoin, user], tourDateId, location._id);
-    dispatch(
-      joinLocation(
-        token,
-        tourDateId,
-        location._id,
-        () => {
-          setLoadingJoin(false);
-          setJoinedLoc(true);
-        },
-        () => {
-          setLoadingJoin(false);
-          if (joinLocation) {
-            setJoinedLoc(false);
-            updateJoinLocation(prevJoin, tourDateId, location._id);
-          }
-        }
-      )
-    );
-  };
-
-  const handleUnJoin = () => {
-    setLoadingJoin(true);
-    setJoinedLoc(false);
-    var prevJoin = location.joinIds;
-    var newJoin = prevJoin.filter(item => item._id !== user._id);
-    updateJoinLocation(newJoin, tourDateId, location._id);
-    dispatch(
-      unjoinLocation(
-        token,
-        tourDateId,
-        location._id,
-        () => {
-          setLoadingJoin(false);
-          setJoinedLoc(false);
-        },
-        () => {
-          setLoadingJoin(false);
-          if (!joined) {
-            setJoinedLoc(true);
-            updateJoinLocation(prevJoin, tourDateId, location._id);
-          }
-        }
-      )
-    );
-  };
-
-  const handleShowJoin = () => {
-    setShowJoin(true);
-  };
-
-  const handleCloseJoin = () => {
-    setShowJoin(false);
-  };
-
-  const checkJoinLocation = () => {
-    let find = location.joinIds.findIndex(ele => ele._id === user?._id);
-    return find >= 0;
-  };
-
-  // const joinLocation = checkJoinLocation();
-  useEffect(() => {
-    if (isSave) {
-      let find = location.joinIds.findIndex(ele => ele._id === user?._id);
-      setJoinedLoc(find >= 0);
-    }
-  }, [location.joinIds, user?._id, isSave]);
-
-  useEffect(() => {
-    setShowDetail(false);
-  }, [indexDate]);
+  // useEffect(() => {
+  //   setShowDetail(false);
+  // }, [indexDate]);
 
   const handleShowMenu = e => {
     setAnchorEl(e.currentTarget);
@@ -463,16 +227,16 @@ export default function Location(props) {
     dispatch(
       tourAction.deleteLocation({
         indexDate: indexDate,
-        indexLocation: indexLocation
+        indexEvent: indexLocation
       })
     );
     handleCloseDelete();
     handleCloseMenu();
   };
 
-  const handleShowDetail = () => {
-    setShowDetail(state => !state);
-  };
+  // const handleShowDetail = () => {
+  //   setShowDetail(state => !state);
+  // };
 
   const handleShowReview = () => {
     setShowReview(true);
@@ -485,8 +249,7 @@ export default function Location(props) {
   const refEdit = React.createRef();
   const refCr = React.createRef();
   const ref = React.createRef();
-  const refDetail = React.createRef();
-  const refUser = React.createRef();
+  // const refDetail = React.createRef();
 
   const EditLocationRef = React.forwardRef((props, ref) => (
     <EditLocationForm {...props} innerRef={ref} />
@@ -500,80 +263,62 @@ export default function Location(props) {
     <ReviewList {...props} innerRef={ref} />
   ));
 
-  const DetailRef = React.forwardRef((props, ref) => (
-    <Detail {...props} innerRef={ref} />
-  ));
-
-  const UserListRef = React.forwardRef((props, ref) => (
-    <UserList {...props} innerRef={ref} />
-  ));
+  // const DetailRef = React.forwardRef((props, ref) => (
+  //   <Detail {...props} innerRef={ref} />
+  // ));
 
   return (
     <Card className={classes.cardContainer}>
       <Grid container>
-        <Grid item md={4} sm={3} className={classes.imageLocation}>
+        <Grid item md={5} sm={3} className={classes.imageLocation}>
           <CardMedia style={{ height: '100%' }}>
-            {location.locationName ? (
-              <img
-                src={'/default2.jpg'}
-                alt="Đang tải..."
-                className={classes.img}
-              />
-            ) : (
-              <img
-                src={location.location.images[0]}
-                alt="Đang tải..."
-                className={classes.img}
-              />
-            )}
+            <img
+              src={
+                location.location.images
+                  ? location.location.images[0]
+                  : './default1.jpg'
+              }
+              alt="Đang tải..."
+              className={classes.img}
+            />
           </CardMedia>
         </Grid>
-        <Grid item md={8} sm={9} xs={12}>
+        <Grid item md={7} sm={9} xs={12}>
           <CardContent style={{ padding: 0 }}>
             <div className={classes.locationContentContainer}>
-              <div style={{ margin: 20 }}>
-                {location.locationName ? (
-                  <Typography variant="h5" className={classes.locationName}>
-                    {location.locationName}
+              <div style={{ margin: 16 }}>
+                <div>
+                  <Typography
+                    className={classes.locationName}
+                    component={Link}
+                    to={`/location/${location.location.name}`}
+                  >
+                    {location.location.fullname}
                   </Typography>
-                ) : (
-                  <>
-                    <div>
-                      <Typography
-                        variant="h5"
-                        className={classes.locationName}
-                        component={Link}
-                        to={`/location/${location.location.name}`}
-                      >
-                        {location.location.fullname}
-                      </Typography>
-                    </div>
-                    <div>
-                      <Typography
-                        variant="h6"
-                        component={Link}
-                        to={'/province/' + location.location.province.name}
-                      >
-                        {location.location.province.fullname}
-                      </Typography>
-                    </div>
-                  </>
-                )}
-                {isSave && (
+                </div>
+                <div>
+                  <Typography
+                    style={{ fontSize: 16, fontWeight: 400 }}
+                    component={Link}
+                    to={'/province/' + location.location.province.name}
+                  >
+                    {location.location.province.fullname}
+                  </Typography>
+                </div>
+                {isSave &&  (
                   <>
                     <div style={{ display: 'flex' }}>
-                      {location.location && (joined || checkJoinLocation()) && (
+                      {location.location && isJoin && (
                         <div>
-                          {' '}
                           <Button
                             className={classes.reviewBtn}
                             onClick={handleShow}
                           >
                             Tạo Review
-                          </Button>{' '}
+                          </Button>
                         </div>
                       )}
-                      {location.postId?.length > 0 && (
+                      {location.reviewIds?.length > 0 && (
                         <Button
                           className={classes.reviewBtn}
                           onClick={handleShowReview}
@@ -581,64 +326,15 @@ export default function Location(props) {
                           Xem review
                         </Button>
                       )}
-                      {!joined && !isOwn && (
-                        <>
-                          {loadingJoin ? (
-                            <CircularProgress />
-                          ) : (
-                            <Button
-                              onClick={joinedLoc ? handleUnJoin : handleJoin}
-                              className={classes.reviewBtn}
-                              disabled={isOld}
-                            >
-                              {joinedLoc ? 'Huỷ tham gia' : 'Tham gia'}
-                            </Button>
-                          )}
-                        </>
-                      )}
                     </div>
-                    <Typography>Thành viên tham gia :</Typography>
-                    <AvatarGroup
-                      max={4}
-                      onClick={handleShowJoin}
-                      style={{ cursor: 'pointer' }}
-                    >
-                      {joinIds.concat(location.joinIds).map(user => (
-                        <Avatar
-                          src={user.avatar}
-                          alt={'A'}
-                          key={user._id}
-                          style={{ height: 20, width: 20 }}
-                        />
-                      ))}
-                    </AvatarGroup>
-                    <Modal
-                      aria-labelledby="like"
-                      aria-describedby="user-like-this-post"
-                      className={classes.modal}
-                      open={showJoin}
-                      onClose={handleCloseJoin}
-                      closeAfterTransition
-                      BackdropComponent={Backdrop}
-                      BackdropProps={{
-                        timeout: 500
-                      }}
-                    >
-                      <UserListRef
-                        ref={refUser}
-                        listUser={joinIds.concat(location.joinIds)}
-                        title={'Đã tham gia'}
-                        handleClose={handleCloseJoin}
-                      />
-                    </Modal>
                   </>
                 )}
-                <Button
+                {/* <Button
                   className={classes.reviewBtn}
                   onClick={handleShowDetail}
                 >
                   Chi tiết
-                </Button>
+                </Button> */}
               </div>
               {isEdit && (
                 <div>
@@ -735,7 +431,9 @@ export default function Location(props) {
                   cost={location.cost}
                   handleClose={handleClose}
                   tourDateId={tourDateId}
-                  indexLocation={location._id}
+                  indexDate={indexDate}
+                  eventId={location._id}
+                  // locationId={location._id}
                   addReview={addReview}
                 />
               </Fade>
@@ -754,14 +452,14 @@ export default function Location(props) {
               <Fade in={showReview}>
                 <ReviewRef
                   ref={ref}
-                  reviews={location.postId}
+                  reviews={location.reviewIds}
                   handleClose={handleCloseReview}
                 />
               </Fade>
             </Modal>
           </CardContent>
         </Grid>
-        <Grid item md={12} sm={12} xs={12}>
+        {/* <Grid item md={12} sm={12} xs={12}>
           <Collapse in={showDetail} style={{ width: '100%' }}>
             <DetailRef
               ref={refDetail}
@@ -773,7 +471,7 @@ export default function Location(props) {
               joined={joined}
             />
           </Collapse>
-        </Grid>
+        </Grid> */}
       </Grid>
     </Card>
   );

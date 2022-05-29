@@ -24,7 +24,7 @@ function Location(props) {
   const open = Boolean(anchorEl);
   const classes = cardStyles();
 
-  const { location, onClick, indexDate } = props;
+  const { location, onClick, indexDate, handleClose, indexEvent } = props;
 
   const handlePopoverOpen = event => {
     onClick();
@@ -38,11 +38,15 @@ function Location(props) {
   const addLoc = e => {
     e.preventDefault();
     dispatch(
-      tourAction.addLocation({ location: location, indexDate: indexDate })
+      tourAction.addLocation({
+        location,
+        indexDate,
+        indexEvent
+      })
     );
     handlePopoverClose();
-    const position = location.position;
-    if (position) dispatch(getRecommend(position));
+    handleClose();
+    if (location?.position) dispatch(getRecommend(location.position));
   };
 
   return (
@@ -62,6 +66,7 @@ function Location(props) {
         disablePortal={false}
         transition
         onClose={handlePopoverClose}
+        style={{ zIndex: 9999 }}
       >
         <ClickAwayListener onClickAway={handlePopoverClose}>
           <Paper className={classes.locationPopper}>
@@ -96,8 +101,16 @@ function Location(props) {
 }
 
 export default function AddLocMap(props) {
-  const { locations, currentProvince, setLoc, state, setState, indexDate } =
-    props;
+  const {
+    locations,
+    currentProvince,
+    setLoc,
+    state,
+    setState,
+    indexDate,
+    handleClose,
+    indexEvent
+  } = props;
 
   useEffect(() => {
     if (currentProvince) {
@@ -120,7 +133,7 @@ export default function AddLocMap(props) {
   };
 
   return (
-    <div style={{ height: 500, marginBlock: 20 }}>
+    <div style={{ height: 500 }}>
       <GoogleMapReact
         bootstrapURLKeys={{ key: KEY }}
         defaultCenter={{ lat: 14.489055527436275, lng: 107.96608963227854 }}
@@ -133,10 +146,12 @@ export default function AddLocMap(props) {
               <Location
                 location={item}
                 key={item._id}
-                lat={item.position.lat}
-                lng={item.position.lng}
+                lat={item.position?.lat}
+                lng={item.position?.lng}
                 onClick={() => locationClick(item)}
                 indexDate={indexDate}
+                indexEvent={indexEvent}
+                handleClose={handleClose}
               />
             ))
           : null}

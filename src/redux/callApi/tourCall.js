@@ -97,37 +97,8 @@ export const getUserTour = (id, token, page) => async dispatch => {
   }
 };
 
-function extractService(services) {
-  return services.map(service => {
-    if (service?.service) {
-      return {
-        ...service,
-        service: service.service._id
-      };
-    } else {
-      return service;
-    }
-  });
-}
-
-function extractLocation(locations) {
-  return locations.map(location => {
-    if (location?.location) {
-      return {
-        ...location,
-        location: location.location._id,
-        services: extractService(location.services)
-      };
-    } else
-      return {
-        ...location,
-        services: extractService(location.services)
-      };
-  });
-}
-
 export const saveTour =
-  (tour, image, token, socket, next, error) => async dispatch => {
+  (tour, image, auth, socket, next, error) => async dispatch => {
     try {
       // call api to save tour
       let imageUpload = [];
@@ -137,34 +108,33 @@ export const saveTour =
         ...tour,
         tour: tour.tour.map(item => ({
           ...item,
-          services: extractService(item.services),
-          locations: extractLocation(item.locations)
+          events: item.events.map(event => ({
+            ...event,
+            location: event.location?._id || null,
+            service: event.service?._id || null
+          }))
         })),
         provinces: Array.from(extractProvinceTour(tour.tour)),
         locations: Array.from(extractLocationTour(tour.tour)),
-        image: image ? imageUpload[0] : ''
+        image: image ? imageUpload[0] : '',
+        joinIds: [
+          {
+            id: auth.user,
+            isJoin: true,
+            isEdit: true
+          }
+        ]
       };
 
-      // console.log(data);
+      console.log(data);
 
-      const res = await customAxios(token).post('/tour/create', data);
+      const res = await customAxios(auth.token).post('/tour/create', data);
 
-      //notify
-      const dataNotify = {
-        id: res.data.newTour._id,
-        text: ' thêm hành trình mới',
-        recipients: res.data.newTour.userId.followers,
-        content: res.data.newTour.name,
-        image: res.data.newTour.image,
-        url: `/tour/${res.data.newTour._id}`
-      };
-      // console.log(dataNotify);
-      dispatch(createNotify(dataNotify, token, socket));
       dispatch(alertAction.success({ message: 'Lưu lịch trình thành công!' }));
       dispatch(resetTour());
-      dispatch(tourAction.addTour({ tour: res.data.newTour }));
-      next();
+      next(res.data.newTour._id);
     } catch (err) {
+      console.log(err);
       error();
     }
   };
@@ -181,8 +151,11 @@ export const updateTour =
         ...tour,
         tour: tour.tour.map(item => ({
           ...item,
-          services: extractService(item.services),
-          locations: extractLocation(item.locations)
+          events: item.events.map(event => ({
+            ...event,
+            location: event.location?._id || null,
+            service: event.service?._id || null
+          }))
         })),
         provinces: Array.from(extractProvinceTour(tour.tour)),
         locations: Array.from(extractLocationTour(tour.tour)),
@@ -196,10 +169,11 @@ export const updateTour =
       dispatch(resetTour());
     } catch (err) {
       // console.log(err);
+      console.log(err);
       error();
-      if (err.response && err.response.data && err.response.data.message)
-        dispatch(alertAction.error({ message: err.response.data.message }));
-      else dispatch(alertAction.error({ message: 'Có lỗi xảy ra' }));
+      // if (err.response && err.response.data && err.response.data.message)
+      //   dispatch(alertAction.error({ message: err.response.data.message }));
+      // else dispatch(alertAction.error({ message: 'Có lỗi xảy ra' }));
     }
   };
 
@@ -207,12 +181,12 @@ export const deleteTour =
   (tour, token, socket, next, error) => async dispatch => {
     try {
       // Notify
-      const dataNotify = {
-        id: tour._id,
-        url: `/tour/${tour._id}`,
-        type: 'deleteTour'
-      };
-      dispatch(deleteNotify(dataNotify, token, socket));
+      // const dataNotify = {
+      //   id: tour._id,
+      //   url: `/tour/${tour._id}`,
+      //   type: 'deleteTour'
+      // };
+      // dispatch(deleteNotify(dataNotify, token, socket));
 
       await customAxios(token).delete(`/tour/${tour._id}`);
       next();
@@ -273,11 +247,54 @@ export const unlikeTour = (id, auth, socket, next) => async dispatch => {
   }
 };
 
-export const joinTour = (id, token, next, error) => async dispatch => {
+export const inviteJoinTour =
+  (id, users, auth, socket, next, error) => async dispatch => {
+    try {
+      const res = await customAxios(auth.token).patch(
+        `/tour/${id}/invite`,
+        users
+      );
+      // dispatch(tourAction.updateJoin({ id: id, joinIds: res.data.joinIds }));
+      // dispatch(alertAction.success({ message: 'Tham gia thành công' }));
+      next();
+
+      const dataNotify = {
+        id: res.data.tour._id,
+        text: ' mời bạn tham gia hành trình',
+        recipients: users.map(item => item.id._id),
+        content: res.data.tour.name,
+        image: res.data.tour.image,
+        url: `/tour/${id}`
+      };
+      dispatch(createNotify(dataNotify, auth.token, socket));
+    } catch (err) {
+      error();
+      if (err.response && err.response.data && err.response.data.message)
+        dispatch(alertAction.error({ message: err.response.data.message }));
+      else dispatch(alertAction.error({ message: 'Có lỗi xảy ra' }));
+    }
+  };
+
+export const changeIsEdit =
+  (id, user, token, next, error) => async dispatch => {
+    try {
+      console.log('data', user.id._id, '+', user.isEdit);
+      await customAxios(token).patch(`/tour/${id}/change_isEdit`, {
+        id: user.id._id,
+        isEdit: user.isEdit
+      });
+      next();
+    } catch (err) {
+      error();
+      if (err.response && err.response.data && err.response.data.message)
+        dispatch(alertAction.error({ message: err.response.data.message }));
+      else dispatch(alertAction.error({ message: 'Có lỗi xảy ra' }));
+    }
+  };
+
+export const acceptJoinTour = (id, token, next, error) => async dispatch => {
   try {
-    await customAxios(token).patch(`/tour/${id}/join`);
-    // dispatch(tourAction.updateJoin({ id: id, joinIds: res.data.joinIds }));
-    dispatch(alertAction.success({ message: 'Tham gia thành công' }));
+    await customAxios(token).patch(`/tour/${id}/accept`);
     next();
   } catch (err) {
     error();
@@ -287,11 +304,9 @@ export const joinTour = (id, token, next, error) => async dispatch => {
   }
 };
 
-export const unJoinTour = (id, token, next, error) => async dispatch => {
+export const unAcceptJoinTour = (id, token, next, error) => async dispatch => {
   try {
-    await customAxios(token).patch(`/tour/${id}/unjoin`);
-    // dispatch(tourAction.updateJoin({ id: id, joinIds: res.data.joinIds }));
-    dispatch(alertAction.success({ message: 'Hủy tham gia thành công' }));
+    await customAxios(token).patch(`/tour/${id}/unAccept`);
     next();
   } catch (err) {
     error();
@@ -301,20 +316,28 @@ export const unJoinTour = (id, token, next, error) => async dispatch => {
   }
 };
 
-export const removeJoin = (tourId, userId, token, next) => async dispatch => {
-  try {
-    await customAxios(token).patch(`/tour/${tourId}/remove_join`, {
-      user: userId
-    });
-    // dispatch(tourAction.updateJoin({ id: tourId, joinIds: res.data.joinIds }));
-    dispatch(alertAction.success({ message: 'Loại bỏ thành công' }));
-  } catch (err) {
-    next();
-    if (err.response && err.response.data && err.response.data.message)
-      dispatch(alertAction.error({ message: err.response.data.message }));
-    else dispatch(alertAction.error({ message: 'Có lỗi xảy ra' }));
-  }
-};
+export const removeMemberTour =
+  (id, user, token, socket, next, error) => async dispatch => {
+    try {
+      await customAxios(token).patch(`/tour/${id}/remove_member`, {
+        id: user.id._id
+      });
+      // dispatch(tourAction.updateJoin({ id: tourId, joinIds: res.data.joinIds }));
+      // dispatch(alertAction.success({ message: 'Loại bỏ thành công' }));
+      next();
+
+      const dataNotify = {
+        id: id,
+        url: `/tour/${id}`
+      };
+      dispatch(deleteNotify(dataNotify, token, socket));
+    } catch (err) {
+      error();
+      if (err.response && err.response.data && err.response.data.message)
+        dispatch(alertAction.error({ message: err.response.data.message }));
+      else dispatch(alertAction.error({ message: 'Có lỗi xảy ra' }));
+    }
+  };
 
 export const removeReview =
   (tourDateId, token, locationId) => async dispatch => {
@@ -418,15 +441,15 @@ export const searchTourHot = query => async dispatch => {
   }
 };
 
-export const getTourSimilar = (auth, id, next) => async dispatch => {
-  try {
-    const res = await customAxios(auth?.token).get(`/tour/similar/${id}`);
-    console.log('data_tour_similar', res.data.tours);
-    next(res.data.tours);
-  } catch (err) {
-    dispatch(tourAction.error({ error: 'Có lỗi xảy ra' }));
-  }
-};
+// export const getTourSimilar = (auth, id, next) => async dispatch => {
+//   try {
+//     const res = await customAxios(auth?.token).get(`/tour/similar/${id}`);
+//     console.log('data_tour_similar', res.data.tours);
+//     next(res.data.tours);
+//   } catch (err) {
+//     dispatch(tourAction.error({ error: 'Có lỗi xảy ra' }));
+//   }
+// };
 
 export const getTourRecommend = (token, next) => async dispatch => {
   try {

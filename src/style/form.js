@@ -28,13 +28,25 @@ const formStyles = makeStyles(
       display: 'flex',
       flexDirection: 'column',
       overflow: 'hidden',
-      borderRadius: attr.borderRadius.md,
+      borderRadius: "15px 0px 0px 15px",
+      borderRight: "3px solid #e3ebe8",
       [theme.breakpoints.down('sm')]: {
-        paddingTop: 10
+        paddingTop: 10,
+      },
+      [theme.breakpoints.down('xs')]: {
+        borderRight: "none",
+        borderBottom: "3px solid #e3ebe8",
+        borderRadius: "15px 15px 0px 0px",
       }
     },
     formContainer: {
       padding: 30
+    },
+    formContainerTour:{
+      padding: 30, 
+      [theme.breakpoints.down('sm')]: {
+        padding: 16
+      }
     },
     textTitle: {
       display: 'flex',
@@ -125,7 +137,12 @@ const formStyles = makeStyles(
     },
     tourNameInput: {
       width: '100%',
-      marginBottom: 20
+      marginBottom: 16
+    },
+    costTotalTour:{
+      border: "1px solid #c4c4c4",
+      marginBottom: 16,
+      padding: 10
     },
     center: {
       display: 'flex',
@@ -351,8 +368,51 @@ const formStyles = makeStyles(
       border: `1px solid ${color.darkgray}`, 
       padding: 20,
       boxShadow: '0 2px 8px #00000026'
+    },
+    addDay: {
+      color: 'white',
+      borderRadius: 5,
+      backgroundColor: "#63b191",
+      cursor: 'pointer',
+      fontWeight: 500,
+      outline: 'none',
+      border: `1px solid ${color.turquoise}`,
+      fontSize: 12,
+      marginTop: 10,
+      textTransform: 'none',
+      marginLeft: 20,
+      marginBottom: 10,
+      [theme.breakpoints.down('md')]: {
+        marginLeft: 10
+      },
+      '&:hover': {
+        backgroundColor: "white",
+        color: 'black',
+      }
+    },
+    addServiceContribute:{
+      width: 1000,
+      [theme.breakpoints.down('sm')]: {
+        width: 700,
+        marginTop: 70
+      },
+      [theme.breakpoints.down('xs')]: {
+        width: 500,
+        marginTop: 70
+      },
+    },
+    addLocationContribute:{
+      width: 1000,
+      [theme.breakpoints.down('sm')]: {
+        width: 700,
+      },
+      [theme.breakpoints.down('xs')]: {
+        width: 500,
+      },
     }
   }),
+  //invite tour:
+  
   { index: 1 }
 );
 

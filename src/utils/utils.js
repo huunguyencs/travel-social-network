@@ -26,21 +26,27 @@ export function sortTourDate(tour) {
 }
 
 export function extractProvinceTour(tour) {
-  var province = [];
-  tour.map(item => {
-    item.locations.map(location =>
-      province.push(location.location.province.fullname)
-    );
-    return true;
-  });
-  return new Set(province);
+  let provinces = [];
+  for (const date of tour) {
+    for (const event of date.events) {
+      if (event.location?.province)
+        provinces.push(event.location.province.fullname);
+      if (event.service?.province)
+        provinces.push(event.service.province.fullname);
+    }
+  }
+  provinces = provinces.filter(item => !!item);
+  return new Set(provinces);
 }
 
-export function extractLocationTour(location) {
-  var locations = [];
-  location.map(item => {
-    item.locations.map(loc => locations.push(loc.location.fullname));
-    return true;
-  });
+export function extractLocationTour(tour) {
+  let locations = [];
+  for (const date of tour) {
+    for (const event of date.events) {
+      if (event.location) locations.push(event.location.fullname);
+      if (event.service) locations.push(event.service.name);
+    }
+  }
+  locations = locations.filter(item => !!item);
   return new Set(locations);
 }

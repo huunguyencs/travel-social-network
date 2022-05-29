@@ -35,9 +35,13 @@ const tourReducer = (state = INIT_STATE, action) => {
       };
     }
     case TOUR_TYPES.ADD_TOUR: {
+      let newTours;
+      if (!state.tours) newTours = [action.payload.tour];
+      else newTours = [...state.tours, action.payload.tour];
+
       return {
         ...state,
-        tours: [...state.tours, action.payload.tour],
+        tours: newTours,
         loading: false,
         error: null
       };
@@ -51,23 +55,35 @@ const tourReducer = (state = INIT_STATE, action) => {
       };
     }
     case TOUR_TYPES.DELETE_TOUR: {
+      if (!state.tours)
+        return {
+          ...state
+        };
+
       return {
         ...state,
         error: null,
-        tours: state.tours.filter(tour => tour._id !== action.payload.id),
-        tourHot: state.tourHot.filter(tour => tour._id !== action.payload.id)
+        tours: state.tours?.filter(tour => tour._id !== action.payload.id),
+        tourHot: state.tourHot?.filter(tour => tour._id !== action.payload.id)
       };
     }
     case TOUR_TYPES.UPDATE_TOUR: {
+      let newTours = null;
+      if (state.tours)
+        newTours = state.tours.map(tour =>
+          tour._id === action.payload.tour._id ? action.payload.tour : tour
+        );
+      let tourHots = null;
+      if (state.tourHot)
+        tourHots = state.tourHot.map(tour =>
+          tour._id === action.payload.tour._id ? action.payload.tour : tour
+        );
+
       return {
         ...state,
         error: null,
-        tours: state.tours.map(tour =>
-          tour._id === action.payload.tour._id ? action.payload.tour : tour
-        ),
-        tourHot: state.tourHot.map(tour =>
-          tour._id === action.payload.tour._id ? action.payload.tour : tour
-        )
+        tours: newTours,
+        tourHot: tourHots
       };
     }
     case TOUR_TYPES.UPDATE_LIKE_TOUR: {
@@ -95,9 +111,10 @@ const tourReducer = (state = INIT_STATE, action) => {
       let comment =
         state.tours.find(item => item._id === action.payload.id)
           ?.commentDetail || [];
-      if(comment.length === 0){
-        comment = state.tourHot.find(item => item._id === action.payload.id)
-        ?.commentDetail || [];
+      if (comment.length === 0) {
+        comment =
+          state.tourHot.find(item => item._id === action.payload.id)
+            ?.commentDetail || [];
       }
       return {
         ...state,
@@ -123,9 +140,10 @@ const tourReducer = (state = INIT_STATE, action) => {
       let comment =
         state.tours.find(item => item._id === action.payload.id)
           ?.commentDetail || [];
-      if(comment.length === 0){
-        comment = state.tourHot.find(item => item._id === action.payload.id)
-        ?.commentDetail || [];
+      if (comment.length === 0) {
+        comment =
+          state.tourHot.find(item => item._id === action.payload.id)
+            ?.commentDetail || [];
       }
       return {
         ...state,
@@ -213,7 +231,7 @@ const tourReducer = (state = INIT_STATE, action) => {
       return {
         ...state,
         tourHot: action.payload,
-        loading: false,
+        loading: false
       };
     }
     case TOUR_TYPES.ERROR_TOUR: {

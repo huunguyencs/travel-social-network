@@ -4,12 +4,12 @@ import * as alertAction from '../actions/alertAction';
 import * as imageUtils from '../../utils/uploadImage';
 import { getRecommendService } from '../actions/createTourAction';
 
-export const getServices = (id, page) => async dispatch => {
+export const getServices = (id, page, next) => async dispatch => {
   dispatch(serviceAction.loading());
   try {
     var res;
     if (id) {
-      res = await customAxios().get(`/service/coop/${id}?offset=${page}`);
+      res = await customAxios().get(`/service/coop/${id}?page=${page}`);
     } else {
       res = await customAxios().get(`/service/list?offset=${page}`);
     }
@@ -18,32 +18,33 @@ export const getServices = (id, page) => async dispatch => {
     } else {
       dispatch(serviceAction.getMoreServices({ services: res.data.services }));
     }
+    next();
   } catch (error) {
     // console.log(error);
     dispatch(serviceAction.error());
   }
 };
 
-export const getDetail = (id, next, error) => async dispatch => {
-  try {
-    const res = await customAxios().get(`/service/rate/${id}`);
-    // console.log(res);
-    dispatch(
-      serviceAction.getDetail({
-        rate: res.data.rate,
-        attribute: res.data.attribute,
-        id: id
-      })
-    );
-    // console.log(res.data.rate);
-    next();
-  } catch (err) {
-    error();
-  }
-};
+// export const getDetail = (id, next, error) => async dispatch => {
+//   try {
+//     const res = await customAxios().get(`/service/rate/${id}`);
+//     // console.log(res);
+//     dispatch(
+//       serviceAction.getDetail({
+//         rate: res.data.rate,
+//         attribute: res.data.attribute,
+//         id: id
+//       })
+//     );
+//     // console.log(res.data.rate);
+//     next();
+//   } catch (err) {
+//     error();
+//   }
+// };
 
 export const reviewService =
-  (id, auth, rate, content, images) => async dispatch => {
+  (id, auth, rate, content, images, next) => async dispatch => {
     try {
       let arrImage = [];
 
@@ -77,6 +78,7 @@ export const reviewService =
           star: res.data.star
         })
       );
+      if (next) next(newReview);
     } catch (err) {
       dispatch(alertAction.error({ message: 'Có lỗi xảy ra!' }));
     }
@@ -130,12 +132,14 @@ export const deleteService = (token, id, next, error) => async dispatch => {
     .catch(() => error());
 };
 
-export const getRecommend = position => dispatch => {
+export const getRecommend = (position, indexDate, indexEvent) => dispatch => {
   const { lat, lng } = position;
   if (!lat || !lng) return;
   customAxios()
     .get(`/service/top_near?lat=${lat}&lng=${lng}`)
     .then(res => {
-      dispatch(getRecommendService(res.data.services));
+      dispatch(
+        getRecommendService({ list: res.data.services, indexDate, indexEvent })
+      );
     });
 };

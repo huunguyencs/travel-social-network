@@ -97,12 +97,12 @@ export default function Header(props) {
   };
   const calculateMessageUnSeen = conversations => {
     // console.log("conversations", conversations)
-    return conversations?.filter(
-      conversation =>
-          !conversation.latestMessage.seen ? false : 
-            !conversation.latestMessage.seen?.find(
-              item => item.member === auth.user._id
-            )?.isSeen
+    return conversations?.filter(conversation =>
+      !conversation.latestMessage.seen
+        ? false
+        : !conversation.latestMessage.seen?.find(
+            item => item.member === auth.user._id
+          )?.isSeen
     ).length;
   };
 
@@ -284,6 +284,19 @@ export default function Header(props) {
                           </ListItemIcon>
                           <Typography variant="inherit">
                             Review của tôi
+                          </Typography>
+                        </MenuItem>
+                        <MenuItem
+                          aria-label="myshare"
+                          component={Link}
+                          to={`/shared`}
+                          onClick={handleCloseUser}
+                        >
+                          <ListItemIcon>
+                            <Star fontSize="small" />
+                          </ListItemIcon>
+                          <Typography variant="inherit">
+                            Chia sẻ của tôi
                           </Typography>
                         </MenuItem>
                         <MenuItem

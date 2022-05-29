@@ -34,9 +34,14 @@ function InfoProfile() {
           setNotFound(true);
         })
       );
-      dispatch(getServices(id, 0));
     }
   }, [user?.user, id, dispatch, setNotFound]);
+
+  useEffect(() => {
+    if (user?.user?.role === 1) {
+      dispatch(getServices(id, 0));
+    }
+  }, [dispatch, user?.user, id]);
 
   const classes = useStyles();
 
