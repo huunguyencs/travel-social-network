@@ -21,6 +21,7 @@ import { AddCircle, CameraAltOutlined } from '@material-ui/icons';
 import customAxios from '../../utils/fetchData';
 import { checkImage, uploadImages } from '../../utils/uploadImage';
 import { ScrollMenu } from 'react-horizontal-scrolling-menu';
+import { getRecommend } from '../../redux/callApi/serviceCall';
 
 const filter = createFilterOptions();
 
@@ -134,6 +135,9 @@ function AddLocationContribute(props) {
         );
         setLoading(false);
         handleClose();
+        if (position) {
+          dispatch(getRecommend(position, indexDate, indexEvent));
+        }
       })
       .catch(() => {
         setLoading(false);
@@ -315,6 +319,10 @@ function AddLocationDefault(props) {
         })
       );
       handleClose();
+      console.log(loc.position);
+      if (loc.position) {
+        dispatch(getRecommend(loc.position, indexDate, indexEvent));
+      }
     }
   };
 
@@ -428,13 +436,6 @@ function AddLocationDefault(props) {
             indexEvent={indexEvent}
           />
         </Grid>
-
-        {/* {createTour.recommendService?.length > 0 && (
-          <ServiceRecommend
-            indexDate={props.indexDate}
-            services={createTour.recommendService}
-          />
-        )} */}
       </Grid>
     </div>
   );

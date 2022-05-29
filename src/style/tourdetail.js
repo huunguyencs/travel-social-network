@@ -102,20 +102,20 @@ const tourdetailStyles = makeStyles(
         paddingInline: 10
       },
       '&:hover': {
-        backgroundColor: '#6f87af',
+        backgroundColor: '#6f87af'
       }
     },
     unactiveTimeline: {
       color: 'black',
-      border:"1px solid #98aed3",
+      border: '1px solid #98aed3',
       marginBottom: 5,
       [theme.breakpoints.down('sm')]: {
         marginInline: 20
       }
     },
-    timelineTour:{
+    timelineTour: {
       [theme.breakpoints.down('sm')]: {
-        display: "flex"
+        display: 'flex'
       }
     },
     activeDot: {
@@ -170,7 +170,7 @@ const tourdetailStyles = makeStyles(
     addDay: {
       color: 'white',
       borderRadius: 5,
-      backgroundColor: "#63b191",
+      backgroundColor: '#63b191',
       cursor: 'pointer',
       fontWeight: 500,
       outline: 'none',
@@ -184,14 +184,14 @@ const tourdetailStyles = makeStyles(
         marginLeft: 10
       },
       '&:hover': {
-        backgroundColor: "white",
-        color: 'black',
+        backgroundColor: 'white',
+        color: 'black'
       }
     },
     addDayCustom: {
       color: 'white',
       borderRadius: 5,
-      backgroundColor: "#63b191",
+      backgroundColor: '#63b191',
       cursor: 'pointer',
       fontWeight: 500,
       outline: 'none',
@@ -208,8 +208,8 @@ const tourdetailStyles = makeStyles(
         marginLeft: 10
       },
       '&:hover': {
-        backgroundColor: "white",
-        color: 'black',
+        backgroundColor: 'white',
+        color: 'black'
       }
     },
     content: {
@@ -390,24 +390,24 @@ const tourdetailStyles = makeStyles(
     paperDetailDate: {
       width: '100%'
     },
-    detailDateTittle:{
-      fontSize: 16, 
+    detailDateTittle: {
+      fontSize: 16,
       fontWeight: 500,
-      padding: 5, 
-      borderBottom:"1px solid #a9a9a9",
-      borderRight:"1px solid #a9a9a9",
+      padding: 5,
+      borderBottom: '1px solid #a9a9a9',
+      borderRight: '1px solid #a9a9a9',
       backgroundColor: color.background
     },
-    reactQuillTour:{
-      width: '100%' ,
-      height: 150, 
-      paddingBottom: 40, 
-      backgroundColor: "white"
+    reactQuillTour: {
+      width: '100%',
+      height: 150,
+      paddingBottom: 40,
+      backgroundColor: 'white'
     },
-    tourDateWrapper:{
-      padding: 10, 
+    tourDateWrapper: {
+      padding: 10,
       [theme.breakpoints.down('sm')]: {
-        border: "1px solid #a9a9a9",
+        border: '1px solid #a9a9a9'
       }
     },
     locationImages: {
@@ -445,7 +445,7 @@ const tourdetailStyles = makeStyles(
       maxHeight: 770,
       overflow: 'hidden',
       [theme.breakpoints.down('sm')]: {
-        margin: '10px 0 0 0',
+        margin: '10px 0 0 0'
       }
     },
     tourLeftInfo: {
@@ -643,7 +643,7 @@ const tourdetailStyles = makeStyles(
       maxWidth: 345
     },
     media: {
-      height: 140
+      height: 160
     },
     buttonWrapper: {
       display: 'flex',
@@ -654,33 +654,33 @@ const tourdetailStyles = makeStyles(
     serviceName: {
       cursor: 'pointer'
     },
-    infoTourDate:{
-      width: "100%"
+    infoTourDate: {
+      width: '100%'
     },
-    buttonChat:{
-      marginLeft: 0, 
-      color:'white',
+    buttonChat: {
+      marginLeft: 0,
+      color: 'white',
       height: 40,
       width: 40,
-      backgroundColor: "#63b191"
+      backgroundColor: '#63b191'
     },
-    generalDate:{
-      border: "1px solid #d2d2d2", 
+    generalDate: {
+      border: '1px solid #d2d2d2',
       borderRadius: 15,
-      backgroundColor: color.background,
+      backgroundColor: color.background
     },
-    detailDate:{
-      border: "1px solid #d2d2d2", 
-      borderRadius: 15, 
-      marginTop:10,
+    detailDate: {
+      border: '1px solid #d2d2d2',
+      borderRadius: 15,
+      marginTop: 10,
       padding: 10,
       backgroundColor: color.background,
       paddingBottom: 16
     },
-    listCmt:{
+    listCmt: {
       maxHeight: 300,
-      overflow:'hidden',
-      overflowY:'auto'
+      overflow: 'hidden',
+      overflowY: 'auto'
     }
   }),
   { index: 1 }

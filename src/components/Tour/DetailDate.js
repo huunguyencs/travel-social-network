@@ -15,8 +15,6 @@ import {
 } from '@material-ui/core';
 import React, { useEffect, useState } from 'react';
 import { tourdetailStyles } from '../../style';
-import ReactQuill from 'react-quill';
-import 'react-quill/dist/quill.snow.css';
 import AddService from './AddService';
 import AddLocation from './AddLocation';
 import Location from './Location';
@@ -29,6 +27,7 @@ import {
   updateEvent,
   updateTimeEvent
 } from '../../redux/actions/createTourAction';
+import QuillEditor from '../QuillEditor';
 
 function UpdateTimeForm({ value, indexDate, indexEvent, handleClose }) {
   const dispatch = useDispatch();
@@ -43,12 +42,18 @@ function UpdateTimeForm({ value, indexDate, indexEvent, handleClose }) {
     setTime(value);
   }, [value]);
   return (
-    <Paper style={{ padding: 50 }}>
+    <Paper style={{ paddingInline: 40, paddingBlock: 10 }}>
+      <div
+        style={{ display: 'flex', justifyContent: 'center', marginBottom: 20 }}
+      >
+        <Typography variant="h6">Chỉnh sửa thời gian</Typography>
+      </div>
       <TextField
         id="time"
         label="Alarm clock"
         type="time"
         value={time}
+        variant="outlined"
         onChange={e => setTime(e.target.value)}
         InputLabelProps={{
           shrink: true
@@ -56,8 +61,14 @@ function UpdateTimeForm({ value, indexDate, indexEvent, handleClose }) {
         inputProps={{
           step: 300 // 5 min
         }}
+        style={{ width: '100%' }}
       />
-      <Button onClick={handleUpdate}>Xong</Button>
+      <div
+        style={{ display: 'flex', justifyContent: 'center', marginBlock: 10 }}
+      >
+        <Button onClick={handleUpdate}>Xong</Button>
+      </div>
+      {/* <Button onClick={handleUpdate}>Xong</Button> */}
     </Paper>
   );
 }
@@ -179,7 +190,7 @@ function TimeDetail({ event, indexDate, indexEvent }) {
 
   return (
     <div>
-      <ReactQuill
+      <QuillEditor
         value={description}
         onChange={e => setDescription(e)}
         className={classes.reactQuillTour}

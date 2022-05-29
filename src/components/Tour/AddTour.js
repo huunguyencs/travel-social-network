@@ -29,8 +29,7 @@ import UpdateTourInfo from '../Forms/UpdateInfoCreateTour';
 import { convertDateToStr } from '../../utils/date';
 import { saveTour, updateTour } from '../../redux/callApi/tourCall';
 import { getProvinces } from '../../redux/callApi/locationCall';
-// import AddService from './AddService';
-// import AddLocation from './AddLocation';
+import ServiceRecommend from '../Service/ServiceRecommend';
 import {
   AddCircle,
   Close,
@@ -51,6 +50,7 @@ function EditBaseDate(props) {
   const { tourDate, date } = props;
 
   const [text, setText] = useState(tourDate.description || '');
+  const { recommendService } = useSelector(state => state.createTour);
 
   // const handleChange = e => {
   //   setText(e.target.value);
@@ -97,8 +97,9 @@ function EditBaseDate(props) {
             </Button>
           </div>
         </div>
-
-        {/* <AddService type="date" indexDate={date} /> */}
+        {recommendService?.list && (
+          <ServiceRecommend services={recommendService.list} />
+        )}
       </div>
     </div>
   );
@@ -191,7 +192,7 @@ export default function AddTour(props) {
   const { createTour, location, auth, socket } = useSelector(state => state);
 
   const [tourInfo, setTourInfo] = useState({
-    name: createTour.name,
+    name: '',
     content: '',
     hashtags: [],
     isPublic: false
@@ -356,11 +357,12 @@ export default function AddTour(props) {
 
   const classes = tourdetailStyles();
 
-  // const [value, setValue] = React.useState(0);
-
-  // const handleChange = (event, newValue) => {
-  //   setValue(newValue);
-  // };
+  useEffect(() => {
+    setTourInfo(state => ({
+      ...state,
+      name: createTour.name
+    }));
+  }, [createTour?.name]);
   return (
     <>
       {(!isUpdate || (isUpdate && createTour.tour && createTour.tour[0])) && (

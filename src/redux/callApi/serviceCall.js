@@ -132,12 +132,14 @@ export const deleteService = (token, id, next, error) => async dispatch => {
     .catch(() => error());
 };
 
-export const getRecommend = position => dispatch => {
+export const getRecommend = (position, indexDate, indexEvent) => dispatch => {
   const { lat, lng } = position;
   if (!lat || !lng) return;
   customAxios()
     .get(`/service/top_near?lat=${lat}&lng=${lng}`)
     .then(res => {
-      dispatch(getRecommendService(res.data.services));
+      dispatch(
+        getRecommendService({ list: res.data.services, indexDate, indexEvent })
+      );
     });
 };

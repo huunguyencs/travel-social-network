@@ -9,7 +9,7 @@ import {
 import React, { useState } from 'react';
 
 import { formStyles } from '../../style';
-import EmojiPicker from '../Input/EmojiPicker';
+// import EmojiPicker from '../Input/EmojiPicker';
 import QuillEditor from '../QuillEditor';
 
 export default function UpdateTourInfo({ tourInfo, setTourInfo, image, cost }) {
@@ -25,12 +25,12 @@ export default function UpdateTourInfo({ tourInfo, setTourInfo, image, cost }) {
     }));
   };
 
-  const setContent = value => {
-    setTourInfo(state => ({
-      ...state,
-      content: value
-    }));
-  };
+  // const setContent = value => {
+  //   setTourInfo(state => ({
+  //     ...state,
+  //     content: value
+  //   }));
+  // };
 
   const hashtagSplit = text => {
     var ht = text.split(' ');
@@ -103,14 +103,14 @@ export default function UpdateTourInfo({ tourInfo, setTourInfo, image, cost }) {
               placeholder="Nội dung tour ..."
             />
           </div>
-          <div style={{marginTop: 50}}>
+          <div style={{ marginTop: 50 }}>
             <div>
               {hashtagArr.map((value, idx) => (
                 <Chip
                   label={'#' + value}
                   onDelete={() => removeHashtag(idx)}
                   key={idx}
-                  style={{ marginInline: 5, backgroundColor: "#a5dec8" }}
+                  style={{ marginInline: 5, backgroundColor: '#a5dec8' }}
                 />
               ))}
             </div>
@@ -126,18 +126,23 @@ export default function UpdateTourInfo({ tourInfo, setTourInfo, image, cost }) {
               />
             </form>
           </div>
-          <div style={{display:'flex'}}>
-            <EmojiPicker content={content} setContent={setContent} />
+          <div style={{ display: 'flex' }}>
+            {/* <EmojiPicker content={content} setContent={setContent} /> */}
             <FormControlLabel
-                control={
-                  <Switch
-                    checked={isPublic}
-                    onChange={e => setTourInfo(state => ({ ...state, isPublic: !state.isPublic }))}
-                    name="isPublic"
-                    color="primary"
-                  />
-                }
-                label={isPublic ? 'Công khai' : 'Riêng tư'}
+              control={
+                <Switch
+                  checked={isPublic}
+                  onChange={e =>
+                    setTourInfo(state => ({
+                      ...state,
+                      isPublic: !state.isPublic
+                    }))
+                  }
+                  name="isPublic"
+                  color="primary"
+                />
+              }
+              label={isPublic ? 'Công khai' : 'Riêng tư'}
             />
           </div>
         </div>

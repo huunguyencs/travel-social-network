@@ -97,35 +97,6 @@ export const getUserTour = (id, token, page) => async dispatch => {
   }
 };
 
-function extractService(services) {
-  return services.map(service => {
-    if (service?.service) {
-      return {
-        ...service,
-        service: service.service._id
-      };
-    } else {
-      return service;
-    }
-  });
-}
-
-function extractLocation(locations) {
-  return locations.map(location => {
-    if (location?.location) {
-      return {
-        ...location,
-        location: location.location._id,
-        services: extractService(location.services)
-      };
-    } else
-      return {
-        ...location,
-        services: extractService(location.services)
-      };
-  });
-}
-
 export const saveTour =
   (tour, image, auth, socket, next, error) => async dispatch => {
     try {
@@ -181,8 +152,11 @@ export const updateTour =
         ...tour,
         tour: tour.tour.map(item => ({
           ...item,
-          services: extractService(item.services),
-          locations: extractLocation(item.locations)
+          events: item.events.map(event => ({
+            ...event,
+            location: event.location?._id || null,
+            service: event.service?._id || null
+          }))
         })),
         provinces: Array.from(extractProvinceTour(tour.tour)),
         locations: Array.from(extractLocationTour(tour.tour)),

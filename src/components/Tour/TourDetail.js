@@ -33,7 +33,7 @@ import {
   Popover
 } from '@material-ui/core';
 import AvatarGroup from '@material-ui/lab/AvatarGroup';
-import React, { useEffect, useMemo, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { tourdetailStyles } from '../../style';
 import Location from './Location';
 import { convertDateToStr, timeAgo } from '../../utils/date';
@@ -201,12 +201,6 @@ export default function TourDetail(props) {
   const handleCloseImage = () => {
     setShowImage(false);
   };
-
-  const isOld = useMemo(() => {
-    const startDate = new Date(tour.tour[0]?.date);
-    const now = new Date();
-    return startDate < now;
-  }, [tour.tour]);
 
   const createReview = (id, index_loc, tourdate_id) => {
     setTour(state => ({
@@ -400,6 +394,13 @@ export default function TourDetail(props) {
         }
       )
     );
+  };
+
+  const handleChangeIndexDate = index => {
+    if (index !== indexDate) {
+      setIndexDate(index);
+      setIndexEvent(0);
+    }
   };
 
   const [anchorElFeedback, setAnchorElFeedback] = useState(null);
@@ -734,7 +735,7 @@ export default function TourDetail(props) {
                   {tour.tour.map((tourDate, index) => (
                     <Step
                       key={index}
-                      onClick={() => setIndexDate(index)}
+                      onClick={() => handleChangeIndexDate(index)}
                       style={{ cursor: 'pointer' }}
                     >
                       <StepLabel StepIconComponent={ColorlibStepIcon}>
@@ -856,7 +857,7 @@ export default function TourDetail(props) {
                                 <div
                                   dangerouslySetInnerHTML={{
                                     __html:
-                                      tourDate.events[indexEvent].description
+                                      tourDate.events[indexEvent]?.description
                                   }}
                                 />
                               </Typography>
@@ -866,12 +867,12 @@ export default function TourDetail(props) {
                                   Chi phí:{' '}
                                 </span>{' '}
                                 {new Intl.NumberFormat().format(
-                                  tourDate.events[indexEvent].cost * 1000
+                                  tourDate.events[indexEvent]?.cost * 1000
                                 )}{' '}
                                 VND
                               </Typography>
                             </div>
-                            {tourDate.events[indexEvent].location && (
+                            {tourDate.events[indexEvent]?.location && (
                               <Location
                                 location={tourDate.events[indexEvent]}
                                 indexDate={indexDate}
@@ -884,10 +885,9 @@ export default function TourDetail(props) {
                                 addReview={createReview}
                                 // joinIds={tour.joinIds}
                                 isOwn={isOwn}
-                                isOld={isOld}
                               />
                             )}
-                            {tourDate.events[indexEvent].service && (
+                            {tourDate.events[indexEvent]?.service && (
                               <ServiceCard
                                 service={tourDate.events[indexEvent]}
                                 indexDate={indexDate}

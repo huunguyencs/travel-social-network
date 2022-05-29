@@ -46,8 +46,7 @@ function Location(props) {
     );
     handlePopoverClose();
     handleClose();
-    // const position = location.position;
-    // if (position) dispatch(getRecommend(position));
+    if (location?.position) dispatch(getRecommend(location.position));
   };
 
   return (

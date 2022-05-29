@@ -8,7 +8,11 @@ const INIT_STATE = {
   isFetching: false,
   error: null,
   cost: 0,
-  recommendService: null
+  recommendService: {
+    list: null,
+    indexEvent: null,
+    indexDate: null
+  }
 };
 
 const createTourReducer = (state = INIT_STATE, action) => {
