@@ -185,21 +185,30 @@ function TimeDetail({ event, indexDate, indexEvent }) {
         className={classes.reactQuillTour}
         placeholder="Mô tả"
       />
-      <TextField
-        label="Chi phí"
-        title="Chi phí"
-        variant="outlined"
-        name="cost"
-        id="cost"
-        type="number"
-        className={classes.fullField}
-        style={{backgroundColor:"white"}}
-        value={cost}
-        onChange={e => setCost(e.target.value)}
-        InputProps={{
-          endAdornment: <InputAdornment position="end">.000 VND</InputAdornment>
-        }}
-      />
+      <div className={classes.btnWrap}>
+        <TextField
+          label="Chi phí"
+          title="Chi phí"
+          variant="outlined"
+          name="cost"
+          id="cost"
+          type="number"
+          className={classes.fullField}
+          style={{backgroundColor:"white"}}
+          value={cost}
+          onChange={e => setCost(e.target.value)}
+          InputProps={{
+            endAdornment: <InputAdornment position="end">.000 VND</InputAdornment>
+          }}
+        />
+        <Button
+          onClick={handleUpdateInfo}
+          variant="contained"
+          className={classes.addDayCustom}
+        >
+          Cập nhật
+        </Button>
+      </div>
       <div className={classes.btnWrap}>
         <AddEventButtons
           indexDate={indexDate}
@@ -207,13 +216,6 @@ function TimeDetail({ event, indexDate, indexEvent }) {
           hideAddLocation={event?.location}
           hideAddService={event?.service}
         />
-        <Button
-          onClick={handleUpdateInfo}
-          variant="contained"
-          className={classes.addDay}
-        >
-          Cập nhật
-        </Button>
       </div>
       {event?.location && (
         <Location

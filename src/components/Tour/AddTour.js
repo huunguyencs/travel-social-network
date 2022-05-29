@@ -178,47 +178,34 @@ function EditBaseDate(props) {
       <Typography className={classes.detailDateTittle}> Tổng quan ngày</Typography>
       <div className={classes.tourDateWrapper}>
         <div>
-          {/* <TextField
-            label="Ghi chú"
-            variant="outlined"
-            name="description"
-            onChange={handleChange}
-            value={text}
-            // className={classes.fullField}
-            style={{
-              width: '100%'
-            }}
-            multiline
-            minRows={4}
-          /> */}
           <ReactQuill
             value={text}
             onChange={e => setText(e)}
             className={classes.reactQuillTour}
             placeholder="Chi tiết"
           />
-          <TextField
-            label="Chi phí"
-            title="Chi phí"
-            variant="outlined"
-            name="cost"
-            id="cost"
-            type="number"
-            className={classes.fullField}
-            style={{backgroundColor:"white"}}
-            value={cost}
-            onChange={e => setCost(e.target.value)}
-            InputProps={{
-              endAdornment: (
-                <InputAdornment position="end">.000 VND</InputAdornment>
-              )
-            }}
-          />
-          <div style={{ display: 'flex', justifyContent: 'center' }}>
+          <div className={classes.btnWrap}>
+            <TextField
+              label="Chi phí"
+              title="Chi phí"
+              variant="outlined"
+              name="cost"
+              id="cost"
+              type="number"
+              className={classes.fullField}
+              style={{backgroundColor:"white"}}
+              value={cost}
+              onChange={e => setCost(e.target.value)}
+              InputProps={{
+                endAdornment: (
+                  <InputAdornment position="end">.000 VND</InputAdornment>
+                )
+              }}
+            />
             <Button
               variant="contained"
               onClick={handleSubmit}
-              className={classes.addDay}
+              className={classes.addDayCustom}
             >
               Cập nhật
             </Button>
@@ -320,7 +307,8 @@ export default function AddTour(props) {
   const [tourInfo, setTourInfo] = useState({
     name: createTour.name,
     content: '',
-    hashtags: []
+    hashtags: [],
+    isPublic: false
   });
   const [idx, setIdx] = useState(0);
   const [showUpdateDate, setShowUpdateDate] = useState(false);

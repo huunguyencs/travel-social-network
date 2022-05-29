@@ -27,8 +27,7 @@ export default function TourRecommendCard(props) {
     <Card className={classes.tourRecommend}>
       <div className={classes.friendHeader}>
         <Typography
-          className={classes.text}
-          style={{ fontSize: 18, fontWeight: 500 }}
+          className={classes.tourRecommendTittle}
         >
           Hành trình liên quan
         </Typography>
