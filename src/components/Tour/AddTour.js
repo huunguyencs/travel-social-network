@@ -97,7 +97,7 @@ function EditBaseDate(props) {
             </Button>
           </div>
         </div>
-        {recommendService?.list && (
+        {recommendService?.list && recommendService?.list.length > 0 &&  (
           <ServiceRecommend services={recommendService.list} />
         )}
       </div>
@@ -494,7 +494,7 @@ export default function AddTour(props) {
                           backgroundColor: '#ebf3f0'
                         }}
                       >
-                        <Grid item md={5} sm={12} xs={12}>
+                        <Grid item md={5} sm={12} xs={12} style={{borderRight: "1px solid #a9a9a9"}}>
                           <EditBaseDateRef
                             ref={refEditDetailDate}
                             date={idx}

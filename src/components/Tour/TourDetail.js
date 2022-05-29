@@ -465,7 +465,7 @@ export default function TourDetail(props) {
                             onClick={() => handleAcceptInvite()}
                             className={classes.reviewBtn}
                           >
-                            Tham gia nhóm
+                            Tham gia hành trình
                           </Button>
                           <Button
                             onClick={() => handleUnAcceptInvite()}

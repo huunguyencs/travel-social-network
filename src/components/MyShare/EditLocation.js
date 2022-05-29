@@ -49,7 +49,7 @@ function MapPicker({ setPosition, position }) {
       zoom={zoom}
       defaultZoom={8}
       mapTypeId="roadmap"
-      style={{ height: 450 }}
+      style={{ height:  580 }}
       onChangeLocation={handleChangeLocation}
       onChangeZoom={handleChangeZoom}
       apiKey={KEY}
@@ -136,12 +136,16 @@ export default function EditLocation({ location, handleClose }) {
 
   const classes = formStyles();
   return (
-    <Paper style={{ width: '60%' }}>
-      <div className={classes.center}>
+    <Paper style={{borderRadius: 15,  maxHeight: 800, overflow:'hidden', overflowY:'auto'}}>
+      <div style={{ padding: 16, borderTop: '1px solid #ded9d9', borderRadius: 15 }}>
+      <div className={classes.addLocationContribute}>
+      <div 
+      className={classes.center}
+      style={{ borderBottom: '1px solid #eeeeee', marginBottom: 10 }}>
         <Typography variant="h6">Chỉnh sửa địa điểm</Typography>
       </div>
       <Grid container>
-        <Grid item md={6} lg={6}>
+        <Grid item md={6} sm={12} xs={12} style={{ paddingRight: 16 }}>
           <Autocomplete
             id="choose-province"
             freeSolo
@@ -149,6 +153,7 @@ export default function EditLocation({ location, handleClose }) {
             loading={locationReducer.loading}
             getOptionLabel={option => option?.fullname}
             className={classes.autocomplete}
+            style={{ marginBottom: 10 }}
             onChange={(e, value) => changeProvince(value)}
             value={province}
             renderInput={params => (
@@ -163,6 +168,7 @@ export default function EditLocation({ location, handleClose }) {
           <TextField
             value={loc.fullname}
             onChange={handleChange}
+            style={{ marginBottom: 10, width: '100%' }}
             variant="outlined"
             label="Tên"
             name="fullname"
@@ -218,14 +224,14 @@ export default function EditLocation({ location, handleClose }) {
             )}
           </div>
         </Grid>
-        <Grid item md={6} lg={6}>
+        <Grid item md={6} sm={12} xs={12}>
           <MapPicker setPosition={setPosition} position={position} />
         </Grid>
       </Grid>
 
       <div style={{ marginTop: 10 }} className={classes.center}>
         <Button
-          className={classes.button}
+          className={classes.addDay}
           type="submit"
           onClick={handleSubmit}
           disabled={loading}
@@ -233,6 +239,9 @@ export default function EditLocation({ location, handleClose }) {
           Cập nhật
         </Button>
       </div>
+    </div>
+      </div>
     </Paper>
+    
   );
 }
