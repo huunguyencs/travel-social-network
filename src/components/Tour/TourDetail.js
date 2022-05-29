@@ -882,7 +882,7 @@ export default function TourDetail(props) {
                                 isSave={true}
                                 isEdit={false}
                                 addReview={createReview}
-                                // joinIds={tour.joinIds}
+                                isJoin={isJoin}
                                 isOwn={isOwn}
                                 isOld={isOld}
                               />
@@ -892,9 +892,11 @@ export default function TourDetail(props) {
                                 service={tourDate.events[indexEvent]}
                                 indexDate={indexDate}
                                 index={indexEvent}
+                                tourDateId={tourDate._id}
                                 addRate={createRate}
-                                isSave={false}
+                                isSave={true}
                                 isEdit={false}
+                                isJoin={isJoin}
                               />
                             )}
                           </Grid>

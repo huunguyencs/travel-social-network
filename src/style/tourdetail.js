@@ -681,7 +681,22 @@ const tourdetailStyles = makeStyles(
       maxHeight: 300,
       overflow:'hidden',
       overflowY:'auto'
-    }
+    },
+    invitation:{
+      padding: 0,
+      flexGrow: 1,
+      marginTop: 10,
+      marginInline: 10,
+      backgroundColor: color.white,
+      borderRadius: attr.borderRadius.md,
+      boxShadow: '0 2px 8px #00000026'
+    },
+    costTotalTour:{
+      border: "1px solid #c4c4c4",
+      padding: 10,
+      backgroundColor: color.white,
+      marginTop: 10
+    },
   }),
   { index: 1 }
 );
