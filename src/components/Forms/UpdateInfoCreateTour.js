@@ -1,7 +1,6 @@
 import {
   InputBase,
   Typography,
-  Paper,
   TextField,
   Chip
 } from '@material-ui/core';

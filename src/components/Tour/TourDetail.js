@@ -232,7 +232,8 @@ export default function TourDetail(props) {
   // const history = useHistory();
   // const dispatch = useDispatch();
 
-  const [idx, setIdx] = useState(0);
+  const [indexDate, setIndexDate] = useState(0);
+  const [indexEvent, setIndexEvent] = useState(0);
   const [position, setPosition] = useState(null);
   const [locations, setLocations] = useState([]);
   const [showImage, setShowImage] = useState(false);
@@ -381,18 +382,18 @@ export default function TourDetail(props) {
   //   );
   // };
   useEffect(() => {
-    if (tour && tour.tour[idx].events.length > 0) {
-      const temp = tour.tour[idx].events[0];
+    if (tour && tour.tour[indexDate].events.length > 0) {
+      const temp = tour.tour[indexDate].events[0];
       if(temp.location != null) setPosition(temp.location.position);
       else if(temp.service != null && position != null) setPosition({lng: temp.service.position[0], lat:temp.service.position[1]});
     }
-  }, [tour, idx, position]);
+  }, [tour, indexDate, position]);
   useEffect(() => {
-    var locs = tour.tour[idx].events
+    var locs = tour.tour[indexDate].events
       .filter(item => item.location)
       .map(item => item.location);
     setLocations(locs);
-  }, [tour, idx]);
+  }, [tour, indexDate]);
 
   const refDetail = React.createRef();
   const refUser = React.createRef();
@@ -682,12 +683,12 @@ export default function TourDetail(props) {
                       style={{ cursor: 'pointer' }}
                     >
                       {tour.joinIds.map(
-                        (user, idx) =>
+                        (user, indexDate) =>
                           user.isJoin && (
                             <Avatar
                               src={user.id.avatar}
                               alt={'avatar'}
-                              key={idx}
+                              key={indexDate}
                               style={{ height: 30, width: 30 }}
                             />
                           )
@@ -868,14 +869,14 @@ export default function TourDetail(props) {
                 className={classes.tourDatesLeft}
               >
                 <Stepper
-                  activeStep={idx}
+                  activeStep={indexDate}
                   orientation="vertical"
                   className={classes.datesWrapper}
                 >
                   {tour.tour.map((tourDate, index) => (
                     <Step
                       key={index}
-                      onClick={() => setIdx(index)}
+                      onClick={() => setIndexDate(index)}
                       style={{ cursor: 'pointer' }}
                     >
                       <StepLabel StepIconComponent={ColorlibStepIcon}>
@@ -888,11 +889,11 @@ export default function TourDetail(props) {
                       </StepLabel>
                       <StepContent>
 
-                          {/* {tour.tour[idx].locations?.map((item, index) => (
+                          {/* {tour.tour[indexDate].locations?.map((item, index) => (
                             <Location
                               location={item}
-                              indexDate={idx}
-                              tourDateId={tour.tour[idx]._id}
+                              indexDate={indexDate}
+                              tourDateId={tour.tour[indexDate]._id}
                               indexLocation={index}
                               edit={false}
                               key={index}
@@ -908,8 +909,8 @@ export default function TourDetail(props) {
                           <Grid item md={11} sm={11} xs={11}>
                             <DetailDateRef
                               ref={refDetail}
-                              date={idx}
-                              tourDate={tour.tour[idx]}
+                              date={indexDate}
+                              tourDate={tour.tour[indexDate]}
                             />
                           </Grid>
                           <Grid item md={1} sm={1} xs={1}>
@@ -918,12 +919,12 @@ export default function TourDetail(props) {
                               <IconButton
                                 style={{ marginLeft: 10 }}
                                 onClick={handleClickFeedback}
-                                aria-describedby={idx}
+                                aria-describedby={indexDate}
                               >
                                 <ChatBubbleOutlineOutlined />
                               </IconButton>
                               <Popover
-                                id={idx}
+                                id={indexDate}
                                 open={openFeedback}
                                 anchorEl={anchorElFeedback}
                                 onClose={handleCloseFeedback}
@@ -965,67 +966,62 @@ export default function TourDetail(props) {
                           </Grid>
                         </Grid>
                         <Grid container>
-                          <Grid item md={2} sm={2} xs={12}> 
-                              <Tabs
-                                orientation={downSm ? 'horizontal' : 'vertical'}
-                                variant="scrollable"
-                                value={value}
-                                onChange={handleChange}
-                                aria-label="Vertical tabs example"
-                                className={classes.tabs}
-                                >
-                                  {/* { tourDate.events.map((event, index)=>(
-                                      <Tab label="7h30" {...a11yProps(index)} />
-                                  ))} */}
-                                  <Tab label="7h30" {...a11yProps(0)} />
-                                  <Tab label="8h30" {...a11yProps(1)} />
-                              </Tabs>
+                          <Grid item md={2} sm={2} xs={12} className={classes.tourDateWrapper}> 
+                            <div className={classes.timelineTour}>
+                              {tourDate.events.map((item, index) => (
+                                <div key={index} >
+                                  <Button
+                                    onClick={() => setIndexEvent(index)}
+                                    className={
+                                      index === indexEvent ? classes.activeTimeline : classes.unactiveTimeline
+                                    }
+                                  >
+                                    {item.time}
+                                  </Button>
+                                </div>
+                              ))}
+                            </div>
                           </Grid>
                           <Grid item md={10} sm={10} xs={12}>
-                            <TabPanel
-                              value={value}
-                              index={0}
-                              className={classes.tabPanel}
-                            >
                               <div className={classes.tourDateInfoWrapper}>
                                 <Typography>
                                   <Label style={{ fontSize: 15 }} />{' '}
                                   <span style={{ fontWeight: 500 }}> Mô tả: </span>{' '}
-                                  {tourDate.description}
+                                  {tourDate.events[indexEvent].description}
                                 </Typography>
                                 <Typography>
                                   <Label style={{ fontSize: 15 }} />
                                   <span style={{ fontWeight: 500 }}>Chi phí: </span>{' '}
-                                  {new Intl.NumberFormat().format( 100* 1000)} VND
+                                  {new Intl.NumberFormat().format( tourDate.events[indexEvent].cost* 1000)} VND
                                 </Typography>
                               </div>
-                              <div>
-                                  {
-                                    tourDate.location && 
-                                    <Location
-                                    location={tourDate.location}
-                                    indexDate={idx}
-                                    tourDateId={tour.tour[idx]._id}
-                                    indexLocation={index=1}
-                                    edit={false}
-                                    key={index=1}
-                                    isSave={true}
-                                    isEdit={false}
-                                    addReview={createReview}
-                                    // joinIds={tour.joinIds}
-                                    isOwn={isOwn}
-                                    isOld={isOld}
-                                  />
-                                  }
-                              </div> 
-                            </TabPanel>
-                            <TabPanel
-                              value={value}
-                              index={1}
-                              className={classes.tabPanel}
-                            > 
-                              
-                            </TabPanel>
+                              {
+                                tourDate.events[indexEvent].location && 
+                                <Location
+                                  location={tourDate.events[indexEvent]}
+                                  indexDate={indexDate}
+                                  tourDateId={tourDate._id}
+                                  indexLocation={indexEvent}
+                                  edit={false}
+                                  key={indexEvent}
+                                  isSave={true}
+                                  isEdit={false}
+                                  addReview={createReview}
+                                  // joinIds={tour.joinIds}
+                                  isOwn={isOwn}
+                                  isOld={isOld}
+                                />
+                              }
+                              {
+                                tourDate.events[indexEvent].service && 
+                                <ServiceCard
+                                  service={tourDate.events[indexEvent]}
+                                  indexDate={indexDate}
+                                  index={indexEvent}
+                                  isSave={false}
+                                  isEdit={false}
+                                />
+                              }
                           </Grid>
                         </Grid>
 

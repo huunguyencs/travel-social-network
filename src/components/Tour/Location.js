@@ -305,7 +305,6 @@ export default function Location(props) {
     addReview,
     joined
   } = props;
-
   // const [showDetail, setShowDetail] = useState(false);
   const [showCreateRv, setShowCreateRv] = useState(false);
   const [anchorEl, setAnchorEl] = useState(null);
