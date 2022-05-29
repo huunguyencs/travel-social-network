@@ -128,12 +128,11 @@ export const saveTour =
 
       console.log(data);
 
-      await customAxios(auth.token).post('/tour/create', data);
+      const res = await customAxios(auth.token).post('/tour/create', data);
 
       dispatch(alertAction.success({ message: 'Lưu lịch trình thành công!' }));
       dispatch(resetTour());
-      dispatch(tourAction.addTour({ tour: data }));
-      next();
+      next(res.data.newTour._id);
     } catch (err) {
       console.log(err);
       error();
@@ -170,10 +169,11 @@ export const updateTour =
       dispatch(resetTour());
     } catch (err) {
       // console.log(err);
+      console.log(err);
       error();
-      if (err.response && err.response.data && err.response.data.message)
-        dispatch(alertAction.error({ message: err.response.data.message }));
-      else dispatch(alertAction.error({ message: 'Có lỗi xảy ra' }));
+      // if (err.response && err.response.data && err.response.data.message)
+      //   dispatch(alertAction.error({ message: err.response.data.message }));
+      // else dispatch(alertAction.error({ message: 'Có lỗi xảy ra' }));
     }
   };
 

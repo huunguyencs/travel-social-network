@@ -192,7 +192,7 @@ function TimeDetail({ event, indexDate, indexEvent }) {
     <div>
       <QuillEditor
         value={description}
-        onChange={e => setDescription(e)}
+        setValue={e => setDescription(e)}
         className={classes.reactQuillTour}
         placeholder="Mô tả"
       />
