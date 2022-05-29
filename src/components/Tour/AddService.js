@@ -55,7 +55,7 @@ function MapPicker({ setPosition, position }) {
       zoom={zoom}
       defaultZoom={8}
       mapTypeId="roadmap"
-      style={{ height: 450 }}
+      style={{ height: 580 }}
       onChangeLocation={handleChangeLocation}
       onChangeZoom={handleChangeZoom}
       apiKey={KEY}
@@ -150,12 +150,12 @@ function ServiceAddContributeForm(props) {
   const classes = formStyles();
 
   return (
-    <div>
-      <div className={classes.center}>
-        <Typography variant="h6">Thêm dịch vụ</Typography>
+    <div className={classes.addServiceContribute}>
+      <div className={classes.center} style={{borderBottom: "1px solid #eeeeee", marginBottom: 10}}>
+        <Typography variant="h6" >Thêm dịch vụ</Typography>
       </div>
       <Grid container>
-        <Grid item md={6}>
+        <Grid item md={6} sm={12} xs={12} style={{paddingRight: 16}}>
           <Autocomplete
             id="choose-province"
             freeSolo
@@ -163,6 +163,7 @@ function ServiceAddContributeForm(props) {
             loading={location.loading}
             getOptionLabel={option => option?.fullname}
             className={classes.autocomplete}
+            style={{marginBottom:10}}
             onChange={(e, value) => changeProvince(value)}
             value={province}
             renderInput={params => (
@@ -177,6 +178,7 @@ function ServiceAddContributeForm(props) {
           <TextField
             value={service.name}
             onChange={handleChange}
+            style={{marginBottom:10, width: "100%"}}
             variant="outlined"
             label="Tên"
             name="name"
@@ -185,6 +187,7 @@ function ServiceAddContributeForm(props) {
           <TextField
             value={service.address}
             onChange={handleChange}
+            style={{marginBottom:10, width: "100%"}}
             variant="outlined"
             label="Mô tả vị trí"
             name="address"
@@ -236,14 +239,14 @@ function ServiceAddContributeForm(props) {
             )}
           </div>
         </Grid>
-        <Grid item md={6}>
+        <Grid item md={6} sm={12} xs={12}>
           <MapPicker setPosition={setPosition} position={position} />
         </Grid>
       </Grid>
 
       <div style={{ marginTop: 10 }} className={classes.center}>
         <Button
-          className={classes.button}
+          className={classes.addDay}
           type="submit"
           onClick={handleSubmit}
           startIcon={<AddCircle />}
@@ -317,7 +320,7 @@ function ServiceItemAddForm(props) {
   const classes = formStyles();
 
   return (
-    <div>
+    <div style={{width: '500px'}}>
       <div className={classes.center}>
         <Typography variant="h6">Thêm dịch vụ</Typography>
       </div>
@@ -413,7 +416,7 @@ function ServiceItemAddForm(props) {
       )}
       <div style={{ marginTop: 10 }} className={classes.center}>
         <Button
-          className={classes.button}
+          className={classes.addDay}
           type="submit"
           onClick={handleSubmit}
           startIcon={<AddCircle />}
@@ -434,8 +437,8 @@ export default function AddService(props) {
   const [name, setName] = useState('');
 
   return (
-    <Paper className={classes.paperContainer} style={{ width: '60%' }}>
-      <div style={{ marginTop: 10, borderTop: '1px solid #ded9d9' }}>
+    <Paper className={classes.paperContainer} style={{borderRadius: 15,  maxHeight: 800, overflow:'hidden', overflowY:'auto'}}>
+      <div style={{ padding: 16, borderTop: '1px solid #ded9d9', borderRadius: 15 }}>
         {contribute ? (
           <ServiceAddContributeForm
             {...props}

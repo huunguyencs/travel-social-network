@@ -10,7 +10,8 @@ import {
   InputAdornment,
   Modal,
   Paper,
-  TextField
+  TextField,
+  Typography
 } from '@material-ui/core';
 import React, { useEffect, useState } from 'react';
 import { tourdetailStyles } from '../../style';
@@ -42,7 +43,7 @@ function UpdateTimeForm({ value, indexDate, indexEvent, handleClose }) {
     setTime(value);
   }, [value]);
   return (
-    <Paper>
+    <Paper style={{padding: 50}}>
       <TextField
         id="time"
         label="Alarm clock"
@@ -101,11 +102,11 @@ function AddEventButtons({
   ));
 
   return (
-    <div style={{ display: 'flex', justifyContent: 'center' }}>
+    <>
       <Button
         variant="contained"
         onClick={showAddService}
-        className={classes.button}
+        className={classes.addDay}
         disabled={Boolean(hideAddService)}
       >
         Thêm dịch vụ
@@ -132,7 +133,7 @@ function AddEventButtons({
       <Button
         variant="contained"
         onClick={showAddLocation}
-        className={classes.button}
+        className={classes.addDay}
         disabled={Boolean(hideAddLocation)}
       >
         Thêm địa điểm
@@ -156,7 +157,7 @@ function AddEventButtons({
           indexEvent={indexEvent}
         />
       </Modal>
-    </div>
+    </>
   );
 }
 
@@ -177,11 +178,11 @@ function TimeDetail({ event, indexDate, indexEvent }) {
   };
 
   return (
-    <div style={{ margin: 10 }}>
+    <div >
       <ReactQuill
         value={description}
         onChange={e => setDescription(e)}
-        style={{ width: '100%' }}
+        className={classes.reactQuillTour}
         placeholder="Mô tả"
       />
       <TextField
@@ -192,7 +193,7 @@ function TimeDetail({ event, indexDate, indexEvent }) {
         id="cost"
         type="number"
         className={classes.fullField}
-        // className={classes.hashtag}
+        style={{backgroundColor:"white"}}
         value={cost}
         onChange={e => setCost(e.target.value)}
         InputProps={{
@@ -200,22 +201,19 @@ function TimeDetail({ event, indexDate, indexEvent }) {
         }}
       />
       <div className={classes.btnWrap}>
-        <Button
-          onClick={handleUpdateInfo}
-          variant="contained"
-          className={classes.button}
-        >
-          Cập nhật
-        </Button>
-      </div>
-
-      <div>
         <AddEventButtons
           indexDate={indexDate}
           indexEvent={indexEvent}
           hideAddLocation={event?.location}
           hideAddService={event?.service}
         />
+        <Button
+          onClick={handleUpdateInfo}
+          variant="contained"
+          className={classes.addDay}
+        >
+          Cập nhật
+        </Button>
       </div>
       {event?.location && (
         <Location
@@ -269,7 +267,7 @@ function TimeLine({ events, indexDate, index, setValue, value, item }) {
   };
 
   return (
-    <div key={index} style={{ display: 'flex' }}>
+    <div key={index} >
       <Button
         onClick={() => setValue(index)}
         className={
@@ -334,30 +332,33 @@ function TimeLine({ events, indexDate, index, setValue, value, item }) {
 export default function DetailDate({ indexDate, events }) {
   const [value, setValue] = useState(0);
   const dispatch = useDispatch();
-
+  const classes = tourdetailStyles();
   const handleAddEvent = () => {
     dispatch(addEvent({ indexDate }));
   };
 
   return (
-    <div>
-      <Grid container>
-        <Grid item md={2}>
-          {events.map((item, index) => (
-            <TimeLine
-              events={events}
-              indexDate={indexDate}
-              index={index}
-              setValue={setValue}
-              value={value}
-              item={item}
-            />
-          ))}
+    <div style={{width: "100%"}}>
+      <Typography className={classes.detailDateTittle}>Chi tiết</Typography>
+      <Grid container className={classes.tourDateWrapper} style={{borderLeft: "1px solid #a9a9a9"}}>
+        <Grid item md={3} sm={12} xs={12} >
+          <div className={classes.timelineTour}>
+            {events.map((item, index) => (
+              <TimeLine
+                events={events}
+                indexDate={indexDate}
+                index={index}
+                setValue={setValue}
+                value={value}
+                item={item}
+              />
+            ))}
+          </div>
           <IconButton onClick={handleAddEvent}>
             <AddCircle />
           </IconButton>
         </Grid>
-        <Grid item md={10}>
+        <Grid item md={9} sm={12} xs={12}>
           <TimeDetail
             event={events[value]}
             indexDate={indexDate}

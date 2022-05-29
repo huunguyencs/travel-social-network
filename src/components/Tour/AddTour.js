@@ -10,13 +10,13 @@ import {
   Step,
   DialogTitle,
   CircularProgress,
-  Paper,
   IconButton,
   TextField,
   InputAdornment,
   Stepper,
   StepContent,
-  StepLabel
+  StepLabel,
+  Typography
 } from '@material-ui/core';
 import React, { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
@@ -174,8 +174,9 @@ function EditBaseDate(props) {
   const classes = tourdetailStyles();
 
   return (
-    <Paper className={classes.paperDetailDate}>
-      <div style={{ padding: 5 }}>
+    <div className={classes.paperDetailDate}>
+      <Typography className={classes.detailDateTittle}> Tổng quan ngày</Typography>
+      <div className={classes.tourDateWrapper}>
         <div>
           {/* <TextField
             label="Ghi chú"
@@ -193,7 +194,7 @@ function EditBaseDate(props) {
           <ReactQuill
             value={text}
             onChange={e => setText(e)}
-            style={{ width: '100%' }}
+            className={classes.reactQuillTour}
             placeholder="Chi tiết"
           />
           <TextField
@@ -204,7 +205,7 @@ function EditBaseDate(props) {
             id="cost"
             type="number"
             className={classes.fullField}
-            // className={classes.hashtag}
+            style={{backgroundColor:"white"}}
             value={cost}
             onChange={e => setCost(e.target.value)}
             InputProps={{
@@ -217,7 +218,7 @@ function EditBaseDate(props) {
             <Button
               variant="contained"
               onClick={handleSubmit}
-              className={classes.button}
+              className={classes.addDay}
             >
               Cập nhật
             </Button>
@@ -226,7 +227,7 @@ function EditBaseDate(props) {
 
         {/* <AddService type="date" indexDate={date} /> */}
       </div>
-    </Paper>
+    </div>
   );
 }
 
@@ -502,7 +503,7 @@ export default function AddTour(props) {
                   />
                 </Grid>
                 <Grid item md={4} sm={5} xs={12}>
-                  <div style={{ paddingRight: 40 }}>
+                  <div style={{ padding: 20, maxHeight: 250, overflow:"hidden" }}>
                     <ChangeImageTour />
                   </div>
                   {state.error && (
@@ -600,15 +601,15 @@ export default function AddTour(props) {
                       </Button>
                     </StepLabel>
                     <StepContent>
-                      <Grid container>
-                        <Grid item md={5}>
+                      <Grid container style={{border:"1px solid #a9a9a9", backgroundColor: "#ebf3f0"}}>
+                        <Grid item md={5} sm={12} xs={12}>
                           <EditBaseDateRef
                             ref={refEditDetailDate}
                             date={idx}
                             tourDate={createTour.tour[idx]}
                           />
                         </Grid>
-                        <Grid item md={7}>
+                        <Grid item md={7} sm={12} xs={12}>
                           <DetailDate
                             indexDate={idx}
                             events={createTour.tour[idx].events}

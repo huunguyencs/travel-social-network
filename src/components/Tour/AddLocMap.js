@@ -129,7 +129,7 @@ export default function AddLocMap(props) {
   };
 
   return (
-    <div style={{ height: 500, marginBlock: 20 }}>
+    <div style={{ height: 500 }}>
       <GoogleMapReact
         bootstrapURLKeys={{ key: KEY }}
         defaultCenter={{ lat: 14.489055527436275, lng: 107.96608963227854 }}

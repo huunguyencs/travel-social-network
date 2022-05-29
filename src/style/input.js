@@ -64,6 +64,25 @@ const inputStyles = makeStyles(
       alignItems: 'center',
       cursor: 'pointer'
     },
+    addAreaHoverTour:{
+      width: '100%',
+      height: 200,
+      border: '2px dashed #555',
+      display: 'flex',
+      justifyContent: 'center',
+      alignItems: 'center',
+      cursor: 'pointer'
+    },
+    addAreaTour:{
+      width: '100%',
+      height: 200,
+      border: '1px dashed #000',
+      display: 'flex',
+      justifyContent: 'center',
+      alignItems: 'center',
+      cursor: 'pointer',
+      borderRadius: 5
+    },
     imageItem: {
       position: 'relative'
     },

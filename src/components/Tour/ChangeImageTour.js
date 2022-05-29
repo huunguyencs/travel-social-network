@@ -37,16 +37,16 @@ export default function ChangeImageTour() {
         const holder = document.getElementById("add-area");
         if (holder) {
             holder.ondragover = function () {
-                this.className = classes.addAreaHover;
+                this.className = classes.addAreaHoverTour;
                 return false;
             }
 
             holder.ondragend = function (e) {
-                this.className = classes.addArea;
+                this.className = classes.addAreaTour;
             }
 
             holder.ondrop = function (e) {
-                this.className = classes.addArea;
+                this.className = classes.addAreaTour;
                 e.preventDefault();
                 setError("");
                 const file = e.dataTransfer.files[0];
@@ -68,13 +68,12 @@ export default function ChangeImageTour() {
                     <img
                         src={typeof image === 'string' ? image : URL.createObjectURL(image)}
                         alt="Can not loading img"
-                        className={classes.item}
-                        width={250}
-                        height={200}
+                        width="100%"
+                        height="100%"
                     />
                     <IconButton onClick={removeImage} className={classes.removeButton} size="small"><HighlightOff /></IconButton>
                 </div> :
-                <div className={classes.addArea} id="add-area">
+                <div className={classes.addAreaTour} id="add-area">
                     <input
                         accept="image/*"
                         style={{ display: 'none' }}
@@ -91,7 +90,7 @@ export default function ChangeImageTour() {
                     </label>
                 </div>
             }
-            <span>{error}</span>
+            <span style={{color:"red"}}>{error}</span>
         </div>
     )
 }

@@ -396,7 +396,7 @@ export default function Location(props) {
   return (
     <Card className={classes.cardContainer}>
       <Grid container>
-        <Grid item md={4} sm={3} className={classes.imageLocation}>
+        <Grid item md={5} sm={3} className={classes.imageLocation}>
           <CardMedia style={{ height: '100%' }}>
             <img
               src={
@@ -409,7 +409,7 @@ export default function Location(props) {
             />
           </CardMedia>
         </Grid>
-        <Grid item md={8} sm={9} xs={12}>
+        <Grid item md={7} sm={9} xs={12}>
           <CardContent style={{ padding: 0 }}>
             <div className={classes.locationContentContainer}>
               <div style={{ margin: 20 }}>

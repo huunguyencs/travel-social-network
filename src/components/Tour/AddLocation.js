@@ -12,7 +12,7 @@ import Autocomplete, {
 import React, { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import GoogleMapPicker from 'react-google-map-picker';
-import { formStyles } from '../../style';
+import { formStyles, tourdetailStyles } from '../../style';
 import AddLocMap from './AddLocMap';
 import * as tourAction from '../../redux/actions/createTourAction';
 import { AddCircle, CameraAltOutlined } from '@material-ui/icons';
@@ -56,7 +56,7 @@ function MapPicker({ setPosition, position }) {
       zoom={zoom}
       defaultZoom={8}
       mapTypeId="roadmap"
-      style={{ height: 450 }}
+      style={{ height: 580 }}
       onChangeLocation={handleChangeLocation}
       onChangeZoom={handleChangeZoom}
       apiKey={KEY}
@@ -149,12 +149,12 @@ function AddLocationContribute(props) {
 
   const classes = formStyles();
   return (
-    <Paper style={{ width: '60%' }}>
-      <div className={classes.center}>
-        <Typography variant="h6">Chia sẻ địa điểm với mọi người</Typography>
+    <div className={classes.addLocationContribute}>
+      <div className={classes.center} style={{borderBottom: "1px solid #eeeeee", marginBottom: 10}}>
+        <Typography variant="h6" >Chia sẻ địa điểm với mọi người</Typography>
       </div>
       <Grid container>
-        <Grid item md={6} lg={6}>
+        <Grid item md={6} sm={12} xs={12} style={{paddingRight: 16}}>
           <Autocomplete
             id="choose-province"
             freeSolo
@@ -162,6 +162,7 @@ function AddLocationContribute(props) {
             loading={location.loading}
             getOptionLabel={option => option?.fullname}
             className={classes.autocomplete}
+            style={{marginBottom:10}}
             onChange={(e, value) => changeProvince(value)}
             value={province}
             renderInput={params => (
@@ -176,6 +177,7 @@ function AddLocationContribute(props) {
           <TextField
             value={loc.fullname}
             onChange={handleChange}
+            style={{marginBottom:10, width:"100%"}}
             variant="outlined"
             label="Tên"
             name="fullname"
@@ -227,14 +229,14 @@ function AddLocationContribute(props) {
             )}
           </div>
         </Grid>
-        <Grid item md={6} lg={6}>
+        <Grid item md={6} sm={12} xs={12}>
           <MapPicker setPosition={setPosition} position={position} />
         </Grid>
       </Grid>
 
       <div style={{ marginTop: 10 }} className={classes.center}>
         <Button
-          className={classes.button}
+          className={classes.addDay}
           type="submit"
           onClick={handleSubmit}
           startIcon={<AddCircle />}
@@ -243,7 +245,7 @@ function AddLocationContribute(props) {
           Thêm
         </Button>
       </div>
-    </Paper>
+    </div>
   );
 }
 
@@ -314,117 +316,120 @@ function AddLocationDefault(props) {
   };
 
   return (
-    <Paper style={{ width: '60%' }}>
-      <div className={classes.addLocationForm}>
-        <Grid container>
-          <Grid item md={6}>
-            <Autocomplete
-              id="choose-province"
-              options={location.provinces}
-              loading={location.loading}
-              getOptionLabel={option => option?.fullname}
-              className={classes.autocompleteProvince}
-              onChange={(e, value) => setProvince(value)}
-              value={province}
-              renderInput={params => (
-                <TextField
-                  {...params}
-                  name="provinces"
-                  label="Chọn tỉnh thành"
-                  variant="outlined"
-                />
-              )}
-            />
-
-            <Autocomplete
-              id="choose-location"
-              options={locations}
-              className={classes.autocompleteProvince}
-              onChange={(e, value) => {
-                if (typeof value === 'string') {
-                  setLoc({
-                    fullname: value,
-                    image: '',
-                    isNew: true
-                  });
-                } else if (value && value.inputValue) {
-                  setLoc({
-                    fullname: value.inputValue,
-                    image: '',
-                    isNew: true
-                  });
-                } else changeLoc(value);
-              }}
-              filterOptions={(options, params) => {
-                const filtered = filter(options, params);
-
-                if (params.inputValue !== '') {
-                  filtered.push({
-                    inputValue: params.inputValue,
-                    fullname: `Thêm ${params.inputValue}`
-                  });
-                }
-                return filtered;
-              }}
-              freeSolo
-              getOptionLabel={option => {
-                if (typeof option === 'string') {
-                  return option;
-                }
-                if (option.inputValue) {
-                  return option.inputValue;
-                }
-                return option.fullname;
-              }}
-              selectOnFocus
-              clearOnBlur
-              handleHomeEndKeys
-              renderOption={option => option.fullname}
-              value={loc}
-              renderInput={params => (
-                <TextField
-                  {...params}
-                  name="location"
-                  label="Chọn địa điểm"
-                  variant="outlined"
-                />
-              )}
-            />
-            <div>
-              <Button
-                className={classes.button}
-                type="submit"
-                onClick={handleSubmit}
-                startIcon={<AddCircle />}
-                disabled={!loc}
-                style={{ padding: 7, marginTop: 5 }}
-              >
-                Thêm
-              </Button>
-            </div>
-          </Grid>
-
-          <Grid item md={6}>
-            <AddLocMap
-              setLoc={setLoc}
-              currentProvince={province}
-              locations={locations}
-              state={state}
-              setState={setState}
-              indexDate={props.indexDate}
-              handleClose={handleClose}
-            />
-          </Grid>
-
-          {/* {createTour.recommendService?.length > 0 && (
-            <ServiceRecommend
-              indexDate={props.indexDate}
-              services={createTour.recommendService}
-            />
-          )} */}
-        </Grid>
+    <div className={classes.addLocationContribute}>
+      <div className={classes.center} style={{borderBottom: "1px solid #eeeeee", marginBottom: 10}}>
+          <Typography variant="h6" >Thêm địa điểm</Typography>
       </div>
-    </Paper>
+      <Grid container >
+        <Grid item md={6} sm={12} xs={12} style={{paddingRight: 16}}>
+          <Autocomplete
+            id="choose-province"
+            options={location.provinces}
+            loading={location.loading}
+            getOptionLabel={option => option?.fullname}
+            className={classes.autocompleteProvince}
+            style={{marginBottom:10}}
+            onChange={(e, value) => setProvince(value)}
+            value={province}
+            renderInput={params => (
+              <TextField
+                {...params}
+                name="provinces"
+                label="Chọn tỉnh thành"
+                variant="outlined"
+              />
+            )}
+          />
+
+          <Autocomplete
+            id="choose-location"
+            options={locations}
+            className={classes.autocompleteProvince}
+            style={{marginBottom:10}}
+            onChange={(e, value) => {
+              if (typeof value === 'string') {
+                setLoc({
+                  fullname: value,
+                  image: '',
+                  isNew: true
+                });
+              } else if (value && value.inputValue) {
+                setLoc({
+                  fullname: value.inputValue,
+                  image: '',
+                  isNew: true
+                });
+              } else changeLoc(value);
+            }}
+            filterOptions={(options, params) => {
+              const filtered = filter(options, params);
+
+              if (params.inputValue !== '') {
+                filtered.push({
+                  inputValue: params.inputValue,
+                  fullname: `Thêm ${params.inputValue}`
+                });
+              }
+              return filtered;
+            }}
+            freeSolo
+            getOptionLabel={option => {
+              if (typeof option === 'string') {
+                return option;
+              }
+              if (option.inputValue) {
+                return option.inputValue;
+              }
+              return option.fullname;
+            }}
+            selectOnFocus
+            clearOnBlur
+            handleHomeEndKeys
+            renderOption={option => option.fullname}
+            value={loc}
+            renderInput={params => (
+              <TextField
+                {...params}
+                name="location"
+                label="Chọn địa điểm"
+                variant="outlined"
+              />
+            )}
+          />
+          <div style={{display:'flex', justifyContent:'center'}}>
+            <Button
+              className={classes.addDay}
+              type="submit"
+              onClick={handleSubmit}
+              startIcon={<AddCircle />}
+              disabled={!loc}
+              style={{ padding: 7, marginTop: 5 }}
+            >
+              Thêm
+            </Button>
+          </div>
+        </Grid>
+
+        <Grid item md={6} sm={12} xs={12} >
+          <AddLocMap
+            setLoc={setLoc}
+            currentProvince={province}
+            locations={locations}
+            state={state}
+            setState={setState}
+            indexDate={props.indexDate}
+            handleClose={handleClose}
+          />
+        </Grid>
+
+        {/* {createTour.recommendService?.length > 0 && (
+          <ServiceRecommend
+            indexDate={props.indexDate}
+            services={createTour.recommendService}
+          />
+        )} */}
+      </Grid>
+    </div>
   );
 }
 
@@ -432,15 +437,22 @@ export default function AddLocation(props) {
   const [isContribute, setIsContribute] = useState(false);
   const [name, setName] = useState('');
   const [province, setProvince] = useState(null);
-  return isContribute ? (
-    <AddLocationContribute {...props} name={name} currentProvince={province} />
-  ) : (
-    <AddLocationDefault
-      {...props}
-      setName={setName}
-      setIsContribute={setIsContribute}
-      province={province}
-      setProvince={setProvince}
-    />
-  );
+  const classes = tourdetailStyles();
+  return(
+    <Paper className={classes.paperContainer} style={{borderRadius: 15,  maxHeight: 800, overflow:'hidden', overflowY:'auto'}}>
+      <div style={{ padding: 16, borderTop: '1px solid #ded9d9', borderRadius: 15 }}>
+        {isContribute ? (
+          <AddLocationContribute {...props} name={name} currentProvince={province} />
+        ):(
+          <AddLocationDefault
+            {...props}
+            setName={setName}
+            setIsContribute={setIsContribute}
+            province={province}
+            setProvince={setProvince}
+          />
+        )}
+      </div>
+    </Paper>
+  )
 }

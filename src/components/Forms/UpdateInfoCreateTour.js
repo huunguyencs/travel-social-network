@@ -69,12 +69,12 @@ export default function UpdateTourInfo({ tourInfo, setTourInfo, image, cost }) {
   const classes = formStyles();
 
   return (
-    <Paper className={classes.paperUpdateInfoContainer}>
+    <div className={classes.paperUpdateInfoContainer}>
       <div className={classes.textTitle}>
         <Typography variant="h5">Thông tin hành trình</Typography>
       </div>
       <div>
-        <div className={classes.formContainer}>
+        <div className={classes.formContainerTour}>
           <TextField
             name="name"
             id="name"
@@ -84,7 +84,7 @@ export default function UpdateTourInfo({ tourInfo, setTourInfo, image, cost }) {
             className={classes.tourNameInput}
             onChange={handleInput}
           />
-          <Typography>
+          <Typography className={classes.costTotalTour}>
             <b>Tổng chi phí: </b>
             {new Intl.NumberFormat().format(cost * 1000)} VND
           </Typography>
@@ -117,18 +117,18 @@ export default function UpdateTourInfo({ tourInfo, setTourInfo, image, cost }) {
             <ReactQuill
               value={content}
               onChange={e => setTourInfo(state => ({ ...state, content: e }))}
-              style={{ width: '100%' }}
+              style={{ width: '100%' ,height: 200}}
               placeholder="Nội dung tour ..."
             />
           </div>
-          <div>
+          <div style={{marginTop: 50}}>
             <div>
               {hashtagArr.map((value, idx) => (
                 <Chip
                   label={'#' + value}
                   onDelete={() => removeHashtag(idx)}
                   key={idx}
-                  style={{ marginInline: 5 }}
+                  style={{ marginInline: 5, backgroundColor: "#a5dec8" }}
                 />
               ))}
             </div>
@@ -151,6 +151,6 @@ export default function UpdateTourInfo({ tourInfo, setTourInfo, image, cost }) {
           </div>
         </div>
       </div>
-    </Paper>
+    </div>
   );
 }
