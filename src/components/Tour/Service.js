@@ -37,7 +37,7 @@ import CreateRateForm from '../Forms/CreateRate';
 
 function ReviewList(props) {
   const { reviews, handleClose } = props;
-  const [posts, setPosts] = useState([]);
+  const [rvs, setRvs] = useState([]);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(false);
 
@@ -46,11 +46,11 @@ function ReviewList(props) {
     setError(false);
     try {
       await customAxios()
-        .post(`/post/list`, {
+        .post(`/service/list_review`, {
           list: reviews
         })
         .then(res => {
-          setPosts(res.data.posts);
+          setRvs(res.data.reviews);
           setLoading(false);
         });
     } catch (error) {
@@ -105,36 +105,33 @@ function ReviewList(props) {
             </div>
           )}
           {!error &&
-            posts.map(post => (
+            rvs.map(rv => (
               <Card
                 style={{
                   width: 600,
                   borderRadius: 10,
                   border: '1px solid #ddd'
                 }}
-                key={post._id}
+                key={rv._id}
               >
                 <CardHeader
-                  avatar={<Avatar alt="avatar" src={post.userId.avatar} />}
+                  avatar={<Avatar alt="avatar" src={rv.userId.avatar} />}
                   title={
                     <Typography
                       style={{ fontWeight: 500 }}
                       component={Link}
-                      to={`/u/${post.userId._id}`}
+                      to={`/u/${rv.userId._id}`}
                     >
-                      {post.userId.fullname}
+                      {rv.userId.fullname}
                     </Typography>
                   }
-                  subheader={
-                    <Link to={`/post/${post._id}`}>
-                      {timeAgo(new Date(post.createdAt))}
-                    </Link>
-                  }
+                  subheader=
+                    {timeAgo(new Date(rv.createdAt))}
                 />
-                {post.images.length > 0 && (
+                {rv.images?.length > 0 && (
                   <CardMedia>
                     <ImageList
-                      imageList={post.images}
+                      imageList={rv.images}
                       show2Image={true}
                       defaultHeight={300}
                       isPost={false}
@@ -143,7 +140,7 @@ function ReviewList(props) {
                 )}
                 <Rating
                   name="location-rating"
-                  value={post.rate}
+                  value={rv.rate}
                   readOnly
                   style={{ marginBottom: 10, marginInline: 20 }}
                 />
@@ -151,7 +148,7 @@ function ReviewList(props) {
                   <SeeMoreText
                     variant="body1"
                     maxText={100}
-                    text={post.content}
+                    text={rv.content}
                   />
                 </CardContent>
               </Card>
