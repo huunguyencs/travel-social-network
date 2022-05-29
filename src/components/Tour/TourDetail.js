@@ -57,7 +57,6 @@ import PropTypes from 'prop-types';
 import clsx from 'clsx';
 import { deleteTour } from '../../redux/callApi/tourCall';
 import TourRecommendCard from '../Card/TourRecommendCard';
-import { SeeMoreText } from '../SeeMoreText';
 import InviteTour from '../Modal/InviteTour';
 import ServiceCard from './Service';
 import InputCommentFeedBack from '../Input/CommentFeedBack';

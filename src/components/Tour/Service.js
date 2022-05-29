@@ -27,7 +27,7 @@ import 'react-quill/dist/quill.snow.css';
 import { Link } from 'react-router-dom';
 
 export default function ServiceCard(props) {
-  const { service, index, isEdit, indexDate, joined } = props;
+  const { service, index, isEdit, indexDate } = props;
 
   const classes = tourdetailStyles();
   const [anchorEl, setAnchorEl] = useState(null);
