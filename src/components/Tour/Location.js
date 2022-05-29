@@ -411,10 +411,9 @@ export default function Location(props) {
         <Grid item md={7} sm={9} xs={12}>
           <CardContent style={{ padding: 0 }}>
             <div className={classes.locationContentContainer}>
-              <div style={{ margin: 20 }}>
+              <div style={{ margin: 16 }}>
                 <div>
                   <Typography
-                    variant="h5"
                     className={classes.locationName}
                     component={Link}
                     to={`/location/${location.location.name}`}
@@ -424,7 +423,7 @@ export default function Location(props) {
                 </div>
                 <div>
                   <Typography
-                    variant="h6"
+                    style={{fontSize: 16, fontWeight: 400}}
                     component={Link}
                     to={'/province/' + location.location.province.name}
                   >

@@ -24,18 +24,13 @@ import {
   StepLabel,
   StepContent,
   makeStyles,
-  Box,
-  Tab,
-  Tabs,
   Fade,
   List,
   ListItem,
   ListItemAvatar,
   ListItemText,
   ListItemSecondaryAction,
-  Popover,
-  useMediaQuery,
-  useTheme,
+  Popover
 } from '@material-ui/core';
 import AvatarGroup from '@material-ui/lab/AvatarGroup';
 import React, { useEffect, useMemo, useState } from 'react';
@@ -65,46 +60,20 @@ import TourRecommendCard from '../Card/TourRecommendCard';
 import { SeeMoreText } from '../SeeMoreText';
 import InviteTour from '../Modal/InviteTour';
 import ServiceCard from './Service';
-import InputComment from '../Input/Comment';
+import InputCommentFeedBack from '../Input/CommentFeedBack';
 import Comment from '../Comment';
-// const data={
-//   content: "Team mình bắt đầu đi từ Sài Gòn đêm thứ 6 về Qui Nhơn, nếu bạn chỉ đi Qui Nhơn thì chỉ cần 2 ngày 1 đêm là ok rồi; còn nếu muốn đi thêm Phú Yên thì thêm 2 ngày 1 đêm nữa.",
-//   name:"Quy Nhơn- Phú Yên đầy nắng gió", 
-//   cost: 10100, 
-//   createdAt: "2022-05-25T18:20:03.672Z",
-//   hashtags:["Quy nhơn, Phu yên","bien","gió"],
-//   image:"https://res.cloudinary.com/dqxvfu5k1/image/upload/v1653502802/b7l2onl5uowz38khlth0.jpg",
-//   isPublic: false,
-//   joinIds:[{
-//     id:{
-//       avatar: "https://res.cloudinary.com/huunguyencs/image/upload/v1653359438/k3rvnexrnyecdwrotew1.jpg",
-//       email: "huy.tran0207@hcmut.edu.vn",
-//       fullname: "Trần Quang Huy",
-//       _id: "627d09531961cd962ff8cdcf"
-//     },
-//     isEdit: true,
-//     isJoin: true
-//   }],
-//   likes:[],
-//   comments:[],
-//   userId:{
-//     avatar: "https://res.cloudinary.com/huunguyencs/image/upload/v1653359438/k3rvnexrnyecdwrotew1.jpg",
-//       email: "huy.tran0207@hcmut.edu.vn",
-//       fullname: "Trần Quang Huy",
-//       _id: "627d09531961cd962ff8cdcf"
-//   },
 
-// }
+
 function DetailDate(props) {
-  const { tourDate, date, joined } = props;
+  const { tourDate } = props;
 
   const classes = tourdetailStyles();
 
   return (
-    <Paper className={classes.paperDetailDate}>
+    <div className={classes.infoTourDate}>
       <Grid container style={{ padding: 10 }}>
         <Grid item md={12} sm={12} xs={12}>
-          <Typography variant='h6'>Tổng quan ngày</Typography>
+          <Typography style={{fontSize: 16, fontWeight: 500}}>Tổng quan ngày</Typography>
           <Typography>
             <Label style={{ fontSize: 15 }} />{' '}
             <span style={{ fontWeight: 500 }}> Mô tả: </span>{' '}
@@ -140,7 +109,7 @@ function DetailDate(props) {
           </div>
         </Grid> */}
       </Grid>
-    </Paper>
+    </div>
   );
 }
 const useColorlibStepIconStyles = makeStyles({
@@ -188,49 +157,13 @@ ColorlibStepIcon.propTypes = {
   icon: PropTypes.node
 };
 
-function TabPanel(props) {
-  const { children, value, index, ...other } = props;
-
-  return (
-    <div
-      role="tabpanel"
-      hidden={value !== index}
-      id={`vertical-tabpanel-${index}`}
-      aria-labelledby={`vertical-tab-${index}`}
-      {...other}
-    >
-      {value === index && <Box>{children}</Box>}
-    </div>
-  );
-}
-
-TabPanel.propTypes = {
-  children: PropTypes.node,
-  index: PropTypes.any.isRequired,
-  value: PropTypes.any.isRequired
-};
-
-function a11yProps(index) {
-  return {
-    id: `vertical-tab-${index}`,
-    'aria-controls': `vertical-tabpanel-${index}`
-  };
-}
 
 export default function TourDetail(props) {
-  const { tour, isOwn, setTour, isInvite, setIsInvite, memberIsEdit, isJoin } =
-    props;
-  console.log('+++++tour+++', tour);
+  const { tour, isOwn, setTour, isInvite, setIsInvite, memberIsEdit, isJoin } = props;
+  
   const classes = tourdetailStyles();
-
-  //   const dispatch = useDispatch();
-  // const { auth } = useSelector(state => state);
-
   const dispatch = useDispatch();
   const { auth, socket } = useSelector(state => state);
-
-  // const history = useHistory();
-  // const dispatch = useDispatch();
 
   const [indexDate, setIndexDate] = useState(0);
   const [indexEvent, setIndexEvent] = useState(0);
@@ -295,92 +228,6 @@ export default function TourDetail(props) {
     }));
   };
 
-  // const updateJoinLocation = (joins, idDate, idLocation) => {
-  //   setTour(tour => ({
-  //     ...tour,
-  //     tour: tour.tour.map(item =>
-  //       item._id === idDate
-  //         ? {
-  //             ...item,
-  //             locations: item.locations.map(loc =>
-  //               loc._id === idLocation
-  //                 ? {
-  //                     ...loc,
-  //                     joinIds: joins
-  //                   }
-  //                 : loc
-  //             )
-  //           }
-  //         : item
-  //     )
-  //   }));
-  // };
-
-  // const handleJoin = () => {
-  //   setState({
-  //     loadingJoin: true,
-  //     error: false
-  //   });
-  //   setJoined(true);
-  //   var prevJoin = tour.joinIds;
-  //   updateJoin([...prevJoin, auth.user]);
-  //   dispatch(
-  //     joinTour(
-  //       tour._id,
-  //       auth.token,
-  //       () => {
-  //         setState({
-  //           loadingJoin: false,
-  //           error: false
-  //         });
-  //       },
-  //       () => {
-  //         setState({
-  //           loadingJoin: false,
-  //           error: true
-  //         });
-  //         if (joined) {
-  //           setJoined(false);
-  //           updateJoin(prevJoin);
-  //         }
-  //       }
-  //     )
-  //   );
-  // };
-
-  // const handleUnJoin = () => {
-  //   setState({
-  //     loadingJoin: true,
-  //     error: false
-  //   });
-  //   setJoined(false);
-  //   var prevJoin = tour.joinIds;
-  //   var newJoin = prevJoin.filter(user => user._id !== auth.user._id);
-  //   updateJoin(newJoin);
-
-  //   dispatch(
-  //     unJoinTour(
-  //       tour._id,
-  //       auth.token,
-  //       () => {
-  //         setState({
-  //           loadingJoin: false,
-  //           error: false
-  //         });
-  //       },
-  //       () => {
-  //         setState({
-  //           loadingJoin: false,
-  //           error: true
-  //         });
-  //         if (!joined) {
-  //           setJoined(true);
-  //           updateJoin(prevJoin);
-  //         }
-  //       }
-  //     )
-  //   );
-  // };
   useEffect(() => {
     if (tour && tour.tour[indexDate].events.length > 0) {
       const temp = tour.tour[indexDate].events[0];
@@ -410,14 +257,6 @@ export default function TourDetail(props) {
   const InviteRef = React.forwardRef((props, ref) => (
     <InviteTour {...props} innerRef={ref} />
   ));
-
-  const [value, setValue] = React.useState(0);
-
-  const handleChange = (event, newValue) => {
-    setValue(newValue);
-  };
-  const theme = useTheme();
-  const downSm = useMediaQuery(theme.breakpoints.down('sm'));
 
   const [anchorEl, setAnchorEl] = useState(null);
   const [showDelete, setShowDelete] = useState(false);
@@ -849,9 +688,6 @@ export default function TourDetail(props) {
                     <Typography className={classes.tourName}>
                       {tour.name}
                     </Typography>
-                    {/* <Typography>Thời gian: {convertDateToStr(volunteer.date[0].date)}</Typography>
-                                            <Typography>Địa điểm xuất phát: {volunteer.location[0].location.fullname}</Typography>
-                                            <Typography>Thể loại: {volunteer.type}</Typography> */}
                   </CardContent>
                 </Card>
                 <div className={classes.tourRecommend}>
@@ -888,24 +724,7 @@ export default function TourDetail(props) {
                         </div>
                       </StepLabel>
                       <StepContent>
-
-                          {/* {tour.tour[indexDate].locations?.map((item, index) => (
-                            <Location
-                              location={item}
-                              indexDate={indexDate}
-                              tourDateId={tour.tour[indexDate]._id}
-                              indexLocation={index}
-                              edit={false}
-                              key={index}
-                              isSave={true}
-                              isEdit={false}
-                              addReview={createReview}
-                              joinIds={tour.joinIds}
-                              isOwn={isOwn}
-                              isOld={isOld}
-                            />
-                          ))} */}
-                        <Grid container>
+                        <Grid container className={classes.generalDate}>
                           <Grid item md={11} sm={11} xs={11}>
                             <DetailDateRef
                               ref={refDetail}
@@ -913,11 +732,11 @@ export default function TourDetail(props) {
                               tourDate={tour.tour[indexDate]}
                             />
                           </Grid>
-                          <Grid item md={1} sm={1} xs={1}>
+                          <Grid item md={1} sm={1} xs={1} style={{display:'flex',alignItems:'center'}}>
                           {isJoin && (
                             <>
                               <IconButton
-                                style={{ marginLeft: 10 }}
+                                className={classes.buttonChat}
                                 onClick={handleClickFeedback}
                                 aria-describedby={indexDate}
                               >
@@ -938,7 +757,7 @@ export default function TourDetail(props) {
                                 }}
                               >
                                 <div className={classes.feedbacks}>
-                                  <Typography variant="h6">Nhận xét</Typography>
+                                  <Typography variant="h6" style={{padding: "5px 5px 5px 30px"}}>Nhận xét</Typography>
                                   <hr className={classes.line} />
                                   <div className={classes.listCmt}>
                                     {tourDate.comments &&
@@ -953,9 +772,11 @@ export default function TourDetail(props) {
                                   </div>
                                   {auth.user && (
                                     <div className={classes.wrapInput}>
-                                      <InputComment
+                                      <InputCommentFeedBack
                                         type="feedback"
                                         id={tourDate._id}
+                                        setTour={setTour}
+                                        indexDate={indexDate}
                                       />
                                     </div>
                                   )}
@@ -965,7 +786,7 @@ export default function TourDetail(props) {
                           )}
                           </Grid>
                         </Grid>
-                        <Grid container>
+                        <Grid container className={classes.detailDate}>
                           <Grid item md={2} sm={2} xs={12} className={classes.tourDateWrapper}> 
                             <div className={classes.timelineTour}>
                               {tourDate.events.map((item, index) => (

@@ -1,6 +1,7 @@
 import {
   Button,
   Card,
+  CardContent,
   CardMedia,
   ClickAwayListener,
   // Collapse,
@@ -173,11 +174,11 @@ export default function ServiceCard(props) {
           </CardMedia>
         </Grid>
         <Grid item md={7} sm={9} xs={12}>
-          <div className={classes.contentContainer}>
+          <CardContent style={{ padding: 0 }}>
             <div className={classes.locationContentContainer}>
-              <div>
+              <div style={{ margin: 16 }}>
                 <div>
-                  <Typography variant="h6" className={classes.locationName}>
+                  <Typography className={classes.locationName}>
                     {service.service?.name}
                   </Typography>
                 </div>
@@ -232,7 +233,7 @@ export default function ServiceCard(props) {
                 )}
               </div>
             </div>
-          </div>
+          </CardContent>
         </Grid>
         {/* <Grid item md={12} sm={12} xs={12}>
           <Collapse in={showDetail} style={{ width: '100%' }}>

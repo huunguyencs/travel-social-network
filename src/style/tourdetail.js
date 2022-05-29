@@ -89,7 +89,8 @@ const tourdetailStyles = makeStyles(
       }
     },
     locationName: {
-      // marginTop: 10,
+      fontSize: 20,
+      fontWeight: 500,
       cursor: 'pointer'
     },
     activeTimeline: {
@@ -213,8 +214,8 @@ const tourdetailStyles = makeStyles(
       }
     },
     imageLocation: {
-      minHeight: 150,
-      maxHeight: 150,
+      minHeight: 160,
+      maxHeight: 160,
       [theme.breakpoints.down('xs')]: {
         display: 'none'
       }
@@ -629,8 +630,33 @@ const tourdetailStyles = makeStyles(
     serviceName: {
       cursor: 'pointer'
     },
-    invitation:{
-      
+    infoTourDate:{
+      width: "100%"
+    },
+    buttonChat:{
+      marginLeft: 0, 
+      color:'white',
+      height: 40,
+      width: 40,
+      backgroundColor: "#63b191"
+    },
+    generalDate:{
+      border: "1px solid #d2d2d2", 
+      borderRadius: 15,
+      backgroundColor: color.background,
+    },
+    detailDate:{
+      border: "1px solid #d2d2d2", 
+      borderRadius: 15, 
+      marginTop:10,
+      padding: 10,
+      backgroundColor: color.background,
+      paddingBottom: 16
+    },
+    listCmt:{
+      maxHeight: 300,
+      overflow:'hidden',
+      overflowY:'auto'
     }
   }),
   { index: 1 }
