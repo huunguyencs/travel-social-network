@@ -686,7 +686,6 @@ const tourdetailStyles = makeStyles(
       padding: 0,
       flexGrow: 1,
       marginTop: 10,
-      marginInline: 10,
       backgroundColor: color.white,
       borderRadius: attr.borderRadius.md,
       boxShadow: '0 2px 8px #00000026'

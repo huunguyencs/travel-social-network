@@ -456,10 +456,16 @@ export default function TourDetail(props) {
                           }
                         />
                         <ListItemSecondaryAction>
-                          <Button onClick={() => handleAcceptInvite()}>
+                          <Button 
+                            onClick={() => handleAcceptInvite()}
+                            className={classes.reviewBtn}
+                          >
                             Tham gia nhóm
                           </Button>
-                          <Button onClick={() => handleUnAcceptInvite()}>
+                          <Button 
+                            onClick={() => handleUnAcceptInvite()}
+                            className={classes.reviewBtn}
+                          >
                             Từ chối lời mời
                           </Button>
                         </ListItemSecondaryAction>
