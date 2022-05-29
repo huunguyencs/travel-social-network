@@ -95,15 +95,11 @@ function Position(props) {
 
 export default function MapCard(props) {
   const { position, zoom, locations, height, name } = props;
-  const [center, setCenter] = useState(position);
-
-  const changeCenter = position => {
-    setCenter(position);
-  };
+  const [center, setCenter] = useState({ lat: 15, lng: 108 });
 
   useEffect(() => {
     if (position) {
-      changeCenter(position);
+      setCenter(position);
     }
   }, [position]);
 
@@ -124,7 +120,7 @@ export default function MapCard(props) {
                 key={item._id}
                 lat={item.position.lat}
                 lng={item.position.lng}
-                onClick={() => changeCenter(item.position)}
+                onClick={() => setCenter(item.position)}
               />
             ))}
           {name && (

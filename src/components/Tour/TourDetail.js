@@ -247,22 +247,24 @@ export default function TourDetail(props) {
   };
 
   useEffect(() => {
-    if (tour && tour.tour[indexDate].events.length > 0) {
-      const temp = tour.tour[indexDate].events[0];
-      if (temp.location != null) setPosition(temp.location.position);
-      else if (temp.service != null && position != null)
+    if (tour?.tour[indexDate]?.events?.length > 0) {
+      const temp = tour.tour[indexDate].events[indexEvent];
+      if (temp.location) setPosition(temp.location.position);
+      else if (temp.service)
         setPosition({
           lng: temp.service.position[0],
           lat: temp.service.position[1]
         });
     }
-  }, [tour, indexDate, position]);
+  }, [tour, indexDate, indexEvent]);
   useEffect(() => {
-    var locs = tour.tour[indexDate].events
-      .filter(item => item.location)
-      .map(item => item.location);
-    setLocations(locs);
-  }, [tour, indexDate]);
+    if (tour?.tour) {
+      var locs = tour.tour[indexDate].events
+        .filter(item => item.location)
+        .map(item => item.location);
+      setLocations(locs);
+    }
+  }, [tour?.tour, indexDate]);
 
   const refDetail = React.createRef();
   const refUser = React.createRef();
@@ -924,14 +926,12 @@ export default function TourDetail(props) {
                 className={classes.tourDatesRight}
               >
                 <div className={classes.map}>
-                  {position ? (
+                  {position && (
                     <MapCard
                       position={position}
                       zoom={12}
                       locations={locations}
                     />
-                  ) : (
-                    <div></div>
                   )}
                 </div>
               </Grid>

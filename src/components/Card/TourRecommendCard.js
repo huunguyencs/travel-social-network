@@ -1,34 +1,46 @@
-import React, { useEffect, useState } from 'react';
+import React, { useCallback, useEffect, useState } from 'react';
 import { Card, List, Typography, CardHeader, Avatar } from '@material-ui/core';
 import { friendCardStyles } from '../../style';
 import { useHistory } from 'react-router-dom';
 import { useSelector } from 'react-redux';
-import { getTourSimilar } from '../../redux/callApi/tourCall';
-import { useDispatch } from 'react-redux';
+// import { getTourSimilar } from '../../redux/callApi/tourCall';
+// import { useDispatch } from 'react-redux';
 import { timeAgo } from '../../utils/date';
 import { Link } from 'react-router-dom';
+import customAxios from '../../utils/fetchData';
 
 export default function TourRecommendCard(props) {
   const { id } = props;
   const { auth } = useSelector(state => state);
   const history = useHistory();
-  const dispatch = useDispatch();
+  // const dispatch = useDispatch();
   const classes = friendCardStyles();
   const [tours, setTours] = useState([]);
+
+  const getTourSimilar = useCallback(() => {
+    customAxios(auth?.token)
+      .get(`/tour/similar/${id}`)
+      .then(res => {
+        setTours(res.data.tours);
+      });
+  }, [auth?.token, id]);
+
   useEffect(() => {
-    dispatch(
-      getTourSimilar(auth, id, data => {
-        setTours(data);
-      })
-    );
-  }, [dispatch, id, auth]);
+    getTourSimilar();
+  }, [getTourSimilar]);
+
+  // useEffect(() => {
+  //   dispatch(
+  //     getTourSimilar(auth, id, data => {
+  //       setTours(data);
+  //     })
+  //   );
+  // }, [dispatch, id, auth]);
 
   return (
     <Card className={classes.tourRecommend}>
       <div className={classes.friendHeader}>
-        <Typography
-          className={classes.tourRecommendTittle}
-        >
+        <Typography className={classes.tourRecommendTittle}>
           Hành trình liên quan
         </Typography>
       </div>

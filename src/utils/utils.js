@@ -29,8 +29,10 @@ export function extractProvinceTour(tour) {
   var province = [];
   for (const date of tour) {
     for (const event of date.events) {
-      if (event.location) province.push(event.location.province.fullname);
-      if (event.service) province.push(event.service.province.fullname);
+      if (event.location?.province)
+        province.push(event.location.province.fullname);
+      if (event.service?.province)
+        province.push(event.service.province.fullname);
     }
   }
   return new Set(province);

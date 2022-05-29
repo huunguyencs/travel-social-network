@@ -441,15 +441,15 @@ export const searchTourHot = query => async dispatch => {
   }
 };
 
-export const getTourSimilar = (auth, id, next) => async dispatch => {
-  try {
-    const res = await customAxios(auth?.token).get(`/tour/similar/${id}`);
-    console.log('data_tour_similar', res.data.tours);
-    next(res.data.tours);
-  } catch (err) {
-    dispatch(tourAction.error({ error: 'Có lỗi xảy ra' }));
-  }
-};
+// export const getTourSimilar = (auth, id, next) => async dispatch => {
+//   try {
+//     const res = await customAxios(auth?.token).get(`/tour/similar/${id}`);
+//     console.log('data_tour_similar', res.data.tours);
+//     next(res.data.tours);
+//   } catch (err) {
+//     dispatch(tourAction.error({ error: 'Có lỗi xảy ra' }));
+//   }
+// };
 
 export const getTourRecommend = (token, next) => async dispatch => {
   try {
