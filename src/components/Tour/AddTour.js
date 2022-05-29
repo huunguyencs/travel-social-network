@@ -238,12 +238,12 @@ export default function AddTour(props) {
         createTour.image,
         auth,
         socket,
-        () => {
+        id => {
           setState({
             loading: false,
             error: false
           });
-          history.push('/tour');
+          history.push(`/tour/${id}`);
         },
         () => {
           setState({

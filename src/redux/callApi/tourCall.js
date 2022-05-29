@@ -128,12 +128,11 @@ export const saveTour =
 
       console.log(data);
 
-      await customAxios(auth.token).post('/tour/create', data);
+      const res = await customAxios(auth.token).post('/tour/create', data);
 
       dispatch(alertAction.success({ message: 'Lưu lịch trình thành công!' }));
       dispatch(resetTour());
-      dispatch(tourAction.addTour({ tour: data }));
-      next();
+      next(res.data.newTour._id);
     } catch (err) {
       console.log(err);
       error();
