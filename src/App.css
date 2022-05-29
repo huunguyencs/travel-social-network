@@ -22,4 +22,5 @@ ul {
 .ql-editor {
   min-height: 100px !important;
   max-height: 200px !important;
+  background-color: white;
 }

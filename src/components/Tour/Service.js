@@ -1,6 +1,7 @@
 import {
   Button,
   Card,
+  CardContent,
   CardMedia,
   ClickAwayListener,
   // Collapse,
@@ -19,100 +20,11 @@ import {
 import { MoreVert } from '@material-ui/icons';
 import React, { useState } from 'react';
 import { useDispatch } from 'react-redux';
-// import { success } from '../../redux/actions/alertAction';
 import * as tourAction from '../../redux/actions/createTourAction';
 import { tourdetailStyles } from '../../style';
 import { ReviewArea } from '../Service/ServiceDetail';
-// import ReactQuill from 'react-quill';
 import 'react-quill/dist/quill.snow.css';
-
-// function DetailService(props) {
-//   const { service, isEdit, indexService, indexDate, joined } = props;
-
-//   const [cost, setCost] = useState(service.cost);
-//   const [description, setDescription] = useState(service.description);
-//   const [time, setTime] = useState(service.time);
-
-//   const dispatch = useDispatch();
-
-//   const handleUpdate = () => {
-//     // console.log(cost);
-//     dispatch(
-//       tourAction.updateService({
-//         cost: parseInt(cost),
-//         description: description,
-//         indexDate: indexDate,
-//         index: indexService,
-//         time: time
-//       })
-//     );
-//     dispatch(success({ message: 'Cập nhật thành công!' }));
-//   };
-
-//   const classes = tourdetailStyles();
-
-//   return (
-//     <div style={{ padding: 5 }}>
-//       {isEdit ? (
-//         <div>
-//           <ReactQuill
-//             value={description}
-//             onChange={e => setDescription(e)}
-//             style={{ width: '100%' }}
-//             placeholder="Mô tả"
-//           />
-//           <TextField
-//             label="Chi phí (nghìn VND)"
-//             variant="outlined"
-//             name="cost"
-//             id="cost"
-//             className={classes.fullField}
-//             type={'number'}
-//             value={cost}
-//             onChange={e => setCost(e.target.value)}
-//           />
-//           <TextField
-//             id="time"
-//             label="Thời gian"
-//             type="time"
-//             defaultValue={service.time}
-//             onChange={e => setTime(e.target.value)}
-//             InputLabelProps={{
-//               shrink: true
-//             }}
-//             inputProps={{
-//               step: 300 // 5 min
-//             }}
-//           />
-//           <div className={classes.btnWrap}>
-//             <Button
-//               onClick={handleUpdate}
-//               // variant="contained"
-//               className={classes.reviewBtn}
-//             >
-//               Cập nhật
-//             </Button>
-//           </div>
-//         </div>
-//       ) : (
-//         <div>
-//           <Typography>
-//             <Label style={{ fontSize: 15 }} />
-//             <span style={{ fontWeight: 500 }}>Chi phí: </span>{' '}
-//             {new Intl.NumberFormat().format(cost * 1000)} VND
-//           </Typography>
-//           <Typography>
-//             <Label style={{ fontSize: 15 }} />{' '}
-//             <span style={{ fontWeight: 500 }}> Mô tả: </span> {description}
-//           </Typography>
-//         </div>
-//       )}
-//       {!isEdit && joined && service?.service && (
-//         <ReviewArea id={service.service._id} />
-//       )}
-//     </div>
-//   );
-// }
+import { Link } from 'react-router-dom';
 
 export default function ServiceCard(props) {
   const { service, index, isEdit, indexDate, joined } = props;
@@ -120,11 +32,6 @@ export default function ServiceCard(props) {
   const classes = tourdetailStyles();
   const [anchorEl, setAnchorEl] = useState(null);
   const [showDelete, setShowDelete] = useState(false);
-  // const [showDetail, setShowDetail] = useState(false);
-
-  // const handleShowDetail = () => {
-  //   setShowDetail(state => !state);
-  // };
 
   const dispatch = useDispatch();
 
@@ -146,8 +53,8 @@ export default function ServiceCard(props) {
 
   const handleDelete = () => {
     dispatch(
-      tourAction.deleteEvent({
-        index: index,
+      tourAction.deleteService({
+        indexEvent: index,
         indexDate: indexDate
       })
     );
@@ -173,15 +80,24 @@ export default function ServiceCard(props) {
           </CardMedia>
         </Grid>
         <Grid item md={7} sm={9} xs={12}>
-          <div className={classes.contentContainer}>
+          <CardContent style={{ padding: 0 }}>
             <div className={classes.locationContentContainer}>
-              <div>
+              <div style={{ margin: 16 }}>
                 <div>
-                  <Typography variant="h6" className={classes.locationName}>
+                  <Typography className={classes.locationName}>
                     {service.service?.name}
                   </Typography>
                 </div>
-                {!isEdit && joined && service?.service && (
+                <div>
+                  <Typography
+                    style={{ fontSize: 16, fontWeight: 400 }}
+                    component={Link}
+                    to={'/province/' + service.service?.province.name}
+                  >
+                    {service.service?.province.fullname}
+                  </Typography>
+                </div>
+                {!isEdit && service?.service && (
                   <ReviewArea id={service.service._id} />
                 )}
               </div>
@@ -232,19 +148,8 @@ export default function ServiceCard(props) {
                 )}
               </div>
             </div>
-          </div>
+          </CardContent>
         </Grid>
-        {/* <Grid item md={12} sm={12} xs={12}>
-          <Collapse in={showDetail} style={{ width: '100%' }}>
-            <DetailService
-              service={service}
-              isEdit={isEdit}
-              indexService={index}
-              indexDate={indexDate}
-              joined={joined}
-            />
-          </Collapse>
-        </Grid> */}
       </Grid>
     </Card>
   );

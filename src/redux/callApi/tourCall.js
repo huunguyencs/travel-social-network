@@ -127,7 +127,7 @@ function extractLocation(locations) {
 }
 
 export const saveTour =
-  (tour, image, token, socket, next, error) => async dispatch => {
+  (tour, image, auth, socket, next, error) => async dispatch => {
     try {
       // call api to save tour
       let imageUpload = [];
@@ -145,28 +145,23 @@ export const saveTour =
         })),
         provinces: Array.from(extractProvinceTour(tour.tour)),
         locations: Array.from(extractLocationTour(tour.tour)),
-        image: image ? imageUpload[0] : ''
+        image: image ? imageUpload[0] : '',
+        joinIds: [
+          {
+            id: auth.user,
+            isJoin: true,
+            isEdit: true
+          }
+        ]
       };
 
       console.log(data);
 
-      const res = await customAxios(token).post('/tour/create', data);
-
-      // //notify
-      // const dataNotify = {
-      //   id: res.data.newTour._id,
-      //   text: ' thêm hành trình mới',
-      //   recipients: res.data.newTour.userId.followers,
-      //   content: res.data.newTour.name,
-      //   image: res.data.newTour.image,
-      //   url: `/tour/${res.data.newTour._id}`
-      // };
-
-      // dispatch(createNotify(dataNotify, token, socket));
+      await customAxios(auth.token).post('/tour/create', data);
 
       dispatch(alertAction.success({ message: 'Lưu lịch trình thành công!' }));
       dispatch(resetTour());
-      dispatch(tourAction.addTour({ tour: res.data.newTour }));
+      dispatch(tourAction.addTour({ tour: data }));
       next();
     } catch (err) {
       console.log(err);

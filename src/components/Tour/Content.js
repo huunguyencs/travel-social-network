@@ -644,7 +644,7 @@ function BaseContent(props) {
             {auth.user && auth.user._id === tour.userId._id ? (
               <ManageUserRef
                 ref={refMg}
-                listUser={tour.joinIds}
+                listUser={tour.joinIds.map(item => item?.id)}
                 updateJoin={updateJoin}
                 tourId={tour._id}
                 title={'Thành viên tham gia'}
@@ -653,7 +653,7 @@ function BaseContent(props) {
             ) : (
               <UserListRef
                 ref={refUser}
-                listUser={tour.joinIds}
+                listUser={tour.joinIds.map(item => item?.id)}
                 title={'Thành viên tham gia'}
                 handleClose={handleCloseJoin}
               />

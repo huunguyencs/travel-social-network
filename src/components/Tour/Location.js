@@ -180,7 +180,6 @@ export default function Location(props) {
     addReview
     // joined
   } = props;
-
   // const [showDetail, setShowDetail] = useState(false);
   const [showCreateRv, setShowCreateRv] = useState(false);
   const [anchorEl, setAnchorEl] = useState(null);
@@ -226,9 +225,9 @@ export default function Location(props) {
 
   const handleDeleteLocation = () => {
     dispatch(
-      tourAction.deleteEvent({
+      tourAction.deleteLocation({
         indexDate: indexDate,
-        index: indexLocation
+        indexEvent: indexLocation
       })
     );
     handleCloseDelete();
@@ -271,7 +270,7 @@ export default function Location(props) {
   return (
     <Card className={classes.cardContainer}>
       <Grid container>
-        <Grid item md={4} sm={3} className={classes.imageLocation}>
+        <Grid item md={5} sm={3} className={classes.imageLocation}>
           <CardMedia style={{ height: '100%' }}>
             <img
               src={
@@ -284,13 +283,12 @@ export default function Location(props) {
             />
           </CardMedia>
         </Grid>
-        <Grid item md={8} sm={9} xs={12}>
+        <Grid item md={7} sm={9} xs={12}>
           <CardContent style={{ padding: 0 }}>
             <div className={classes.locationContentContainer}>
-              <div style={{ margin: 20 }}>
+              <div style={{ margin: 16 }}>
                 <div>
                   <Typography
-                    variant="h5"
                     className={classes.locationName}
                     component={Link}
                     to={`/location/${location.location.name}`}
@@ -300,7 +298,7 @@ export default function Location(props) {
                 </div>
                 <div>
                   <Typography
-                    variant="h6"
+                    style={{ fontSize: 16, fontWeight: 400 }}
                     component={Link}
                     to={'/province/' + location.location.province.name}
                   >
@@ -320,7 +318,7 @@ export default function Location(props) {
                           </Button>
                         </div>
                       )}
-                      {location.postId?.length > 0 && (
+                      {location.reviewIds?.length > 0 && (
                         <Button
                           className={classes.reviewBtn}
                           onClick={handleShowReview}
@@ -433,7 +431,9 @@ export default function Location(props) {
                   cost={location.cost}
                   handleClose={handleClose}
                   tourDateId={tourDateId}
-                  indexLocation={location._id}
+                  indexDate={indexDate}
+                  eventId={location._id}
+                  // locationId={location._id}
                   addReview={addReview}
                 />
               </Fade>
@@ -452,7 +452,7 @@ export default function Location(props) {
               <Fade in={showReview}>
                 <ReviewRef
                   ref={ref}
-                  reviews={location.postId}
+                  reviews={location.reviewIds}
                   handleClose={handleCloseReview}
                 />
               </Fade>

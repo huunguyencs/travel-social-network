@@ -24,7 +24,7 @@ function Location(props) {
   const open = Boolean(anchorEl);
   const classes = cardStyles();
 
-  const { location, onClick, indexDate, handleClose } = props;
+  const { location, onClick, indexDate, handleClose, indexEvent } = props;
 
   const handlePopoverOpen = event => {
     onClick();
@@ -38,7 +38,11 @@ function Location(props) {
   const addLoc = e => {
     e.preventDefault();
     dispatch(
-      tourAction.addLocation({ location: location, indexDate: indexDate })
+      tourAction.addLocation({
+        location,
+        indexDate,
+        indexEvent
+      })
     );
     handlePopoverClose();
     handleClose();
@@ -105,7 +109,8 @@ export default function AddLocMap(props) {
     state,
     setState,
     indexDate,
-    handleClose
+    handleClose,
+    indexEvent
   } = props;
 
   useEffect(() => {
@@ -129,7 +134,7 @@ export default function AddLocMap(props) {
   };
 
   return (
-    <div style={{ height: 500, marginBlock: 20 }}>
+    <div style={{ height: 500 }}>
       <GoogleMapReact
         bootstrapURLKeys={{ key: KEY }}
         defaultCenter={{ lat: 14.489055527436275, lng: 107.96608963227854 }}
@@ -146,6 +151,7 @@ export default function AddLocMap(props) {
                 lng={item.position?.lng}
                 onClick={() => locationClick(item)}
                 indexDate={indexDate}
+                indexEvent={indexEvent}
                 handleClose={handleClose}
               />
             ))

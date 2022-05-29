@@ -37,7 +37,7 @@ export default function QuillEditor({ value, setValue, placeholder }) {
     <ReactQuill
       value={value}
       onChange={setValue}
-      // style={{ width: '100%' }}
+      style={{ backgroundColor: 'white' }}
       placeholder={placeholder}
       modules={modules}
       formats={formats}
