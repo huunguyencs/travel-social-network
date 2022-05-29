@@ -74,7 +74,7 @@ function AdminHome(props) {
     setLoading(true);
     setError(null);
     await customAxios(token)
-      .get(`/user/list`)
+      .get(`/user/admin`)
       .then(res => {
         setUsers(res.data.users);
         setLoading(false);
@@ -89,7 +89,7 @@ function AdminHome(props) {
     setLoading(true);
     setError(null);
     await customAxios(token)
-      .get(`/tour/tours`)
+      .get(`/tour/admin`)
       .then(res => {
         setTours(res.data.tours);
         setLoading(false);
@@ -104,7 +104,7 @@ function AdminHome(props) {
     setLoading(true);
     setError(null);
     await customAxios(token)
-      .get(`/post/all`)
+      .get(`/post/admin`)
       .then(res => {
         setPosts(res.data.posts);
         setLoading(false);
