@@ -21,7 +21,7 @@ import {
   CardHeader,
   Avatar,
 } from '@material-ui/core';
-import { MoreVert, Close, AddAPhoto, Send } from '@material-ui/icons';
+import { MoreVert, Close } from '@material-ui/icons';
 import React, { useState, useEffect} from 'react';
 import * as tourAction from '../../redux/actions/createTourAction';
 import { tourdetailStyles } from '../../style';
@@ -32,7 +32,6 @@ import { timeAgo } from '../../utils/date';
 import ImageList from '../Modal/ImageList';
 import { Rating } from '@material-ui/lab';
 import { SeeMoreText } from '../SeeMoreText';
-import CreateReviewForm from '../Forms/CreateReview';
 import { useDispatch} from 'react-redux';
 import CreateRateForm from '../Forms/CreateRate';
 
