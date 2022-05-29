@@ -48,7 +48,7 @@ import {
   FlagOutlined,
   ChatBubbleOutlineOutlined
 } from '@material-ui/icons';
-import { Link } from 'react-router-dom';
+import { Link, useHistory } from 'react-router-dom';
 import UserList from '../Modal/UserList';
 import { useDispatch, useSelector } from 'react-redux';
 import { acceptJoinTour, unAcceptJoinTour } from '../../redux/callApi/tourCall';
@@ -161,6 +161,8 @@ ColorlibStepIcon.propTypes = {
 export default function TourDetail(props) {
   const { tour, isOwn, setTour, isInvite, setIsInvite, memberIsEdit, isJoin } =
     props;
+
+  const history = useHistory();
 
   const classes = tourdetailStyles();
   const dispatch = useDispatch();
@@ -311,6 +313,7 @@ export default function TourDetail(props) {
           });
           setShowDelete(false);
           handleCloseMenu();
+          history.push('/tour');
         },
         () => {
           setState({
@@ -456,13 +459,13 @@ export default function TourDetail(props) {
                           }
                         />
                         <ListItemSecondaryAction>
-                          <Button 
+                          <Button
                             onClick={() => handleAcceptInvite()}
                             className={classes.reviewBtn}
                           >
                             Tham gia nhóm
                           </Button>
-                          <Button 
+                          <Button
                             onClick={() => handleUnAcceptInvite()}
                             className={classes.reviewBtn}
                           >
