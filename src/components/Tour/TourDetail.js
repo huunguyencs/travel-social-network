@@ -246,18 +246,22 @@ export default function TourDetail(props) {
 
   useEffect(() => {
     if (tour && tour.tour[indexDate].events.length > 0) {
-      const temp = tour.tour[indexDate].events[0];
-      if (temp.location != null) setPosition(temp.location.position);
-      else if (temp.service != null && position != null)
-        setPosition({
-          lng: temp.service.position[0],
-          lat: temp.service.position[1]
-        });
+      // const temp = tour.tour[indexDate].events[0];
+      // if (temp.location != null) setPosition(temp.location.position);
+      // else if (temp.service != null && position != null)
+      //   setPosition({
+      //     lng: temp.service.position[0],
+      //     lat: temp.service.position[1]
+      //   });
+      const temp = tour.tour[indexDate].events.filter(event=> event.location != null );
+      if(temp.length > 0){
+        setPosition(temp[0].location.position);
+      }
     }
   }, [tour, indexDate, position]);
   useEffect(() => {
     var locs = tour.tour[indexDate].events
-      .filter(item => item.location)
+      .filter(item => item.location != null)
       .map(item => item.location);
     setLocations(locs);
   }, [tour, indexDate]);
@@ -460,7 +464,7 @@ export default function TourDetail(props) {
                             onClick={() => handleAcceptInvite()}
                             className={classes.reviewBtn}
                           >
-                            Tham gia nhóm
+                            Tham gia hành trình
                           </Button>
                           <Button 
                             onClick={() => handleUnAcceptInvite()}
