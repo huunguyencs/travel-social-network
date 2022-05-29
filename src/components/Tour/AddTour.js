@@ -83,10 +83,10 @@ function EditBaseDate(props) {
             setValue={e => setText(e)}
             placeholder="Chi tiết"
           />
-            <Typography className={classes.costTotalTour}>
-              <b>Chi phí ngày: </b>
-              {new Intl.NumberFormat().format(tourDate.cost * 1000)} VND
-            </Typography>
+          <Typography className={classes.costTotalTour}>
+            <b>Chi phí ngày: </b>
+            {new Intl.NumberFormat().format(tourDate.cost * 1000)} VND
+          </Typography>
           <div style={{ display: 'flex', justifyContent: 'center' }}>
             <Button
               variant="contained"
@@ -360,9 +360,11 @@ export default function AddTour(props) {
   useEffect(() => {
     setTourInfo(state => ({
       ...state,
-      name: createTour.name
+      name: createTour.name,
+      description: createTour?.description || '',
+      hashtags: createTour.hashtags || []
     }));
-  }, [createTour?.name]);
+  }, [createTour?.name, createTour?.description, createTour?.hashtags]);
   return (
     <>
       {(!isUpdate || (isUpdate && createTour.tour && createTour.tour[0])) && (
