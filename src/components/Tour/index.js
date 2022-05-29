@@ -238,7 +238,7 @@ export default function Tour(props) {
             </div>
             <div className={classes.postFooter}>
               <div className={classes.likers}>
-                {tour?.likes.length > 0 &&
+                {tour?.likes?.length > 0 &&
                   tour.likes.map((item, index) => (
                     <img
                       className={classes.liker}
@@ -250,7 +250,7 @@ export default function Tour(props) {
               </div>
               <div className={classes.likersText}>
                 <p style={{ color: '#888da8', margin: 0 }}>
-                  {tour?.likes.length > 0 &&
+                  {tour?.likes?.length > 0 &&
                     tour.likes.slice(0, 5).map((item, index) => (
                       <Typography
                         key={index}
@@ -264,19 +264,19 @@ export default function Tour(props) {
                       >
                         {
                           item.fullname.split(' ')[
-                            item.fullname.split(' ').length - 1
+                            item.fullname.split(' ')?.length - 1
                           ]
                         }
-                        {index !== tour.likes.slice(0, 5).length - 1
+                        {index !== tour.likes.slice(0, 5)?.length - 1
                           ? ', '
                           : ''}
                       </Typography>
                     ))}
                 </p>
-                {tour?.likes.length === 1 ? (
+                {tour?.likes?.length === 1 ? (
                   <p style={{ margin: 0 }}>đã thích bài viết này</p>
                 ) : (
-                  tour?.likes.length > 1 && (
+                  tour?.likes?.length > 1 && (
                     <p
                       style={{ margin: 0, cursor: 'pointer' }}
                       onClick={handleOpen}
@@ -299,7 +299,7 @@ export default function Tour(props) {
                       margin: '0 5px'
                     }}
                   >
-                    {tour.likes.length}
+                    {tour.likes?.length}
                   </span>
                 </div>
                 <div className={classes.likeCount}>
@@ -314,7 +314,7 @@ export default function Tour(props) {
                       margin: '0 5px'
                     }}
                   >
-                    {tour.comments.length}
+                    {tour.comments?.length}
                   </span>
                 </div>
                 <div className={classes.likeCount}>
@@ -329,7 +329,7 @@ export default function Tour(props) {
                       margin: '0 5px'
                     }}
                   >
-                    {tour.likes.length}
+                    {tour.likes?.length}
                   </span>
                 </div>
               </div>
