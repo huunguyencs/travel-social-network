@@ -39,7 +39,14 @@ export default function MyReviewPage() {
     document.title = 'Review của tôi';
   }, []);
 
-  if (loading) return <Loading style={{ marginTop: 150 }} />;
+  if (loading)
+    return (
+      <div
+        style={{ display: 'flex', justifyContent: 'center', marginTop: 150 }}
+      >
+        <Loading />
+      </div>
+    );
 
   if (error) return <div className={classes.center}>Có lỗi xảy ra</div>;
 
