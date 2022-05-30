@@ -239,19 +239,21 @@ export default function Tour(props) {
             <div className={classes.postFooter}>
               <div className={classes.likers}>
                 {tour?.likes?.length > 0 &&
-                  tour.likes.map((item, index) => (
-                    <img
-                      className={classes.liker}
-                      src={item.avatar}
-                      alt="avatar"
-                      key={index}
-                    />
-                  ))}
+                  tour.likes
+                    .slice(0, 3)
+                    .map((item, index) => (
+                      <img
+                        className={classes.liker}
+                        src={item.avatar}
+                        alt="avatar"
+                        key={index}
+                      />
+                    ))}
               </div>
               <div className={classes.likersText}>
-                <p style={{ color: '#888da8', margin: 0 }}>
+                <p style={{ color: '#888da8', margin: 0, display: 'flex' }}>
                   {tour?.likes?.length > 0 &&
-                    tour.likes.slice(0, 5).map((item, index) => (
+                    tour.likes.slice(0, 3).map((item, index) => (
                       <Typography
                         key={index}
                         onClick={handleOpen}
@@ -267,7 +269,7 @@ export default function Tour(props) {
                             item.fullname.split(' ')?.length - 1
                           ]
                         }
-                        {index !== tour.likes.slice(0, 5)?.length - 1
+                        {index !== tour.likes.slice(0, 3)?.length - 1
                           ? ', '
                           : ''}
                       </Typography>
