@@ -61,7 +61,7 @@ export const getTourHashtag = (page, hashtag) => async dispatch => {
   if (page > 0) dispatch(tourAction.loading());
 
   return customAxios()
-    .get(`/tour/hashtag?hashtag=${hashtag}&offset=${page}`)
+    .get(`/tour/hashtag?hashtag=${hashtag}&page=${page}`)
     .then(res => {
       const tours = res.data.tours.map(item => sortTourDate(item));
       if (page > 0) {
